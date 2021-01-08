@@ -476,14 +476,13 @@ namespace DotSpatial.Data.Forms
         /// A progress message, generally as part of a long loop was sent. It is a bad
         /// idea to log these to a file as there may be thousands of them.
         /// </summary>
-        /// <param name="baseMessage">The status part of the progress message with no percent information</param>
         /// <param name="percent">The integer percent from 0 to 100</param>
-        /// <param name="message">The complete message, showing both status and completion percent</param>
-        public void Progress(string baseMessage, int percent, string message)
+        /// <param name="message">The complete message, showing both status and completion percent.</param>
+        public void Progress(int percent, string message)
         {
             foreach (KeyValuePair<int, ILogger> logger in _loggers)
             {
-                logger.Value.Progress(baseMessage, percent, message);
+                logger.Value.Progress(percent, message);
             }
         }
 
@@ -511,6 +510,17 @@ namespace DotSpatial.Data.Forms
             foreach (KeyValuePair<int, ILogger> logger in _loggers)
             {
                 logger.Value.PublicMethodLeft(methodName);
+            }
+        }
+
+        /// <summary>
+        /// Resets the progress.
+        /// </summary>
+        public void Reset()
+        {
+            foreach (KeyValuePair<int, ILogger> logger in _loggers)
+            {
+                logger.Value.Reset();
             }
         }
 

@@ -119,7 +119,7 @@ namespace DotSpatial.Tools
                 newFeature.DataRow[TextStrings.Area + fieldCount] = output.Features[j].Geometry.Area;
 
                 // Status updates is done here
-                cancelProgressHandler.Progress(string.Empty, Convert.ToInt32((Convert.ToDouble(j) / Convert.ToDouble(input.Features.Count)) * 100), input.Features[j].DataRow[0].ToString());
+                cancelProgressHandler.Progress(Convert.ToInt32((Convert.ToDouble(j) / Convert.ToDouble(input.Features.Count)) * 100), input.Features[j].DataRow[0].ToString());
                 if (cancelProgressHandler.Cancel)
                 {
                     return false;

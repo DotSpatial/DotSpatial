@@ -252,7 +252,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     {
                         foreach (PackageDependency dependentPackage in dependency)
                         {
-                            App.ProgressHandler.Progress(null, 0, string.Format(Resources.DownloadingDependency, dependentPackage.Id));
+                            App.ProgressHandler.Progress(0, string.Format(Resources.DownloadingDependency, dependentPackage.Id));
                             _downloadDialog.ShowDownloadStatus(dependentPackage);
                             _downloadDialog.SetProgressBarPercent(0);
 
@@ -267,7 +267,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     }
 
                     // Download the extension.
-                    App.ProgressHandler.Progress(null, 0, string.Format(Resources.Downloading, pack.Title));
+                    App.ProgressHandler.Progress(0, string.Format(Resources.Downloading, pack.Title));
                     _downloadDialog.ShowDownloadStatus(pack);
                     _downloadDialog.SetProgressBarPercent(0);
 
@@ -285,7 +285,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     // Load the extension.
                     App.RefreshExtensions();
                     IEnumerable<PackageDependency> dependency = pack.Dependencies;
-                    App.ProgressHandler.Progress(null, 0, string.Format(Resources.Installing, pack.Title));
+                    App.ProgressHandler.Progress(0, string.Format(Resources.Installing, pack.Title));
 
                     // Activate the extension(s) that was installed.
                     var extensions = App.Extensions.Where(a => !inactiveExtensions.Contains(a) && !a.IsActive).ToList();
@@ -299,7 +299,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     }
 
                     Installed.Items.Clear();
-                    App.ProgressHandler.Progress(null, 0, Resources.Ready);
+                    App.ProgressHandler.Progress(0, Resources.Ready);
 
                     string message = string.Format(Resources.TheFollowingPackagesAreInstalled, pack.Title);
 
@@ -521,7 +521,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxUninstall.Enabled = false;
 
             // Remove the selected package.
-            App.ProgressHandler.Progress(null, 0, string.Format(Resources.Uninstalling, selectedPackage.Id));
+            App.ProgressHandler.Progress(0, string.Format(Resources.Uninstalling, selectedPackage.Id));
 
             // Make backup
             if (selectedExtension.DeactivationAllowed)
@@ -530,7 +530,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             App.MarkPackageForRemoval(GetPackageFolderName(selectedPackage));
 
             // hack: we should really try to refresh the list, using what ever category the user has selected.
-            App.ProgressHandler.Progress(null, 0, Resources.Ready);
+            App.ProgressHandler.Progress(0, Resources.Ready);
 
             MessageBox.Show(Resources.ExtensionWillFinishUninstallingOnRestart);
             _restartNeccesary = true;

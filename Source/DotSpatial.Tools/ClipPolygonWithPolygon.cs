@@ -83,13 +83,13 @@ namespace DotSpatial.Tools
             // Validates the input and output data
             if (input == null || input2 == null || output == null)
             {
-                cancelProgressHandler.Progress(string.Empty, 100, TextStrings.Oneparameterinnull);
+                cancelProgressHandler.Progress(100, TextStrings.Oneparameterinnull);
                 return false;
             }
 
             if (input2.FeatureType != FeatureType.Polygon)
             {
-                cancelProgressHandler.Progress(string.Empty, 100, TextStrings.secondinputlayer);
+                cancelProgressHandler.Progress(100, TextStrings.secondinputlayer);
                 return false;
             }
 

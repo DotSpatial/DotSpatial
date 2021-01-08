@@ -183,14 +183,14 @@ namespace DotSpatial.Tools
                 }
 
                 // Status updates is done here, shows number of old / new points
-                cancelProgressHandler.Progress(string.Empty, Convert.ToInt32((Convert.ToDouble(j) / Convert.ToDouble(input.Features.Count)) * 100), numOldPoints + "-->" + numNewPoints);
+                cancelProgressHandler.Progress(Convert.ToInt32((Convert.ToDouble(j) / Convert.ToDouble(input.Features.Count)) * 100), numOldPoints + "-->" + numNewPoints);
                 if (cancelProgressHandler.Cancel)
                 {
                     return false;
                 }
             }
 
-            cancelProgressHandler.Progress(string.Empty, 100, TextStrings.Originalnumberofpoints + numTotalOldPoints + " " + TextStrings.Newnumberofpoints + numTotalNewPoints);
+            cancelProgressHandler.Progress(100, TextStrings.Originalnumberofpoints + numTotalOldPoints + " " + TextStrings.Newnumberofpoints + numTotalNewPoints);
 
             output.Save();
             return true;

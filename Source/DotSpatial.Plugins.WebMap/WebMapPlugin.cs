@@ -243,7 +243,7 @@ namespace DotSpatial.Plugins.WebMap
         private void BwProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             // Do we know what what our progress completion percent is (instead of 50)?
-            App.ProgressHandler.Progress("Loading Basemap ...", e.ProgressPercentage, "Loading Basemap ...");
+            App.ProgressHandler.Progress(e.ProgressPercentage, "Loading Basemap ...");
         }
 
         private void BwRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -259,7 +259,7 @@ namespace DotSpatial.Plugins.WebMap
                 App.Map.IsBusy = false;
                 _busySet = false;
                 App.Map.MapFrame.Invalidate();
-                App.ProgressHandler.Progress(string.Empty, 0, string.Empty);
+                App.ProgressHandler.Reset();
             }
         }
 
@@ -294,7 +294,7 @@ namespace DotSpatial.Plugins.WebMap
             else if (!App.Map.Projection.Equals(_webMercProj))
             {
                 // get original view extents
-                App.ProgressHandler.Progress(string.Empty, 0, "Reprojecting Map Layers...");
+                App.ProgressHandler.Progress(0, "Reprojecting Map Layers...");
                 double[] viewExtentXy = { App.Map.ViewExtents.MinX, App.Map.ViewExtents.MinY, App.Map.ViewExtents.MaxX, App.Map.ViewExtents.MaxY };
                 double[] viewExtentZ = { 0.0, 0.0 };
 
@@ -307,7 +307,7 @@ namespace DotSpatial.Plugins.WebMap
                 // if projection is not WebMercator - reproject all layers:
                 App.Map.MapFrame.ReprojectMapFrame(_webMercProj);
 
-                App.ProgressHandler.Progress(string.Empty, 0, "Loading Basemap...");
+                App.ProgressHandler.Progress(0, "Loading Basemap...");
             }
 
             EnableBasemapLayer();

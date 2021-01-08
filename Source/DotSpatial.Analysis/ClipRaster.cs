@@ -44,11 +44,11 @@ namespace DotSpatial.Analysis
             // if the polygon is completely outside the raster
             if (!input.ContainsFeature(polygon)) return input;
 
-            cancelProgressHandler?.Progress(null, 16, "Retrieving the borders.");
+            cancelProgressHandler?.Progress(16, "Retrieving the borders.");
 
             List<Border> borders = GetBorders(polygon);
 
-            cancelProgressHandler?.Progress(null, 33, "Copying raster.");
+            cancelProgressHandler?.Progress(33, "Copying raster.");
 
             // create output raster
             IRaster output = Raster.CreateRaster(outputFileName, input.DriverCode, input.NumColumns, input.NumRows, 1, input.DataType, new[] { string.Empty });

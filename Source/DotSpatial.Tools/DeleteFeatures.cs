@@ -112,7 +112,7 @@ namespace DotSpatial.Tools
                 // only update when increment in percentage
                 if (current > previous)
                 {
-                    cancelProgressHandler.Progress(string.Empty, current, current + TextStrings.progresscompleted);
+                    cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
                 }
 
                 previous = current;

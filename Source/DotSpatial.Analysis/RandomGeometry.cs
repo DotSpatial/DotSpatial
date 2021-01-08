@@ -65,7 +65,7 @@ namespace DotSpatial.Analysis
                     }
 
                     int progress = Convert.ToInt32(i * 100 / numberOfPoints);
-                    cancelProgressHandler.Progress(string.Empty, progress, string.Empty);
+                    cancelProgressHandler.Progress(progress, string.Empty);
                 }
             }
 

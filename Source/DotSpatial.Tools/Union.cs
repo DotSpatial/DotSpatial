@@ -116,7 +116,7 @@ namespace DotSpatial.Tools
                 }
 
                 previous = Convert.ToInt32(Math.Round(i * 40D / max));
-                cancelProgressHandler.Progress(string.Empty, previous, previous + TextStrings.progresscompleted);
+                cancelProgressHandler.Progress(previous, previous + TextStrings.progresscompleted);
             }
 
             max = other.Features.Count;
@@ -141,7 +141,7 @@ namespace DotSpatial.Tools
                 }
 
                 previous = Convert.ToInt32(Math.Round((i * 40D / max) + 40D));
-                cancelProgressHandler.Progress(string.Empty, previous, previous + TextStrings.progresscompleted);
+                cancelProgressHandler.Progress(previous, previous + TextStrings.progresscompleted);
             }
 
             max = tempFeatureSet.Features.Count;
@@ -162,7 +162,7 @@ namespace DotSpatial.Tools
                     return false;
                 }
 
-                cancelProgressHandler.Progress(string.Empty, previous, previous + TextStrings.progresscompleted);
+                cancelProgressHandler.Progress(previous, previous + TextStrings.progresscompleted);
             }
 
             max = tempOutput.Features.Count;
@@ -182,7 +182,7 @@ namespace DotSpatial.Tools
                 }
 
                 previous = Convert.ToInt32(Math.Round((i * 10D / max) + 90D));
-                cancelProgressHandler.Progress(string.Empty, previous, previous + TextStrings.progresscompleted);
+                cancelProgressHandler.Progress(previous, previous + TextStrings.progresscompleted);
             }
 
             output.SaveAs(output.Filename, true);
@@ -196,13 +196,13 @@ namespace DotSpatial.Tools
         {
             _inputParam = new Parameter[2];
             _inputParam[0] = new FeatureSetParam(TextStrings.BaseFeatureSet)
-                                 {
-                                     HelpText = TextStrings.MainFeatureset
-                                 };
+            {
+                HelpText = TextStrings.MainFeatureset
+            };
             _inputParam[1] = new FeatureSetParam(TextStrings.ChildFeatureSet)
-                                 {
-                                     HelpText = TextStrings.SecondFeatureset
-                                 };
+            {
+                HelpText = TextStrings.SecondFeatureset
+            };
             _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.UnionFeatureSet);
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
