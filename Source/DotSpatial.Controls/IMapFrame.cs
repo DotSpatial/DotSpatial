@@ -204,7 +204,7 @@ namespace DotSpatial.Controls
         /// <param name="device">Graphics object used for drawing.</param>
         /// <param name="targetRectangle">Rectangle to draw the content to.</param>
         /// <param name="targetEnvelope">the extents to draw to the target rectangle</param>
-        void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope);
+        void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope, int iFactor = 1);
 
         /// <summary>
         /// Converts a single geographic location into the equivalent point on the

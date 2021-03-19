@@ -173,6 +173,12 @@ namespace DotSpatial.Data
                 ExcludeFeature(feature);
             }
 
+
+            //_list.ForEach(x => x.ParentFeatureSet = null);
+            //Parent.DataTable.Rows.Clear();
+
+            //if (!EventsSuspended) _list.ForEach(x => OnFeatureRemoved(x));
+
             _list.Clear();
         }
 

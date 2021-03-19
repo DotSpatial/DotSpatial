@@ -934,9 +934,9 @@ namespace DotSpatial.Controls
         /// <param name="device">The graphics device to print to</param>
         /// <param name="targetRectangle">the rectangle where the map content should be drawn.</param>
         /// <param name="targetEnvelope">the extents to print in the target rectangle</param>
-        public void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope)
+        public void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope, int iFactor = 1)
         {
-            MapFrame.Print(device, targetRectangle, targetEnvelope);
+            MapFrame.Print(device, targetRectangle, targetEnvelope, iFactor);
         }
 
         /// <summary>

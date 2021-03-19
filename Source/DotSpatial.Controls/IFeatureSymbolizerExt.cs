@@ -1,8 +1,8 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
-using System.Drawing.Drawing2D;
 using DotSpatial.Symbology;
+using System.Drawing.Drawing2D;
 
 namespace DotSpatial.Controls
 {
@@ -22,10 +22,10 @@ namespace DotSpatial.Controls
         {
             if (self.ScaleMode == ScaleMode.Geographic)
             {
-                return args.ImageRectangle.Width / args.GeographicExtents.Width;
+                return (args.ImageRectangle.Width / args.GeographicExtents.Width) * args.Factor;
             }
 
-            return 1;
+            return 1 * args.Factor;
         }
 
         /// <summary>
