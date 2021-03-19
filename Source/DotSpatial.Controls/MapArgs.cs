@@ -1,10 +1,10 @@
 // Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
-using System;
-using System.Drawing;
 using DotSpatial.Data;
 using GeoAPI.Geometries;
+using System;
+using System.Drawing;
 
 namespace DotSpatial.Controls
 {
@@ -14,8 +14,6 @@ namespace DotSpatial.Controls
     public class MapArgs : EventArgs, IProj
     {
 
-        private Coordinate _printlocation = null;
-
         #region  Constructors
 
         /// <summary>
@@ -23,10 +21,11 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="bufferRectangle">The buffer rectangle.</param>
         /// <param name="bufferEnvelope">The buffer envelope.</param>
-        public MapArgs(Rectangle bufferRectangle, Extent bufferEnvelope)
+        public MapArgs(Rectangle bufferRectangle, Extent bufferEnvelope, int factor = 1)
         {
             ImageRectangle = bufferRectangle;
             GeographicExtents = bufferEnvelope;
+            Factor = factor;
         }
 
         /// <summary>
@@ -35,11 +34,12 @@ namespace DotSpatial.Controls
         /// <param name="bufferRectangle">The buffer rectangle.</param>
         /// <param name="bufferEnvelope">The buffer envelope.</param>
         /// <param name="g">The graphics object used for drawing.</param>
-        public MapArgs(Rectangle bufferRectangle, Extent bufferEnvelope, Graphics g)
+        public MapArgs(Rectangle bufferRectangle, Extent bufferEnvelope, Graphics g, int factor = 1)
         {
             ImageRectangle = bufferRectangle;
             GeographicExtents = bufferEnvelope;
             Device = g;
+            Factor = factor;
         }
 
         #endregion
@@ -82,11 +82,7 @@ namespace DotSpatial.Controls
         public double MinX => GeographicExtents.MinX;
 
         // CGX
-        public Coordinate Printlocation
-        {
-            get { return _printlocation; }
-            set { _printlocation = value; }
-        }
+        public int Factor { get; set; }
         // CGX END
 
         #endregion

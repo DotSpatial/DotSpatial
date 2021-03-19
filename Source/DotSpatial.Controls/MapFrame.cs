@@ -1068,27 +1068,53 @@ namespace DotSpatial.Controls
         /// <param name="device">Graphics object used for drawing.</param>
         /// <param name="targetRectangle">Rectangle to draw the content to.</param>
         /// <param name="targetEnvelope">the extents to draw to the target rectangle</param>
-        public virtual void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope)
+        public virtual void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope, int iFactor = 1 )
         {
-            MapArgs args = new MapArgs(targetRectangle, targetEnvelope, device);
-            Matrix oldMatrix = device.Transform;
-            try
-            {
-                device.TranslateTransform(targetRectangle.X, targetRectangle.Y);
+            Rectangle increaseTargetRectangle = new Rectangle(targetRectangle.X, targetRectangle.Y, targetRectangle.Width, targetRectangle.Height);
+            increaseTargetRectangle.X *= iFactor;
+            increaseTargetRectangle.Y *= iFactor;
+            increaseTargetRectangle.Width *= iFactor;
+            increaseTargetRectangle.Height *= iFactor;
 
-                foreach (IMapLayer ml in Layers)
+            Bitmap memory = new Bitmap(increaseTargetRectangle.Width, increaseTargetRectangle.Height);
+            using (Graphics g = Graphics.FromImage(memory))
+            {
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                g.CompositingQuality = CompositingQuality.HighQuality;
+
+                MapArgs args = new MapArgs(increaseTargetRectangle, targetEnvelope, g, iFactor);
+                Matrix oldMatrix = g.Transform;
+                try
                 {
-                    PrintLayer(ml, args);
+                    g.TranslateTransform(increaseTargetRectangle.X, increaseTargetRectangle.Y);
+
+                    foreach (IMapLayer ml in Layers)
+                    {
+                        PrintLayer(ml, args);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    g.Transform = oldMatrix;
                 }
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-            finally
-            {
-                device.Transform = oldMatrix;
-            }
+
+            device.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            device.SmoothingMode = SmoothingMode.HighQuality;
+            device.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            device.CompositingQuality = CompositingQuality.HighQuality;
+            device.DrawImage(
+                    memory
+                    , targetRectangle.X
+                    , targetRectangle.Y
+                    , targetRectangle.Width
+                    , targetRectangle.Height);
         }
 
         /// <summary>
