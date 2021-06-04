@@ -30,6 +30,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Default mouse cursor button in layout insert toolbar
 - A function to get a reprojected clone of a featureset
 - Auto display children of MapGroup is now an option of the MapFrame
+- Feature of determining the delta azimuth of three consecutive points (#1360)
 
 ### Changed
 - Switched to VS2017 and C#7
