@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-
+﻿
 namespace DotSpatial.Projections.Tests
 {
     /// <summary>
@@ -9,6 +8,20 @@ namespace DotSpatial.Projections.Tests
     [TestFixture]
     public class ProjectionInfoTests
     {
+
+        /// <summary>
+        /// Tests the latitude of origin when set as a property as posted by sindizy https://github.com/DotSpatial/DotSpatial/issues/1193
+        /// </summary>
+        public void TestLatititudeOfOrigin_Issue_1193()
+        {
+            //the World From Space (Orthographic) needs some tweaks
+            ProjectionInfo prjWfs = KnownCoordinateSystems.Projected.World.TheWorldfromSpace;
+            prjWfs.CentralMeridian = -112;
+            prjWfs.LatitudeOfOrigin = -45;
+            Assert.AreEqual(-45, prjWfs.LatitudeOfOrigin);
+
+        }
+
         /// <summary>
         /// Proj4 string esri comparison test.
         /// </summary>
