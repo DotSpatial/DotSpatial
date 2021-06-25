@@ -12,6 +12,7 @@
 // --------------------|------------|------------------------------------------------------------
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
 // Bart Adriaanse      | 30/11/2013 |  Added DutchRD definitions, DoubleStereographic
+// Christoph Perger    | 20/10/2017 |  Added PlateCarree (EPSG:32662)
 // ********************************************************************************************************
 
 using System.Collections.Generic;
@@ -84,6 +85,7 @@ namespace DotSpatial.Projections.Transforms
             _transforms.Add(new ObliqueCylindricalEqualArea());
             _transforms.Add(new ObliqueMercator());
             _transforms.Add(new Orthographic());
+            _transforms.Add(new PlateCarree());
             _transforms.Add(new Polyconic());
             _transforms.Add(new PutinsP1());
             _transforms.Add(new QuarticAuthalic());
