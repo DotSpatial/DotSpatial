@@ -125,17 +125,17 @@
     <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.4.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\DotSpatial.NetTopologySuite.1.14.4\lib\net40-client\DotSpatial.NetTopologySuite.dll</HintPath>
     </Reference>
-    <Reference Include="gdalconst_csharp, Version=1.0.7872.28394, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=x86">
-      <HintPath>..\packages\gdal_MSVC1910.3.3.1.31\lib\net40\gdalconst_csharp.dll</HintPath>
+    <Reference Include="gdalconst_csharp, Version=1.0.7906.18381, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <HintPath>..\packages\gdal_MSVC1910.3.3.1.33\lib\net40\gdalconst_csharp.dll</HintPath>
     </Reference>
-    <Reference Include="gdal_csharp, Version=1.0.7872.28392, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=x86">
-      <HintPath>..\packages\gdal_MSVC1910.3.3.1.31\lib\net40\gdal_csharp.dll</HintPath>
+    <Reference Include="gdal_csharp, Version=1.0.7906.18379, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <HintPath>..\packages\gdal_MSVC1910.3.3.1.33\lib\net40\gdal_csharp.dll</HintPath>
     </Reference>
-    <Reference Include="ogr_csharp, Version=1.0.7872.28390, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=x86">
-      <HintPath>..\packages\gdal_MSVC1910.3.3.1.31\lib\net40\ogr_csharp.dll</HintPath>
+    <Reference Include="ogr_csharp, Version=1.0.7906.18377, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <HintPath>..\packages\gdal_MSVC1910.3.3.1.33\lib\net40\ogr_csharp.dll</HintPath>
     </Reference>
-    <Reference Include="osr_csharp, Version=1.0.7872.28389, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=x86">
-      <HintPath>..\packages\gdal_MSVC1910.3.3.1.31\lib\net40\osr_csharp.dll</HintPath>
+    <Reference Include="osr_csharp, Version=1.0.7906.18376, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <HintPath>..\packages\gdal_MSVC1910.3.3.1.33\lib\net40\osr_csharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -251,8 +251,8 @@
     <Error Condition="!Exists('..\packages\sqlite_Native_MSVC1910.3.36.0.6\build\net20\sqlite_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\sqlite_Native_MSVC1910.3.36.0.6\build\net20\sqlite_Native_MSVC1910.targets'))" />
     <Error Condition="!Exists('..\packages\proj4_Native_MSVC1910.8.1.0.9\build\net20\proj4_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\proj4_Native_MSVC1910.8.1.0.9\build\net20\proj4_Native_MSVC1910.targets'))" />
     <Error Condition="!Exists('..\packages\spatialite_Native_MSVC1910.5.0.1.17\build\net20\spatialite_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\spatialite_Native_MSVC1910.5.0.1.17\build\net20\spatialite_Native_MSVC1910.targets'))" />
-    <Error Condition="!Exists('..\packages\gdal_Native_MSVC1910.3.3.1.31\build\net20\gdal_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\gdal_Native_MSVC1910.3.3.1.31\build\net20\gdal_Native_MSVC1910.targets'))" />
-    <Error Condition="!Exists('..\packages\gdal_MSVC1910_wrap.3.3.1.31\build\net40\gdal_MSVC1910_wrap.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\gdal_MSVC1910_wrap.3.3.1.31\build\net40\gdal_MSVC1910_wrap.targets'))" />
+    <Error Condition="!Exists('..\packages\gdal_Native_MSVC1910.3.3.1.33\build\net20\gdal_Native_MSVC1910.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\gdal_Native_MSVC1910.3.3.1.33\build\net20\gdal_Native_MSVC1910.targets'))" />
+    <Error Condition="!Exists('..\packages\gdal_MSVC1910_wrap.3.3.1.33\build\net40\gdal_MSVC1910_wrap.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\gdal_MSVC1910_wrap.3.3.1.33\build\net40\gdal_MSVC1910_wrap.targets'))" />
   </Target>
   <Import Project="..\packages\cUrl_Native_MSVC1910.7.58.0.4\build\net20\cUrl_Native_MSVC1910.targets" Condition="Exists('..\packages\cUrl_Native_MSVC1910.7.58.0.4\build\net20\cUrl_Native_MSVC1910.targets')" />
   <Import Project="..\packages\iconv_Native_MSVC1910.1.15.0.4\build\net20\iconv_Native_MSVC1910.targets" Condition="Exists('..\packages\iconv_Native_MSVC1910.1.15.0.4\build\net20\iconv_Native_MSVC1910.targets')" />
@@ -267,6 +267,6 @@
   <Import Project="..\packages\sqlite_Native_MSVC1910.3.36.0.6\build\net20\sqlite_Native_MSVC1910.targets" Condition="Exists('..\packages\sqlite_Native_MSVC1910.3.36.0.6\build\net20\sqlite_Native_MSVC1910.targets')" />
   <Import Project="..\packages\proj4_Native_MSVC1910.8.1.0.9\build\net20\proj4_Native_MSVC1910.targets" Condition="Exists('..\packages\proj4_Native_MSVC1910.8.1.0.9\build\net20\proj4_Native_MSVC1910.targets')" />
   <Import Project="..\packages\spatialite_Native_MSVC1910.5.0.1.17\build\net20\spatialite_Native_MSVC1910.targets" Condition="Exists('..\packages\spatialite_Native_MSVC1910.5.0.1.17\build\net20\spatialite_Native_MSVC1910.targets')" />
-  <Import Project="..\packages\gdal_Native_MSVC1910.3.3.1.31\build\net20\gdal_Native_MSVC1910.targets" Condition="Exists('..\packages\gdal_Native_MSVC1910.3.3.1.31\build\net20\gdal_Native_MSVC1910.targets')" />
-  <Import Project="..\packages\gdal_MSVC1910_wrap.3.3.1.31\build\net40\gdal_MSVC1910_wrap.targets" Condition="Exists('..\packages\gdal_MSVC1910_wrap.3.3.1.31\build\net40\gdal_MSVC1910_wrap.targets')" />
+  <Import Project="..\packages\gdal_Native_MSVC1910.3.3.1.33\build\net20\gdal_Native_MSVC1910.targets" Condition="Exists('..\packages\gdal_Native_MSVC1910.3.3.1.33\build\net20\gdal_Native_MSVC1910.targets')" />
+  <Import Project="..\packages\gdal_MSVC1910_wrap.3.3.1.33\build\net40\gdal_MSVC1910_wrap.targets" Condition="Exists('..\packages\gdal_MSVC1910_wrap.3.3.1.33\build\net40\gdal_MSVC1910_wrap.targets')" />
 </Project>
