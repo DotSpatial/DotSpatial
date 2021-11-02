@@ -113,7 +113,7 @@ namespace DotSpatial.Tools
                 // only update when increment in percentage
                 if (current > previous)
                 {
-                    cancelProgressHandler.Progress(string.Empty, current, current + TextStrings.progresscompleted);
+                    cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
                 }
 
                 previous = current;
@@ -131,20 +131,20 @@ namespace DotSpatial.Tools
         {
             _inputParam = new Parameter[2];
             _inputParam[0] = new FeatureSetParam(TextStrings.input1FeatureSet)
-                                 {
-                                     HelpText = TextStrings.InputFeatureSettodelete
-                                 };
+            {
+                HelpText = TextStrings.InputFeatureSettodelete
+            };
 
             _inputParam[1] = new FeatureSetParam(TextStrings.input2FeatureSettoAdd)
-                                 {
-                                     HelpText = TextStrings.InputFeatureSetaddnewfeatures
-                                 };
+            {
+                HelpText = TextStrings.InputFeatureSetaddnewfeatures
+            };
 
             _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.OutputFeatureSet)
-                                  {
-                                      HelpText = TextStrings.SelectResultFeatureSetDirectory
-                                  };
+            {
+                HelpText = TextStrings.SelectResultFeatureSetDirectory
+            };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 

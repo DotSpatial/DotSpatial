@@ -284,9 +284,9 @@ namespace DotSpatial.Controls
 
             if (progForm == null) return;
             if (toolToExecute == null) return;
-            progForm.Progress(string.Empty, 0, "==================");
-            progForm.Progress(string.Empty, 0, string.Format(MessageStrings.ToolManager_ExecutingTool, toolToExecute.Name));
-            progForm.Progress(string.Empty, 0, "==================");
+            progForm.Progress(0, "==================");
+            progForm.Progress(0, string.Format(MessageStrings.ToolManager_ExecutingTool, toolToExecute.Name));
+            progForm.Progress(0, "==================");
             bool result = false;
             try
             {
@@ -294,14 +294,14 @@ namespace DotSpatial.Controls
             }
             catch (Exception ex)
             {
-                progForm.Progress(string.Empty, 100, "Error: " + ex);
+                progForm.Progress(100, "Error: " + ex);
             }
 
             e.Result = result;
             progForm.ExecutionComplete();
-            progForm.Progress(string.Empty, 100, "==================");
-            progForm.Progress(string.Empty, 100, string.Format(MessageStrings.ToolManager_DoneExecutingTool, toolToExecute.Name));
-            progForm.Progress(string.Empty, 100, "==================");
+            progForm.Progress(100, "==================");
+            progForm.Progress(100, string.Format(MessageStrings.ToolManager_DoneExecutingTool, toolToExecute.Name));
+            progForm.Progress(100, "==================");
         }
 
         private void DoDoubleClick(TreeNode theNode)

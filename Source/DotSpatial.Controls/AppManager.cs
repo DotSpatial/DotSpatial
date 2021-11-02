@@ -281,7 +281,7 @@ namespace DotSpatial.Controls
                 {
                     int percent = (progress * 100) / extensionCount;
                     var msg = string.Format(MessageStrings.LoadingPluginsPercentComplete, extension.Name, percent);
-                    ProgressHandler.Progress(MessageStrings.LoadingPlugins, percent, msg);
+                    ProgressHandler.Progress(percent, msg);
                     progress++;
                 }
 
@@ -298,7 +298,7 @@ namespace DotSpatial.Controls
             }
 
             // report progress
-            ProgressHandler?.Progress(MessageStrings.LoadingPlugins, 0, string.Empty);
+            ProgressHandler?.Progress(0, string.Empty);
         }
 
         /// <summary>
@@ -423,9 +423,18 @@ namespace DotSpatial.Controls
         /// <param name="msg">The message.</param>
         public void UpdateProgress(string msg)
         {
-            if (_splashScreen != null) UpdateSplashScreen(msg);
-            else if (ProgressHandler != null) ProgressHandler.Progress(string.Empty, 0, msg);
-            else MessageBox.Show(msg);
+            if (_splashScreen != null)
+            {
+                UpdateSplashScreen(msg);
+            }
+            else if (ProgressHandler != null)
+            {
+                ProgressHandler.Progress(0, msg);
+            }
+            else
+            {
+                MessageBox.Show(msg);
+            }
         }
 
         /// <summary>

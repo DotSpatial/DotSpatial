@@ -1088,7 +1088,7 @@ Public Class frmAutomatic_v3
         ttip.SetToolTip(btnSetExtents, "Click this to zoom and set extents to use for the focusing mask.")
         ttip.SetToolTip(btnLoadPre, "Click this to load pre-existing intermediate pre-processing" + vbNewLine + "files generated from a previous run of the AWD on the base" + vbNewLine + "grid. This allows the skipping of the time-consuming" + vbNewLine + "pre-processing steps.")
 
-        runFormCleanup()
+        RunFormCleanup()
     End Sub
 
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1830,12 +1830,12 @@ Public Class frmAutomatic_v3
             Message = fname
         End If
         Message = Message & "|" & GetFileDescription(gtype) & "|" & CLng(gtype)
-        App.ProgressHandler.Progress("Add", 0, Message)
+        App.ProgressHandler.Progress(0, Message)
         Return True
     End Function
 
     Public Function RemoveLayer(ByVal fname As String, Optional ByVal toPrompt As Boolean = True) As Boolean
-        App.ProgressHandler.Progress("Remove", 0, fname)
+        App.ProgressHandler.Progress(0, fname)
         RemoveLayer = True
     End Function
 
@@ -1909,8 +1909,8 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/30/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub runFormCleanup()
-        App.ProgressHandler.Progress("Status", 0, "")
+    Private Sub RunFormCleanup()
+        App.ProgressHandler.Reset()
         Cursor = System.Windows.Forms.Cursors.Default
         btnRunAll.Enabled = True
         btnCancel.Enabled = True
@@ -1922,7 +1922,7 @@ Public Class frmAutomatic_v3
         grpbxSetupPreprocess.Enabled = True
         grpbxThresh.Enabled = True
         grpbxOutletDef.Enabled = True
-        Me.Refresh()
+        Refresh()
     End Sub
 
 #End Region
@@ -3271,18 +3271,18 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/30/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Function runPreprocessing() As Boolean
+    Private Function RunPreprocessing() As Boolean
         runFormInit()
         lblPreproc.BringToFront()
         lblPreproc.Visible = True
-        Me.Refresh()
+        Refresh()
         preProcHasRan = False
         Try
             If Not validatePreprocessing() Then
-                runFormCleanup()
+                RunFormCleanup()
                 Return False
             End If
-            App.ProgressHandler.Progress("Status", 0, "Preparing Grid")
+            App.ProgressHandler.Progress(0, "Preparing Grid")
             g_BaseDEM = getPathByName(cmbxSelDem.Items(cmbxSelDem.SelectedIndex))
             tdbFileList.FormFileNames(g_BaseDEM, tdbChoiceList.OutputPath, True)
             ' CWG 30/1/11 Changed for TauDEM V5
@@ -3295,9 +3295,9 @@ Public Class frmAutomatic_v3
                 tdbFileList.sd8 = tdbChoiceList.D8SlopePath
                 tdbFileList.p = tdbChoiceList.D8Path
             Else
-                If Not runMask() Then runFormCleanup() : Return False
-                If Not runPitFill() Then runFormCleanup() : Return False
-                If Not runD8() Then runFormCleanup() : Return False
+                If Not runMask() Then RunFormCleanup() : Return False
+                If Not runPitFill() Then RunFormCleanup() : Return False
+                If Not runD8() Then RunFormCleanup() : Return False
 
                 'hack:
                 If tdbChoiceList.useDinf Then
@@ -3305,13 +3305,13 @@ Public Class frmAutomatic_v3
                 End If
             End If
         Catch e As Exception
-            runFormCleanup()
+            RunFormCleanup()
             preProcHasRan = False
             Return False
             MsgBox(e.Message, MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
         End Try
 
-        runFormCleanup()
+        RunFormCleanup()
         preProcHasRan = True
         Return True
     End Function
@@ -3386,14 +3386,14 @@ Public Class frmAutomatic_v3
 
         Try
             If Not validatePreprocessing() Or Not validateDelinByThresh() Then
-                runFormCleanup()
+                RunFormCleanup()
                 Return False
             End If
 
             'If the preProcessing hasn't been done, run it first and only go on if it succeeded
             If Not preProcHasRan Then
                 If Not runPreprocessing() Then
-                    runFormCleanup()
+                    RunFormCleanup()
                     Return False
                 End If
             End If
@@ -3413,11 +3413,11 @@ Public Class frmAutomatic_v3
                 'DataManagement.DeleteShapefile(tdbFileList.net)
                 DataManagement.CopyShapefile(tdbChoiceList.NetPath, tdbFileList.net)
             Else
-                If Not runAreaD8() Then runFormCleanup() : Return False
+                If Not runAreaD8() Then RunFormCleanup() : Return False
                 If tdbChoiceList.useDinf Then
-                    If Not runAreaDinf() Then runFormCleanup() : Return False
+                    If Not runAreaDinf() Then RunFormCleanup() : Return False
                 End If
-                If Not runDefineStreamGrids() Then runFormCleanup() : Return False
+                If Not runDefineStreamGrids() Then RunFormCleanup() : Return False
 
                 If cmbxStream.SelectedIndex > 0 Then
                     'turn off the burn in layer to better view the result
@@ -3426,14 +3426,14 @@ Public Class frmAutomatic_v3
                 End If
             End If
         Catch e As Exception
-            runFormCleanup()
+            RunFormCleanup()
             threshDelinHasRan = False
 
             MsgBox(e.Message, MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
             Return False
         End Try
 
-        runFormCleanup()
+        RunFormCleanup()
         threshDelinHasRan = True
         Return True
     End Function
@@ -3481,14 +3481,14 @@ Public Class frmAutomatic_v3
         runOutletsAndFinish = False
         Try
             If Not validatePreprocessing() Or Not validateDelinByThresh() Or Not validateOutlets() Then
-                runFormCleanup()
+                RunFormCleanup()
                 Return False
             End If
 
             'If the Delin portion hasn't been done, run it first and only go on if it succeeded
             If Not threshDelinHasRan Then
                 If Not runDelinByThresh() Then
-                    runFormCleanup()
+                    RunFormCleanup()
                     'If Not stopClose Then
                     '    MsgBox("An error occured while delineating. Please check that your data is in the same projection and overlaps correctly and that your threshold was set to a valid value.")
                     'End If
@@ -3527,18 +3527,18 @@ Public Class frmAutomatic_v3
                 End If
             End If
 
-            If Not runWshedToShape() Then runFormCleanup() : Return False
-            If Not runApplyStreamAttributes() Then runFormCleanup() : Return False
+            If Not runWshedToShape() Then RunFormCleanup() : Return False
+            If Not runApplyStreamAttributes() Then RunFormCleanup() : Return False
             'hack
             ' If Not runApplyWatershedAttributes() Then runFormCleanup() : Return False
             'If Not runBuildJoinedBasins() Then runFormCleanup() : Return False
             'If Not runApplyJoinBasinAttributes() Then runFormCleanup() : Return False
         Catch e As Exception
-            runFormCleanup()
+            RunFormCleanup()
 
             MsgBox(e.Message, MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
         End Try
-        runFormCleanup()
+        RunFormCleanup()
         runOutletsAndFinish = True
     End Function
 
@@ -3717,18 +3717,18 @@ Public Class frmAutomatic_v3
         If burnFirst Then
             strToFill = runBurn(tdbFileList.dem)
             If strToFill = "" Then
-                App.ProgressHandler.Progress("Status", 0, "")
+                App.ProgressHandler.Progress(0, "")
                 Cursor = System.Windows.Forms.Cursors.Default
                 Return False
             End If
         End If
 
-        App.ProgressHandler.Progress("Status", 0, "Pit Fill")
+        App.ProgressHandler.Progress(0, "Pit Fill")
         Try
             Hydrology.Fill(strToFill, tdbFileList.fel, App.ProgressHandler)
         Catch ex As Exception
             MsgBox("An error occured while filling the grid: " + ex.Message, MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
-            App.ProgressHandler.Progress("Status", 0, "")
+            App.ProgressHandler.Progress(0, "")
             Cursor = System.Windows.Forms.Cursors.Default
             Return False
         End Try
@@ -3736,7 +3736,7 @@ Public Class frmAutomatic_v3
         If Not burnFirst Then
             tdbFileList.fel = runBurn(tdbFileList.fel)
             If tdbFileList.fel = "" Then
-                App.ProgressHandler.Progress("Status", 0, "")
+                App.ProgressHandler.Progress(0, "")
                 Cursor = System.Windows.Forms.Cursors.Default
                 Return False
             End If
@@ -4110,7 +4110,7 @@ Public Class frmAutomatic_v3
         If doTicks Then
             tickb = Now().Ticks
         End If
-        App.ProgressHandler.Progress("Status", 0, "Calculating Stream Parameters")
+        App.ProgressHandler.Progress(0, "Calculating Stream Parameters")
         If tdbChoiceList.CalcSpecialStreamFields Then
             runApplyStreamAttributes = Hydrology.ApplyStreamAttributes(tdbFileList.net, tdbFileList.dem, tdbFileList.wshed, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
         Else
@@ -4153,19 +4153,19 @@ Public Class frmAutomatic_v3
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     ' 02/20/2006    CM              Added precision and moved begineditings
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Function runApplyWatershedAttributes() As Boolean
+    Private Function RunApplyWatershedAttributes() As Boolean
 
         If doTicks Then
             tickb = Now().Ticks
         End If
 
-        runApplyWatershedAttributes = Hydrology.ApplyWatershedLinkAttributes(tdbFileList.wshed, tdbFileList.net, App.ProgressHandler)
+        RunApplyWatershedAttributes = Hydrology.ApplyWatershedLinkAttributes(tdbFileList.wshed, tdbFileList.net, App.ProgressHandler)
 
         If tdbChoiceList.CalcSpecialWshedFields Then
-            runApplyWatershedAttributes = Hydrology.ApplyWatershedAreaAttributes(tdbFileList.wshed, App.ProgressHandler)
-            runApplyWatershedAttributes = Hydrology.ApplyWatershedSlopeAttribute(tdbFileList.w, tdbFileList.wshed, tdbFileList.sd8, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
+            RunApplyWatershedAttributes = Hydrology.ApplyWatershedAreaAttributes(tdbFileList.wshed, App.ProgressHandler)
+            RunApplyWatershedAttributes = Hydrology.ApplyWatershedSlopeAttribute(tdbFileList.w, tdbFileList.wshed, tdbFileList.sd8, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
         Else
-            runApplyWatershedAttributes = True
+            RunApplyWatershedAttributes = True
         End If
 
         If doTicks Then

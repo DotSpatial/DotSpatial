@@ -27,7 +27,8 @@ namespace DotSpatial.Symbology
             double dy = self.Height * (newRectangle.Y - original.Y) / original.Height;
             double w = self.Width * newRectangle.Width / original.Width;
             double h = self.Height * newRectangle.Height / original.Height;
-            return new Extent(self.X + dx, self.Y + dy, self.X + dx + w, self.Y + dy + h);
+
+            return new Extent(self.X + dx, self.Y + dy - h, self.X + dx + w, self.Y + dy);
         }
 
         #endregion

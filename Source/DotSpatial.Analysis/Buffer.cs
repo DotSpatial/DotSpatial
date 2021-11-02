@@ -37,7 +37,7 @@ namespace DotSpatial.Analysis
                     }
 
                     int progress = Convert.ToInt32(i * 100 / numFeatures);
-                    cancelProgressHandler.Progress("buffer_tool", progress, "Buffering features.");
+                    cancelProgressHandler.Progress(progress, "Buffering features.");
                 }
             }
 

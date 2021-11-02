@@ -46,13 +46,14 @@
     <DocumentationFile>..\bin\Release\Windows Extensions\DotSpatial.Plugins.WebMap\DotSpatial.Plugins.WebMap.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BruTile, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\BruTile.dll</HintPath>
+    <Reference Include="BruTile, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BruTile.3.0.0\lib\net45\BruTile.dll</HintPath>
     </Reference>
-    <Reference Include="BruTile.Desktop, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\BruTile.Desktop.dll</HintPath>
+    <Reference Include="BruTile.Desktop, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BruTile.Desktop.3.0.0\lib\net45\BruTile.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="BruTile.Desktop.DbCache, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BruTile.Desktop.DbCache.3.0.0\lib\net45\BruTile.Desktop.DbCache.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.GeoAPI.1.7.4.3\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
