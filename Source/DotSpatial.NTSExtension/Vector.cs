@@ -241,12 +241,8 @@ namespace DotSpatial.NTSExtension
                 double mag = Length2D;
                 if (mag == 0) return 0;
                 double theta = Math.Atan(Y / X);
-                if (X < 0) theta = Math.PI - theta;
-                if (X > 0 && Y < 0)
-                {
-                    // Turn -Pi/2 -> 0 into 3Pi/2 -> 2Pi
-                    theta = (Math.PI * 2) + theta;
-                }
+                if (X < 0) theta += Math.PI;
+                if (theta > Math.PI) theta -= Math.PI * 2.0;
 
                 return theta;
             }
