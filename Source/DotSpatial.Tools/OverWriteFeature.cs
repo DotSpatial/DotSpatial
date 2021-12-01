@@ -115,7 +115,7 @@ namespace DotSpatial.Tools
             }
 
             output.SaveAs(output.Filename, true);
-            cancelProgressHandler.Progress(string.Empty, 100, 100 + TextStrings.progresscompleted);
+            cancelProgressHandler.Progress(100, 100 + TextStrings.progresscompleted);
             return true;
         }
 

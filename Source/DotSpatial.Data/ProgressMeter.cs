@@ -256,7 +256,7 @@ namespace DotSpatial.Data
             BaseMessage = "Ready.";
             if (Silent) return;
 
-            ProgressHandler?.Progress(BaseMessage, _prog, BaseMessage);
+            ProgressHandler?.Progress(_prog, BaseMessage);
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace DotSpatial.Data
         {
             if (Silent) return;
 
-            ProgressHandler?.Progress(BaseMessage, _prog, BaseMessage + ", " + _prog + "% Complete.");
+            ProgressHandler?.Progress(_prog, BaseMessage + ", " + _prog + "% Complete.");
         }
 
         #endregion

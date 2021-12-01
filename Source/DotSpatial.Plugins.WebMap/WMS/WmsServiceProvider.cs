@@ -77,7 +77,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
             var zoomS = zoom.ToString(CultureInfo.InvariantCulture);
             try
             {
-                var index = new TileIndex(x, y, zoom.ToString(CultureInfo.InvariantCulture));
+                var index = new TileIndex(x, y, zoom);
                 var tc = TileCache;
                 var bytes = tc?.Find(index);
                 if (bytes == null)
@@ -103,7 +103,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
             {
                 if (ex is WebException || ex is TimeoutException)
                 {
-                    return ExceptionToBitmap(ex, TileSource.Schema.GetTileWidth(zoomS), TileSource.Schema.GetTileHeight(zoomS));
+                    return ExceptionToBitmap(ex, TileSource.Schema.GetTileWidth(zoom), TileSource.Schema.GetTileHeight(zoom));
                 }
 
                 Debug.WriteLine(ex.Message);

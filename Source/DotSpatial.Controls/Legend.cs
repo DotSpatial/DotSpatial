@@ -645,7 +645,16 @@ namespace DotSpatial.Controls
                     }
                     else if (_dragTarget.Item.LegendType == LegendType.Layer && _dragItem.Item.LegendType == LegendType.Layer)
                     {
-                        boxOverLine = BoxFromItem(_dragTarget.Item.BottomMember());
+                        if (_dragTarget.Item.IsExpanded)
+                        {
+                            // if layer is expanded then we look for the bottom member of the target item
+                            boxOverLine = BoxFromItem(_dragTarget.Item.BottomMember());
+                        }
+                        else
+                        {
+                            // if layer is collapsed then just use the target item
+                            boxOverLine = _dragTarget;
+                        }
                     }
                     else
                     {

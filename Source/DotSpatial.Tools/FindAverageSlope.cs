@@ -96,10 +96,10 @@ namespace DotSpatial.Tools
             output.DataTable.Columns.Add(TextStrings.AveSlope, typeof(double));
 
             IRaster slopeGrid = new Raster
-                                    {
-                                        DataType = ras.DataType,
-                                        Bounds = ras.Bounds
-                                    };
+            {
+                DataType = ras.DataType,
+                Bounds = ras.Bounds
+            };
 
             // FeatureSet polyShape = new FeatureSet();
             int previous = 0;
@@ -136,7 +136,7 @@ namespace DotSpatial.Tools
                 // only update when increment in percentage
                 if (current > previous + 5)
                 {
-                    cancelProgressHandler.Progress(string.Empty, current, current + TextStrings.progresscompleted);
+                    cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
                     previous = current;
                 }
 
@@ -197,23 +197,23 @@ namespace DotSpatial.Tools
         {
             _inputParam = new Parameter[3];
             _inputParam[0] = new RasterParam(TextStrings.input1altitudeRaster)
-                                 {
-                                     HelpText = TextStrings.InputRasterforaverageslopecalculation
-                                 };
+            {
+                HelpText = TextStrings.InputRasterforaverageslopecalculation
+            };
             _inputParam[1] = new DoubleParam(TextStrings.inputZfactor, 1.0)
-                                 {
-                                     HelpText = TextStrings.InputZfactorforslopedisplay
-                                 };
+            {
+                HelpText = TextStrings.InputZfactorforslopedisplay
+            };
             _inputParam[2] = new PolygonFeatureSetParam(TextStrings.input1polygonfeatureset)
-                                 {
-                                     HelpText = TextStrings.FindAverageSlopeDescription
-                                 };
+            {
+                HelpText = TextStrings.FindAverageSlopeDescription
+            };
 
             _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.Outputfeaturesetwithaverageslope)
-                                  {
-                                      HelpText = TextStrings.Resultofaverageslope
-                                  };
+            {
+                HelpText = TextStrings.Resultofaverageslope
+            };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 

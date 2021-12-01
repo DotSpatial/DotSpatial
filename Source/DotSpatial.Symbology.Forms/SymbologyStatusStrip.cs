@@ -25,7 +25,7 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        private delegate void UpdateProg(string key, int percent, string message);
+        private delegate void UpdateProg(int percent, string message);
 
         #region Properties
 
@@ -47,20 +47,28 @@ namespace DotSpatial.Symbology.Forms
         /// This method is thread safe so that people calling this method don't cause a cross-thread violation
         /// by updating the progress indicator from a different thread.
         /// </summary>
-        /// <param name="key">A string message with just a description of what is happening, but no percent completion information.</param>
         /// <param name="percent">The integer percent from 0 to 100.</param>
-        /// <param name="message">A message.</param>
-        public void Progress(string key, int percent, string message)
+        /// <param name="message">A message including the percent information if wanted.</param>
+        public void Progress(int percent, string message)
         {
             if (InvokeRequired)
             {
                 UpdateProg prg = UpdateProgress;
-                BeginInvoke(prg, key, percent, message);
+                BeginInvoke(prg, percent, message);
             }
             else
             {
-                UpdateProgress(key, percent, message);
+                UpdateProgress(percent, message);
             }
+        }
+
+        /// <summary>
+        /// Resets the progress. This method is thread safe so that people calling this method don't cause a cross-thread violation
+        /// by updating the progress indicator from a different thread.
+        /// </summary>
+        public void Reset()
+        {
+            Progress(0, string.Empty);
         }
 
         /// <summary>
@@ -90,7 +98,7 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
-        private void UpdateProgress(string key, int percent, string message)
+        private void UpdateProgress(int percent, string message)
         {
             if (ProgressBar != null)
                 ProgressBar.Value = percent;
@@ -100,7 +108,7 @@ namespace DotSpatial.Symbology.Forms
             // hack: I think there is a bug somewhere if we need to call DoEvents at the end of this event handler.
             Application.DoEvents();
         }
-
+        
         #endregion
     }
 }

@@ -202,7 +202,7 @@ namespace DotSpatial.Tools
                     if (percent > lastUpdate)
                     {
                         lastUpdate += 1;
-                        cancelProgressHandler.Progress(string.Empty, lastUpdate, TextStrings.Pass1 + lastUpdate + TextStrings.progresscompleted);
+                        cancelProgressHandler.Progress(lastUpdate, TextStrings.Pass1 + lastUpdate + TextStrings.progresscompleted);
                         if (cancelProgressHandler.Cancel)
                         {
                             return false;
@@ -293,7 +293,7 @@ namespace DotSpatial.Tools
                     if (percent > lastUpdate)
                     {
                         lastUpdate += 1;
-                        cancelProgressHandler.Progress(string.Empty, lastUpdate, TextStrings.Pass2 + lastUpdate + TextStrings.progresscompleted);
+                        cancelProgressHandler.Progress(lastUpdate, TextStrings.Pass2 + lastUpdate + TextStrings.progresscompleted);
                         if (cancelProgressHandler.Cancel)
                         {
                             return false;
@@ -319,18 +319,18 @@ namespace DotSpatial.Tools
         {
             _inputParam = new Parameter[2];
             _inputParam[0] = new RasterParam(TextStrings.inputRaster)
-                                 {
-                                     HelpText = TextStrings.InputRastercontainingtargetcells
-                                 };
+            {
+                HelpText = TextStrings.InputRastercontainingtargetcells
+            };
             _inputParam[1] = new DoubleParam(TextStrings.Maximumdistance, 100.0)
-                                 {
-                                     HelpText = TextStrings.Maximumdistancetobecalculated
-                                 };
+            {
+                HelpText = TextStrings.Maximumdistancetobecalculated
+            };
             _outputParam = new Parameter[2];
             _outputParam[0] = new RasterParam(TextStrings.OutputRaster)
-                                  {
-                                      HelpText = TextStrings.SelectresultrasterfileName
-                                  };
+            {
+                HelpText = TextStrings.SelectresultrasterfileName
+            };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 

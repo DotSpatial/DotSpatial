@@ -564,7 +564,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <returns>0.</returns>
         private int GdalProgressFunc(double complete, IntPtr message, IntPtr data)
         {
-            ProgressHandler.Progress("Copy Progress", Convert.ToInt32(complete), "Copy Progress");
+            ProgressHandler.Progress(Convert.ToInt32(complete), "Copy Progress");
             return 0;
         }
 

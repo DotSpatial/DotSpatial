@@ -29,6 +29,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - The possibility to use static methods to deserialize objects that were serialized to a dspx file and can't be deserialized correctly via their class constructor (FeatureSet, MapSelfLoadGroup, MapSelfLoadLayers from GdalExtension, SpatiaLiteFeatureSet) (#1061)
 - Default mouse cursor button in layout insert toolbar
 - A function to get a reprojected clone of a featureset
+- Auto display children of MapGroup is now an option of the MapFrame
 
 ### Changed
 - Switched to VS2017 and C#7
@@ -158,3 +159,5 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Potential Bug in RasterBoundsExt class CellsContainingExtent(...) method (#1332)
 - Potential bug in EnvelopeExt (and ExtentExt) class Reproportion(...) method (#1326)
 - Bug in AzimuthalEquidistant class (#1342)
+- Bug in moving legend items (#1368)
+- Bug in ExtentExt.Reproportion discussed in #1351 (#1370)

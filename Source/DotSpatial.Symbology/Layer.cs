@@ -571,9 +571,9 @@ namespace DotSpatial.Symbology
         {
             if (DataSet != null)
             {
-                ProgressHandler?.Progress(string.Empty, 0, "Reprojecting Layer " + LegendText);
+                ProgressHandler?.Progress(0, "Reprojecting Layer " + LegendText);
                 DataSet.Reproject(targetProjection);
-                ProgressHandler?.Progress(string.Empty, 0, string.Empty);
+                ProgressHandler?.Reset();
             }
         }
 

@@ -158,7 +158,7 @@ Public Class TaudemPlugin
 
 #Region "Used Functions"
     Private Sub DisplayMessage(ByVal message As String)
-        App.ProgressHandler.Progress(Nothing, 0, message)
+        App.ProgressHandler.Progress(0, message)
     End Sub
     'Public Sub ItemClicked(ByVal ItemName As String, ByRef Handled As Boolean)
     '    'This sub fires when a menu item is clicked in MapWindow.  Here we check if the menu item

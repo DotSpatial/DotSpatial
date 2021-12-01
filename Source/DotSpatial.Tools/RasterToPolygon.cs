@@ -122,7 +122,7 @@ namespace DotSpatial.Tools
                 int current = Convert.ToInt32((y * 100.0) / input.NumRows);
                 if (current > previous)
                 {
-                    cancelProgressHandler.Progress(string.Empty, current, current + TextStrings.progresscompleted);
+                    cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
                     previous = current;
                 }
 

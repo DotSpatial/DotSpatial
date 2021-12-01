@@ -255,7 +255,7 @@ namespace DotSpatial.Data.Forms
             _timer?.Stop();
             if (Silent) return;
             if (ProgressHandler == null) return;
-            ProgressHandler.Progress(Key, _prog, Key);
+            ProgressHandler.Reset();
             Application.DoEvents(); // Allow the form to update a status bar if necessary.
         }
 
@@ -266,7 +266,7 @@ namespace DotSpatial.Data.Forms
         {
             if (Silent) return;
             if (ProgressHandler == null) return;
-            ProgressHandler.Progress(Key, _prog, Key + ", " + _prog + "% Complete.");
+            ProgressHandler.Progress(_prog, Key + ", " + _prog + "% Complete.");
             Application.DoEvents(); // Allow the form to update a status bar if necessary.
         }
 

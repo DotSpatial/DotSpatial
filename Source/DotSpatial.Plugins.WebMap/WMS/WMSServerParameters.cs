@@ -114,19 +114,38 @@ namespace DotSpatial.Plugins.WebMap.WMS
             return null;
         }
 
+        private string PrepareUri(string uri)
+        {
+            if (!uri.Contains("?"))
+            {
+                uri += "?";
+            }
+            else if (!uri.EndsWith("?") && !uri.EndsWith("&"))
+            {
+                uri += "&";
+            }
+
+            return uri;
+        }
+
         private void BtnGetCapabilitiesClick(object sender, EventArgs e)
         {
             var serverUrl = tbServerUrl.Text;
             if (string.IsNullOrWhiteSpace(serverUrl)) return;
 
-            if (serverUrl.IndexOf("Request=GetCapabilities", StringComparison.OrdinalIgnoreCase) < 0)
+            serverUrl = PrepareUri(serverUrl);
+
+            var noCapabilities = serverUrl.IndexOf("Request=GetCapabilities", StringComparison.OrdinalIgnoreCase) < 0;
+            var noService = serverUrl.IndexOf("SERVICE=WMS", StringComparison.OrdinalIgnoreCase) < 0;
+
+            if (noCapabilities)
             {
-                serverUrl = serverUrl + "&Request=GetCapabilities";
+                serverUrl += "Request=GetCapabilities&";
             }
 
-            if (serverUrl.IndexOf("SERVICE=WMS", StringComparison.OrdinalIgnoreCase) < 0)
+            if (noService)
             {
-                serverUrl = serverUrl + "&SERVICE=WMS";
+                serverUrl += "SERVICE=WMS&";
             }
 
             WmsCapabilities capabilities;

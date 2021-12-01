@@ -83,7 +83,7 @@ namespace DotSpatial.Plugins.Taudem
         /// <returns>True, if run successfully.</returns>
         public static bool ApplyJoinBasinAreaAttributes(string joinBasinShapePath, ElevationUnits elevUnits, IProgressHandler callback)
         {
-            callback?.Progress("Status", 0, "Calculating Merge Shed Area Attributes");
+            callback?.Progress(0, "Calculating Merge Shed Area Attributes");
 
             int oldperc = 0;
             var mergeshed = FeatureSet.Open(joinBasinShapePath);
@@ -105,7 +105,7 @@ namespace DotSpatial.Plugins.Taudem
                     var newperc = Convert.ToInt32((Convert.ToDouble(i) / Convert.ToDouble(mergeshed.NumRows())) * 100);
                     if (newperc > oldperc)
                     {
-                        callback?.Progress("Status", newperc, "Calculating Merge Shed Area Attributes");
+                        callback?.Progress(newperc, "Calculating Merge Shed Area Attributes");
                         oldperc = newperc;
                     }
                 }
@@ -139,7 +139,7 @@ namespace DotSpatial.Plugins.Taudem
             mergeshed.Save();
             mergeshed.Close();
 
-            callback?.Progress(string.Empty, 0, string.Empty);
+            callback?.Reset();
             return true;
         }
 
@@ -153,7 +153,7 @@ namespace DotSpatial.Plugins.Taudem
         /// <returns>True, if run successfully.</returns>
         public static bool ApplyJoinBasinStreamAttributes(string networkShapePath, string basinShapePath, string joinBasinShapePath, IProgressHandler callback)
         {
-            callback?.Progress("Status", 0, "Calculating Merge Shed Area Attributes");
+            callback?.Progress(0, "Calculating Merge Shed Area Attributes");
 
             var shedShapefile = FeatureSet.Open(basinShapePath);
 
@@ -222,7 +222,7 @@ namespace DotSpatial.Plugins.Taudem
                     var newperc = Convert.ToInt32((Convert.ToDouble(i) / Convert.ToDouble(mergeshedShapefile.NumRows())) * 100);
                     if (newperc > oldperc)
                     {
-                        callback?.Progress("Status", newperc, "Calculating Merge Shed Area Attributes");
+                        callback?.Progress(newperc, "Calculating Merge Shed Area Attributes");
                         oldperc = newperc;
                     }
                 }
@@ -253,7 +253,7 @@ namespace DotSpatial.Plugins.Taudem
             netShapefile.Close();
             shedShapefile.Close();
 
-            callback?.Progress(string.Empty, 0, string.Empty);
+            callback?.Reset();
 
             return true;
         }
@@ -279,7 +279,7 @@ namespace DotSpatial.Plugins.Taudem
             const int SlopeField = 10;
             const int UsAreaField = 12;
 
-            callback?.Progress("Status", 0, "Calculating Stream Parameters");
+            callback?.Progress(0, "Calculating Stream Parameters");
 
             if (!File.Exists(streamNetworkShapePath))
             {
@@ -317,7 +317,7 @@ namespace DotSpatial.Plugins.Taudem
                     int newperc = Convert.ToInt32((Convert.ToDouble(sindx) / Convert.ToDouble(shedShapeNumShapes)) * 100);
                     if (newperc > oldperc)
                     {
-                        callback.Progress("Status", newperc, "Calculating Stream Parameters");
+                        callback.Progress(newperc, "Calculating Stream Parameters");
                         oldperc = newperc;
                     }
                 }
@@ -481,7 +481,7 @@ namespace DotSpatial.Plugins.Taudem
             streamShape.Save();
             streamShape.Close();
 
-            callback?.Progress("Status", 0, string.Empty);
+            callback?.Reset();
 
             return true;
         }
@@ -494,7 +494,7 @@ namespace DotSpatial.Plugins.Taudem
         /// <returns>True on success.</returns>
         public static bool ApplyWatershedAreaAttributes(string subBasinShapePath, IProgressHandler callback)
         {
-            callback?.Progress("Status", 0, "Calculating WS Area Parameters");
+            callback?.Progress(0, "Calculating WS Area Parameters");
 
             var shedShape = FeatureSet.Open(subBasinShapePath);
 
@@ -512,7 +512,7 @@ namespace DotSpatial.Plugins.Taudem
                     var newperc = Convert.ToInt32((Convert.ToDouble(sindx) / Convert.ToDouble(shedShape.NumRows())) * 100);
                     if (newperc > oldperc)
                     {
-                        callback?.Progress("Status", newperc, "Calculating WS Area Parameters");
+                        callback?.Progress(newperc, "Calculating WS Area Parameters");
 
                         oldperc = newperc;
                     }
@@ -547,7 +547,7 @@ namespace DotSpatial.Plugins.Taudem
             shedShape.Save();
             shedShape.Close();
 
-            callback?.Progress(string.Empty, 0, string.Empty);
+            callback?.Reset();
 
             return true;
         }
@@ -566,7 +566,7 @@ namespace DotSpatial.Plugins.Taudem
             // CWG 23/1/2011 changed to GeoTiff for Taudem V5
             string tmpClipPath = Path.GetDirectoryName(elevGridPath) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(elevGridPath) + "_clip.tif";
 
-            callback?.Progress("Status", 0, "Calculating WS Elevation Parameters");
+            callback?.Progress(0, "Calculating WS Elevation Parameters");
             var shedShape = FeatureSet.Open(subBasinShapePath);
             var elevGrid = Raster.Open(elevGridPath);
 
@@ -582,7 +582,7 @@ namespace DotSpatial.Plugins.Taudem
                     int newperc = Convert.ToInt32((Convert.ToDouble(sindx) / Convert.ToDouble(shedShape.NumRows() - 1)) * 100);
                     if (newperc > oldperc)
                     {
-                        callback?.Progress("Status", newperc, "Calculating WS Elevation Parameters");
+                        callback?.Progress(newperc, "Calculating WS Elevation Parameters");
                         oldperc = newperc;
                     }
                 }
@@ -617,7 +617,7 @@ namespace DotSpatial.Plugins.Taudem
                 }
             }
 
-            callback?.Progress("Status", 0, "Calculating WS Elevation Parameters");
+            callback?.Progress(0, "Calculating WS Elevation Parameters");
 
             int slopeFieldNum = AddField(shedShape, "AveElev", typeof(double));
             string slopeProj = elevGrid.Projection.ToString();
@@ -630,7 +630,7 @@ namespace DotSpatial.Plugins.Taudem
                     int newperc = Convert.ToInt32((Convert.ToDouble(sindx) / Convert.ToDouble(shedShape.NumRows())) * 100);
                     if (newperc > oldperc)
                     {
-                        callback?.Progress("Status", newperc, "Calculating WS Elevation Parameters");
+                        callback?.Progress(newperc, "Calculating WS Elevation Parameters");
                         oldperc = newperc;
                     }
                 }
@@ -647,7 +647,7 @@ namespace DotSpatial.Plugins.Taudem
             shedShape.Close();
             elevGrid.Close();
 
-            callback?.Progress(string.Empty, 0, string.Empty);
+            callback?.Reset();
             return true;
         }
 
@@ -661,7 +661,7 @@ namespace DotSpatial.Plugins.Taudem
         /// <returns>True on success.</returns>
         public static bool ApplyWatershedElevationAttribute(string subBasinGridPath, string subBasinShapePath, string elevGridPath, IProgressHandler callback)
         {
-            callback?.Progress("Status", 0, "Calculating WS Elevation Parameters");
+            callback?.Progress(0, "Calculating WS Elevation Parameters");
 
             var shedShape = FeatureSet.Open(subBasinShapePath);
             var countElev = new int[shedShape.NumRows()];
@@ -727,7 +727,7 @@ namespace DotSpatial.Plugins.Taudem
                 var newperc = Convert.ToInt32((Convert.ToDouble(row) / Convert.ToDouble(numberRows - 1)) * 100);
                 if (newperc > oldperc)
                 {
-                    callback?.Progress("Status", newperc, "Calculating WS Elevation Parameters");
+                    callback?.Progress(newperc, "Calculating WS Elevation Parameters");
 
                     oldperc = newperc;
                 }
@@ -761,7 +761,7 @@ namespace DotSpatial.Plugins.Taudem
 
             elevGrid.Close();
             subBasinGrid.Close();
-            callback?.Progress("Status", 0, "Calculating WS Elevation Parameters");
+            callback?.Progress(0, "Calculating WS Elevation Parameters");
 
             var slopeFieldNum = AddField(shedShape, "AveElev", typeof(double));
             oldperc = 0;
@@ -773,7 +773,7 @@ namespace DotSpatial.Plugins.Taudem
                     var newperc = Convert.ToInt32((Convert.ToDouble(sindx) / Convert.ToDouble(shedShape.NumRows())) * 100);
                     if (newperc > oldperc)
                     {
-                        callback?.Progress("Status", newperc, "Calculating WS Elevation Parameters");
+                        callback?.Progress(newperc, "Calculating WS Elevation Parameters");
                         oldperc = newperc;
                     }
                 }
@@ -789,7 +789,7 @@ namespace DotSpatial.Plugins.Taudem
 
             shedShape.Save();
             shedShape.Close();
-            callback?.Progress(string.Empty, 0, string.Empty);
+            callback?.Reset();
             return true;
         }
 
@@ -804,7 +804,7 @@ namespace DotSpatial.Plugins.Taudem
         {
             int shedIndex;
 
-            callback?.Progress("Status", 0, "Assigning WS Link");
+            callback?.Progress(0, "Assigning WS Link");
 
             // Stream fields
             const int IdField = 0;
@@ -847,7 +847,7 @@ namespace DotSpatial.Plugins.Taudem
                     var newperc = Convert.ToInt32((Convert.ToDouble(shedIndex) / Convert.ToDouble(shedShapeNumShapes)) * 100);
                     if (newperc > oldperc)
                     {
-                        callback.Progress("Status", newperc, "Assigning WS Link");
+                        callback.Progress(newperc, "Assigning WS Link");
                         oldperc = newperc;
                     }
                 }
@@ -883,7 +883,7 @@ namespace DotSpatial.Plugins.Taudem
             shedShape.Close();
             streamShape.Close();
 
-            callback?.Progress(string.Empty, 0, string.Empty);
+            callback?.Reset();
 
             return 0;
         }
@@ -905,7 +905,7 @@ namespace DotSpatial.Plugins.Taudem
             var tmpClipPath = Path.Combine(path, Path.GetFileNameWithoutExtension(slopeGridPath) + "_clip.tif");
 
             // DataManagement.DeleteGrid(tmpClipPath);
-            callback?.Progress("Status", 0, "Calculating WS Slope Parameters");
+            callback?.Progress(0, "Calculating WS Slope Parameters");
 
             var shedShape = FeatureSet.Open(subBasinShapePath);
 
@@ -925,7 +925,7 @@ namespace DotSpatial.Plugins.Taudem
                     var newperc = Convert.ToInt32((Convert.ToDouble(sindx) / Convert.ToDouble(shedShape.NumRows() - 1)) * 100);
                     if (newperc > oldperc)
                     {
-                        callback?.Progress("Status", newperc, "Calculating WS Slope Parameters");
+                        callback?.Progress(newperc, "Calculating WS Slope Parameters");
 
                         oldperc = newperc;
                     }
@@ -966,7 +966,7 @@ namespace DotSpatial.Plugins.Taudem
                 tmpClipGrid.Close();
             }
 
-            callback?.Progress("Status", 0, "Calculating WS Slope Parameters");
+            callback?.Progress(0, "Calculating WS Slope Parameters");
 
             var slopeFieldNum = AddField(shedShape, "AveSlope", typeof(double));
             oldperc = 0;
@@ -978,7 +978,7 @@ namespace DotSpatial.Plugins.Taudem
                     var newperc = Convert.ToInt32((Convert.ToDouble(sindx) / Convert.ToDouble(shedShape.NumRows())) * 100);
                     if (newperc > oldperc)
                     {
-                        callback?.Progress("Status", newperc, "Calculating WS Slope Parameters");
+                        callback?.Progress(newperc, "Calculating WS Slope Parameters");
                         oldperc = newperc;
                     }
                 }
@@ -1025,7 +1025,7 @@ namespace DotSpatial.Plugins.Taudem
             shedShape.Save();
             shedShape.Close();
 
-            callback?.Progress(string.Empty, 0, string.Empty);
+            callback?.Reset();
 
             return true;
         }
@@ -1041,7 +1041,7 @@ namespace DotSpatial.Plugins.Taudem
         /// <returns>True, if run successfully.</returns>
         public static bool ApplyWatershedSlopeAttribute(string subBasinGridPath, string subBasinShapePath, string slopeGridPath, ElevationUnits elevUnits, IProgressHandler callback)
         {
-            callback?.Progress("Status", 0, "Calculating WS Slope Parameters");
+            callback?.Progress(0, "Calculating WS Slope Parameters");
 
             var shedShape = FeatureSet.Open(subBasinShapePath);
             var subBasinGrid = Raster.Open(subBasinGridPath);
@@ -1109,7 +1109,7 @@ namespace DotSpatial.Plugins.Taudem
                 var newperc = Convert.ToInt32((Convert.ToDouble(row) / Convert.ToDouble(numberRows - 1)) * 100);
                 if (newperc > oldperc)
                 {
-                    callback?.Progress("Status", newperc, "Calculating WS Slope Parameters");
+                    callback?.Progress(newperc, "Calculating WS Slope Parameters");
 
                     oldperc = newperc;
                 }
@@ -1146,7 +1146,7 @@ namespace DotSpatial.Plugins.Taudem
 
             slopeGrid.Close();
 
-            callback?.Progress("Status", 0, "Calculating WS Slope Parameters");
+            callback?.Progress(0, "Calculating WS Slope Parameters");
 
             var slopeFieldNum = AddField(shedShape, "AveSlope", typeof(double));
 
@@ -1159,7 +1159,7 @@ namespace DotSpatial.Plugins.Taudem
                     var newperc = Convert.ToInt32((Convert.ToDouble(sindx) / Convert.ToDouble(shedShape.NumRows())) * 100);
                     if (newperc > oldperc)
                     {
-                        callback?.Progress("Status", newperc, "Calculating WS Slope Parameters");
+                        callback?.Progress(newperc, "Calculating WS Slope Parameters");
 
                         oldperc = newperc;
                     }
@@ -1209,7 +1209,7 @@ namespace DotSpatial.Plugins.Taudem
 
             subBasinGrid.Close();
 
-            callback?.Progress(string.Empty, 0, string.Empty);
+            callback?.Reset();
 
             return true;
         }
@@ -1231,7 +1231,7 @@ namespace DotSpatial.Plugins.Taudem
         {
             Trace.WriteLine("AreaD8(d8Path: " + d8Path + ",\n" + "       outletsPath: " + outletsPath + ",\n" + "       AreaD8ResultPath: " + areaD8ResultPath + ",\n" + "       useOutlets: " + useOutlets + ",\n" + "       useEdgeContamCheck: " + useEdgeContamCheck + "\n" + "       NumProcesses: " + numProcesses + "\n" + "       ShowTaudemOutput: " + showTaudemOutput + "\n" + "       callback)");
 
-            callback?.Progress("Status", 0, "D8 Area");
+            callback?.Progress(0, "D8 Area");
 
             var pars = "-p " + Quote(d8Path) + " -ad8 " + Quote(areaD8ResultPath);
             if (useOutlets)
@@ -1251,7 +1251,7 @@ namespace DotSpatial.Plugins.Taudem
                 MessageBox.Show(errMsg, errMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            callback?.Progress("Status", 0, string.Empty);
+            callback?.Reset();
 
             Trace.WriteLine("Finished AreaD8");
             return result;
@@ -1339,7 +1339,7 @@ namespace DotSpatial.Plugins.Taudem
                     var newperc = Convert.ToInt32((Convert.ToDouble(sindx) / Convert.ToDouble(shed.NumRows())) * 100);
                     if (newperc > oldperc)
                     {
-                        callback?.Progress("Status", newperc, "Merging Watersheds to Outlets/Inlets");
+                        callback?.Progress(newperc, "Merging Watersheds to Outlets/Inlets");
                         oldperc = newperc;
                     }
                 }
@@ -1462,7 +1462,7 @@ namespace DotSpatial.Plugins.Taudem
                 outlets?.Close();
             }
 
-            callback?.Progress(string.Empty, 0, string.Empty);
+            callback?.Reset();
 
             return true;
         }
@@ -1481,7 +1481,7 @@ namespace DotSpatial.Plugins.Taudem
         public static bool D8(string pitFillPath, string d8ResultPath, string d8SlopeResultPath, int numProcesses, bool showTaudemOutput, IProgressHandler callback)
         {
             Trace.WriteLine("D8(pitFillPath: " + pitFillPath + "\n" + "   D8ResultPath: " + d8ResultPath + "\n" + "   D8SlopeResultPath: " + d8SlopeResultPath + "\n" + "   NumProcesses: " + numProcesses.ToString() + "\n" + "   ShowTaudemOutput: " + showTaudemOutput.ToString() + "\n" + "   callback)");
-            callback?.Progress("Status", 0, "D8 Flow Directions");
+            callback?.Progress(0, "D8 Flow Directions");
 
             var pars = "-p " + Quote(d8ResultPath) + " -sd8 " + Quote(d8SlopeResultPath) + " -fel " + Quote(pitFillPath);
             var result = RunTaudem("D8FlowDir.exe", pars, numProcesses, showTaudemOutput);
@@ -1492,7 +1492,7 @@ namespace DotSpatial.Plugins.Taudem
                 MessageBox.Show(errMsg, errMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            callback?.Progress("Status", 0, string.Empty);
+            callback?.Reset();
 
             Trace.WriteLine("Finished D8");
             return result == 0;
@@ -1572,7 +1572,7 @@ namespace DotSpatial.Plugins.Taudem
         {
             Trace.WriteLine("Dinf(pitFillPath: " + pitFillPath + ",\n" + "       DInfResultPath: " + dInfResultPath + ",\n" + "       DInfSlopeResultPath: " + dInfSlopeResultPath + ",\n" + "       NumProcesses: " + numProcesses.ToString() + "\n" + "       ShowTaudemOutput: " + showTaudemOutput.ToString() + "\n" + "       callback)");
 
-            callback?.Progress("Status", 0, "D-inf Flow Directions");
+            callback?.Progress(0, "D-inf Flow Directions");
 
             var pars = "-ang " + Quote(dInfResultPath) + " -slp " + Quote(dInfSlopeResultPath) + " -fel " + Quote(pitFillPath);
 
@@ -1583,7 +1583,7 @@ namespace DotSpatial.Plugins.Taudem
                 MessageBox.Show(errMsg, errMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            callback?.Progress("Status", 0, string.Empty);
+            callback?.Reset();
 
             Trace.WriteLine("Finished DInf");
             return result;
@@ -1621,7 +1621,7 @@ namespace DotSpatial.Plugins.Taudem
         public static int RunAllStreamDelineation(string areaD8Path, string streamGridResultPath, int threshold, int numProcesses, bool showTaudemOutput, IProgressHandler callback)
         {
             Trace.WriteLine("All Stream Delineation");
-            callback?.Progress("Status", 0, "All Stream Delineation");
+            callback?.Progress(0, "All Stream Delineation");
 
             var areaGridPath = areaD8Path; // TODO CWG inf does not seems to work (useDinf)?areaDInfPath:areaD8Path;
             var pars = "-ssa " + Quote(areaGridPath) + " -src " + Quote(streamGridResultPath) + " -thresh " + threshold.ToString(CultureInfo.InvariantCulture);
@@ -1654,7 +1654,7 @@ namespace DotSpatial.Plugins.Taudem
         public static int RunGridNetwork(string demGridPath, string d8Path, string longestUpslopeResultPath, string totalUpslopeResultPath, string strahlOrdResultPath, string outletsPath, bool useOutlets, int numProcesses, bool showTaudemOutput, IProgressHandler callback)
         {
             Trace.WriteLine("Grid Network");
-            callback?.Progress("Status", 0, "Grid Network");
+            callback?.Progress(0, "Grid Network");
 
             var pars = "-p " + Quote(d8Path) + " -plen " + Quote(longestUpslopeResultPath) + " -tlen " + Quote(totalUpslopeResultPath) + " -gord " + Quote(strahlOrdResultPath);
             if (useOutlets)
@@ -1669,7 +1669,7 @@ namespace DotSpatial.Plugins.Taudem
                 MessageBox.Show(errMsg, errMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            callback?.Progress("Status", 0, string.Empty);
+            callback?.Reset();
 
             return result;
         }
@@ -1698,7 +1698,7 @@ namespace DotSpatial.Plugins.Taudem
         public static int RunStreamOrderGridRaster(string demGridPath, string pitFillPath, string d8Path, string areaD8Path, string outletsPath, string streamGridResultPath, string streamOrdResultPath, string streamShapeResultPath, string watershedGridResultPath, string coordDatResultPath, string treeDatResultPath, bool useOutlets, int numProcesses, bool showTaudemOutput, IProgressHandler callback)
         {
             Trace.WriteLine("Stream Order Grid and Raster");
-            callback?.Progress("Status", 0, "Stream Order Grid and Raster");
+            callback?.Progress(0, "Stream Order Grid and Raster");
 
             File.Delete(coordDatResultPath);
             File.Delete(treeDatResultPath);
@@ -1728,7 +1728,7 @@ namespace DotSpatial.Plugins.Taudem
 
             DataManagement.TryCopy(Path.ChangeExtension(demGridPath, ".prj"), Path.ChangeExtension(streamShapeResultPath, ".prj"));
 
-            callback?.Progress("Status", 0, string.Empty);
+            callback?.Reset();
 
             return result;
         }
@@ -1903,7 +1903,7 @@ namespace DotSpatial.Plugins.Taudem
         {
             Trace.WriteLine("Fill(sourceGrid: " + sourceFile + ",\n" + "     mwDestFile: " + destFile + ",\n" + "     Overwrite: " + overwrite + ",\n" + "     ShowProgressDialog: " + showProgressDialog + ",\n" + "     FrameWidth: " + frameWidth + ", \n" + "     FrameHeight: " + frameHeight + ", \n" + "     IProgressHandler");
 
-            callBack?.Progress("Status", 0, "Opening Files");
+            callBack?.Progress(0, "Opening Files");
 
             var pars = "-z " + Quote(sourceFile) + " -fel " + Quote(destFile);
             var result = RunTaudem("PitRemove.exe", pars, 1, false);

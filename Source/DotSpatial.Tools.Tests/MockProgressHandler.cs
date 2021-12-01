@@ -18,12 +18,18 @@ namespace DotSpatial.Tools.Tests
         /// <summary>
         /// Does nothing.
         /// </summary>
-        /// <param name="key">The key.</param>
         /// <param name="percent">The percent.</param>
         /// <param name="message">The message.</param>
-        public void Progress(string key, int percent, string message)
+        public void Progress(int percent, string message)
         {
             // nothing
+        }
+
+        /// <summary>
+        /// Does nothing.
+        /// </summary>
+        public void Reset()
+        {
         }
     }
 }

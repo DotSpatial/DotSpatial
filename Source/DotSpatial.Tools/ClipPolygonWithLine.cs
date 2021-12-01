@@ -704,13 +704,13 @@ namespace DotSpatial.Tools
                 // only update when increment in percentage
                 if (current > previous)
                 {
-                    cancelProgressHandler.Progress(string.Empty, current, current + TextStrings.progresscompleted);
+                    cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
                 }
 
                 previous = current;
             }
 
-            cancelProgressHandler.Progress(string.Empty, 100, 100 + TextStrings.progresscompleted);
+            cancelProgressHandler.Progress(100, 100 + TextStrings.progresscompleted);
             resultFs.SaveAs(filename, true);
             return true;
         }

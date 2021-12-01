@@ -210,7 +210,7 @@ namespace DotSpatial.Tools
                     if (Convert.ToInt32(Convert.ToDouble(x * numRows) / Convert.ToDouble(numColumns * numRows) * 100) > lastUpdate)
                     {
                         lastUpdate = Convert.ToInt32(Convert.ToDouble(x * numRows) / Convert.ToDouble(numColumns * numRows) * 100);
-                        cancelProgressHandler.Progress(string.Empty, lastUpdate, "Cell: " + (x * numRows) + " of " + (numColumns * numRows));
+                        cancelProgressHandler.Progress(lastUpdate, "Cell: " + (x * numRows) + " of " + (numColumns * numRows));
                         if (cancelProgressHandler.Cancel)
                         {
                             return false;
