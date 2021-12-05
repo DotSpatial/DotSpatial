@@ -8,7 +8,7 @@ namespace DotSpatial.Tests.Common
     /// <summary>
     /// This contains common functions for all test classes.
     /// </summary>
-    public class Common
+    public abstract class Common
     {
         /// <summary>
         /// Gets the absolute path of the given relative path.
