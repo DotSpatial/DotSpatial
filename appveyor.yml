@@ -14,6 +14,7 @@ build:
   verbosity: normal
   
 init:
+- ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 - ps: $env:buildVersion = "$env:packageVersion.$env:appveyor_build_number"
 - ps: $env:nugetVersion = "$env:packageVersion-alpha$env:appveyor_build_number"
 - ps: Update-AppveyorBuild -Version $env:buildVersion
