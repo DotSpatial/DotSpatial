@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Controls.Tests
@@ -55,7 +56,7 @@ namespace DotSpatial.Controls.Tests
             var actual = target.SerializationManager.GetCustomSetting(uniqueName, DateTime.Now.AddDays(1));
             Assert.AreEqual(expected, actual);
 
-            string path = Path.GetFullPath(Path.Combine("TestFiles", "SerializeTestWithCustomSettings.map.xml.dspx"));
+            string path = Path.Combine(Common.AbsolutePath("TestFiles"), "SerializeTestWithCustomSettings.map.xml.dspx");
 
             target.SerializationManager.SaveProject(path);
 

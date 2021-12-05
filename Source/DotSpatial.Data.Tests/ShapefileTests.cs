@@ -15,7 +15,7 @@ namespace DotSpatial.Data.Tests
     {
         #region Fields
 
-        private readonly string _shapefiles = Path.Combine(@"Data", @"Shapefiles");
+        private readonly string _shapefiles = Common.AbsolutePath(Path.Combine(@"Data", @"Shapefiles"));
 
         #endregion
 

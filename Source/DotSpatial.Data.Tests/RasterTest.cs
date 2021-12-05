@@ -93,23 +93,23 @@ namespace DotSpatial.Data.Tests
         [TestMethod]
         public void SaveAsTest()
         {
-            const string GridDataFolder = @"Data\Grids\";
+            string gridDataFolder = Common.AbsolutePath(@"Data\Grids\");
             var p = new GdalRasterProvider();
-            var sourceGrid = p.Open(GridDataFolder + @"elev_cm_ESRI\elev_cm_clip2\hdr.adf");
+            var sourceGrid = p.Open(Path.Combine(gridDataFolder, @"elev_cm_ESRI\elev_cm_clip2\hdr.adf"));
             var sourceGridMaximum = sourceGrid.Maximum;
 
-            const string SavedGridName = GridDataFolder + @"elev_cm.tif";
-            sourceGrid.SaveAs(SavedGridName);
+            string savedGridName = Path.Combine(gridDataFolder, @"elev_cm.tif");
+            sourceGrid.SaveAs(savedGridName);
 
             Assert.AreEqual(sourceGrid.Maximum, sourceGridMaximum, 0.0001);
 
-            var savedSourceGrid = Raster.Open(SavedGridName);
+            var savedSourceGrid = Raster.Open(savedGridName);
 
             Assert.AreEqual(sourceGridMaximum, savedSourceGrid.Maximum, 0.0001);
 
             sourceGrid.Close();
             savedSourceGrid.Close();
-            File.Delete(SavedGridName);
+            File.Delete(savedGridName);
         }
 
         #endregion

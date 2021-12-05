@@ -24,8 +24,8 @@ namespace DotSpatial.Data.Tests
         [TestCase(true)]
         public void CanExportPointShapeWithNullShapes(bool indexMode)
         {
-            const string Path = @"Data\Shapefiles\Yield\Yield 2012.shp";
-            var target = new PointShapefile(Path);
+            string path = Common.AbsolutePath(@"Data\Shapefiles\Yield\Yield 2012.shp");
+            var target = new PointShapefile(path);
             Assert.IsTrue(target.Features.Count > 0);
             target.IndexMode = indexMode;
 
@@ -53,8 +53,8 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void CanLoadShapePointWithNullShapes()
         {
-            const string Path = @"Data\Shapefiles\Yield\Yield 2012.shp";
-            var target = new PointShapefile(Path);
+            string path = Common.AbsolutePath(@"Data\Shapefiles\Yield\Yield 2012.shp");
+            var target = new PointShapefile(path);
             Assert.IsNotNull(target);
             Assert.AreEqual(target.ShapeIndices.Count(d => d.ShapeType == ShapeType.NullShape), 1792);
             Assert.AreEqual(target.Features.Count(d => d.Geometry.IsEmpty), 1792);
@@ -66,8 +66,8 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void CanReadPointZWithoutM()
         {
-            const string Path = @"Data\Shapefiles\shp-no-m\SPATIAL_F_LUFTNINGSVENTIL.shp";
-            var target = new PointShapefile(Path);
+            string path = Common.AbsolutePath(@"Data\Shapefiles\shp-no-m\SPATIAL_F_LUFTNINGSVENTIL.shp");
+            var target = new PointShapefile(path);
             Assert.AreEqual(CoordinateType.Z, target.CoordinateType);
             Assert.IsNotNull(target.Z);
             Assert.IsNotNull(target.M);

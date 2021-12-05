@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using DotSpatial.Controls;
+using DotSpatial.Tests.Common;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
@@ -20,14 +21,16 @@ namespace DotSpatial.Symbology.Tests
     {
         #region Methods
 
+        private readonly string _folder = Common.AbsolutePath("TestFiles");
+
         /// <summary>
         /// A test for ExportSelection.
         /// </summary>
         [Test]
         public void ExportSelectionTest()
         {
-            string filename = Path.Combine("TestFiles", "soils.shp");
-            string fileOut = Path.Combine("TestFiles", "soilsExport.shp");
+            string filename = Path.Combine(_folder, "soils.shp");
+            string fileOut = Path.Combine(_folder, "soilsExport.shp");
 
             ShapefileLayerProvider provider = new ShapefileLayerProvider();
             var target = (FeatureLayer)provider.OpenLayer(filename, false, null, null);
@@ -49,8 +52,8 @@ namespace DotSpatial.Symbology.Tests
             Thread.CurrentThread.CurrentCulture = new CultureInfo("cs-CZ");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("cs-CZ");
 
-            string filename = Path.Combine("TestFiles", "soils.shp");
-            string fileOut = Path.Combine("TestFiles", "soilsExport.shp");
+            string filename = Path.Combine(_folder, "soils.shp");
+            string fileOut = Path.Combine(_folder, "soilsExport.shp");
 
             ShapefileLayerProvider provider = new ShapefileLayerProvider();
             var target = (FeatureLayer)provider.OpenLayer(filename, false, null, null);
@@ -206,7 +209,7 @@ namespace DotSpatial.Symbology.Tests
         {
             // load layer with us states
             ShapefileLayerProvider provider = new ShapefileLayerProvider();
-            var fl = (IFeatureLayer)provider.OpenLayer(Path.Combine(@"TestFiles", "50mil_us_states.shp"), false, null, null);
+            var fl = (IFeatureLayer)provider.OpenLayer(Common.AbsolutePath(Path.Combine(@"TestFiles", "50mil_us_states.shp")), false, null, null);
             Assert.IsNotNull(fl);
 
             // add two categories for testing category.SelectionEnabled

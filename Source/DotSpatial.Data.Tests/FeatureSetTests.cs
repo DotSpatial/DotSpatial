@@ -21,7 +21,7 @@ namespace DotSpatial.Data.Tests
     {
         #region Fields
 
-        private readonly string _shapefiles = Path.Combine(@"Data", @"Shapefiles");
+        private readonly string _shapefiles = Common.AbsolutePath(Path.Combine(@"Data", @"Shapefiles"));
 
         #endregion
 
@@ -308,32 +308,36 @@ namespace DotSpatial.Data.Tests
 
                 if (c == CoordinateType.Regular)
                 {
-                    // regular coordinates don't have m values
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].M);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.MinM());
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.MaxM());
+                    Assert.IsTrue(loaded.Features[0].Geometry.Coordinates[0] is Coordinate);
+                    Assert.IsFalse(loaded.Features[0].Geometry.Coordinates[0] is CoordinateZ);
+                    Assert.IsFalse(loaded.Features[0].Geometry.Coordinates[0] is CoordinateM);
                 }
-                else
+                else if (c == CoordinateType.M)
                 {
-                    // m or z coordinates have m values
-                    Assert.AreEqual(4, loaded.Features[0].Geometry.Coordinates[0].M);
-                    Assert.AreEqual(4, loaded.Features[0].Geometry.MinM());
-                    Assert.AreEqual(10, loaded.Features[0].Geometry.MaxM());
-                }
+                    Assert.IsTrue(loaded.Features[0].Geometry.Coordinates[0] is CoordinateM);
+                    Assert.IsFalse(loaded.Features[0].Geometry.Coordinates[0] is CoordinateZ);
 
-                if (c == CoordinateType.Z)
-                {
-                    // z coordinates have z values
-                    Assert.AreEqual(7, loaded.Features[0].Geometry.Coordinates[0].Z);
-                    Assert.AreEqual(3, loaded.Features[0].Geometry.MinZ());
-                    Assert.AreEqual(9, loaded.Features[0].Geometry.MaxZ());
+                    if (loaded.Features[0].Geometry.Coordinates[0] is CoordinateM cm)
+                    {
+                        Assert.AreEqual(4, cm.M);
+                        Assert.AreEqual(4, loaded.Features[0].Geometry.MinM());
+                        Assert.AreEqual(10, loaded.Features[0].Geometry.MaxM());
+                    }
                 }
-                else
+                else if (c == CoordinateType.Z)
                 {
-                    // regular and m coordinates don't have z values
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].Z);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.MinZ());
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.MaxZ());
+                    Assert.IsTrue(loaded.Features[0].Geometry.Coordinates[0] is CoordinateZM);
+
+                    if (loaded.Features[0].Geometry.Coordinates[0] is CoordinateZM cm)
+                    {
+                        Assert.AreEqual(7, cm.Z);
+                        Assert.AreEqual(3, loaded.Features[0].Geometry.MinZ());
+                        Assert.AreEqual(9, loaded.Features[0].Geometry.MaxZ());
+
+                        Assert.AreEqual(4, cm.M);
+                        Assert.AreEqual(4, loaded.Features[0].Geometry.MinM());
+                        Assert.AreEqual(10, loaded.Features[0].Geometry.MaxM());
+                    }
                 }
             }
             finally
@@ -421,32 +425,36 @@ namespace DotSpatial.Data.Tests
 
                 if (c == CoordinateType.Regular)
                 {
-                    // regular coordinates don't have m values
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].M);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.MinM());
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.MaxM());
+                    Assert.IsTrue(loaded.Features[0].Geometry.Coordinates[0] is Coordinate);
+                    Assert.IsFalse(loaded.Features[0].Geometry.Coordinates[0] is CoordinateZ);
+                    Assert.IsFalse(loaded.Features[0].Geometry.Coordinates[0] is CoordinateM);
                 }
-                else
+                else if (c == CoordinateType.M)
                 {
-                    // m or z coordinates have m values
-                    Assert.AreEqual(4, loaded.Features[0].Geometry.Coordinates[0].M);
-                    Assert.AreEqual(4, loaded.Features[0].Geometry.MinM());
-                    Assert.AreEqual(4, loaded.Features[0].Geometry.MaxM());
-                }
+                    Assert.IsTrue(loaded.Features[0].Geometry.Coordinates[0] is CoordinateM);
+                    Assert.IsFalse(loaded.Features[0].Geometry.Coordinates[0] is CoordinateZ);
 
-                if (c == CoordinateType.Z)
-                {
-                    // z coordinates have z values
-                    Assert.AreEqual(7, loaded.Features[0].Geometry.Coordinates[0].Z);
-                    Assert.AreEqual(7, loaded.Features[0].Geometry.MinZ());
-                    Assert.AreEqual(7, loaded.Features[0].Geometry.MaxZ());
+                    if (loaded.Features[0].Geometry.Coordinates[0] is CoordinateM cm)
+                    {
+                        Assert.AreEqual(4, cm.M);
+                        Assert.AreEqual(4, loaded.Features[0].Geometry.MinM());
+                        Assert.AreEqual(4, loaded.Features[0].Geometry.MaxM());
+                    }
                 }
-                else
+                else if (c == CoordinateType.Z)
                 {
-                    // regular and m coordinates don't have z values
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].Z);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.MinZ());
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.MaxZ());
+                    Assert.IsTrue(loaded.Features[0].Geometry.Coordinates[0] is CoordinateZM);
+
+                    if (loaded.Features[0].Geometry.Coordinates[0] is CoordinateZM cm)
+                    {
+                        Assert.AreEqual(7, cm.Z);
+                        Assert.AreEqual(7, loaded.Features[0].Geometry.MinZ());
+                        Assert.AreEqual(7, loaded.Features[0].Geometry.MaxZ());
+
+                        Assert.AreEqual(4, cm.M);
+                        Assert.AreEqual(4, loaded.Features[0].Geometry.MinM());
+                        Assert.AreEqual(4, loaded.Features[0].Geometry.MaxM());
+                    }
                 }
             }
             finally

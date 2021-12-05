@@ -1657,18 +1657,11 @@ namespace DotSpatial.Data
                 List<Coordinate> coords = new List<Coordinate>();
                 foreach (Vertex d in part)
                 {
-                    Coordinate c = new Coordinate(d.X, d.Y);
+                    var m = M?.Length > 0 ? M[i] : double.NaN;
+                    var z = Z?.Length > 0 ? Z[i] : double.NaN;
+
+                    Coordinate c = CoordinateExt.CreateCoordinate(d.X, d.Y, Z?.Length > 0, z, M?.Length > 0, m);
                     coords.Add(c);
-                    if (M != null && M.Length > 0)
-                    {
-                        c.M = M[i];
-                    }
-
-                    if (Z != null && Z.Length > 0)
-                    {
-                        c.Z = Z[i];
-                    }
-
                     i++;
                 }
 
@@ -1716,20 +1709,13 @@ namespace DotSpatial.Data
             foreach (PartRange part in shape.Parts)
             {
                 int i = part.StartIndex;
-                foreach (Vertex vertex in part)
+                foreach (Vertex d in part)
                 {
-                    Coordinate c = new Coordinate(vertex.X, vertex.Y);
+                    var m = M?.Length > 0 ? M[i] : double.NaN;
+                    var z = Z?.Length > 0 ? Z[i] : double.NaN;
+
+                    Coordinate c = CoordinateExt.CreateCoordinate(d.X, d.Y, Z?.Length > 0, z, M?.Length > 0, m);
                     coords.Add(c);
-                    if (M != null && M.Length != 0)
-                    {
-                        c.M = M[i];
-                    }
-
-                    if (Z != null && Z.Length != 0)
-                    {
-                        c.Z = Z[i];
-                    }
-
                     i++;
                 }
             }
@@ -1765,19 +1751,15 @@ namespace DotSpatial.Data
             }
             else
             {
-                Coordinate c = new Coordinate(Vertex[shape.StartIndex * 2], Vertex[(shape.StartIndex * 2) + 1]);
+                var m = M?.Length > 0 ? M[shape.StartIndex] : double.NaN;
+                var z = Z?.Length > 0 ? Z[shape.StartIndex] : double.NaN;
 
-                if (M != null && M.Length != 0)
+                Coordinate c = CoordinateExt.CreateCoordinate(Vertex[shape.StartIndex * 2], Vertex[(shape.StartIndex * 2) + 1], Z?.Length > 0, z, M?.Length > 0, m);
+
+                if (FeatureGeometryFactory == null)
                 {
-                    c.M = M[shape.StartIndex];
+                    FeatureGeometryFactory = GeometryFactory.Default;
                 }
-
-                if (Z != null && Z.Length != 0)
-                {
-                    c.Z = Z[shape.StartIndex];
-                }
-
-                if (FeatureGeometryFactory == null) FeatureGeometryFactory = GeometryFactory.Default;
 
                 FeatureGeometryFactory.CreatePoint(new Coordinate());
 
@@ -1812,19 +1794,12 @@ namespace DotSpatial.Data
                 int i = part.StartIndex;
                 foreach (Vertex d in part)
                 {
-                    Coordinate c = new Coordinate(d.X, d.Y);
-                    if (M != null && M.Length > 0)
-                    {
-                        c.M = M[i];
-                    }
+                    var m = M?.Length > 0 ? M[i] : double.NaN;
+                    var z = Z?.Length > 0 ? Z[i] : double.NaN;
 
-                    if (Z != null && Z.Length > 0)
-                    {
-                        c.Z = Z[i];
-                    }
-
-                    i++;
+                    Coordinate c = CoordinateExt.CreateCoordinate(d.X, d.Y, Z?.Length > 0, z, M?.Length > 0, m);
                     coords.Add(c);
+                    i++;
                 }
 
                 LinearRing ring = FeatureGeometryFactory.CreateLinearRing(coords.ToArray());

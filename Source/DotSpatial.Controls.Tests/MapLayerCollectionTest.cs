@@ -3,6 +3,7 @@
 
 using System.IO;
 using DotSpatial.Data;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
@@ -17,6 +18,8 @@ namespace DotSpatial.Controls.Tests
     {
         #region Methods
 
+        private readonly string _folder = Common.AbsolutePath("TestFiles");
+
         /// <summary>
         /// A test for MapFrame property is the mapFrame null when adding a group?.
         /// </summary>
@@ -24,7 +27,7 @@ namespace DotSpatial.Controls.Tests
         public void MapFrameIsNotNullGroup()
         {
             var map = new Map();
-            var path = Path.Combine("TestFiles", "test-randomPts.shp");
+            var path = Path.Combine(_folder, "test-randomPts.shp");
 
             var fs = FeatureSet.Open(path);
             var myLayer = new MapPointLayer(fs);
@@ -44,7 +47,7 @@ namespace DotSpatial.Controls.Tests
         public void SelectedLayerNullIfLayerRemoved()
         {
             var map = new Map();
-            var path = Path.Combine("TestFiles", "test-randomPts.shp");
+            var path = Path.Combine(_folder, "test-randomPts.shp");
             var myLayer = map.AddLayer(path);
 
             Assert.IsNotNull(myLayer, "the added map layer should not be null.");

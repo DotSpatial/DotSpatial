@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using DotSpatial.Controls;
+using DotSpatial.Tests.Common;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
 
@@ -17,6 +18,8 @@ namespace DotSpatial.Serialization.Tests
     [TestClass]
     public class XmlDeserializerTest
     {
+        private readonly string _folder = Common.AbsolutePath("Data");
+
         #region Methods
 
         /// <summary>
@@ -33,7 +36,7 @@ namespace DotSpatial.Serialization.Tests
 
             XmlDeserializer target = new XmlDeserializer();
             Map map = new Map();
-            string path = Path.Combine("Data", "DeserializeTest.map.xml");
+            string path = Path.Combine(_folder, "DeserializeTest.map.xml");
             target.Deserialize(map, File.ReadAllText(path));
         }
 
@@ -45,7 +48,7 @@ namespace DotSpatial.Serialization.Tests
         {
             XmlDeserializer target = new XmlDeserializer();
             Map map = new Map();
-            string path = Path.Combine("Data", "DeserializeTest.map.xml");
+            string path = Path.Combine(_folder, "DeserializeTest.map.xml");
             target.Deserialize(map, File.ReadAllText(path));
         }
 

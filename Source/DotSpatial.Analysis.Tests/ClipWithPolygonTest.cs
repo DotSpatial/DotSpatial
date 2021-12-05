@@ -3,6 +3,7 @@
 
 using System.IO;
 using DotSpatial.Data;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Analysis.Tests
@@ -19,9 +20,11 @@ namespace DotSpatial.Analysis.Tests
         [Test]
         public void ClipRasterWithPolygonTest()
         {
-            var shapeFilePath = Path.Combine("Data", "elbe_watershed1.shp");
-            var rasterFilePath = Path.Combine("Data", "kriging.bgd");
-            var resultFilePath = Path.Combine("Data", "clipResult.bgd");
+            var folder = Common.AbsolutePath("Data");
+
+            var shapeFilePath = Path.Combine(folder, "elbe_watershed1.shp");
+            var rasterFilePath = Path.Combine(folder, "kriging.bgd");
+            var resultFilePath = Path.Combine(folder, "clipResult.bgd");
 
             var lClipPolygon = Shapefile.OpenFile(shapeFilePath);
             var lGridToClip = Raster.OpenFile(rasterFilePath, false);
