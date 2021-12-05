@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using DotSpatial.NTSExtension;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
@@ -461,8 +462,6 @@ namespace DotSpatial.Data
                 List<int> parts = new List<int>();
                 List<Coordinate> points = new List<Coordinate>();
 
-                addPoints(parts, points, f);
-
                 bool isNullShape = false;
                 int contentLength;
 
@@ -474,6 +473,7 @@ namespace DotSpatial.Data
                 }
                 else
                 {
+                    addPoints(parts, points, f);
                     contentLength = GetContentLength(parts.Count, points.Count, shapefile.Header.ShapeType);
                 }
 
@@ -525,8 +525,8 @@ namespace DotSpatial.Data
 
                     if (shapefile.Header.ShapeType == expectedZType)
                     {
-                        shpStream.WriteLe(f.Geometry.EnvelopeInternal.MinZ);
-                        shpStream.WriteLe(f.Geometry.EnvelopeInternal.MaxZ);
+                        shpStream.WriteLe(f.Geometry.MinZ());
+                        shpStream.WriteLe(f.Geometry.MaxZ());
                         double[] zVals = new double[points.Count];
                         for (int i = 0; i < points.Count; i++)
                         {
@@ -538,8 +538,8 @@ namespace DotSpatial.Data
 
                     if (shapefile.Header.ShapeType == expectedMType || shapefile.Header.ShapeType == expectedZType)
                     {
-                        shpStream.WriteLe(f.Geometry.EnvelopeInternal.MinM);
-                        shpStream.WriteLe(f.Geometry.EnvelopeInternal.MaxM);
+                        shpStream.WriteLe(f.Geometry.MinM());
+                        shpStream.WriteLe(f.Geometry.MaxM());
 
                         double[] mVals = new double[points.Count];
                         for (int i = 0; i < points.Count; i++)

@@ -10,7 +10,7 @@ namespace DotSpatial.NTSExtension
     /// Contains a magnitude and direction
     /// Supports more fundamental calculations than LineSegment, rather than topological functions.
     /// </summary>
-    public class Vector : Coordinate
+    public class Vector : CoordinateZ
     {
         #region  Constructors
 
@@ -25,7 +25,7 @@ namespace DotSpatial.NTSExtension
         /// Initializes a new instance of the <see cref="Vector"/> class where the X, Y and Z terms are the same as the specified coordinate.
         /// </summary>
         /// <param name="coord">The ICoordinate to use.</param>
-        public Vector(Coordinate coord)
+        public Vector(CoordinateZ coord)
         {
             X = coord.X;
             Y = coord.Y;
@@ -50,7 +50,7 @@ namespace DotSpatial.NTSExtension
         /// </summary>
         /// <param name="startCoord">The start coordinate.</param>
         /// <param name="endCoord">The end coordinate for the vector.</param>
-        public Vector(Coordinate startCoord, Coordinate endCoord)
+        public Vector(CoordinateZ startCoord, CoordinateZ endCoord)
         {
             X = endCoord.X - startCoord.X;
             Y = endCoord.Y - startCoord.Y;
@@ -580,9 +580,9 @@ namespace DotSpatial.NTSExtension
         /// Returns an ICoordinate from this vector, where the X, Y and Z value match the values in this vector.
         /// </summary>
         /// <returns>an ICoordinate, where the X, Y and Z value match the values in this vector.</returns>
-        public Coordinate ToCoordinate()
+        public CoordinateZ ToCoordinate()
         {
-            return new Coordinate(X, Y, Z);
+            return new CoordinateZ(X, Y, Z);
         }
 
         /// <summary>
@@ -591,7 +591,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A new segment from this vector, where the StartPoint is 0, 0, 0 and the End Point is the tip of this vector.</returns>
         public LineSegment ToLineSegment()
         {
-            return new LineSegment(new Coordinate(0, 0, 0), ToCoordinate());
+            return new LineSegment(new CoordinateZ(0, 0, 0), ToCoordinate());
         }
 
         /// <summary>

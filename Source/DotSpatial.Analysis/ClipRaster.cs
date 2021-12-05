@@ -3,9 +3,9 @@
 
 using System;
 using System.Collections.Generic;
-
 using DotSpatial.Data;
 using DotSpatial.NTSExtension;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Analysis
 {

@@ -52,7 +52,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             get
             {
-                Coordinate c = _showZ ? new Coordinate(_dbxX.Value, _dbxY.Value, _dbxZ.Value) : new Coordinate(_dbxX.Value, _dbxY.Value);
+                Coordinate c = _showZ ? new CoordinateZ(_dbxX.Value, _dbxY.Value, _dbxZ.Value) : new Coordinate(_dbxX.Value, _dbxY.Value);
                 if (_showM)
                 {
                     c.M = _dbxM.Value;

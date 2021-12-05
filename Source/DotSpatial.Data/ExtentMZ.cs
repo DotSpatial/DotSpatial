@@ -3,7 +3,6 @@
 
 using System;
 using System.ComponentModel;
-using DotSpatial.NTSExtension;
 using DotSpatial.Serialization;
 using NetTopologySuite.Geometries;
 
@@ -49,9 +48,13 @@ namespace DotSpatial.Data
         /// Initializes a new instance of the <see cref="ExtentMz"/> class.
         /// </summary>
         /// <param name="env">The Envelope to read the minimum and maximum values from.</param>
-        public ExtentMz(Envelope env)
+        /// <param name="minM">The double Minimum in the Measure category.</param>
+        /// <param name="minZ">The double Minimum in the Z direction.</param>
+        /// <param name="maxM">The double Maximum in the Measure category.</param>
+        /// <param name="maxZ">The double Maximum in the Z direction.</param>
+        public ExtentMz(Envelope env, double minM, double minZ, double maxM, double maxZ)
         {
-            SetValues(env.MinX, env.MinY, env.MinM, env.MinZ, env.MaxX, env.MaxY, env.MaxM, env.MaxZ);
+            SetValues(env.MinX, env.MinY, minM, minZ, env.MaxX, env.MaxY, maxM, maxZ);
         }
 
         #endregion
@@ -137,7 +140,6 @@ namespace DotSpatial.Data
         /// <returns>True if this contains the given envelope.</returns>
         public override bool Contains(Envelope env)
         {
-            if (env.HasZ() && HasZ && (env.MaxZ < MinZ || env.MinZ > MaxZ)) return false;
             return base.Contains(env);
         }
 
@@ -336,18 +338,12 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Tests with the specified envelope for a collision. If any part of the Z bounds
-        /// are invalid, this will default to the M, X and Y Intersect comparison.
+        /// Tests with the specified envelope for a collision. This will default to the X and Y Intersect comparison.
         /// </summary>
         /// <param name="env">The envelope to test.</param>
         /// <returns>Boolean.</returns>
         public override bool Intersects(Envelope env)
         {
-            if (!double.IsNaN(env.MinZ) && !double.IsNaN(env.MaxZ) && HasZ)
-            {
-                if (env.MaxZ < MinZ || env.MinZ > MaxZ) return false;
-            }
-
             return base.Intersects(env);
         }
 
@@ -405,18 +401,12 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Tests if this envelope is contained by the specified envelope. If either envelope doesn't
-        /// support M then only the XY case will be tested.
+        /// Tests if this envelope is contained by the specified envelope. Only the XY case will be tested.
         /// </summary>
         /// <param name="env">The envelope to compare.</param>
         /// <returns>Boolean.</returns>
         public override bool Within(Envelope env)
         {
-            if (!double.IsNaN(env.MinZ) && !double.IsNaN(env.MaxZ) && HasZ)
-            {
-                if (env.MaxZ > MinZ || env.MinZ < MaxZ) return false;
-            }
-
             return base.Within(env);
         }
 

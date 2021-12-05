@@ -212,13 +212,13 @@ namespace DotSpatial.Data
                     }
                     else
                     {
-                        header.Zmin = feature.Geometry.EnvelopeInternal.MinZ;
-                        header.Zmax = feature.Geometry.EnvelopeInternal.MaxZ;
+                        header.Zmin = feature.Geometry.MinZ();
+                        header.Zmax = feature.Geometry.MaxZ();
                         header.ShapeType = ShapeTypeZ;
                     }
 
-                    header.Mmin = feature.Geometry.EnvelopeInternal.MinM;
-                    header.Mmax = feature.Geometry.EnvelopeInternal.MaxM;
+                    header.Mmin = feature.Geometry.MinM();
+                    header.Mmax = feature.Geometry.MaxM();
                 }
 
                 header.ShxLength = 4 + 50;
@@ -288,13 +288,13 @@ namespace DotSpatial.Data
                         }
                         else
                         {
-                            header.Zmin = feature.Geometry.EnvelopeInternal.MinZ;
-                            header.Zmax = feature.Geometry.EnvelopeInternal.MaxZ;
+                            header.Zmin = feature.Geometry.MinZ();
+                            header.Zmax = feature.Geometry.MaxZ();
                             header.ShapeType = ShapeTypeZ;
                         }
 
-                        header.Mmin = feature.Geometry.EnvelopeInternal.MinM;
-                        header.Mmax = feature.Geometry.EnvelopeInternal.MaxM;
+                        header.Mmin = feature.Geometry.MinM();
+                        header.Mmax = feature.Geometry.MaxM();
                     }
 
                     header.ShxLength = 4 + 50;
@@ -547,19 +547,32 @@ namespace DotSpatial.Data
             else
             {
                 // Other features, so include new feature
-                newExt = new Envelope(header.Xmin, header.Xmax, header.Ymin, header.Ymax, header.Zmin, header.Zmax, header.Mmin, header.Mmax);
+                newExt = new Envelope(header.Xmin, header.Xmax, header.Ymin, header.Ymax);
                 newExt.ExpandToInclude(feature.EnvelopeInternal);
             }
 
             header.Xmin = newExt.MinX;
             header.Ymin = newExt.MinY;
-            header.Zmin = newExt.MinZ;
             header.Xmax = newExt.MaxX;
             header.Ymax = newExt.MaxY;
-            header.Zmax = newExt.MaxZ;
-            header.Mmin = newExt.MinM; // TODO added by jany_ on nts integration ... is this correct?
-            header.Mmax = newExt.MaxM;
-            header.ShxLength = header.ShxLength + 4;
+
+            if (header.ShapeType == ShapeTypeM)
+            {
+                if (feature.MinM() < header.Mmin)
+                {
+                    header.Mmin = feature.MinM();
+                }
+            }
+
+            if (header.ShapeType == ShapeTypeM || header.ShapeType == ShapeTypeZ)
+            {
+                if (feature.MinZ() < header.Zmin)
+                {
+                    header.Zmin = feature.MinZ();
+                }
+            }
+
+            header.ShxLength += 4;
             if (writeHeaderFiles)
             {
                 WriteHeader(header, Filename);

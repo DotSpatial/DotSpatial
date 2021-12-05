@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
+using System.Linq;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.NTSExtension
@@ -12,6 +13,100 @@ namespace DotSpatial.NTSExtension
     public static class GeometryExt
     {
         #region Methods
+
+        /// <summary>
+        /// Gets the maximal M value of the Geometry.
+        /// </summary>
+        /// <param name="geo">Geometry to get the maximal M value from.</param>
+        /// <returns>0 if no M there were no M values. Otherwise the maximal M value found.</returns>
+        public static double MaxM(this Geometry geo)
+        {
+            if (geo.Coordinates.Any(_ => _ is CoordinateM))
+            {
+                double maxCoordinateM = geo.Coordinates.Where(_ => _ is CoordinateM).Select(_ => _.M).Max();
+
+                if (geo.Coordinates.Any(_ => _ is CoordinateZM))
+                {
+                    var maxCoordinateZM = geo.Coordinates.Where(_ => _ is CoordinateZM).Select(_ => _.M).Max();
+
+                    if (maxCoordinateZM > maxCoordinateM)
+                    {
+                        maxCoordinateM = maxCoordinateZM;
+                    }
+                }
+
+                return maxCoordinateM;
+            }
+            else if (geo.Coordinates.Any(_ => _ is CoordinateZM))
+            {
+                return geo.Coordinates.Where(_ => _ is CoordinateZM).Select(_ => _.M).Max();
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the minimal M value of the Geometry.
+        /// </summary>
+        /// <param name="geo">Geometry to get the minimal M value from.</param>
+        /// <returns>0 if there were no M values. Otherwise the minimal M value found.</returns>
+        public static double MinM(this Geometry geo)
+        {
+            if (geo.Coordinates.Any(_ => _ is CoordinateM))
+            {
+                double minCoordinateM = geo.Coordinates.Where(_ => _ is CoordinateM).Select(_ => _.M).Min();
+
+                if (geo.Coordinates.Any(_ => _ is CoordinateZM))
+                {
+                    var minCoordinateZM = geo.Coordinates.Where(_ => _ is CoordinateZM).Select(_ => _.M).Min();
+
+                    if (minCoordinateZM < minCoordinateM)
+                    {
+                        minCoordinateM = minCoordinateZM;
+                    }
+                }
+
+                return minCoordinateM;
+            }
+            else if (geo.Coordinates.Any(_ => _ is CoordinateZM))
+            {
+                return geo.Coordinates.Where(_ => _ is CoordinateZM).Select(_ => _.M).Min();
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the maximal Z value of the Geometry.
+        /// </summary>
+        /// <param name="geo">Geometry to get the maximal M value from.</param>
+        /// <returns>0 if there were no Z values. Otherwise the maximal Z value found.</returns>
+        public static double MaxZ(this Geometry geo)
+        {
+            // CoordinateZM is also of type CoordinateZ
+            if (geo.Coordinates.Any(_ => _ is CoordinateZ))
+            {
+                return geo.Coordinates.Where(_ => _ is CoordinateZ).Select(_ => _.Z).Max();
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the minimal Z value of the Geometry.
+        /// </summary>
+        /// <param name="geo">Geometry to get the minimal Z value from.</param>
+        /// <returns>0 if there were no Z values. Otherwise the minimal Z value found.</returns>
+        public static double MinZ(this Geometry geo)
+        {
+            // CoordinateZM is also of type CoordinateZ
+            if (geo.Coordinates.Any(_ => _ is CoordinateZ))
+            {
+                return geo.Coordinates.Where(_ => _ is CoordinateZ).Select(_ => _.Z).Min();
+            }
+
+            return 0;
+        }
 
         /// <summary>
         /// Rotates the geometry by the given radian angle around the origin.

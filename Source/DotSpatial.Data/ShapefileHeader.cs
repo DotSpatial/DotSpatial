@@ -12,19 +12,7 @@ namespace DotSpatial.Data
     /// </summary>
     public class ShapefileHeader
     {
-        #region Fields
-
-        // Always 9994 if it is a shapefile
-
-        // The length of the shp file in bytes
         private string _fileName;
-
-        // The version, which should be 1000
-
-        // Specifies line, polygon, point etc.
-
-        // Extent Values for the entire shapefile
-        #endregion
 
         #region Constructors
 
@@ -81,13 +69,12 @@ namespace DotSpatial.Data
         public double Mmax { get; set; }
 
         /// <summary>
-        ///  Gets or sets tminimum M coordinate for the values in the shapefile.
+        ///  Gets or sets the minimum M coordinate for the values in the shapefile.
         /// </summary>
         public double Mmin { get; set; }
 
         /// <summary>
-        /// Gets or sets the DotSpatial.Data.Shapefiles.ShapeType enumeration specifying
-        /// whether the shapes are points, lines, polygons etc.
+        /// Gets or sets the DotSpatial.Data.Shapefiles.ShapeType enumeration specifying whether the shapes are points, lines, polygons etc.
         /// </summary>
         public ShapeType ShapeType { get; set; }
 
@@ -117,17 +104,17 @@ namespace DotSpatial.Data
         public double Xmin { get; set; }
 
         /// <summary>
-        /// Gets or sets tmaximum Y coordinate for the shapes in the shapefile.
+        /// Gets or sets the maximum Y coordinate for the shapes in the shapefile.
         /// </summary>
         public double Ymax { get; set; }
 
         /// <summary>
-        /// Gets or sets tminimum Y coordinate for the values in the shapefile.
+        /// Gets or sets the minimum Y coordinate for the values in the shapefile.
         /// </summary>
         public double Ymin { get; set; }
 
         /// <summary>
-        /// Gets or sets tmaximum Z coordinate for the shapes in the shapefile.
+        /// Gets or sets the maximum Z coordinate for the shapes in the shapefile.
         /// </summary>
         public double Zmax { get; set; }
 
@@ -319,7 +306,7 @@ namespace DotSpatial.Data
         /// <returns>An Envelope.</returns>
         public Envelope ToEnvelope()
         {
-            return new Envelope(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, Mmin, Mmax);
+            return new Envelope(Xmin, Xmax, Ymin, Ymax);
         }
 
         /// <summary>

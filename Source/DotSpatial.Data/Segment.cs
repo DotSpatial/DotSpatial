@@ -4,6 +4,7 @@
 using System;
 using DotSpatial.NTSExtension;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Mathematics;
 
 namespace DotSpatial.Data
 {
@@ -84,8 +85,8 @@ namespace DotSpatial.Data
         {
             Vertex p = new Vertex(point.X, point.Y);
             Vertex pt = ClosestPointTo(p);
-            Vector dist = new Vector(new Coordinate(pt.X, pt.Y), point);
-            return dist.Length2D;
+            var dist = new Vector2D(new Coordinate(pt.X, pt.Y), point);
+            return dist.Length();
         }
 
         /// <summary>
@@ -117,12 +118,9 @@ namespace DotSpatial.Data
             }
 
             // http://softsurfer.com/Archive/algorithm_0102/algorithm_0102.htm
-            Vector v = ToVector(); // vector from p1 to p2 in the segment
-            v.Z = 0;
-            Vector w = new Vector(P1.ToCoordinate(), point.ToCoordinate()) // vector from p1 to Point
-            {
-                Z = 0
-            };
+            var v = ToVector2D(); // vector from p1 to p2 in the segment
+            Vector2D w = new Vector2D(new Coordinate(P1.X, P1.Y), new Coordinate(point.X, point.Y));
+
             double c1 = w.Dot(v); // the dot product represents the projection onto the line
 
             if (c1 < 0)
@@ -145,7 +143,7 @@ namespace DotSpatial.Data
             // but somewhere on the segment between P1 and P2
             endPointFlag = EndPointInteraction.OnLine;
             double b = c1 / c2;
-            v = v.Multiply(b);
+            v *= b;
             Vertex pb = new Vertex(P1.X + v.X, P1.Y + v.Y);
             return pb;
         }
@@ -154,11 +152,22 @@ namespace DotSpatial.Data
         /// Casts this to a vector.
         /// </summary>
         /// <returns>This as vector.</returns>
-        public Vector ToVector()
+        public Vector3D ToVector3D()
         {
             double x = P2.X - P1.X;
             double y = P2.Y - P1.Y;
-            return new Vector(x, y, 0);
+            return new Vector3D(x, y, 0);
+        }
+
+        /// <summary>
+        /// Casts this to a vector.
+        /// </summary>
+        /// <returns>This as vector.</returns>
+        public Vector2D ToVector2D()
+        {
+            double x = P2.X - P1.X;
+            double y = P2.Y - P1.Y;
+            return new Vector2D(x, y);
         }
 
         /// <summary>
@@ -170,9 +179,9 @@ namespace DotSpatial.Data
         {
             // http://www.geometryalgorithms.com/Archive/algorithm_0106/algorithm_0106.htm
             const double SmallNum = 0.00000001;
-            Vector u = ToVector(); // Segment 1
-            Vector v = lineSegment.ToVector(); // Segment 2
-            Vector w = ToVector();
+            Vector2D u = ToVector2D(); // Segment 1
+            Vector2D v = lineSegment.ToVector2D(); // Segment 2
+            Vector2D w = ToVector2D();
             double a = u.Dot(u);  // length of segment 1
             double b = u.Dot(v);  // length of segment 2 projected onto line 1
             double c = v.Dot(v);  // length of segment 2
@@ -272,12 +281,12 @@ namespace DotSpatial.Data
             }
 
             // get the difference of the two closest points
-            Vector dU = u.Multiply(sc);
-            Vector dV = v.Multiply(tc);
-            Vector dP = w.Add(dU).Subtract(dV);
+            Vector2D dU = u * sc;
+            Vector2D dV = v * tc;
+            Vector2D dP = w + dU - dV;
 
             // S1(sc) - S2(tc)
-            return dP.Length2D;
+            return dP.Length();
         }
 
         /// <summary>

@@ -1272,7 +1272,7 @@ namespace DotSpatial.Tools
                             {
                                 firstIntPt = intersectPts[i][j]; // first intersection for this cut
                                 nNewLineStartIndex = i;
-                                listNewLine.Add(new Coordinate(intersectPts[i][j].X, intersectPts[i][j].Y, 0.0));
+                                listNewLine.Add(new Coordinate(intersectPts[i][j].X, intersectPts[i][j].Y));
                                 listLinePartStartEndIndexValues.Add(listNewLine.Count - 1);
                             }
                             else
@@ -1295,7 +1295,7 @@ namespace DotSpatial.Tools
                     }
                     else if (firstIntPt != null && lastIntPt != null)
                     {
-                        listNewLine.Add(new Coordinate(lastIntPt.X, lastIntPt.Y, 0.0));
+                        listNewLine.Add(new Coordinate(lastIntPt.X, lastIntPt.Y));
                         listLinePartStartEndIndexValues.Add(listNewLine.Count - 1);
 
                         colListForEachLinePart.Add(new List<int>(listLinePartIndexValuesForOrigLine));

@@ -90,14 +90,14 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         public static int DetermineZoomLevel(Envelope envelope, Rectangle rectangle)
         {
             double metersAcross = EarthRadiusKms * envelope.Width * Math.PI / 180; // find the arc length represented by the displayed map
-            metersAcross *= Math.Cos(envelope.Center().Y * Math.PI / 180); // correct for the center latitude
+            metersAcross *= Math.Cos(envelope.Centre.Y * Math.PI / 180); // correct for the center latitude
 
             double metersAcrossPerPixel = metersAcross / rectangle.Width; // find the resolution in meters per pixel
 
             // find zoomlevel such that metersAcrossPerPix is close
             for (int i = 2; i < 19; i++)
             {
-                double groundRes = GroundResolution(envelope.Center().Y, i);
+                double groundRes = GroundResolution(envelope.Centre.Y, i);
 
                 if (metersAcrossPerPixel > groundRes)
                 {

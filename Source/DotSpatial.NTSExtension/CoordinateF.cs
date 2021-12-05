@@ -401,7 +401,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A copy of this instance.</returns>
         public object Clone()
         {
-            return new Coordinate(_x, _y, _z, _m);
+            return new CoordinateZM(_x, _y, _z, _m);
         }
 
         /// <summary>
@@ -433,7 +433,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A copy of this instance.</returns>
         public Coordinate Copy()
         {
-            return new Coordinate(_x, _y, _z, _m);
+            return new CoordinateZM(_x, _y, _z, _m);
         }
 
         /// <summary>

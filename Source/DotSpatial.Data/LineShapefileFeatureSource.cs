@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using DotSpatial.NTSExtension;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
@@ -145,15 +146,15 @@ namespace DotSpatial.Data
             for (var i = 0; i < points.Count; i++)
             {
                 xyVals[i * 2] = points[i].X;
-                xyVals[i * 2 + 1] = points[i].Y;
+                xyVals[(i * 2) + 1] = points[i].Y;
             }
 
             shpStream.WriteLe(xyVals, 0, 2 * points.Count);
 
             if (header.ShapeType == ShapeType.PolyLineZ)
             {
-                shpStream.WriteLe(feature.EnvelopeInternal.MinZ);
-                shpStream.WriteLe(feature.EnvelopeInternal.MaxZ);
+                shpStream.WriteLe(feature.MinZ());
+                shpStream.WriteLe(feature.MaxZ());
                 double[] zVals = new double[points.Count];
                 for (int ipoint = 0; ipoint < points.Count; ipoint++)
                 {
@@ -172,8 +173,8 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    shpStream.WriteLe(feature.EnvelopeInternal.MinM);
-                    shpStream.WriteLe(feature.EnvelopeInternal.MaxM);
+                    shpStream.WriteLe(feature.MinM());
+                    shpStream.WriteLe(feature.MaxM());
                 }
 
                 double[] mVals = new double[points.Count];
@@ -189,7 +190,7 @@ namespace DotSpatial.Data
             shpStream.Close();
             offset += contentLength;
             Shapefile.WriteFileLength(Filename, offset + 4); // Add 4 for the record header
-            Shapefile.WriteFileLength(header.ShxFilename, 50 + numFeatures * 4);
+            Shapefile.WriteFileLength(header.ShxFilename, 50 + (numFeatures * 4));
         }
     }
 }

@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using DotSpatial.NTSExtension;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
@@ -28,21 +29,6 @@ namespace DotSpatial.Symbology
         public DrawWindow()
         {
             _geographicView = new Envelope(-180, 180, -90, 90);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DrawWindow"/> class with the specified coordinates.
-        /// </summary>
-        /// <param name="x1">The first x-value.</param>
-        /// <param name="x2">The second x-value.</param>
-        /// <param name="y1">The first y-value.</param>
-        /// <param name="y2">The second y-value.</param>
-        /// <param name="z1">The first z-value.</param>
-        /// <param name="z2">The second z-value.</param>
-        public DrawWindow(double x1, double x2, double y1, double y2, double z1, double z2)
-            : base(x1, x2, y1, y2, z1, z2)
-        {
-            _geographicView = new Envelope(x1, x2, y1, y2);
         }
 
         /// <summary>
@@ -168,8 +154,8 @@ namespace DotSpatial.Symbology
         {
             double x = inX - MinX;
             double y = inY - MinY;
-            x = x / Width;
-            y = y / Height;
+            x /= Width;
+            y /= Height;
             return new PointF(Convert.ToSingle(x), Convert.ToSingle(y));
         }
 
@@ -182,8 +168,8 @@ namespace DotSpatial.Symbology
         {
             double x = inCoord.X - MinX;
             double y = inCoord.Y - MinY;
-            x = x / Width;
-            y = y / Height;
+            x /= Width;
+            y /= Height;
             return new PointF(Convert.ToSingle(x), Convert.ToSingle(y));
         }
 
@@ -205,8 +191,8 @@ namespace DotSpatial.Symbology
             {
                 double x = inCoords[i].X - minX;
                 double y = inCoords[i].Y - minY;
-                x = x / w;
-                y = y / h;
+                x /= w;
+                y /= h;
                 result[i] = new PointF(Convert.ToSingle(x), Convert.ToSingle(y));
             }
 

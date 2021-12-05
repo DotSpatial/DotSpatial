@@ -24,50 +24,6 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Gets the coordinate defining the center of this envelope
-        /// in all of the dimensions of this envelope.
-        /// </summary>
-        /// <param name="self">The <c>IEnvelope</c> to find the center for.</param>
-        /// <returns>An ICoordinate.</returns>
-        public static Coordinate Center(this Envelope self)
-        {
-            if (self == null || self.IsNull) return null;
-            Coordinate result = new Coordinate
-                                    {
-                                        X = (self.MinX + self.MaxX) / 2,
-                                        Y = (self.MinY + self.MaxY) / 2
-                                    };
-
-            if (!double.IsNaN(self.MinZ)) result.Z = (self.MinZ + self.MaxZ) / 2;
-            if (!double.IsNaN(self.MinM)) result.M = (self.MinM + self.MaxM) / 2;
-            return result;
-        }
-
-        /// <summary>
-        /// Checks whether the given Envelope has M values.
-        /// </summary>
-        /// <param name="envelope">Envelope that gets checked.</param>
-        /// <returns>False if either envelope.Minimum.M or envelope.Maximum.M is not a number or Minimum.M is bigger than Maximum.M. </returns>
-        public static bool HasM(this Envelope envelope)
-        {
-            if (double.IsNaN(envelope.MinM) || double.IsNaN(envelope.MaxM))
-                return false;
-            return envelope.MinM <= envelope.MaxM;
-        }
-
-        /// <summary>
-        /// Checks whether the given Envelope has Z values.
-        /// </summary>
-        /// <param name="envelope">Envelope that gets checked.</param>
-        /// <returns>False if either envelope.Minimum.Z or envelope.Maximum.Z is not a number or Minimum.Z is bigger than Maximum.Z. </returns>
-        public static bool HasZ(this Envelope envelope)
-        {
-            if (double.IsNaN(envelope.MinZ) || double.IsNaN(envelope.MaxZ))
-                return false;
-            return envelope.MinZ <= envelope.MaxZ;
-        }
-
-        /// <summary>
         /// Gets the right value, which is X + Width.
         /// </summary>
         /// <param name="self">The <c>IEnvelope</c> that this calculation is for.</param>

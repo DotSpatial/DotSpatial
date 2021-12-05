@@ -60,9 +60,11 @@ namespace DotSpatial.Data
         /// Initializes a new instance of the <see cref="ExtentM"/> class. This overload works from an envelope.
         /// </summary>
         /// <param name="env">The envelope with extent values to read.</param>
-        public ExtentM(Envelope env)
+        /// <param name="minM">The minimum M.</param>
+        /// <param name="maxM">The maximum M.</param>
+        public ExtentM(Envelope env, double minM, double maxM)
         {
-            SetValues(env.MinX, env.MinY, env.MinM, env.MaxX, env.MaxY, env.MaxM);
+            SetValues(env.MinX, env.MinY, minM, env.MaxX, env.MaxY, maxM);
         }
 
         #endregion
@@ -155,14 +157,6 @@ namespace DotSpatial.Data
         /// <returns>Boolean.</returns>
         public override bool Contains(Envelope env)
         {
-            if (env.HasM() && HasM)
-            {
-                if (env.MaxM < MinM || env.MinM > MaxM)
-                {
-                    return false;
-                }
-            }
-
             return base.Contains(env);
         }
 
@@ -383,19 +377,6 @@ namespace DotSpatial.Data
         /// <returns>Boolean.</returns>
         public override bool Intersects(Envelope env)
         {
-            if (!double.IsNaN(env.MinM) && !double.IsNaN(env.MaxM) && HasM)
-            {
-                if (env.MaxM < MinM)
-                {
-                    return false;
-                }
-
-                if (env.MinM > MaxM)
-                {
-                    return false;
-                }
-            }
-
             return base.Intersects(env);
         }
 
@@ -466,19 +447,6 @@ namespace DotSpatial.Data
         /// <returns>True, if this envelope is contained by the specified envelope.</returns>
         public override bool Within(Envelope env)
         {
-            if (!double.IsNaN(env.MinM) && !double.IsNaN(env.MaxM) && HasM)
-            {
-                if (env.MaxM > MinM)
-                {
-                    return false;
-                }
-
-                if (env.MinM < MaxM)
-                {
-                    return false;
-                }
-            }
-
             return base.Within(env);
         }
 

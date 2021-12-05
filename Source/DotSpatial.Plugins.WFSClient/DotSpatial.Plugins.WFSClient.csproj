@@ -76,8 +76,8 @@
       <Name>DotSpatial.Symbology</Name>
       <Private>False</Private>
     </ProjectReference>
-    <Reference Include="DotSpatial.NetTopologySuite, Version=2.0.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotSpatial.NetTopologySuite.2.0.1-pre.184130514\lib\netstandard2.0\DotSpatial.NetTopologySuite.dll</HintPath>
+    <Reference Include="NetTopologySuite, Version=2.0.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NetTopologySuite.2.4.0\lib\netstandard2.0\NetTopologySuite.dll</HintPath>
     </Reference>
     <Reference Include="Renci.Data.Interop, Version=1.1.0.0, Culture=neutral, PublicKeyToken=3d62193ae6a45b09, processorArchitecture=MSIL">
       <HintPath>SupportFiles\Renci.Data.Interop.dll</HintPath>

@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Drawing;
-using DotSpatial.NTSExtension;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
@@ -30,20 +29,13 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This allows the creation of the correct kind of Extent class from an Envelope, which can contain
-        /// M or Z values.
+        /// This creates an Extent from an Envelope.
         /// </summary>
         /// <param name="self">The Envelope to convert into an Extent.</param>
         /// <returns>The extent that was created from the envelope.</returns>
         public static Extent ToExtent(this Envelope self)
         {
-            if (self.HasZ())
-            {
-                // regardless of whether it has M, we need an MZExtent.
-                return new ExtentMz(self);
-            }
-
-            return self.HasM() ? new ExtentM(self) : new Extent(self);
+            return new Extent(self);
         }
     }
 }

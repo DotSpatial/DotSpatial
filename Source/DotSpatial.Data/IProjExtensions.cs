@@ -44,11 +44,11 @@ namespace DotSpatial.Data
             double y = Convert.ToDouble(position.Y);
             if (self != null && self.GeographicExtents != null)
             {
-                x = (x - self.ImageRectangle.X) * self.GeographicExtents.Width / self.ImageRectangle.Width + self.GeographicExtents.MinX;
-                y = self.GeographicExtents.MaxY - (y - self.ImageRectangle.Y) * self.GeographicExtents.Height / self.ImageRectangle.Height;
+                x = ((x - self.ImageRectangle.X) * self.GeographicExtents.Width / self.ImageRectangle.Width) + self.GeographicExtents.MinX;
+                y = self.GeographicExtents.MaxY - ((y - self.ImageRectangle.Y) * self.GeographicExtents.Height / self.ImageRectangle.Height);
             }
 
-            return new Coordinate(x, y, 0.0);
+            return new Coordinate(x, y);
         }
 
         /// <summary>
@@ -92,13 +92,15 @@ namespace DotSpatial.Data
         /// <returns>A Point with the new location.</returns>
         public static Point ProjToPixel(this IProj self, Coordinate location)
         {
-            if (self.GeographicExtents.Width == 0 || self.GeographicExtents.Height == 0) return Point.Empty;
+            if (self.GeographicExtents.Width == 0 || self.GeographicExtents.Height == 0)
+            {
+                return Point.Empty;
+            }
+
             try
             {
-                int x = Convert.ToInt32(self.ImageRectangle.X + (location.X - self.GeographicExtents.MinX) *
-                                    (self.ImageRectangle.Width / self.GeographicExtents.Width));
-                int y = Convert.ToInt32(self.ImageRectangle.Y + (self.GeographicExtents.MaxY - location.Y) *
-                                        (self.ImageRectangle.Height / self.GeographicExtents.Height));
+                int x = Convert.ToInt32(self.ImageRectangle.X + ((location.X - self.GeographicExtents.MinX) * (self.ImageRectangle.Width / self.GeographicExtents.Width)));
+                int y = Convert.ToInt32(self.ImageRectangle.Y + ((self.GeographicExtents.MaxY - location.Y) * (self.ImageRectangle.Height / self.GeographicExtents.Height)));
 
                 return new Point(x, y);
             }

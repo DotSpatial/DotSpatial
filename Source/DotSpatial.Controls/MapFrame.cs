@@ -541,7 +541,7 @@ namespace DotSpatial.Controls
             x = (x * view.Width / _width) + view.MinX;
             y = view.MaxY - (y * view.Height / _height);
 
-            return new Coordinate(x, y, 0.0);
+            return new Coordinate(x, y);
         }
 
         /// <summary>

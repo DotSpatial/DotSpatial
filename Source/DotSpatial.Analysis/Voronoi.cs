@@ -272,7 +272,7 @@ namespace DotSpatial.Analysis
                 double sx = -dy / l;
                 double sy = dx / l;
 
-                Coordinate center = bounds.Center();
+                Coordinate center = bounds.Centre;
                 if ((start.X > center.X && start.Y > center.Y) || (start.X < center.X && start.Y < center.Y))
                 {
                     sx = dy / l;
