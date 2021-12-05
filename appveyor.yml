@@ -4,7 +4,7 @@ configuration: Release
 
 environment:
   packageVersion: 2.0.0
-  appveyor_rdp_password:test12!?
+  appveyor_rdp_password: test12!?
 
 cache: 
 - source\packages -> **\packages.config
