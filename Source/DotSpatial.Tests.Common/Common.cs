@@ -8,7 +8,7 @@ namespace DotSpatial.Tests.Common
     /// <summary>
     /// This contains common functions for all test classes.
     /// </summary>
-    public abstract class Common
+    public class Common
     {
         /// <summary>
         /// Gets the absolute path of the given relative path.
@@ -18,6 +18,14 @@ namespace DotSpatial.Tests.Common
         public static string AbsolutePath(string relPath)
         {
             return System.IO.Path.Combine(TestContext.CurrentContext.TestDirectory, relPath);
+        }
+
+        /// <summary>
+        /// Dummy test function that is needed for nunit3.
+        /// </summary>
+        [Test]
+        public void Dummy()
+        {
         }
     }
 }
