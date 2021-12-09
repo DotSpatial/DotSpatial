@@ -221,7 +221,6 @@ namespace DotSpatial.Projections
         /// </summary>
         public int? Zone { get; set; }
 
-
         // ReSharper disable InconsistentNaming
         /// <summary>
         ///   Gets or sets the alpha/ azimuth.
@@ -1263,6 +1262,14 @@ namespace DotSpatial.Projections
             _longitudeOf2nd = GetParameter("Longitude_Of_2nd", esriString);
             LatitudeOfOrigin = GetParameter(new[] { "Latitude_Of_Origin", "Latitude_Of_Center", "Central_Parallel" }, ref _latitudeOfOriginAlias, esriString);
             iStart = esriString.LastIndexOf("UNIT", StringComparison.Ordinal);
+            if (esriString.Contains("VERTCS"))
+            {
+                String woVert = esriString.Substring(iStart);
+                if (woVert.Contains("UNIT"))
+                {
+                    iStart = woVert.LastIndexOf("UNIT", StringComparison.Ordinal);
+                }
+            }
             string unit = esriString.Substring(iStart, esriString.Length - iStart);
             Unit.ParseEsriString(unit);
 
@@ -1300,10 +1307,10 @@ namespace DotSpatial.Projections
                     double b = GeographicInfo.Datum.Spheroid.PolarRadius;
                     double r =
                         Math.Sqrt(
-                            (a * a
+                            ((a * a)
                              +
-                             a * b * b
-                             / (Math.Sqrt(a * a - b * b) * Math.Log((a + Math.Sqrt(a * a - b * b)) / b, Math.E)))
+                             ((a * b * b)
+                             / (Math.Sqrt((a * a) - (b * b)) * Math.Log((a + Math.Sqrt((a * a) - (b * b))) / b, Math.E))))
                             / 2);
                     GeographicInfo.Datum.Spheroid = new Spheroid(r);
                 }
@@ -1336,6 +1343,5 @@ namespace DotSpatial.Projections
         }
 
         #endregion
-        
     }
 }
