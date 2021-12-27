@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// ColorType
+    /// ColorType.
     /// </summary>
     public enum ColorType : byte
     {

@@ -10,7 +10,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// ExtentElement
+    /// ExtentElement.
     /// </summary>
     internal partial class ExtentElement : DialogElement
     {
@@ -23,7 +23,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtentElement"/> class.
         /// </summary>
-        /// <param name="value">The ExtentParam</param>
+        /// <param name="value">The ExtentParam.</param>
         public ExtentElement(ExtentParam value)
         {
             _tthelp = new ToolTip();
@@ -44,7 +44,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Parameter that the element represents
+        /// Gets or sets the Parameter that the element represents.
         /// </summary>
         public new ExtentParam Param
         {

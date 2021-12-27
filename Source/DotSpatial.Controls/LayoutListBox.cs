@@ -38,7 +38,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the layoutControl
+        /// Gets or sets the layoutControl.
         /// </summary>
         [Browsable(false)]
         public LayoutControl LayoutControl
@@ -63,7 +63,7 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Refreshes the items in the list to accurately reflect the current collection
+        /// Refreshes the items in the list to accurately reflect the current collection.
         /// </summary>
         public void RefreshList()
         {

@@ -15,7 +15,7 @@ namespace DotSpatial.Data
     public delegate bool RowEditEvent(RowEditEventArgs e);
 
     /// <summary>
-    /// RowEditEvent arguments
+    /// RowEditEvent arguments.
     /// </summary>
     public class RowEditEventArgs
     {
@@ -88,9 +88,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Convert the byte data for a column into the appropriate data value
+        /// Convert the byte data for a column into the appropriate data value.
         /// </summary>
-        /// <param name="field">Column information for data value being parsed</param>
+        /// <param name="field">Column information for data value being parsed.</param>
         /// <returns>The parsed value.</returns>
         public object ParseColumn(Field field)
         {
@@ -172,7 +172,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Convert array of values to bytes and fill ByteContent.
         /// </summary>
-        /// <param name="values">The values</param>
+        /// <param name="values">The values.</param>
         public void SetAllColumns(object[] values)
         {
             int count = values.Length;
@@ -195,10 +195,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Convert value to bytes and place in ByteContent at correct location
+        /// Convert value to bytes and place in ByteContent at correct location.
         /// </summary>
-        /// <param name="field">Column information for the conversion</param>
-        /// <param name="value">The value</param>
+        /// <param name="field">Column information for the conversion.</param>
+        /// <param name="value">The value.</param>
         public void SetColumn(Field field, double value)
         {
             char[] test = field.NumberConverter.ToChar(value);
@@ -207,10 +207,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Convert value to bytes and place in ByteContent at correct location
+        /// Convert value to bytes and place in ByteContent at correct location.
         /// </summary>
-        /// <param name="field">Column information for the conversion</param>
-        /// <param name="value">The value</param>
+        /// <param name="field">Column information for the conversion.</param>
+        /// <param name="value">The value.</param>
         public void SetColumn(Field field, string value)
         {
             string text = value.PadRight(field.Length, ' ');
@@ -221,10 +221,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Convert value to bytes and place in ByteContent at correct location
+        /// Convert value to bytes and place in ByteContent at correct location.
         /// </summary>
-        /// <param name="field">Column information for the conversion</param>
-        /// <param name="value">The value</param>
+        /// <param name="field">Column information for the conversion.</param>
+        /// <param name="value">The value.</param>
         public void SetColumn(Field field, float value)
         {
             if (field.TypeCharacter == 'F')
@@ -242,7 +242,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Convert value to bytes and place in ByteContent at correct location.
         /// </summary>
-        /// <param name="field">Column information for the conversion</param>
+        /// <param name="field">Column information for the conversion.</param>
         /// <param name="dbNull">The DBNull.</param>
         public void SetColumn(Field field, DBNull dbNull)
         {
@@ -254,10 +254,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Convert value to bytes and place in ByteContent at correct location
+        /// Convert value to bytes and place in ByteContent at correct location.
         /// </summary>
-        /// <param name="field">Column information for the conversion</param>
-        /// <param name="value">The value</param>
+        /// <param name="field">Column information for the conversion.</param>
+        /// <param name="value">The value.</param>
         public void SetColumn(Field field, decimal value)
         {
             char[] test = field.NumberConverter.ToChar(value);
@@ -266,10 +266,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Convert value to bytes and place in ByteContent at correct location
+        /// Convert value to bytes and place in ByteContent at correct location.
         /// </summary>
-        /// <param name="field">Column information for the conversion</param>
-        /// <param name="value">The value</param>
+        /// <param name="field">Column information for the conversion.</param>
+        /// <param name="value">The value.</param>
         public void SetColumn(Field field, long value)
         {
             string str = value.ToString();
@@ -281,10 +281,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Convert value to bytes and place in ByteContent at correct location
+        /// Convert value to bytes and place in ByteContent at correct location.
         /// </summary>
-        /// <param name="field">Column information for the conversion</param>
-        /// <param name="value">The value</param>
+        /// <param name="field">Column information for the conversion.</param>
+        /// <param name="value">The value.</param>
         public void SetColumn(Field field, bool value)
         {
             Encoding.Default.GetBytes(value ? "T" : "F", 0, 1, ByteContent, field.DataAddress);
@@ -294,8 +294,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Convert value to bytes and place in ByteContent at correct location.
         /// </summary>
-        /// <param name="field">Column information for the conversion</param>
-        /// <param name="value">The value</param>
+        /// <param name="field">Column information for the conversion.</param>
+        /// <param name="value">The value.</param>
         public void SetColumn(Field field, DateTime value)
         {
             SetColumn(field, value.ToString("yyyyMMdd"));

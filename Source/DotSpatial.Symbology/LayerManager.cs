@@ -586,8 +586,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Checks a dialog filter and returns a list of just the extensions.
         /// </summary>
-        /// <param name="dialogFilter">The Dialog Filter to read extensions from</param>
-        /// <returns>A list of extensions</returns>
+        /// <param name="dialogFilter">The Dialog Filter to read extensions from.</param>
+        /// <returns>A list of extensions.</returns>
         public virtual List<string> GetSupportedExtensions(string dialogFilter)
         {
             List<string> extensions = new List<string>();
@@ -730,7 +730,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This opens a file, but populates the dialog filter with only raster formats.
         /// </summary>
-        /// <returns>for now an ILayerSet</returns>
+        /// <returns>for now an ILayerSet.</returns>
         public virtual ILayer OpenImageLayer()
         {
             throw new NotImplementedException();
@@ -739,8 +739,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Opens a new layer and automatically adds it to the specified container.
         /// </summary>
-        /// <param name="container">The container (usually a LayerCollection) to add to</param>
-        /// <returns>The layer after it has been created and added to the container</returns>
+        /// <param name="container">The container (usually a LayerCollection) to add to.</param>
+        /// <returns>The layer after it has been created and added to the container.</returns>
         public virtual ILayer OpenLayer(ICollection<ILayer> container)
         {
             throw new NotImplementedException();
@@ -750,7 +750,7 @@ namespace DotSpatial.Symbology
         /// This launches an open file dialog and attempts to load the specified file.
         /// </summary>
         /// <param name="progressHandler">Specifies the progressHandler to receive progress messages. This value overrides the property on this DataManager.</param>
-        /// <returns>A Layer</returns>
+        /// <returns>A Layer.</returns>
         public virtual ILayer OpenLayer(IProgressHandler progressHandler)
         {
             throw new NotImplementedException();
@@ -759,7 +759,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This launches an open file dialog and attempts to load the specified file.
         /// </summary>
-        /// <returns>A Layer created from the file</returns>
+        /// <returns>A Layer created from the file.</returns>
         public virtual ILayer OpenLayer()
         {
             throw new NotImplementedException();
@@ -780,8 +780,8 @@ namespace DotSpatial.Symbology
         /// Opens a new layer and automatically adds it to the specified container.
         /// </summary>
         /// <param name="fileName">A String fileName to attempt to open.</param>
-        /// <param name="container">The container (usually a LayerCollection) to add to</param>
-        /// <returns>The layer after it has been created and added to the container</returns>
+        /// <param name="container">The container (usually a LayerCollection) to add to.</param>
+        /// <returns>The layer after it has been created and added to the container.</returns>
         public virtual ILayer OpenLayer(string fileName, ICollection<ILayer> container)
         {
             return OpenLayer(fileName, LoadInRam, container, ProgressHandler);
@@ -792,7 +792,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="fileName">A String fileName to attempt to open.</param>
         /// <param name="progressHandler">Specifies the progressHandler to receive progress messages. This value overrides the property on this DataManager.</param>
-        /// <returns>A Layer</returns>
+        /// <returns>A Layer.</returns>
         public virtual ILayer OpenLayer(string fileName, IProgressHandler progressHandler)
         {
             return OpenLayer(fileName, LoadInRam, null, progressHandler);
@@ -804,9 +804,9 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="fileName">A String fileName to attempt to open.</param>
         /// <param name="inRam">A boolean value that if true will attempt to force a load of the data into memory. This value overrides the property on this LayerManager.</param>
-        /// <param name="container">A container to open this layer in</param>
+        /// <param name="container">A container to open this layer in.</param>
         /// <param name="progressHandler">Specifies the progressHandler to receive progress messages. This value overrides the property on this LayerManager.</param>
-        /// <returns>An ILayer</returns>
+        /// <returns>An ILayer.</returns>
         public virtual ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler)
         {
             // To Do: Add Customization that allows users to specify which plugins to use in priority order.
@@ -848,17 +848,17 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This opens a file, but populates the dialog filter with only raster formats.
         /// </summary>
-        /// <returns>An IRaster with the data from the file specified in an open file dialog</returns>
+        /// <returns>An IRaster with the data from the file specified in an open file dialog.</returns>
         public virtual IRasterLayer OpenRasterLayer()
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// This attempts to open the specified raster file and returns an associated layer
+        /// This attempts to open the specified raster file and returns an associated layer.
         /// </summary>
-        /// <param name="fileName">The string fileName to open</param>
-        /// <returns>An IRaster with the data from the file specified in an open file dialog</returns>
+        /// <param name="fileName">The string fileName to open.</param>
+        /// <returns>An IRaster with the data from the file specified in an open file dialog.</returns>
         public virtual IRasterLayer OpenRasterLayer(string fileName)
         {
             return OpenLayer(fileName, LoadInRam, null, ProgressHandler) as IRasterLayer;
@@ -867,17 +867,17 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This opens a file, but populates the dialog filter with only raster formats.
         /// </summary>
-        /// <returns>An IFeatureSet with the data from the file specified in a dialog</returns>
+        /// <returns>An IFeatureSet with the data from the file specified in a dialog.</returns>
         public virtual IFeatureLayer OpenVectorLayer()
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// This attempts to open the specified vector file and returns an associated layer
+        /// This attempts to open the specified vector file and returns an associated layer.
         /// </summary>
-        /// <param name="fileName">the string fileName to open</param>
-        /// <returns>An IFeatureSet with the data from the file specified in a dialog</returns>
+        /// <param name="fileName">the string fileName to open.</param>
+        /// <returns>An IFeatureSet with the data from the file specified in a dialog.</returns>
         public virtual IFeatureLayer OpenVectorLayer(string fileName)
         {
             return OpenLayer(fileName, LoadInRam, null, ProgressHandler) as IFeatureLayer;

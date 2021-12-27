@@ -10,7 +10,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -44,8 +44,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="MapLineLayer"/> class.
         /// </summary>
-        /// <param name="featureSet">A featureset that contains lines</param>
-        /// <param name="container">An IContainer that the line layer should be created in</param>
+        /// <param name="featureSet">A featureset that contains lines.</param>
+        /// <param name="container">An IContainer that the line layer should be created in.</param>
         public MapLineLayer(IFeatureSet featureSet, ICollection<ILayer> container)
             : base(featureSet, container, null)
         {
@@ -176,12 +176,11 @@ namespace DotSpatial.Controls
         /// This is testing the idea of using an input parameter type that is marked as out
         /// instead of a return type.
         /// </summary>
-        /// <param name="result">The result of the creation</param>
-        /// <returns>Boolean, true if a layer can be created</returns>
+        /// <param name="result">The result of the creation.</param>
+        /// <returns>Boolean, true if a layer can be created.</returns>
         public override bool CreateLayerFromSelectedFeatures(out IFeatureLayer result)
         {
-            MapLineLayer temp;
-            bool resultOk = CreateLayerFromSelectedFeatures(out temp);
+            bool resultOk = CreateLayerFromSelectedFeatures(out MapLineLayer temp);
             result = temp;
             return resultOk;
         }
@@ -189,8 +188,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// This is the strong typed version of the same process that is specific to geo point layers.
         /// </summary>
-        /// <param name="result">The new GeoPointLayer to be created</param>
-        /// <returns>Boolean, true if there were any values in the selection</returns>
+        /// <param name="result">The new GeoPointLayer to be created.</param>
+        /// <returns>Boolean, true if there were any values in the selection.</returns>
         public virtual bool CreateLayerFromSelectedFeatures(out MapLineLayer result)
         {
             result = null;
@@ -271,8 +270,8 @@ namespace DotSpatial.Controls
         /// directly, use OnDrawFeatures. This will not clear existing buffer content.
         /// For that call Initialize instead.
         /// </summary>
-        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
-        /// <param name="regions">The geographic regions to draw</param>
+        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space.</param>
+        /// <param name="regions">The geographic regions to draw.</param>
         /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
         public virtual void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
@@ -317,7 +316,7 @@ namespace DotSpatial.Controls
         /// <param name="ls">LineString that gets added.</param>
         /// <param name="args">The map arguments.</param>
         /// <param name="clipRect">The clip rectangle.</param>
-        internal static void BuildLineString(GraphicsPath path, ILineString ls, MapArgs args, Rectangle clipRect)
+        internal static void BuildLineString(GraphicsPath path, LineString ls, MapArgs args, Rectangle clipRect)
         {
             double minX = args.MinX;
             double maxY = args.MaxY;
@@ -372,9 +371,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the OnBufferChanged event
+        /// Fires the OnBufferChanged event.
         /// </summary>
-        /// <param name="clipRectangles">The Rectangle in pixels</param>
+        /// <param name="clipRectangles">The Rectangle in pixels.</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
             if (BufferChanged != null)
@@ -580,17 +579,17 @@ namespace DotSpatial.Controls
             {
                 foreach (IFeature f in featList)
                 {
-                    var geo = f.Geometry as ILineString;
+                    var geo = f.Geometry as LineString;
                     if (geo != null)
                     {
                         BuildLineString(graphPath, geo, e, clipRect);
                     }
                     else
                     {
-                        var col = f.Geometry as IGeometryCollection;
+                        var col = f.Geometry as GeometryCollection;
                         if (col != null)
                         {
-                            foreach (var c1 in col.Geometries.OfType<ILineString>())
+                            foreach (var c1 in col.Geometries.OfType<LineString>())
                             {
                                 BuildLineString(graphPath, c1, e, clipRect);
                             }

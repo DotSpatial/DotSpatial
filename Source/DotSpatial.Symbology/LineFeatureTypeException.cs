@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// LineFeatureTypeException
+    /// LineFeatureTypeException.
     /// </summary>
     public class LineFeatureTypeException : ArgumentException
     {
@@ -23,7 +23,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="LineFeatureTypeException"/> class.
         /// </summary>
-        /// <param name="message">The custom error message for this exception</param>
+        /// <param name="message">The custom error message for this exception.</param>
         public LineFeatureTypeException(string message)
             : base(message)
         {

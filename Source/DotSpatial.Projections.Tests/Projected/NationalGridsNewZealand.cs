@@ -1,14 +1,21 @@
 using System.Collections.Generic;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Projections.Tests.Projected
 {
-    /// <summary>
+      /// <summary>
     /// This class contains all the tests for the NationalGridsNewZealand category of Projected coordinate systems
     /// </summary>
     [TestFixture]
     public class NationalGridsNewZealand
     {
+        [OneTimeSetUp]
+        public void RunBeforeAnyTests()
+        {
+            GridShift.InitializeExternalGrids(Common.AbsolutePath("GeogTransformGrids"), false);
+        }
+
         [Test]
         [TestCaseSource("GetProjections")]
         public void NationalGridsNewZealandTests(ProjectionInfoDesc pInfo)

@@ -171,7 +171,7 @@ namespace DotSpatial.Data
             /// <summary>
             /// Initializes a new instance of the <see cref="FeatureSetPackEnumerator"/> class based on the specified FeaturSetPack.
             /// </summary>
-            /// <param name="parent">The Pack</param>
+            /// <param name="parent">The Pack.</param>
             public FeatureSetPackEnumerator(FeatureSetPack parent)
             {
                 _parent = parent;

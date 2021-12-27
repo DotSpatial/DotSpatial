@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Index.KdTree;
 
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Fixed Count or Distance
+    /// Fixed Count or Distance.
     /// </summary>
     public enum NeighborhoodType
     {
@@ -55,12 +56,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -71,13 +72,11 @@ namespace DotSpatial.Tools
         /// <summary>
         /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
-        /// <param name="cancelProgressHandler">A progress handler for receiving progress messages</param>
-        /// <returns>A boolean, true if the IDW process worked correctly</returns>
+        /// <param name="cancelProgressHandler">A progress handler for receiving progress messages.</param>
+        /// <returns>A boolean, true if the IDW process worked correctly.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
-            IFeatureSet input = _inputParam[0].Value as IFeatureSet;
-            ListParam lp = _inputParam[1] as ListParam;
-            if (input == null || lp == null) return false;
+            if (!(_inputParam[0].Value is IFeatureSet input) || !(_inputParam[1] is ListParam lp)) return false;
 
             input.FillAttributes();
 
@@ -93,21 +92,21 @@ namespace DotSpatial.Tools
 
         /// <summary>
         /// Executes the Area tool with programatic input
-        /// Ping delete static for external testing
+        /// Ping delete static for external testing.
         /// </summary>
-        /// <param name="input">The input raster</param>
-        /// <param name="zField">The field name containing the values to interpolate</param>
-        /// <param name="cellSize">The double geographic size of the raster cells to create</param>
-        /// <param name="power">The double power representing the inverse</param>
-        /// <param name="neighborType">Fixed distance of fixed number of neighbors</param>
+        /// <param name="input">The input raster.</param>
+        /// <param name="zField">The field name containing the values to interpolate.</param>
+        /// <param name="cellSize">The double geographic size of the raster cells to create.</param>
+        /// <param name="power">The double power representing the inverse.</param>
+        /// <param name="neighborType">Fixed distance of fixed number of neighbors.</param>
         /// <param name="pointCount">The number of neighbors to include if the neighborhood type
-        /// is Fixed</param>
+        /// is Fixed.</param>
         /// <param name="distance">Points further from the raster cell than this distance are not included
         /// in the calculation if the neighborhood type is Fixed Distance.</param>
-        /// <param name="output">The output raster where values are stored.  The fileName is used, but the number
-        /// of rows and columns will be computed from the cellSize and input featureset</param>
-        /// <param name="cancelProgressHandler">A progress handler for receiving progress messages</param>
-        /// <returns>A boolean, true if the IDW process worked correctly</returns>
+        /// <param name="output">The output raster where values are stored. The fileName is used, but the number
+        /// of rows and columns will be computed from the cellSize and input featureset.</param>
+        /// <param name="cancelProgressHandler">A progress handler for receiving progress messages.</param>
+        /// <returns>A boolean, true if the IDW process worked correctly.</returns>
         public bool Execute(IFeatureSet input, string zField, double cellSize, double power, NeighborhoodType neighborType, int pointCount, double distance, IRaster output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
@@ -152,7 +151,7 @@ namespace DotSpatial.Tools
                 Coordinate coord = input.Features[randomList[index]].Geometry.Coordinates[0];
                 while (kd.Search(coord) != null)
                 {
-                    coord.X = coord.X * 1.000000000000001D;
+                    coord.X *= 1.000000000000001D;
                 }
 
                 kd.Insert(coord, input.Features[randomList[index]]);
@@ -225,41 +224,41 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {
             _inputParam = new Parameter[7];
             _inputParam[0] = new PointFeatureSetParam(TextStrings.PointFeatureSet);
             _inputParam[1] = new ListParam(TextStrings.Zvalue)
-                                 {
-                                     HelpText = TextStrings.layercontainsvalues
-                                 };
+            {
+                HelpText = TextStrings.layercontainsvalues
+            };
             _inputParam[2] = new DoubleParam(TextStrings.CellSize, 0, 0, double.MaxValue)
-                                 {
-                                     HelpText = TextStrings.Thecellsizeingeographicunits
-                                 };
+            {
+                HelpText = TextStrings.Thecellsizeingeographicunits
+            };
             _inputParam[3] = new DoubleParam(TextStrings.Power, 2, 1, double.MaxValue)
-                                 {
-                                     HelpText = TextStrings.Theinfluenceofdistance
-                                 };
+            {
+                HelpText = TextStrings.Theinfluenceofdistance
+            };
             _neighborhoodType = new List<string>
                                     {
                                         TextStrings.FixedDistance,
                                         TextStrings.FixedCount
                                     };
             _inputParam[4] = new ListParam(TextStrings.NeighborhoodType, _neighborhoodType, 0)
-                                 {
-                                     HelpText = TextStrings.Selectthetypeofneighborhood
-                                 };
+            {
+                HelpText = TextStrings.Selectthetypeofneighborhood
+            };
             _inputParam[5] = new IntParam(TextStrings.MinMaxnumberofpoints, 12, 0, int.MaxValue)
-                                 {
-                                     HelpText = TextStrings.FixedDistanceHelpText
-                                 };
+            {
+                HelpText = TextStrings.FixedDistanceHelpText
+            };
             _inputParam[6] = new DoubleParam(TextStrings.MinMaxdistance, 0, 0, double.MaxValue)
-                                 {
-                                     HelpText = TextStrings.FixedDistanceHelpText
-                                 };
+            {
+                HelpText = TextStrings.FixedDistanceHelpText
+            };
 
             _outputParam = new Parameter[2];
             _outputParam[0] = new RasterParam(TextStrings.Raster);
@@ -274,9 +273,7 @@ namespace DotSpatial.Tools
         {
             if (sender == _inputParam[0])
             {
-                FeatureSet fs = _inputParam[0].Value as FeatureSet;
-                ListParam lp = _inputParam[1] as ListParam;
-                if (fs != null && lp != null)
+                if (_inputParam[0].Value is FeatureSet fs && _inputParam[1] is ListParam lp)
                 {
                     lp.ValueList.Clear();
                     for (int i = 0; i < fs.DataTable.Columns.Count; i++)

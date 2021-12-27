@@ -77,11 +77,11 @@ namespace DotSpatial.Plugins.Taudem
         }
 
         /// <summary>
-        /// Attempts to copy a file
+        /// Attempts to copy a file.
         /// </summary>
-        /// <param name="oldName">The old filename</param>
-        /// <param name="newName">The new filename</param>
-        /// <returns>True on success</returns>
+        /// <param name="oldName">The old filename.</param>
+        /// <param name="newName">The new filename.</param>
+        /// <returns>True on success.</returns>
         public static bool TryCopy(string oldName, string newName)
         {
             try

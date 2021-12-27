@@ -11,7 +11,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// ColorCategory
+    /// ColorCategory.
     /// </summary>
     [ToolboxItem(false)]
     [Serializable]
@@ -68,8 +68,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="ColorCategory"/> class, but doesn't specify the colors themselves.
         /// </summary>
-        /// <param name="startValue">The start value</param>
-        /// <param name="endValue">The end value</param>
+        /// <param name="startValue">The start value.</param>
+        /// <param name="endValue">The end value.</param>
         public ColorCategory(double? startValue, double? endValue)
             : base(startValue, endValue)
         {
@@ -82,8 +82,8 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="startValue">One of the values to use in this colorbreak.</param>
         /// <param name="endValue">The other value to use in this colorbreak.</param>
-        /// <param name="lowColor">The color to assign to the higher of the two values</param>
-        /// <param name="highColor">The color to assign to the lower of the two values</param>
+        /// <param name="lowColor">The color to assign to the higher of the two values.</param>
+        /// <param name="highColor">The color to assign to the lower of the two values.</param>
         public ColorCategory(double? startValue, double? endValue, Color lowColor, Color highColor)
             : base(startValue, endValue)
         {
@@ -107,7 +107,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets custom actions for ColorCategory
+        /// Gets or sets custom actions for ColorCategory.
         /// </summary>
         [Browsable(false)]
         public IColorCategoryActions ColorCategoryActions { get; set; }
@@ -220,7 +220,7 @@ namespace DotSpatial.Symbology
         /// This is primarily used in the BiValue situation where a color needs to be generated
         /// somewhere between the start value and the end value.
         /// </summary>
-        /// <param name="value">The value to be converted into a color from the range on this color break</param>
+        /// <param name="value">The value to be converted into a color from the range on this color break.</param>
         /// <returns>A color that is selected from the range values.</returns>
         public virtual Color CalculateColor(double value)
         {
@@ -292,9 +292,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Fires the EditItem event. If e returns handled, then this will not launch the default editor
+        /// Fires the EditItem event. If e returns handled, then this will not launch the default editor.
         /// </summary>
-        /// <param name="e">The HandledEventArgs</param>
+        /// <param name="e">The HandledEventArgs.</param>
         protected virtual void OnEditItem(HandledEventArgs e)
         {
             EditItem?.Invoke(this, e);

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// the basic element for tools
+    /// the basic element for tools.
     /// </summary>
     public class ToolElement : ModelElement
     {
@@ -21,8 +21,8 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="ToolElement"/> class.
         /// </summary>
-        /// <param name="tool">The tool that the tool element represents</param>
-        /// <param name="modelElements">A list of all the elements in the model</param>
+        /// <param name="tool">The tool that the tool element represents.</param>
+        /// <param name="modelElements">A list of all the elements in the model.</param>
         public ToolElement(ITool tool, List<ModelElement> modelElements)
             : base(modelElements)
         {
@@ -35,7 +35,7 @@ namespace DotSpatial.Modeling.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the list of Elements presently available in the Modeler
+        /// Gets or sets the list of Elements presently available in the Modeler.
         /// </summary>
         public List<ModelElement> ElementsInModel { get; set; }
 
@@ -45,12 +45,12 @@ namespace DotSpatial.Modeling.Forms
         public ToolExecuteStatus ExecutionStatus { get; set; }
 
         /// <summary>
-        /// Gets the ITool this element represents
+        /// Gets the ITool this element represents.
         /// </summary>
         public ITool Tool { get; }
 
         /// <summary>
-        /// Gets the current status of the tool
+        /// Gets the current status of the tool.
         /// </summary>
         public ToolStatus ToolStatus { get; private set; }
 
@@ -71,7 +71,7 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// Updates the status indicator
+        /// Updates the status indicator.
         /// </summary>
         public void UpdateStatus()
         {

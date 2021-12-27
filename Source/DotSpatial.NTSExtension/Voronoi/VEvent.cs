@@ -31,7 +31,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// </summary>
         /// <param name="obj">Second VEvent to compare.</param>
         /// <returns>True, if the events are equal.</returns>
-        /// <exception cref="ArgumentException">Thrown if obj is not a VEvent</exception>
+        /// <exception cref="ArgumentException">Thrown if obj is not a VEvent.</exception>
         public int CompareTo(object obj)
         {
             if (!(obj is VEvent))

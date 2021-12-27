@@ -11,7 +11,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// OutlinedSymbol
+    /// OutlinedSymbol.
     /// </summary>
     public class OutlinedSymbol : Symbol, IOutlinedSymbol
     {
@@ -151,7 +151,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Occurs during the randomize process and allows future overriding of the process for sub-classes.
         /// </summary>
-        /// <param name="generator">The random generator</param>
+        /// <param name="generator">The random generator.</param>
         protected override void OnRandomize(Random generator)
         {
             // randomize properties of the base class & any properties that are types that implement IRandomizable

@@ -7,7 +7,7 @@ using System.Globalization;
 namespace DotSpatial.Serialization.Tests
 {
     /// <summary>
-    /// TestHexFormatter
+    /// TestHexFormatter.
     /// </summary>
     public class TestHexFormatter : SerializationFormatter
     {

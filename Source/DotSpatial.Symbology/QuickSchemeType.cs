@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// QuickSchemeTypes
+    /// QuickSchemeTypes.
     /// </summary>
     public enum QuickSchemeType
     {

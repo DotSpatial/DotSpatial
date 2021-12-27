@@ -66,7 +66,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the wheel zoom sensitivity. Increasing makes it more sensitive. Maximum is 0.5, Minimum is 0.01
+        /// Gets or sets the wheel zoom sensitivity. Increasing makes it more sensitive. Maximum is 0.5, Minimum is 0.01.
         /// </summary>
         public double Sensitivity
         {
@@ -86,7 +86,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the full refresh timeout value in milliseconds
+        /// Gets or sets the full refresh timeout value in milliseconds.
         /// </summary>
         public int TimerInterval
         {
@@ -107,7 +107,7 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Handles the actions that the tool controls during the OnMouseDown event
+        /// Handles the actions that the tool controls during the OnMouseDown event.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseDown(GeoMouseArgs e)
@@ -150,7 +150,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Mouse Up
+        /// Mouse Up.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseUp(GeoMouseArgs e)
@@ -171,7 +171,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Mouse Wheel
+        /// Mouse Wheel.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseWheel(GeoMouseArgs e)

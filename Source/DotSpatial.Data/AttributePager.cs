@@ -9,7 +9,7 @@ using System.Data;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// AttributePager
+    /// AttributePager.
     /// </summary>
     public class AttributePager : IEnumerable<DataTable>, IEnumerator<DataTable>
     {
@@ -102,24 +102,24 @@ namespace DotSpatial.Data
         /// <summary>
         /// The integer number of pages.
         /// </summary>
-        /// <returns>the number of pages</returns>
+        /// <returns>the number of pages.</returns>
         public int NumPages()
         {
             return (int)Math.Ceiling((double)_numRows / PageSize);
         }
 
         /// <summary>
-        /// Returns the page that the specified row is on
+        /// Returns the page that the specified row is on.
         /// </summary>
-        /// <param name="rowIndex">The integer row index</param>
-        /// <returns>The page of the row in question</returns>
+        /// <param name="rowIndex">The integer row index.</param>
+        /// <returns>The page of the row in question.</returns>
         public int PageOfRow(int rowIndex)
         {
             return (int)Math.Floor((double)rowIndex / PageSize);
         }
 
         /// <summary>
-        /// reset the attribute pager
+        /// reset the attribute pager.
         /// </summary>
         public void Reset()
         {
@@ -129,10 +129,10 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Loads the appropriate page if it isn't loaded already and returns the DataRow that
-        /// matches the specified index
+        /// matches the specified index.
         /// </summary>
-        /// <param name="rowIndex">The integer row index</param>
-        /// <returns>The DataRow</returns>
+        /// <param name="rowIndex">The integer row index.</param>
+        /// <returns>The DataRow.</returns>
         public DataRow Row(int rowIndex)
         {
             int page = PageOfRow(rowIndex);
@@ -148,7 +148,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the number of rows on the specified page.
         /// </summary>
-        /// <param name="pageindex">The page index</param>
+        /// <param name="pageindex">The page index.</param>
         /// <returns>The number of rows that should be on that page.</returns>
         public int RowCount(int pageindex)
         {

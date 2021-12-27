@@ -4,7 +4,7 @@
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// ReferenceTypes
+    /// ReferenceTypes.
     /// </summary>
     public enum ReferenceType
     {

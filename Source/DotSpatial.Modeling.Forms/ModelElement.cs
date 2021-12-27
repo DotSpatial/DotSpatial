@@ -6,14 +6,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using Point = System.Drawing.Point;
 
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// Defines the base class for all model components
+    /// Defines the base class for all model components.
     /// </summary>
     public class ModelElement : ICloneable
     {
@@ -22,7 +21,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelElement"/> class.
         /// </summary>
-        /// <param name="modelElements">A list of all the elements in the model</param>
+        /// <param name="modelElements">A list of all the elements in the model.</param>
         public ModelElement(List<ModelElement> modelElements)
         {
             Location = new Point(0, 0);
@@ -104,18 +103,18 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// Returns a shallow copy of the Parameter class
+        /// Returns a shallow copy of the Parameter class.
         /// </summary>
-        /// <returns>A new Parameters class that is a shallow copy of the original parameters class</returns>
+        /// <returns>A new Parameters class that is a shallow copy of the original parameters class.</returns>
         public ModelElement Copy()
         {
             return MemberwiseClone() as ModelElement;
         }
 
         /// <summary>
-        /// When a double click is caught by the parent class call this method
+        /// When a double click is caught by the parent class call this method.
         /// </summary>
-        /// <returns>True</returns>
+        /// <returns>True.</returns>
         public virtual bool DoubleClick()
         {
             return true;
@@ -124,11 +123,11 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Returns true if the element intersects the rectangle from the parent class.
         /// </summary>
-        /// <param name="rect">The rectangle to test must be in the virtual modeling coordinant plane</param>
+        /// <param name="rect">The rectangle to test must be in the virtual modeling coordinant plane.</param>
         /// <returns>True, if the element intersects the rectangle from the parent class.</returns>
         public virtual bool ElementInRectangle(Rectangle rect)
         {
-            IGeometry rectanglePoly;
+            Geometry rectanglePoly;
             if (rect.Height == 0 && rect.Width == 0)
             {
                 rectanglePoly = new NetTopologySuite.Geometries.Point(rect.X, rect.Y);
@@ -219,7 +218,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Darkens the component slightly.
         /// </summary>
-        /// <param name="highlighted">Darkens if true returns to normal if false</param>
+        /// <param name="highlighted">Darkens if true returns to normal if false.</param>
         public virtual void Highlighted(bool highlighted)
         {
             Highlight = highlighted ? 0.85 : 1.0;
@@ -248,7 +247,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Repaints the form with cool background and stuff.
         /// </summary>
-        /// <param name="graph">The graphics object to paint to, the element will be drawn to 0, 0</param>
+        /// <param name="graph">The graphics object to paint to, the element will be drawn to 0, 0.</param>
         public virtual void Paint(Graphics graph)
         {
             // Sets up the colors to use
@@ -388,7 +387,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Calculates if a point is within the shape that defines the element.
         /// </summary>
-        /// <param name="point">A point to test in the virtual modeling plane</param>
+        /// <param name="point">A point to test in the virtual modeling plane.</param>
         /// <returns>True, if the point is within the shape that defines the element.</returns>
         public virtual bool PointInElement(Point point)
         {
@@ -439,7 +438,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Returns true if the point is in the extents rectangle of the element.
         /// </summary>
-        /// <param name="pt">A point to test, assuming 0, 0 is the top left corner of the shapes drawing rectangle</param>
+        /// <param name="pt">A point to test, assuming 0, 0 is the top left corner of the shapes drawing rectangle.</param>
         /// <returns>True if the point is in the extents rectangle of the element.</returns>
         protected virtual bool PointInExtents(Point pt)
         {

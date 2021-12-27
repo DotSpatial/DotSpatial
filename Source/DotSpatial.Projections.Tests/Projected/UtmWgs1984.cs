@@ -12,15 +12,15 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Creates a new instance of the Africa Class
         /// </summary>
-        [TestFixtureSetUp]
+        [SetUp]
         public void Initialize()
         {
-            
+
         }
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WGS1984ComplexUTMZone20N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984ComplexUTMZone20N;
@@ -29,7 +29,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WGS1984ComplexUTMZone21N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984ComplexUTMZone21N;
@@ -38,7 +38,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WGS1984ComplexUTMZone22N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984ComplexUTMZone22N;
@@ -47,7 +47,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WGS1984ComplexUTMZone23N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984ComplexUTMZone23N;
@@ -56,7 +56,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WGS1984ComplexUTMZone24N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984ComplexUTMZone24N;
@@ -65,7 +65,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WGS1984ComplexUTMZone25N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984ComplexUTMZone25N;
@@ -74,7 +74,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WGS1984ComplexUTMZone26N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984ComplexUTMZone26N;
@@ -83,7 +83,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WGS1984ComplexUTMZone27N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984ComplexUTMZone27N;
@@ -92,7 +92,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WGS1984ComplexUTMZone28N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984ComplexUTMZone28N;
@@ -101,7 +101,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WGS1984ComplexUTMZone29N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984ComplexUTMZone29N;
@@ -110,7 +110,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WGS1984ComplexUTMZone30N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984ComplexUTMZone30N;

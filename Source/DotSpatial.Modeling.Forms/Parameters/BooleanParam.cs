@@ -7,7 +7,7 @@ using DotSpatial.Modeling.Forms.Elements;
 namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
-    /// Boolean Parameters returned by an ITool allows the tool to specify default value
+    /// Boolean Parameters returned by an ITool allows the tool to specify default value.
     /// </summary>
     public class BooleanParam : Parameter
     {
@@ -20,8 +20,8 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="BooleanParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
-        /// <param name="checkBoxText">The text to appear adjacent to the checkBox</param>
+        /// <param name="name">The name of the parameter.</param>
+        /// <param name="checkBoxText">The text to appear adjacent to the checkBox.</param>
         public BooleanParam(string name, string checkBoxText)
         {
             Name = name;
@@ -33,9 +33,9 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="BooleanParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
-        /// <param name="checkBoxText">The text to appear adjacent to the checkBox</param>
-        /// <param name="value">The default value</param>
+        /// <param name="name">The name of the parameter.</param>
+        /// <param name="checkBoxText">The text to appear adjacent to the checkBox.</param>
+        /// <param name="value">The default value.</param>
         public BooleanParam(string name, string checkBoxText, bool value)
         {
             Name = name;

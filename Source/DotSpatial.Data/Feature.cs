@@ -7,15 +7,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using DotSpatial.NTSExtension;
-using DotSpatial.Serialization;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// A generic vector feature that has the geometry and data components but no drawing information
+    /// A generic vector feature that has the geometry and data components but no drawing information.
     /// </summary>
     [ToolboxItem(false)]
     public class Feature : IFeature
@@ -25,7 +23,7 @@ namespace DotSpatial.Data
         private DataRow _dataRow;
         private FeatureType _featureType;
 
-        private IGeometry _geometry;
+        private Geometry _geometry;
         private IFeatureSet _parentFeatureSet;
 
         #endregion
@@ -71,7 +69,7 @@ namespace DotSpatial.Data
 
             if (shape.Range.FeatureType == FeatureType.Line)
             {
-                List<ILineString> strings = new List<ILineString>();
+                List<LineString> strings = new List<LineString>();
                 foreach (PartRange part in shape.Range.Parts)
                 {
                     List<Coordinate> coords = new List<Coordinate>();
@@ -107,7 +105,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature"/> class based on a single point. The attribute datarow is null.
         /// </summary>
-        /// <param name="point">The vertex</param>
+        /// <param name="point">The vertex.</param>
         public Feature(Vertex point)
             : this(new Point(point.X, point.Y))
         {
@@ -125,8 +123,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature"/> class from a geometry.
         /// </summary>
-        /// <param name="geometry">The geometry to turn into a feature</param>
-        public Feature(IGeometry geometry)
+        /// <param name="geometry">The geometry to turn into a feature.</param>
+        public Feature(Geometry geometry)
         {
             _geometry = geometry;
             _featureType = FeatureTypeFromGeometryType(geometry);
@@ -137,9 +135,9 @@ namespace DotSpatial.Data
         /// Initializes a new instance of the <see cref="Feature"/> class.
         /// This will automatically add the feature to the parent featureset.
         /// </summary>
-        /// <param name="geometry">The IBasicGeometry to use for this feature</param>
+        /// <param name="geometry">The IBasicGeometry to use for this feature.</param>
         /// <param name="parent">The IFeatureSet to add this feature to.</param>
-        public Feature(IGeometry geometry, IFeatureSet parent)
+        public Feature(Geometry geometry, IFeatureSet parent)
         {
             _geometry = geometry;
             _featureType = FeatureTypeFromGeometryType(geometry);
@@ -161,8 +159,8 @@ namespace DotSpatial.Data
         /// Initializes a new instance of the <see cref="Feature"/> class, by specifying the feature type enumeration and a
         /// set of coordinates that can be either a list or an array as long as it is enumerable.
         /// </summary>
-        /// <param name="featureType">The feature type</param>
-        /// <param name="coordinates">The coordinates to pass</param>
+        /// <param name="featureType">The feature type.</param>
+        /// <param name="coordinates">The coordinates to pass.</param>
         public Feature(FeatureType featureType, IEnumerable<Coordinate> coordinates)
         {
             switch (featureType)
@@ -257,11 +255,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets a valid IGeometry associated with the data elements of this feature.
+        /// Gets or sets a valid Geometry associated with the data elements of this feature.
         /// This will be enough geometry information to cast into a full fledged geometry
-        /// that can be used in coordination with DotSpatial.Analysis
+        /// that can be used in coordination with DotSpatial.Analysis.
         /// </summary>
-        public virtual IGeometry Geometry
+        public virtual Geometry Geometry
         {
             get
             {
@@ -347,7 +345,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a new shape based on this feature by itself.
         /// </summary>
-        /// <returns>A Shape object</returns>
+        /// <returns>A Shape object.</returns>
         public Shape ToShape()
         {
             return new Shape(this);
@@ -367,7 +365,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a deep copy of this feature.
         /// </summary>
-        /// <returns>Returns a deep copy of this feature as an object</returns>
+        /// <returns>Returns a deep copy of this feature as an object.</returns>
         object ICloneable.Clone()
         {
             Feature clone = (Feature)MemberwiseClone();
@@ -387,17 +385,13 @@ namespace DotSpatial.Data
         int IComparable<IFeature>.CompareTo(IFeature other)
         {
             DataRow oDr = other.DataRow;
-            if (_dataRow != null && oDr != null)
+            if (_dataRow?.Table != null && oDr?.Table != null)
             {
-                if (_dataRow.Table != null && oDr.Table != null)
+                int myIndex = _dataRow.Table.Columns.IndexOf(ComparisonField);
+                int oIndex = oDr.Table.Columns.IndexOf(ComparisonField);
+                if (_dataRow[myIndex] is IComparable c)
                 {
-                    int myIndex = _dataRow.Table.Columns.IndexOf(ComparisonField);
-                    int oIndex = oDr.Table.Columns.IndexOf(ComparisonField);
-                    IComparable c = _dataRow[myIndex] as IComparable;
-                    if (c != null)
-                    {
-                        return c.CompareTo(oDr[oIndex]);
-                    }
+                    return c.CompareTo(oDr[oIndex]);
                 }
             }
 
@@ -409,7 +403,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a deep copy of this feature.
         /// </summary>
-        /// <returns>Returns a deep copy of this feature as an IFeature</returns>
+        /// <returns>Returns a deep copy of this feature as an IFeature.</returns>
         IFeature IFeature.Copy()
         {
             return Copy();
@@ -418,7 +412,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Occurs during the cloning process and this method also duplicates the envelope and basic geometry.
         /// </summary>
-        /// <param name="copy">The feature being copied</param>
+        /// <param name="copy">The feature being copied.</param>
         protected virtual void OnCopy(Feature copy)
         {
             copy.Geometry = _geometry.Copy();
@@ -431,7 +425,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="geometry">Geometry that is used to determine the FeatureType.</param>
         /// <returns>Unspecified if the geometry was null otherwise the FeatureType that corresponds to the geometries OgcGeometryType.</returns>
-        private static FeatureType FeatureTypeFromGeometryType(IGeometry geometry)
+        private static FeatureType FeatureTypeFromGeometryType(Geometry geometry)
         {
             FeatureType featureType = FeatureType.Unspecified;
             if (geometry == null) return featureType;
@@ -453,7 +447,7 @@ namespace DotSpatial.Data
                     featureType = FeatureType.MultiPoint;
                     break;
                 case OgcGeometryType.GeometryCollection:
-                    IGeometryCollection geomCollection = geometry as IGeometryCollection;
+                    GeometryCollection geomCollection = geometry as GeometryCollection;
                     if (geomCollection != null)
                     {
                         // Check to see if every featureType in the GeometryCollection matches
@@ -497,8 +491,8 @@ namespace DotSpatial.Data
 
         private void ReadPolygonShape(Shape shape)
         {
-            List<ILinearRing> shells = new List<ILinearRing>();
-            List<ILinearRing> holes = new List<ILinearRing>();
+            List<LinearRing> shells = new List<LinearRing>();
+            List<LinearRing> holes = new List<LinearRing>();
             foreach (PartRange part in shape.Range.Parts)
             {
                 List<Coordinate> coords = new List<Coordinate>();
@@ -519,7 +513,7 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    if (CGAlgorithms.IsCCW(ring.Coordinates))
+                    if (ring.IsCCW)
                     {
                         holes.Add(ring);
                     }
@@ -533,31 +527,31 @@ namespace DotSpatial.Data
             if (shells.Count == 0 && holes.Count > 0)
             {
                 shells = holes;
-                holes = new List<ILinearRing>();
+                holes = new List<LinearRing>();
             }
 
             //// Now we have a list of all shells and all holes
-            List<ILinearRing>[] holesForShells = new List<ILinearRing>[shells.Count];
+            List<LinearRing>[] holesForShells = new List<LinearRing>[shells.Count];
             for (int i = 0; i < shells.Count; i++)
             {
-                holesForShells[i] = new List<ILinearRing>();
+                holesForShells[i] = new List<LinearRing>();
             }
 
             // Find holes
-            foreach (ILinearRing hole in holes)
+            foreach (LinearRing hole in holes)
             {
-                ILinearRing minShell = null;
+                LinearRing minShell = null;
                 Envelope minEnv = null;
                 Envelope testEnv = hole.EnvelopeInternal;
                 Coordinate testPt = hole.Coordinates[0];
                 for (int j = 0; j < shells.Count; j++)
                 {
-                    ILinearRing tryRing = shells[j];
+                    LinearRing tryRing = shells[j];
                     Envelope tryEnv = tryRing.EnvelopeInternal;
                     if (minShell != null) minEnv = minShell.EnvelopeInternal;
 
                     // Check if this new containing ring is smaller than the current minimum ring
-                    if (tryEnv.Contains(testEnv) && (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates) || PointInList(testPt, tryRing.Coordinates)))
+                    if (tryEnv.Contains(testEnv) && (PointLocation.IsInRing(testPt, tryRing.Coordinates) || PointInList(testPt, tryRing.Coordinates)))
                     {
                         if (minShell == null || minEnv.Contains(tryEnv))
                         {
@@ -569,7 +563,7 @@ namespace DotSpatial.Data
                 }
             }
 
-            var polygons = new IPolygon[shells.Count];
+            var polygons = new Polygon[shells.Count];
             for (int i = 0; i < shells.Count; i++)
             {
                 polygons[i] = new Polygon(shells[i], holesForShells[i].ToArray());

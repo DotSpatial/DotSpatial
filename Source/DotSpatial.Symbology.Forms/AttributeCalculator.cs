@@ -60,7 +60,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// This will display the Expression in RichText box
+        /// This will display the Expression in RichText box.
         /// </summary>
         public void DisplyExpression()
         {
@@ -105,10 +105,10 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// beta function
+        /// beta function.
         /// </summary>
-        /// <param name="z">z is not used</param>
-        /// <param name="w">w is not used</param>
+        /// <param name="z">z is not used.</param>
+        /// <param name="w">w is not used.</param>
         /// <returns>The calculated value.</returns>
         private static double Beta(double z, double w)
         {
@@ -116,7 +116,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// This will return true if string is Exponetial.eg 1.2E+2,
+        /// This will return true if string is Exponetial.eg 1.2E+2,.
         /// </summary>
         /// <param name="arg">String  that is checked.</param>
         /// <returns>True, if t he string is exponential.</returns>
@@ -136,7 +136,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Combination n objects, k classes
+        /// Combination n objects, k classes.
         /// </summary>
         /// <param name="a">The a.</param>
         /// <param name="b">The b.</param>
@@ -156,7 +156,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// digamma function
+        /// digamma function.
         /// </summary>
         /// <param name="x">The x.</param>
         /// <returns>The resulting value.</returns>
@@ -643,7 +643,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// gamma function
+        /// gamma function.
         /// </summary>
         /// <returns>The calculated value.</returns>
         private static double Gamma()
@@ -655,7 +655,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// logarithm gamma function
+        /// logarithm gamma function.
         /// </summary>
         /// <returns>The calculated value.</returns>
         private static double GammaLn()
@@ -667,7 +667,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// gamma  - Lanczos approximation algorithm for gamma function
+        /// gamma  - Lanczos approximation algorithm for gamma function.
         /// </summary>
         /// <param name="mantissa">The mantissa.</param>
         /// <param name="expo">The exponent.</param>
@@ -717,7 +717,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// This give the relavent token no.
         /// </summary>
-        /// <param name="subExp">Function Name</param>
+        /// <param name="subExp">Function Name.</param>
         /// <returns>The calculated value.</returns>
         private static int GetTokenNo(string subExp)
         {
@@ -966,7 +966,7 @@ namespace DotSpatial.Symbology.Forms
 
         /// <summary>
         /// Checks if the given argument is a number.
-        /// x must have always the decimal point "123.756", ".0056", "1.3455E-12"
+        /// x must have always the decimal point "123.756", ".0056", "1.3455E-12".
         /// </summary>
         /// <param name="arg">Argument checked for being a number.</param>
         /// <returns>True, if the argument is a number.</returns>
@@ -981,10 +981,10 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// FIdx the MCD between two integer numbers
+        /// FIdx the MCD between two integer numbers.
         /// </summary>
-        /// <param name="a">The first number</param>
-        /// <param name="b">The second number</param>
+        /// <param name="a">The first number.</param>
+        /// <param name="b">The second number.</param>
         /// <returns>The calculated value.</returns>
         private static double Mcd(double a, double b)
         {
@@ -1001,10 +1001,10 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// FIdx the mcm between two integer numbers
+        /// FIdx the mcm between two integer numbers.
         /// </summary>
-        /// <param name="a">The first number</param>
-        /// <param name="b">The second number</param>
+        /// <param name="a">The first number.</param>
+        /// <param name="b">The second number.</param>
         /// <returns>The calculated value.</returns>
         private static double Mcm(double a, double b)
         {
@@ -1022,7 +1022,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Riemman's zeta function
+        /// Riemman's zeta function.
         /// </summary>
         /// <param name="x">The x.</param>
         /// <returns>The calculated value.</returns>
@@ -1136,7 +1136,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Tral: This will divide the string to relavent functions level
+        /// Tral: This will divide the string to relavent functions level.
         /// </summary>
         /// <param name="exp">The exponent.</param>
         private void ParExp(string exp)

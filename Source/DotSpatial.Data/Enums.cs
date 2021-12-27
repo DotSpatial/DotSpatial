@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Byte order
+    /// Byte order.
     /// </summary>
     public enum ByteOrder
     {

@@ -29,17 +29,17 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets a value indicating whether or not the events are suspended on the layer collection
+        /// Gets a value indicating whether or not the events are suspended on the layer collection.
         /// </summary>
         bool EventsSuspended { get; }
 
         /// <summary>
-        /// Gets the integer handle for this group
+        /// Gets the integer handle for this group.
         /// </summary>
         int Handle { get; }
 
         /// <summary>
-        /// Gets or sets the icon
+        /// Gets or sets the icon.
         /// </summary>
         Image Icon { get; set; }
 
@@ -51,7 +51,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a value indicating whether the layers within this group are visible.
         /// Note: When reading this property, it returns true if any layer is visible within
-        /// this group
+        /// this group.
         /// </summary>
         bool LayersVisible { get; set; }
 
@@ -82,20 +82,20 @@ namespace DotSpatial.Symbology
         /// Gets all feature layers of the map frame including feature layers which are nested
         /// within groups. The group objects themselves are not included in this list.
         /// </summary>
-        /// <returns>The list of the feature layers</returns>
+        /// <returns>The list of the feature layers.</returns>
         List<IFeatureLayer> GetAllFeatureLayers();
 
         /// <summary>
         /// Gets all map groups in the map including the nested groups.
         /// </summary>
-        /// <returns>the list of the groups</returns>
+        /// <returns>the list of the groups.</returns>
         List<IGroup> GetAllGroups();
 
         /// <summary>
         /// Gets all image layers of the map frame including image layers which are nested
         /// within groups. The group objects themselves are not included in this list.
         /// </summary>
-        /// <returns>The list of the image layers</returns>
+        /// <returns>The list of the image layers.</returns>
         List<IImageLayer> GetAllImageLayers();
 
         /// <summary>
@@ -103,56 +103,56 @@ namespace DotSpatial.Symbology
         /// within groups. The group objects themselves are not included in this list,
         /// but all FeatureLayers, RasterLayers, ImageLayers and other layers are included.
         /// </summary>
-        /// <returns>The list of the layers</returns>
+        /// <returns>The list of the layers.</returns>
         List<ILayer> GetAllLayers();
 
         /// <summary>
         /// Gets all line layers of the map frame including line layers which are nested
         /// within groups. The group objects themselves are not included in this list.
         /// </summary>
-        /// <returns>The list of the line layers</returns>
+        /// <returns>The list of the line layers.</returns>
         List<ILineLayer> GetAllLineLayers();
 
         /// <summary>
         /// Gets all point layers of the map frame including point layers which are nested
         /// within groups. The group objects themselves are not included in this list.
         /// </summary>
-        /// <returns>The list of the point layers</returns>
+        /// <returns>The list of the point layers.</returns>
         List<IPointLayer> GetAllPointLayers();
 
         /// <summary>
         /// Gets all polygon layers of the map frame including polygon layers which are nested
         /// within groups. The group objects themselves are not included in this list.
         /// </summary>
-        /// <returns>The list of the polygon layers</returns>
+        /// <returns>The list of the polygon layers.</returns>
         List<IPolygonLayer> GetAllPolygonLayers();
 
         /// <summary>
         /// Gets all raster layers of the map frame including raster layers which are nested
         /// within groups. The group objects themselves are not included in this list.
         /// </summary>
-        /// <returns>The list of the raster layers</returns>
+        /// <returns>The list of the raster layers.</returns>
         List<IRasterLayer> GetAllRasterLayers();
 
         /// <summary>
         /// Gets the layers cast as ILayer without any information about the actual drawing methods.
         /// This is useful for handling methods that my come from various types of maps.
         /// </summary>
-        /// <returns>An enumerable collection of ILayer</returns>
+        /// <returns>An enumerable collection of ILayer.</returns>
         IList<ILayer> GetLayers();
 
         /// <summary>
         /// Gets the layer handle of the specified layer.
         /// </summary>
-        /// <param name="positionInGroup">0 based index into list of layers</param>
-        /// <returns>Layer's handle on success, -1 on failure</returns>
+        /// <param name="positionInGroup">0 based index into list of layers.</param>
+        /// <returns>Layer's handle on success, -1 on failure.</returns>
         int LayerHandle(int positionInGroup);
 
         /// <summary>
-        /// Returns a snapshot image of this group
+        /// Returns a snapshot image of this group.
         /// </summary>
-        /// <param name="imgWidth">Width in pixels of the returned image (height is determined by the number of layers in the group)</param>
-        /// <returns>Bitmap of the group and sublayers (expanded)</returns>
+        /// <param name="imgWidth">Width in pixels of the returned image (height is determined by the number of layers in the group).</param>
+        /// <returns>Bitmap of the group and sublayers (expanded).</returns>
         Bitmap LegendSnapShot(int imgWidth);
 
         /// <summary>

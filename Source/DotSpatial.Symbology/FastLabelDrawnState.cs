@@ -13,7 +13,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="FastLabelDrawnState"/> class.
         /// </summary>
-        /// <param name="category">The category</param>
+        /// <param name="category">The category.</param>
         public FastLabelDrawnState(ILabelCategory category)
         {
             Category = category;

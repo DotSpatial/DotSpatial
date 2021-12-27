@@ -7,7 +7,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// ImageProjection
+    /// ImageProjection.
     /// </summary>
     public class ImageProjection : IProj
     {

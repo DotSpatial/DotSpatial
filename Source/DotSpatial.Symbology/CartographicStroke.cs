@@ -113,7 +113,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// gets or sets the DashCap for both the start and end caps of the dashes
+        /// gets or sets the DashCap for both the start and end caps of the dashes.
         /// </summary>
         [Serialize("DashCap")]
         public DashCap DashCap
@@ -130,7 +130,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the DashPattern as an array of floating point values from 0 to 1
+        /// Gets or sets the DashPattern as an array of floating point values from 0 to 1.
         /// </summary>
         [XmlIgnore]
         public float[] DashPattern
@@ -165,7 +165,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the line cap for both the start and end of the line
+        /// Gets or sets the line cap for both the start and end of the line.
         /// </summary>
         [Serialize("EndCap")]
         public LineCap EndCap
@@ -219,7 +219,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the line cap for both the start and end of the line
+        /// Gets or sets the line cap for both the start and end of the line.
         /// </summary>
         [Serialize("LineCap")]
         public LineCap StartCap
@@ -307,8 +307,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Creates a pen for drawing the non-decorative portion of the line.
         /// </summary>
-        /// <param name="scaleWidth">The base width in pixels that is equivalent to a width of 1</param>
-        /// <returns>A new Pen</returns>
+        /// <param name="scaleWidth">The base width in pixels that is equivalent to a width of 1.</param>
+        /// <returns>A new Pen.</returns>
         public override Pen ToPen(double scaleWidth)
         {
             Pen myPen = base.ToPen(scaleWidth);
@@ -378,7 +378,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Handles the randomization of the cartographic properties of this stroke.
         /// </summary>
-        /// <param name="generator">The random class that generates the random numbers</param>
+        /// <param name="generator">The random class that generates the random numbers.</param>
         protected override void OnRandomize(Random generator)
         {
             base.OnRandomize(generator);

@@ -3,9 +3,9 @@
 
 using System;
 using System.Collections.Generic;
-
 using DotSpatial.Data;
 using DotSpatial.NTSExtension;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Analysis
 {
@@ -17,13 +17,13 @@ namespace DotSpatial.Analysis
         #region Methods
 
         /// <summary>
-        /// Clips a raster with a polygon feature
+        /// Clips a raster with a polygon feature.
         /// </summary>
-        /// <param name="inputFileName">The input raster file</param>
-        /// <param name="polygon">The clipping polygon feature</param>
-        /// <param name="outputFileName">The output raster file</param>
-        /// <param name="cancelProgressHandler">Progress handler for reporting progress status and cancelling the operation</param>
-        /// <returns>The output clipped raster object</returns>
+        /// <param name="inputFileName">The input raster file.</param>
+        /// <param name="polygon">The clipping polygon feature.</param>
+        /// <param name="outputFileName">The output raster file.</param>
+        /// <param name="cancelProgressHandler">Progress handler for reporting progress status and cancelling the operation.</param>
+        /// <returns>The output clipped raster object.</returns>
         public static IRaster ClipRasterWithPolygon(string inputFileName, IFeature polygon, string outputFileName, ICancelProgressHandler cancelProgressHandler = null)
         {
             return ClipRasterWithPolygon(polygon, Raster.Open(inputFileName), outputFileName, cancelProgressHandler);
@@ -32,12 +32,12 @@ namespace DotSpatial.Analysis
         /// <summary>
         /// Clips a raster with a polygon feature.
         /// </summary>
-        /// <param name="polygon">The clipping polygon feature</param>
-        /// <param name="input">The input raster object</param>
-        /// <param name="outputFileName">the output raster file name</param>
-        /// <param name="cancelProgressHandler">Progress handler for reporting progress status and cancelling the operation</param>
+        /// <param name="polygon">The clipping polygon feature.</param>
+        /// <param name="input">The input raster object.</param>
+        /// <param name="outputFileName">the output raster file name.</param>
+        /// <param name="cancelProgressHandler">Progress handler for reporting progress status and cancelling the operation.</param>
         /// <remarks>We assume there is only one part in the polygon.
-        /// Traverses the raster with a vertical scan line from left to right, bottom to top</remarks>
+        /// Traverses the raster with a vertical scan line from left to right, bottom to top.</remarks>
         /// <returns>The raster resulting from the clip operation.</returns>
         public static IRaster ClipRasterWithPolygon(IFeature polygon, IRaster input, string outputFileName, ICancelProgressHandler cancelProgressHandler = null)
         {
@@ -167,8 +167,8 @@ namespace DotSpatial.Analysis
         /// <summary>
         /// Finds the last raster column corresponding to the right-most edge of the polygon.
         /// </summary>
-        /// <param name="polygon">the polygon</param>
-        /// <param name="inputRaster">the input raster</param>
+        /// <param name="polygon">the polygon.</param>
+        /// <param name="inputRaster">the input raster.</param>
         /// <returns>The raster column corresponding to the right-most edge of the polygon
         /// (if raster ends after the right edge of the poly)
         /// or the last raster column (if raster ends before right edge of the polygon).</returns>
@@ -182,13 +182,13 @@ namespace DotSpatial.Analysis
         }
 
         /// <summary>
-        /// Finds the first raster column corresponding to the left-most edge of the polygon
+        /// Finds the first raster column corresponding to the left-most edge of the polygon.
         /// </summary>
-        /// <param name="polygon">the polygon</param>
-        /// <param name="inputRaster">the input raster</param>
+        /// <param name="polygon">the polygon.</param>
+        /// <param name="inputRaster">the input raster.</param>
         /// <returns>The raster column corresponding to the left-most edge of the polygon
         /// (if raster starts before left edge of the polygon)
-        /// or the first raster column (if raster starts after left edge of the polygon)</returns>
+        /// or the first raster column (if raster starts after left edge of the polygon).</returns>
         /// <remarks>If the poly sits to the left of the raster then the first column of the raster is returned.</remarks>
         private static int GetStartColumn(IFeature polygon, IRaster inputRaster)
         {
@@ -202,9 +202,9 @@ namespace DotSpatial.Analysis
         /// <summary>
         /// Finds the X-coordinate of the first scanline.
         /// </summary>
-        /// <param name="polygon">The polygon</param>
-        /// <param name="inputRaster">The input raster</param>
-        /// <returns>the X-coordinate of the first scanline</returns>
+        /// <param name="polygon">The polygon.</param>
+        /// <param name="inputRaster">The input raster.</param>
+        /// <returns>the X-coordinate of the first scanline.</returns>
         private static double GetXStart(IFeature polygon, IRaster inputRaster)
         {
             double rasterMinXCenter = inputRaster.Xllcenter;

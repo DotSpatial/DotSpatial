@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// RasterFileTypes
+    /// RasterFileTypes.
     /// </summary>
     public enum RasterFileType
     {

@@ -77,7 +77,7 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the display text in the dropdownbox
+        /// Gets or sets a value indicating the display text in the dropdownbox.
         /// </summary>
         public string DisplayText
         {
@@ -95,7 +95,7 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the color of the text in the dropdownbox
+        /// Gets or sets a value indicating the color of the text in the dropdownbox.
         /// </summary>
         public Color FontColor
         {

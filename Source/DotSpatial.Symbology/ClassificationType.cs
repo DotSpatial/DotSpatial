@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// ClassificationTypes
+    /// ClassificationTypes.
     /// </summary>
     public enum ClassificationType
     {

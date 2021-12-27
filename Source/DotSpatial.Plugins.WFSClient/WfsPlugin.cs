@@ -8,7 +8,7 @@ using DotSpatial.Controls.Header;
 namespace DotSpatial.Plugins.WFSClient
 {
     /// <summary>
-    /// WfsPlugin
+    /// WfsPlugin.
     /// </summary>
     public class WfsPlugin : Extension
     {

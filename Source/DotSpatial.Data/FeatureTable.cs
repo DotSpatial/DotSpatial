@@ -5,7 +5,7 @@ using System;
 using System.ComponentModel;
 using System.Data;
 using System.Runtime.Serialization;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -44,7 +44,7 @@ namespace DotSpatial.Data
         /// Initializes a new instance of the <see cref="FeatureTable"/> class.
         /// This may or may not be required for proper functioning, but is not part of the public API.
         /// </summary>
-        /// <param name="table">A DataTable</param>
+        /// <param name="table">A DataTable.</param>
         internal FeatureTable(DataTable table)
         {
             TableName = table.TableName;
@@ -69,10 +69,10 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureTable"/> class.
-        /// This may not work since I stripped off the xml related auto text that seems to rely on an existing dataset
+        /// This may not work since I stripped off the xml related auto text that seems to rely on an existing dataset.
         /// </summary>
-        /// <param name="info">The SerializationInfo</param>
-        /// <param name="context">The StreamingContext</param>
+        /// <param name="info">The SerializationInfo.</param>
+        /// <param name="context">The StreamingContext.</param>
         protected FeatureTable(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -127,7 +127,7 @@ namespace DotSpatial.Data
         /// Gets or sets a geometry factory to use when instantiating geometries
         /// from WKB for the rows of this table.
         /// </summary>
-        public IGeometryFactory GeometryFactory { get; set; }
+        public GeometryFactory GeometryFactory { get; set; }
 
         #endregion
 
@@ -137,7 +137,7 @@ namespace DotSpatial.Data
         /// Accesses the FeatureRow of this table based on the specified index.
         /// </summary>
         /// <param name="index">The integer index of the feature row to access.</param>
-        /// <returns>This FeatureRow</returns>
+        /// <returns>This FeatureRow.</returns>
         public FeatureRow this[int index] => (FeatureRow)Rows[index];
 
         #endregion
@@ -172,7 +172,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="geometry">The byte form of the well known text to use in creating a new, otherwise empty row.</param>
         /// <returns>The newly created FeatureRow with the specified well known text.</returns>
-        public FeatureRow AddFeatureRow(IGeometry geometry)
+        public FeatureRow AddFeatureRow(Geometry geometry)
         {
             FeatureRow rowFeatureRow = (FeatureRow)NewRow();
             object[] columnValuesArray = { null, geometry.AsBinary() };
@@ -193,8 +193,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Finds a FeatureRow by the FID field.
         /// </summary>
-        /// <param name="fid">The long fid to find</param>
-        /// <returns>A FeatureRow</returns>
+        /// <param name="fid">The long fid to find.</param>
+        /// <returns>A FeatureRow.</returns>
         public FeatureRow FindByFid(long fid)
         {
             return (FeatureRow)Rows.Find(new object[] { fid });

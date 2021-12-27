@@ -4,14 +4,14 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// This interface provides ability to use in ColorCategory any custom actions (including GUI-dependent dialogs)
+    /// This interface provides ability to use in ColorCategory any custom actions (including GUI-dependent dialogs).
     /// </summary>
     public interface IColorCategoryActions
     {
         /// <summary>
-        /// Show edit dialog
+        /// Show edit dialog.
         /// </summary>
-        /// <param name="e">Instance of ColorCategory</param>
+        /// <param name="e">Instance of ColorCategory.</param>
         void ShowEdit(IColorCategory e);
     }
 }

@@ -8,7 +8,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// DateTimeElement
+    /// DateTimeElement.
     /// </summary>
     internal partial class DateTimeElement : DialogElement
     {
@@ -24,7 +24,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeElement"/> class.
         /// </summary>
-        /// <param name="param">The parameter this element represents</param>
+        /// <param name="param">The parameter this element represents.</param>
         public DateTimeElement(DateTimeParam param)
         {
             // Needed by the designer
@@ -46,7 +46,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Parameter that the element represents
+        /// Gets or sets the Parameter that the element represents.
         /// </summary>
         public new DateTimeParam Param
         {

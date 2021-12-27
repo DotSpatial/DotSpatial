@@ -12,7 +12,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PolygonScheme
+    /// PolygonScheme.
     /// </summary>
     public class PolygonScheme : FeatureScheme, IPolygonScheme
     {
@@ -70,7 +70,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets the number of categories in this scheme
+        /// Gets the number of categories in this scheme.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -96,7 +96,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Adds a new scheme, assuming that the new scheme is the correct type.
         /// </summary>
-        /// <param name="category">The category to add</param>
+        /// <param name="category">The category to add.</param>
         public override void AddCategory(ICategory category)
         {
             IPolygonCategory pc = category as IPolygonCategory;
@@ -104,7 +104,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Clears the categories
+        /// Clears the categories.
         /// </summary>
         public override void ClearCategories()
         {
@@ -112,11 +112,11 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates the category using a random fill color
+        /// Creates the category using a random fill color.
         /// </summary>
-        /// <param name="fillColor">The base color to use for creating the category</param>
-        /// <param name="size">This is ignored for polygons</param>
-        /// <returns>A new polygon category</returns>
+        /// <param name="fillColor">The base color to use for creating the category.</param>
+        /// <param name="size">This is ignored for polygons.</param>
+        /// <returns>A new polygon category.</returns>
         public override ICategory CreateNewCategory(Color fillColor, double size)
         {
             PolygonCategory result = new PolygonCategory();
@@ -144,7 +144,7 @@ namespace DotSpatial.Symbology
         /// Uses the settings on this scheme to create a random category.
         /// </summary>
         /// <param name="filterExpression">Used as filterExpression and LegendText in the resulting category.</param>
-        /// <returns>A new IFeatureCategory</returns>
+        /// <returns>A new IFeatureCategory.</returns>
         public override IFeatureCategory CreateRandomCategory(string filterExpression)
         {
             PolygonCategory result = new PolygonCategory();
@@ -167,7 +167,7 @@ namespace DotSpatial.Symbology
         /// Reduces the index value of the specified category by 1 by exchaning it with the category before it.
         /// If there is no category before it, then this does nothing.
         /// </summary>
-        /// <param name="category">The category to decrease the index of</param>
+        /// <param name="category">The category to decrease the index of.</param>
         /// <returns>True, if index was decreased.</returns>
         public override bool DecreaseCategoryIndex(ICategory category)
         {
@@ -180,8 +180,8 @@ namespace DotSpatial.Symbology
         /// surface in the specified bounding rectangle.
         /// </summary>
         /// <param name="index">The integer index of the feature to draw.</param>
-        /// <param name="g">The Graphics object to draw to</param>
-        /// <param name="bounds">The rectangular bounds to draw in</param>
+        /// <param name="g">The Graphics object to draw to.</param>
+        /// <param name="bounds">The rectangular bounds to draw in.</param>
         public override void DrawCategory(int index, Graphics g, Rectangle bounds)
         {
             Categories[index].Symbolizer.Draw(g, bounds);
@@ -211,7 +211,7 @@ namespace DotSpatial.Symbology
         /// Re-orders the specified member by attempting to exchange it with the next higher
         /// index category. If there is no higher index, this does nothing.
         /// </summary>
-        /// <param name="category">The category to increase the index of</param>
+        /// <param name="category">The category to increase the index of.</param>
         /// <returns>True, if the index was increased.</returns>
         public override bool IncreaseCategoryIndex(ICategory category)
         {
@@ -220,10 +220,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Inserts the category at the specified index
+        /// Inserts the category at the specified index.
         /// </summary>
-        /// <param name="index">The integer index where the category should be inserted</param>
-        /// <param name="category">The category to insert</param>
+        /// <param name="index">The integer index where the category should be inserted.</param>
+        /// <param name="category">The category to insert.</param>
         public override void InsertCategory(int index, ICategory category)
         {
             IPolygonCategory pc = category as IPolygonCategory;
@@ -231,9 +231,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Removes the specified category
+        /// Removes the specified category.
         /// </summary>
-        /// <param name="category">The category to remove</param>
+        /// <param name="category">The category to remove.</param>
         public override void RemoveCategory(ICategory category)
         {
             IPolygonCategory pc = category as IPolygonCategory;
@@ -241,7 +241,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Resumes the category events
+        /// Resumes the category events.
         /// </summary>
         public override void ResumeEvents()
         {
@@ -249,7 +249,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Suspends the category events
+        /// Suspends the category events.
         /// </summary>
         public override void SuspendEvents()
         {
@@ -261,7 +261,7 @@ namespace DotSpatial.Symbology
         /// settings for creating "unbounded" colors.
         /// </summary>
         /// <param name="count">The integer count.</param>
-        /// <returns>The List of colors</returns>
+        /// <returns>The List of colors.</returns>
         protected override List<Color> GetDefaultColors(int count)
         {
             IPolygonSymbolizer ps = EditorSettings?.TemplateSymbolizer as IPolygonSymbolizer;
@@ -281,7 +281,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Handle the event un-wiring and scheme update for the old categories
+        /// Handle the event un-wiring and scheme update for the old categories.
         /// </summary>
         /// <param name="categories">The category collection to update.</param>
         protected virtual void OnExcludeCategories(PolygonCategoryCollection categories)
@@ -297,7 +297,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Handle the event wiring and scheme update for the new categories.
         /// </summary>
-        /// <param name="categories">The category collection to update</param>
+        /// <param name="categories">The category collection to update.</param>
         protected virtual void OnIncludeCategories(PolygonCategoryCollection categories)
         {
             if (categories == null) return;

@@ -105,8 +105,8 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// This method echoes information about input boxes to all the loggers.
         /// </summary>
-        /// <param name="text">The string message that appeared on the InputBox</param>
-        /// <param name="result">The ystem.Windows.Forms.DialogResult describing if the value was cancelled </param>
+        /// <param name="text">The string message that appeared on the InputBox.</param>
+        /// <param name="result">The ystem.Windows.Forms.DialogResult describing if the value was cancelled. </param>
         /// <param name="value">The string containing the value entered.</param>
         public void LogInput(string text, DialogResult result, string value)
         {
@@ -270,7 +270,7 @@ namespace DotSpatial.Data.Forms
         /// Shows a MessageBox, logs the text of the text and the result chosen by the user.
         /// </summary>
         /// <param name="owner">An implementation of the IWin32Window that will own the modal form dialog box.</param>
-        /// <param name="text">The text to display in the MessageBox</param>
+        /// <param name="text">The text to display in the MessageBox.</param>
         /// <returns>A DialogResult showing the user input from this messagebox.</returns>
         public DialogResult LogMessageBox(IWin32Window owner, string text)
         {
@@ -284,8 +284,8 @@ namespace DotSpatial.Data.Forms
         /// Shows a MessageBox, logs the text of the text and the result chosen by the user.
         /// </summary>
         /// <param name="owner">An implementation of the IWin32Window that will own the modal form dialog box.</param>
-        /// <param name="text">The text to display in the MessageBox</param>
-        /// <param name="caption">The text to display in the title bar of the MessageBox</param>
+        /// <param name="text">The text to display in the MessageBox.</param>
+        /// <param name="caption">The text to display in the title bar of the MessageBox.</param>
         /// <returns>A DialogResult showing the user input from this messagebox.</returns>
         public DialogResult LogMessageBox(IWin32Window owner, string text, string caption)
         {
@@ -299,9 +299,9 @@ namespace DotSpatial.Data.Forms
         /// Shows a MessageBox, logs the text of the text and the result chosen by the user.
         /// </summary>
         /// <param name="owner">An implementation of the IWin32Window that will own the modal form dialog box.</param>
-        /// <param name="text">The text to display in the MessageBox</param>
-        /// <param name="caption">The text to display in the title bar of the MessageBox</param>
-        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox</param>
+        /// <param name="text">The text to display in the MessageBox.</param>
+        /// <param name="caption">The text to display in the title bar of the MessageBox.</param>
+        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox.</param>
         /// <returns>A DialogResult showing the user input from this messagebox.</returns>
         public DialogResult LogMessageBox(IWin32Window owner, string text, string caption, MessageBoxButtons buttons)
         {
@@ -315,10 +315,10 @@ namespace DotSpatial.Data.Forms
         /// Shows a MessageBox, logs the text of the text and the result chosen by the user.
         /// </summary>
         /// <param name="owner">An implementation of the IWin32Window that will own the modal form dialog box.</param>
-        /// <param name="text">The text to display in the MessageBox</param>
-        /// <param name="caption">The text to display in the title bar of the MessageBox</param>
-        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox</param>
-        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox</param>
+        /// <param name="text">The text to display in the MessageBox.</param>
+        /// <param name="caption">The text to display in the title bar of the MessageBox.</param>
+        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox.</param>
+        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox.</param>
         /// <returns>A DialogResult showing the user input from this messagebox.</returns>
         public DialogResult LogMessageBox(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
         {
@@ -332,11 +332,11 @@ namespace DotSpatial.Data.Forms
         /// Shows a MessageBox, logs the text of the text and the result chosen by the user.
         /// </summary>
         /// <param name="owner">An implementation of the IWin32Window that will own the modal form dialog box.</param>
-        /// <param name="text">The text to display in the MessageBox</param>
-        /// <param name="caption">The text to display in the title bar of the MessageBox</param>
-        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox</param>
-        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox</param>
-        /// <param name="defaultButton">One of the MessageBoxDefaultButtons that describes the default button for the MessageBox</param>
+        /// <param name="text">The text to display in the MessageBox.</param>
+        /// <param name="caption">The text to display in the title bar of the MessageBox.</param>
+        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox.</param>
+        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox.</param>
+        /// <param name="defaultButton">One of the MessageBoxDefaultButtons that describes the default button for the MessageBox.</param>
         /// <returns>A DialogResult showing the user input from this messagebox.</returns>
         public DialogResult LogMessageBox(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton)
         {
@@ -349,11 +349,11 @@ namespace DotSpatial.Data.Forms
         /// Shows a MessageBox, logs the text of the text and the result chosen by the user.
         /// </summary>
         /// <param name="owner">An implementation of the IWin32Window that will own the modal form dialog box.</param>
-        /// <param name="text">The text to display in the MessageBox</param>
-        /// <param name="caption">The text to display in the title bar of the MessageBox</param>
-        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox</param>
-        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox</param>
-        /// <param name="defaultButton">One of the MessageBoxDefaultButtons that describes the default button for the MessageBox</param>
+        /// <param name="text">The text to display in the MessageBox.</param>
+        /// <param name="caption">The text to display in the title bar of the MessageBox.</param>
+        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox.</param>
+        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox.</param>
+        /// <param name="defaultButton">One of the MessageBoxDefaultButtons that describes the default button for the MessageBox.</param>
         /// <param name="options">One of the MessageBoxOptions that describes which display and association options to use for the MessageBox. You may pass 0 if you wish to use the defaults.</param>
         /// <returns>A DialogResult showing the user input from this messagebox.</returns>
         public DialogResult LogMessageBox(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton, MessageBoxOptions options)
@@ -366,7 +366,7 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Shows a MessageBox, logs the text of the text and the result chosen by the user.
         /// </summary>
-        /// <param name="text">The text to display in the MessageBox</param>
+        /// <param name="text">The text to display in the MessageBox.</param>
         /// <returns>A DialogResult showing the user input from this messagebox.</returns>
         public DialogResult LogMessageBox(string text)
         {
@@ -379,8 +379,8 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Shows a MessageBox, logs the text of the text and the result chosen by the user.
         /// </summary>
-        /// <param name="text">The text to display in the MessageBox</param>
-        /// <param name="caption">The text to display in the title bar of the MessageBox</param>
+        /// <param name="text">The text to display in the MessageBox.</param>
+        /// <param name="caption">The text to display in the title bar of the MessageBox.</param>
         /// <returns>A DialogResult showing the user input from this messagebox.</returns>
         public DialogResult LogMessageBox(string text, string caption)
         {
@@ -393,9 +393,9 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Shows a MessageBox, logs the text of the text and the result chosen by the user.
         /// </summary>
-        /// <param name="text">The text to display in the MessageBox</param>
-        /// <param name="caption">The text to display in the title bar of the MessageBox</param>
-        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox</param>
+        /// <param name="text">The text to display in the MessageBox.</param>
+        /// <param name="caption">The text to display in the title bar of the MessageBox.</param>
+        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox.</param>
         /// <returns>A DialogResult showing the user input from this messagebox.</returns>
         public DialogResult LogMessageBox(string text, string caption, MessageBoxButtons buttons)
         {
@@ -408,10 +408,10 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Shows a MessageBox, logs the text of the text and the result chosen by the user.
         /// </summary>
-        /// <param name="text">The text to display in the MessageBox</param>
-        /// <param name="caption">The text to display in the title bar of the MessageBox</param>
-        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox</param>
-        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox</param>
+        /// <param name="text">The text to display in the MessageBox.</param>
+        /// <param name="caption">The text to display in the title bar of the MessageBox.</param>
+        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox.</param>
+        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox.</param>
         /// <returns>A DialogResult showing the user input from this messagebox.</returns>
         public DialogResult LogMessageBox(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
         {
@@ -424,11 +424,11 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Shows a MessageBox, logs the text of the text and the result chosen by the user.
         /// </summary>
-        /// <param name="text">The text to display in the MessageBox</param>
-        /// <param name="caption">The text to display in the title bar of the MessageBox</param>
-        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox</param>
-        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox</param>
-        /// <param name="defaultButton">One of the MessageBoxDefaultButtons that describes the default button for the MessageBox</param>
+        /// <param name="text">The text to display in the MessageBox.</param>
+        /// <param name="caption">The text to display in the title bar of the MessageBox.</param>
+        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox.</param>
+        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox.</param>
+        /// <param name="defaultButton">One of the MessageBoxDefaultButtons that describes the default button for the MessageBox.</param>
         /// <returns>A DialogResult showing the user input from this messagebox.</returns>
         public DialogResult LogMessageBox(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton)
         {
@@ -440,11 +440,11 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Shows a MessageBox, logs the text of the text and the result chosen by the user.
         /// </summary>
-        /// <param name="text">The text to display in the MessageBox</param>
-        /// <param name="caption">The text to display in the title bar of the MessageBox</param>
-        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox</param>
-        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox</param>
-        /// <param name="defaultButton">One of the MessageBoxDefaultButtons that describes the default button for the MessageBox</param>
+        /// <param name="text">The text to display in the MessageBox.</param>
+        /// <param name="caption">The text to display in the title bar of the MessageBox.</param>
+        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox.</param>
+        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox.</param>
+        /// <param name="defaultButton">One of the MessageBoxDefaultButtons that describes the default button for the MessageBox.</param>
         /// <param name="options">One of the MessageBoxOptions that describes which display and association options to use for the MessageBox. You may pass 0 if you wish to use the defaults.</param>
         /// <returns>A DialogResult showing the user input from this messagebox.</returns>
         public DialogResult LogMessageBox(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton, MessageBoxOptions options)
@@ -457,13 +457,13 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Shows a MessageBox, logs the text of the text and the result chosen by the user.
         /// </summary>
-        /// <param name="text">The text to display in the MessageBox</param>
-        /// <param name="caption">The text to display in the title bar of the MessageBox</param>
-        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox</param>
-        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox</param>
-        /// <param name="defaultButton">One of the MessageBoxDefaultButtons that describes the default button for the MessageBox</param>
+        /// <param name="text">The text to display in the MessageBox.</param>
+        /// <param name="caption">The text to display in the title bar of the MessageBox.</param>
+        /// <param name="buttons">One of the MessageBoxButtons that describes which button to display in the MessageBox.</param>
+        /// <param name="icon">One of the MessageBoxIcons that describes which icon to display in the MessageBox.</param>
+        /// <param name="defaultButton">One of the MessageBoxDefaultButtons that describes the default button for the MessageBox.</param>
         /// <param name="options">One of the MessageBoxOptions that describes which display and association options to use for the MessageBox. You may pass 0 if you wish to use the defaults.</param>
-        /// <param name="displayHelpButton">A boolean indicating whether or not to display a help button on the messagebox</param>
+        /// <param name="displayHelpButton">A boolean indicating whether or not to display a help button on the messagebox.</param>
         /// <returns>A DialogResult showing the user input from this messagebox.</returns>
         public DialogResult LogMessageBox(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton, MessageBoxOptions options, bool displayHelpButton)
         {
@@ -476,7 +476,7 @@ namespace DotSpatial.Data.Forms
         /// A progress message, generally as part of a long loop was sent. It is a bad
         /// idea to log these to a file as there may be thousands of them.
         /// </summary>
-        /// <param name="percent">The integer percent from 0 to 100</param>
+        /// <param name="percent">The integer percent from 0 to 100.</param>
         /// <param name="message">The complete message, showing both status and completion percent.</param>
         public void Progress(int percent, string message)
         {
@@ -491,8 +491,8 @@ namespace DotSpatial.Data.Forms
         /// action to register its entrance into a function as well as logging the parameter names
         /// and a type specific indicator of their value.
         /// </summary>
-        /// <param name="methodName">The string name of the method</param>
-        /// <param name="parameters">The List&lt;string&gt; of Parameter names and string form values</param>
+        /// <param name="methodName">The string name of the method.</param>
+        /// <param name="parameters">The List&lt;string&gt; of Parameter names and string form values.</param>
         public void PublicMethodEntered(string methodName, List<string> parameters)
         {
             foreach (KeyValuePair<int, ILogger> logger in _loggers)
@@ -502,9 +502,9 @@ namespace DotSpatial.Data.Forms
         }
 
         /// <summary>
-        /// This event will allow the registering of the exit from each public method
+        /// This event will allow the registering of the exit from each public method.
         /// </summary>
-        /// <param name="methodName">The Method name of the method being left</param>
+        /// <param name="methodName">The Method name of the method being left.</param>
         public void PublicMethodLeft(string methodName)
         {
             foreach (KeyValuePair<int, ILogger> logger in _loggers)
@@ -528,8 +528,8 @@ namespace DotSpatial.Data.Forms
         /// The key specified here is the key that was returned by the AddLogger method.
         /// </summary>
         /// <param name="key">The integer key of the logger to remove.</param>
-        /// <returns>True if the logger was successfully removed, or false if the key could not be found</returns>
-        /// <exception cref="System.ArgumentNullException">key is null</exception>
+        /// <returns>True if the logger was successfully removed, or false if the key could not be found.</returns>
+        /// <exception cref="System.ArgumentNullException">key is null.</exception>
         public bool RemoveLogger(int key)
         {
             return _loggers.Remove(key);

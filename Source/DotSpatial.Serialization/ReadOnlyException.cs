@@ -7,7 +7,7 @@ using DotSpatial.Serialization.Properties;
 namespace DotSpatial.Serialization
 {
     /// <summary>
-    /// ReadOnlyException
+    /// ReadOnlyException.
     /// </summary>
     public class ReadOnlyException : ApplicationException
     {

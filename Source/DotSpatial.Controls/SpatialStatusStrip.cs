@@ -12,7 +12,7 @@ using DotSpatial.Controls.Header;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A pre-configured status strip with a thread safe Progress function
+    /// A pre-configured status strip with a thread safe Progress function.
     /// </summary>
     [ToolboxBitmap(typeof(SpatialStatusStrip), "SpatialStatusStrip.ico")]
     [PartNotDiscoverable] // Do not allow discover this class by MEF
@@ -100,7 +100,7 @@ namespace DotSpatial.Controls
         /// This method is thread safe so that people calling this method don't cause a cross-thread violation
         /// by updating the progress indicator from a different thread.
         /// </summary>
-        /// <param name="percent">The integer percent from 0 to 100</param>
+        /// <param name="percent">The integer percent from 0 to 100.</param>
         /// <param name="message">A message including the percent information if wanted.</param>
         public void Progress(int percent, string message)
         {
@@ -228,14 +228,12 @@ namespace DotSpatial.Controls
             Refresh();
         }
 
-        
-
         #endregion
 
         #region Classes
 
         /// <summary>
-        /// PanelGuiElements
+        /// PanelGuiElements.
         /// </summary>
         internal class PanelGuiElements
         {

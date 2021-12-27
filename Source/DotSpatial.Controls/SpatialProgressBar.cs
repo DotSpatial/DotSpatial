@@ -7,7 +7,7 @@ using DotSpatial.Symbology.Forms;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// mwProgressBar
+    /// mwProgressBar.
     /// </summary>
     [ToolboxBitmap(typeof(SpatialProgressBar), "Components.SpatialProgressBar.ico")]
     public class SpatialProgressBar : SymbologyProgressBar

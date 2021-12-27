@@ -17,7 +17,7 @@ using Microsoft.Win32;
 namespace DotSpatial.Plugins.About
 {
     /// <summary>
-    /// Generic, self-contained About Box dialog
+    /// Generic, self-contained About Box dialog.
     /// </summary>
     /// <remarks>
     /// Jeff Atwood
@@ -25,7 +25,7 @@ namespace DotSpatial.Plugins.About
     /// http://www.codinghorror.com/blog/2004/02/about-the-about-box.html
     /// http://www.codeproject.com/KB/vb/aboutbox.aspx
     /// converted to C# by Scott Ferguson
-    /// http://www.forestmoon.com
+    /// http://www.forestmoon.com.
     /// </remarks>
     public partial class AboutBox : Form
     {
@@ -59,7 +59,7 @@ namespace DotSpatial.Plugins.About
         /// <remarks>
         /// defaults to "Copyright © %year%, %company%"
         /// %company% = Assembly: AssemblyCompany
-        /// %year% = current 4-digit year
+        /// %year% = current 4-digit year.
         /// </remarks>
         public string AppCopyright
         {
@@ -87,7 +87,7 @@ namespace DotSpatial.Plugins.About
         /// </summary>
         /// <remarks>
         /// defaults to "%description%"
-        /// %description% = Assembly: AssemblyDescription
+        /// %description% = Assembly: AssemblyDescription.
         /// </remarks>
         public string AppDescription
         {
@@ -139,7 +139,7 @@ namespace DotSpatial.Plugins.About
         /// Sets the default 32x32 application icon to appear in the upper left of the about dialog.
         /// </summary>
         /// <remarks>
-        /// if you open this form using .ShowDialog(Owner), the icon can be derived from the owning form
+        /// if you open this form using .ShowDialog(Owner), the icon can be derived from the owning form.
         /// </remarks>
         public Icon AppImage
         {
@@ -161,7 +161,7 @@ namespace DotSpatial.Plugins.About
         /// defaults to "%product% is %copyright%, %trademark%"
         /// %product% = Assembly: AssemblyProduct
         /// %copyright% = Assembly: AssemblyCopyright
-        /// %trademark% = Assembly: AssemblyTrademark
+        /// %trademark% = Assembly: AssemblyTrademark.
         /// </remarks>
         public string AppMoreInfo
         {
@@ -189,7 +189,7 @@ namespace DotSpatial.Plugins.About
         /// </summary>
         /// <remarks>
         /// defaults to "%title%"
-        /// %title% = Assembly: AssemblyTitle
+        /// %title% = Assembly: AssemblyTitle.
         /// </remarks>
         public string AppTitle
         {
@@ -209,7 +209,7 @@ namespace DotSpatial.Plugins.About
         /// </summary>
         /// <remarks>
         /// defaults to "Version %version%"
-        /// %version% = Assembly: AssemblyVersion
+        /// %version% = Assembly: AssemblyVersion.
         /// </remarks>
         public string AppVersion
         {
@@ -258,7 +258,7 @@ namespace DotSpatial.Plugins.About
         }
 
         /// <summary>
-        /// Matches assembly by Assembly.GetName.Name; returns nothing if no match
+        /// Matches assembly by Assembly.GetName.Name; returns nothing if no match.
         /// </summary>
         /// <param name="assemblyName">Name of the assembly that should be returned.</param>
         /// <returns>Nothing if no match, otherwise the found assembly.</returns>
@@ -350,7 +350,7 @@ namespace DotSpatial.Plugins.About
 
         /// <summary>
         /// Returns string name / string value pair of all attributes.
-        /// for specified assembly
+        /// for specified assembly.
         /// </summary>
         /// <remarks>
         /// note that Assembly* values are pulled from AssemblyInfo file in project folder
@@ -362,7 +362,7 @@ namespace DotSpatial.Plugins.About
         /// Copyright       = AssemblyCopyright string
         /// Company         = AssemblyCompany string
         /// Description     = AssemblyDescription string
-        /// Title           = AssemblyTitle string
+        /// Title           = AssemblyTitle string.
         /// </remarks>
         /// <param name="a">Assembly to get the attributes from.</param>
         /// <returns>A string name / string value pair of all attributes.</returns>
@@ -512,9 +512,9 @@ namespace DotSpatial.Plugins.About
         /// returns DateTime this Assembly was last built. Will attempt to calculate from build number, if possible.
         /// If not, the actual LastWriteTime on the assembly file will be returned.
         /// </summary>
-        /// <param name="a">Assembly to get build date for</param>
-        /// <param name="forceFileDate">Don't attempt to use the build number to calculate the date</param>
-        /// <returns>DateTime this assembly was last built</returns>
+        /// <param name="a">Assembly to get build date for.</param>
+        /// <param name="forceFileDate">Don't attempt to use the build number to calculate the date.</param>
+        /// <returns>DateTime this assembly was last built.</returns>
         private DateTime AssemblyBuildDate(Assembly a, bool forceFileDate)
         {
             Version assemblyVersion = a.GetName().Version;
@@ -589,7 +589,7 @@ namespace DotSpatial.Plugins.About
         }
 
         /// <summary>
-        /// expand about dialog to show additional advanced details
+        /// expand about dialog to show additional advanced details.
         /// </summary>
         /// <param name="sender">The sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -615,7 +615,7 @@ namespace DotSpatial.Plugins.About
         /// <summary>
         /// Retrieves a cached value from the entry assembly attribute lookup collection.
         /// </summary>
-        /// <param name="strName">Name of value that should be returned</param>
+        /// <param name="strName">Name of value that should be returned.</param>
         /// <returns>Value belonging to the given name.</returns>
         private string EntryAssemblyAttrib(string strName)
         {

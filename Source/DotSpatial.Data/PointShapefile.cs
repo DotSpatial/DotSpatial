@@ -1,16 +1,15 @@
 // Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// A shapefile class that handles the special case where the data type is point
+    /// A shapefile class that handles the special case where the data type is point.
     /// </summary>
     public class PointShapefile : Shapefile
     {
@@ -27,7 +26,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="PointShapefile"/> class that is loaded from the supplied fileName.
         /// </summary>
-        /// <param name="fileName">The string fileName of the polygon shapefile to load</param>
+        /// <param name="fileName">The string fileName of the polygon shapefile to load.</param>
         public PointShapefile(string fileName)
             : this()
         {
@@ -58,8 +57,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Opens a shapefile.
         /// </summary>
-        /// <param name="fileName">The string fileName of the point shapefile to load</param>
-        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
+        /// <param name="fileName">The string fileName of the point shapefile to load.</param>
+        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler.</param>
         public void Open(string fileName, IProgressHandler progressHandler)
         {
             if (!File.Exists(fileName)) return;
@@ -166,8 +165,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Obtains a typed list of ShapefilePoint structures with double values associated with the various coordinates.
         /// </summary>
-        /// <param name="fileName">A string fileName</param>
-        /// <param name="progressHandler">Progress handler</param>
+        /// <param name="fileName">A string fileName.</param>
+        /// <param name="progressHandler">Progress handler.</param>
         private void FillPoints(string fileName, IProgressHandler progressHandler)
         {
             if (!CanBeRead(fileName, this, ShapeType.Point, ShapeType.PointM, ShapeType.PointZ)) return;

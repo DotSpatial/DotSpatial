@@ -3,6 +3,7 @@
 
 using System.IO;
 using DotSpatial.Data;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Analysis.Tests
@@ -19,7 +20,7 @@ namespace DotSpatial.Analysis.Tests
         [Test]
         public void SlopeIsWorking()
         {
-            var raster = Raster.Open(Path.Combine("Data", "kriging.bgd"));
+            var raster = Raster.Open(Path.Combine(Common.AbsolutePath("Data"), "kriging.bgd"));
             var actual = Slope.GetSlope(raster, 1, true, null);
             try
             {

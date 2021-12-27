@@ -16,7 +16,7 @@ namespace DotSpatial.Extensions.SplashScreens
     public sealed class SplashScreenHelper
     {
         /// <summary>
-        /// Searches "Application Extensions" for and activates "*SplashScreen*.dll"
+        /// Searches "Application Extensions" for and activates "*SplashScreen*.dll".
         /// </summary>
         /// <returns>Null if no ISplashScreenManager was found otherwise the first ISplashScreenManager that was found.</returns>
         public static ISplashScreenManager GetSplashScreenManager()

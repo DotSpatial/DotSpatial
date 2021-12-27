@@ -13,7 +13,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// CharacterSymbol
+    /// CharacterSymbol.
     /// </summary>
     [Serializable]
     public class CharacterSymbol : Symbol, ICharacterSymbol
@@ -44,7 +44,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterSymbol"/> class.
         /// </summary>
-        /// <param name="character">The character to use for the symbol</param>
+        /// <param name="character">The character to use for the symbol.</param>
         public CharacterSymbol(char character)
         {
             _character = character;
@@ -57,8 +57,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterSymbol"/> class.
         /// </summary>
-        /// <param name="character">The character to use for the symbol</param>
-        /// <param name="fontFamily">The font family for the character</param>
+        /// <param name="character">The character to use for the symbol.</param>
+        /// <param name="fontFamily">The font family for the character.</param>
         public CharacterSymbol(char character, string fontFamily)
         {
             _character = character;
@@ -71,9 +71,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterSymbol"/> class.
         /// </summary>
-        /// <param name="character">The character to use for the symbol</param>
-        /// <param name="fontFamily">The font family for the character</param>
-        /// <param name="color">The color for the character</param>
+        /// <param name="character">The character to use for the symbol.</param>
+        /// <param name="fontFamily">The font family for the character.</param>
+        /// <param name="color">The color for the character.</param>
         public CharacterSymbol(char character, string fontFamily, Color color)
         {
             _character = character;
@@ -86,10 +86,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterSymbol"/> class.
         /// </summary>
-        /// <param name="character">The character to use for the symbol</param>
-        /// <param name="fontFamily">The font family for the character</param>
-        /// <param name="color">The color for the character</param>
-        /// <param name="size">The size for the symbol</param>
+        /// <param name="character">The character to use for the symbol.</param>
+        /// <param name="fontFamily">The font family for the character.</param>
+        /// <param name="color">The color for the character.</param>
+        /// <param name="size">The size for the symbol.</param>
         public CharacterSymbol(char character, string fontFamily, Color color, double size)
         {
             _character = character;
@@ -156,7 +156,7 @@ namespace DotSpatial.Symbology
         /// specific character in a given "typeset" range.
         /// </summary>
         /// <remarks>
-        /// // Editor(typeof(CharacterCodeEditor), typeof(UITypeEditor))
+        /// // Editor(typeof(CharacterCodeEditor), typeof(UITypeEditor)).
         /// </remarks>
         [XmlIgnore]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -176,7 +176,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the color
+        /// Gets or sets the color.
         /// </summary>
         [XmlIgnore]
         [Description("Gets or sets the color")]
@@ -197,7 +197,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets the string font family name to use for this character set.
         /// </summary>
         /// <remarks>
-        /// // Editor(typeof(FontFamilyNameEditor), typeof(UITypeEditor)),
+        /// // Editor(typeof(FontFamilyNameEditor), typeof(UITypeEditor)),.
         /// </remarks>
         [Description("Gets or sets the font family name to use when building the font.")]
         [Serialize("FontFamilyName")]
@@ -282,9 +282,9 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Gets the font color of this symbol to represent the color of this symbol
+        /// Gets the font color of this symbol to represent the color of this symbol.
         /// </summary>
-        /// <returns>The color of this symbol as a font</returns>
+        /// <returns>The color of this symbol as a font.</returns>
         public override Color GetColor()
         {
             return _color;
@@ -344,9 +344,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Sets the fill color of this symbol to the specified color
+        /// Sets the fill color of this symbol to the specified color.
         /// </summary>
-        /// <param name="color">The Color</param>
+        /// <param name="color">The Color.</param>
         public override void SetColor(Color color)
         {
             _color = color;
@@ -355,7 +355,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the string equivalent of the specified character code.
         /// </summary>
-        /// <returns>A string version of the character</returns>
+        /// <returns>A string version of the character.</returns>
         public override string ToString()
         {
             return _character.ToString();
@@ -393,7 +393,7 @@ namespace DotSpatial.Symbology
         /// However, since most fonts don't support full unicode values, a character from 0 to 255 is
         /// chosen.
         /// </summary>
-        /// <param name="generator">The random class generator</param>
+        /// <param name="generator">The random class generator.</param>
         protected override void OnRandomize(Random generator)
         {
             _color = generator.NextColor();

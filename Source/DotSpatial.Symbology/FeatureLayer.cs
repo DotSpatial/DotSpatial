@@ -10,7 +10,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using Msg = DotSpatial.Symbology.SymbologyMessageStrings;
 
 namespace DotSpatial.Symbology
@@ -76,10 +76,10 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureLayer"/> class.
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="featureSet">
-        /// The data bearing layer to apply new drawing characteristics to
+        /// The data bearing layer to apply new drawing characteristics to.
         /// </param>
         protected FeatureLayer(IFeatureSet featureSet)
         {
@@ -88,13 +88,13 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureLayer"/> class.
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="featureSet">
-        /// The data bearing layer to apply new drawing characteristics to
+        /// The data bearing layer to apply new drawing characteristics to.
         /// </param>
         /// <param name="container">
-        /// The container this layer should be added to
+        /// The container this layer should be added to.
         /// </param>
         protected FeatureLayer(IFeatureSet featureSet, ICollection<ILayer> container)
             : base(container)
@@ -104,16 +104,16 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureLayer"/> class.
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="featureSet">
-        /// The data bearing layer to apply new drawing characteristics to
+        /// The data bearing layer to apply new drawing characteristics to.
         /// </param>
         /// <param name="container">
-        /// The container this layer should be added to
+        /// The container this layer should be added to.
         /// </param>
         /// <param name="progressHandler">
-        /// A progress handler for receiving status messages
+        /// A progress handler for receiving status messages.
         /// </param>
         protected FeatureLayer(IFeatureSet featureSet, ICollection<ILayer> container, IProgressHandler progressHandler)
             : base(container, progressHandler)
@@ -169,7 +169,7 @@ namespace DotSpatial.Symbology
         public IDictionary<IFeatureCategory, Extent> CategoryExtents => _categoryExtents;
 
         /// <summary>
-        /// Gets or sets the underlying dataset for this layer, specifically as an IFeatureSet
+        /// Gets or sets the underlying dataset for this layer, specifically as an IFeatureSet.
         /// </summary>
         [Serialize("DataSet", ConstructorArgumentIndex = 0, UseCase = SerializeAttribute.UseCases.Both)]
         [Browsable(false)]
@@ -434,7 +434,7 @@ namespace DotSpatial.Symbology
         public bool Snappable { get; set; }
 
         /// <summary>
-        /// Gets or sets and interface for the shared symbol characteristics between point, line and polygon features
+        /// Gets or sets and interface for the shared symbol characteristics between point, line and polygon features.
         /// </summary>
         [Category("Appearance")]
         [Description("Gets or sets a collection of feature characteristics for this layer.")]
@@ -519,7 +519,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Assigns the fast drawn states
+        /// Assigns the fast drawn states.
         /// </summary>
         public void AssignFastDrawnStates()
         {
@@ -697,10 +697,10 @@ namespace DotSpatial.Symbology
         /// instead of a return type.
         /// </summary>
         /// <param name="result">
-        /// The result of the creation
+        /// The result of the creation.
         /// </param>
         /// <returns>
-        /// Boolean, true if a layer can be created
+        /// Boolean, true if a layer can be created.
         /// </returns>
         public virtual bool CreateLayerFromSelectedFeatures(out IFeatureLayer result)
         {
@@ -716,11 +716,11 @@ namespace DotSpatial.Symbology
         /// overridden in sub-classes because the drawing methods are very different.
         /// </summary>
         /// <param name="g">
-        /// A graphics object to draw to
+        /// A graphics object to draw to.
         /// </param>
         /// <param name="p">
         /// A projection handling interface designed to translate
-        ///  geographic coordinates to screen coordinates
+        ///  geographic coordinates to screen coordinates.
         /// </param>
         public virtual void DrawSnapShot(Graphics g, IProj p)
         {
@@ -891,7 +891,7 @@ namespace DotSpatial.Symbology
         /// this method will not alter it. This will only fire a single SelectionExtended event,
         /// rather than firing it for each member selected.
         /// </summary>
-        /// <param name="featureIndices">A List of integers representing the zero-based feature index values</param>
+        /// <param name="featureIndices">A List of integers representing the zero-based feature index values.</param>
         public void Select(IEnumerable<int> featureIndices)
         {
             if (_editMode)
@@ -1001,8 +1001,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Modifies the features with a new selection based on the modifyMode.
         /// </summary>
-        /// <param name="filterExpression">The string filter expression to use</param>
-        /// <param name="modifyMode">Determines how the newly chosen features should interact with the existing selection</param>
+        /// <param name="filterExpression">The string filter expression to use.</param>
+        /// <param name="modifyMode">Determines how the newly chosen features should interact with the existing selection.</param>
         public void SelectByAttribute(string filterExpression, ModifySelectionMode modifyMode)
         {
             if (!_drawnStatesNeeded && !_editMode)
@@ -1207,7 +1207,7 @@ namespace DotSpatial.Symbology
         /// <param name="geographicExtent">The extent to use when computing the snapshot.</param>
         /// <param name="width">The integer height of the bitmap. The height is calculated based on
         /// the aspect ratio of the specified geographic extent.</param>
-        /// <returns>A Bitmap object</returns>
+        /// <returns>A Bitmap object.</returns>
         public Bitmap SnapShot(Extent geographicExtent, int width)
         {
             int height = Convert.ToInt32((geographicExtent.Height / geographicExtent.Width) * width);
@@ -1435,7 +1435,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This method cycles through all the Categories in the scheme and creates a new category.
         /// </summary>
-        /// <param name="scheme">The scheme to apply</param>
+        /// <param name="scheme">The scheme to apply.</param>
         protected virtual void OnApplyScheme(IFeatureScheme scheme)
         {
             if (scheme == null) return;
@@ -1523,7 +1523,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Occurs when selecting features and fires the SelectByAttribute event with
-        /// the expression used as the filter expression
+        /// the expression used as the filter expression.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -1614,7 +1614,7 @@ namespace DotSpatial.Symbology
         /// then the dialog will not be shown.
         /// </summary>
         /// <param name="e">
-        /// A HandledEventArgs parameter
+        /// A HandledEventArgs parameter.
         /// </param>
         protected virtual void OnLabelSetup(HandledEventArgs e)
         {
@@ -1622,7 +1622,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This fires the scheme applied event after the scheme has been altered
+        /// This fires the scheme applied event after the scheme has been altered.
         /// </summary>
         protected virtual void OnSchemeApplied()
         {
@@ -1631,7 +1631,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Occurs when selecting features and fires the SelectByAttribute event with
-        /// the expression used as the filter expression
+        /// the expression used as the filter expression.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>

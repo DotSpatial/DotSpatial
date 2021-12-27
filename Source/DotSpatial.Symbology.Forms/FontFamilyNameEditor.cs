@@ -11,7 +11,7 @@ using System.Windows.Forms.Design;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// FontFamilyNameEditor
+    /// FontFamilyNameEditor.
     /// </summary>
     public class FontFamilyNameEditor : UITypeEditor
     {
@@ -61,7 +61,7 @@ namespace DotSpatial.Symbology.Forms
         /// Gets the UITypeEditorEditStyle, which in this case is drop down.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
-        /// <returns>The UITypeEditorEditStyle</returns>
+        /// <returns>The UITypeEditorEditStyle.</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;

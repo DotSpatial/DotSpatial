@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// IRandomizable
+    /// IRandomizable.
     /// </summary>
     public interface IRandomizable
     {
@@ -14,7 +14,7 @@ namespace DotSpatial.Symbology
         /// This method will set the values for this class with random values that are
         /// within acceptable parameters for this class.
         /// </summary>
-        /// <param name="generator">An existing random number generator so that the random seed can be controlled</param>
+        /// <param name="generator">An existing random number generator so that the random seed can be controlled.</param>
         void Randomize(Random generator);
     }
 }

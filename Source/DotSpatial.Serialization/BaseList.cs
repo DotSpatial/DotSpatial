@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Serialization
 {
     /// <summary>
-    /// BaseList
+    /// BaseList.
     /// </summary>
     /// <typeparam name="T">Type of the contained items.</typeparam>
     [Serializable]
@@ -17,10 +17,10 @@ namespace DotSpatial.Serialization
         #region Indexers
 
         /// <summary>
-        /// Gets or sets the value of type T at the specified index
+        /// Gets or sets the value of type T at the specified index.
         /// </summary>
-        /// <param name="index">The zero-base integer index marking the position of the item</param>
-        /// <returns>The item</returns>
+        /// <param name="index">The zero-base integer index marking the position of the item.</param>
+        /// <returns>The item.</returns>
         public T this[int index]
         {
             get
@@ -56,16 +56,16 @@ namespace DotSpatial.Serialization
         /// </summary>
         /// <param name="index">The zero based integer index describing the target index for the item.</param>
         /// <param name="item">The implementation of T to insert into this index.</param>
-        /// <exception cref="ReadOnlyException">If ReadOnly is true, then this method will cause an exception</exception>
+        /// <exception cref="ReadOnlyException">If ReadOnly is true, then this method will cause an exception.</exception>
         public virtual void Insert(int index, T item)
         {
             DoInsert(index, item);
         }
 
         /// <summary>
-        /// Removes the item from the specified index
+        /// Removes the item from the specified index.
         /// </summary>
-        /// <param name="index">The zero based integer index</param>
+        /// <param name="index">The zero based integer index.</param>
         public void RemoveAt(int index)
         {
             T item = InnerList[index];
@@ -96,7 +96,7 @@ namespace DotSpatial.Serialization
         /// The happens after an item was removed from the specified index.
         /// </summary>
         /// <param name="index">The index the item was removed from.</param>
-        /// <param name="item">The item that was removed</param>
+        /// <param name="item">The item that was removed.</param>
         protected virtual void OnRemoveAt(int index, T item)
         {
         }

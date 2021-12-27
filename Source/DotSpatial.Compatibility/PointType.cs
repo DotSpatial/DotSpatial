@@ -4,7 +4,7 @@
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// PointTypes
+    /// PointTypes.
     /// </summary>
     public enum PointType
     {

@@ -8,7 +8,7 @@ namespace DotSpatial.Controls.Header
 {
     /// <summary>
     /// The StatusPanel class allows adding user-defined status panels to the
-    /// status bar
+    /// status bar.
     /// </summary>
     public class StatusPanel : INotifyPropertyChanged
     {

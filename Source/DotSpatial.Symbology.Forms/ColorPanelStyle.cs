@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// ColorPanelStyle
+    /// ColorPanelStyle.
     /// </summary>
     public enum ColorPanelStyle
     {

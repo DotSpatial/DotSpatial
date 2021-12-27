@@ -131,8 +131,8 @@ namespace DotSpatial.Symbology
         /// Sets the outline, assuming that the symbolizer either supports outlines, or
         /// else by using a second symbol layer.
         /// </summary>
-        /// <param name="outlineColor">The color of the outline</param>
-        /// <param name="width">The width of the outline in pixels</param>
+        /// <param name="outlineColor">The color of the outline.</param>
+        /// <param name="width">The width of the outline in pixels.</param>
         public virtual void SetOutline(Color outlineColor, double width)
         {
             OnItemChanged(this);

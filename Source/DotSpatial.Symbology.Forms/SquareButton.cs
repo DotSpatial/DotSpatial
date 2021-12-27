@@ -7,7 +7,7 @@ using System.Drawing.Drawing2D;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// SquareButton
+    /// SquareButton.
     /// </summary>
     public class SquareButton
     {
@@ -58,7 +58,7 @@ namespace DotSpatial.Symbology.Forms
 
         /// <summary>
         /// Gets or sets the color for this button control when it is not pressed, but is
-        /// currently capturing the mouse
+        /// currently capturing the mouse.
         /// </summary>
         public Color ColorUpLit { get; set; }
 

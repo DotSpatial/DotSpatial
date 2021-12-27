@@ -4,7 +4,7 @@
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// Docking styles for DotSpatial UIPanels
+    /// Docking styles for DotSpatial UIPanels.
     /// </summary>
     public enum SpatialDockStyle
     {

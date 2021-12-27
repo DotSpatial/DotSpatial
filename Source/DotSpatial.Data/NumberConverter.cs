@@ -22,7 +22,7 @@ namespace DotSpatial.Data
         public const int MaximumLength = 18;
 
         /// <summary>
-        /// Format provider to use to convert DBF numbers to strings and characters
+        /// Format provider to use to convert DBF numbers to strings and characters.
         /// </summary>
         public static readonly IFormatProvider NumberConversionFormatProvider = CultureInfo.GetCultureInfo("en-US");
 
@@ -100,7 +100,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the decimal count to use for this number converter
+        /// Gets or sets the decimal count to use for this number converter.
         /// </summary>
         public int DecimalCount
         {
@@ -117,7 +117,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the format string used to convert doubles, floats, and decimals to strings
+        /// Gets or sets the format string used to convert doubles, floats, and decimals to strings.
         /// </summary>
         public string DecimalFormatString { get; set; }
 
@@ -133,7 +133,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Converts from a string, or 0 if the parse failed.
         /// </summary>
-        /// <param name="value">The string value to parse</param>
+        /// <param name="value">The string value to parse.</param>
         /// <returns>The parse result.</returns>
         public double FromString(string value)
         {
@@ -143,10 +143,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a new random array of characters that represents a number and is constrained by the specified length and decimal count
+        /// Creates a new random array of characters that represents a number and is constrained by the specified length and decimal count.
         /// </summary>
         /// <param name="numDigits">The integer number of significant (non-zero) digits that should be created as part of the number.</param>
-        /// <returns>A character array of that matches the length and decimal count specified by this properties on this number converter</returns>
+        /// <returns>A character array of that matches the length and decimal count specified by this properties on this number converter.</returns>
         public char[] RandomChars(int numDigits)
         {
             if (numDigits > Length - 1)
@@ -215,7 +215,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a new, random float that is constrained by the specified length and decimal count.
         /// </summary>
-        /// <returns>A new float. Floats can only store about 8 digits of precision, so specifying a high </returns>
+        /// <returns>A new float. Floats can only store about 8 digits of precision, so specifying a high. </returns>
         public float RandomFloat()
         {
             string test = new string(RandomChars(6));
@@ -223,67 +223,67 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Converts the specified decimal value to a string that can be used for the number field
+        /// Converts the specified decimal value to a string that can be used for the number field.
         /// </summary>
-        /// <param name="number">The decimal value to convert to a string</param>
-        /// <returns>A string version of the specified number</returns>
+        /// <param name="number">The decimal value to convert to a string.</param>
+        /// <returns>A string version of the specified number.</returns>
         public char[] ToChar(double number)
         {
             return ToCharInternal(number);
         }
 
         /// <summary>
-        /// Converts the specified decimal value to a string that can be used for the number field
+        /// Converts the specified decimal value to a string that can be used for the number field.
         /// </summary>
-        /// <param name="number">The decimal value to convert to a string</param>
-        /// <returns>A string version of the specified number</returns>
+        /// <param name="number">The decimal value to convert to a string.</param>
+        /// <returns>A string version of the specified number.</returns>
         public char[] ToChar(float number)
         {
             return ToCharInternal(number);
         }
 
         /// <summary>
-        /// Converts the specified decimal value to a string that can be used for the number field
+        /// Converts the specified decimal value to a string that can be used for the number field.
         /// </summary>
-        /// <param name="number">The decimal value to convert to a string</param>
-        /// <returns>A string version of the specified number</returns>
+        /// <param name="number">The decimal value to convert to a string.</param>
+        /// <returns>A string version of the specified number.</returns>
         public char[] ToChar(decimal number)
         {
             return ToCharInternal(number);
         }
 
         /// <summary>
-        /// Converts the specified double value to a string that can be used for the number field
+        /// Converts the specified double value to a string that can be used for the number field.
         /// </summary>
-        /// <param name="number">The double precision floating point value to convert to a string</param>
-        /// <returns>A string version of the specified number</returns>
+        /// <param name="number">The double precision floating point value to convert to a string.</param>
+        /// <returns>A string version of the specified number.</returns>
         public string ToString(double number)
         {
             return ToStringInternal(number);
         }
 
         /// <summary>
-        /// Converts the specified decimal value to a string that can be used for the number field
+        /// Converts the specified decimal value to a string that can be used for the number field.
         /// </summary>
-        /// <param name="number">The decimal value to convert to a string</param>
-        /// <returns>A string version of the specified number</returns>
+        /// <param name="number">The decimal value to convert to a string.</param>
+        /// <returns>A string version of the specified number.</returns>
         public string ToString(decimal number)
         {
             return ToStringInternal(number);
         }
 
         /// <summary>
-        /// Converts the specified float value to a string that can be used for the number field
+        /// Converts the specified float value to a string that can be used for the number field.
         /// </summary>
-        /// <param name="number">The floating point value to convert to a string</param>
-        /// <returns>A string version of the specified number</returns>
+        /// <param name="number">The floating point value to convert to a string.</param>
+        /// <returns>A string version of the specified number.</returns>
         public string ToString(float number)
         {
             return ToStringInternal(number);
         }
 
         /// <summary>
-        /// Compute and update the DecimalFormatString from the precision specifier
+        /// Compute and update the DecimalFormatString from the precision specifier.
         /// </summary>
         public void UpdateDecimalFormatString()
         {

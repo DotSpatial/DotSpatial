@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Serialization.Tests
 {
     /// <summary>
-    /// Node
+    /// Node.
     /// </summary>
     public class Node
     {

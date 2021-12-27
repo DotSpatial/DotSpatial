@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
 using DotSpatial.Plugins.WebMap.Properties;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Plugins.WebMap.Tiling
 {
@@ -88,10 +88,10 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         /// <summary>
         /// Get tile envelope in WGS-84 coordinates.
         /// </summary>
-        /// <param name="x">x index</param>
-        /// <param name="y">y index</param>
-        /// <param name="zoom">zoom</param>
-        /// <returns>Envelope in WGS-84</returns>
+        /// <param name="x">x index.</param>
+        /// <param name="y">y index.</param>
+        /// <param name="zoom">zoom.</param>
+        /// <returns>Envelope in WGS-84.</returns>
         private static Envelope GetTileEnvelope(int x, int y, int zoom)
         {
             var currTopLeftPixXy = TileCalculator.TileXyToTopLeftPixelXy(x, y);

@@ -14,87 +14,87 @@ namespace DotSpatial.Serialization
         #region Fields
 
         /// <summary>
-        /// arg
+        /// arg.
         /// </summary>
         public const string Arg = "arg";
 
         /// <summary>
-        /// dictionary
+        /// dictionary.
         /// </summary>
         public const string Dictionary = "dictionary";
 
         /// <summary>
-        /// entry
+        /// entry.
         /// </summary>
         public const string DictionaryEntry = "entry";
 
         /// <summary>
-        /// key
+        /// key.
         /// </summary>
         public const string DictionaryKey = "key";
 
         /// <summary>
-        /// value
+        /// value.
         /// </summary>
         public const string DictionaryValue = "value";
 
         /// <summary>
-        /// enum
+        /// enum.
         /// </summary>
         public const string Enum = "enum";
 
         /// <summary>
-        /// formatter
+        /// formatter.
         /// </summary>
         public const string Formatter = "formatter";
 
         /// <summary>
-        /// id
+        /// id.
         /// </summary>
         public const string Id = "id";
 
         /// <summary>
-        /// item
+        /// item.
         /// </summary>
         public const string Item = "item";
 
         /// <summary>
-        /// key
+        /// key.
         /// </summary>
         public const string Key = "key";
 
         /// <summary>
-        /// list
+        /// list.
         /// </summary>
         public const string List = "list";
 
         /// <summary>
-        /// member
+        /// member.
         /// </summary>
         public const string Member = "member";
 
         /// <summary>
-        /// name
+        /// name.
         /// </summary>
         public const string Name = "name";
 
         /// <summary>
-        /// object
+        /// object.
         /// </summary>
         public const string Object = "object";
 
         /// <summary>
-        /// primitive
+        /// primitive.
         /// </summary>
         public const string Primitive = "primitive";
 
         /// <summary>
-        /// ref
+        /// ref.
         /// </summary>
         public const string Ref = "ref";
 
         /// <summary>
-        /// root
+        /// root.
         /// </summary>
         public const string Root = "root";
 
@@ -109,17 +109,17 @@ namespace DotSpatial.Serialization
         public const string StaticMethodIndicator = "staticMethodIndicator";
 
         /// <summary>
-        /// string
+        /// string.
         /// </summary>
         public const string String = "string";
 
         /// <summary>
-        /// types
+        /// types.
         /// </summary>
         public const string TypeCache = "types";
 
         /// <summary>
-        /// type
+        /// type.
         /// </summary>
         public const string TypeId = "type";
 
@@ -129,7 +129,7 @@ namespace DotSpatial.Serialization
         public const string UseCase = "useCase";
 
         /// <summary>
-        /// value
+        /// value.
         /// </summary>
         public const string Value = "value";
 
@@ -140,8 +140,8 @@ namespace DotSpatial.Serialization
         /// <summary>
         /// Returns a System.Type that corresponds to the MemberInfo, regardless of whether the member is a field or property.
         /// </summary>
-        /// <param name="memberInfo">The base class that can be either a FieldInfo or PropertyInfo</param>
-        /// <returns>The System.Type</returns>
+        /// <param name="memberInfo">The base class that can be either a FieldInfo or PropertyInfo.</param>
+        /// <returns>The System.Type.</returns>
         public static Type GetMemberType(MemberInfo memberInfo)
         {
             var info = memberInfo as PropertyInfo;

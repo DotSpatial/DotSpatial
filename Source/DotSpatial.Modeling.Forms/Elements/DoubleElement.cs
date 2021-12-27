@@ -7,7 +7,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// An element for doubles
+    /// An element for doubles.
     /// </summary>
     public partial class DoubleElement : DialogElement
     {
@@ -23,7 +23,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="DoubleElement"/> class.
         /// </summary>
-        /// <param name="param">The parameter this element represents</param>
+        /// <param name="param">The parameter this element represents.</param>
         public DoubleElement(DoubleParam param)
         {
             // Needed by the designer
@@ -41,7 +41,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Parameter that the element represents
+        /// Gets or sets the Parameter that the element represents.
         /// </summary>
         public new DoubleParam Param
         {
@@ -61,7 +61,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         #region Methods
 
         /// <summary>
-        /// Refreshes status lights or other content
+        /// Refreshes status lights or other content.
         /// </summary>
         public override void Refresh()
         {
@@ -69,10 +69,10 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// Checks if text contains a value double
+        /// Checks if text contains a value double.
         /// </summary>
-        /// <param name="theValue">The text to text</param>
-        /// <returns>Returns true if it is a valid double</returns>
+        /// <param name="theValue">The text to text.</param>
+        /// <returns>Returns true if it is a valid double.</returns>
         private static bool IsDecimal(string theValue)
         {
             try
@@ -118,7 +118,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// When the text box is clicked this event fires
+        /// When the text box is clicked this event fires.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -128,7 +128,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// This changes the color of the light and the tooltip of the light based on the status of the text in the box
+        /// This changes the color of the light and the tooltip of the light based on the status of the text in the box.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>

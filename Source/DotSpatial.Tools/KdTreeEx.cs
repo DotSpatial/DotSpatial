@@ -3,7 +3,7 @@
 
 using System.Linq;
 using System.Reflection;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.KdTree;
 
 namespace DotSpatial.Tools

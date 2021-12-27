@@ -29,8 +29,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="Range"/> class.
         /// </summary>
-        /// <param name="value1">Either bound of the range</param>
-        /// <param name="value2">The other bound of the range</param>
+        /// <param name="value1">Either bound of the range.</param>
+        /// <param name="value2">The other bound of the range.</param>
         public Range(double? value1, double? value2)
         {
             Minimum = value1;
@@ -54,7 +54,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="Range"/> class.
         /// </summary>
-        /// <param name="expression">A string expression that can be two separate numbers separated by a dash</param>
+        /// <param name="expression">A string expression that can be two separate numbers separated by a dash.</param>
         public Range(string expression)
         {
             string exp = expression ?? "-";
@@ -168,7 +168,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Tests to determine if this range contains the specified double value.
         /// </summary>
-        /// <param name="value">the double value to test</param>
+        /// <param name="value">the double value to test.</param>
         /// <returns>Boolean, true if the value is within the current bounds.</returns>
         public bool Contains(double value)
         {
@@ -204,7 +204,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Generates a valid SQL query expression for this range, using the field string
         /// as the member being compared. The field string should already be bound in
-        /// brackets, or put together as a normal composit like "[males]/[pop1990]"
+        /// brackets, or put together as a normal composit like "[males]/[pop1990]".
         /// </summary>
         /// <param name="field">The field name to build into an expression. This should already be wrapped in square brackets.</param>
         /// <returns>The string SQL query expression.</returns>
@@ -252,8 +252,8 @@ namespace DotSpatial.Symbology
         /// This is a slightly more complex specification where the numeric formatting
         /// controls how the generated string will appear.
         /// </summary>
-        /// <param name="method">The interval snap method</param>
-        /// <param name="digits">This is only used for rounding or significant figures, but controls those options</param>
+        /// <param name="method">The interval snap method.</param>
+        /// <param name="digits">This is only used for rounding or significant figures, but controls those options.</param>
         /// <returns>A string equivalent of this range, but using a number format.</returns>
         public string ToString(IntervalSnapMethod method, int digits)
         {

@@ -11,7 +11,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the base name to use for naming items
+        /// Gets or sets the base name to use for naming items.
         /// </summary>
         string BaseName { get; set; }
 
@@ -29,14 +29,14 @@ namespace DotSpatial.Data
         /// and threfore will be drawn earlier, and therefore should appear
         /// in a lower position on the list.
         /// </summary>
-        /// <param name="name">The name of the item to demote</param>
+        /// <param name="name">The name of the item to demote.</param>
         void Demote(string name);
 
         /// <summary>
         /// Gets the item with the specified name as an object.
         /// This enables the INamedList to work with items even if it doesn't know the strong type.
         /// </summary>
-        /// <param name="name">The string name of the item to retrieve</param>
+        /// <param name="name">The string name of the item to retrieve.</param>
         /// <returns>The actual item cast as an object.</returns>
         object GetItem(string name);
 
@@ -44,7 +44,7 @@ namespace DotSpatial.Data
         /// Gets the name of the specified item, even if the strong type of the
         /// item is not known.
         /// </summary>
-        /// <param name="item">The item to get the name of cast as an object</param>
+        /// <param name="item">The item to get the name of cast as an object.</param>
         /// <returns>The string name of the specified object.</returns>
         string GetNameOfObject(object item);
 
@@ -71,7 +71,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Removes the item with the specified name from the list.
         /// </summary>
-        /// <param name="name">The string name of the item to remove</param>
+        /// <param name="name">The string name of the item to remove.</param>
         void Remove(string name);
 
         #endregion

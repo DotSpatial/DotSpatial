@@ -122,9 +122,9 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <summary>
         /// Gives you an array of strings.
         /// </summary>
-        /// <param name="source">Enumerable source object</param>
+        /// <param name="source">Enumerable source object.</param>
         /// <typeparam name="T">Type of the source elements.</typeparam>
-        /// <returns>List of strings from the enumerable source object</returns>
+        /// <returns>List of strings from the enumerable source object.</returns>
         private static string[] ToArrayOfStrings<T>(IEnumerable<T> source)
         {
             return source.Select(_ => _.ToString()).ToArray();
@@ -140,7 +140,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <summary>
         /// Appends a label and some text to the text box on the installed tab.
         /// </summary>
-        /// <param name="label">The label for your text.  eg. "Label":</param>
+        /// <param name="label">The label for your text.  eg. "Label":.</param>
         /// <param name="text">The text to be diplayed.</param>
         private void AppendToInstalledTab(string label, string text)
         {
@@ -155,7 +155,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <summary>
         /// Appends a label and some text to the text box on the online tab.
         /// </summary>
-        /// <param name="label">The label for your text.  eg. "Label":</param>
+        /// <param name="label">The label for your text.  eg. "Label":.</param>
         /// <param name="text">The text to be diplayed.</param>
         private void AppendToOnlineTab(string label, string text)
         {

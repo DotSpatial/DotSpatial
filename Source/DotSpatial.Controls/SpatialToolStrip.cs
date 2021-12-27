@@ -41,7 +41,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="SpatialToolStrip"/> class using the specified IMap.
         /// </summary>
-        /// <param name="map">The map for the toolbar to interact with</param>
+        /// <param name="map">The map for the toolbar to interact with.</param>
         public SpatialToolStrip(IMap map)
         {
             InitializeComponent();
@@ -78,7 +78,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the basic map that this toolbar will interact with by default
+        /// Gets or sets the basic map that this toolbar will interact with by default.
         /// </summary>
         [Description("Gets or sets the basic map that this toolbar will interact with by default")]
         public IMap Map

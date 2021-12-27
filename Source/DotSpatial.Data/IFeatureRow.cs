@@ -1,7 +1,7 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -25,7 +25,7 @@ namespace DotSpatial.Data
         /// Gets or sets a Geometry created lazily from a WKB byte structure in the GEOMETRY field preferentially
         /// or if the field is DBNull and the shape is not null, then from the Shape object.
         /// </summary>
-        IGeometry Geometry { get; set; }
+        Geometry Geometry { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the extent has been created.

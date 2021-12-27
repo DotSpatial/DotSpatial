@@ -9,7 +9,7 @@ using System.Globalization;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// PointFConverter
+    /// PointFConverter.
     /// </summary>
     public class PointFConverter : ExpandableObjectConverter
     {
@@ -28,12 +28,12 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Converts the specified string into a PointF
+        /// Converts the specified string into a PointF.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <param name="culture">The culture info.</param>
         /// <param name="value">The PointF.</param>
-        /// <returns>The converted value</returns>
+        /// <returns>The converted value.</returns>
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             var s = value as string;
@@ -72,7 +72,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Converts the PointF into a string
+        /// Converts the PointF into a string.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <param name="culture">The culture info.</param>

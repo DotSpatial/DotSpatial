@@ -3,6 +3,7 @@
 
 using System.Drawing;
 using System.IO;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
@@ -19,7 +20,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks that the image that gets loaded in InRamImageData(fileName) constructor gets drawn to _inRamImage.")]
         public void InRamImageDataCtorLoadsImageWithColor()
         {
-            var imagePath = Path.Combine(@"Data\Grids", "Hintergrundkarte.tif");
+            var imagePath = Common.AbsolutePath(Path.Combine(@"Data\Grids", "Hintergrundkarte.tif"));
 
             using (var inram = new InRamImageData(imagePath))
             using (var bitmap = inram.GetBitmap())

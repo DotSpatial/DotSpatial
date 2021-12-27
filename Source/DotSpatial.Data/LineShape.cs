@@ -11,7 +11,7 @@ namespace DotSpatial.Data
     public static class LineShape
     {
         /// <summary>
-        /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon
+        /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon.
         /// </summary>
         public static double Epsilon
         {
@@ -82,8 +82,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Returns true if any segment from a line or polygon shape interesect any segments from the line or polygon shape.
         /// </summary>
-        /// <param name="lineShape">A Line or Polygon shape</param>
-        /// <param name="otherShape">Another line or polygon shape</param>
+        /// <param name="lineShape">A Line or Polygon shape.</param>
+        /// <param name="otherShape">Another line or polygon shape.</param>
         /// <returns>True, if any segments intersect.</returns>
         public static bool SegmentsIntersect(ShapeRange lineShape, ShapeRange otherShape)
         {

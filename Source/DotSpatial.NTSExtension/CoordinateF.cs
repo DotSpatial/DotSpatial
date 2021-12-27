@@ -3,7 +3,7 @@
 
 using System;
 using System.ComponentModel;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.NTSExtension
 {
@@ -73,7 +73,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Initializes a new instance of the <see cref="CoordinateF"/> class from any Coordinate object.
         /// </summary>
-        /// <param name="coordinate">The Vector.IPoint interface to construct a coordinate from</param>
+        /// <param name="coordinate">The Vector.Point interface to construct a coordinate from.</param>
         public CoordinateF(Coordinate coordinate)
         {
             _x = Convert.ToSingle(coordinate.X);
@@ -144,7 +144,7 @@ namespace DotSpatial.NTSExtension
         public int NumOrdinates => 3;
 
         /// <summary>
-        /// Gets or sets the values of this CoordinateF using an array of double values
+        /// Gets or sets the values of this CoordinateF using an array of double values.
         /// </summary>
         public double[] Values
         {
@@ -242,7 +242,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded + operator.
         /// </summary>
-        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord1">The first coordinate for the operation.</param>
         /// <param name="coord2">The second coordinate for the operation.</param>
         public static CoordinateF operator +(CoordinateF coord1, Coordinate coord2)
         {
@@ -253,7 +253,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded + operator.
         /// </summary>
-        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord1">The first coordinate for the operation.</param>
         /// <param name="d">The float to add.</param>
         public static CoordinateF operator +(CoordinateF coord1, float d)
         {
@@ -264,7 +264,7 @@ namespace DotSpatial.NTSExtension
         /// Overloaded + operator.
         /// </summary>
         /// <param name="d">The float to add.</param>
-        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord1">The first coordinate for the operation.</param>
         public static CoordinateF operator +(float d, CoordinateF coord1)
         {
             return coord1 + d;
@@ -273,7 +273,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded / operator.
         /// </summary>
-        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord1">The first coordinate for the operation.</param>
         /// <param name="coord2">The second coordinate for the operation.</param>
         public static CoordinateF operator /(CoordinateF coord1, Coordinate coord2)
         {
@@ -283,7 +283,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded / operator.
         /// </summary>
-        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord1">The first coordinate for the operation.</param>
         /// <param name="d">The float to devide.</param>
         public static CoordinateF operator /(CoordinateF coord1, float d)
         {
@@ -294,7 +294,7 @@ namespace DotSpatial.NTSExtension
         /// Overloaded / operator.
         /// </summary>
         /// <param name="d">The float to devide.</param>
-        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord1">The first coordinate for the operation.</param>
         public static CoordinateF operator /(float d, CoordinateF coord1)
         {
             return coord1 / d;
@@ -325,7 +325,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded * operator.
         /// </summary>
-        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord1">The first coordinate for the operation.</param>
         /// <param name="coord2">The second coordinate for the operation.</param>
         public static CoordinateF operator *(CoordinateF coord1, Coordinate coord2)
         {
@@ -335,7 +335,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded * operator.
         /// </summary>
-        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord1">The first coordinate for the operation.</param>
         /// <param name="d">The float to multiply.</param>
         public static CoordinateF operator *(CoordinateF coord1, float d)
         {
@@ -346,7 +346,7 @@ namespace DotSpatial.NTSExtension
         /// Overloaded * operator.
         /// </summary>
         /// <param name="d">The float to multiply.</param>
-        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord1">The first coordinate for the operation.</param>
         public static CoordinateF operator *(float d, CoordinateF coord1)
         {
             return coord1 * d;
@@ -355,7 +355,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded - operator.
         /// </summary>
-        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord1">The first coordinate for the operation.</param>
         /// <param name="coord2">The second coordinate for the operation.</param>
         public static CoordinateF operator -(CoordinateF coord1, Coordinate coord2)
         {
@@ -365,7 +365,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Overloaded - operator.
         /// </summary>
-        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord1">The first coordinate for the operation.</param>
         /// <param name="d">The float to subtract.</param>
         public static CoordinateF operator -(CoordinateF coord1, float d)
         {
@@ -376,7 +376,7 @@ namespace DotSpatial.NTSExtension
         /// Overloaded - operator.
         /// </summary>
         /// <param name="d">The float to subtract.</param>
-        /// <param name="coord1">The first coordinate for the operation</param>
+        /// <param name="coord1">The first coordinate for the operation.</param>
         public static CoordinateF operator -(float d, CoordinateF coord1)
         {
             return coord1 - d;
@@ -401,7 +401,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A copy of this instance.</returns>
         public object Clone()
         {
-            return new Coordinate(_x, _y, _z, _m);
+            return new CoordinateZM(_x, _y, _z, _m);
         }
 
         /// <summary>
@@ -410,7 +410,7 @@ namespace DotSpatial.NTSExtension
         /// Returns
         ///    -1 : this.x lowerthan other.x || ((this.x == other.x) AND (this.y lowerthan other.y))
         ///    0  : this.x == other.x AND this.y = other.y
-        ///    1  : this.x greaterthan other.x || ((this.x == other.x) AND (this.y greaterthan other.y))
+        ///    1  : this.x greaterthan other.x || ((this.x == other.x) AND (this.y greaterthan other.y)).
         /// </summary>
         /// <param name="other"><c>Coordinate</c> with which this <c>Coordinate</c> is being compared.</param>
         /// <returns>
@@ -419,8 +419,7 @@ namespace DotSpatial.NTSExtension
         /// </returns>
         public int CompareTo(object other)
         {
-            Coordinate otherCoord = other as Coordinate;
-            if (otherCoord == null) throw new ArgumentException(TopologyText.ArgumentCouldNotBeCast_S1_S2.Replace("%S1", "other").Replace("%S2", "ICoordinate"));
+            if (!(other is Coordinate otherCoord)) throw new ArgumentException(TopologyText.ArgumentCouldNotBeCast_S1_S2.Replace("%S1", "other").Replace("%S2", "ICoordinate"));
             if (_x < otherCoord.X) return -1;
             if (_x > otherCoord.X) return 1;
             if (_y < otherCoord.Y) return -1;
@@ -434,7 +433,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A copy of this instance.</returns>
         public Coordinate Copy()
         {
-            return new Coordinate(_x, _y, _z, _m);
+            return new CoordinateZM(_x, _y, _z, _m);
         }
 
         /// <summary>
@@ -503,8 +502,8 @@ namespace DotSpatial.NTSExtension
         /// Returns the distance that is appropriate for N dimensions. In otherwords, if this point is
         /// three dimensional, then all three dimensions will be used for calculating the distance.
         /// </summary>
-        /// <param name="coordinate">The coordinate to compare to this coordinate</param>
-        /// <returns>A double valued distance measure that is invariant to the number of coordinates</returns>
+        /// <param name="coordinate">The coordinate to compare to this coordinate.</param>
+        /// <returns>A double valued distance measure that is invariant to the number of coordinates.</returns>
         /// <exception cref="CoordinateMismatchException">The number of dimensions does not match between the points.</exception>
         public double HyperDistance(Coordinate coordinate)
         {
@@ -522,7 +521,7 @@ namespace DotSpatial.NTSExtension
         /* END ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Gets an array of double values for each of the ordinates
+        /// Gets an array of double values for each of the ordinates.
         /// </summary>
         /// <returns>An array of double values for each of the ordinates.</returns>
         public double[] ToArray()
@@ -533,7 +532,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Returns a <c>string</c> of the form <I>(x, y, z)</I> .
         /// </summary>
-        /// <returns><c>string</c> of the form <I>(x, y, z)</I></returns>
+        /// <returns><c>string</c> of the form. <I>(x, y, z)</I></returns>
         public override string ToString()
         {
             return "(" + _x + ", " + _y + ", " + _z + ")";

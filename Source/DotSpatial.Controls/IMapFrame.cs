@@ -7,7 +7,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using Point = System.Drawing.Point;
 
 namespace DotSpatial.Controls
 {
@@ -50,12 +51,12 @@ namespace DotSpatial.Controls
         Image BufferImage { get; set; }
 
         /// <summary>
-        /// Gets a rectangle indicating the size of the map frame image
+        /// Gets a rectangle indicating the size of the map frame image.
         /// </summary>
         Rectangle ClientRectangle { get; }
 
         /// <summary>
-        /// Gets or sets the integer that specifies the chunk that is actively being drawn
+        /// Gets or sets the integer that specifies the chunk that is actively being drawn.
         /// </summary>
         int CurrentChunk { get; set; }
 
@@ -77,7 +78,7 @@ namespace DotSpatial.Controls
         bool IsPanning { get; set; }
 
         /// <summary>
-        /// Gets or sets the layers
+        /// Gets or sets the layers.
         /// </summary>
         new IMapLayerCollection Layers { get; set; }
 
@@ -112,15 +113,15 @@ namespace DotSpatial.Controls
         /// BufferToProj takes a pixel coordinate on the buffer and
         /// converts it to geographic coordinates.
         /// </summary>
-        /// <param name="position">A Point describing the pixel position on the back buffer</param>
-        /// <returns>An ICoordinate describing the geographic position</returns>
+        /// <param name="position">A Point describing the pixel position on the back buffer.</param>
+        /// <returns>An ICoordinate describing the geographic position.</returns>
         Coordinate BufferToProj(Point position);
 
         /// <summary>
         /// This projects a rectangle relative to the buffer into and Envelope in geographic coordinates.
         /// </summary>
-        /// <param name="rect">A Rectangle</param>
-        /// <returns>An Envelope interface</returns>
+        /// <param name="rect">A Rectangle.</param>
+        /// <returns>An Envelope interface.</returns>
         Extent BufferToProj(Rectangle rect);
 
         /// <summary>
@@ -152,7 +153,7 @@ namespace DotSpatial.Controls
         /// Pans the image for this map frame. Instead of drawing entirely new content, from all 5 zones,
         /// just the slivers of newly revealed area need to be re-drawn.
         /// </summary>
-        /// <param name="shift">A Point showing the amount to shift in pixels</param>
+        /// <param name="shift">A Point showing the amount to shift in pixels.</param>
         void Pan(Point shift);
 
         /// <summary>
@@ -175,8 +176,8 @@ namespace DotSpatial.Controls
         /// for doing vector drawing on much larger pages. The result will be centered in the
         /// specified target rectangle bounds.
         /// </summary>
-        /// <param name="device">Graphics device to print to</param>
-        /// <param name="targetRectangle">The target rectangle in the graphics units of the device</param>
+        /// <param name="device">Graphics device to print to.</param>
+        /// <param name="targetRectangle">The target rectangle in the graphics units of the device.</param>
         void Print(Graphics device, Rectangle targetRectangle);
 
         /// <summary>
@@ -187,14 +188,14 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="device">Graphics object used for drawing.</param>
         /// <param name="targetRectangle">Rectangle to draw the content to.</param>
-        /// <param name="targetEnvelope">the extents to draw to the target rectangle</param>
+        /// <param name="targetEnvelope">the extents to draw to the target rectangle.</param>
         void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope);
 
         /// <summary>
         /// Converts a single geographic location into the equivalent point on the
         /// screen relative to the top left corner of the map.
         /// </summary>
-        /// <param name="location">The geographic position to transform</param>
+        /// <param name="location">The geographic position to transform.</param>
         /// <returns>A Point with the new location.</returns>
         Point ProjToBuffer(Coordinate location);
 
@@ -202,8 +203,8 @@ namespace DotSpatial.Controls
         /// Converts a single geographic envelope into an equivalent Rectangle
         /// as it would be drawn on the screen.
         /// </summary>
-        /// <param name="ext">The geographic Envelope</param>
-        /// <returns>A Rectangle</returns>
+        /// <param name="ext">The geographic Envelope.</param>
+        /// <returns>A Rectangle.</returns>
         Rectangle ProjToBuffer(Extent ext);
 
         /// <summary>
@@ -229,12 +230,12 @@ namespace DotSpatial.Controls
         void ZoomOut();
 
         /// <summary>
-        /// Zooms to the next extent of the map frame
+        /// Zooms to the next extent of the map frame.
         /// </summary>
         void ZoomToNext();
 
         /// <summary>
-        /// Zooms to the previous extent of the map frame
+        /// Zooms to the previous extent of the map frame.
         /// </summary>
         void ZoomToPrevious();
 

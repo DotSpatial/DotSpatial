@@ -9,7 +9,7 @@ using System.Drawing.Drawing2D;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using PointShape = DotSpatial.Symbology.PointShape;
 
 namespace DotSpatial.Plugins.LiDAR
@@ -129,8 +129,8 @@ namespace DotSpatial.Plugins.LiDAR
         /// directly, use OnDrawFeatures.  This will not clear existing buffer content.
         /// For that call Initialize instead.
         /// </summary>
-        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
-        /// <param name="regions">The geographic regions to draw</param>
+        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space.</param>
+        /// <param name="regions">The geographic regions to draw.</param>
         /// <param name="selected">Indicates whether only the selected elements should be drawn. This does nothing if selected is true, because this layer can't have selected elements.</param>
         public virtual void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
@@ -164,10 +164,11 @@ namespace DotSpatial.Plugins.LiDAR
 
                     if (featureType == FeatureType.Point)
                     {
-                        Point pt = new Point(Convert.ToInt32((vertices[index * 2] - minX) * dx), Convert.ToInt32((maxY - vertices[(index * 2) + 1]) * dy));
+                        var x = Convert.ToInt32((vertices[index * 2] - minX) * dx);
+                        var y = Convert.ToInt32((maxY - vertices[(index * 2) + 1]) * dy);
 
                         Matrix shift = origTransform.Clone();
-                        shift.Translate(pt.X, pt.Y);
+                        shift.Translate(x, y);
                         g.Transform = shift;
 
                         g.DrawImageUnscaled(bmp, -bmp.Width / 2, -bmp.Height / 2);
@@ -215,9 +216,9 @@ namespace DotSpatial.Plugins.LiDAR
         }
 
         /// <summary>
-        /// Fires the OnBufferChanged event
+        /// Fires the OnBufferChanged event.
         /// </summary>
-        /// <param name="clipRectangles">The Rectangle in pixels</param>
+        /// <param name="clipRectangles">The Rectangle in pixels.</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
             if (BufferChanged != null)

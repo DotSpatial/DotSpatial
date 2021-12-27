@@ -133,10 +133,10 @@ namespace DotSpatial.Controls
         #endregion
 
         /// <summary>
-        /// The default, indexed value of type T
+        /// The default, indexed value of type T.
         /// </summary>
-        /// <param name="index">The numeric index</param>
-        /// <returns>An object of type T corresponding to the index value specified</returns>
+        /// <param name="index">The numeric index.</param>
+        /// <returns>An object of type T corresponding to the index value specified.</returns>
         public new IMapLayer this[int index]
         {
             get
@@ -158,14 +158,14 @@ namespace DotSpatial.Controls
         /// IMapLayer which can be further cast into a PointLayer, MapLineLayer or
         /// a PolygonLayer, depending on the data that is passed in.
         /// </summary>
-        /// <param name="layer">A pre-existing FeatureLayer that has already been created from a featureSet</param>
+        /// <param name="layer">A pre-existing FeatureLayer that has already been created from a featureSet.</param>
         public void Add(IMapLayer layer)
         {
             base.Add(layer);
         }
 
         /// <summary>
-        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;
+        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;.
         /// </summary>
         /// <param name="collection">collection: The collection whose elements should be added to the end of the
         /// System.Collections.Generic.List&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null,
@@ -194,8 +194,8 @@ namespace DotSpatial.Controls
         /// Adds the dataset specified to the file. Depending on whether this is a featureSet,
         /// Raster, or ImageData, this will return the appropriate layer for the map.
         /// </summary>
-        /// <param name="dataSet">A dataset</param>
-        /// <returns>The IMapLayer to add</returns>
+        /// <param name="dataSet">A dataset.</param>
+        /// <returns>The IMapLayer to add.</returns>
         public virtual IMapLayer Add(IDataSet dataSet)
         {
             var ss = dataSet as ISelfLoadSet;
@@ -229,7 +229,7 @@ namespace DotSpatial.Controls
         /// IMapLayer which can be further cast into a PointLayer, MapLineLayer or
         /// a PolygonLayer, depending on the data that is passed in.
         /// </summary>
-        /// <param name="featureSet">Any valid IFeatureSet that does not yet have drawing characteristics</param>
+        /// <param name="featureSet">Any valid IFeatureSet that does not yet have drawing characteristics.</param>
         /// <returns>A newly created valid implementation of FeatureLayer which at least gives a few more common
         /// drawing related methods and can also be cast into the appropriate Point, Line or Polygon layer.</returns>
         public virtual IMapFeatureLayer Add(IFeatureSet featureSet)
@@ -278,7 +278,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Adds the specified image data as a new layer to the map.
         /// </summary>
-        /// <param name="image">The image to add as a layer</param>
+        /// <param name="image">The image to add as a layer.</param>
         /// <returns>the IMapImageLayer interface for the layer that was added to the map.</returns>
         public IMapImageLayer Add(IImageData image)
         {
@@ -293,10 +293,10 @@ namespace DotSpatial.Controls
         /// <summary>
         /// This copies the members of this collection to the specified array index, but
         /// only if they match the IGeoLayer interface. (Other kinds of layers can be
-        /// added to this collection by casting it to a LayerCollection)
+        /// added to this collection by casting it to a LayerCollection).
         /// </summary>
-        /// <param name="inArray">The array of IGeoLayer interfaces to copy values to</param>
-        /// <param name="arrayIndex">The zero-based integer index in the output array to start copying values to</param>
+        /// <param name="inArray">The array of IGeoLayer interfaces to copy values to.</param>
+        /// <param name="arrayIndex">The zero-based integer index in the output array to start copying values to.</param>
         public void CopyTo(IMapLayer[] inArray, int arrayIndex)
         {
             int index = arrayIndex;
@@ -391,7 +391,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// This simply forwards the call from a layer to the container of this collection (like a MapFrame).
         /// </summary>
-        /// <param name="sender">The layer that actually changed</param>
+        /// <param name="sender">The layer that actually changed.</param>
         /// <param name="e">The clip args.</param>
         protected virtual void OnBufferChanged(object sender, ClipArgs e)
         {
@@ -425,7 +425,7 @@ namespace DotSpatial.Controls
             object IEnumerator.Current => _internalEnumerator.Current;
 
             /// <summary>
-            /// Calls the Dispose method
+            /// Calls the Dispose method.
             /// </summary>
             public void Dispose()
             {
@@ -433,9 +433,9 @@ namespace DotSpatial.Controls
             }
 
             /// <summary>
-            /// Moves to the next member
+            /// Moves to the next member.
             /// </summary>
-            /// <returns>boolean, true if the enumerator was able to advance</returns>
+            /// <returns>boolean, true if the enumerator was able to advance.</returns>
             public bool MoveNext()
             {
                 while (_internalEnumerator.MoveNext())
@@ -448,7 +448,7 @@ namespace DotSpatial.Controls
             }
 
             /// <summary>
-            /// Resets to before the first member
+            /// Resets to before the first member.
             /// </summary>
             public void Reset()
             {

@@ -48,7 +48,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the map where changes are tracked
+        /// Gets or sets the map where changes are tracked.
         /// </summary>
         public IMap Map
         {

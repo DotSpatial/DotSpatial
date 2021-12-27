@@ -7,7 +7,7 @@ using System.Drawing.Drawing2D;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// LabelAlignmentButton
+    /// LabelAlignmentButton.
     /// </summary>
     public class LabelAlignmentButton
     {
@@ -23,8 +23,8 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="LabelAlignmentButton"/> class with the specified rectangle as the bounds.
         /// </summary>
-        /// <param name="bounds">The bounds relative to the parent client</param>
-        /// <param name="backColor">The background color</param>
+        /// <param name="bounds">The bounds relative to the parent client.</param>
+        /// <param name="backColor">The background color.</param>
         public LabelAlignmentButton(Rectangle bounds, Color backColor)
         {
             Bounds = bounds;

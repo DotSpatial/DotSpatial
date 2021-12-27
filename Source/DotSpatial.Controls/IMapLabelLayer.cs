@@ -22,7 +22,7 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Resolves ambiguity
+        /// Resolves ambiguity.
         /// </summary>
         new void Invalidate();
 

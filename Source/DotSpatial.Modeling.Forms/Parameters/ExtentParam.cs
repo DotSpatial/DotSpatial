@@ -8,7 +8,7 @@ using DotSpatial.Modeling.Forms.Elements;
 namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
-    /// ExtentParam
+    /// ExtentParam.
     /// </summary>
     public class ExtentParam : Parameter
     {
@@ -51,7 +51,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         public bool DefaultToMapExtent { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input).
         /// </summary>
         public new Extent Value
         {

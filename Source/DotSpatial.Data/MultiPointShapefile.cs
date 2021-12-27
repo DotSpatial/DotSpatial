@@ -5,12 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// A shapefile class that handles the special case where each features has multiple points
+    /// A shapefile class that handles the special case where each features has multiple points.
     /// </summary>
     public class MultiPointShapefile : Shapefile
     {
@@ -27,7 +27,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiPointShapefile"/> class that is loaded from the supplied fileName.
         /// </summary>
-        /// <param name="fileName">The string fileName of the polygon shapefile to load</param>
+        /// <param name="fileName">The string fileName of the polygon shapefile to load.</param>
         public MultiPointShapefile(string fileName)
             : this()
         {
@@ -39,10 +39,10 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Gets the feature at the specified index offset
+        /// Gets the feature at the specified index offset.
         /// </summary>
-        /// <param name="index">the integer index</param>
-        /// <returns>An IFeature created from the shape at the specified offset</returns>
+        /// <param name="index">the integer index.</param>
+        /// <returns>An IFeature created from the shape at the specified offset.</returns>
         public override IFeature GetFeature(int index)
         {
             IFeature f;
@@ -63,10 +63,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Opens a shapefile
+        /// Opens a shapefile.
         /// </summary>
-        /// <param name="fileName">The string fileName of the point shapefile to load</param>
-        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
+        /// <param name="fileName">The string fileName of the point shapefile to load.</param>
+        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler.</param>
         public void Open(string fileName, IProgressHandler progressHandler)
         {
             IndexMode = true;
@@ -178,7 +178,7 @@ namespace DotSpatial.Data
         /// Obtains a typed list of MultiPoint structures with double values associated with the various coordinates.
         /// </summary>
         /// <param name="fileName">Name of the file that gets loaded.</param>
-        /// <param name="progressHandler">Progress handler</param>
+        /// <param name="progressHandler">Progress handler.</param>
         private void FillPoints(string fileName, IProgressHandler progressHandler)
         {
             // Check whether file is empty or not all parameters are set correctly.

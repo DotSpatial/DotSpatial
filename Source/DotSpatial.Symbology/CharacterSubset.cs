@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// CharacterSubsets
+    /// CharacterSubsets.
     /// </summary>
     public enum CharacterSubset
     {

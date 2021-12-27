@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// HfaInvalidCountException
+    /// HfaInvalidCountException.
     /// </summary>
     public class HfaInvalidCountException : ApplicationException
     {

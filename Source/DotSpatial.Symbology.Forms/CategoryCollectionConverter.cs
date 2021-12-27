@@ -9,14 +9,14 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// CategoryCollectionConverter
+    /// CategoryCollectionConverter.
     /// </summary>
     public class CategoryCollectionConverter : CollectionConverter
     {
         #region Methods
 
         /// <summary>
-        /// Determines how to convert from an interface
+        /// Determines how to convert from an interface.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <param name="sourceType">The source type.</param>

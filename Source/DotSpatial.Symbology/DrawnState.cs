@@ -21,10 +21,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawnState"/> class for subdividing features.
         /// </summary>
-        /// <param name="category">A category that the feature belongs to</param>
-        /// <param name="selected">Boolean, true if the feature is currently selected</param>
-        /// <param name="chunk">An integer chunk that this feature should belong to</param>
-        /// <param name="visible">A boolean indicating whether this feature is visible or not</param>
+        /// <param name="category">A category that the feature belongs to.</param>
+        /// <param name="selected">Boolean, true if the feature is currently selected.</param>
+        /// <param name="chunk">An integer chunk that this feature should belong to.</param>
+        /// <param name="visible">A boolean indicating whether this feature is visible or not.</param>
         public DrawnState(IFeatureCategory category, bool selected, int chunk, bool visible)
         {
             SchemeCategory = category;
@@ -53,7 +53,7 @@ namespace DotSpatial.Symbology
         public bool IsVisible { get; set; }
 
         /// <summary>
-        /// Gets or sets the scheme category
+        /// Gets or sets the scheme category.
         /// </summary>
         public IFeatureCategory SchemeCategory { get; set; }
 
@@ -79,7 +79,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Overrides the not-equal to operator
+        /// Overrides the not-equal to operator.
         /// </summary>
         /// <param name="u">First drawn state to check.</param>
         /// <param name="v">Second drawn state to check.</param>

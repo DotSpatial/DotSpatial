@@ -7,7 +7,7 @@ using OSGeo.GDAL;
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
     /// <summary>
-    /// GDalException
+    /// GDalException.
     /// </summary>
     public class GdalException : ApplicationException
     {

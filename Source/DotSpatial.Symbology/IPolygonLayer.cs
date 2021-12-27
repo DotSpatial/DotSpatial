@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// A layer with drawing characteristics for LineStrings
+    /// A layer with drawing characteristics for LineStrings.
     /// </summary>
     public interface IPolygonLayer : IFeatureLayer
     {

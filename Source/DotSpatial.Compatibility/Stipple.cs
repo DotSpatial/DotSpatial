@@ -4,7 +4,7 @@
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// FillStipple
+    /// FillStipple.
     /// </summary>
     public enum Stipple
     {

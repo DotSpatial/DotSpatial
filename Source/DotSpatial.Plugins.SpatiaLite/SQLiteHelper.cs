@@ -7,7 +7,7 @@ using System.IO;
 namespace DotSpatial.Plugins.SpatiaLite
 {
     /// <summary>
-    /// The type of SQLite database (data repositor or metadata cache)
+    /// The type of SQLite database (data repositor or metadata cache).
     /// </summary>
     public enum DatabaseType
     {

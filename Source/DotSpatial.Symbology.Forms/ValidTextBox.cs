@@ -108,7 +108,7 @@ namespace DotSpatial.Symbology.Forms
         public Color NormalBackgroundColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the text that should appear as the mouse hovers over this textbox
+        /// Gets or sets the text that should appear as the mouse hovers over this textbox.
         /// </summary>
         [Category("Behavior")]
         [Description("Gets or sets the text that this control should display when not showing an error.")]
@@ -119,7 +119,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// This changes the error text,
+        /// This changes the error text,.
         /// </summary>
         public void ClearError()
         {

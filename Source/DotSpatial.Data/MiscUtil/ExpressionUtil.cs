@@ -10,19 +10,19 @@ namespace DotSpatial.Data.MiscUtil
     // http://www.codeproject.com/KB/cs/GenericArithmeticUtil.aspx
 
     /// <summary>
-    /// General purpose Expression utilities
+    /// General purpose Expression utilities.
     /// </summary>
     public static class ExpressionUtil
     {
         #region Methods
 
         /// <summary>
-        /// Create a function delegate representing a unary operation
+        /// Create a function delegate representing a unary operation.
         /// </summary>
-        /// <typeparam name="TArg1">The parameter type</typeparam>
-        /// <typeparam name="TResult">The return type</typeparam>
-        /// <param name="body">Body factory</param>
-        /// <returns>Compiled function delegate</returns>
+        /// <typeparam name="TArg1">The parameter type.</typeparam>
+        /// <typeparam name="TResult">The return type.</typeparam>
+        /// <param name="body">Body factory.</param>
+        /// <returns>Compiled function delegate.</returns>
         public static Func<TArg1, TResult> CreateExpression<TArg1, TResult>(Func<Expression, UnaryExpression> body)
         {
             ParameterExpression inp = Expression.Parameter(typeof(TArg1), "inp");
@@ -38,31 +38,31 @@ namespace DotSpatial.Data.MiscUtil
         }
 
         /// <summary>
-        /// Create a function delegate representing a binary operation
+        /// Create a function delegate representing a binary operation.
         /// </summary>
-        /// <typeparam name="TArg1">The first parameter type</typeparam>
-        /// <typeparam name="TArg2">The second parameter type</typeparam>
-        /// <typeparam name="TResult">The return type</typeparam>
-        /// <param name="body">Body factory</param>
-        /// <returns>Compiled function delegate</returns>
+        /// <typeparam name="TArg1">The first parameter type.</typeparam>
+        /// <typeparam name="TArg2">The second parameter type.</typeparam>
+        /// <typeparam name="TResult">The return type.</typeparam>
+        /// <param name="body">Body factory.</param>
+        /// <returns>Compiled function delegate.</returns>
         public static Func<TArg1, TArg2, TResult> CreateExpression<TArg1, TArg2, TResult>(Func<Expression, Expression, BinaryExpression> body)
         {
             return CreateExpression<TArg1, TArg2, TResult>(body, false);
         }
 
         /// <summary>
-        /// Create a function delegate representing a binary operation
+        /// Create a function delegate representing a binary operation.
         /// </summary>
-        /// <typeparam name="TArg1">The first parameter type</typeparam>
-        /// <typeparam name="TArg2">The second parameter type</typeparam>
-        /// <typeparam name="TResult">The return type</typeparam>
-        /// <param name="body">Body factory</param>
+        /// <typeparam name="TArg1">The first parameter type.</typeparam>
+        /// <typeparam name="TArg2">The second parameter type.</typeparam>
+        /// <typeparam name="TResult">The return type.</typeparam>
+        /// <param name="body">Body factory.</param>
         /// <param name="castArgsToResultOnFailure">If no matching operation is possible, attempt to convert
         /// TArg1 and TArg2 to TResult for a match? For example, there is no
         /// "decimal operator /(decimal, int)", but by converting TArg2 (int) to
         /// TResult (decimal) a match is found.</param>
         /// <returns>
-        /// Compiled function delegate
+        /// Compiled function delegate.
         /// </returns>
         public static Func<TArg1, TArg2, TResult> CreateExpression<TArg1, TArg2, TResult>(Func<Expression, Expression, BinaryExpression> body, bool castArgsToResultOnFailure)
         {

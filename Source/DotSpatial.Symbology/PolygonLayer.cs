@@ -20,7 +20,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonLayer"/> class.
         /// </summary>
-        /// <param name="inFeatureSet">A featureset that contains polygons</param>
+        /// <param name="inFeatureSet">A featureset that contains polygons.</param>
         /// <exception cref="PolygonFeatureTypeException">Thrown if a non-polygon featureset is supplied.</exception>
         public PolygonLayer(IFeatureSet inFeatureSet)
             : base(inFeatureSet)
@@ -31,8 +31,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonLayer"/> class.
         /// </summary>
-        /// <param name="inFeatureSet">A featureset that contains polygons</param>
-        /// <param name="progressHandler">An IProgressHandler to receive progress messages</param>
+        /// <param name="inFeatureSet">A featureset that contains polygons.</param>
+        /// <param name="progressHandler">An IProgressHandler to receive progress messages.</param>
         /// <exception cref="PolygonFeatureTypeException">Thrown if a non-polygon featureset is supplied.</exception>
         public PolygonLayer(IFeatureSet inFeatureSet, IProgressHandler progressHandler)
             : base(inFeatureSet, null, progressHandler)
@@ -62,7 +62,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <remarks>
         /// [TypeConverter(typeof(GeneralTypeConverter))]
-        /// [Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))]
+        /// [Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))].
         /// </remarks>
         [Category("Appearance")]
         [Description("Gets or sets the symbolic characteristics for the regular polygons in this layer or symbol class")]
@@ -87,7 +87,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <remarks>
         /// [TypeConverter(typeof(GeneralTypeConverter))]
-        /// [Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))]
+        /// [Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))].
         /// </remarks>
         [Category("Appearance")]
         [Description("Gets or sets the symbolic characteristics for the regular polygons in this layer or symbol class")]
@@ -110,7 +110,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <remarks>
         /// [TypeConverter(typeof(GeneralTypeConverter))]
-        /// [Editor(typeof(PolygonSchemePropertyGridEditor), typeof(UITypeEditor))]
+        /// [Editor(typeof(PolygonSchemePropertyGridEditor), typeof(UITypeEditor))].
         /// </remarks>
         [Category("Appearance")]
         [Description("Gets or sets the entire scheme to use for symbolizing this polygon layer.")]

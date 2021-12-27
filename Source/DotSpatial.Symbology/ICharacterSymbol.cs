@@ -38,7 +38,7 @@ namespace DotSpatial.Symbology
         /// specific character in a given "typeset" range.
         /// </summary>
         /// <remarks>
-        /// [Editor(typeof(CharacterCodeEditor), typeof(UITypeEditor))]
+        /// [Editor(typeof(CharacterCodeEditor), typeof(UITypeEditor))].
         /// </remarks>
         [Description("Gets or sets the lower unicode byte or character ASCII code")]
         byte Code { get; set; }
@@ -46,7 +46,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the string font family name to use for this character set.
         /// </summary>
-        /// <remarks>[Editor(typeof(FontFamilyNameEditor), typeof(UITypeEditor))]</remarks>
+        /// <remarks>[Editor(typeof(FontFamilyNameEditor), typeof(UITypeEditor))].</remarks>
         [Description("Gets or sets the font family name to use when building the font.")]
         string FontFamilyName { get; set; }
 
@@ -63,7 +63,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the string equivalent of the specified character code.
         /// </summary>
-        /// <returns>A string version of the character</returns>
+        /// <returns>A string version of the character.</returns>
         string ToString();
 
         #endregion

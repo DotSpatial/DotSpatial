@@ -3,7 +3,7 @@
 
 using System;
 using System.Runtime.InteropServices;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {

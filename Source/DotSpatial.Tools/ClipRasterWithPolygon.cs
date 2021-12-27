@@ -39,12 +39,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 

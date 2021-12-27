@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PatternTypes
+    /// PatternTypes.
     /// </summary>
     public enum PatternType
     {
