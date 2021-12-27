@@ -1,9 +1,9 @@
-version: 2.0
+version: 2.0.1
 image: Visual Studio 2019
 configuration: Release
 
 environment:
-  packageVersion: 2.0.0
+  packageVersion: 2.0.1
 
 cache: 
 - source\packages -> **\packages.config
@@ -13,8 +13,8 @@ build:
   verbosity: normal
   
 init:
-- ps: $env:buildVersion = "$env:packageVersion.$env:appveyor_build_number"
-- ps: $env:nugetVersion = "$env:packageVersion-alpha$env:appveyor_build_number"
+- ps: $env:buildVersion = "$env:packageVersion"
+- ps: $env:nugetVersion = "$env:packageVersion"
 - ps: Update-AppveyorBuild -Version $env:buildVersion
 
 assembly_info:
