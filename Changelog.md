@@ -2,11 +2,16 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+### Changed
 - Switched to VS2019
 - Switched to .Net Framework 4.7.2
 - Updated StyleCop.Analyzers to 1.1.118
 - Switched from DotSpatial.NetTopologySuite/DotSpatial.GeoAPI to NetTopologySuite 2.4.0
 - Updated NUnit to 3.13.2
+
+### Fixed
+- Bug in extent calculation in WebMap plugin (#1367)
 
 ## V2.0.1
 
