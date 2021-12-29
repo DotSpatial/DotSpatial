@@ -8,7 +8,7 @@ using DotSpatial.Symbology;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// Contains extension methods for <see cref="IFeatureLayer"/>
+    /// Contains extension methods for <see cref="IFeatureLayer"/>.
     /// </summary>
     // ReSharper disable once InconsistentNaming
     public static class IFeatureLayerExtensions
@@ -22,9 +22,9 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="featureLayer">The FeatureLayer to apply the labels to.</param>
         /// <param name="expression">The string label expression to use where field names are in square brackets like
-        /// [Name]</param>
-        /// <param name="font">The font to use for these labels</param>
-        /// <param name="fontColor">The color for the labels</param>
+        /// [Name].</param>
+        /// <param name="font">The font to use for these labels.</param>
+        /// <param name="fontColor">The color for the labels.</param>
         /// <exception cref="ArgumentNullException"><paramref name="featureLayer"/> must be not null.</exception>
         public static void AddLabels(this IFeatureLayer featureLayer, string expression, Font font, Color fontColor)
         {
@@ -53,8 +53,8 @@ namespace DotSpatial.Controls
         /// This will add a new label category that will only apply to the specified filter expression.
         /// This will not remove any existing categories.
         /// </summary>
-        /// <param name="featureLayer">The feature layer that the labels should be applied to</param>
-        /// <param name="expression">The string expression where field names are in square brackets</param>
+        /// <param name="featureLayer">The feature layer that the labels should be applied to.</param>
+        /// <param name="expression">The string expression where field names are in square brackets.</param>
         /// <param name="filterExpression">The string filter expression that controls which features are labeled.
         /// Field names are in square brackets, strings in single quotes.</param>
         /// <param name="symbolizer">The label symbolizer that controls the basic appearance of the labels in this
@@ -81,8 +81,8 @@ namespace DotSpatial.Controls
         /// This will add a new label category that will only apply to the specified filter expression. This will
         /// not remove any existing categories.
         /// </summary>
-        /// <param name="featureLayer">The feature layer that the labels should be applied to</param>
-        /// <param name="expression">The string expression where field names are in square brackets</param>
+        /// <param name="featureLayer">The feature layer that the labels should be applied to.</param>
+        /// <param name="expression">The string expression where field names are in square brackets.</param>
         /// <param name="filterExpression">The string filter expression that controls which features are labeled.
         /// Field names are in square brackets, strings in single quotes.</param>
         /// <param name="symbolizer">The label symbolizer that controls the basic appearance of the labels in this

@@ -4,7 +4,7 @@
 namespace DotSpatial.NTSExtension
 {
     /// <summary>
-    /// IMatrix
+    /// IMatrix.
     /// </summary>
     public interface IMatrix
     {

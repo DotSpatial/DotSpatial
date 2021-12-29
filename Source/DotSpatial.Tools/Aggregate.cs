@@ -68,7 +68,7 @@ namespace DotSpatial.Tools
         /// <param name="sourceData">The source FeatureSet to aggregate the features for.</param>
         /// <param name="resultData">The result FeatureSet of aggregated features.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
-        /// <returns>True if successful</returns>
+        /// <returns>True if successful.</returns>
         public bool Execute(IFeatureSet sourceData, IFeatureSet resultData, ICancelProgressHandler cancelProgressHandler)
         {
             // removed "static" dpa 12/2009 so that this can be run from an external call directly.

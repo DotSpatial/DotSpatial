@@ -8,7 +8,7 @@ using System.Globalization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Size2DConverter
+    /// Size2DConverter.
     /// </summary>
     public class Size2DConverter : ExpandableObjectConverter
     {
@@ -79,7 +79,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Converts the Size2D into a string
+        /// Converts the Size2D into a string.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <param name="culture">The culture info.</param>

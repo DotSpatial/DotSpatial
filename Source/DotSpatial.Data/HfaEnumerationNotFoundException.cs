@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// HfaEnumerationNotFoundException
+    /// HfaEnumerationNotFoundException.
     /// </summary>
     public class HfaEnumerationNotFoundException : ApplicationException
     {

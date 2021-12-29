@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// ExtentParseException
+    /// ExtentParseException.
     /// </summary>
     public class ExtentParseException : Exception
     {

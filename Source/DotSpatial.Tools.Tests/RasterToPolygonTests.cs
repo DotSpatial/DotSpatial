@@ -16,17 +16,20 @@ namespace DotSpatial.Tools.Tests
     [TestFixture]
     internal class RasterToPolygonTests
     {
+        private readonly string _folder = Common.AbsolutePath(@"Data");
+
         /// <summary>
         /// Tests that the tool can create multipart polygons from the given raster.
         /// </summary>
-        /// <param name="file">Raster that gets converted.</param>
+        /// <param name="pFile">Raster that gets converted.</param>
         [Test]
-        [TestCase(@"Data\DEM_w.tif")]
-        [TestCase(@"Data\DanSite1w.tif")]
-        [TestCase(@"Data\DanSite2w.tif")]
-        [TestCase(@"Data\c1w.tif")]
-        public void CanCreateMultiPartPolygons(string file)
+        [TestCase(@"DEM_w.tif")]
+        [TestCase(@"DanSite1w.tif")]
+        [TestCase(@"DanSite2w.tif")]
+        [TestCase(@"c1w.tif")]
+        public void CanCreateMultiPartPolygons(string pFile)
         {
+            var file = System.IO.Path.Combine(_folder, pFile);
             var target = new RasterToPolygon();
             var p = new GdalRasterProvider();
             var raster = p.Open(file);
@@ -41,13 +44,16 @@ namespace DotSpatial.Tools.Tests
         /// <summary>
         /// Checks that the tool doesn't create multipart polygons  when a connection grid is used.
         /// </summary>
-        /// <param name="rasterFile">The raster file.</param>
-        /// <param name="flowDirectionGridFile">The connection grid file.</param>
+        /// <param name="pRasterFile">The raster file.</param>
+        /// <param name="pFlowDirectionGridFile">The connection grid file.</param>
         [Test]
-        [TestCase(@"Data\DEM_w.tif", @"Data\DEM_p.tif")]
-        [TestCase(@"Data\c1w.tif", @"Data\c1p.tif")]
-        public void NoMultiPartPolygonsWithConnectionGrid(string rasterFile, string flowDirectionGridFile)
+        [TestCase(@"DEM_w.tif", @"DEM_p.tif")]
+        [TestCase(@"c1w.tif", @"c1p.tif")]
+        public void NoMultiPartPolygonsWithConnectionGrid(string pRasterFile, string pFlowDirectionGridFile)
         {
+            var rasterFile = System.IO.Path.Combine(_folder, pRasterFile);
+            var flowDirectionGridFile = System.IO.Path.Combine(_folder, pFlowDirectionGridFile);
+
             var p = new GdalRasterProvider();
             var raster = p.Open(rasterFile);
             var flowDirectionGrid = p.Open(flowDirectionGridFile);

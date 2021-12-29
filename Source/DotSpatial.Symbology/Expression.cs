@@ -1354,7 +1354,7 @@ namespace DotSpatial.Symbology
         /// Converts the given value to string. Uses _floatingFormat for double.
         /// </summary>
         /// <param name="value">Value that gets converted.</param>
-        /// <returns>value as string</returns>
+        /// <returns>value as string.</returns>
         private string SaveToString(object value)
         {
             if (value == null || value == DBNull.Value) return string.Empty;

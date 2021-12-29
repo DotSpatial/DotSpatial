@@ -8,7 +8,7 @@ using System.IO;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// ByteBlock
+    /// ByteBlock.
     /// </summary>
     public class ByteBlock
     {
@@ -39,7 +39,7 @@ namespace DotSpatial.Data
         public int BlockSize { get; }
 
         /// <summary>
-        /// Gets or sets the current block index
+        /// Gets or sets the current block index.
         /// </summary>
         public int CurrentBlock { get; set; }
 
@@ -76,7 +76,7 @@ namespace DotSpatial.Data
         /// Reads the number of bytes using the specified reader.
         /// This handles copying across blocks if necessary.
         /// </summary>
-        /// <param name="numBytes">The integer number of bytes to read</param>
+        /// <param name="numBytes">The integer number of bytes to read.</param>
         /// <param name="stream">The file or data stream to read from.</param>
         public void Read(int numBytes, Stream stream)
         {
@@ -95,7 +95,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Resets the indices
+        /// Resets the indices.
         /// </summary>
         public void Reset()
         {

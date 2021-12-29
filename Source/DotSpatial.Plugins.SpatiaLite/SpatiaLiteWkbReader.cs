@@ -2,8 +2,7 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.IO;
-using GeoAPI.Geometries;
-using GeoAPI.IO;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
 namespace DotSpatial.Plugins.SpatiaLite
@@ -18,19 +17,19 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// </summary>
         /// <param name="stream">Stream that should be used to read the data.</param>
         /// <returns>IGeometry that is contained in the given stream.</returns>
-        public override IGeometry Read(Stream stream)
+        public override Geometry Read(Stream stream)
         {
             // specialized Read() method for SpatiaLite
             using (stream)
             {
                 // read first byte
-                BinaryReader reader = null;
+                BiEndianBinaryReader reader = null;
                 var startByte = stream.ReadByte(); // must be "0"
                 var byteOrder = (ByteOrder)stream.ReadByte();
 
                 try
                 {
-                    reader = (byteOrder == ByteOrder.BigEndian) ? new BEBinaryReader(stream) : new BinaryReader(stream);
+                    reader = new BiEndianBinaryReader(stream, byteOrder);
 
                     int srid = reader.ReadInt32();
                     double mbrMinX = reader.ReadDouble();

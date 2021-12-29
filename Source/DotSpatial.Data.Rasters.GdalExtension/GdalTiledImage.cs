@@ -49,7 +49,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         #region Methods
 
         /// <summary>
-        /// Closes the image
+        /// Closes the image.
         /// </summary>
         public override void Close()
         {

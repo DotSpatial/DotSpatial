@@ -6,7 +6,8 @@ using System.ComponentModel;
 using System.Drawing;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using Point = System.Drawing.Point;
 
 namespace DotSpatial.Controls
 {
@@ -18,17 +19,17 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets the bounding rectangle representing this map in screen coordinates
+        /// Gets the bounding rectangle representing this map in screen coordinates.
         /// </summary>
         Rectangle Bounds { get; }
 
         /// <summary>
-        /// Gets an image that has been buffered
+        /// Gets an image that has been buffered.
         /// </summary>
         Image BufferedImage { get; }
 
         /// <summary>
-        /// Gets the client rectangle of the map control
+        /// Gets the client rectangle of the map control.
         /// </summary>
         Rectangle ClientRectangle { get; }
 
@@ -47,7 +48,7 @@ namespace DotSpatial.Controls
         FunctionMode FunctionMode { get; set; }
 
         /// <summary>
-        /// Gets the height of the control
+        /// Gets the height of the control.
         /// </summary>
         int Height { get; }
 
@@ -61,12 +62,12 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Gets or sets a value indicating whether the Map is Zoomed out to full extent or not.
-        /// Added 1/3/2013 by Eric Hullinger
+        /// Added 1/3/2013 by Eric Hullinger.
         /// </summary>
         bool IsZoomedToMaxExtent { get; set; }
 
         /// <summary>
-        /// Gets the screen coordinates of the
+        /// Gets the screen coordinates of the.
         /// </summary>
         int Left { get; }
 
@@ -146,36 +147,36 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Converts a single point location into an equivalent geographic coordinate.
         /// </summary>
-        /// <param name="position">The client coordinate relative to the map control</param>
-        /// <returns>The geographic ICoordinate interface</returns>
+        /// <param name="position">The client coordinate relative to the map control.</param>
+        /// <returns>The geographic ICoordinate interface.</returns>
         Coordinate PixelToProj(Point position);
 
         /// <summary>
         /// Converts a rectangle in pixel coordinates relative to the map control into a geographic envelope.
         /// </summary>
-        /// <param name="rect">The rectangle to convert</param>
-        /// <returns>An Envelope interface</returns>
+        /// <param name="rect">The rectangle to convert.</param>
+        /// <returns>An Envelope interface.</returns>
         Extent PixelToProj(Rectangle rect);
 
         /// <summary>
         /// Converts a point from screen coordinates to client coordinates.
         /// </summary>
-        /// <param name="position">The Point representing the screen position</param>
-        /// <returns>The Point</returns>
+        /// <param name="position">The Point representing the screen position.</param>
+        /// <returns>The Point.</returns>
         Point PointToClient(Point position);
 
         /// <summary>
         /// Converts a point from client coordinates to screen coordinates.
         /// </summary>
         /// <param name="position">The client location.</param>
-        /// <returns>A Point in screen coordinates</returns>
+        /// <returns>A Point in screen coordinates.</returns>
         Point PointToScreen(Point position);
 
         /// <summary>
         /// Converts a single geographic location into the equivalent point on the
         /// screen relative to the top left corner of the map.
         /// </summary>
-        /// <param name="location">The geographic position to transform</param>
+        /// <param name="location">The geographic position to transform.</param>
         /// <returns>A Point with the new location.</returns>
         Point ProjToPixel(Coordinate location);
 
@@ -183,8 +184,8 @@ namespace DotSpatial.Controls
         /// Converts a single geographic envelope into an equivalent Rectangle
         /// as it would be drawn on the screen.
         /// </summary>
-        /// <param name="env">The geographic Envelope</param>
-        /// <returns>A Rectangle</returns>
+        /// <param name="env">The geographic Envelope.</param>
+        /// <returns>A Rectangle.</returns>
         Rectangle ProjToPixel(Extent env);
 
         /// <summary>

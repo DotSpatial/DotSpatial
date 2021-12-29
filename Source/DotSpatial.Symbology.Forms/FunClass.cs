@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// FunClass
+    /// FunClass.
     /// </summary>
     internal class FunClass
     {
@@ -76,7 +76,7 @@ namespace DotSpatial.Symbology.Forms
 
         /// <summary>
         /// Gets or sets the no Of arg fuction type
-        /// either one or two or more than two
+        /// either one or two or more than two.
         /// </summary>
         public int NoOfArg { get; set; }
 

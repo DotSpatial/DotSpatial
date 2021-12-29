@@ -10,8 +10,6 @@ using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using Point = System.Drawing.Point;
 
@@ -65,7 +63,7 @@ namespace DotSpatial.Plugins.Measure
         #region Properties
 
         /// <summary>
-        /// Gets or sets the featureset to modify
+        /// Gets or sets the featureset to modify.
         /// </summary>
         public IFeatureSet FeatureSet { get; set; }
 
@@ -112,9 +110,9 @@ namespace DotSpatial.Plugins.Measure
         }
 
         /// <summary>
-        /// Handles drawing of editing features
+        /// Handles drawing of editing features.
         /// </summary>
-        /// <param name="e">The drawing args</param>
+        /// <param name="e">The drawing args.</param>
         protected override void OnDraw(MapDrawArgs e)
         {
             Point mouseTest = Map.PointToClient(Control.MousePosition);
@@ -232,7 +230,7 @@ namespace DotSpatial.Plugins.Measure
         }
 
         /// <summary>
-        /// updates the auto-filling X and Y coordinates
+        /// updates the auto-filling X and Y coordinates.
         /// </summary>
         /// <param name="e">the event args.</param>
         protected override void OnMouseMove(GeoMouseArgs e)
@@ -297,7 +295,7 @@ namespace DotSpatial.Plugins.Measure
         }
 
         /// <summary>
-        /// Handles the Mouse-Up situation
+        /// Handles the Mouse-Up situation.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseUp(GeoMouseArgs e)
@@ -390,8 +388,7 @@ namespace DotSpatial.Plugins.Measure
             _measureDialog = new MeasureDialog();
             HandleMeasureDialogEvents();
 
-            Control map = Map as Control;
-            if (map != null) map.MouseLeave += MapMouseLeave;
+            if (Map is Control map) map.MouseLeave += MapMouseLeave;
             Name = "MapFunctionMeasure";
         }
 
@@ -404,14 +401,14 @@ namespace DotSpatial.Plugins.Measure
 
         private double GetArea(Coordinate[] tempPolygon)
         {
-            double area = Math.Abs(CGAlgorithms.SignedArea(tempPolygon));
+            double area = Math.Abs(NetTopologySuite.Algorithm.Area.OfRingSigned(tempPolygon));
             if (_previousParts == null || _previousParts.Count == 0)
             {
-                _firstPartIsCounterClockwise = CGAlgorithms.IsCCW(tempPolygon);
+                _firstPartIsCounterClockwise = NetTopologySuite.Algorithm.Orientation.IsCCW(tempPolygon);
             }
             else
             {
-                if (CGAlgorithms.IsCCW(tempPolygon) != _firstPartIsCounterClockwise)
+                if (NetTopologySuite.Algorithm.Orientation.IsCCW(tempPolygon) != _firstPartIsCounterClockwise)
                 {
                     area = -area;
                 }
@@ -447,7 +444,7 @@ namespace DotSpatial.Plugins.Measure
                     double factor = Math.Cos(y * Math.PI / 180);
                     dx *= factor;
                     dist = Math.Sqrt((dx * dx) + (dy * dy));
-                    dist = dist * RadiusOfEarth;
+                    dist *= RadiusOfEarth;
                 }
                 else
                 {

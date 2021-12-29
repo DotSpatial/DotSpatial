@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A Tool strip to use with the ToolManager when used as a graphical control
+    /// A Tool strip to use with the ToolManager when used as a graphical control.
     /// </summary>
     [ToolboxItem(false)]
     public class ToolManagerToolStrip : ToolStrip
@@ -36,7 +36,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the ToolManager currently associated with the toolstrip
+        /// Gets or sets the ToolManager currently associated with the toolstrip.
         /// </summary>
         public ToolManager ToolManager { get; set; }
 

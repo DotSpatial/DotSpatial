@@ -6,12 +6,12 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using DotSpatial.Data;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A layout control that draws the content from a map control so that it can be printed
+    /// A layout control that draws the content from a map control so that it can be printed.
     /// </summary>
     public class LayoutMap : LayoutElement
     {
@@ -34,10 +34,8 @@ namespace DotSpatial.Controls
         /// <exception cref="ArgumentNullException">Throws if mapControl is null.</exception>
         public LayoutMap(Map mapControl)
         {
-            if (mapControl == null) throw new ArgumentNullException(nameof(mapControl));
-
+            _mapControl = mapControl ?? throw new ArgumentNullException(nameof(mapControl));
             Name = "Map";
-            _mapControl = mapControl;
 
             Envelope viewExtentEnvelope = new Envelope(_mapControl.ViewExtents.ToEnvelope());
             if (_mapControl.ExtendBuffer)
@@ -100,8 +98,7 @@ namespace DotSpatial.Controls
 
             set
             {
-                if (value == null) throw new ArgumentNullException(nameof(value));
-                _mapControl = value;
+                _mapControl = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
 
@@ -137,10 +134,10 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
+        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object.
         /// </summary>
-        /// <param name="g">The graphics object to draw to</param>
-        /// <param name="printing">Boolean, true if the drawing is printing to an actual page</param>
+        /// <param name="g">The graphics object to draw to.</param>
+        /// <param name="printing">Boolean, true if the drawing is printing to an actual page.</param>
         public override void Draw(Graphics g, bool printing)
         {
             if (printing == false)
@@ -173,17 +170,17 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Pans the map
+        /// Pans the map.
         /// </summary>
-        /// <param name="x">The amount to pan the map in the X-axis in map coord</param>
-        /// <param name="y">The amount to pan the map in the Y-axis in map coord</param>
+        /// <param name="x">The amount to pan the map in the X-axis in map coord.</param>
+        /// <param name="y">The amount to pan the map in the Y-axis in map coord.</param>
         public virtual void PanMap(double x, double y)
         {
             Envelope = new Envelope(Envelope.MinX - x, Envelope.MaxX - x, Envelope.MinY - y, Envelope.MaxY - y);
         }
 
         /// <summary>
-        /// Zooms the map element in by 10%
+        /// Zooms the map element in by 10%.
         /// </summary>
         public virtual void ZoomInMap()
         {
@@ -194,7 +191,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zooms the map element out by 10%
+        /// Zooms the map element out by 10%.
         /// </summary>
         public virtual void ZoomOutMap()
         {
@@ -205,7 +202,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zooms the map to the fullextent of all available layers
+        /// Zooms the map to the fullextent of all available layers.
         /// </summary>
         public virtual void ZoomToFullExtent()
         {
@@ -213,7 +210,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zooms the map to the extent of the current view
+        /// Zooms the map to the extent of the current view.
         /// </summary>
         public virtual void ZoomViewExtent()
         {
@@ -228,7 +225,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Updates the size of the control
+        /// Updates the size of the control.
         /// </summary>
         protected override void OnSizeChanged()
         {

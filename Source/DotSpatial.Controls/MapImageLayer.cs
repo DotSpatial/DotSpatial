@@ -34,7 +34,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="MapImageLayer"/> class.
         /// </summary>
-        /// <param name="baseImage">The image to draw as a layer</param>
+        /// <param name="baseImage">The image to draw as a layer.</param>
         public MapImageLayer(IImageData baseImage)
             : base(baseImage)
         {
@@ -43,8 +43,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="MapImageLayer"/> class.
         /// </summary>
-        /// <param name="baseImage">The image to draw as a layer</param>
-        /// <param name="container">The Layers collection that keeps track of the image layer</param>
+        /// <param name="baseImage">The image to draw as a layer.</param>
+        /// <param name="container">The Layers collection that keeps track of the image layer.</param>
         public MapImageLayer(IImageData baseImage, ICollection<ILayer> container)
             : base(baseImage, container)
         {
@@ -53,7 +53,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="MapImageLayer"/> class.
         /// </summary>
-        /// <param name="baseImage">The image to draw as a layer</param>
+        /// <param name="baseImage">The image to draw as a layer.</param>
         /// <param name="transparent">The color to make transparent when drawing the image.</param>
         public MapImageLayer(IImageData baseImage, Color transparent)
             : base(baseImage)
@@ -112,8 +112,8 @@ namespace DotSpatial.Controls
         /// This will draw any features that intersect this region. To specify the features directly, use OnDrawFeatures.
         /// This will not clear existing buffer content. For that call Initialize instead.
         /// </summary>
-        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
-        /// <param name="regions">The geographic regions to draw</param>
+        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space.</param>
+        /// <param name="regions">The geographic regions to draw.</param>
         /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features. Because images can't be selected they won't be drawn if selected is true.</param>
         public void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
@@ -133,7 +133,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Fires the OnBufferChanged event.
         /// </summary>
-        /// <param name="clipRectangles">The Rectangle in pixels</param>
+        /// <param name="clipRectangles">The Rectangle in pixels.</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
             BufferChanged?.Invoke(this, new ClipArgs(clipRectangles));
@@ -215,12 +215,12 @@ namespace DotSpatial.Controls
                     using (var attributes = new ImageAttributes())
                     {
                         attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                        g.DrawImage(bmp, r, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
+                        g.DrawImage(bmp, new Rectangle(0, 0, r.Width, r.Height), 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
                     }
                 }
                 else
                 {
-                    g.DrawImage(bmp, r);
+                    g.DrawImage(bmp, new Rectangle(0, 0, r.Width, r.Height));
                 }
 
                 bmp.Dispose();

@@ -12,7 +12,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// Creates a new instance of the SQLQueryControl
+    /// Creates a new instance of the SQLQueryControl.
     /// </summary>
     public partial class SqlQueryControl : UserControl
     {

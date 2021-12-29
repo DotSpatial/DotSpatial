@@ -1,7 +1,6 @@
 // Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
-using System.Collections.Generic;
 using System.Linq;
 
 namespace DotSpatial.Symbology
@@ -17,11 +16,11 @@ namespace DotSpatial.Symbology
         /// Searches through the LegendItems recursively, looking for the 0 index
         /// member of the deepest part of the tree.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <returns>The found member.</returns>
         public static ILegendItem BottomMember(this ILegendItem self)
         {
-            if (self.LegendItems != null && self.LegendItems.Any())
+            if (self?.LegendItems != null && self.LegendItems.Any())
             {
                 var items = self.LegendItems.ToList();
 
@@ -63,10 +62,10 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// This method starts with this legend item and tests to see if it can contain
-        /// the specified target. As it moves up the
+        /// the specified target. As it moves up the.
         /// </summary>
-        /// <param name="startItem">This legend item</param>
-        /// <param name="dropItem">The target legend item to test</param>
+        /// <param name="startItem">This legend item.</param>
+        /// <param name="dropItem">The target legend item to test.</param>
         /// <returns>An ILegendItem that is one of the parent items of this item, but that can receive the target.</returns>
         public static ILegendItem GetValidContainerFor(this ILegendItem startItem, ILegendItem dropItem)
         {
@@ -122,7 +121,7 @@ namespace DotSpatial.Symbology
         /// This method starts with this legend item and searches through the
         /// parent groups until it finds a valid mapframe.
         /// </summary>
-        /// <param name="self">The ILegendItem to start from</param>
+        /// <param name="self">The ILegendItem to start from.</param>
         /// <returns>The IMapFrame that contains this item.</returns>
         public static IFrame ParentMapFrame(this ILegendItem self)
         {

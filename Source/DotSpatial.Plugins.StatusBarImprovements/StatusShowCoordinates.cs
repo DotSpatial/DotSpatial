@@ -4,6 +4,7 @@
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 
+
 namespace DotSpatial.Plugins.StatusBarImprovements
 {
     /// <summary>

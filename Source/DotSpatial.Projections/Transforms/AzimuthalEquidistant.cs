@@ -266,7 +266,6 @@ namespace DotSpatial.Projections.Transforms
                         lp[phi] = double.NaN;
                         lp[lam] = double.NaN;
                         continue;
-                        //throw new ProjectionException(20);
                     }
                     cRh = Math.PI;
                 }
@@ -274,7 +273,7 @@ namespace DotSpatial.Projections.Transforms
                 {
                     lp[phi] = Phi0;
                     lp[lam] = 0;
-                    return;
+                    continue;
                 }
                 if (_mode == Modes.Oblique || _mode == Modes.Equitorial)
                 {
@@ -328,7 +327,7 @@ namespace DotSpatial.Projections.Transforms
                 {
                     lp[phi] = Phi0;
                     lp[lam] = 0;
-                    return;
+                    continue;
                 }
                 if (_mode == Modes.Oblique || _mode == Modes.Equitorial)
                 {

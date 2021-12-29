@@ -7,7 +7,7 @@ using System.Drawing;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// ImageData (not named Image because of conflicting with the Dot Net Image object)
+    /// ImageData (not named Image because of conflicting with the Dot Net Image object).
     /// </summary>
     public class ImageData : RasterBoundDataSet, IImageData
     {
@@ -32,7 +32,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets or sets an integer indicating how many bytes exist for each pixel.
-        /// Eg. 32 ARGB = 4, 24 RGB = 3, 16 bit GrayScale = 2
+        /// Eg. 32 ARGB = 4, 24 RGB = 3, 16 bit GrayScale = 2.
         /// </summary>
         public int BytesPerPixel { get; set; }
 
@@ -68,7 +68,7 @@ namespace DotSpatial.Data
         public WorldFile WorldFile { get; set; }
 
         /// <summary>
-        /// Gets or sets the color palette
+        /// Gets or sets the color palette.
         /// </summary>
         protected IEnumerable<Color> ColorPalette { get; set; }
 
@@ -79,7 +79,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Opens the file with the specified fileName.
         /// </summary>
-        /// <param name="fileName">The string fileName to open</param>
+        /// <param name="fileName">The string fileName to open.</param>
         /// <returns>ImageData of the opened file.</returns>
         public static IImageData Open(string fileName)
         {
@@ -87,7 +87,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Forces the image to read values from the graphic image format to the byte array format
+        /// Forces the image to read values from the graphic image format to the byte array format.
         /// </summary>
         public virtual void CopyBitmapToValues()
         {
@@ -111,10 +111,10 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a new image and world file, placing the default bounds at the origin, with one pixel per unit.
         /// </summary>
-        /// <param name="fileName">The string fileName</param>
-        /// <param name="width">The integer width</param>
-        /// <param name="height">The integer height</param>
-        /// <param name="bandType">The color band type</param>
+        /// <param name="fileName">The string fileName.</param>
+        /// <param name="width">The integer width.</param>
+        /// <param name="height">The integer height.</param>
+        /// <param name="bandType">The color band type.</param>
         /// <returns>The create image data.</returns>
         public virtual IImageData Create(string fileName, int width, int height, ImageBandType bandType)
         {
@@ -135,9 +135,9 @@ namespace DotSpatial.Data
         /// The window gives the corresponding pixel dimensions for the image, so that
         /// images matching the resolution of the screen can be used.
         /// </summary>
-        /// <param name="envelope">The geographic extents to retrieve data for</param>
-        /// <param name="size">The rectangle that defines the size of the drawing area in pixels</param>
-        /// <returns>A bitmap captured from the main image </returns>
+        /// <param name="envelope">The geographic extents to retrieve data for.</param>
+        /// <param name="size">The rectangle that defines the size of the drawing area in pixels.</param>
+        /// <returns>A bitmap captured from the main image. </returns>
         public Bitmap GetBitmap(Extent envelope, Size size)
         {
             return GetBitmap(envelope, new Rectangle(new Point(0, 0), size));
@@ -148,9 +148,9 @@ namespace DotSpatial.Data
         /// The window gives the corresponding pixel dimensions for the image, so that
         /// images matching the resolution of the screen can be used.
         /// </summary>
-        /// <param name="envelope">The geographic extents to retrieve data for</param>
-        /// <param name="window">The rectangle that defines the size of the drawing area in pixels</param>
-        /// <returns>A bitmap captured from the main image </returns>
+        /// <param name="envelope">The geographic extents to retrieve data for.</param>
+        /// <param name="window">The rectangle that defines the size of the drawing area in pixels.</param>
+        /// <returns>A bitmap captured from the main image. </returns>
         public virtual Bitmap GetBitmap(Extent envelope, Rectangle window)
         {
             return null;
@@ -200,8 +200,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets a block of data directly, converted into a bitmap.
         /// </summary>
-        /// <param name="xOffset">The zero based integer column offset from the left</param>
-        /// <param name="yOffset">The zero based integer row offset from the top</param>
+        /// <param name="xOffset">The zero based integer column offset from the left.</param>
+        /// <param name="yOffset">The zero based integer row offset from the top.</param>
         /// <param name="xSize">The integer number of pixel columns in the block. </param>
         /// <param name="ySize">The integer number of pixel rows in the block.</param>
         /// <returns>A Bitmap that is xSize, ySize.</returns>
@@ -231,8 +231,8 @@ namespace DotSpatial.Data
         /// Sets the color value into the byte array based on the row and column position of the pixel.
         /// </summary>
         /// <param name="row">The integer row index of the pixel to set the color of.</param>
-        /// <param name="column">The integer column index of the pixel to set the color of </param>
-        /// <param name="col">The color to copy values from</param>
+        /// <param name="column">The integer column index of the pixel to set the color of. </param>
+        /// <param name="col">The color to copy values from.</param>
         public virtual void SetColor(int row, int column, Color col)
         {
             int bpp = BytesPerPixel;
@@ -269,8 +269,8 @@ namespace DotSpatial.Data
         /// Be sure to call UpdateOverviews after writing all blocks in pyramid images.
         /// </summary>
         /// <param name="value">The bitmap value to save.</param>
-        /// <param name="xOffset">The zero based integer column offset from the left</param>
-        /// <param name="yOffset">The zero based integer row offset from the top</param>
+        /// <param name="xOffset">The zero based integer column offset from the left.</param>
+        /// <param name="yOffset">The zero based integer row offset from the top.</param>
         public virtual void WriteBlock(Bitmap value, int xOffset, int yOffset)
         {
             // Implemented in subclasses.

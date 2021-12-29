@@ -17,7 +17,7 @@ namespace DotSpatial.Symbology
         /// Adds a round rectangle to the graphics path where the integer radius specified determines how rounded the rectangle should become.
         /// This can be thought of rounded arcs connected by straight lines.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <param name="bounds">The bounds.</param>
         /// <param name="radius">The radius used for rounding the corner.</param>
         public static void AddRoundedRectangle(this GraphicsPath self, Rectangle bounds, int radius)
@@ -53,7 +53,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Adds the unclosed set of lines that are the bottom and right of the shape.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <param name="bounds">The bounds.</param>
         /// <param name="radius">The radius used for rounding the corner.</param>
         public static void AddRoundedRectangleBottomRight(this GraphicsPath self, Rectangle bounds, int radius)
@@ -73,7 +73,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Adds the unclosed set of lines that are the top and left of the shape.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <param name="bounds">The bounds.</param>
         /// <param name="radius">The radius used for rounding the corner.</param>
         public static void AddRoundedRectangleTopLeft(this GraphicsPath self, Rectangle bounds, int radius)
@@ -96,7 +96,7 @@ namespace DotSpatial.Symbology
         /// all of the points in the graphics path.
         /// </summary>
         /// <param name="self">The grpahics path to test.</param>
-        /// <returns>A RectangleF</returns>
+        /// <returns>A RectangleF.</returns>
         public static RectangleF GetBounds(this GraphicsPath self)
         {
             PointF[] points = self.PathPoints;

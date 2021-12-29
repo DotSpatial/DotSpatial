@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Carries event arguments for the generic IEventList
+    /// Carries event arguments for the generic IEventList.
     /// </summary>
     /// <typeparam name="T">Type of the contained items.</typeparam>
     public class Collective<T> : EventArgs
@@ -17,7 +17,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="Collective{T}"/> class.
         /// </summary>
-        /// <param name="inCollection">The IEnumerable&lt;T&gt; specified during the event"/></param>
+        /// <param name="inCollection">The IEnumerable&lt;T&gt; specified during the event"/>.</param>
         public Collective(IEnumerable<T> inCollection)
         {
             Collection = inCollection;

@@ -43,12 +43,12 @@ namespace DotSpatial.Tools
         public string HelpText => TextStrings.OverWriteFeaturebyindex;
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -57,7 +57,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if successful
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
@@ -80,7 +80,7 @@ namespace DotSpatial.Tools
         /// Executes the overwrite feature Opaeration tool programmatically.
         /// </summary>
         /// <param name="input1">The input FeatureSet.</param>
-        /// <param name="index">The Index to overwrite</param>
+        /// <param name="index">The Index to overwrite.</param>
         /// <param name="input2">The input2 featureSet which has the new feature to overwrite.</param>
         /// <param name="output">The output FeatureSet.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
@@ -115,7 +115,7 @@ namespace DotSpatial.Tools
             }
 
             output.SaveAs(output.Filename, true);
-            cancelProgressHandler.Progress(string.Empty, 100, 100 + TextStrings.progresscompleted);
+            cancelProgressHandler.Progress(100, 100 + TextStrings.progresscompleted);
             return true;
         }
 

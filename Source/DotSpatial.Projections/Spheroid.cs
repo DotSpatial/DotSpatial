@@ -302,7 +302,7 @@ namespace DotSpatial.Projections
                     _equatorialRadius = 6375738.7;
                     InverseFlattening = 334.29;
                     break;
-                case Proj4Ellipsoid.Custom: 
+                case Proj4Ellipsoid.Custom:
                     // Nothing for Custom
                     break;
                 case Proj4Ellipsoid.Delambre_1810:
@@ -625,9 +625,32 @@ namespace DotSpatial.Projections
         /// <param name="esriString"></param>
         public void ParseEsriString(string esriString)
         {
-            if (esriString.Contains("SPHEROID") == false) return;
+            if (!esriString.Contains("SPHEROID"))
+                return;
+
             int iStart = esriString.IndexOf("SPHEROID", StringComparison.Ordinal) + 9;
-            int iEnd = esriString.IndexOf("]", iStart, StringComparison.Ordinal);
+            int iEnd = 0;
+            int numLeftBrackets = 0;
+            int numRightBrackets = 0;
+
+            for (int i = iStart; i < esriString.Length; i++)
+            {
+                char c = esriString[i];
+                if (c == '[')
+                {
+                    numLeftBrackets++;
+                }
+                else if (c == ']')
+                {
+                    numRightBrackets++;
+                    if (numRightBrackets > numLeftBrackets)
+                    {
+                        iEnd = i;
+                        break;
+                    }
+                }
+            }
+
             if (iEnd < iStart) return;
             string extracted = esriString.Substring(iStart, iEnd - iStart);
             string[] terms = extracted.Split(',');

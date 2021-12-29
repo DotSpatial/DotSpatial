@@ -8,7 +8,7 @@ using DotSpatial.Modeling.Forms.Elements;
 namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
-    /// Raster parameter allows ITools to specify that they require a Raster data set as input
+    /// Raster parameter allows ITools to specify that they require a Raster data set as input.
     /// </summary>
     public class RasterParam : Parameter
     {
@@ -16,9 +16,9 @@ namespace DotSpatial.Modeling.Forms.Parameters
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RasterParam"/> class.
-        /// Creates a new Raster parameter
+        /// Creates a new Raster parameter.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
+        /// <param name="name">The name of the parameter.</param>
         public RasterParam(string name)
         {
             Name = name;
@@ -31,7 +31,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         #region Properties
 
         /// <summary>
-        /// Gets or sets the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input).
         /// </summary>
         public new IRaster Value
         {

@@ -38,35 +38,35 @@ Public Class frmLoadOutputs
 
         'Default filename:
         fdgOpen.FileName = GetDefaultFilename(append)
-        If fdgOpen.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If fdgOpen.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Return fdgOpen.FileName
         End If
 
         Return String.Empty
 
     End Function
-    Private Sub btnBrowseFill_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseFill.Click
+    Private Sub btnBrowseFill_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseFill.Click
         txtbxFill.Text = GetFilenameFromUser("fel")
     End Sub
 
-    Private Sub btnBrowseD8Slope_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseD8Slope.Click
+    Private Sub btnBrowseD8Slope_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseD8Slope.Click
         txtbxD8Slope.Text = GetFilenameFromUser("sd8")
     End Sub
 
-    Private Sub btnBrowseD8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseD8.Click
+    Private Sub btnBrowseD8_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseD8.Click
         txtbxD8.Text = GetFilenameFromUser("p")
     End Sub
 
-    Private Sub btnBrowseDinfSlope_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseDinfSlope.Click
+    Private Sub btnBrowseDinfSlope_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseDinfSlope.Click
         txtbxDinfSlope.Text = GetFilenameFromUser("slp")
     End Sub
 
-    Private Sub btnBrowseDinf_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseDinf.Click
+    Private Sub btnBrowseDinf_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseDinf.Click
         txtbxDinf.Text = GetFilenameFromUser("ang")
     End Sub
 
 
-    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnOK.Click
 
         ' Paul Meems, 23-Aug-2011, Added:
         fillPath = String.Empty
@@ -117,7 +117,7 @@ Public Class frmLoadOutputs
         'End If
     End Sub
 
-    Private Sub frmLoadOutputs_VisibleChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.VisibleChanged
+    Private Sub frmLoadOutputs_VisibleChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles MyBase.VisibleChanged
         If Me.Visible = True Then
             fillPath = ""
             sd8Path = ""
@@ -138,7 +138,7 @@ Public Class frmLoadOutputs
         End If
     End Sub
 
-    Private Sub btnBrowseMask_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseMask.Click
+    Private Sub btnBrowseMask_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseMask.Click
         txtbxMasked.Text = GetFilenameFromUser("_masked")
     End Sub
 End Class

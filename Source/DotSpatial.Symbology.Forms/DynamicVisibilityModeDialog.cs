@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// DynamicVisibilityModeDialog
+    /// DynamicVisibilityModeDialog.
     /// </summary>
     public partial class DynamicVisibilityModeDialog : Form
     {

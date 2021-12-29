@@ -28,7 +28,7 @@ Imports DotSpatial.Data
 Imports DotSpatial.Plugins.Taudem.Port.Manhattan
 
 Public Class frmAutomatic_v3
-    Inherits System.Windows.Forms.Form
+    Inherits Windows.Forms.Form
 
 
     Public Property App As AppManager
@@ -65,113 +65,113 @@ Public Class frmAutomatic_v3
     End Sub
 
     'Required by the Windows Form Designer
-    Private components As System.ComponentModel.IContainer
+    Private components As ComponentModel.IContainer
 
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
-    Friend WithEvents btnRunAll As System.Windows.Forms.Button
-    Friend WithEvents btnCancel As System.Windows.Forms.Button
-    Friend WithEvents ttip As System.Windows.Forms.ToolTip
-    Friend WithEvents grpbxSetupPreprocess As System.Windows.Forms.GroupBox
-    Friend WithEvents btnSelectMask As System.Windows.Forms.Button
-    Friend WithEvents btnDrawMask As System.Windows.Forms.Button
-    Friend WithEvents chkbxMask As System.Windows.Forms.CheckBox
-    Friend WithEvents chkbxBurnStream As System.Windows.Forms.CheckBox
-    Friend WithEvents lblSelDem As System.Windows.Forms.Label
-    Friend WithEvents grpbxThresh As System.Windows.Forms.GroupBox
-    Friend WithEvents cmbxThreshConvUnits As System.Windows.Forms.ComboBox
-    Friend WithEvents txtbxThreshConv As System.Windows.Forms.TextBox
-    Friend WithEvents txtNumCells As System.Windows.Forms.Label
-    Friend WithEvents txtbxThreshold As System.Windows.Forms.TextBox
-    Friend WithEvents grpbxOutletDef As System.Windows.Forms.GroupBox
-    Friend WithEvents btnSelectOutlets As System.Windows.Forms.Button
-    Friend WithEvents btnDrawOutlets As System.Windows.Forms.Button
-    Friend WithEvents btnBrowseOutlets As System.Windows.Forms.Button
-    Friend WithEvents cmbxOutlets As System.Windows.Forms.ComboBox
-    Friend WithEvents chkbxUseOutlet As System.Windows.Forms.CheckBox
-    Friend WithEvents btnRunPreproc As System.Windows.Forms.Button
-    Friend WithEvents btnRunThreshDelin As System.Windows.Forms.Button
-    Friend WithEvents btnAdvanced As System.Windows.Forms.Button
-    Friend WithEvents lblMaskSelected As System.Windows.Forms.Label
-    Friend WithEvents lblOutletSelected As System.Windows.Forms.Label
-    Friend WithEvents btnSnapTo As System.Windows.Forms.Button
-    Friend WithEvents txtbxSnapThresh As System.Windows.Forms.TextBox
-    Friend WithEvents lblSnapThresh As System.Windows.Forms.Label
-    Friend WithEvents lblElevUnits As System.Windows.Forms.Label
-    Friend WithEvents btnHelp As System.Windows.Forms.Button
-    Friend WithEvents cmbxElevUnits As System.Windows.Forms.ComboBox
-    Friend WithEvents rdobtnUseFileMask As System.Windows.Forms.RadioButton
-    Friend WithEvents rdobtnUseExtents As System.Windows.Forms.RadioButton
-    Friend WithEvents btnSetExtents As System.Windows.Forms.Button
-    Friend WithEvents btnBrowseMask As System.Windows.Forms.Button
-    Friend WithEvents cmbxMask As System.Windows.Forms.ComboBox
-    Friend WithEvents btnBrowseStream As System.Windows.Forms.Button
-    Friend WithEvents cmbxStream As System.Windows.Forms.ComboBox
-    Friend WithEvents btnBrowseDem As System.Windows.Forms.Button
-    Friend WithEvents cmbxSelDem As System.Windows.Forms.ComboBox
-    Friend WithEvents lblOutlets As System.Windows.Forms.Label
-    Friend WithEvents lblPreproc As System.Windows.Forms.Label
-    Friend WithEvents lblDelin As System.Windows.Forms.Label
-    Friend WithEvents btnLoadPre As System.Windows.Forms.Button
-    Friend WithEvents lblPreOut As System.Windows.Forms.Label
-    Friend WithEvents btnLoadDelin As System.Windows.Forms.Button
-    Friend WithEvents lblDelinOut As System.Windows.Forms.Label
-    Friend WithEvents btnRunOutletFinish As System.Windows.Forms.Button
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmAutomatic_v3))
-        Me.btnRunAll = New System.Windows.Forms.Button
-        Me.btnCancel = New System.Windows.Forms.Button
-        Me.ttip = New System.Windows.Forms.ToolTip(Me.components)
-        Me.grpbxSetupPreprocess = New System.Windows.Forms.GroupBox
-        Me.lblPreOut = New System.Windows.Forms.Label
-        Me.btnLoadPre = New System.Windows.Forms.Button
-        Me.lblElevUnits = New System.Windows.Forms.Label
-        Me.cmbxElevUnits = New System.Windows.Forms.ComboBox
-        Me.rdobtnUseFileMask = New System.Windows.Forms.RadioButton
-        Me.rdobtnUseExtents = New System.Windows.Forms.RadioButton
-        Me.btnSetExtents = New System.Windows.Forms.Button
-        Me.btnRunPreproc = New System.Windows.Forms.Button
-        Me.lblMaskSelected = New System.Windows.Forms.Label
-        Me.chkbxBurnStream = New System.Windows.Forms.CheckBox
-        Me.btnSelectMask = New System.Windows.Forms.Button
-        Me.btnDrawMask = New System.Windows.Forms.Button
-        Me.btnBrowseMask = New System.Windows.Forms.Button
-        Me.cmbxMask = New System.Windows.Forms.ComboBox
-        Me.chkbxMask = New System.Windows.Forms.CheckBox
-        Me.btnBrowseStream = New System.Windows.Forms.Button
-        Me.cmbxStream = New System.Windows.Forms.ComboBox
-        Me.btnBrowseDem = New System.Windows.Forms.Button
-        Me.cmbxSelDem = New System.Windows.Forms.ComboBox
-        Me.lblSelDem = New System.Windows.Forms.Label
-        Me.lblPreproc = New System.Windows.Forms.Label
-        Me.grpbxThresh = New System.Windows.Forms.GroupBox
-        Me.lblDelinOut = New System.Windows.Forms.Label
-        Me.btnLoadDelin = New System.Windows.Forms.Button
-        Me.btnRunThreshDelin = New System.Windows.Forms.Button
-        Me.cmbxThreshConvUnits = New System.Windows.Forms.ComboBox
-        Me.txtbxThreshConv = New System.Windows.Forms.TextBox
-        Me.txtNumCells = New System.Windows.Forms.Label
-        Me.txtbxThreshold = New System.Windows.Forms.TextBox
-        Me.lblDelin = New System.Windows.Forms.Label
-        Me.grpbxOutletDef = New System.Windows.Forms.GroupBox
-        Me.txtbxSnapThresh = New System.Windows.Forms.TextBox
-        Me.btnSnapTo = New System.Windows.Forms.Button
-        Me.lblOutletSelected = New System.Windows.Forms.Label
-        Me.btnRunOutletFinish = New System.Windows.Forms.Button
-        Me.btnSelectOutlets = New System.Windows.Forms.Button
-        Me.btnDrawOutlets = New System.Windows.Forms.Button
-        Me.btnBrowseOutlets = New System.Windows.Forms.Button
-        Me.cmbxOutlets = New System.Windows.Forms.ComboBox
-        Me.chkbxUseOutlet = New System.Windows.Forms.CheckBox
-        Me.lblSnapThresh = New System.Windows.Forms.Label
-        Me.lblOutlets = New System.Windows.Forms.Label
-        Me.btnAdvanced = New System.Windows.Forms.Button
-        Me.btnHelp = New System.Windows.Forms.Button
-        Me.numProcesses = New System.Windows.Forms.TextBox
-        Me.lblNumProc = New System.Windows.Forms.Label
-        Me.showTaudemOutput = New System.Windows.Forms.CheckBox
+    Friend WithEvents btnRunAll As Windows.Forms.Button
+    Friend WithEvents btnCancel As Windows.Forms.Button
+    Friend WithEvents ttip As Windows.Forms.ToolTip
+    Friend WithEvents grpbxSetupPreprocess As Windows.Forms.GroupBox
+    Friend WithEvents btnSelectMask As Windows.Forms.Button
+    Friend WithEvents btnDrawMask As Windows.Forms.Button
+    Friend WithEvents chkbxMask As Windows.Forms.CheckBox
+    Friend WithEvents chkbxBurnStream As Windows.Forms.CheckBox
+    Friend WithEvents lblSelDem As Windows.Forms.Label
+    Friend WithEvents grpbxThresh As Windows.Forms.GroupBox
+    Friend WithEvents cmbxThreshConvUnits As Windows.Forms.ComboBox
+    Friend WithEvents txtbxThreshConv As Windows.Forms.TextBox
+    Friend WithEvents txtNumCells As Windows.Forms.Label
+    Friend WithEvents txtbxThreshold As Windows.Forms.TextBox
+    Friend WithEvents grpbxOutletDef As Windows.Forms.GroupBox
+    Friend WithEvents btnSelectOutlets As Windows.Forms.Button
+    Friend WithEvents btnDrawOutlets As Windows.Forms.Button
+    Friend WithEvents btnBrowseOutlets As Windows.Forms.Button
+    Friend WithEvents cmbxOutlets As Windows.Forms.ComboBox
+    Friend WithEvents chkbxUseOutlet As Windows.Forms.CheckBox
+    Friend WithEvents btnRunPreproc As Windows.Forms.Button
+    Friend WithEvents btnRunThreshDelin As Windows.Forms.Button
+    Friend WithEvents btnAdvanced As Windows.Forms.Button
+    Friend WithEvents lblMaskSelected As Windows.Forms.Label
+    Friend WithEvents lblOutletSelected As Windows.Forms.Label
+    Friend WithEvents btnSnapTo As Windows.Forms.Button
+    Friend WithEvents txtbxSnapThresh As Windows.Forms.TextBox
+    Friend WithEvents lblSnapThresh As Windows.Forms.Label
+    Friend WithEvents lblElevUnits As Windows.Forms.Label
+    Friend WithEvents btnHelp As Windows.Forms.Button
+    Friend WithEvents cmbxElevUnits As Windows.Forms.ComboBox
+    Friend WithEvents rdobtnUseFileMask As Windows.Forms.RadioButton
+    Friend WithEvents rdobtnUseExtents As Windows.Forms.RadioButton
+    Friend WithEvents btnSetExtents As Windows.Forms.Button
+    Friend WithEvents btnBrowseMask As Windows.Forms.Button
+    Friend WithEvents cmbxMask As Windows.Forms.ComboBox
+    Friend WithEvents btnBrowseStream As Windows.Forms.Button
+    Friend WithEvents cmbxStream As Windows.Forms.ComboBox
+    Friend WithEvents btnBrowseDem As Windows.Forms.Button
+    Friend WithEvents cmbxSelDem As Windows.Forms.ComboBox
+    Friend WithEvents lblOutlets As Windows.Forms.Label
+    Friend WithEvents lblPreproc As Windows.Forms.Label
+    Friend WithEvents lblDelin As Windows.Forms.Label
+    Friend WithEvents btnLoadPre As Windows.Forms.Button
+    Friend WithEvents lblPreOut As Windows.Forms.Label
+    Friend WithEvents btnLoadDelin As Windows.Forms.Button
+    Friend WithEvents lblDelinOut As Windows.Forms.Label
+    Friend WithEvents btnRunOutletFinish As Windows.Forms.Button
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
+        Me.components = New ComponentModel.Container
+        Dim resources As ComponentModel.ComponentResourceManager = New ComponentModel.ComponentResourceManager(GetType(frmAutomatic_v3))
+        Me.btnRunAll = New Windows.Forms.Button
+        Me.btnCancel = New Windows.Forms.Button
+        Me.ttip = New Windows.Forms.ToolTip(Me.components)
+        Me.grpbxSetupPreprocess = New Windows.Forms.GroupBox
+        Me.lblPreOut = New Windows.Forms.Label
+        Me.btnLoadPre = New Windows.Forms.Button
+        Me.lblElevUnits = New Windows.Forms.Label
+        Me.cmbxElevUnits = New Windows.Forms.ComboBox
+        Me.rdobtnUseFileMask = New Windows.Forms.RadioButton
+        Me.rdobtnUseExtents = New Windows.Forms.RadioButton
+        Me.btnSetExtents = New Windows.Forms.Button
+        Me.btnRunPreproc = New Windows.Forms.Button
+        Me.lblMaskSelected = New Windows.Forms.Label
+        Me.chkbxBurnStream = New Windows.Forms.CheckBox
+        Me.btnSelectMask = New Windows.Forms.Button
+        Me.btnDrawMask = New Windows.Forms.Button
+        Me.btnBrowseMask = New Windows.Forms.Button
+        Me.cmbxMask = New Windows.Forms.ComboBox
+        Me.chkbxMask = New Windows.Forms.CheckBox
+        Me.btnBrowseStream = New Windows.Forms.Button
+        Me.cmbxStream = New Windows.Forms.ComboBox
+        Me.btnBrowseDem = New Windows.Forms.Button
+        Me.cmbxSelDem = New Windows.Forms.ComboBox
+        Me.lblSelDem = New Windows.Forms.Label
+        Me.lblPreproc = New Windows.Forms.Label
+        Me.grpbxThresh = New Windows.Forms.GroupBox
+        Me.lblDelinOut = New Windows.Forms.Label
+        Me.btnLoadDelin = New Windows.Forms.Button
+        Me.btnRunThreshDelin = New Windows.Forms.Button
+        Me.cmbxThreshConvUnits = New Windows.Forms.ComboBox
+        Me.txtbxThreshConv = New Windows.Forms.TextBox
+        Me.txtNumCells = New Windows.Forms.Label
+        Me.txtbxThreshold = New Windows.Forms.TextBox
+        Me.lblDelin = New Windows.Forms.Label
+        Me.grpbxOutletDef = New Windows.Forms.GroupBox
+        Me.txtbxSnapThresh = New Windows.Forms.TextBox
+        Me.btnSnapTo = New Windows.Forms.Button
+        Me.lblOutletSelected = New Windows.Forms.Label
+        Me.btnRunOutletFinish = New Windows.Forms.Button
+        Me.btnSelectOutlets = New Windows.Forms.Button
+        Me.btnDrawOutlets = New Windows.Forms.Button
+        Me.btnBrowseOutlets = New Windows.Forms.Button
+        Me.cmbxOutlets = New Windows.Forms.ComboBox
+        Me.chkbxUseOutlet = New Windows.Forms.CheckBox
+        Me.lblSnapThresh = New Windows.Forms.Label
+        Me.lblOutlets = New Windows.Forms.Label
+        Me.btnAdvanced = New Windows.Forms.Button
+        Me.btnHelp = New Windows.Forms.Button
+        Me.numProcesses = New Windows.Forms.TextBox
+        Me.lblNumProc = New Windows.Forms.Label
+        Me.showTaudemOutput = New Windows.Forms.CheckBox
         Me.grpbxSetupPreprocess.SuspendLayout()
         Me.grpbxThresh.SuspendLayout()
         Me.grpbxOutletDef.SuspendLayout()
@@ -180,18 +180,18 @@ Public Class frmAutomatic_v3
         'btnRunAll
         '
         Me.btnRunAll.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.btnRunAll.Location = New System.Drawing.Point(358, 523)
+        Me.btnRunAll.Location = New Drawing.Point(358, 523)
         Me.btnRunAll.Name = "btnRunAll"
-        Me.btnRunAll.Size = New System.Drawing.Size(75, 23)
+        Me.btnRunAll.Size = New Drawing.Size(75, 23)
         Me.btnRunAll.TabIndex = 28
         Me.btnRunAll.Text = "Run All"
         '
         'btnCancel
         '
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(277, 523)
+        Me.btnCancel.Location = New Drawing.Point(277, 523)
         Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(75, 23)
+        Me.btnCancel.Size = New Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 27
         Me.btnCancel.Text = "Close"
         '
@@ -225,9 +225,9 @@ Public Class frmAutomatic_v3
         Me.grpbxSetupPreprocess.Controls.Add(Me.cmbxSelDem)
         Me.grpbxSetupPreprocess.Controls.Add(Me.lblSelDem)
         Me.grpbxSetupPreprocess.Controls.Add(Me.lblPreproc)
-        Me.grpbxSetupPreprocess.Location = New System.Drawing.Point(5, 3)
+        Me.grpbxSetupPreprocess.Location = New Drawing.Point(5, 3)
         Me.grpbxSetupPreprocess.Name = "grpbxSetupPreprocess"
-        Me.grpbxSetupPreprocess.Size = New System.Drawing.Size(431, 272)
+        Me.grpbxSetupPreprocess.Size = New Drawing.Size(431, 272)
         Me.grpbxSetupPreprocess.TabIndex = 28
         Me.grpbxSetupPreprocess.TabStop = False
         Me.grpbxSetupPreprocess.Text = "Setup and Preprocessing"
@@ -235,10 +235,10 @@ Public Class frmAutomatic_v3
         'lblPreOut
         '
         Me.lblPreOut.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblPreOut.Location = New System.Drawing.Point(194, 237)
+                        Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.lblPreOut.Location = New Drawing.Point(194, 237)
         Me.lblPreOut.Name = "lblPreOut"
-        Me.lblPreOut.Size = New System.Drawing.Size(149, 25)
+        Me.lblPreOut.Size = New Drawing.Size(149, 25)
         Me.lblPreOut.TabIndex = 35
         Me.lblPreOut.Text = "Intermediate Files Loaded"
         Me.lblPreOut.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -246,18 +246,18 @@ Public Class frmAutomatic_v3
         '
         'btnLoadPre
         '
-        Me.btnLoadPre.Location = New System.Drawing.Point(14, 237)
+        Me.btnLoadPre.Location = New Drawing.Point(14, 237)
         Me.btnLoadPre.Name = "btnLoadPre"
-        Me.btnLoadPre.Size = New System.Drawing.Size(171, 26)
+        Me.btnLoadPre.Size = New Drawing.Size(171, 26)
         Me.btnLoadPre.TabIndex = 34
         Me.btnLoadPre.Text = "Use Existing Intermediate Files"
         Me.btnLoadPre.UseVisualStyleBackColor = True
         '
         'lblElevUnits
         '
-        Me.lblElevUnits.Location = New System.Drawing.Point(3, 15)
+        Me.lblElevUnits.Location = New Drawing.Point(3, 15)
         Me.lblElevUnits.Name = "lblElevUnits"
-        Me.lblElevUnits.Size = New System.Drawing.Size(84, 16)
+        Me.lblElevUnits.Size = New Drawing.Size(84, 16)
         Me.lblElevUnits.TabIndex = 33
         Me.lblElevUnits.Text = "Elevation Units"
         '
@@ -266,17 +266,17 @@ Public Class frmAutomatic_v3
         Me.cmbxElevUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbxElevUnits.ItemHeight = 13
         Me.cmbxElevUnits.Items.AddRange(New Object() {"Meters", "Centimeters", "Feet"})
-        Me.cmbxElevUnits.Location = New System.Drawing.Point(6, 34)
+        Me.cmbxElevUnits.Location = New Drawing.Point(6, 34)
         Me.cmbxElevUnits.Name = "cmbxElevUnits"
-        Me.cmbxElevUnits.Size = New System.Drawing.Size(81, 21)
+        Me.cmbxElevUnits.Size = New Drawing.Size(81, 21)
         Me.cmbxElevUnits.TabIndex = 32
         '
         'rdobtnUseFileMask
         '
         Me.rdobtnUseFileMask.AutoSize = True
-        Me.rdobtnUseFileMask.Location = New System.Drawing.Point(14, 158)
+        Me.rdobtnUseFileMask.Location = New Drawing.Point(14, 158)
         Me.rdobtnUseFileMask.Name = "rdobtnUseFileMask"
-        Me.rdobtnUseFileMask.Size = New System.Drawing.Size(169, 17)
+        Me.rdobtnUseFileMask.Size = New Drawing.Size(169, 17)
         Me.rdobtnUseFileMask.TabIndex = 31
         Me.rdobtnUseFileMask.Text = "Use Grid or Shapefile for Mask"
         Me.rdobtnUseFileMask.UseVisualStyleBackColor = True
@@ -285,9 +285,9 @@ Public Class frmAutomatic_v3
         '
         Me.rdobtnUseExtents.AutoSize = True
         Me.rdobtnUseExtents.Checked = True
-        Me.rdobtnUseExtents.Location = New System.Drawing.Point(14, 135)
+        Me.rdobtnUseExtents.Location = New Drawing.Point(14, 135)
         Me.rdobtnUseExtents.Name = "rdobtnUseExtents"
-        Me.rdobtnUseExtents.Size = New System.Drawing.Size(189, 17)
+        Me.rdobtnUseExtents.Size = New Drawing.Size(189, 17)
         Me.rdobtnUseExtents.TabIndex = 30
         Me.rdobtnUseExtents.TabStop = True
         Me.rdobtnUseExtents.Text = "Use Current View Extents for Mask"
@@ -295,20 +295,20 @@ Public Class frmAutomatic_v3
         '
         'btnSetExtents
         '
-        Me.btnSetExtents.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnSetExtents.Location = New System.Drawing.Point(347, 132)
+        Me.btnSetExtents.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.btnSetExtents.Location = New Drawing.Point(347, 132)
         Me.btnSetExtents.Name = "btnSetExtents"
-        Me.btnSetExtents.Size = New System.Drawing.Size(75, 23)
+        Me.btnSetExtents.Size = New Drawing.Size(75, 23)
         Me.btnSetExtents.TabIndex = 29
         Me.btnSetExtents.Text = "Set Extents"
         Me.btnSetExtents.UseVisualStyleBackColor = True
         '
         'btnRunPreproc
         '
-        Me.btnRunPreproc.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnRunPreproc.Location = New System.Drawing.Point(350, 239)
+        Me.btnRunPreproc.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.btnRunPreproc.Location = New Drawing.Point(350, 239)
         Me.btnRunPreproc.Name = "btnRunPreproc"
-        Me.btnRunPreproc.Size = New System.Drawing.Size(75, 23)
+        Me.btnRunPreproc.Size = New Drawing.Size(75, 23)
         Me.btnRunPreproc.TabIndex = 12
         Me.btnRunPreproc.Text = "Run"
         Me.btnRunPreproc.UseVisualStyleBackColor = True
@@ -316,10 +316,10 @@ Public Class frmAutomatic_v3
         'lblMaskSelected
         '
         Me.lblMaskSelected.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblMaskSelected.Location = New System.Drawing.Point(191, 206)
+                        Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.lblMaskSelected.Location = New Drawing.Point(191, 206)
         Me.lblMaskSelected.Name = "lblMaskSelected"
-        Me.lblMaskSelected.Size = New System.Drawing.Size(152, 23)
+        Me.lblMaskSelected.Size = New Drawing.Size(152, 23)
         Me.lblMaskSelected.TabIndex = 28
         Me.lblMaskSelected.Text = "0 Selected"
         Me.lblMaskSelected.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -327,120 +327,120 @@ Public Class frmAutomatic_v3
         'chkbxBurnStream
         '
         Me.chkbxBurnStream.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.chkbxBurnStream.Location = New System.Drawing.Point(6, 61)
+                        Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.chkbxBurnStream.Location = New Drawing.Point(6, 61)
         Me.chkbxBurnStream.Name = "chkbxBurnStream"
-        Me.chkbxBurnStream.Size = New System.Drawing.Size(416, 24)
+        Me.chkbxBurnStream.Size = New Drawing.Size(416, 24)
         Me.chkbxBurnStream.TabIndex = 3
         Me.chkbxBurnStream.Text = " Burn-in Existing Stream Polyline"
         '
         'btnSelectMask
         '
-        Me.btnSelectMask.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnSelectMask.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), Windows.Forms.AnchorStyles)
         Me.btnSelectMask.Enabled = False
-        Me.btnSelectMask.Location = New System.Drawing.Point(101, 206)
+        Me.btnSelectMask.Location = New Drawing.Point(101, 206)
         Me.btnSelectMask.Name = "btnSelectMask"
-        Me.btnSelectMask.Size = New System.Drawing.Size(84, 23)
+        Me.btnSelectMask.Size = New Drawing.Size(84, 23)
         Me.btnSelectMask.TabIndex = 10
         Me.btnSelectMask.Text = "Select Mask"
         Me.btnSelectMask.UseVisualStyleBackColor = True
         '
         'btnDrawMask
         '
-        Me.btnDrawMask.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnDrawMask.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), Windows.Forms.AnchorStyles)
         Me.btnDrawMask.Enabled = False
-        Me.btnDrawMask.Location = New System.Drawing.Point(15, 206)
+        Me.btnDrawMask.Location = New Drawing.Point(15, 206)
         Me.btnDrawMask.Name = "btnDrawMask"
-        Me.btnDrawMask.Size = New System.Drawing.Size(83, 23)
+        Me.btnDrawMask.Size = New Drawing.Size(83, 23)
         Me.btnDrawMask.TabIndex = 9
         Me.btnDrawMask.Text = "Draw Mask"
         Me.btnDrawMask.UseVisualStyleBackColor = True
         '
         'btnBrowseMask
         '
-        Me.btnBrowseMask.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnBrowseMask.Image = CType(resources.GetObject("btnBrowseMask.Image"), System.Drawing.Image)
-        Me.btnBrowseMask.Location = New System.Drawing.Point(398, 175)
+        Me.btnBrowseMask.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.btnBrowseMask.Image = CType(resources.GetObject("btnBrowseMask.Image"), Drawing.Image)
+        Me.btnBrowseMask.Location = New Drawing.Point(398, 175)
         Me.btnBrowseMask.Name = "btnBrowseMask"
-        Me.btnBrowseMask.Size = New System.Drawing.Size(24, 23)
+        Me.btnBrowseMask.Size = New Drawing.Size(24, 23)
         Me.btnBrowseMask.TabIndex = 8
         '
         'cmbxMask
         '
         Me.cmbxMask.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                        Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
         Me.cmbxMask.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbxMask.Enabled = False
-        Me.cmbxMask.Location = New System.Drawing.Point(14, 177)
+        Me.cmbxMask.Location = New Drawing.Point(14, 177)
         Me.cmbxMask.Name = "cmbxMask"
-        Me.cmbxMask.Size = New System.Drawing.Size(378, 21)
+        Me.cmbxMask.Size = New Drawing.Size(378, 21)
         Me.cmbxMask.TabIndex = 7
         '
         'chkbxMask
         '
         Me.chkbxMask.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.chkbxMask.Location = New System.Drawing.Point(6, 111)
+                        Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.chkbxMask.Location = New Drawing.Point(6, 111)
         Me.chkbxMask.Name = "chkbxMask"
-        Me.chkbxMask.Size = New System.Drawing.Size(416, 24)
+        Me.chkbxMask.Size = New Drawing.Size(416, 24)
         Me.chkbxMask.TabIndex = 6
         Me.chkbxMask.Text = "Use a Focusing Mask"
         '
         'btnBrowseStream
         '
-        Me.btnBrowseStream.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnBrowseStream.Image = CType(resources.GetObject("btnBrowseStream.Image"), System.Drawing.Image)
-        Me.btnBrowseStream.Location = New System.Drawing.Point(398, 84)
+        Me.btnBrowseStream.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.btnBrowseStream.Image = CType(resources.GetObject("btnBrowseStream.Image"), Drawing.Image)
+        Me.btnBrowseStream.Location = New Drawing.Point(398, 84)
         Me.btnBrowseStream.Name = "btnBrowseStream"
-        Me.btnBrowseStream.Size = New System.Drawing.Size(24, 23)
+        Me.btnBrowseStream.Size = New Drawing.Size(24, 23)
         Me.btnBrowseStream.TabIndex = 5
         '
         'cmbxStream
         '
         Me.cmbxStream.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                        Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
         Me.cmbxStream.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbxStream.Items.AddRange(New Object() {"test"})
-        Me.cmbxStream.Location = New System.Drawing.Point(14, 86)
+        Me.cmbxStream.Location = New Drawing.Point(14, 86)
         Me.cmbxStream.Name = "cmbxStream"
-        Me.cmbxStream.Size = New System.Drawing.Size(378, 21)
+        Me.cmbxStream.Size = New Drawing.Size(378, 21)
         Me.cmbxStream.TabIndex = 4
         '
         'btnBrowseDem
         '
-        Me.btnBrowseDem.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnBrowseDem.Image = CType(resources.GetObject("btnBrowseDem.Image"), System.Drawing.Image)
-        Me.btnBrowseDem.Location = New System.Drawing.Point(398, 32)
+        Me.btnBrowseDem.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.btnBrowseDem.Image = CType(resources.GetObject("btnBrowseDem.Image"), Drawing.Image)
+        Me.btnBrowseDem.Location = New Drawing.Point(398, 32)
         Me.btnBrowseDem.Name = "btnBrowseDem"
-        Me.btnBrowseDem.Size = New System.Drawing.Size(24, 23)
+        Me.btnBrowseDem.Size = New Drawing.Size(24, 23)
         Me.btnBrowseDem.TabIndex = 2
         '
         'cmbxSelDem
         '
         Me.cmbxSelDem.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                        Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
         Me.cmbxSelDem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbxSelDem.ItemHeight = 13
         Me.cmbxSelDem.Items.AddRange(New Object() {"Select a Grid"})
-        Me.cmbxSelDem.Location = New System.Drawing.Point(102, 34)
+        Me.cmbxSelDem.Location = New Drawing.Point(102, 34)
         Me.cmbxSelDem.Name = "cmbxSelDem"
-        Me.cmbxSelDem.Size = New System.Drawing.Size(290, 21)
+        Me.cmbxSelDem.Size = New Drawing.Size(290, 21)
         Me.cmbxSelDem.TabIndex = 1
         '
         'lblSelDem
         '
-        Me.lblSelDem.Location = New System.Drawing.Point(94, 15)
+        Me.lblSelDem.Location = New Drawing.Point(94, 15)
         Me.lblSelDem.Name = "lblSelDem"
-        Me.lblSelDem.Size = New System.Drawing.Size(184, 16)
+        Me.lblSelDem.Size = New Drawing.Size(184, 16)
         Me.lblSelDem.TabIndex = 27
         Me.lblSelDem.Text = "Base Elevation Data (DEM) Layer:"
         '
         'lblPreproc
         '
-        Me.lblPreproc.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPreproc.Location = New System.Drawing.Point(6, 16)
+        Me.lblPreproc.Font = New Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPreproc.Location = New Drawing.Point(6, 16)
         Me.lblPreproc.Name = "lblPreproc"
-        Me.lblPreproc.Size = New System.Drawing.Size(419, 253)
+        Me.lblPreproc.Size = New Drawing.Size(419, 253)
         Me.lblPreproc.TabIndex = 33
         Me.lblPreproc.Text = "Setup and Preprocessing Steps Currently Running"
         Me.lblPreproc.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -455,9 +455,9 @@ Public Class frmAutomatic_v3
         Me.grpbxThresh.Controls.Add(Me.txtNumCells)
         Me.grpbxThresh.Controls.Add(Me.txtbxThreshold)
         Me.grpbxThresh.Controls.Add(Me.lblDelin)
-        Me.grpbxThresh.Location = New System.Drawing.Point(5, 281)
+        Me.grpbxThresh.Location = New Drawing.Point(5, 281)
         Me.grpbxThresh.Name = "grpbxThresh"
-        Me.grpbxThresh.Size = New System.Drawing.Size(431, 81)
+        Me.grpbxThresh.Size = New Drawing.Size(431, 81)
         Me.grpbxThresh.TabIndex = 30
         Me.grpbxThresh.TabStop = False
         Me.grpbxThresh.Text = "Network Delineation by Threshold Method"
@@ -465,10 +465,10 @@ Public Class frmAutomatic_v3
         'lblDelinOut
         '
         Me.lblDelinOut.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblDelinOut.Location = New System.Drawing.Point(194, 48)
+                        Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.lblDelinOut.Location = New Drawing.Point(194, 48)
         Me.lblDelinOut.Name = "lblDelinOut"
-        Me.lblDelinOut.Size = New System.Drawing.Size(149, 25)
+        Me.lblDelinOut.Size = New Drawing.Size(149, 25)
         Me.lblDelinOut.TabIndex = 36
         Me.lblDelinOut.Text = "Intermediate Files Loaded"
         Me.lblDelinOut.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -476,19 +476,19 @@ Public Class frmAutomatic_v3
         '
         'btnLoadDelin
         '
-        Me.btnLoadDelin.Location = New System.Drawing.Point(14, 47)
+        Me.btnLoadDelin.Location = New Drawing.Point(14, 47)
         Me.btnLoadDelin.Name = "btnLoadDelin"
-        Me.btnLoadDelin.Size = New System.Drawing.Size(171, 26)
+        Me.btnLoadDelin.Size = New Drawing.Size(171, 26)
         Me.btnLoadDelin.TabIndex = 35
         Me.btnLoadDelin.Text = "Use Existing Intermediate Files"
         Me.btnLoadDelin.UseVisualStyleBackColor = True
         '
         'btnRunThreshDelin
         '
-        Me.btnRunThreshDelin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnRunThreshDelin.Location = New System.Drawing.Point(350, 50)
+        Me.btnRunThreshDelin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.btnRunThreshDelin.Location = New Drawing.Point(350, 50)
         Me.btnRunThreshDelin.Name = "btnRunThreshDelin"
-        Me.btnRunThreshDelin.Size = New System.Drawing.Size(75, 23)
+        Me.btnRunThreshDelin.Size = New Drawing.Size(75, 23)
         Me.btnRunThreshDelin.TabIndex = 17
         Me.btnRunThreshDelin.Text = "Run"
         Me.btnRunThreshDelin.UseVisualStyleBackColor = True
@@ -498,42 +498,42 @@ Public Class frmAutomatic_v3
         Me.cmbxThreshConvUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbxThreshConvUnits.ItemHeight = 13
         Me.cmbxThreshConvUnits.Items.AddRange(New Object() {"sq. mi", "acres", "hectares", "sq. km", "sq. m", "sq. ft"})
-        Me.cmbxThreshConvUnits.Location = New System.Drawing.Point(353, 20)
+        Me.cmbxThreshConvUnits.Location = New Drawing.Point(353, 20)
         Me.cmbxThreshConvUnits.Name = "cmbxThreshConvUnits"
-        Me.cmbxThreshConvUnits.Size = New System.Drawing.Size(72, 21)
+        Me.cmbxThreshConvUnits.Size = New Drawing.Size(72, 21)
         Me.cmbxThreshConvUnits.TabIndex = 15
         '
         'txtbxThreshConv
         '
-        Me.txtbxThreshConv.Location = New System.Drawing.Point(209, 20)
+        Me.txtbxThreshConv.Location = New Drawing.Point(209, 20)
         Me.txtbxThreshConv.MaxLength = 10
         Me.txtbxThreshConv.Name = "txtbxThreshConv"
-        Me.txtbxThreshConv.Size = New System.Drawing.Size(138, 20)
+        Me.txtbxThreshConv.Size = New Drawing.Size(138, 20)
         Me.txtbxThreshConv.TabIndex = 14
         '
         'txtNumCells
         '
         Me.txtNumCells.AutoSize = True
-        Me.txtNumCells.Location = New System.Drawing.Point(144, 23)
+        Me.txtNumCells.Location = New Drawing.Point(144, 23)
         Me.txtNumCells.Name = "txtNumCells"
-        Me.txtNumCells.Size = New System.Drawing.Size(51, 13)
+        Me.txtNumCells.Size = New Drawing.Size(51, 13)
         Me.txtNumCells.TabIndex = 26
         Me.txtNumCells.Text = "# of Cells"
         '
         'txtbxThreshold
         '
-        Me.txtbxThreshold.Location = New System.Drawing.Point(14, 20)
+        Me.txtbxThreshold.Location = New Drawing.Point(14, 20)
         Me.txtbxThreshold.MaxLength = 10
         Me.txtbxThreshold.Name = "txtbxThreshold"
-        Me.txtbxThreshold.Size = New System.Drawing.Size(127, 20)
+        Me.txtbxThreshold.Size = New Drawing.Size(127, 20)
         Me.txtbxThreshold.TabIndex = 13
         '
         'lblDelin
         '
-        Me.lblDelin.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDelin.Location = New System.Drawing.Point(7, 16)
+        Me.lblDelin.Font = New Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDelin.Location = New Drawing.Point(7, 16)
         Me.lblDelin.Name = "lblDelin"
-        Me.lblDelin.Size = New System.Drawing.Size(418, 57)
+        Me.lblDelin.Size = New Drawing.Size(418, 57)
         Me.lblDelin.TabIndex = 27
         Me.lblDelin.Text = "Network Delineation Steps Running"
         Me.lblDelin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -551,28 +551,28 @@ Public Class frmAutomatic_v3
         Me.grpbxOutletDef.Controls.Add(Me.chkbxUseOutlet)
         Me.grpbxOutletDef.Controls.Add(Me.lblSnapThresh)
         Me.grpbxOutletDef.Controls.Add(Me.lblOutlets)
-        Me.grpbxOutletDef.Location = New System.Drawing.Point(5, 364)
+        Me.grpbxOutletDef.Location = New Drawing.Point(5, 364)
         Me.grpbxOutletDef.Name = "grpbxOutletDef"
-        Me.grpbxOutletDef.Size = New System.Drawing.Size(431, 126)
+        Me.grpbxOutletDef.Size = New Drawing.Size(431, 126)
         Me.grpbxOutletDef.TabIndex = 31
         Me.grpbxOutletDef.TabStop = False
         Me.grpbxOutletDef.Text = "Custom Outlet/Inlet Definition and Delineation Completion"
         '
         'txtbxSnapThresh
         '
-        Me.txtbxSnapThresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtbxSnapThresh.Location = New System.Drawing.Point(185, 98)
+        Me.txtbxSnapThresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.txtbxSnapThresh.Location = New Drawing.Point(185, 98)
         Me.txtbxSnapThresh.Name = "txtbxSnapThresh"
-        Me.txtbxSnapThresh.Size = New System.Drawing.Size(85, 20)
+        Me.txtbxSnapThresh.Size = New Drawing.Size(85, 20)
         Me.txtbxSnapThresh.TabIndex = 24
         Me.txtbxSnapThresh.Text = "300"
         '
         'btnSnapTo
         '
-        Me.btnSnapTo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnSnapTo.Location = New System.Drawing.Point(15, 96)
+        Me.btnSnapTo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), Windows.Forms.AnchorStyles)
+        Me.btnSnapTo.Location = New Drawing.Point(15, 96)
         Me.btnSnapTo.Name = "btnSnapTo"
-        Me.btnSnapTo.Size = New System.Drawing.Size(84, 23)
+        Me.btnSnapTo.Size = New Drawing.Size(84, 23)
         Me.btnSnapTo.TabIndex = 23
         Me.btnSnapTo.Text = "Snap Preview"
         Me.btnSnapTo.UseVisualStyleBackColor = True
@@ -580,141 +580,141 @@ Public Class frmAutomatic_v3
         'lblOutletSelected
         '
         Me.lblOutletSelected.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblOutletSelected.Location = New System.Drawing.Point(276, 69)
+                        Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.lblOutletSelected.Location = New Drawing.Point(276, 69)
         Me.lblOutletSelected.Name = "lblOutletSelected"
-        Me.lblOutletSelected.Size = New System.Drawing.Size(146, 23)
+        Me.lblOutletSelected.Size = New Drawing.Size(146, 23)
         Me.lblOutletSelected.TabIndex = 29
         Me.lblOutletSelected.Text = "0 Selected"
         Me.lblOutletSelected.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'btnRunOutletFinish
         '
-        Me.btnRunOutletFinish.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnRunOutletFinish.Location = New System.Drawing.Point(350, 96)
+        Me.btnRunOutletFinish.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.btnRunOutletFinish.Location = New Drawing.Point(350, 96)
         Me.btnRunOutletFinish.Name = "btnRunOutletFinish"
-        Me.btnRunOutletFinish.Size = New System.Drawing.Size(75, 23)
+        Me.btnRunOutletFinish.Size = New Drawing.Size(75, 23)
         Me.btnRunOutletFinish.TabIndex = 25
         Me.btnRunOutletFinish.Text = "Run"
         Me.btnRunOutletFinish.UseVisualStyleBackColor = True
         '
         'btnSelectOutlets
         '
-        Me.btnSelectOutlets.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnSelectOutlets.Location = New System.Drawing.Point(145, 69)
+        Me.btnSelectOutlets.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), Windows.Forms.AnchorStyles)
+        Me.btnSelectOutlets.Location = New Drawing.Point(145, 69)
         Me.btnSelectOutlets.Name = "btnSelectOutlets"
-        Me.btnSelectOutlets.Size = New System.Drawing.Size(125, 23)
+        Me.btnSelectOutlets.Size = New Drawing.Size(125, 23)
         Me.btnSelectOutlets.TabIndex = 22
         Me.btnSelectOutlets.Text = "Select Outlets/Inlets"
         Me.btnSelectOutlets.UseVisualStyleBackColor = True
         '
         'btnDrawOutlets
         '
-        Me.btnDrawOutlets.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnDrawOutlets.Location = New System.Drawing.Point(14, 69)
+        Me.btnDrawOutlets.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), Windows.Forms.AnchorStyles)
+        Me.btnDrawOutlets.Location = New Drawing.Point(14, 69)
         Me.btnDrawOutlets.Name = "btnDrawOutlets"
-        Me.btnDrawOutlets.Size = New System.Drawing.Size(125, 23)
+        Me.btnDrawOutlets.Size = New Drawing.Size(125, 23)
         Me.btnDrawOutlets.TabIndex = 21
         Me.btnDrawOutlets.Text = "Draw Outlets/Inlets"
         Me.btnDrawOutlets.UseVisualStyleBackColor = True
         '
         'btnBrowseOutlets
         '
-        Me.btnBrowseOutlets.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnBrowseOutlets.Image = CType(resources.GetObject("btnBrowseOutlets.Image"), System.Drawing.Image)
-        Me.btnBrowseOutlets.Location = New System.Drawing.Point(398, 41)
+        Me.btnBrowseOutlets.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.btnBrowseOutlets.Image = CType(resources.GetObject("btnBrowseOutlets.Image"), Drawing.Image)
+        Me.btnBrowseOutlets.Location = New Drawing.Point(398, 41)
         Me.btnBrowseOutlets.Name = "btnBrowseOutlets"
-        Me.btnBrowseOutlets.Size = New System.Drawing.Size(24, 23)
+        Me.btnBrowseOutlets.Size = New Drawing.Size(24, 23)
         Me.btnBrowseOutlets.TabIndex = 20
         '
         'cmbxOutlets
         '
         Me.cmbxOutlets.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                        Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
         Me.cmbxOutlets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbxOutlets.Location = New System.Drawing.Point(15, 43)
+        Me.cmbxOutlets.Location = New Drawing.Point(15, 43)
         Me.cmbxOutlets.Name = "cmbxOutlets"
-        Me.cmbxOutlets.Size = New System.Drawing.Size(378, 21)
+        Me.cmbxOutlets.Size = New Drawing.Size(378, 21)
         Me.cmbxOutlets.TabIndex = 19
         '
         'chkbxUseOutlet
         '
         Me.chkbxUseOutlet.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.chkbxUseOutlet.Location = New System.Drawing.Point(6, 19)
+                        Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.chkbxUseOutlet.Location = New Drawing.Point(6, 19)
         Me.chkbxUseOutlet.Name = "chkbxUseOutlet"
-        Me.chkbxUseOutlet.Size = New System.Drawing.Size(416, 24)
+        Me.chkbxUseOutlet.Size = New Drawing.Size(416, 24)
         Me.chkbxUseOutlet.TabIndex = 18
         Me.chkbxUseOutlet.Text = "Use a Custom Outlets/Inlets Layer"
         '
         'lblSnapThresh
         '
-        Me.lblSnapThresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblSnapThresh.Location = New System.Drawing.Point(102, 94)
+        Me.lblSnapThresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.lblSnapThresh.Location = New Drawing.Point(102, 94)
         Me.lblSnapThresh.Name = "lblSnapThresh"
-        Me.lblSnapThresh.Size = New System.Drawing.Size(89, 26)
+        Me.lblSnapThresh.Size = New Drawing.Size(89, 26)
         Me.lblSnapThresh.TabIndex = 32
         Me.lblSnapThresh.Text = "Snap Threshold"
         Me.lblSnapThresh.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblOutlets
         '
-        Me.lblOutlets.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblOutlets.Location = New System.Drawing.Point(5, 16)
+        Me.lblOutlets.Font = New Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblOutlets.Location = New Drawing.Point(5, 16)
         Me.lblOutlets.Name = "lblOutlets"
-        Me.lblOutlets.Size = New System.Drawing.Size(420, 103)
+        Me.lblOutlets.Size = New Drawing.Size(420, 103)
         Me.lblOutlets.TabIndex = 0
         Me.lblOutlets.Text = "Outlets and Sub-basin Delineation Steps Currently Running"
         Me.lblOutlets.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'btnAdvanced
         '
-        Me.btnAdvanced.Location = New System.Drawing.Point(5, 523)
+        Me.btnAdvanced.Location = New Drawing.Point(5, 523)
         Me.btnAdvanced.Name = "btnAdvanced"
-        Me.btnAdvanced.Size = New System.Drawing.Size(112, 23)
+        Me.btnAdvanced.Size = New Drawing.Size(112, 23)
         Me.btnAdvanced.TabIndex = 26
         Me.btnAdvanced.Text = "Advanced Settings"
         '
         'btnHelp
         '
-        Me.btnHelp.Location = New System.Drawing.Point(196, 523)
+        Me.btnHelp.Location = New Drawing.Point(196, 523)
         Me.btnHelp.Name = "btnHelp"
-        Me.btnHelp.Size = New System.Drawing.Size(75, 23)
+        Me.btnHelp.Size = New Drawing.Size(75, 23)
         Me.btnHelp.TabIndex = 32
         Me.btnHelp.Text = "Help"
         Me.btnHelp.Visible = False
         '
         'numProcesses
         '
-        Me.numProcesses.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.numProcesses.Location = New System.Drawing.Point(123, 496)
+        Me.numProcesses.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.numProcesses.Location = New Drawing.Point(123, 496)
         Me.numProcesses.Name = "numProcesses"
-        Me.numProcesses.Size = New System.Drawing.Size(40, 20)
+        Me.numProcesses.Size = New Drawing.Size(40, 20)
         Me.numProcesses.TabIndex = 33
         '
         'lblNumProc
         '
-        Me.lblNumProc.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblNumProc.Location = New System.Drawing.Point(8, 492)
+        Me.lblNumProc.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), Windows.Forms.AnchorStyles)
+        Me.lblNumProc.Location = New Drawing.Point(8, 492)
         Me.lblNumProc.Name = "lblNumProc"
-        Me.lblNumProc.Size = New System.Drawing.Size(109, 26)
+        Me.lblNumProc.Size = New Drawing.Size(109, 26)
         Me.lblNumProc.TabIndex = 34
         Me.lblNumProc.Text = "Number of processes"
         Me.lblNumProc.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'showTaudemOutput
         '
-        Me.showTaudemOutput.Location = New System.Drawing.Point(196, 498)
+        Me.showTaudemOutput.Location = New Drawing.Point(196, 498)
         Me.showTaudemOutput.Name = "showTaudemOutput"
-        Me.showTaudemOutput.Size = New System.Drawing.Size(136, 17)
+        Me.showTaudemOutput.Size = New Drawing.Size(136, 17)
         Me.showTaudemOutput.TabIndex = 35
         Me.showTaudemOutput.Text = "Show TauDEM output"
         Me.showTaudemOutput.UseVisualStyleBackColor = True
         '
         'frmAutomatic_v3
         '
-        Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-        Me.ClientSize = New System.Drawing.Size(440, 549)
+        Me.AutoScaleBaseSize = New Drawing.Size(5, 13)
+        Me.ClientSize = New Drawing.Size(440, 549)
         Me.Controls.Add(Me.showTaudemOutput)
         Me.Controls.Add(Me.lblNumProc)
         Me.Controls.Add(Me.numProcesses)
@@ -739,9 +739,9 @@ Public Class frmAutomatic_v3
         Me.ResumeLayout(False)
         Me.PerformLayout()
     End Sub
-    Private showTaudemOutput As System.Windows.Forms.CheckBox
-    Friend numProcesses As System.Windows.Forms.TextBox
-    Friend lblNumProc As System.Windows.Forms.Label
+    Private showTaudemOutput As Windows.Forms.CheckBox
+    Friend numProcesses As Windows.Forms.TextBox
+    Friend lblNumProc As Windows.Forms.Label
 
 #End Region
 
@@ -1038,7 +1038,7 @@ Public Class frmAutomatic_v3
     Private frmSettings As New frmAdvancedOptions_v3
 
     ' debug tick timer items
-    Private os As System.IO.StreamWriter
+    Private os As IO.StreamWriter
     Private tickb, ticka, tickd As Long
     Private doTicks As Boolean = False
     Private timepath As String = System.IO.Path.Combine(System.IO.Path.GetTempPath, "taudem_timing.txt")
@@ -1069,7 +1069,7 @@ Public Class frmAutomatic_v3
         ProgressHandler = wrapper
 
         If doTicks Then
-            os = New System.IO.StreamWriter(timepath)
+            os = New IO.StreamWriter(timepath)
         End If
         cmbxElevUnits.SelectedIndex = 0
         fillCombos()
@@ -1088,7 +1088,7 @@ Public Class frmAutomatic_v3
         ttip.SetToolTip(btnSetExtents, "Click this to zoom and set extents to use for the focusing mask.")
         ttip.SetToolTip(btnLoadPre, "Click this to load pre-existing intermediate pre-processing" + vbNewLine + "files generated from a previous run of the AWD on the base" + vbNewLine + "grid. This allows the skipping of the time-consuming" + vbNewLine + "pre-processing steps.")
 
-        runFormCleanup()
+        RunFormCleanup()
     End Sub
 
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1830,12 +1830,12 @@ Public Class frmAutomatic_v3
             Message = fname
         End If
         Message = Message & "|" & GetFileDescription(gtype) & "|" & CLng(gtype)
-        App.ProgressHandler.Progress("Add", 0, Message)
+        App.ProgressHandler.Progress(0, Message)
         Return True
     End Function
 
     Public Function RemoveLayer(ByVal fname As String, Optional ByVal toPrompt As Boolean = True) As Boolean
-        App.ProgressHandler.Progress("Remove", 0, fname)
+        App.ProgressHandler.Progress(0, fname)
         RemoveLayer = True
     End Function
 
@@ -1881,7 +1881,7 @@ Public Class frmAutomatic_v3
     ' 05/30/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Private Sub runFormInit()
-        Cursor = Windows.Forms.Cursors.WaitCursor
+        Cursor = System.Windows.Forms.Cursors.WaitCursor
         btnRunAll.Enabled = False
         btnCancel.Enabled = False
         btnAdvanced.Enabled = False
@@ -1909,9 +1909,9 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/30/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub runFormCleanup()
-        App.ProgressHandler.Progress("Status", 0, "")
-        Cursor = Windows.Forms.Cursors.Default
+    Private Sub RunFormCleanup()
+        App.ProgressHandler.Reset()
+        Cursor = System.Windows.Forms.Cursors.Default
         btnRunAll.Enabled = True
         btnCancel.Enabled = True
         btnAdvanced.Enabled = True
@@ -1922,7 +1922,7 @@ Public Class frmAutomatic_v3
         grpbxSetupPreprocess.Enabled = True
         grpbxThresh.Enabled = True
         grpbxOutletDef.Enabled = True
-        Me.Refresh()
+        Refresh()
     End Sub
 
 #End Region
@@ -1944,9 +1944,9 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub txtbxThreshold_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtbxThreshold.KeyDown
-        If e.KeyCode = Windows.Forms.Keys.Return Then
-            Windows.Forms.SendKeys.Send("{TAB}")
+    Private Sub txtbxThreshold_KeyDown(ByVal sender As System.Object, ByVal e As Windows.Forms.KeyEventArgs) Handles txtbxThreshold.KeyDown
+        If e.KeyCode = System.Windows.Forms.Keys.Return Then
+            System.Windows.Forms.SendKeys.Send("{TAB}")
         End If
     End Sub
 
@@ -1966,7 +1966,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub txtbxThreshold_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtbxThreshold.KeyPress
+    Private Sub txtbxThreshold_KeyPress(ByVal sender As System.Object, ByVal e As Windows.Forms.KeyPressEventArgs) Handles txtbxThreshold.KeyPress
         If Char.IsNumber(e.KeyChar) = False And Char.IsControl(e.KeyChar) = False Then
             e.Handled = True
         End If
@@ -1988,7 +1988,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub txtbxThreshold_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtbxThreshold.Leave
+    Private Sub txtbxThreshold_Leave(ByVal sender As System.Object, ByVal e As EventArgs) Handles txtbxThreshold.Leave
         validateCellThreshAndSet()
     End Sub
 
@@ -2008,9 +2008,9 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/28/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub txtbxThreshConv_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtbxThreshConv.KeyDown
-        If e.KeyCode = Windows.Forms.Keys.Return Then
-            Windows.Forms.SendKeys.Send("{TAB}")
+    Private Sub txtbxThreshConv_KeyDown(ByVal sender As System.Object, ByVal e As Windows.Forms.KeyEventArgs) Handles txtbxThreshConv.KeyDown
+        If e.KeyCode = System.Windows.Forms.Keys.Return Then
+            System.Windows.Forms.SendKeys.Send("{TAB}")
         End If
     End Sub
 
@@ -2030,7 +2030,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/28/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub txtbxThreshConv_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtbxThreshConv.KeyPress
+    Private Sub txtbxThreshConv_KeyPress(ByVal sender As System.Object, ByVal e As Windows.Forms.KeyPressEventArgs) Handles txtbxThreshConv.KeyPress
         If Char.IsNumber(e.KeyChar) = False And Char.IsControl(e.KeyChar) = False And e.KeyChar <> "." Then
             e.Handled = True
         End If
@@ -2052,7 +2052,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/28/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub txtbxThreshConv_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtbxThreshConv.Leave
+    Private Sub txtbxThreshConv_Leave(ByVal sender As System.Object, ByVal e As EventArgs) Handles txtbxThreshConv.Leave
         validateConvThreshAndSet()
     End Sub
 
@@ -2072,7 +2072,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 06/01/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub txtbxSnapThresh_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtbxSnapThresh.KeyPress
+    Private Sub txtbxSnapThresh_KeyPress(ByVal sender As System.Object, ByVal e As Windows.Forms.KeyPressEventArgs) Handles txtbxSnapThresh.KeyPress
         If Char.IsNumber(e.KeyChar) = False And Char.IsControl(e.KeyChar) = False And e.KeyChar <> "." Then
             e.Handled = True
         End If
@@ -2094,13 +2094,13 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 06/01/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub txtbxSnapThresh_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtbxSnapThresh.KeyDown
-        If e.KeyCode = Windows.Forms.Keys.Return Then
-            Windows.Forms.SendKeys.Send("{TAB}")
+    Private Sub txtbxSnapThresh_KeyDown(ByVal sender As System.Object, ByVal e As Windows.Forms.KeyEventArgs) Handles txtbxSnapThresh.KeyDown
+        If e.KeyCode = System.Windows.Forms.Keys.Return Then
+            System.Windows.Forms.SendKeys.Send("{TAB}")
         End If
     End Sub
 
-    Private Sub txtbxSnapThresh_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtbxSnapThresh.TextChanged
+    Private Sub txtbxSnapThresh_TextChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles txtbxSnapThresh.TextChanged
         threshDelinHasRan = False
     End Sub
 
@@ -2120,7 +2120,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub cmbxSelDem_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbxSelDem.SelectedIndexChanged
+    Private Sub cmbxSelDem_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles cmbxSelDem.SelectedIndexChanged
         Dim tmpPath, tmpLastDem As String
         If cmbxSelDem.SelectedIndex > 0 Then
             If cmbxSelDem.Items.Item(cmbxSelDem.SelectedIndex) <> lastDem Then
@@ -2162,7 +2162,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 07/24/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub cmbxStream_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbxStream.SelectedIndexChanged
+    Private Sub cmbxStream_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles cmbxStream.SelectedIndexChanged
         If cmbxStream.SelectedIndex > 0 Then
             lastStream = cmbxStream.Items(cmbxStream.SelectedIndex)
         End If
@@ -2236,7 +2236,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub cmbxThreshConvUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbxThreshConvUnits.SelectedIndexChanged
+    Private Sub cmbxThreshConvUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles cmbxThreshConvUnits.SelectedIndexChanged
         validateCellThreshAndSet()
         validateConvThreshAndSet()
         lastConvUnit = cmbxThreshConvUnits.SelectedIndex
@@ -2347,7 +2347,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 06/20/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub rdobtnUseExtents_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rdobtnUseExtents.CheckedChanged
+    Private Sub rdobtnUseExtents_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rdobtnUseExtents.CheckedChanged
         cmbxMask.Enabled = Not rdobtnUseExtents.Checked
         btnDrawMask.Enabled = Not rdobtnUseExtents.Checked
         btnSelectMask.Enabled = Not rdobtnUseExtents.Checked
@@ -2359,25 +2359,25 @@ Public Class frmAutomatic_v3
         End If
     End Sub
 
-    Private Sub chkbxBurnStream_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkbxBurnStream.Click
+    Private Sub chkbxBurnStream_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles chkbxBurnStream.Click
         If tdbChoiceList.useBurnIn <> chkbxBurnStream.Checked Then
             preProcHasRan = False
         End If
     End Sub
 
-    Private Sub chkbxMask_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkbxMask.Click
+    Private Sub chkbxMask_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles chkbxMask.Click
         If tdbChoiceList.useMaskFileOrExtents <> chkbxMask.Checked Then
             preProcHasRan = False
         End If
     End Sub
 
-    Private Sub rdobtnUseExtents_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rdobtnUseExtents.Click
+    Private Sub rdobtnUseExtents_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles rdobtnUseExtents.Click
         If tdbChoiceList.useExtentMask <> rdobtnUseExtents.Checked Then
             preProcHasRan = False
         End If
     End Sub
 
-    Private Sub rdobtnUseFileMask_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rdobtnUseFileMask.Click
+    Private Sub rdobtnUseFileMask_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles rdobtnUseFileMask.Click
         If tdbChoiceList.useExtentMask <> rdobtnUseExtents.Checked Then
             preProcHasRan = False
         End If
@@ -2400,7 +2400,7 @@ Public Class frmAutomatic_v3
     ' 05/26/2006    ARA             Created
     ' 08/09/2006    ARA             Save Config on leaving.
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub btnAdvanced_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdvanced.Click
+    Private Sub btnAdvanced_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnAdvanced.Click
         frmSettings.BringToFront()
         frmSettings.ShowDialog()
         SaveToChoices()
@@ -3062,7 +3062,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub btnRunPreproc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunPreproc.Click
+    Private Sub btnRunPreproc_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnRunPreproc.Click
         runPreprocessing()
     End Sub
 
@@ -3082,7 +3082,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub btnRunThreshDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunThreshDelin.Click
+    Private Sub btnRunThreshDelin_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnRunThreshDelin.Click
         runDelinByThresh()
     End Sub
 
@@ -3102,7 +3102,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub btnRunOutletFinish_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunOutletFinish.Click
+    Private Sub btnRunOutletFinish_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnRunOutletFinish.Click
         runOutletsAndFinish()
     End Sub
 
@@ -3122,7 +3122,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub btnRunAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunAll.Click
+    Private Sub btnRunAll_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnRunAll.Click
         If runAll() Then
             closingCleanup()
             Me.Close()
@@ -3145,7 +3145,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnCancel.Click
         closingCleanup()
         Me.Close()
     End Sub
@@ -3169,7 +3169,7 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Sub btnLoadPre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadPre.Click
+    Private Sub btnLoadPre_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnLoadPre.Click
         If cmbxSelDem.SelectedIndex = 0 Then
             MsgBox("You need to select a DEM grid from the Base Elevation Grid drop-down list. If no layers are available to select, you can use the browse button beside the list to open an existing DEM.", MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
         Else
@@ -3204,7 +3204,7 @@ Public Class frmAutomatic_v3
         End If
     End Sub
 
-    Private Sub btnLoadDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadDelin.Click
+    Private Sub btnLoadDelin_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnLoadDelin.Click
         If cmbxSelDem.SelectedIndex = 0 Then
             MsgBox("You need to select a DEM grid from the Base Elevation Grid drop-down list. If no layers are available to select, you can use the browse button beside the list to open an existing DEM.", MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
         Else
@@ -3271,18 +3271,18 @@ Public Class frmAutomatic_v3
     ' Date          Changed By      Notes
     ' 05/30/2006    ARA             Created
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Function runPreprocessing() As Boolean
+    Private Function RunPreprocessing() As Boolean
         runFormInit()
         lblPreproc.BringToFront()
         lblPreproc.Visible = True
-        Me.Refresh()
+        Refresh()
         preProcHasRan = False
         Try
             If Not validatePreprocessing() Then
-                runFormCleanup()
+                RunFormCleanup()
                 Return False
             End If
-            App.ProgressHandler.Progress("Status", 0, "Preparing Grid")
+            App.ProgressHandler.Progress(0, "Preparing Grid")
             g_BaseDEM = getPathByName(cmbxSelDem.Items(cmbxSelDem.SelectedIndex))
             tdbFileList.FormFileNames(g_BaseDEM, tdbChoiceList.OutputPath, True)
             ' CWG 30/1/11 Changed for TauDEM V5
@@ -3295,9 +3295,9 @@ Public Class frmAutomatic_v3
                 tdbFileList.sd8 = tdbChoiceList.D8SlopePath
                 tdbFileList.p = tdbChoiceList.D8Path
             Else
-                If Not runMask() Then runFormCleanup() : Return False
-                If Not runPitFill() Then runFormCleanup() : Return False
-                If Not runD8() Then runFormCleanup() : Return False
+                If Not runMask() Then RunFormCleanup() : Return False
+                If Not runPitFill() Then RunFormCleanup() : Return False
+                If Not runD8() Then RunFormCleanup() : Return False
 
                 'hack:
                 If tdbChoiceList.useDinf Then
@@ -3305,13 +3305,13 @@ Public Class frmAutomatic_v3
                 End If
             End If
         Catch e As Exception
-            runFormCleanup()
+            RunFormCleanup()
             preProcHasRan = False
             Return False
             MsgBox(e.Message, MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
         End Try
 
-        runFormCleanup()
+        RunFormCleanup()
         preProcHasRan = True
         Return True
     End Function
@@ -3386,14 +3386,14 @@ Public Class frmAutomatic_v3
 
         Try
             If Not validatePreprocessing() Or Not validateDelinByThresh() Then
-                runFormCleanup()
+                RunFormCleanup()
                 Return False
             End If
 
             'If the preProcessing hasn't been done, run it first and only go on if it succeeded
             If Not preProcHasRan Then
                 If Not runPreprocessing() Then
-                    runFormCleanup()
+                    RunFormCleanup()
                     Return False
                 End If
             End If
@@ -3413,11 +3413,11 @@ Public Class frmAutomatic_v3
                 'DataManagement.DeleteShapefile(tdbFileList.net)
                 DataManagement.CopyShapefile(tdbChoiceList.NetPath, tdbFileList.net)
             Else
-                If Not runAreaD8() Then runFormCleanup() : Return False
+                If Not runAreaD8() Then RunFormCleanup() : Return False
                 If tdbChoiceList.useDinf Then
-                    If Not runAreaDinf() Then runFormCleanup() : Return False
+                    If Not runAreaDinf() Then RunFormCleanup() : Return False
                 End If
-                If Not runDefineStreamGrids() Then runFormCleanup() : Return False
+                If Not runDefineStreamGrids() Then RunFormCleanup() : Return False
 
                 If cmbxStream.SelectedIndex > 0 Then
                     'turn off the burn in layer to better view the result
@@ -3426,14 +3426,14 @@ Public Class frmAutomatic_v3
                 End If
             End If
         Catch e As Exception
-            runFormCleanup()
+            RunFormCleanup()
             threshDelinHasRan = False
 
             MsgBox(e.Message, MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
             Return False
         End Try
 
-        runFormCleanup()
+        RunFormCleanup()
         threshDelinHasRan = True
         Return True
     End Function
@@ -3481,14 +3481,14 @@ Public Class frmAutomatic_v3
         runOutletsAndFinish = False
         Try
             If Not validatePreprocessing() Or Not validateDelinByThresh() Or Not validateOutlets() Then
-                runFormCleanup()
+                RunFormCleanup()
                 Return False
             End If
 
             'If the Delin portion hasn't been done, run it first and only go on if it succeeded
             If Not threshDelinHasRan Then
                 If Not runDelinByThresh() Then
-                    runFormCleanup()
+                    RunFormCleanup()
                     'If Not stopClose Then
                     '    MsgBox("An error occured while delineating. Please check that your data is in the same projection and overlaps correctly and that your threshold was set to a valid value.")
                     'End If
@@ -3527,18 +3527,18 @@ Public Class frmAutomatic_v3
                 End If
             End If
 
-            If Not runWshedToShape() Then runFormCleanup() : Return False
-            If Not runApplyStreamAttributes() Then runFormCleanup() : Return False
+            If Not runWshedToShape() Then RunFormCleanup() : Return False
+            If Not runApplyStreamAttributes() Then RunFormCleanup() : Return False
             'hack
             ' If Not runApplyWatershedAttributes() Then runFormCleanup() : Return False
             'If Not runBuildJoinedBasins() Then runFormCleanup() : Return False
             'If Not runApplyJoinBasinAttributes() Then runFormCleanup() : Return False
         Catch e As Exception
-            runFormCleanup()
+            RunFormCleanup()
 
             MsgBox(e.Message, MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
         End Try
-        runFormCleanup()
+        RunFormCleanup()
         runOutletsAndFinish = True
     End Function
 
@@ -3717,27 +3717,27 @@ Public Class frmAutomatic_v3
         If burnFirst Then
             strToFill = runBurn(tdbFileList.dem)
             If strToFill = "" Then
-                App.ProgressHandler.Progress("Status", 0, "")
-                Cursor = Windows.Forms.Cursors.Default
+                App.ProgressHandler.Progress(0, "")
+                Cursor = System.Windows.Forms.Cursors.Default
                 Return False
             End If
         End If
 
-        App.ProgressHandler.Progress("Status", 0, "Pit Fill")
+        App.ProgressHandler.Progress(0, "Pit Fill")
         Try
             Hydrology.Fill(strToFill, tdbFileList.fel, App.ProgressHandler)
         Catch ex As Exception
             MsgBox("An error occured while filling the grid: " + ex.Message, MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
-            App.ProgressHandler.Progress("Status", 0, "")
-            Cursor = Windows.Forms.Cursors.Default
+            App.ProgressHandler.Progress(0, "")
+            Cursor = System.Windows.Forms.Cursors.Default
             Return False
         End Try
 
         If Not burnFirst Then
             tdbFileList.fel = runBurn(tdbFileList.fel)
             If tdbFileList.fel = "" Then
-                App.ProgressHandler.Progress("Status", 0, "")
-                Cursor = Windows.Forms.Cursors.Default
+                App.ProgressHandler.Progress(0, "")
+                Cursor = System.Windows.Forms.Cursors.Default
                 Return False
             End If
         End If
@@ -4110,7 +4110,7 @@ Public Class frmAutomatic_v3
         If doTicks Then
             tickb = Now().Ticks
         End If
-        App.ProgressHandler.Progress("Status", 0, "Calculating Stream Parameters")
+        App.ProgressHandler.Progress(0, "Calculating Stream Parameters")
         If tdbChoiceList.CalcSpecialStreamFields Then
             runApplyStreamAttributes = Hydrology.ApplyStreamAttributes(tdbFileList.net, tdbFileList.dem, tdbFileList.wshed, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
         Else
@@ -4153,19 +4153,19 @@ Public Class frmAutomatic_v3
     ' 05/26/2006    ARA             Reset change logs for new version when copying over functionality
     ' 02/20/2006    CM              Added precision and moved begineditings
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private Function runApplyWatershedAttributes() As Boolean
+    Private Function RunApplyWatershedAttributes() As Boolean
 
         If doTicks Then
             tickb = Now().Ticks
         End If
 
-        runApplyWatershedAttributes = Hydrology.ApplyWatershedLinkAttributes(tdbFileList.wshed, tdbFileList.net, App.ProgressHandler)
+        RunApplyWatershedAttributes = Hydrology.ApplyWatershedLinkAttributes(tdbFileList.wshed, tdbFileList.net, App.ProgressHandler)
 
         If tdbChoiceList.CalcSpecialWshedFields Then
-            runApplyWatershedAttributes = Hydrology.ApplyWatershedAreaAttributes(tdbFileList.wshed, App.ProgressHandler)
-            runApplyWatershedAttributes = Hydrology.ApplyWatershedSlopeAttribute(tdbFileList.w, tdbFileList.wshed, tdbFileList.sd8, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
+            RunApplyWatershedAttributes = Hydrology.ApplyWatershedAreaAttributes(tdbFileList.wshed, App.ProgressHandler)
+            RunApplyWatershedAttributes = Hydrology.ApplyWatershedSlopeAttribute(tdbFileList.w, tdbFileList.wshed, tdbFileList.sd8, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
         Else
-            runApplyWatershedAttributes = True
+            RunApplyWatershedAttributes = True
         End If
 
         If doTicks Then
@@ -4277,7 +4277,7 @@ Public Class frmAutomatic_v3
         End Get
     End Property
 
-    Private Sub frmAutomatic_v3_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub frmAutomatic_v3_FormClosing(ByVal sender As System.Object, ByVal e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         ' Paul Meems, 24-aug-2011
         ' Close the timer file if it is being used and display it:
         If doTicks AndAlso Not (os Is Nothing) Then

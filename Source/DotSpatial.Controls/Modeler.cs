@@ -17,7 +17,7 @@ using DotSpatial.Modeling.Forms;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A modeler form which allows users to create models with visual representations of tools
+    /// A modeler form which allows users to create models with visual representations of tools.
     /// </summary>
     // This control will no longer be visible
     [ToolboxItem(false)]
@@ -55,7 +55,7 @@ namespace DotSpatial.Controls
         private Point _selectBoxPt;
 
         /// <summary>
-        /// Decides if the the DotSpatial watermark is present in the lowerleft corner
+        /// Decides if the the DotSpatial watermark is present in the lowerleft corner.
         /// </summary>
         private bool _showWaterMark = true;
 
@@ -133,33 +133,33 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the color that data should have in the modeler
+        /// Gets or sets the color that data should have in the modeler.
         /// </summary>
         [Category("Model Appearance")]
         [Description("Gets or sets the color that data should have in the modeler")]
         public Color DataColor { get; set; } = Color.LightGreen;
 
         /// <summary>
-        /// Gets or sets the font that will be used to label the data in the modeler
+        /// Gets or sets the font that will be used to label the data in the modeler.
         /// </summary>
         [Category("Model Appearance")]
         [Description("Gets or sets the font that will be used to label the data in the modeler")]
         public Font DataFont { get; set; } = SystemFonts.DialogFont;
 
         /// <summary>
-        /// Gets or sets the shape that data should be represented with in the modeler
+        /// Gets or sets the shape that data should be represented with in the modeler.
         /// </summary>
         [Category("Model Appearance")]
         [Description("Gets or sets the shape that data should be represented with in the modeler")]
         public ModelShape DataShape { get; set; } = ModelShape.Ellipse;
 
         /// <summary>
-        /// Gets or sets the extension used by default for opening, saving and creating new models. ex "mwm"
+        /// Gets or sets the extension used by default for opening, saving and creating new models. ex "mwm".
         /// </summary>
         public string DefaultFileExtension { get; set; }
 
         /// <summary>
-        /// Gets or Sets the drawing quality for the toolbox
+        /// Gets or Sets the drawing quality for the toolbox.
         /// </summary>
         [Category("Model Appearance")]
         [Description("Gets or Sets the drawing quality for the toolbox")]
@@ -216,7 +216,7 @@ namespace DotSpatial.Controls
         public int MaxExecutionThreads { get; set; }
 
         /// <summary>
-        /// Gets or sets the fileName of the current model
+        /// Gets or sets the fileName of the current model.
         /// </summary>
         public string ModelFilename
         {
@@ -252,7 +252,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the color that tools should have in the modeler
+        /// Gets or sets the color that tools should have in the modeler.
         /// </summary>
         [Category("Model Appearance")]
         [Description("Gets or sets the color that tools should be represented with in the modeler")]
@@ -276,7 +276,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the font that will be used to label the tools in the modeler
+        /// Gets or sets the font that will be used to label the tools in the modeler.
         /// </summary>
         [Category("Model Appearance")]
         [Description("Gets or sets the font that will be used to label the tools in the modeler")]
@@ -307,7 +307,7 @@ namespace DotSpatial.Controls
         public ToolManager ToolManager { get; set; }
 
         /// <summary>
-        /// Gets or sets the shape that tools should be represented with in the modeler
+        /// Gets or sets the shape that tools should be represented with in the modeler.
         /// </summary>
         [Category("Model Appearance")]
         [Description("Gets or sets the shape that tools should be represented with in the modeler")]
@@ -340,12 +340,12 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the working path for the model
+        /// Gets or sets the working path for the model.
         /// </summary>
         public string WorkingPath { get; set; }
 
         /// <summary>
-        /// Gets or sets the zoom factor of the map values below 0 zoom out, values above 1 zoom in. 1 = no zoom
+        /// Gets or sets the zoom factor of the map values below 0 zoom out, values above 1 zoom in. 1 = no zoom.
         /// </summary>
         public float ZoomFactor
         {
@@ -366,9 +366,9 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Centers the map on a given point
+        /// Centers the map on a given point.
         /// </summary>
-        /// <param name="centerPoint">A Point in the modelers virtual coordinant system</param>
+        /// <param name="centerPoint">A Point in the modelers virtual coordinant system.</param>
         public void CenterModelerOnPoint(Point centerPoint)
         {
             Point virtBr = PixelToVirtual(Width, Height);
@@ -388,9 +388,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new model
+        /// Creates a new model.
         /// </summary>
-        /// <param name="promptSave">if true prompts user to save current model if it is not saved</param>
+        /// <param name="promptSave">if true prompts user to save current model if it is not saved.</param>
         public void CreateNewModel(bool promptSave)
         {
             string fileName = Path.Combine(Path.GetTempPath(), "New_Model") + "." + DefaultFileExtension;
@@ -412,7 +412,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Deletes all of the selected elements if it is allowed
+        /// Deletes all of the selected elements if it is allowed.
         /// </summary>
         public void DeleteSelectedElements()
         {
@@ -519,10 +519,10 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Executes a model after verifying that it is ready
+        /// Executes a model after verifying that it is ready.
         /// </summary>
-        /// <param name="error">A string parameter which will contains a error string if one is generated</param>
-        /// <returns>Returns true if it executed successfully</returns>
+        /// <param name="error">A string parameter which will contains a error string if one is generated.</param>
+        /// <returns>Returns true if it executed successfully.</returns>
         public bool ExecuteModel(out string error)
         {
             // Make sure all the tools are ready for execution
@@ -607,7 +607,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Prompts the user to load a model and asks them if they want to save the current model first
+        /// Prompts the user to load a model and asks them if they want to save the current model first.
         /// </summary>
         public void LoadModel()
         {
@@ -768,8 +768,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Saves the current project to disk.
         /// </summary>
-        /// <param name="promptOverwrite">True to prompt for overwrite if file exists</param>
-        /// <param name="promptSaveAs">True show save as dialog</param>
+        /// <param name="promptOverwrite">True to prompt for overwrite if file exists.</param>
+        /// <param name="promptSaveAs">True show save as dialog.</param>
         public void SaveModel(bool promptOverwrite, bool promptSaveAs)
         {
             string fileName = ModelFilename;
@@ -799,7 +799,7 @@ namespace DotSpatial.Controls
         /// Saves a copy of the model to the selected file without renaming the current project.
         /// </summary>
         /// <param name="fileName">File to save to.</param>
-        /// <returns>True</returns>
+        /// <returns>True.</returns>
         public bool SaveModel(string fileName)
         {
             // Creates the model xml document
@@ -855,7 +855,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zooms to the extent of all elements in the model and centers the modeler on them
+        /// Zooms to the extent of all elements in the model and centers the modeler on them.
         /// </summary>
         public void ZoomFullExtent()
         {
@@ -898,7 +898,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zooms the model in 20%
+        /// Zooms the model in 20%.
         /// </summary>
         public void ZoomIn()
         {
@@ -918,7 +918,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zooms the model out 20%
+        /// Zooms the model out 20%.
         /// </summary>
         public void ZoomOut()
         {
@@ -938,7 +938,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// When the user double clicks on the model this event fires
+        /// When the user double clicks on the model this event fires.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnDoubleClick(EventArgs e)
@@ -1122,7 +1122,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// On Key Up
+        /// On Key Up.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnKeyUp(KeyEventArgs e)
@@ -1138,7 +1138,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires when the Filename of the project is changed
+        /// Fires when the Filename of the project is changed.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected virtual void OnModelFilenameChanged(EventArgs e)
@@ -1147,7 +1147,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// When the users clicks the mouse this event fires
+        /// When the users clicks the mouse this event fires.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseDown(MouseEventArgs e)
@@ -1243,7 +1243,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// When the mouse is moved this event fires
+        /// When the mouse is moved this event fires.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseMove(MouseEventArgs e)
@@ -1366,7 +1366,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// When the user mouses up after a single click this event fires
+        /// When the user mouses up after a single click this event fires.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseUp(MouseEventArgs e)
@@ -1489,7 +1489,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// When the element is called on to be painted this method is called
+        /// When the element is called on to be painted this method is called.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)
@@ -1548,7 +1548,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// When the form draws the background do nothing
+        /// When the form draws the background do nothing.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -1556,7 +1556,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Redraws the background when the form is resized
+        /// Redraws the background when the form is resized.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnResize(EventArgs e)
@@ -1585,8 +1585,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Adds a data element to the modeler based on a parameter descrition.
         /// </summary>
-        /// <param name="par">The parameter to add to the modeler</param>
-        /// <param name="location">A point representing the virtual location of the element</param>
+        /// <param name="par">The parameter to add to the modeler.</param>
+        /// <param name="location">A point representing the virtual location of the element.</param>
         /// <returns>The data element, that was added to the modeler.</returns>
         private DataElement AddData(Parameter par, Point location)
         {
@@ -1596,9 +1596,9 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Adds a data element to the modeler.
         /// </summary>
-        /// <param name="par">The data set to add to the modeler</param>
-        /// <param name="location">A point representing the virtual location of the data element</param>
-        /// <param name="name">The name to give the element</param>
+        /// <param name="par">The data set to add to the modeler.</param>
+        /// <param name="location">A point representing the virtual location of the data element.</param>
+        /// <param name="name">The name to give the element.</param>
         /// <returns>The data element, that was added to the modeler.</returns>
         private DataElement AddData(Parameter par, Point location, string name)
         {
@@ -1616,10 +1616,10 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Adds a element to the model
+        /// Adds a element to the model.
         /// </summary>
-        /// <param name="element">The new model Element to add to the model form</param>
-        /// <param name="location">A point representing the virtual location of the element</param>
+        /// <param name="element">The new model Element to add to the model form.</param>
+        /// <param name="location">A point representing the virtual location of the element.</param>
         private void AddElement(ModelElement element, Point location)
         {
             List<string> elementNames = new List<string>();
@@ -1665,8 +1665,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Adds a tool to the Modeler.
         /// </summary>
-        /// <param name="tool">the tool to add to the modeler</param>
-        /// <param name="location">A point representing the virtual location of the tool</param>
+        /// <param name="tool">the tool to add to the modeler.</param>
+        /// <param name="location">A point representing the virtual location of the tool.</param>
         /// <returns>The tool element that was added.</returns>
         private ToolElement AddTool(ITool tool, Point location)
         {
@@ -1676,9 +1676,9 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Adds a tool to the Modeler.
         /// </summary>
-        /// <param name="tool">the tool to add to the modeler</param>
+        /// <param name="tool">the tool to add to the modeler.</param>
         /// <param name="modelName">The name to give the element.</param>
-        /// <param name="location">A point representing the virtual location of the tool</param>
+        /// <param name="location">A point representing the virtual location of the tool.</param>
         /// <returns>The tool element that was added.</returns>
         private ToolElement AddTool(ITool tool, string modelName, Point location)
         {
@@ -1736,13 +1736,13 @@ namespace DotSpatial.Controls
                     {
                         if (progForm != null)
                         {
-                            progForm.Progress(string.Empty, 0, "==================");
-                            progForm.Progress(string.Empty, 0, "Executing Tool: " + te.Name);
-                            progForm.Progress(string.Empty, 0, "==================");
+                            progForm.Progress(0, "==================");
+                            progForm.Progress(0, "Executing Tool: " + te.Name);
+                            progForm.Progress(0, "==================");
                             te.Tool.Execute(progForm);
-                            progForm.Progress(string.Empty, 100, "==================");
-                            progForm.Progress(string.Empty, 100, "Done Executing Tool: " + te.Name);
-                            progForm.Progress(string.Empty, 100, "==================");
+                            progForm.Progress(100, "==================");
+                            progForm.Progress(100, "Done Executing Tool: " + te.Name);
+                            progForm.Progress(100, "==================");
                         }
 
                         te.ExecutionStatus = ToolExecuteStatus.Done;
@@ -1756,7 +1756,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Clears all the elements in the _selectedElements list, removes their highlights and puts them back in the _modelElements list
+        /// Clears all the elements in the _selectedElements list, removes their highlights and puts them back in the _modelElements list.
         /// </summary>
         private void ClearSelectedElements()
         {
@@ -1767,9 +1767,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Removes a specific element from the model clearing any links it has to other elements
+        /// Removes a specific element from the model clearing any links it has to other elements.
         /// </summary>
-        /// <param name="element">The element to remove</param>
+        /// <param name="element">The element to remove.</param>
         private void DeleteElement(ModelElement element)
         {
             ToolElement te = element as ToolElement;
@@ -1827,7 +1827,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Returns a rectangle in virtual coordinantes based on a pixel rectangle
+        /// Returns a rectangle in virtual coordinantes based on a pixel rectangle.
         /// </summary>
         /// <param name="rect">Pixel rectangle.</param>
         /// <returns>Rectangle in virtual coordinates.</returns>
@@ -1839,21 +1839,21 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Translates between pixel location and virtual location
+        /// Translates between pixel location and virtual location.
         /// </summary>
-        /// <param name="pt">A point in pixel coordinantes. 0, 0 is the top left of the modeler</param>
-        /// <returns>A point in the virtual model coordinantes</returns>
+        /// <param name="pt">A point in pixel coordinantes. 0, 0 is the top left of the modeler.</param>
+        /// <returns>A point in the virtual model coordinantes.</returns>
         private Point PixelToVirtual(Point pt)
         {
             return PixelToVirtual(pt.X, pt.Y);
         }
 
         /// <summary>
-        /// Translates between pixel location and virtual location
+        /// Translates between pixel location and virtual location.
         /// </summary>
-        /// <param name="x">the X location in pixel coordinantes</param>
-        /// <param name="y">the Y location in pixel coordinantes</param>
-        /// <returns>A point in the virtual model coordinantes</returns>
+        /// <param name="x">the X location in pixel coordinantes.</param>
+        /// <param name="y">the Y location in pixel coordinantes.</param>
+        /// <returns>A point in the virtual model coordinantes.</returns>
         private Point PixelToVirtual(int x, int y)
         {
             int ptX = Convert.ToInt32((x / _virtualZoom) - (_virtualOffset.X / _virtualZoom));
@@ -1892,7 +1892,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Paints the elements to the backbuffer
+        /// Paints the elements to the backbuffer.
         /// </summary>
         private void UpdateBackBuffer()
         {
@@ -1943,21 +1943,21 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Translates between virtual model coords and pixels
+        /// Translates between virtual model coords and pixels.
         /// </summary>
-        /// <param name="pt">A point in the virtual model coordinantes</param>
-        /// <returns>A point in pixel coordinantes. 0, 0 is the top left of the modeler</returns>
+        /// <param name="pt">A point in the virtual model coordinantes.</param>
+        /// <returns>A point in pixel coordinantes. 0, 0 is the top left of the modeler.</returns>
         private Point VirtualToPixel(Point pt)
         {
             return VirtualToPixel(pt.X, pt.Y);
         }
 
         /// <summary>
-        /// Translates between virtual model coords and pixels
+        /// Translates between virtual model coords and pixels.
         /// </summary>
-        /// <param name="x">the X location in virtual model coordinantes</param>
-        /// <param name="y">the Y location in virtual model coordinantes</param>
-        /// <returns>A point in pixel coordinantes. 0, 0 is the top left of the modeler</returns>
+        /// <param name="x">the X location in virtual model coordinantes.</param>
+        /// <param name="y">the Y location in virtual model coordinantes.</param>
+        /// <returns>A point in pixel coordinantes. 0, 0 is the top left of the modeler.</returns>
         private Point VirtualToPixel(int x, int y)
         {
             int ptX = Convert.ToInt32((x * _virtualZoom) + _virtualOffset.X);

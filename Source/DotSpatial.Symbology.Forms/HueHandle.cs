@@ -9,7 +9,7 @@ using System.Drawing.Drawing2D;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// HueHandle
+    /// HueHandle.
     /// </summary>
     public class HueHandle
     {

@@ -3,6 +3,23 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- JGD2011, EPSG from 6669 to 6687 (#1262)
+- Feature of determining the delta azimuth of three consecutive points (#1360)
+- InterSectionTool (#945) 
+
+### Changed
+- Switched to VS2019
+- Switched to .Net Framework 4.7.2
+- Updated StyleCop.Analyzers to 1.1.118
+- Switched from DotSpatial.NetTopologySuite/DotSpatial.GeoAPI to NetTopologySuite 2.4.0
+- Updated NUnit to 3.13.2
+
+### Fixed
+- Bug in extent calculation in WebMap plugin (#1367)
+
+## V2.0.1
+
 Be aware that code written for 1.9 will not work out of the box because DotSpatial.Topology was replaced by DotSpatial.GeoAPI and DotSpatial.NetTopologySuite (#786). Have a look at the [Wiki](https://github.com/DotSpatial/DotSpatial/wiki/Switching-from-DotSpatial-1.9-to-2.0) for more information.
 
 ### Added
@@ -28,9 +45,12 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - The possibility to draw linestrings which are inside a geometry collection (#1061)
 - The possibility to use static methods to deserialize objects that were serialized to a dspx file and can't be deserialized correctly via their class constructor (FeatureSet, MapSelfLoadGroup, MapSelfLoadLayers from GdalExtension, SpatiaLiteFeatureSet) (#1061)
 - Default mouse cursor button in layout insert toolbar
+- A function to get a reprojected clone of a featureset
+- Auto display children of MapGroup is now an option of the MapFrame
 
 ### Changed
-- Switched to VS2015 and C#6
+- Switched to VS2017 and C#7
+- Switched to .Net Framework 4.5.2 (#1083)
 - GdalExtension: Updated to GDAL 1.1.11
 - Demo and Apps projects should have build files (#120)
 - ExtensionManager & HideReleaseFromEndUser (#798)
@@ -54,6 +74,8 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - If a dxf file contains only a single feature type the dxf file gets added to the map as a single layer with the feature type it contains (#1061)
 - dxf files get loaded with their styles (#1061)
 - Show buttons from layout toolbars as checked while their function is active
+- replaced ContextMenu by ContextMenuStrip inside Legend, so we don't have to draw the images shown in the ContextMenu ourselves (#1069)
+- changed the background color of the LayerDialog and TabControlDialog tabs to Control so they have the same background color as the user controls they contain (#1069)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
@@ -137,3 +159,23 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - FeatureTypeFromGeometryType Method updated to work with GeometryCollection (#1044)
 - The SpatiaLite plugin to be able to load SpatiaLite databases of version 4 and higher (#1061)
 - WebMap-Plugin fails fetching tiles for specific WMS (#1074)
+- Plugins/WFSClient: Feature fetching fails on systems w NumberFormatInfo.NumberDecimalSeparator != '.' (#1081)
+- showMargin can be checked as soon as layoutControl is not null (#1091) 
+- don't assign the 'EndRow' property to itself in BinaryRaster.OpenWindow (#1089)
+- assign "D_ITRF_1997" to ITRF1997.GeographicInfo.Datum.Name instead of ITRF1997.GeographicInfo.Name because this is the name of the datum and not the GeographicInfo (#1090)
+- Update Brutile version in Webmap? (#800)
+- SetSelectable Plugin Not Included in Release Build (#1106)
+- Error on OpenFile with special SPHEROID string (#1142)
+- Shape File Saves with Wrong DataTypes (#1005)
+- Calculation of translation param in InRamImageData.GetBitmap is defective (#1203)
+- MapImageLayer not drawn correctly on print (#1137)
+- MapRasterLayer not drawn correctly on print
+- Create Categories for symbology is inconsistent with large datasets (#1242)
+- Geographic projections now have a Name property
+- Drawing order of labels is given precedence from top to bottom layer (#1226)
+- DotSpatial Projection with GridShift is Extremely Slow for NAD27 (#1333)
+- Potential Bug in RasterBoundsExt class CellsContainingExtent(...) method (#1332)
+- Potential bug in EnvelopeExt (and ExtentExt) class Reproportion(...) method (#1326)
+- Bug in AzimuthalEquidistant class (#1342)
+- Bug in moving legend items (#1368)
+- Bug in ExtentExt.Reproportion discussed in #1351 (#1370)

@@ -142,11 +142,11 @@ namespace DotSpatial.Controls
         public static string BaseDirectory { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether extensions should be placed in <see cref="BaseDirectory"/>
+        /// Gets or sets a value indicating whether extensions should be placed in <see cref="BaseDirectory"/>.
         /// </summary>
         /// <value>
         /// <c>true</c> if extensions should be placed in <see cref="BaseDirectory"/>; otherwise, extensions will be placed in a user profile folder based on the entry assembly name.
-        /// This must be set before calling LoadExtensions();
+        /// This must be set before calling LoadExtensions();.
         /// </value>
         public static bool UseBaseDirectoryForExtensionsDirectory { get; set; }
 
@@ -281,7 +281,7 @@ namespace DotSpatial.Controls
                 {
                     int percent = (progress * 100) / extensionCount;
                     var msg = string.Format(MessageStrings.LoadingPluginsPercentComplete, extension.Name, percent);
-                    ProgressHandler.Progress(MessageStrings.LoadingPlugins, percent, msg);
+                    ProgressHandler.Progress(percent, msg);
                     progress++;
                 }
 
@@ -298,7 +298,7 @@ namespace DotSpatial.Controls
             }
 
             // report progress
-            ProgressHandler?.Progress(MessageStrings.LoadingPlugins, 0, string.Empty);
+            ProgressHandler?.Progress(0, string.Empty);
         }
 
         /// <summary>
@@ -423,9 +423,18 @@ namespace DotSpatial.Controls
         /// <param name="msg">The message.</param>
         public void UpdateProgress(string msg)
         {
-            if (_splashScreen != null) UpdateSplashScreen(msg);
-            else if (ProgressHandler != null) ProgressHandler.Progress(string.Empty, 0, msg);
-            else MessageBox.Show(msg);
+            if (_splashScreen != null)
+            {
+                UpdateSplashScreen(msg);
+            }
+            else if (ProgressHandler != null)
+            {
+                ProgressHandler.Progress(0, msg);
+            }
+            else
+            {
+                MessageBox.Show(msg);
+            }
         }
 
         /// <summary>

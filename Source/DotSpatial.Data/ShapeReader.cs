@@ -3,12 +3,12 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// A class for cycling pages of shapes from a large dataset
+    /// A class for cycling pages of shapes from a large dataset.
     /// </summary>
     public class ShapeReader : IEnumerable<Dictionary<int, Shape>>
     {

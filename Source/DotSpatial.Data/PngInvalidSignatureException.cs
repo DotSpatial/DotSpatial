@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// PngInvalidSignatureException
+    /// PngInvalidSignatureException.
     /// </summary>
     public class PngInvalidSignatureException : ApplicationException
     {

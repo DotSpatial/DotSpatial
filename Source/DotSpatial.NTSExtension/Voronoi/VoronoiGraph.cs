@@ -8,7 +8,7 @@
 namespace DotSpatial.NTSExtension.Voronoi
 {
     /// <summary>
-    /// Voronoi Graph
+    /// Voronoi Graph.
     /// </summary>
     public class VoronoiGraph
     {
@@ -22,7 +22,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         public HashSet<VoronoiEdge> Edges { get; } = new HashSet<VoronoiEdge>();
 
         /// <summary>
-        /// Gets the vertices that join the voronoi polygon edges (not the original points)
+        /// Gets the vertices that join the voronoi polygon edges (not the original points).
         /// </summary>
         public HashSet<Vector2> Vertices { get; } = new HashSet<Vector2>();
 

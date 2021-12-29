@@ -8,7 +8,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// An element for true/false values
+    /// An element for true/false values.
     /// </summary>
     public partial class BooleanElement : DialogElement
     {
@@ -21,7 +21,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="BooleanElement"/> class.
         /// </summary>
-        /// <param name="param">The parameter this element represents</param>
+        /// <param name="param">The parameter this element represents.</param>
         public BooleanElement(BooleanParam param)
         {
             // Needed by the designer
@@ -39,7 +39,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Parameter that the element represents
+        /// Gets or sets the Parameter that the element represents.
         /// </summary>
         public new BooleanParam Param
         {
@@ -59,7 +59,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         #region Methods
 
         /// <summary>
-        /// Updates the status lights
+        /// Updates the status lights.
         /// </summary>
         public override void Refresh()
         {
@@ -67,7 +67,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// This changes the color of the light and the tooltip of the light based on the status of the checkbox
+        /// This changes the color of the light and the tooltip of the light based on the status of the checkbox.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -86,7 +86,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// When the check box it clicked this event fires
+        /// When the check box it clicked this event fires.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>

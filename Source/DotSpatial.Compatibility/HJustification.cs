@@ -4,7 +4,7 @@
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// HJustification
+    /// HJustification.
     /// </summary>
     public enum HJustification
     {

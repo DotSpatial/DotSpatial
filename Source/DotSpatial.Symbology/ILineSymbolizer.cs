@@ -35,9 +35,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Sequentially draws all of the strokes using the specified graphics path.
         /// </summary>
-        /// <param name="g">The graphics device to draw to</param>
-        /// <param name="gp">The graphics path that describes the pathway to draw</param>
-        /// <param name="scaleWidth">The double scale width that when multiplied by the width gives a measure in pixels</param>
+        /// <param name="g">The graphics device to draw to.</param>
+        /// <param name="gp">The graphics path that describes the pathway to draw.</param>
+        /// <param name="scaleWidth">The double scale width that when multiplied by the width gives a measure in pixels.</param>
         void DrawPath(Graphics g, GraphicsPath gp, double scaleWidth);
 
         /// <summary>

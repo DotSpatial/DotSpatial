@@ -93,9 +93,9 @@ namespace DotSpatial.Serialization
         /// The forward method that will serialize a property or field with the specified name.
         /// The name does not have to be the same as the name of the member.
         /// </summary>
-        /// <param name="memberInfo">The property or field information to serialize</param>
-        /// <param name="name">The name to remove</param>
-        /// <returns>The Serialization Map Entry created by the serialize method</returns>
+        /// <param name="memberInfo">The property or field information to serialize.</param>
+        /// <param name="name">The name to remove.</param>
+        /// <returns>The Serialization Map Entry created by the serialize method.</returns>
         protected SerializationMapEntry Serialize(MemberInfo memberInfo, string name)
         {
             SerializationMapEntry result = new SerializationMapEntry(memberInfo, new SerializeAttribute(name));

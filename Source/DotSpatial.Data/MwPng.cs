@@ -14,7 +14,7 @@ namespace DotSpatial.Data
     /// This cannot work with any possible png file, but rather provides at least one common
     /// format that can be used natively for large files that is better at compression than
     /// just storing the values directly.
-    /// http://www.w3.org/TR/2003/REC-PNG-20031110/#11PLTE
+    /// http://www.w3.org/TR/2003/REC-PNG-20031110/#11PLTE.
     /// </summary>
     public class MwPng
     {
@@ -28,8 +28,8 @@ namespace DotSpatial.Data
         /// <param name="offset">The integer offset in the array where the filter should begin application. If this is 0, then
         /// it assumes that there is no previous scan-line to work with.</param>
         /// <param name="length">The number of bytes to filter, starting at the specified offset. This should be evenly divisible by the width.</param>
-        /// <param name="width">The integer width of a scan-line for grabbing the c and b bytes</param>
-        /// <returns>The entire length of bytes starting with the specified offset</returns>
+        /// <param name="width">The integer width of a scan-line for grabbing the c and b bytes.</param>
+        /// <returns>The entire length of bytes starting with the specified offset.</returns>
         /// <exception cref="PngInsuficientLengthException">Thrown if the offset and the length together lay after the refData.Length.</exception>
         public static byte[] Filter(byte[] refData, int offset, int length, int width)
         {
@@ -100,7 +100,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="fileName">The file name.</param>
         /// <returns>The created bitmap.</returns>
-        /// <exception cref="PngInvalidSignatureException">If the file signature doesn't match the png file signature</exception>
+        /// <exception cref="PngInvalidSignatureException">If the file signature doesn't match the png file signature.</exception>
         public Bitmap Read(string fileName)
         {
             Stream f = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 1000000);
@@ -118,9 +118,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Unfilters the data in order to reconstruct the original values.
         /// </summary>
-        /// <param name="filterStream">The filtered but decompressed bytes</param>
-        /// <param name="offset">the integer offset where reconstruction should begin</param>
-        /// <param name="length">The integer length of bytes to deconstruct</param>
+        /// <param name="filterStream">The filtered but decompressed bytes.</param>
+        /// <param name="offset">the integer offset where reconstruction should begin.</param>
+        /// <param name="length">The integer length of bytes to deconstruct.</param>
         /// <param name="width">The integer width of a scan-line in bytes (not counting any filter type bytes.</param>
         /// <returns>The unfiltered data.</returns>
         /// <exception cref="PngInsuficientLengthException">Thrown if the length and offset together lay behind the streams total length.</exception>
@@ -207,8 +207,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// For testing, see if we can write a png ourself that can be opened by .Net png.
         /// </summary>
-        /// <param name="image">The image to write to png format</param>
-        /// <param name="fileName">The string fileName</param>
+        /// <param name="image">The image to write to png format.</param>
+        /// <param name="fileName">The string fileName.</param>
         public void Write(Bitmap image, string fileName)
         {
             if (File.Exists(fileName)) File.Delete(fileName);
@@ -238,11 +238,11 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// B C   - For the current pixel X, use the best fit from B, C or A to predict X.
-        /// A X
+        /// A X.
         /// </summary>
-        /// <param name="a">The a</param>
-        /// <param name="b">The b</param>
-        /// <param name="c">The c</param>
+        /// <param name="a">The a.</param>
+        /// <param name="b">The b.</param>
+        /// <param name="c">The c.</param>
         /// <returns>The predicted value.</returns>
         private static byte PaethPredictor(byte a, byte b, byte c)
         {

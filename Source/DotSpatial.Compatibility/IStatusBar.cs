@@ -24,21 +24,21 @@ namespace DotSpatial.Compatibility
         int NumPanels { get; }
 
         /// <summary>
-        /// Gets or sets the value of the StatusBar's ProgressBar
+        /// Gets or sets the value of the StatusBar's ProgressBar.
         /// </summary>
         int ProgressBarValue { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the StatusBar's ProgressBar should be shown
+        /// Gets or sets a value indicating whether or not the StatusBar's ProgressBar should be shown.
         /// </summary>
         bool ShowProgressBar { get; set; }
 
         #endregion
 
         /// <summary>
-        /// Iterator for all panels within the StatusBar
+        /// Iterator for all panels within the StatusBar.
         /// </summary>
-        /// <param name="index">Index of the StatusBarItem to retrieve</param>
+        /// <param name="index">Index of the StatusBarItem to retrieve.</param>
         IStatusBarItem this[int index] { get; }
 
         #region Methods
@@ -47,15 +47,15 @@ namespace DotSpatial.Compatibility
         /// Adds a new panel to the status bar. This function has been deprecated. Please use the
         /// <c>AddPanel(Text)</c> overload.
         /// </summary>
-        /// <returns>The StatusBarItem that was just added</returns>
+        /// <returns>The StatusBarItem that was just added.</returns>
         IStatusBarItem AddPanel();
 
         /// <summary>
         /// Adds a new panel to the status bar. This function has been deprecated. Please use the
         /// <c>AddPanel(Text)</c> overload.
         /// </summary>
-        /// <param name="insertAt">The index at which the panel should be added</param>
-        /// <returns>The StatusBarItem that was just added</returns>
+        /// <param name="insertAt">The index at which the panel should be added.</param>
+        /// <returns>The StatusBarItem that was just added.</returns>
         IStatusBarItem AddPanel(int insertAt);
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace DotSpatial.Compatibility
         /// <summary>
         /// Removes the specified Panel. There must always be one panel. If you remove the last panel, the <c>DotSpatial</c> will automatically add one.
         /// </summary>
-        /// <param name="index">Zero-Based index of the panel to be removed</param>
+        /// <param name="index">Zero-Based index of the panel to be removed.</param>
         void RemovePanel(int index);
 
         /// <summary>

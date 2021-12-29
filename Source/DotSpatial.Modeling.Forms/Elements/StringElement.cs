@@ -16,7 +16,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="StringElement"/> class.
         /// </summary>
-        /// <param name="param">The parameter this element represents</param>
+        /// <param name="param">The parameter this element represents.</param>
         public StringElement(StringParam param)
         {
             // Needed by the designer
@@ -85,7 +85,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// This changes the color of the light and the tooltip of the light based on the status of the text in the box
+        /// This changes the color of the light and the tooltip of the light based on the status of the text in the box.
         /// </summary>
         /// <param name="sender">The sender that raised the event.</param>
         /// <param name="e">The event args.</param>

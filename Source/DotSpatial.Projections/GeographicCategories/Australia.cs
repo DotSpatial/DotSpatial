@@ -47,11 +47,17 @@ namespace DotSpatial.Projections.GeographicCategories
             NewZealandGeodeticDatum1949 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
             NZGD2000 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
 
+            AustralianGeodeticDatum1966.Name = "GCS_Australian_1966";
             AustralianGeodeticDatum1966.GeographicInfo.Name = "GCS_Australian_1966";
+            AustralianGeodeticDatum1984.Name = "GCS_Australian_1984";
             AustralianGeodeticDatum1984.GeographicInfo.Name = "GCS_Australian_1984";
+            ChathamIslands1979.Name = "GCS_Chatham_Islands_1979";
             ChathamIslands1979.GeographicInfo.Name = "GCS_Chatham_Islands_1979";
+            GeocentricDatumofAustralia1994.Name = "GCS_GDA_1994";
             GeocentricDatumofAustralia1994.GeographicInfo.Name = "GCS_GDA_1994";
+            NewZealandGeodeticDatum1949.Name = "GCS_New_Zealand_1949";
             NewZealandGeodeticDatum1949.GeographicInfo.Name = "GCS_New_Zealand_1949";
+            NZGD2000.Name = "GCS_NZGD_2000";
             NZGD2000.GeographicInfo.Name = "GCS_NZGD_2000";
 
             AustralianGeodeticDatum1966.GeographicInfo.Datum.Name = "D_Australian_1966";

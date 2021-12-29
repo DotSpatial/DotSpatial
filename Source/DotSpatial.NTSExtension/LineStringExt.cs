@@ -2,13 +2,12 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.NTSExtension
 {
     /// <summary>
-    /// Contains extension methodes for GeoAPI.Geomtetries.ILineString.
+    /// Contains extension methodes for NetTopologySuite.Geomtetries.LineString.
     /// </summary>
     public static class LineStringExt
     {
@@ -17,10 +16,10 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Given the specified test point, this checks each segment, and will return the closest point on the specified segment.
         /// </summary>
-        /// <param name="self">The ILineString, whose point is returned.</param>
+        /// <param name="self">The LineString, whose point is returned.</param>
         /// <param name="testPoint">The point to test.</param>
         /// <returns>The closest point.</returns>
-        public static Coordinate ClosestPoint(this ILineString self, Coordinate testPoint)
+        public static Coordinate ClosestPoint(this LineString self, Coordinate testPoint)
         {
             Coordinate closest = self.GetCoordinateN(0);
             double dist = double.MaxValue;
@@ -42,10 +41,10 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Gets the value of the angle between the StartPoint and the EndPoint in Radian.
         /// </summary>
-        /// <param name="self">The ILineString, whose angle is returned.</param>
-        /// <remarks>added by JLeiss</remarks>
+        /// <param name="self">The LineString, whose angle is returned.</param>
+        /// <remarks>added by JLeiss.</remarks>
         /// <returns>The angle between start end endpoint in radian.</returns>
-        public static double RadAngle(this ILineString self)
+        public static double RadAngle(this LineString self)
         {
             double deltaX = self.EndPoint.X - self.StartPoint.X;
             double deltaY = self.EndPoint.Y - self.StartPoint.Y;

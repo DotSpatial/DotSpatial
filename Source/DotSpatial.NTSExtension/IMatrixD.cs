@@ -4,7 +4,7 @@
 namespace DotSpatial.NTSExtension
 {
     /// <summary>
-    /// IMatrix4
+    /// IMatrix4.
     /// </summary>
     public interface IMatrixD : IMatrix
     {
@@ -26,8 +26,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Multiplies every value in the specified n x m matrix by the specified double inScalar.
         /// </summary>
-        /// <param name="inScalar">The double precision floating point to multiply all the members against</param>
-        /// <returns>A new n x m matrix</returns>
+        /// <param name="inScalar">The double precision floating point to multiply all the members against.</param>
+        /// <returns>A new n x m matrix.</returns>
         IMatrixD Multiply(double inScalar);
 
         /// <summary>

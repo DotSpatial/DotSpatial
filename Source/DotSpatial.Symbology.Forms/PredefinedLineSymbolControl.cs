@@ -43,7 +43,7 @@ namespace DotSpatial.Symbology.Forms
         /// Initializes a new instance of the <see cref="PredefinedLineSymbolControl"/> class that uses the specific symbol provider.
         /// </summary>
         /// <param name="prov">The provider class that is used to retrieve the predefined custom symbols from
-        /// the XML file or another data source</param>
+        /// the XML file or another data source.</param>
         public PredefinedLineSymbolControl(CustomLineSymbolProvider prov)
         {
             _provider = prov;
@@ -273,7 +273,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Adds a new symbolizer to the control. The added symbolizer will be selected by default.
         /// </summary>
-        /// <param name="newSymbolizer">The added custom symbolizer</param>
+        /// <param name="newSymbolizer">The added custom symbolizer.</param>
         public void AddSymbolizer(CustomLineSymbolizer newSymbolizer)
         {
             SymbolizerList.Add(newSymbolizer);
@@ -283,8 +283,8 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Checks if the control contains the specified symbolizer.
         /// </summary>
-        /// <param name="symbolizer">the line symbolizer to be checked</param>
-        /// <returns>true if found, false otherwise</returns>
+        /// <param name="symbolizer">the line symbolizer to be checked.</param>
+        /// <returns>true if found, false otherwise.</returns>
         public bool ContainsSymbolizer(ILineSymbolizer symbolizer)
         {
             foreach (ILineSymbolizer sym in SymbolizerList)
@@ -300,16 +300,16 @@ namespace DotSpatial.Symbology.Forms
 
         /// <summary>
         /// Loads the list of symbolizers from the serialized file
-        /// (not yet implemented)
+        /// (not yet implemented).
         /// </summary>
-        /// <param name="fileName">The file name from which to load</param>
+        /// <param name="fileName">The file name from which to load.</param>
         public void Load(string fileName)
         {
         }
 
         /// <summary>
         /// Saves the list of symbolizers to a file using serialization
-        /// (not yet implemented)
+        /// (not yet implemented).
         /// </summary>
         /// <param name="fileName">The file name to save to.</param>
         public void Save(string fileName)
@@ -317,7 +317,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Takes place when the control is initialized or invalidated
+        /// Takes place when the control is initialized or invalidated.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnInitialize(PaintEventArgs e)
@@ -439,11 +439,11 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Draws a symbolizer inside the specified rectangle including margins
+        /// Draws a symbolizer inside the specified rectangle including margins.
         /// </summary>
-        /// <param name="g">The graphics device to draw to</param>
-        /// <param name="rect">The Rectangle describing where to draw</param>
-        /// <param name="sym">The IFeatureSymbolizer to draw</param>
+        /// <param name="g">The graphics device to draw to.</param>
+        /// <param name="rect">The Rectangle describing where to draw.</param>
+        /// <param name="sym">The IFeatureSymbolizer to draw.</param>
         private void DrawSymbolizer(Graphics g, Rectangle rect, ICustomSymbolizer sym)
         {
             int textHeight = GetStringHeight(g, sym.Name);

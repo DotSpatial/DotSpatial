@@ -77,7 +77,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the end color for this dialog
+        /// Gets or sets the end color for this dialog.
         /// </summary>
         [Category("Appearance")]
         [Description("Gets or sets the end color for this dialog")]
@@ -96,7 +96,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the start color for this dialog
+        /// Gets or sets the start color for this dialog.
         /// </summary>
         [Category("Appearance")]
         [Description("Gets or sets the start color for this dialog")]
@@ -122,7 +122,7 @@ namespace DotSpatial.Symbology.Forms
         public IDescriptor Original { get; set; }
 
         /// <summary>
-        /// Gets the IProgressHandler version of the status bar on this form
+        /// Gets the IProgressHandler version of the status bar on this form.
         /// </summary>
         public IProgressHandler ProgressHandler => _spatialStatusStrip1;
 
@@ -131,7 +131,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Fires the ChangesApplied event
+        /// Fires the ChangesApplied event.
         /// </summary>
         protected virtual void OnChangesApplied()
         {

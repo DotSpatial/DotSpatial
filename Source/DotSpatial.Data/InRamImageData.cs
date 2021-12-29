@@ -105,7 +105,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Forces the image to read values from the graphic image format to the byte array format
+        /// Forces the image to read values from the graphic image format to the byte array format.
         /// </summary>
         public override void CopyBitmapToValues()
         {
@@ -237,8 +237,8 @@ namespace DotSpatial.Data
             float m22 = Convert.ToSingle(a[5] * -dy);
             float m21 = Convert.ToSingle(a[2] * dx);
             float m12 = Convert.ToSingle(a[4] * -dy);
-            float l = (float)(a[0] - .5 * (a[1] + a[2])); // Left of top left pixel
-            float t = (float)(a[3] - .5 * (a[4] + a[5])); // top of top left pixel
+            double l = a[0] - (.5 * (a[1] + a[2])); // Left of top left pixel
+            double t = a[3] - (.5 * (a[4] + a[5])); // top of top left pixel
             float xShift = (float)((l - envelope.MinX) * dx);
             float yShift = (float)((envelope.MaxY - t) * dy);
 
@@ -304,10 +304,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Saves the image to the specified fileName
+        /// Saves the image to the specified fileName.
         /// </summary>
         /// <param name="fileName">
-        /// The string fileName to save this as
+        /// The string fileName to save this as.
         /// </param>
         public override void SaveAs(string fileName)
         {
@@ -320,8 +320,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets a block of data directly, converted into a bitmap.
         /// </summary>
-        /// <param name="xOffset">The zero based integer column offset from the left</param>
-        /// <param name="yOffset">The zero based integer row offset from the top</param>
+        /// <param name="xOffset">The zero based integer column offset from the left.</param>
+        /// <param name="yOffset">The zero based integer row offset from the top.</param>
         /// <param name="xSize">The integer number of pixel columns in the block. </param>
         /// <param name="ySize">The integer number of pixel rows in the block.</param>
         /// <returns>A Bitmap that is xSize, ySize.</returns>
@@ -340,8 +340,8 @@ namespace DotSpatial.Data
         /// Saves a bitmap of data as a continuous block into the specified location.
         /// </summary>
         /// <param name="value">The bitmap value to save.</param>
-        /// <param name="xOffset">The zero based integer column offset from the left</param>
-        /// <param name="yOffset">The zero based integer row offset from the top</param>
+        /// <param name="xOffset">The zero based integer column offset from the left.</param>
+        /// <param name="yOffset">The zero based integer row offset from the top.</param>
         public override void WriteBlock(Bitmap value, int xOffset, int yOffset)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
@@ -352,7 +352,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Release any unmanaged memory objects
+        /// Release any unmanaged memory objects.
         /// </summary>
         /// <param name="disposeManagedResources">
         /// The dispose Managed Resources.

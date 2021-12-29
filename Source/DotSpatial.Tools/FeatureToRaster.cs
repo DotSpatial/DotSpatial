@@ -41,12 +41,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -55,15 +55,14 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
-        /// <param name="cancelProgressHandler">A progress handler for handling progress messages</param>
+        /// <param name="cancelProgressHandler">A progress handler for handling progress messages.</param>
         /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
-            IFeatureSet poly = _inputParam[0].Value as IFeatureSet;
             double cellSize = (double)_inputParam[2].Value;
-            if (poly == null)
+            if (!(_inputParam[0].Value is IFeatureSet poly))
             {
                 return false;
             }
@@ -80,13 +79,13 @@ namespace DotSpatial.Tools
         /// each cell that coincide with the values in the specified field of the attribute
         /// table.  If the cellSize is 0, then it will be automatically calculated so that
         /// the smaller dimension (between width and height) is 256 cells.
-        /// Ping Yang delete static for external testing 01/2010
+        /// Ping Yang delete static for external testing 01/2010.
         /// </summary>
-        /// <param name="source">The featureset to convert into a vector format</param>
+        /// <param name="source">The featureset to convert into a vector format.</param>
         /// <param name="cellSize">A double giving the geographic cell size.</param>
-        /// <param name="fieldName">The string fieldName to use</param>
-        /// <param name="output">The raster that will be created</param>
-        /// <param name="cancelProgressHandler">A progress handler for handling progress messages</param>
+        /// <param name="fieldName">The string fieldName to use.</param>
+        /// <param name="output">The raster that will be created.</param>
+        /// <param name="cancelProgressHandler">A progress handler for handling progress messages.</param>
         /// <returns>True, if executed successfully.</returns>
         public bool Execute(IFeatureSet source, double cellSize, string fieldName, IRaster output, ICancelProgressHandler cancelProgressHandler)
         {
@@ -102,7 +101,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {
@@ -152,8 +151,7 @@ namespace DotSpatial.Tools
                 fields.Add(column.ColumnName + " [" + column.DataType.Name + "]");
             }
 
-            ListParam lp = _inputParam[1] as ListParam;
-            if (lp == null)
+            if (!(_inputParam[1] is ListParam lp))
             {
                 return;
             }

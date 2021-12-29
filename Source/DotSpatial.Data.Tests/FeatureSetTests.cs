@@ -8,7 +8,6 @@ using System.IO;
 using DotSpatial.NTSExtension;
 using DotSpatial.Projections;
 using DotSpatial.Tests.Common;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
@@ -22,7 +21,7 @@ namespace DotSpatial.Data.Tests
     {
         #region Fields
 
-        private readonly string _shapefiles = Path.Combine(@"Data", @"Shapefiles");
+        private readonly string _shapefiles = Common.AbsolutePath(Path.Combine(@"Data", @"Shapefiles"));
 
         #endregion
 
@@ -53,7 +52,7 @@ namespace DotSpatial.Data.Tests
         {
             var outfile = FileTools.GetTempFileName(".shp");
             IFeatureSet fs = new FeatureSet();
-            var c = new Coordinate(10.1, 20.2, 3.3, 4.4);
+            var c = new CoordinateZM(10.1, 20.2, 3.3, 4.4);
 
             fs.CoordinateType = CoordinateType.Z;
             fs.Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
@@ -148,7 +147,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232
+        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232.
         /// </summary>
         [Test]
         public void FilePathTest1()
@@ -166,7 +165,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232
+        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232.
         /// </summary>
         [Test]
         public void FilePathTest2()
@@ -184,7 +183,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232
+        /// A test for FilePath http://dotspatial.codeplex.com/workitem/232.
         /// </summary>
         [Test]
         public void FilePathTestWithSpaces()
@@ -222,7 +221,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void MultiPointSaveAsWorking()
         {
-            var vertices = new[] { new Coordinate(10.1, 20.2, 3.3, 4.4), new Coordinate(11.1, 22.2, 3.3, 4.4) };
+            var vertices = new[] { new CoordinateZM(10.1, 20.2, 3.3, 4.4), new CoordinateZM(11.1, 22.2, 3.3, 4.4) };
 
             var mp = new MultiPoint(vertices.CastToPointArray());
             var f = new Feature(mp);
@@ -276,11 +275,11 @@ namespace DotSpatial.Data.Tests
             {
                 List<Coordinate> coords = new List<Coordinate>
                                           {
-                                              new Coordinate(1, 2, 7, 4),
-                                              new Coordinate(3, 4, 5, 6),
-                                              new Coordinate(5, 6, 3, 8),
-                                              new Coordinate(7, 8, 9, 10),
-                                              new Coordinate(1, 2, 7, 4)
+                                              new CoordinateZM(1, 2, 7, 4),
+                                              new CoordinateZM(3, 4, 5, 6),
+                                              new CoordinateZM(5, 6, 3, 8),
+                                              new CoordinateZM(7, 8, 9, 10),
+                                              new CoordinateZM(1, 2, 7, 4)
                                           };
 
                 var fs = new FeatureSet(ft)
@@ -309,32 +308,36 @@ namespace DotSpatial.Data.Tests
 
                 if (c == CoordinateType.Regular)
                 {
-                    // regular coordinates don't have m values
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].M);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.M);
+                    Assert.IsTrue(loaded.Features[0].Geometry.Coordinates[0] is Coordinate);
+                    Assert.IsFalse(loaded.Features[0].Geometry.Coordinates[0] is CoordinateZ);
+                    Assert.IsFalse(loaded.Features[0].Geometry.Coordinates[0] is CoordinateM);
                 }
-                else
+                else if (c == CoordinateType.M)
                 {
-                    // m or z coordinates have m values
-                    Assert.AreEqual(4, loaded.Features[0].Geometry.Coordinates[0].M);
-                    Assert.AreEqual(4, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);
-                    Assert.AreEqual(10, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.M);
-                }
+                    Assert.IsTrue(loaded.Features[0].Geometry.Coordinates[0] is CoordinateM);
+                    Assert.IsFalse(loaded.Features[0].Geometry.Coordinates[0] is CoordinateZ);
 
-                if (c == CoordinateType.Z)
-                {
-                    // z coordinates have z values
-                    Assert.AreEqual(7, loaded.Features[0].Geometry.Coordinates[0].Z);
-                    Assert.AreEqual(3, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.Z);
-                    Assert.AreEqual(9, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.Z);
+                    if (loaded.Features[0].Geometry.Coordinates[0] is CoordinateM cm)
+                    {
+                        Assert.AreEqual(4, cm.M);
+                        Assert.AreEqual(4, loaded.Features[0].Geometry.MinM());
+                        Assert.AreEqual(10, loaded.Features[0].Geometry.MaxM());
+                    }
                 }
-                else
+                else if (c == CoordinateType.Z)
                 {
-                    // regular and m coordinates don't have z values
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].Z);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.Z);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.Z);
+                    Assert.IsTrue(loaded.Features[0].Geometry.Coordinates[0] is CoordinateZM);
+
+                    if (loaded.Features[0].Geometry.Coordinates[0] is CoordinateZM cm)
+                    {
+                        Assert.AreEqual(7, cm.Z);
+                        Assert.AreEqual(3, loaded.Features[0].Geometry.MinZ());
+                        Assert.AreEqual(9, loaded.Features[0].Geometry.MaxZ());
+
+                        Assert.AreEqual(4, cm.M);
+                        Assert.AreEqual(4, loaded.Features[0].Geometry.MinM());
+                        Assert.AreEqual(10, loaded.Features[0].Geometry.MaxM());
+                    }
                 }
             }
             finally
@@ -414,7 +417,7 @@ namespace DotSpatial.Data.Tests
                     CoordinateType = c
                 };
 
-                fs.AddFeature(new Point(new Coordinate(1, 2, 7, 4)));
+                fs.AddFeature(new Point(new CoordinateZM(1, 2, 7, 4)));
 
                 Assert.DoesNotThrow(() => fs.SaveAs(fileName, true));
 
@@ -422,37 +425,113 @@ namespace DotSpatial.Data.Tests
 
                 if (c == CoordinateType.Regular)
                 {
-                    // regular coordinates don't have m values
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].M);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.M);
+                    Assert.IsTrue(loaded.Features[0].Geometry.Coordinates[0] is Coordinate);
+                    Assert.IsFalse(loaded.Features[0].Geometry.Coordinates[0] is CoordinateZ);
+                    Assert.IsFalse(loaded.Features[0].Geometry.Coordinates[0] is CoordinateM);
                 }
-                else
+                else if (c == CoordinateType.M)
                 {
-                    // m or z coordinates have m values
-                    Assert.AreEqual(4, loaded.Features[0].Geometry.Coordinates[0].M);
-                    Assert.AreEqual(4, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.M);
-                    Assert.AreEqual(4, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.M);
-                }
+                    Assert.IsTrue(loaded.Features[0].Geometry.Coordinates[0] is CoordinateM);
+                    Assert.IsFalse(loaded.Features[0].Geometry.Coordinates[0] is CoordinateZ);
 
-                if (c == CoordinateType.Z)
-                {
-                    // z coordinates have z values
-                    Assert.AreEqual(7, loaded.Features[0].Geometry.Coordinates[0].Z);
-                    Assert.AreEqual(7, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.Z);
-                    Assert.AreEqual(7, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.Z);
+                    if (loaded.Features[0].Geometry.Coordinates[0] is CoordinateM cm)
+                    {
+                        Assert.AreEqual(4, cm.M);
+                        Assert.AreEqual(4, loaded.Features[0].Geometry.MinM());
+                        Assert.AreEqual(4, loaded.Features[0].Geometry.MaxM());
+                    }
                 }
-                else
+                else if (c == CoordinateType.Z)
                 {
-                    // regular and m coordinates don't have z values
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.Coordinates[0].Z);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Minimum.Z);
-                    Assert.AreEqual(double.NaN, loaded.Features[0].Geometry.EnvelopeInternal.Maximum.Z);
+                    Assert.IsTrue(loaded.Features[0].Geometry.Coordinates[0] is CoordinateZM);
+
+                    if (loaded.Features[0].Geometry.Coordinates[0] is CoordinateZM cm)
+                    {
+                        Assert.AreEqual(7, cm.Z);
+                        Assert.AreEqual(7, loaded.Features[0].Geometry.MinZ());
+                        Assert.AreEqual(7, loaded.Features[0].Geometry.MaxZ());
+
+                        Assert.AreEqual(4, cm.M);
+                        Assert.AreEqual(4, loaded.Features[0].Geometry.MinM());
+                        Assert.AreEqual(4, loaded.Features[0].Geometry.MaxM());
+                    }
                 }
             }
             finally
             {
                 FileTools.DeleteShapeFile(fileName);
+            }
+        }
+
+        /// <summary>
+        /// Tests whether or not the field mapper is saving the TypeCharacter correctly to shape files.
+        /// Note that the TypeCharacter is derived from a field's DataType.
+        /// When a shape file is read from disk, DataType is derived from the typeCode stored in the file.
+        /// So when read from disk the translation goes as follows [file typeCode]->[DataType]->TypeCharacter.
+        /// So there could be something lost in this translation.
+        /// </summary>
+        /// <param name="customFieldMapper">Whether or not to run the test with the Custom Field Mapper defined at the bottom of this document.</param>
+        [TestCase(true)]
+        [TestCase(false)]
+        public void SaveShapeFileCustomFieldMappings(bool customFieldMapper)
+        {
+            if (customFieldMapper)
+                FieldTypeCharacterMapperManager.Mapper = new CustomTestFieldMapper();
+
+            var fileName = FileTools.GetTempFileName(".shp");
+
+            try
+            {
+                var coords = new List<Coordinate>
+                                          {
+                                              new Coordinate(1, 2),
+                                              new Coordinate(3, 4),
+                                              new Coordinate(5, 6),
+                                              new Coordinate(7, 8),
+                                              new Coordinate(1, 2)
+                                          };
+
+                var fs = new FeatureSet(FeatureType.Line)
+                {
+                    Projection = KnownCoordinateSystems.Geographic.World.WGS1984,
+                    CoordinateType = CoordinateType.Regular
+                };
+
+                fs.DataTable.Columns.Add(new DataColumn("doublefield", typeof(double)));
+                fs.DataTable.Columns.Add(new DataColumn("decimalfield", typeof(decimal)));
+                fs.DataTable.Columns.Add(new DataColumn("floatfield", typeof(float)));
+                fs.DataTable.Columns.Add(new DataColumn("stringfield", typeof(string)));
+
+                var feature = fs.AddFeature(new LineString(coords.ToArray()));
+                feature.DataRow.BeginEdit();
+                feature.DataRow["doublefield"] = 0.05d;
+                feature.DataRow["decimalfield"] = 0.05m;
+                feature.DataRow["floatfield"] = 0.05f;
+                feature.DataRow["stringfield"] = "hello world";
+                feature.DataRow.EndEdit();
+
+                Assert.DoesNotThrow(() => fs.SaveAs(fileName, true));
+
+                var loaded = FeatureSet.Open(fileName);
+                if (customFieldMapper)
+                {
+                    Assert.True(new Field(loaded.DataTable.Columns[0]).TypeCharacter == FieldTypeCharacters.Double);
+                    Assert.True(new Field(loaded.DataTable.Columns[1]).TypeCharacter == FieldTypeCharacters.Double);
+                    Assert.True(new Field(loaded.DataTable.Columns[2]).TypeCharacter == FieldTypeCharacters.Double);
+                }
+                else
+                {
+                    Assert.True(new Field(loaded.DataTable.Columns[0]).TypeCharacter == FieldTypeCharacters.Number);
+                    Assert.True(new Field(loaded.DataTable.Columns[1]).TypeCharacter == FieldTypeCharacters.Number);
+                    Assert.True(new Field(loaded.DataTable.Columns[2]).TypeCharacter == FieldTypeCharacters.Number);
+                }
+
+                Assert.True(((Field)loaded.DataTable.Columns[3]).TypeCharacter == FieldTypeCharacters.Text);
+            }
+            finally
+            {
+                FileTools.DeleteShapeFile(fileName);
+                FieldTypeCharacterMapperManager.Mapper = new FieldTypeCharacterMapper();
             }
         }
 
@@ -470,7 +549,7 @@ namespace DotSpatial.Data.Tests
         }
 
         /// <summary>
-        /// Checks whether the WGS84 coordinatese that were projected and saved to a WGS1984UTMZone33N are still the same after they are read from the shapefile and projected back to WGS84.
+        /// Checks whether the WGS84 coordinates that were projected and saved to a WGS1984UTMZone33N are still the same after they are read from the shapefile and projected back to WGS84.
         /// </summary>
         [Test(Description = @"https://dotspatial.codeplex.com/workitem/25169")]
         public void UtmProjectionSamePointsAfterSaveLoadShapeFile()

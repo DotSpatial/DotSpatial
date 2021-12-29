@@ -60,8 +60,8 @@ namespace DotSpatial.Controls
         /// Adds the dataset specified to the file. Depending on whether this is a featureSet,
         /// Raster, or ImageData, this will return the appropriate layer for the map.
         /// </summary>
-        /// <param name="dataSet">A dataset</param>
-        /// <returns>The IMapLayer to add</returns>
+        /// <param name="dataSet">A dataset.</param>
+        /// <returns>The IMapLayer to add.</returns>
         IMapLayer Add(IDataSet dataSet);
 
         /// <summary>
@@ -70,23 +70,23 @@ namespace DotSpatial.Controls
         /// IMapLayer which can be further cast into a PointLayer, MapLineLayer or
         /// a PolygonLayer, depending on the data that is passed in.
         /// </summary>
-        /// <param name="featureSet">Any valid IFeatureSet that does not yet have drawing characteristics</param>
+        /// <param name="featureSet">Any valid IFeatureSet that does not yet have drawing characteristics.</param>
         /// <returns>A newly created valid implementation of FeatureLayer which at least gives a few more common
         /// drawing related methods and can also be cast into the appropriate Point, Line or Polygon layer.</returns>
         IMapFeatureLayer Add(IFeatureSet featureSet);
 
         /// <summary>
-        /// Adds the specified raster as a new layer
+        /// Adds the specified raster as a new layer.
         /// </summary>
-        /// <param name="raster">The raster to add as a layer</param>
-        /// <returns>the MapRasterLayer interface</returns>
+        /// <param name="raster">The raster to add as a layer.</param>
+        /// <returns>the MapRasterLayer interface.</returns>
         IMapRasterLayer Add(IRaster raster);
 
         /// <summary>
         /// Adds the specified ImageData class to the map as a new layer and returns the newly created layer.
         /// </summary>
-        /// <param name="image">The image being created</param>
-        /// <returns>An interface to the newly created MapImageLayer</returns>
+        /// <param name="image">The image being created.</param>
+        /// <returns>An interface to the newly created MapImageLayer.</returns>
         IMapImageLayer Add(IImageData image);
 
         /// <summary>

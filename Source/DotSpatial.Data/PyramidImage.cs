@@ -9,7 +9,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -59,7 +59,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the pyramid image header
+        /// Gets or sets the pyramid image header.
         /// </summary>
         public PyramidHeader Header { get; set; }
 
@@ -68,7 +68,7 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Creates the headers using the existing RasterBounds for this image
+        /// Creates the headers using the existing RasterBounds for this image.
         /// </summary>
         public void CreateHeaders()
         {
@@ -90,12 +90,12 @@ namespace DotSpatial.Data
         /// This takes an original image and calculates the header content for all the lower resolution tiles.
         /// This does not actually write the bytes for those images.
         /// </summary>
-        /// <param name="numRows">The number of rows in the original image</param>
-        /// <param name="numColumns">The number of columns in the original image</param>
+        /// <param name="numRows">The number of rows in the original image.</param>
+        /// <param name="numColumns">The number of columns in the original image.</param>
         /// <param name="affineCoefficients">
         /// the array of doubles in ABCDEF order
         /// X' = A + Bx + Cy
-        /// Y' = D + Ex + Fy
+        /// Y' = D + Ex + Fy.
         /// </param>
         public void CreateHeaders(int numRows, int numColumns, double[] affineCoefficients)
         {
@@ -329,8 +329,8 @@ namespace DotSpatial.Data
             float m22 = Convert.ToSingle(a[5] * -dy);
             float m21 = Convert.ToSingle(a[2] * dx);
             float m12 = Convert.ToSingle(a[4] * -dy);
-            float l = (float)(a[0] - (.5 * (a[1] + a[2]))); // Left of top left pixel
-            float t = (float)(a[3] - (.5 * (a[4] + a[5]))); // top of top left pixel
+            double l = a[0] - (.5 * (a[1] + a[2])); // Left of top left pixel
+            double t = a[3] - (.5 * (a[4] + a[5])); // top of top left pixel
             float xShift = (float)((l - envelope.MinX) * dx);
             float yShift = (float)((envelope.MaxY - t) * dy);
             g.Transform = new Matrix(m11, m12, m21, m22, xShift, yShift);
@@ -357,8 +357,8 @@ namespace DotSpatial.Data
         /// implementation, so assumes you are reading and writing to the 0 scale.
         /// This is always in ARGB format.
         /// </summary>
-        /// <param name="xOffset">The zero based integer column offset from the left</param>
-        /// <param name="yOffset">The zero based integer row offset from the top</param>
+        /// <param name="xOffset">The zero based integer column offset from the left.</param>
+        /// <param name="yOffset">The zero based integer row offset from the top.</param>
         /// <param name="xSize">The integer number of pixel columns in the block. </param>
         /// <param name="ySize">The integer number of pixel rows in the block.</param>
         /// <returns>A Bitmap that is xSize, ySize.</returns>
@@ -403,12 +403,12 @@ namespace DotSpatial.Data
         /// If the headers have not been created or the bounds extend beyond the header numRows and numColumns for the
         /// specified scale, this will throw an exception.
         /// </summary>
-        /// <param name="startRow">The integer start row</param>
-        /// <param name="startColumn">The integer start column</param>
-        /// <param name="numRows">The integer number of rows in the window</param>
-        /// <param name="numColumns">The integer number of columns in the window</param>
+        /// <param name="startRow">The integer start row.</param>
+        /// <param name="startColumn">The integer start column.</param>
+        /// <param name="numRows">The integer number of rows in the window.</param>
+        /// <param name="numColumns">The integer number of columns in the window.</param>
         /// <param name="scale">The integer scale. 0 is the original image.</param>
-        /// <returns>The bytes created by this process</returns>
+        /// <returns>The bytes created by this process.</returns>
         /// <exception cref="PyramidUndefinedHeaderException">Occurs when attempting to write data before the headers are defined.</exception>
         /// <exception cref="PyramidOutOfBoundsException">Occurs if the range specified is outside the bounds for the specified image scale.</exception>
         public byte[] ReadWindow(int startRow, int startColumn, int numRows, int numColumns, int scale)
@@ -470,8 +470,8 @@ namespace DotSpatial.Data
         /// This should be in ARGB pixel format or it will fail.
         /// </summary>
         /// <param name="value">The bitmap value to save.</param>
-        /// <param name="xOffset">The zero based integer column offset from the left</param>
-        /// <param name="yOffset">The zero based integer row offset from the top</param>
+        /// <param name="xOffset">The zero based integer column offset from the left.</param>
+        /// <param name="yOffset">The zero based integer row offset from the top.</param>
         public override void WriteBlock(Bitmap value, int xOffset, int yOffset)
         {
             byte[] vals = new byte[value.Width * value.Height * 4];
@@ -512,14 +512,14 @@ namespace DotSpatial.Data
         /// If the headers have not been created or the bounds extend beyond the header numRows and numColumns for the
         /// specified scale, this will throw an exception.
         /// </summary>
-        /// <param name="bytes">The byte array</param>
-        /// <param name="startRow">The integer start row</param>
-        /// <param name="startColumn">The integer start column</param>
-        /// <param name="numRows">The integer number of rows in the window</param>
-        /// <param name="numColumns">The integer number of columns in the window</param>
+        /// <param name="bytes">The byte array.</param>
+        /// <param name="startRow">The integer start row.</param>
+        /// <param name="startColumn">The integer start column.</param>
+        /// <param name="numRows">The integer number of rows in the window.</param>
+        /// <param name="numColumns">The integer number of columns in the window.</param>
         /// <param name="scale">The integer scale. 0 is the original image.</param>
-        /// <exception cref="PyramidUndefinedHeaderException">Occurs when attempting to write data before the headers are defined</exception>
-        /// <exception cref="PyramidOutOfBoundsException">Occurs if the range specified is outside the bounds for the specified image scale</exception>
+        /// <exception cref="PyramidUndefinedHeaderException">Occurs when attempting to write data before the headers are defined.</exception>
+        /// <exception cref="PyramidOutOfBoundsException">Occurs if the range specified is outside the bounds for the specified image scale.</exception>
         public void WriteWindow(byte[] bytes, int startRow, int startColumn, int numRows, int numColumns, int scale)
         {
             ProgressMeter pm = new ProgressMeter(ProgressHandler, "Saving Pyramid Values", numRows);
@@ -532,15 +532,15 @@ namespace DotSpatial.Data
         /// If the headers have not been created or the bounds extend beyond the header numRows and numColumns for the
         /// specified scale, this will throw an exception.
         /// </summary>
-        /// <param name="bytes">The byte array</param>
-        /// <param name="startRow">The integer start row</param>
-        /// <param name="startColumn">The integer start column</param>
-        /// <param name="numRows">The integer number of rows in the window</param>
-        /// <param name="numColumns">The integer number of columns in the window</param>
+        /// <param name="bytes">The byte array.</param>
+        /// <param name="startRow">The integer start row.</param>
+        /// <param name="startColumn">The integer start column.</param>
+        /// <param name="numRows">The integer number of rows in the window.</param>
+        /// <param name="numColumns">The integer number of columns in the window.</param>
         /// <param name="scale">The integer scale. 0 is the original image.</param>
         /// <param name="pm">The progress meter to advance by row. Calls Next() for each row.</param>
-        /// <exception cref="PyramidUndefinedHeaderException">Occurs when attempting to write data before the headers are defined</exception>
-        /// <exception cref="PyramidOutOfBoundsException">Occurs if the range specified is outside the bounds for the specified image scale</exception>
+        /// <exception cref="PyramidUndefinedHeaderException">Occurs when attempting to write data before the headers are defined.</exception>
+        /// <exception cref="PyramidOutOfBoundsException">Occurs if the range specified is outside the bounds for the specified image scale.</exception>
         public void WriteWindow(byte[] bytes, int startRow, int startColumn, int numRows, int numColumns, int scale, ProgressMeter pm)
         {
             if (Header == null || Header.ImageHeaders.Length <= scale || Header.ImageHeaders[scale] == null)

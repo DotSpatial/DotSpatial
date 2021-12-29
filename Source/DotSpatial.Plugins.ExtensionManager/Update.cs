@@ -14,7 +14,7 @@ using NuGet;
 namespace DotSpatial.Plugins.ExtensionManager
 {
     /// <summary>
-    /// Update
+    /// Update.
     /// </summary>
     internal class Update
     {

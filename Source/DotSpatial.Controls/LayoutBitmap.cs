@@ -10,7 +10,7 @@ using System.IO;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// The layout bitmap provides the ability to add any custom image to the layout
+    /// The layout bitmap provides the ability to add any custom image to the layout.
     /// </summary>
     public class LayoutBitmap : LayoutElement
     {
@@ -42,7 +42,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets bitmap to use
+        /// Gets or sets bitmap to use.
         /// </summary>
         [Browsable(false)]
         public Bitmap Bitmap
@@ -109,7 +109,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the string fileName of the bitmap to use
+        /// Gets or sets the string fileName of the bitmap to use.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -156,10 +156,10 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
+        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object.
         /// </summary>
-        /// <param name="g">The graphics object to draw to</param>
-        /// <param name="printing">Boolean, true if this is being drawn to a print document</param>
+        /// <param name="g">The graphics object to draw to.</param>
+        /// <param name="printing">Boolean, true if this is being drawn to a print document.</param>
         public override void Draw(Graphics g, bool printing)
         {
             if (_bitmap == null) return;

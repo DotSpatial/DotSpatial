@@ -11,7 +11,8 @@ using DotSpatial.Data;
 using DotSpatial.NTSExtension;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using Point = System.Drawing.Point;
 
 namespace DotSpatial.Plugins.ShapeEditor
 {
@@ -239,8 +240,8 @@ namespace DotSpatial.Plugins.ShapeEditor
                         {
                             _selectedFeature = _activeFeature;
                             _activeFeature = null;
-                            IPolygonCategory sc = _selectedCategory as IPolygonCategory;
-                            if (sc == null)
+
+                            if (!(_selectedCategory is IPolygonCategory sc))
                             {
                                 _selectedCategory = new PolygonCategory(Color.FromArgb(55, 0, 255, 255), Color.Blue, 1)
                                 {
@@ -254,8 +255,8 @@ namespace DotSpatial.Plugins.ShapeEditor
                         {
                             _selectedFeature = _activeFeature;
                             _activeFeature = null;
-                            ILineCategory sc = _selectedCategory as ILineCategory;
-                            if (sc == null)
+
+                            if (!(_selectedCategory is ILineCategory sc))
                             {
                                 _selectedCategory = new LineCategory(Color.Cyan, 1)
                                 {
@@ -273,11 +274,9 @@ namespace DotSpatial.Plugins.ShapeEditor
                             MapPointLayer mpl = _layer as MapPointLayer;
                             mpl?.SetVisible(_activeFeature, false);
 
-                            IPointCategory sc = _selectedCategory as IPointCategory;
-                            if (sc == null)
+                            if (!(_selectedCategory is IPointCategory sc))
                             {
-                                IPointSymbolizer ps = _layer.GetCategory(_activeFeature).Symbolizer.Copy() as IPointSymbolizer;
-                                if (ps != null)
+                                if (_layer.GetCategory(_activeFeature).Symbolizer.Copy() is IPointSymbolizer ps)
                                 {
                                     ps.SetFillColor(Color.Cyan);
                                     _selectedCategory = new PointCategory(ps);
@@ -407,7 +406,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 {
                     for (int prt = 0; prt < _selectedFeature.Geometry.NumGeometries; prt++)
                     {
-                        IGeometry g = _selectedFeature.Geometry.GetGeometryN(prt);
+                        Geometry g = _selectedFeature.Geometry.GetGeometryN(prt);
                         IList<Coordinate> coords = g.Coordinates;
                         for (int ic = 0; ic < coords.Count; ic++)
                         {
@@ -445,7 +444,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 {
                     for (int prt = 0; prt < _selectedFeature.Geometry.NumGeometries; prt++)
                     {
-                        IGeometry g = _selectedFeature.Geometry.GetGeometryN(prt);
+                        Geometry g = _selectedFeature.Geometry.GetGeometryN(prt);
                         IList<Coordinate> coords = g.Coordinates;
                         for (int ic = 0; ic < coords.Count; ic++)
                         {
@@ -509,19 +508,18 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             Extent ext = Map.PixelToProj(mouseRect);
-            IPolygon env = ext.ToEnvelope().ToPolygon();
+            Polygon env = ext.ToEnvelope().ToPolygon();
             bool requiresInvalidate = false;
             foreach (IFeature feature in _featureSet.Features)
             {
                 if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
                 {
-                    MapPointLayer mpl = _layer as MapPointLayer;
-                    if (mpl != null)
+                    if (_layer is MapPointLayer mpl)
                     {
                         int w = 3;
                         int h = 3;
-                        PointCategory pc = mpl.GetCategory(feature) as PointCategory;
-                        if (pc != null)
+
+                        if (mpl.GetCategory(feature) is PointCategory pc)
                         {
                             if (pc.Symbolizer.ScaleMode != ScaleMode.Geographic)
                             {
@@ -558,8 +556,7 @@ namespace DotSpatial.Plugins.ShapeEditor
 
                         if (_featureSet.FeatureType == FeatureType.Polygon)
                         {
-                            IPolygonCategory pc = _activeCategory as IPolygonCategory;
-                            if (pc == null)
+                            if (!(_activeCategory is IPolygonCategory pc))
                             {
                                 _activeCategory = new PolygonCategory(Color.FromArgb(55, 255, 0, 0), Color.Red, 1)
                                 {
@@ -570,8 +567,7 @@ namespace DotSpatial.Plugins.ShapeEditor
 
                         if (_featureSet.FeatureType == FeatureType.Line)
                         {
-                            ILineCategory pc = _activeCategory as ILineCategory;
-                            if (pc == null)
+                            if (!(_activeCategory is ILineCategory pc))
                             {
                                 _activeCategory = new LineCategory(Color.Red, 3)
                                 {
@@ -605,15 +601,15 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             Extent ext = Map.PixelToProj(mouseRect);
-            MapPointLayer mpl = _layer as MapPointLayer;
+            Polygon env = ext.ToEnvelope().ToPolygon();
             bool requiresInvalidate = false;
-            IPolygon env = ext.ToEnvelope().ToPolygon();
-            if (mpl != null)
+
+            if (_layer is MapPointLayer mpl)
             {
                 int w = 3;
                 int h = 3;
-                PointCategory pc = mpl.GetCategory(_activeFeature) as PointCategory;
-                if (pc != null)
+
+                if (mpl.GetCategory(_activeFeature) is PointCategory pc)
                 {
                     if (pc.Symbolizer.ScaleMode != ScaleMode.Geographic)
                     {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Interface for ReadOnlyList{T}
+    /// Interface for ReadOnlyList{T}.
     /// </summary>
     /// <typeparam name="T">Type of contained items.</typeparam>
     public interface IReadOnlyList<T> : IEnumerable<T>
@@ -31,7 +31,7 @@ namespace DotSpatial.Data
         /// Gets the item at the specified index. Ideally, this ReadOnlyList is used with
         /// value types, or else this gives the user considerable power over the core content.
         /// </summary>
-        /// <param name="index">The item to obtain from this list</param>
+        /// <param name="index">The item to obtain from this list.</param>
         /// <returns>The item at the specified index.</returns>
         T this[int index] { get; }
 
@@ -43,7 +43,7 @@ namespace DotSpatial.Data
         /// Tests to see if the specified item is contained in the list. This returns true if the item is contained in the list.
         /// </summary>
         /// <param name="item">The item to test for.</param>
-        /// <returns>Boolean, true if the item is found in the list</returns>
+        /// <returns>Boolean, true if the item is found in the list.</returns>
         bool Contains(T item);
 
         /// <summary>
@@ -54,10 +54,10 @@ namespace DotSpatial.Data
         void CopyTo(T[] array, int arrayIndex);
 
         /// <summary>
-        /// Obtains the index of the specified item
+        /// Obtains the index of the specified item.
         /// </summary>
-        /// <param name="item">The item to find the index of</param>
-        /// <returns>An integer representing the index of the specified item</returns>
+        /// <param name="item">The item to find the index of.</param>
+        /// <returns>An integer representing the index of the specified item.</returns>
         int IndexOf(T item);
 
         #endregion

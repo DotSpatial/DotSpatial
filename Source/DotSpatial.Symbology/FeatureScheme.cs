@@ -16,7 +16,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// FeatureScheme
+    /// FeatureScheme.
     /// </summary>
     public abstract class FeatureScheme : Scheme, IFeatureScheme
     {
@@ -83,7 +83,7 @@ namespace DotSpatial.Symbology
         public bool AppearsInLegend { get; set; }
 
         /// <summary>
-        /// Gets or sets the dialog settings
+        /// Gets or sets the dialog settings.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -137,9 +137,9 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Creates categories either based on unique values, or classification method.
-        /// If the method is
+        /// If the method is.
         /// </summary>
-        /// <param name="table">The System.DataTable to that has the data values to use</param>
+        /// <param name="table">The System.DataTable to that has the data values to use.</param>
         public void CreateCategories(DataTable table)
         {
             string fieldName = EditorSettings.FieldName;
@@ -209,8 +209,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Uses the settings on this scheme to create a random category.
         /// </summary>
-        /// <returns>A new IFeatureCategory</returns>
-        /// <param name="filterExpression">The filter expression to use</param>
+        /// <returns>A new IFeatureCategory.</returns>
+        /// <param name="filterExpression">The filter expression to use.</param>
         public virtual IFeatureCategory CreateRandomCategory(string filterExpression)
         {
             return null;
@@ -301,7 +301,8 @@ namespace DotSpatial.Symbology
                 pageSize = 10000;
                 int count = EditorSettings.MaxSampleCount;
 
-                Random rnd = new Random();
+                // Specified seed is required for consistently recreating the break values
+                Random rnd = new Random(9999);
                 AttributePager ap = new AttributePager(source, pageSize);
                 int countPerPage = count / ap.NumPages();
                 ProgressMeter pm = new ProgressMeter(progressHandler, "Sampling " + count + " random values", count);
@@ -385,7 +386,10 @@ namespace DotSpatial.Symbology
                         Dictionary<int, double> randomValues = new Dictionary<int, double>();
                         int count = EditorSettings.MaxSampleCount;
                         int max = rows.Length;
-                        Random rnd = new Random();
+
+                        // Specified seed is required for consistently recreating the break values
+                        Random rnd = new Random(9999);
+
                         for (int i = 0; i < count; i++)
                         {
                             double val;
@@ -448,7 +452,9 @@ namespace DotSpatial.Symbology
                 Dictionary<int, double> randomValues = new Dictionary<int, double>();
                 int count = EditorSettings.MaxSampleCount;
                 int max = table.Rows.Count;
-                Random rnd = new Random();
+
+                // Specified seed is required for consistently recreating the break values
+                Random rnd = new Random(9999);
                 for (int i = 0; i < count; i++)
                 {
                     double val;
@@ -530,9 +536,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Calculates the unique colors as a scheme.
         /// </summary>
-        /// <param name="fs">The featureset with the data table definition</param>
-        /// <param name="uniqueField">The unique field</param>
-        /// <param name="categoryFunc">Func for creating category</param>
+        /// <param name="fs">The featureset with the data table definition.</param>
+        /// <param name="uniqueField">The unique field.</param>
+        /// <param name="categoryFunc">Func for creating category.</param>
         /// <returns>A hastable with the unique colors.</returns>
         protected Hashtable GenerateUniqueColors(IFeatureSet fs, string uniqueField, Func<Color, IFeatureCategory> categoryFunc)
         {
@@ -661,7 +667,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Handles the special case of not copying the parent during an on copy properties operation
+        /// Handles the special case of not copying the parent during an on copy properties operation.
         /// </summary>
         /// <param name="source">The source to copy the properties from.</param>
         protected override void OnCopyProperties(object source)
@@ -733,7 +739,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This checks the type of the specified field whether it's a string field
+        /// This checks the type of the specified field whether it's a string field.
         /// </summary>
         /// <param name="fieldName">Name of the field that gets checked.</param>
         /// <param name="source">Attribute source that contains the field.</param>

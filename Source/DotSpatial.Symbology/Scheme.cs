@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 
 namespace DotSpatial.Symbology
 {
@@ -66,7 +65,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Adds a new scheme, assuming that the new scheme is the correct type.
         /// </summary>
-        /// <param name="category">The category to add</param>
+        /// <param name="category">The category to add.</param>
         public abstract void AddCategory(ICategory category);
 
         /// <summary>
@@ -85,11 +84,11 @@ namespace DotSpatial.Symbology
         public abstract void ClearCategories();
 
         /// <summary>
-        /// Creates the category using a random fill color
+        /// Creates the category using a random fill color.
         /// </summary>
-        /// <param name="fillColor">The base color to use for creating the category</param>
-        /// <param name="size">For points this is the larger dimension, for lines this is the largest width</param>
-        /// <returns>A new IFeatureCategory that matches the type of this scheme</returns>
+        /// <param name="fillColor">The base color to use for creating the category.</param>
+        /// <param name="size">For points this is the larger dimension, for lines this is the largest width.</param>
+        /// <returns>A new IFeatureCategory that matches the type of this scheme.</returns>
         public virtual ICategory CreateNewCategory(Color fillColor, double size)
         {
             // This method should be overridden in child classes
@@ -99,7 +98,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Uses the settings on this scheme to create a random category.
         /// </summary>
-        /// <returns>A new ICategory</returns>
+        /// <returns>A new ICategory.</returns>
         public abstract ICategory CreateRandomCategory();
 
         /// <summary>
@@ -107,7 +106,7 @@ namespace DotSpatial.Symbology
         /// exchaning it with the category before it. If there is no
         /// category before it, then this does nothing.
         /// </summary>
-        /// <param name="category">The category to decrease the index of</param>
+        /// <param name="category">The category to decrease the index of.</param>
         /// <returns>True, if run successfully.</returns>
         public abstract bool DecreaseCategoryIndex(ICategory category);
 
@@ -116,38 +115,38 @@ namespace DotSpatial.Symbology
         /// surface in the specified bounding rectangle.
         /// </summary>
         /// <param name="index">The integer index of the feature to draw.</param>
-        /// <param name="g">The Graphics object to draw to</param>
-        /// <param name="bounds">The rectangular bounds to draw in</param>
+        /// <param name="g">The Graphics object to draw to.</param>
+        /// <param name="bounds">The rectangular bounds to draw in.</param>
         public abstract void DrawCategory(int index, Graphics g, Rectangle bounds);
 
         /// <summary>
         /// Re-orders the specified member by attempting to exchange it with the next higher
         /// index category. If there is no higher index, this does nothing.
         /// </summary>
-        /// <param name="category">The category to increase the index of</param>
+        /// <param name="category">The category to increase the index of.</param>
         /// <returns>True, if run successfully.</returns>
         public abstract bool IncreaseCategoryIndex(ICategory category);
 
         /// <summary>
-        /// Inserts the category at the specified index
+        /// Inserts the category at the specified index.
         /// </summary>
-        /// <param name="index">The integer index where the category should be inserted</param>
-        /// <param name="category">The category to insert</param>
+        /// <param name="index">The integer index where the category should be inserted.</param>
+        /// <param name="category">The category to insert.</param>
         public abstract void InsertCategory(int index, ICategory category);
 
         /// <summary>
-        /// Removes the specified category
+        /// Removes the specified category.
         /// </summary>
-        /// <param name="category">The category to insert</param>
+        /// <param name="category">The category to insert.</param>
         public abstract void RemoveCategory(ICategory category);
 
         /// <summary>
-        /// Resumes the category events
+        /// Resumes the category events.
         /// </summary>
         public abstract void ResumeEvents();
 
         /// <summary>
-        /// Suspends the category events
+        /// Suspends the category events.
         /// </summary>
         public abstract void SuspendEvents();
 
@@ -180,7 +179,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Applies the snapping type to the given breaks
+        /// Applies the snapping type to the given breaks.
         /// </summary>
         protected void ApplyBreakSnapping()
         {
@@ -221,7 +220,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Generates the break categories for this scheme
+        /// Generates the break categories for this scheme.
         /// </summary>
         protected void CreateBreakCategories()
         {
@@ -341,7 +340,7 @@ namespace DotSpatial.Symbology
         /// This can be overriddend for handling special cases like point and line symbolizers
         /// that should be using the template colors.
         /// </summary>
-        /// <param name="count">The integer count to use</param>
+        /// <param name="count">The integer count to use.</param>
         /// <returns>The default colors.</returns>
         protected virtual List<Color> GetDefaultColors(int count)
         {
@@ -385,24 +384,26 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="count">Count of breaks.</param>
         /// <returns>List with breaks.</returns>
+        /// <remarks>
+        /// Originally this function used an algorithm based on MapWinGIS code that was too buggy.
+        /// Updated by dpa May 2018 to use a well known algorithm documented in NaturalBreaks.cs.
+        /// </remarks>
         protected List<Break> GetNaturalBreaks(int count)
         {
-            var breaks = new JenksBreaksCalcuation(Values, count);
-            breaks.Optimize();
-            var results = breaks.GetResults();
+            var theOutput = new List<Break>(count);
+            var natBreaks = new NaturalBreaks(Values, count);
+            List<double> theBreakValues = natBreaks.GetResults();
 
-            var output = new List<Break>(count);
-            output.AddRange(
-                results.Select(
-                    result => new Break
-                    {
-                        Maximum = Values[result]
-                    }));
+            // remove the first break value since it is the lowest value
+            theBreakValues.RemoveAt(0);
+            foreach (double oneBreakValue in theBreakValues)
+            {
+                Break b = new Break();
+                b.Maximum = oneBreakValue;
+                theOutput.Add(b);
+            }
 
-            // Set latest Maximum to null
-            output.Last().Maximum = null;
-
-            return output;
+            return theOutput;
         }
 
         /// <summary>
@@ -485,7 +486,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// The default behavior for creating ramp colors is to create colors in the mid-range for
-        /// both lightness and saturation, but to have the full range of hue
+        /// both lightness and saturation, but to have the full range of hue.
         /// </summary>
         /// <param name="numColors">Number of colors needed.</param>
         /// <returns>The list with the created colors.</returns>
@@ -523,7 +524,7 @@ namespace DotSpatial.Symbology
         #region Classes
 
         /// <summary>
-        /// Breaks for value ranges
+        /// Breaks for value ranges.
         /// </summary>
         protected class Break
         {
@@ -541,7 +542,7 @@ namespace DotSpatial.Symbology
             /// <summary>
             /// Initializes a new instance of the <see cref="Break"/> class.
             /// </summary>
-            /// <param name="name">The string name for the break</param>
+            /// <param name="name">The string name for the break.</param>
             public Break(string name)
             {
                 Name = name;

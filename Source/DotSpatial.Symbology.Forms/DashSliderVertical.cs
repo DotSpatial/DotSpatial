@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// DashSliderVertical
+    /// DashSliderVertical.
     /// </summary>
     public class DashSliderVertical : DashSlider
     {
@@ -47,10 +47,10 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Teh Publick method allowing this dash slider to be moved
+        /// Teh Publick method allowing this dash slider to be moved.
         /// </summary>
-        /// <param name="g">The graphics object to draw to</param>
-        /// <param name="clipRectangle">The clip rectangle defining where drawing should take place</param>
+        /// <param name="g">The graphics object to draw to.</param>
+        /// <param name="clipRectangle">The clip rectangle defining where drawing should take place.</param>
         public override void Draw(Graphics g, Rectangle clipRectangle)
         {
             DrawVertical(g, clipRectangle);

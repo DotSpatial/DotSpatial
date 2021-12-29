@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// PyramidHeader
+    /// PyramidHeader.
     /// </summary>
     [XmlRoot("PyramidHeader")]
     public class PyramidHeader

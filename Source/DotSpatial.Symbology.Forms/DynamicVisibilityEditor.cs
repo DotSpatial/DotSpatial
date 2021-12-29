@@ -9,7 +9,7 @@ using System.Windows.Forms.Design;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// DynamicVisibilityEditor
+    /// DynamicVisibilityEditor.
     /// </summary>
     public class DynamicVisibilityEditor : UITypeEditor
     {
@@ -43,7 +43,7 @@ namespace DotSpatial.Symbology.Forms
         /// Indicate that we should use a drop-down for controlling dynamic visibility.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
-        /// <returns>The UITypeEditorEditStyle</returns>
+        /// <returns>The UITypeEditorEditStyle.</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;

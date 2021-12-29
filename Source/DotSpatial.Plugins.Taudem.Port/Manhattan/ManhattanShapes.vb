@@ -1,11 +1,8 @@
 ﻿Option Strict On
 Option Explicit On
 
-Imports System.Collections.Generic
 Imports System.Globalization
 Imports DotSpatial.Data
-Imports Microsoft.VisualBasic
-Imports GeoAPI.Geometries
 Imports NetTopologySuite.Geometries
 
 Namespace Manhattan
@@ -25,8 +22,8 @@ Namespace Manhattan
     ''' <para>4. Convert the polygons into lists of points, the format for a shape in a shapefile</para>
     ''' </summary>
     Public Class ManhattanShapes
-        Private gridFilePath As String
-        Private ShapesTable As Dictionary(Of Integer, manhattanCustomData)
+        Private ReadOnly gridFilePath As String
+        Private ReadOnly ShapesTable As Dictionary(Of Integer, manhattanCustomData)
         ' ''' <summary>
         ' ''' Constructor, making an empty dictionary
         ' ''' </summary>
@@ -41,13 +38,14 @@ Namespace Manhattan
         ''' <param name="indx"></param>
         ''' <param name="p"></param>
         ''' <param name="area"></param>
-        Private Sub addShape(ByVal indx As Integer, ByVal p As manhattanPolygon, ByVal area As Integer)
+        Private Sub AddShape(ByVal indx As Integer, ByVal p As manhattanPolygon, ByVal area As Integer)
             If ShapesTable.ContainsKey(indx) Then
                 ShapesTable(indx).polygons.Add(p)
                 ShapesTable(indx).area += area
             Else
-                Dim lp As New List(Of manhattanPolygon)()
-                lp.Add(p)
+                Dim lp As New List(Of manhattanPolygon) From {
+                    p
+                }
                 ShapesTable.Add(indx, New manhattanCustomData(lp, area))
             End If
         End Sub
@@ -55,11 +53,11 @@ Namespace Manhattan
         ''' <summary>
         ''' For each index in the dictionary, merges its parts if possible.
         ''' </summary>
-        Private Sub mergeShapes()
+        Private Sub MergeShapes()
             Dim keys As New List(Of Integer)()
             keys.AddRange(ShapesTable.Keys)
             For Each i As Integer In keys
-                ShapesTable(i).polygons = mergeMyPolygons(ShapesTable(i).polygons)
+                ShapesTable(i).polygons = MergeMyPolygons(ShapesTable(i).polygons)
             Next i
         End Sub
 
@@ -69,7 +67,7 @@ Namespace Manhattan
         ''' </summary>
         ''' <param name="todo"></param>
         ''' <returns></returns>
-        Private Shared Function mergeMyPolygons(ByVal todo As List(Of manhattanPolygon)) As List(Of manhattanPolygon)
+        Private Shared Function MergeMyPolygons(ByVal todo As List(Of manhattanPolygon)) As List(Of manhattanPolygon)
             Dim done As New List(Of manhattanPolygon)()
             Do While todo.Count > 0
                 Dim p0 As manhattanPolygon = todo(0)
@@ -97,11 +95,11 @@ Namespace Manhattan
         ''' <summary>
         ''' For each index in the dictionary, separates out any holes.
         ''' </summary>
-        Private Sub makeHoles()
+        Private Sub MakeHoles()
             Dim keys As New List(Of Integer)()
             keys.AddRange(ShapesTable.Keys)
             For Each i As Integer In keys
-                ShapesTable(i).polygons = makeHoles(New List(Of manhattanPolygon)(), ShapesTable(i).polygons)
+                ShapesTable(i).polygons = MakeHoles(New List(Of manhattanPolygon)(), ShapesTable(i).polygons)
             Next i
         End Sub
 
@@ -114,7 +112,7 @@ Namespace Manhattan
         ''' <param name="done">polygons with no holes</param>
         ''' <param name="todo">polygons which may have holes</param>
         ''' <returns></returns>
-        Private Shared Function makeHoles(ByVal done As List(Of manhattanPolygon), ByVal todo As List(Of manhattanPolygon)) As List(Of manhattanPolygon)
+        Private Shared Function MakeHoles(ByVal done As List(Of manhattanPolygon), ByVal todo As List(Of manhattanPolygon)) As List(Of manhattanPolygon)
             Do While todo.Count > 0
                 Dim first, last As Integer
                 Dim [next] As manhattanPolygon = todo(0)
@@ -145,8 +143,8 @@ Namespace Manhattan
         ''' Finish by merging shapes and making holes
         ''' </summary>
         Public Sub FinishShapes()
-            mergeShapes()
-            makeHoles()
+            MergeShapes()
+            MakeHoles()
         End Sub
 
         ''' <summary>
@@ -155,7 +153,7 @@ Namespace Manhattan
         ''' 2.  A set of lines, one for each polygon for that value.
         ''' </summary>
         ''' <returns></returns>
-        Public Function makeString() As String
+        Public Function MakeString() As String
             Dim res As String = ""
             For Each kvp As KeyValuePair(Of Integer, manhattanCustomData) In ShapesTable
                 Dim indx As Integer = kvp.Key
@@ -285,9 +283,9 @@ Namespace Manhattan
 
             '// origin (taken as column zero and row zero) is at the top left of the grid
             Dim startC As Coordinate = grid.CellToProj(0, 0)
-            startC.X = startC.X - (grid.CellWidth / 2)
-            startC.Y = startC.Y + (grid.CellHeight / 2)
-            Dim MainOffset As New manhattanCustomOffSet(startC, grid.CellWidth, grid.CellHeight)
+            startC.X -= (grid.CellWidth / 2)
+            startC.Y += (grid.CellHeight / 2)
+            Dim MainOffset As New ManhattanCustomOffSet(startC, grid.CellWidth, grid.CellHeight)
 
             Dim NoDataValue As Double = grid.NoDataValue
             Dim numRows As Integer = grid.EndRow
@@ -305,37 +303,38 @@ Namespace Manhattan
                         width += 1
                     Else
                         If GridValue <> NoDataValue Then
-                            Me.addShape(GridValue, manhattanPolygon.box(Col - width, Row, width), width)
+                            Me.AddShape(GridValue, manhattanPolygon.box(Col - width, Row, width), width)
                         End If
                         GridValue = NextGridValue
                         width = 1
                     End If
                 Next Col
                 If GridValue <> NoDataValue Then
-                    Me.addShape(GridValue, manhattanPolygon.box(Col - width, Row, width), width)
+                    Me.AddShape(GridValue, manhattanPolygon.box(Col - width, Row, width), width)
                 End If
             Next Row
 
             Me.FinishShapes()
-            Dim PolygonFeatureSet As New FeatureSet(FeatureType.Polygon)
-            PolygonFeatureSet.Projection = grid.Projection
+            Dim PolygonFeatureSet As New FeatureSet(FeatureType.Polygon) With {
+                .Projection = grid.Projection
+            }
             grid.Close()
 
-            addFieldToFS(PolygonFeatureSet, GridValueFieldName, GetType(Integer))
-            addFieldToFS(PolygonFeatureSet, AreaFieldName, GetType(Double))
+            AddFieldToFS(PolygonFeatureSet, GridValueFieldName, GetType(Integer))
+            AddFieldToFS(PolygonFeatureSet, AreaFieldName, GetType(Double))
 
             For Each GridValue In Me.ShapesTable.Keys
-                Dim simplePolygon As Dictionary(Of Integer, manhattanPolygonParts) = MainOffset.makeShape(ShapesTable(GridValue).polygons)
+                Dim simplePolygon As Dictionary(Of Integer, ManhattanPolygonParts) = MainOffset.MakeShape(ShapesTable(GridValue).polygons)
                 If simplePolygon Is Nothing Then
                     Continue For
                 Else
-                    For Each s As KeyValuePair(Of Integer, manhattanPolygonParts) In simplePolygon
+                    For Each s As KeyValuePair(Of Integer, ManhattanPolygonParts) In simplePolygon
                         Dim COORDS As New List(Of Coordinate)
-                        For Each S1 As KeyValuePair(Of Integer, Coordinate) In s.Value.points
+                        For Each S1 As KeyValuePair(Of Integer, Coordinate) In s.Value.Points
                             COORDS.Add(S1.Value)
                         Next
                         If COORDS.Count > 0 Then
-                            Dim newPolygon As IGeometry = New Polygon(New LinearRing(COORDS.ToArray()))
+                            Dim newPolygon As Geometry = New Polygon(New LinearRing(COORDS.ToArray()))
                             Dim addedFEAT As IFeature = PolygonFeatureSet.AddFeature(newPolygon)
                             addedFEAT.DataRow(0) = GridValue
                             addedFEAT.DataRow(1) = addedFEAT.Geometry.Area
@@ -347,15 +346,15 @@ Namespace Manhattan
             Return PolygonFeatureSet
         End Function
 
-        Public Shared Sub addFieldToFS(ByVal polygonSF As FeatureSet, ByVal fieldName As String, ByVal dataType As System.Type)
+        Public Shared Sub AddFieldToFS(ByVal polygonSF As FeatureSet, ByVal fieldName As String, ByVal dataType As Type)
             Dim exists As Boolean = False
-            For Each c As System.Data.DataColumn In polygonSF.DataTable.Columns
+            For Each c As DataColumn In polygonSF.DataTable.Columns
                 If c.ColumnName.ToLower = fieldName.ToLower Then
                     exists = True
                 End If
             Next
             If Not exists Then
-                Dim newCol As New System.Data.DataColumn(fieldName, dataType)
+                Dim newCol As New DataColumn(fieldName, dataType)
                 polygonSF.DataTable.Columns.Add(newCol)
                 polygonSF.DataTable.AcceptChanges()
             End If

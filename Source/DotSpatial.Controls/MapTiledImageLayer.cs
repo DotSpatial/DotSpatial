@@ -36,8 +36,8 @@ namespace DotSpatial.Controls
         /// directly, use OnDrawFeatures. This will not clear existing buffer content.
         /// For that call Initialize instead.
         /// </summary>
-        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
-        /// <param name="regions">The geographic regions to draw</param>
+        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space.</param>
+        /// <param name="regions">The geographic regions to draw.</param>
         public void DrawRegions(MapArgs args, List<Extent> regions)
         {
             List<Rectangle> clipRects = args.ProjToPixel(regions);
@@ -55,8 +55,8 @@ namespace DotSpatial.Controls
         /// This draws to the back buffer. If the back buffer doesn't exist, this will create one.
         /// This will not flip the back buffer to the front.
         /// </summary>
-        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
-        /// <param name="regions">The geographic regions to draw</param>
+        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space.</param>
+        /// <param name="regions">The geographic regions to draw.</param>
         /// <param name="clipRectangles">The clip rectangles.</param>
         private void DrawWindows(MapArgs args, IList<Extent> regions, IList<Rectangle> clipRectangles)
         {

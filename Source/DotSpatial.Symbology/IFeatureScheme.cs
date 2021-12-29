@@ -34,12 +34,12 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a value indicating whether or not the legend should draw this item as a categorical
         /// tier in the legend. If so, it will allow the LegendText to be visible as a kind of group for the
-        /// categories. If not, the categories will appear directly below the layer.C:\dev\Mapwindow6Dev\DotSpatial\DotSpatial\Drawing\Vectors\Points\PointCategoryCollection.cs
+        /// categories. If not, the categories will appear directly below the layer.C:\dev\Mapwindow6Dev\DotSpatial\DotSpatial\Drawing\Vectors\Points\PointCategoryCollection.cs.
         /// </summary>
         bool AppearsInLegend { get; set; }
 
         /// <summary>
-        /// Gets or sets the dialog settings
+        /// Gets or sets the dialog settings.
         /// </summary>
         new FeatureEditorSettings EditorSettings { get; set; }
 
@@ -49,9 +49,9 @@ namespace DotSpatial.Symbology
         int NumCategories { get; }
 
         /// <summary>
-        /// Gets the UITypeEditor to use for editing this FeatureScheme
+        /// Gets the UITypeEditor to use for editing this FeatureScheme.
         /// </summary>
-        /// <returns>The UITypeEditor</returns>
+        /// <returns>The UITypeEditor.</returns>
         UITypeEditor PropertyEditor { get; }
 
         #endregion
@@ -63,7 +63,7 @@ namespace DotSpatial.Symbology
         /// to determine how to create the values, so ensure that you update that property first.
         /// </summary>
         /// <param name="source">The attribute source that can provide the attribute information.</param>
-        /// <param name="progressHandler">The progress handler for showing progress on what is likely a slow process</param>
+        /// <param name="progressHandler">The progress handler for showing progress on what is likely a slow process.</param>
         void CreateCategories(IAttributeSource source, ICancelProgressHandler progressHandler);
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Uses the settings on this scheme to create a random category.
         /// </summary>
-        /// <returns>A new IFeatureCategory</returns>
-        /// <param name="filterExpression">The filter expression to use</param>
+        /// <returns>A new IFeatureCategory.</returns>
+        /// <param name="filterExpression">The filter expression to use.</param>
         IFeatureCategory CreateRandomCategory(string filterExpression);
 
         /// <summary>

@@ -10,7 +10,7 @@ using System.Reflection;
 namespace DotSpatial.Positioning.Design
 {
     /// <summary>
-    /// Type converter for angles in radians
+    /// Type converter for angles in radians.
     /// </summary>
     // The Original Code is from http://geoframework.codeplex.com/ version 2.0
     public sealed class RadianConverter : PositioningNumericObjectConverter

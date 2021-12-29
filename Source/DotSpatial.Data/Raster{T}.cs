@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -28,8 +28,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="Raster{T}"/> class.
         /// </summary>
-        /// <param name="numRows">The number of rows in the raster</param>
-        /// <param name="numColumns">The number of columns in the raster</param>
+        /// <param name="numRows">The number of rows in the raster.</param>
+        /// <param name="numColumns">The number of columns in the raster.</param>
         /// <param name="valueGrid">The default ValueGrid only supports standard numeric types, but if a different kind of value grid is needed, this allows it.</param>
         public Raster(int numRows, int numColumns, ValueGrid<T> valueGrid)
         {
@@ -55,8 +55,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="Raster{T}"/> class.
         /// </summary>
-        /// <param name="numRows">The number of rows in the raster</param>
-        /// <param name="numColumns">The number of columns in the raster</param>
+        /// <param name="numRows">The number of rows in the raster.</param>
+        /// <param name="numColumns">The number of columns in the raster.</param>
         public Raster(int numRows, int numColumns)
         {
             NumRows = numRows;
@@ -147,10 +147,10 @@ namespace DotSpatial.Data
         /// <param name="startRow">The 0 based integer index of the top row to copy from this raster. If this raster is itself a window, 0 represents the startRow from the file.</param>
         /// <param name="endRow">The integer index of the bottom row to copy from this raster. The largest allowed value is NumRows - 1.</param>
         /// <param name="startColumn">The 0 based integer index of the leftmost column to copy from this raster. If this raster is a window, 0 represents the startColumn from the file.</param>
-        /// <param name="endColumn">The 0 based integer index of the rightmost column to copy from this raster. The largest allowed value is NumColumns - 1</param>
+        /// <param name="endColumn">The 0 based integer index of the rightmost column to copy from this raster. The largest allowed value is NumColumns - 1.</param>
         /// <param name="copyValues">If this is true, the values are saved to the file. If this is false and the data can be loaded into Ram, no file handling is done. Otherwise, a file of NoData values is created.</param>
         /// <param name="inRam">Boolean. If this is true and the window is small enough, a copy of the values will be loaded into memory.</param>
-        /// <returns>An implementation of IRaster</returns>
+        /// <returns>An implementation of IRaster.</returns>
         public IRaster CopyWindow(string fileName, int startRow, int endRow, int startColumn, int endColumn, bool copyValues, bool inRam)
         {
             if (inRam == false || (endColumn - startColumn + 1) * (endRow - startRow + 1) > 64000000) throw new ArgumentException(DataStrings.RasterRequiresCast);
@@ -271,7 +271,7 @@ namespace DotSpatial.Data
         /// It should work faster than the buffered methods in cases where an unusually arranged collection of values are required.
         /// Sorting the list before calling this should significantly improve performance.
         /// </summary>
-        /// <param name="indices">A list or array of long values that are (Row * NumRowsInFile + Column)</param>
+        /// <param name="indices">A list or array of long values that are (Row * NumRowsInFile + Column).</param>
         /// <returns>List of the gotten values.</returns>
         public virtual List<T> GetValuesT(IEnumerable<long> indices)
         {
@@ -294,9 +294,9 @@ namespace DotSpatial.Data
         /// <param name="startRow">The 0 based integer index of the top row to get from this raster. If this raster is itself a window, 0 represents the startRow from the file.</param>
         /// <param name="endRow">The integer index of the bottom row to get from this raster. The largest allowed value is NumRows - 1.</param>
         /// <param name="startColumn">The 0 based integer index of the leftmost column to get from this raster. If this raster is a window, 0 represents the startColumn from the file.</param>
-        /// <param name="endColumn">The 0 based integer index of the rightmost column to get from this raster. The largest allowed value is NumColumns - 1</param>
+        /// <param name="endColumn">The 0 based integer index of the rightmost column to get from this raster. The largest allowed value is NumColumns - 1.</param>
         /// <param name="inRam">Boolean. If this is true and the window is small enough, a copy of the values will be loaded into memory.</param>
-        /// <returns>An implementation of IRaster</returns>
+        /// <returns>An implementation of IRaster.</returns>
         public IRaster GetWindow(int startRow, int endRow, int startColumn, int endColumn, bool inRam)
         {
             if (IsInRam == false) throw new ArgumentException(DataStrings.RasterRequiresCast);
@@ -432,7 +432,7 @@ namespace DotSpatial.Data
         /// This method reads the values from the entire band into an array and returns the array as a single array.
         /// This assumes 0 offsets, the size of the entire image, and 0 for the pixel or line space.
         /// </summary>
-        /// <returns>An array of values of type T, in row major order</returns>
+        /// <returns>An array of values of type T, in row major order.</returns>
         public T[][] ReadRaster()
         {
             return ReadRaster(0, 0, NumColumns, NumRows);
@@ -557,10 +557,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads a specific
+        /// Reads a specific.
         /// </summary>
         /// <param name="buffer">The one dimensional array of values containing all the data for this particular content.</param>
-        /// <param name="row">The integer row to write to the raster</param>
+        /// <param name="row">The integer row to write to the raster.</param>
         public void WriteRow(T[] buffer, int row)
         {
             T[][] bufferJagged = new T[1][];

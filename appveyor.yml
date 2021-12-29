@@ -1,19 +1,20 @@
 version: 2.0.{build}
+image: Visual Studio 2019
 configuration: Release
 
 environment:
-  packageVersion: 2.0.0
+  packageVersion: 2.0
 
 cache: 
 - source\packages -> **\packages.config
 
 build:
   project: source\DotSpatial.sln  
-  verbosity: minimal
+  verbosity: normal
   
 init:
 - ps: $env:buildVersion = "$env:packageVersion.$env:appveyor_build_number"
-- ps: $env:nugetVersion = "$env:packageVersion-alpha$env:appveyor_build_number"
+- ps: $env:nugetVersion = "$env:packageVersion.$env:appveyor_build_number"
 - ps: Update-AppveyorBuild -Version $env:buildVersion
 
 assembly_info:

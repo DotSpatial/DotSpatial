@@ -7,7 +7,7 @@ using System.Drawing;
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// UserInteraction
+    /// UserInteraction.
     /// </summary>
     public class UserInteraction : IUserInteraction
     {
@@ -30,7 +30,7 @@ namespace DotSpatial.Compatibility
         ///  Prompt the user to select a projection, and return the PROJ4 representation of this
         ///  projection. Specify the dialog caption and an optional default projection ("" for none).
         /// </summary>
-        /// <param name="dialogCaption">The text to be displayed on the dialog, e.g. "Please select a projection."</param>
+        /// <param name="dialogCaption">The text to be displayed on the dialog, e.g. "Please select a projection.".</param>
         /// <param name="defaultProjection">The PROJ4 projection string of the projection to default to, "" for none.</param>
         /// <returns>The PROJ4 string of the selected projection.</returns>
         public string GetProjectionFromUser(string dialogCaption, string defaultProjection)

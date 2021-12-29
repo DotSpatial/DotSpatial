@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DotSpatial.Data;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Operation.Linemerge;
@@ -155,11 +154,11 @@ namespace DotSpatial.Plugins.Contourer
                     {
                         for (int z = 0; z < levels.Length; z++)
                         {
-                            IList<IGeometry> cont = GetContours(ref iRst, x, y, lev[z]);
+                            IList<Geometry> cont = GetContours(ref iRst, x, y, lev[z]);
 
                             foreach (var g in cont)
                             {
-                                var f = (Feature)fs.AddFeature((ILineString)g);
+                                var f = (Feature)fs.AddFeature((LineString)g);
                                 f.DataRow[field] = lev[z];
                             }
                         }
@@ -173,12 +172,12 @@ namespace DotSpatial.Plugins.Contourer
                     fs.DataTable.Columns.Add("Lev", typeof(int));
                     fs.DataTable.Columns.Add("Label", typeof(string));
 
-                    Collection<IGeometry> contours = new Collection<IGeometry>();
+                    Collection<Geometry> contours = new Collection<Geometry>();
                     if (levels != null)
                     {
                         for (int z = 0; z < levels.Length; z++)
                         {
-                            IList<IGeometry> cont = GetContours(ref iRst, x, y, lev[z]);
+                            IList<Geometry> cont = GetContours(ref iRst, x, y, lev[z]);
 
                             foreach (var g in cont)
                             {
@@ -196,8 +195,8 @@ namespace DotSpatial.Plugins.Contourer
 
                         contours.Add(new LineString(boundary));
 
-                        Collection<IGeometry> nodedContours = new Collection<IGeometry>();
-                        IPrecisionModel pm = new PrecisionModel(1000d);
+                        Collection<Geometry> nodedContours = new Collection<Geometry>();
+                        PrecisionModel pm = new PrecisionModel(1000d);
                         GeometryNoder geomNoder = new GeometryNoder(pm);
 
                         foreach (var c in geomNoder.Node(contours))
@@ -208,9 +207,9 @@ namespace DotSpatial.Plugins.Contourer
                         Polygonizer polygonizer = new Polygonizer();
                         polygonizer.Add(nodedContours);
 
-                        foreach (IPolygon p in polygonizer.GetPolygons().OfType<IPolygon>())
+                        foreach (Polygon p in polygonizer.GetPolygons().OfType<Polygon>())
                         {
-                            IPoint pnt = p.InteriorPoint;
+                            Point pnt = p.InteriorPoint;
 
                             int c = (int)((pnt.X - iRst.Extent.MinX) / iRst.CellWidth);
                             int r = (int)((iRst.Extent.MaxY - pnt.Y) / iRst.CellHeight);
@@ -244,7 +243,7 @@ namespace DotSpatial.Plugins.Contourer
         /// <param name="y">The y values.</param>
         /// <param name="zlev">Level to get the contours for.</param>
         /// <returns>The contours that were found.</returns>
-        public static IList<IGeometry> GetContours(ref Raster rst, double[] x, double[] y, double zlev)
+        public static IList<Geometry> GetContours(ref Raster rst, double[] x, double[] y, double zlev)
         {
             List<LineString> lsList = new List<LineString>();
 
@@ -343,7 +342,7 @@ namespace DotSpatial.Plugins.Contourer
 
             lm.Add(lsList);
 
-            IList<IGeometry> merged = lm.GetMergedLineStrings();
+            IList<Geometry> merged = lm.GetMergedLineStrings();
 
             return merged;
         }

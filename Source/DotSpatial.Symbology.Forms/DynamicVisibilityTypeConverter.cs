@@ -8,14 +8,14 @@ using System.Globalization;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// DynamicVisibilityTypeConverter
+    /// DynamicVisibilityTypeConverter.
     /// </summary>
     public class DynamicVisibilityTypeConverter : StringConverter
     {
         #region Methods
 
         /// <summary>
-        /// Returns true if we are converting from boolean
+        /// Returns true if we are converting from boolean.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <param name="sourceType">The source type.</param>
@@ -26,7 +26,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Returns true if we are converting to strings
+        /// Returns true if we are converting to strings.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <param name="destinationType">The destination type.</param>

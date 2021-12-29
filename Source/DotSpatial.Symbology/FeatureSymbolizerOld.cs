@@ -100,7 +100,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to use the specified TextureImage during drawing
+        /// Gets or sets a value indicating whether to use the specified TextureImage during drawing.
         /// </summary>
         [Category("Appearance")]
         [Description("Gets or sets whether to use the specified TextureImage during drawing")]
@@ -136,7 +136,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets a string name to help identify this Symbolizer
+        /// Gets or sets a string name to help identify this Symbolizer.
         /// </summary>
         public virtual string Name
         {
@@ -212,7 +212,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the string TextureFile to define the fill texture
+        /// Gets or sets the string TextureFile to define the fill texture.
         /// </summary>
         [Category("Appearance")]
         [Description("Gets or sets the string TextureFile to define the fill texture")]
@@ -255,10 +255,10 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Draws a basic symbol to the specified rectangle
+        /// Draws a basic symbol to the specified rectangle.
         /// </summary>
-        /// <param name="g">The graphics surface to draw on</param>
-        /// <param name="target">The target to draw the symbol to</param>
+        /// <param name="g">The graphics surface to draw on.</param>
+        /// <param name="target">The target to draw the symbol to.</param>
         public virtual void Draw(Graphics g, Rectangle target)
         {
             g.FillRectangle(FillBrush, target);
@@ -272,10 +272,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Occurs in response to the legend symbol being painted
+        /// Occurs in response to the legend symbol being painted.
         /// </summary>
-        /// <param name="g">The Graphics surface to draw on</param>
-        /// <param name="box">The box to draw to</param>
+        /// <param name="g">The Graphics surface to draw on.</param>
+        /// <param name="box">The box to draw to.</param>
         public override void LegendSymbolPainted(Graphics g, Rectangle box)
         {
             SolidBrush b = new SolidBrush(FillColor);

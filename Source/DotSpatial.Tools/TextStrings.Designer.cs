@@ -19,7 +19,7 @@ namespace DotSpatial.Tools {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class TextStrings {
@@ -574,7 +574,7 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exception in Executer the polygon cliping with line.
+        ///   Looks up a localized string similar to Exception in Executer the polygon clipping with line.
         /// </summary>
         internal static string Exceptioninclipin {
             get {
@@ -1024,7 +1024,7 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input line for cliping.
+        ///   Looks up a localized string similar to Input line for clipping.
         /// </summary>
         internal static string Inputlineforcliping {
             get {
@@ -1051,7 +1051,7 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input Polygon for Cliping.
+        ///   Looks up a localized string similar to Input Polygon for Clipping.
         /// </summary>
         internal static string InputPolygonforCliping {
             get {
@@ -1060,7 +1060,7 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input Polygon for clipping to Raste.
+        ///   Looks up a localized string similar to Input Polygon for clipping to Raster.
         /// </summary>
         internal static string InputPolygonforclipingtoRaster {
             get {
@@ -1105,7 +1105,7 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input Raster for Cliping.
+        ///   Looks up a localized string similar to Input Raster for Clipping.
         /// </summary>
         internal static string InputRasterforCliping {
             get {

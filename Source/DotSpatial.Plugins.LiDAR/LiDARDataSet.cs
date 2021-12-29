@@ -10,7 +10,7 @@ using Pdal;
 namespace DotSpatial.Plugins.LiDAR
 {
     /// <summary>
-    /// LiDarDataSet
+    /// LiDarDataSet.
     /// </summary>
     public class LiDarDataSet : IDataSet
     {
@@ -197,8 +197,8 @@ namespace DotSpatial.Plugins.LiDAR
         /// Right now it is generating random points that are within the
         /// view extent.
         /// </summary>
-        /// <param name="boundingBox">the view extent</param>
-        /// <returns>array of the points in [x y x y ... order]</returns>
+        /// <param name="boundingBox">the view extent.</param>
+        /// <returns>array of the points in [x y x y ... order].</returns>
         public double[] GetPointArray(Extent boundingBox)
         {
             LasReader reader = new LasReader("C:\\Tile_1.las");

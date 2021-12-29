@@ -7,7 +7,7 @@ using System.Data;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Row event argument class
+    /// Row event argument class.
     /// </summary>
     public class FeatureRowChangeEvent : EventArgs
     {

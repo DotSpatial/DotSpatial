@@ -40,7 +40,7 @@ namespace DotSpatial.Symbology
         public IFeatureCategory Category { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this item should be drawn as being selected-
+        /// Gets or sets a value indicating whether this item should be drawn as being selected-.
         /// </summary>
         public bool Selected { get; set; }
 
@@ -57,7 +57,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Equality based on the Boolean and category settings.
         /// </summary>
-        /// <param name="obj">The fast drawn state to compare with</param>
+        /// <param name="obj">The fast drawn state to compare with.</param>
         /// <returns>True, if both items are equal.</returns>
         public override bool Equals(object obj)
         {

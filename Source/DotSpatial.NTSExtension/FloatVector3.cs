@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.NTSExtension
 {
@@ -14,17 +14,17 @@ namespace DotSpatial.NTSExtension
         #region Fields
 
         /// <summary>
-        /// X
+        /// X.
         /// </summary>
         public float X;
 
         /// <summary>
-        /// Y
+        /// Y.
         /// </summary>
         public float Y;
 
         /// <summary>
-        /// Z
+        /// Z.
         /// </summary>
         public float Z;
 
@@ -36,7 +36,7 @@ namespace DotSpatial.NTSExtension
         /// Initializes a new instance of the <see cref="FloatVector3"/> struct.
         /// Copies the X, Y and Z values from the CoordinateF without doing a conversion.
         /// </summary>
-        /// <param name="coord">X, Y Z</param>
+        /// <param name="coord">X, Y Z.</param>
         public FloatVector3(CoordinateF coord)
         {
             X = coord.X;
@@ -47,9 +47,9 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Initializes a new instance of the <see cref="FloatVector3"/> struct with the specified values.
         /// </summary>
-        /// <param name="xValue">X</param>
-        /// <param name="yValue">Y</param>
-        /// <param name="zValue">Z</param>
+        /// <param name="xValue">X.</param>
+        /// <param name="yValue">Y.</param>
+        /// <param name="zValue">Z.</param>
         public FloatVector3(float xValue, float yValue, float zValue)
         {
             X = xValue;
@@ -60,7 +60,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Initializes a new instance of the <see cref="FloatVector3"/> structusing the X, Y and Z values from the coordinate.
         /// </summary>
-        /// <param name="coord">The coordinate to obtain X, Y and Z values from</param>
+        /// <param name="coord">The coordinate to obtain X, Y and Z values from.</param>
         public FloatVector3(Coordinate coord)
         {
             X = Convert.ToSingle(coord.X);
@@ -89,9 +89,9 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Adds the vectors lhs and V using vector addition, which adds the corresponding components.
         /// </summary>
-        /// <param name="lhs">One vector to be added</param>
-        /// <param name="rhs">A second vector to be added</param>
-        /// <returns>The sum of the vectors</returns>
+        /// <param name="lhs">One vector to be added.</param>
+        /// <param name="rhs">A second vector to be added.</param>
+        /// <returns>The sum of the vectors.</returns>
         public static FloatVector3 operator +(FloatVector3 lhs, FloatVector3 rhs)
         {
             return new FloatVector3
@@ -106,10 +106,10 @@ namespace DotSpatial.NTSExtension
         /// Divides the components of vector lhs by the respective components
         /// ov vector V and returns the resulting vector.
         /// </summary>
-        /// <param name="lhs">FloatVector3 Dividend (Numbers to be divided)</param>
-        /// <param name="rhs">FloatVector3 Divisor (Numbers to divide by)</param>
-        /// <returns>A FloatVector3 quotient of lhs and V</returns>
-        /// <remarks>To prevent divide by 0, if a 0 is in V, it will return 0 in the result</remarks>
+        /// <param name="lhs">FloatVector3 Dividend (Numbers to be divided).</param>
+        /// <param name="rhs">FloatVector3 Divisor (Numbers to divide by).</param>
+        /// <returns>A FloatVector3 quotient of lhs and V.</returns>
+        /// <remarks>To prevent divide by 0, if a 0 is in V, it will return 0 in the result.</remarks>
         public static FloatVector3 operator /(FloatVector3 lhs, FloatVector3 rhs)
         {
             FloatVector3 result = default(FloatVector3);
@@ -120,11 +120,11 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Multiplies each component of vector lhs by the Scalar value
+        /// Multiplies each component of vector lhs by the Scalar value.
         /// </summary>
-        /// <param name="lhs">A vector representing the vector to be multiplied</param>
-        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by</param>
-        /// <returns>A FloatVector3 representing the vector product of vector lhs and the Scalar</returns>
+        /// <param name="lhs">A vector representing the vector to be multiplied.</param>
+        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by.</param>
+        /// <returns>A FloatVector3 representing the vector product of vector lhs and the Scalar.</returns>
         /// <exception cref="ArgumentException">Thrown if scalar is 0.</exception>
         public static FloatVector3 operator /(FloatVector3 lhs, float scalar)
         {
@@ -152,9 +152,9 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Returns the Cross Product of two vectors lhs and rhs.
         /// </summary>
-        /// <param name="lhs">Vector, the first input vector</param>
-        /// <param name="rhs">Vector, the second input vector</param>
-        /// <returns>A FloatVector3 containing the cross product of lhs and V</returns>
+        /// <param name="lhs">Vector, the first input vector.</param>
+        /// <param name="rhs">Vector, the second input vector.</param>
+        /// <returns>A FloatVector3 containing the cross product of lhs and V.</returns>
         public static FloatVector3 operator ^(FloatVector3 lhs, FloatVector3 rhs)
         {
             return new FloatVector3
@@ -177,11 +177,11 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Returns the Inner Product also known as the dot product of two vectors, lhs and V
+        /// Returns the Inner Product also known as the dot product of two vectors, lhs and V.
         /// </summary>
-        /// <param name="lhs">The input vector</param>
-        /// <param name="rhs">The vector to take the inner product against lhs</param>
-        /// <returns>a Double containing the dot product of lhs and V</returns>
+        /// <param name="lhs">The input vector.</param>
+        /// <param name="rhs">The vector to take the inner product against lhs.</param>
+        /// <returns>a Double containing the dot product of lhs and V.</returns>
         public static float operator *(FloatVector3 lhs, FloatVector3 rhs)
         {
             return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z);
@@ -189,11 +189,11 @@ namespace DotSpatial.NTSExtension
 
         /// <summary>
         /// Multiplies the vectors lhs and V using vector multiplication,
-        /// which adds the corresponding components
+        /// which adds the corresponding components.
         /// </summary>
-        /// <param name="scalar">A scalar to multpy to the vector</param>
-        /// <param name="rhs">A vector to be multiplied</param>
-        /// <returns>The scalar product for the vectors</returns>
+        /// <param name="scalar">A scalar to multpy to the vector.</param>
+        /// <param name="rhs">A vector to be multiplied.</param>
+        /// <returns>The scalar product for the vectors.</returns>
         public static FloatVector3 operator *(float scalar, FloatVector3 rhs)
         {
             return new FloatVector3
@@ -205,11 +205,11 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Multiplies each component of vector lhs by the Scalar value
+        /// Multiplies each component of vector lhs by the Scalar value.
         /// </summary>
-        /// <param name="lhs">A vector representing the vector to be multiplied</param>
-        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by</param>
-        /// <returns>A FloatVector3 representing the vector product of vector lhs and the Scalar</returns>
+        /// <param name="lhs">A vector representing the vector to be multiplied.</param>
+        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by.</param>
+        /// <returns>A FloatVector3 representing the vector product of vector lhs and the Scalar.</returns>
         public static FloatVector3 operator *(FloatVector3 lhs, float scalar)
         {
             return new FloatVector3
@@ -221,11 +221,11 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Subtracts FloatVector3 V from FloatVector3 lhs
+        /// Subtracts FloatVector3 V from FloatVector3 lhs.
         /// </summary>
-        /// <param name="lhs">A FloatVector3 to subtract from</param>
-        /// <param name="rhs">A FloatVector3 to subtract</param>
-        /// <returns>The FloatVector3 difference lhs - V</returns>
+        /// <param name="lhs">A FloatVector3 to subtract from.</param>
+        /// <param name="rhs">A FloatVector3 to subtract.</param>
+        /// <returns>The FloatVector3 difference lhs - V.</returns>
         public static FloatVector3 operator -(FloatVector3 lhs, FloatVector3 rhs)
         {
             FloatVector3 result;
@@ -242,8 +242,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Adds all the scalar members of the the two vectors.
         /// </summary>
-        /// <param name="lhs">Left hand side</param>
-        /// <param name="rhs">Right hand side</param>
+        /// <param name="lhs">Left hand side.</param>
+        /// <param name="rhs">Right hand side.</param>
         /// <returns>The resulting vector.</returns>
         public static FloatVector3 Add(FloatVector3 lhs, FloatVector3 rhs)
         {
@@ -253,9 +253,9 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Returns the Cross Product of two vectors lhs and V.
         /// </summary>
-        /// <param name="lhs">Vector, the first input vector</param>
-        /// <param name="rhs">Vector, the second input vector</param>
-        /// <returns>A FloatVector3 containing the cross product of lhs and V</returns>
+        /// <param name="lhs">Vector, the first input vector.</param>
+        /// <param name="rhs">Vector, the second input vector.</param>
+        /// <returns>A FloatVector3 containing the cross product of lhs and V.</returns>
         public static FloatVector3 CrossProduct(FloatVector3 lhs, FloatVector3 rhs)
         {
             FloatVector3 result = new FloatVector3
@@ -270,8 +270,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Multiplies all the scalar members of the the two vectors.
         /// </summary>
-        /// <param name="lhs">Left hand side</param>
-        /// <param name="rhs">Right hand side</param>
+        /// <param name="lhs">Left hand side.</param>
+        /// <param name="rhs">Right hand side.</param>
         /// <returns>The resulting value.</returns>
         public static float Dot(FloatVector3 lhs, FloatVector3 rhs)
         {
@@ -292,8 +292,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Subtracts all the scalar members of the the two vectors.
         /// </summary>
-        /// <param name="lhs">Left hand side</param>
-        /// <param name="rhs">Right hand side</param>
+        /// <param name="lhs">Left hand side.</param>
+        /// <param name="rhs">Right hand side.</param>
         /// <returns>The resulting vector.</returns>
         public static FloatVector3 Subtract(FloatVector3 lhs, FloatVector3 rhs)
         {
@@ -301,9 +301,9 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Adds the specified v
+        /// Adds the specified v.
         /// </summary>
-        /// <param name="vector">A FloatVector3 to add to this vector</param>
+        /// <param name="vector">A FloatVector3 to add to this vector.</param>
         public void Add(FloatVector3 vector)
         {
             X += vector.X;
@@ -324,7 +324,7 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// Not sure what I should be doing here since Int can't really contain this much info very well
+        /// Not sure what I should be doing here since Int can't really contain this much info very well.
         /// </summary>
         /// <returns>The generated hash code.</returns>
         public override int GetHashCode()
@@ -335,7 +335,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Multiplies this vector by a scalar value.
         /// </summary>
-        /// <param name="scalar">The scalar to multiply by</param>
+        /// <param name="scalar">The scalar to multiply by.</param>
         public void Multiply(float scalar)
         {
             X *= scalar;
@@ -357,7 +357,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Subtracts the specified value.
         /// </summary>
-        /// <param name="vector">A FloatVector3</param>
+        /// <param name="vector">A FloatVector3.</param>
         public void Subtract(FloatVector3 vector)
         {
             X -= vector.X;

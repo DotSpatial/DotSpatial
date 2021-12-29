@@ -15,7 +15,7 @@ using NuGet;
 namespace DotSpatial.Plugins.ExtensionManager
 {
     /// <summary>
-    /// Paging
+    /// Paging.
     /// </summary>
     internal class Paging
     {

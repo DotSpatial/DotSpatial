@@ -17,7 +17,7 @@ using System.Windows.Forms;
 using System.Xml;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -493,9 +493,9 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Aligns elements with each other or with the margins.
         /// </summary>
-        /// <param name="elements">A list of elements to align</param>
-        /// <param name="side">The side to align to</param>
-        /// <param name="margin">True to align to paper margins, false to align to the most extreme element of the indicated side</param>
+        /// <param name="elements">A list of elements to align.</param>
+        /// <param name="side">The side to align to.</param>
+        /// <param name="margin">True to align to paper margins, false to align to the most extreme element of the indicated side.</param>
         public void AlignElements(List<LayoutElement> elements, Alignment side, bool margin)
         {
             switch (side)
@@ -678,7 +678,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Converts all of the selected layout elements to bitmaps
+        /// Converts all of the selected layout elements to bitmaps.
         /// </summary>
         public virtual void ConvertSelectedToBitmap()
         {
@@ -751,7 +751,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Export layout to bitmap.
         /// </summary>
-        /// <param name="fileName">Bitmap file name</param>
+        /// <param name="fileName">Bitmap file name.</param>
         /// <exception cref="ArgumentNullException">Throws when fileName is null.</exception>
         public void ExportToBitmap(string fileName)
         {
@@ -778,7 +778,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Export layout to DotSpatial Layout File.
         /// </summary>
-        /// <param name="fileName">DotSpatial Layout File</param>
+        /// <param name="fileName">DotSpatial Layout File.</param>
         /// <exception cref="ArgumentNullException">Throws when fileName is null.</exception>
         public void ExportToMwl(string fileName)
         {
@@ -918,9 +918,9 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Shows a load dialog box and prompts the user to open a layout file.
         /// </summary>
-        /// <param name="promptSave">Prompts the user if they want to save first</param>
-        /// <param name="loadPaperSettings">Loads the paper settings (size, margins, orientation) from the layout</param>
-        /// <param name="promptPaperMismatch">Warn the user if the paper size stored in the file doesn't exist in current printer and ask them if they want to load it anyways</param>
+        /// <param name="promptSave">Prompts the user if they want to save first.</param>
+        /// <param name="loadPaperSettings">Loads the paper settings (size, margins, orientation) from the layout.</param>
+        /// <param name="promptPaperMismatch">Warn the user if the paper size stored in the file doesn't exist in current printer and ask them if they want to load it anyways.</param>
         public void LoadLayout(bool promptSave, bool loadPaperSettings, bool promptPaperMismatch)
         {
             if (LayoutElements.Count > 0 && promptSave)
@@ -962,9 +962,9 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Loads the selected layoutfile.
         /// </summary>
-        /// <param name="fileName">The layout file to load</param>
-        /// <param name="loadPaperSettings">Loads the paper settings (size, margins, orientation) from the layout</param>
-        /// <param name="promptPaperMismatch">Warn the user if the paper size stored in the file doesn't exist in current printer and ask them if they want to load it anyways</param>
+        /// <param name="fileName">The layout file to load.</param>
+        /// <param name="loadPaperSettings">Loads the paper settings (size, margins, orientation) from the layout.</param>
+        /// <param name="promptPaperMismatch">Warn the user if the paper size stored in the file doesn't exist in current printer and ask them if they want to load it anyways.</param>
         public void LoadLayout(string fileName, bool loadPaperSettings, bool promptPaperMismatch)
         {
             // Open the model xml document
@@ -1069,8 +1069,7 @@ namespace DotSpatial.Controls
                     if (child != null)
                     {
                         var innerChild = child.ChildNodes[0];
-                        var lb = loadList[i] as LayoutBitmap;
-                        if (lb != null)
+                        if (loadList[i] is LayoutBitmap lb)
                         {
                             lb.Filename = innerChild.Attributes["Filename"].Value;
                             if (innerChild.Attributes["BitmapData"] != null)
@@ -1091,16 +1090,12 @@ namespace DotSpatial.Controls
                                 lb.Contrast = XmlHelper.FromString<int>(innerChild.Attributes["Contrast"].Value);
                             }
                         }
-                        else if (loadList[i] is LayoutLegend)
+                        else if (loadList[i] is LayoutLegend ll)
                         {
-                            var ll = loadList[i] as LayoutLegend;
-                            if (ll != null)
-                            {
-                                ll.LayoutControl = this;
-                                ll.TextHint = XmlHelper.EnumFromString<TextRenderingHint>(innerChild.Attributes["TextHint"].Value);
-                                ll.Color = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
-                                ll.Font = XmlHelper.FromString<Font>(innerChild.Attributes["Font"].Value);
-                            }
+                            ll.LayoutControl = this;
+                            ll.TextHint = XmlHelper.EnumFromString<TextRenderingHint>(innerChild.Attributes["TextHint"].Value);
+                            ll.Color = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
+                            ll.Font = XmlHelper.FromString<Font>(innerChild.Attributes["Font"].Value);
 
                             var mapIndex = Convert.ToInt32(innerChild.Attributes["Map"].Value);
                             if (mapIndex >= 0)
@@ -1114,73 +1109,57 @@ namespace DotSpatial.Controls
                                 layStr = layStr.Substring(0, layStr.LastIndexOf("|", StringComparison.Ordinal) + 1);
                             }
 
-                            if (ll != null)
+                            ll.NumColumns = XmlHelper.FromString<int>(innerChild.Attributes["NumColumns"].Value);
+                            ll.Layers = layers;
+                        }
+                        else if (loadList[i] is LayoutMap lm)
+                        {
+                            lm.Envelope = new Envelope(XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeXmin"].Value), XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeXmax"].Value), XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeYmin"].Value), XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeYmax"].Value));
+                        }
+                        else if (loadList[i] is LayoutNorthArrow na)
+                        {
+                            na.Color = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
+                            na.NorthArrowStyle = XmlHelper.EnumFromString<NorthArrowStyle>(innerChild.Attributes["Style"].Value);
+                            if (innerChild.Attributes["Rotation"] != null)
                             {
-                                ll.NumColumns = XmlHelper.FromString<int>(innerChild.Attributes["NumColumns"].Value);
-                                ll.Layers = layers;
+                                na.Rotation = XmlHelper.FromString<float>(innerChild.Attributes["Rotation"].Value);
                             }
                         }
-                        else if (loadList[i] is LayoutMap)
+                        else if (loadList[i] is LayoutRectangle lr)
                         {
-                            var lm = loadList[i] as LayoutMap;
-                            if (lm != null) lm.Envelope = new Envelope(XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeXmin"].Value), XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeXmax"].Value), XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeYmin"].Value), XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeYmax"].Value));
-                        }
-                        else if (loadList[i] is LayoutNorthArrow)
-                        {
-                            var na = loadList[i] as LayoutNorthArrow;
-                            if (na != null)
+                            // This code is to load legacy layouts that had properties for the color/outline of rectangles
+                            if (innerChild.Attributes["Color"] != null && innerChild.Attributes["BackColor"] != null && innerChild.Attributes["OutlineWidth"] != null)
                             {
-                                na.Color = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
-                                na.NorthArrowStyle = XmlHelper.EnumFromString<NorthArrowStyle>(innerChild.Attributes["Style"].Value);
-                                if (innerChild.Attributes["Rotation"] != null)
-                                    na.Rotation = XmlHelper.FromString<float>(innerChild.Attributes["Rotation"].Value);
+                                var tempOutlineColor = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
+                                var tempBackColor = XmlHelper.FromString<Color>(innerChild.Attributes["BackColor"].Value);
+                                var tempOutlineWidth = XmlHelper.FromString<int>(innerChild.Attributes["OutlineWidth"].Value);
+                                lr.Background = new PolygonSymbolizer(tempBackColor, tempOutlineColor, tempOutlineWidth);
                             }
                         }
-                        else if (loadList[i] is LayoutRectangle)
+                        else if (loadList[i] is LayoutScaleBar lsc)
                         {
-                            var lr = loadList[i] as LayoutRectangle;
-                            if (lr != null)
-                            {
-                                // This code is to load legacy layouts that had properties for the color/outline of rectangles
-                                if (innerChild.Attributes["Color"] != null && innerChild.Attributes["BackColor"] != null && innerChild.Attributes["OutlineWidth"] != null)
-                                {
-                                    var tempOutlineColor = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
-                                    var tempBackColor = XmlHelper.FromString<Color>(innerChild.Attributes["BackColor"].Value);
-                                    var tempOutlineWidth = XmlHelper.FromString<int>(innerChild.Attributes["OutlineWidth"].Value);
-                                    lr.Background = new PolygonSymbolizer(tempBackColor, tempOutlineColor, tempOutlineWidth);
-                                }
-                            }
-                        }
-                        else if (loadList[i] is LayoutScaleBar)
-                        {
-                            var lsc = loadList[i] as LayoutScaleBar;
-                            if (lsc != null)
-                            {
-                                lsc.LayoutControl = this;
-                                lsc.TextHint = XmlHelper.EnumFromString<TextRenderingHint>(innerChild.Attributes["TextHint"].Value);
-                                lsc.Color = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
-                                lsc.Font = XmlHelper.FromString<Font>(innerChild.Attributes["Font"].Value);
-                                lsc.BreakBeforeZero = Convert.ToBoolean(innerChild.Attributes["BreakBeforeZero"].Value);
-                                lsc.NumberOfBreaks = XmlHelper.FromString<int>(innerChild.Attributes["NumberOfBreaks"].Value);
-                                lsc.Unit = XmlHelper.EnumFromString<ScaleBarUnit>(innerChild.Attributes["Unit"].Value);
-                                lsc.UnitText = innerChild.Attributes["UnitText"].Value;
-                            }
+                            lsc.LayoutControl = this;
+                            lsc.TextHint = XmlHelper.EnumFromString<TextRenderingHint>(innerChild.Attributes["TextHint"].Value);
+                            lsc.Color = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
+                            lsc.Font = XmlHelper.FromString<Font>(innerChild.Attributes["Font"].Value);
+                            lsc.BreakBeforeZero = Convert.ToBoolean(innerChild.Attributes["BreakBeforeZero"].Value);
+                            lsc.NumberOfBreaks = XmlHelper.FromString<int>(innerChild.Attributes["NumberOfBreaks"].Value);
+                            lsc.Unit = XmlHelper.EnumFromString<ScaleBarUnit>(innerChild.Attributes["Unit"].Value);
+                            lsc.UnitText = innerChild.Attributes["UnitText"].Value;
 
                             var mapIndex = Convert.ToInt32(innerChild.Attributes["Map"].Value);
                             if (mapIndex >= 0)
-                                if (lsc != null) lsc.Map = loadList[mapIndex] as LayoutMap;
-                        }
-                        else if (loadList[i] is LayoutText)
-                        {
-                            var lt = loadList[i] as LayoutText;
-                            if (lt != null)
                             {
-                                lt.TextHint = XmlHelper.EnumFromString<TextRenderingHint>(innerChild.Attributes["TextHint"].Value);
-                                lt.Color = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
-                                lt.Font = XmlHelper.FromString<Font>(innerChild.Attributes["Font"].Value);
-                                lt.ContentAlignment = XmlHelper.FromString<ContentAlignment>(innerChild.Attributes["ContentAlignment"].Value);
-                                lt.Text = innerChild.Attributes["Text"].Value;
+                                lsc.Map = loadList[mapIndex] as LayoutMap;
                             }
+                        }
+                        else if (loadList[i] is LayoutText lt)
+                        {
+                            lt.TextHint = XmlHelper.EnumFromString<TextRenderingHint>(innerChild.Attributes["TextHint"].Value);
+                            lt.Color = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
+                            lt.Font = XmlHelper.FromString<Font>(innerChild.Attributes["Font"].Value);
+                            lt.ContentAlignment = XmlHelper.FromString<ContentAlignment>(innerChild.Attributes["ContentAlignment"].Value);
+                            lt.Text = innerChild.Attributes["Text"].Value;
                         }
 
                         child = child.PreviousSibling;
@@ -1208,11 +1187,11 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Makes all of the input layout elements have the same width or height
+        /// Makes all of the input layout elements have the same width or height.
         /// </summary>
-        /// <param name="elements">A list of elements to resize to the max size of all elements or the margins</param>
-        /// <param name="axis">Fit the width or the height</param>
-        /// <param name="margin">True if use margin size false to use arges element in input list</param>
+        /// <param name="elements">A list of elements to resize to the max size of all elements or the margins.</param>
+        /// <param name="axis">Fit the width or the height.</param>
+        /// <param name="margin">True if use margin size false to use arges element in input list.</param>
         public void MatchElementsSize(List<LayoutElement> elements, Fit axis, bool margin)
         {
             if (axis == Fit.Width)
@@ -1307,9 +1286,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new blank layout
+        /// Creates a new blank layout.
         /// </summary>
-        /// <param name="promptSave">Prompts the user if they want to save first</param>
+        /// <param name="promptSave">Prompts the user if they want to save first.</param>
         public void NewLayout(bool promptSave)
         {
             if (LayoutElements.Count > 0 && promptSave)
@@ -1326,11 +1305,11 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Pans the map the specified amount
+        /// Pans the map the specified amount.
         /// </summary>
-        /// <param name="lm">the layout map to pan</param>
-        /// <param name="x">The distance to pan the map on x-axis in screen coord</param>
-        /// <param name="y">The distance to pan the map on y-axis in screen coord</param>
+        /// <param name="lm">the layout map to pan.</param>
+        /// <param name="x">The distance to pan the map on x-axis in screen coord.</param>
+        /// <param name="y">The distance to pan the map on y-axis in screen coord.</param>
         public void PanMap(LayoutMap lm, float x, float y)
         {
             var mapOnScreen = PaperToScreen(lm.Rectangle);
@@ -1338,7 +1317,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Prints to the printer currently in PrinterSettings
+        /// Prints to the printer currently in PrinterSettings.
         /// </summary>
         public void Print()
         {
@@ -1351,7 +1330,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Refreshes all of the elements in the layout
+        /// Refreshes all of the elements in the layout.
         /// </summary>
         public void RefreshElements()
         {
@@ -1406,7 +1385,7 @@ namespace DotSpatial.Controls
         /// If file name has .mwl extension then it will be saved as DotSpatial Layout File.
         /// Otherwise it will be trying to save as Bitmap.
         /// </summary>
-        /// <param name="fileName">Specified file name</param>
+        /// <param name="fileName">Specified file name.</param>
         /// <exception cref="ArgumentNullException">Throws when fileName is null.</exception>
         public void SaveLayout(string fileName)
         {
@@ -1505,11 +1484,11 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zooms into the paper
+        /// Zooms into the paper.
         /// </summary>
         public void ZoomIn()
         {
-            Zoom = Zoom + 0.1F;
+            Zoom += 0.1F;
         }
 
         /// <summary>
@@ -1526,7 +1505,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomOut()
         {
-            Zoom = Zoom - 0.1F;
+            Zoom -= 0.1F;
         }
 
         /// <summary>
@@ -1586,7 +1565,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Removes the specified layoutElement from the selection
+        /// Removes the specified layoutElement from the selection.
         /// </summary>
         /// <param name="le">The layout element.</param>
         internal void RemoveFromSelection(LayoutElement le)
@@ -1597,7 +1576,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Drawing code
+        /// Drawing code.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)
@@ -1778,15 +1757,15 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Centers the layout on a given point.
         /// </summary>
-        /// <param name="centerPoint">A Point on the paper to center on</param>
+        /// <param name="centerPoint">A Point on the paper to center on.</param>
         private void CenterPaperOnPoint(PointF centerPoint)
         {
             var paperCenterOnScreen = PaperToScreen(centerPoint);
             var diffX = paperCenterOnScreen.X - ((Width - _vScrollBar.Width - 4) / 2F);
             var diffY = paperCenterOnScreen.Y - ((Height - _hScrollBar.Height - 4) / 2F);
 
-            _paperLocation.X = _paperLocation.X - diffX;
-            _paperLocation.Y = _paperLocation.Y - diffY;
+            _paperLocation.X -= diffX;
+            _paperLocation.Y -= diffY;
 
             UpdateScrollBars();
             Invalidate();
@@ -1900,8 +1879,7 @@ namespace DotSpatial.Controls
             for (var i = LayoutElements.Count - 1; i >= 0; i--)
             {
                 var le = LayoutElements[i];
-                var lt = le as LayoutText;
-                if (lt != null)
+                if (le is LayoutText lt)
                 {
                     // Text was incorrectly losing final letters.
                     var r = le.Rectangle;
@@ -1951,7 +1929,7 @@ namespace DotSpatial.Controls
         /// <param name="e">The event args.</param>
         private void HScrollBarScroll(object sender, ScrollEventArgs e)
         {
-            _paperLocation.X = _paperLocation.X + (e.OldValue - e.NewValue);
+            _paperLocation.X += (e.OldValue - e.NewValue);
             Invalidate();
         }
 
@@ -2083,7 +2061,10 @@ namespace DotSpatial.Controls
                     foreach (var le in SelectedLayoutElements)
                     {
                         if (le.Background?.OutlineSymbolizer != null)
-                            inflate = inflate + ((float)le.Background.GetOutlineWidth() * _zoom);
+                        {
+                            inflate += ((float)le.Background.GetOutlineWidth() * _zoom);
+                        }
+
                         var invalRect = PaperToScreen(le.Rectangle);
                         invalRect.Inflate(inflate, inflate);
                         Invalidate(new Region(invalRect));
@@ -2103,7 +2084,9 @@ namespace DotSpatial.Controls
 
                     // Makes sure that we have a outline to use it to inflate the invalidation rectangle
                     if (SelectedLayoutElements[0].Background?.OutlineSymbolizer != null)
-                        inflate = inflate + ((float)SelectedLayoutElements[0].Background.GetOutlineWidth() * _zoom);
+                    {
+                        inflate += ((float)SelectedLayoutElements[0].Background.GetOutlineWidth() * _zoom);
+                    }
 
                     _suppressLEinvalidate = true;
                     var oldScreenRect = PaperToScreen(SelectedLayoutElements[0].Rectangle);
@@ -2113,38 +2096,38 @@ namespace DotSpatial.Controls
                     switch (_resizeSelectedEdge)
                     {
                         case Edge.TopLeft:
-                            oldScreenRect.X = oldScreenRect.X - deltaX;
-                            oldScreenRect.Y = oldScreenRect.Y - deltaY;
-                            oldScreenRect.Width = oldScreenRect.Width + deltaX;
-                            oldScreenRect.Height = oldScreenRect.Height + deltaY;
+                            oldScreenRect.X -= deltaX;
+                            oldScreenRect.Y -= deltaY;
+                            oldScreenRect.Width += deltaX;
+                            oldScreenRect.Height += deltaY;
                             break;
                         case Edge.Top:
-                            oldScreenRect.Y = oldScreenRect.Y - deltaY;
-                            oldScreenRect.Height = oldScreenRect.Height + deltaY;
+                            oldScreenRect.Y -= deltaY;
+                            oldScreenRect.Height += deltaY;
                             break;
                         case Edge.TopRight:
-                            oldScreenRect.Y = oldScreenRect.Y - deltaY;
-                            oldScreenRect.Height = oldScreenRect.Height + deltaY;
-                            oldScreenRect.Width = oldScreenRect.Width - deltaX;
+                            oldScreenRect.Y -= deltaY;
+                            oldScreenRect.Height += deltaY;
+                            oldScreenRect.Width -= deltaX;
                             break;
                         case Edge.Right:
-                            oldScreenRect.Width = oldScreenRect.Width - deltaX;
+                            oldScreenRect.Width -= deltaX;
                             break;
                         case Edge.BottomRight:
-                            oldScreenRect.Width = oldScreenRect.Width - deltaX;
-                            oldScreenRect.Height = oldScreenRect.Height - deltaY;
+                            oldScreenRect.Width -= deltaX;
+                            oldScreenRect.Height -= deltaY;
                             break;
                         case Edge.Bottom:
-                            oldScreenRect.Height = oldScreenRect.Height - deltaY;
+                            oldScreenRect.Height -= deltaY;
                             break;
                         case Edge.BottomLeft:
-                            oldScreenRect.X = oldScreenRect.X - deltaX;
-                            oldScreenRect.Width = oldScreenRect.Width + deltaX;
-                            oldScreenRect.Height = oldScreenRect.Height - deltaY;
+                            oldScreenRect.X -= deltaX;
+                            oldScreenRect.Width += deltaX;
+                            oldScreenRect.Height -= deltaY;
                             break;
                         case Edge.Left:
-                            oldScreenRect.X = oldScreenRect.X - deltaX;
-                            oldScreenRect.Width = oldScreenRect.Width + deltaX;
+                            oldScreenRect.X -= deltaX;
+                            oldScreenRect.Width += deltaX;
                             break;
                     }
 
@@ -2284,13 +2267,13 @@ namespace DotSpatial.Controls
                             _mouseBox.Height = _elementToAddWithMouse.Rectangle.Height != 0 ? _elementToAddWithMouse.Rectangle.Height : 100;
                         if (_mouseBox.Width < 0)
                         {
-                            _mouseBox.X = _mouseBox.X + _mouseBox.Width;
+                            _mouseBox.X += _mouseBox.Width;
                             _mouseBox.Width = -_mouseBox.Width;
                         }
 
                         if (_mouseBox.Height < 0)
                         {
-                            _mouseBox.Y = _mouseBox.Y + _mouseBox.Height;
+                            _mouseBox.Y += _mouseBox.Height;
                             _mouseBox.Height = -_mouseBox.Height;
                         }
 
@@ -2515,7 +2498,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// This event handler is fired by the print document when it prints and draws the layout to the print document
+        /// This event handler is fired by the print document when it prints and draws the layout to the print document.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -2525,7 +2508,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Converts a point in screen coordinants to paper coordinants in 1/100 of an inch
+        /// Converts a point in screen coordinants to paper coordinants in 1/100 of an inch.
         /// </summary>
         /// <param name="screen">Rectangle in screen coordinates to convert.</param>
         /// <returns>Rectangle in paper coordinates.</returns>
@@ -2584,9 +2567,7 @@ namespace DotSpatial.Controls
         private bool TrySet<T>(ToolStrip ts, T property)
             where T : class
         {
-            var t = ts as T;
-
-            if (t == null) return false;
+            if (!(ts is T t)) return false;
 
             // ReSharper disable once RedundantAssignment
             property = t;
@@ -2629,7 +2610,7 @@ namespace DotSpatial.Controls
         /// <param name="e">The event args.</param>
         private void VScrollBarScroll(object sender, ScrollEventArgs e)
         {
-            _paperLocation.Y = _paperLocation.Y + (e.OldValue - e.NewValue);
+            _paperLocation.Y += (e.OldValue - e.NewValue);
             Invalidate();
         }
 

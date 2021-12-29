@@ -6,7 +6,7 @@ using System.Text;
 namespace DotSpatial.Serialization
 {
     /// <summary>
-    /// A class that helps with xml project serialization
+    /// A class that helps with xml project serialization.
     /// </summary>
     public static class XmlHelper
     {
@@ -16,8 +16,8 @@ namespace DotSpatial.Serialization
         /// Some characters create problems in xml format by being interpreted by xml parsers as
         /// content formatting tags.
         /// </summary>
-        /// <param name="text">The string text of the unescaped original characters</param>
-        /// <returns>The modified string where the characters are replaced</returns>
+        /// <param name="text">The string text of the unescaped original characters.</param>
+        /// <returns>The modified string where the characters are replaced.</returns>
         public static string EscapeInvalidCharacters(string text)
         {
             StringBuilder sb = new StringBuilder();
@@ -52,10 +52,10 @@ namespace DotSpatial.Serialization
         }
 
         /// <summary>
-        /// This converts the invalid characters back to the original, unescaped text
+        /// This converts the invalid characters back to the original, unescaped text.
         /// </summary>
-        /// <param name="text">The string text of the escaped characters</param>
-        /// <returns>The unescaped string text</returns>
+        /// <param name="text">The string text of the escaped characters.</param>
+        /// <returns>The unescaped string text.</returns>
         public static string UnEscapeInvalidCharacters(string text)
         {
             text = text.Replace("&lt;", "<");

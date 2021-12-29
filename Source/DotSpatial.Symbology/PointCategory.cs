@@ -12,7 +12,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PointCategory
+    /// PointCategory.
     /// </summary>
     [Serializable]
     public class PointCategory : FeatureCategory, IPointCategory
@@ -44,7 +44,7 @@ namespace DotSpatial.Symbology
         /// This uses the same symbolizer, but with a fill and border color of light cyan
         /// for the selection symbolizer.
         /// </summary>
-        /// <param name="pointSymbolizer">The symbolizer to use in order to create a category</param>
+        /// <param name="pointSymbolizer">The symbolizer to use in order to create a category.</param>
         public PointCategory(IPointSymbolizer pointSymbolizer)
         {
             Symbolizer = pointSymbolizer;
@@ -56,9 +56,9 @@ namespace DotSpatial.Symbology
         /// Initializes a new instance of the <see cref="PointCategory"/> class where the symbolizer is based on the simple characteristics.
         /// The selection symbolizer has the same shape and size, but will be colored cyan.
         /// </summary>
-        /// <param name="color">The color of the regular symbolizer</param>
-        /// <param name="shape">The shape of the regular symbolizer</param>
-        /// <param name="size">the size of the regular symbolizer</param>
+        /// <param name="color">The color of the regular symbolizer.</param>
+        /// <param name="shape">The shape of the regular symbolizer.</param>
+        /// <param name="size">the size of the regular symbolizer.</param>
         public PointCategory(Color color, PointShape shape, double size)
         {
             Symbolizer = new PointSymbolizer(color, shape, size);
@@ -68,10 +68,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PointCategory"/> class based on the specified character.
         /// </summary>
-        /// <param name="character">The character to use for the symbol</param>
-        /// <param name="fontFamilyName">The font family name to use as the font</param>
-        /// <param name="color">The color of the character</param>
-        /// <param name="size">The size of the symbol</param>
+        /// <param name="character">The character to use for the symbol.</param>
+        /// <param name="fontFamilyName">The font family name to use as the font.</param>
+        /// <param name="color">The color of the character.</param>
+        /// <param name="size">The size of the symbol.</param>
         public PointCategory(char character, string fontFamilyName, Color color, double size)
         {
             Symbolizer = new PointSymbolizer(character, fontFamilyName, color, size);
@@ -82,8 +82,8 @@ namespace DotSpatial.Symbology
         /// Initializes a new instance of the <see cref="PointCategory"/> class where the picture is used for the symbol,
         /// and a selected symbol is created as the same symbol but with a cyan border.
         /// </summary>
-        /// <param name="picture">The image to use</param>
-        /// <param name="size">The size of the symbol</param>
+        /// <param name="picture">The image to use.</param>
+        /// <param name="size">The size of the symbol.</param>
         public PointCategory(Image picture, double size)
         {
             Symbolizer = new PointSymbolizer(picture, size);

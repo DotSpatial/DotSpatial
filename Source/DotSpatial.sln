@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Serialization", "DotSpatial.Serialization\DotSpatial.Serialization.csproj", "{9B692E11-0273-4331-9B15-1670093EDDBF}"
 EndProject
@@ -420,5 +420,8 @@ Global
 		{84FD5045-5DE8-4950-A083-77789573F430} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{034F7ADE-AC2A-48AE-9CF2-0686EEA97C25} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{6F295436-734C-4588-9214-1FD281C89BB6} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D8B430BA-FDC2-4A09-B7CF-47AAA201EA8B}
 	EndGlobalSection
 EndGlobal

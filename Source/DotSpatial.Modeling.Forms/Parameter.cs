@@ -42,12 +42,12 @@ namespace DotSpatial.Modeling.Forms
         public bool DefaultSpecified { get; set; }
 
         /// <summary>
-        /// Gets or sets the help image that will appear beside the parameter element when it is clicked
+        /// Gets or sets the help image that will appear beside the parameter element when it is clicked.
         /// </summary>
         public Bitmap HelpImage { get; set; }
 
         /// <summary>
-        /// Gets or sets the help text that will appear beside the parameter element when it is clicked
+        /// Gets or sets the help text that will appear beside the parameter element when it is clicked.
         /// </summary>
         public string HelpText { get; set; } = string.Empty;
 
@@ -103,9 +103,9 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// Returns a shallow copy of the Parameter class
+        /// Returns a shallow copy of the Parameter class.
         /// </summary>
-        /// <returns>A new Parameters class that is a shallow copy of the original parameters class</returns>
+        /// <returns>A new Parameters class that is a shallow copy of the original parameters class.</returns>
         public Parameter Copy()
         {
             return MemberwiseClone() as Parameter;
@@ -120,7 +120,7 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// This method returns the dialog component that should be used to visualise INPUT to this parameter
+        /// This method returns the dialog component that should be used to visualise INPUT to this parameter.
         /// </summary>
         /// <param name="dataSets">A list of DataSetArrays.</param>
         /// <returns>The dialog component that should be used to visualise INPUT to this parameter.</returns>
@@ -130,7 +130,7 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// This method returns the dialog component that should be used to visualise OUTPUT to this parameter
+        /// This method returns the dialog component that should be used to visualise OUTPUT to this parameter.
         /// </summary>
         /// <param name="dataSets">A list of DataSetArrays.</param>
         /// <returns>The dialog component that should be used to visualise OUTPUT to this parameter.</returns>
@@ -140,7 +140,7 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// Call this when the parameter's value is changed
+        /// Call this when the parameter's value is changed.
         /// </summary>
         protected void OnValueChanged()
         {

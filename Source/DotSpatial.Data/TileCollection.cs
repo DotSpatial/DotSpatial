@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// TileCollection
+    /// TileCollection.
     /// </summary>
     public class TileCollection : IEnumerable<IImageData>
     {
@@ -50,7 +50,7 @@ namespace DotSpatial.Data
         public int TileHeight { get; }
 
         /// <summary>
-        /// Gets or sets the 2D array of tiles
+        /// Gets or sets the 2D array of tiles.
         /// </summary>
         public IImageData[,] Tiles { get; set; }
 
@@ -120,7 +120,7 @@ namespace DotSpatial.Data
         /// Calls a method that calculates the propper image bounds for each of the extents of the tiles,
         /// given the affine coefficients for the whole image.
         /// </summary>
-        /// <param name="affine"> x' = A + Bx + Cy; y' = D + Ex + Fy</param>
+        /// <param name="affine"> x' = A + Bx + Cy; y' = D + Ex + Fy.</param>
         public void SetTileBounds(double[] affine)
         {
             double[] tileAffine = new double[6];
@@ -157,7 +157,7 @@ namespace DotSpatial.Data
         #region Classes
 
         /// <summary>
-        /// Enumerates the collection of tiles
+        /// Enumerates the collection of tiles.
         /// </summary>
         private class TileCollectionEnumerator : IEnumerator<IImageData>
         {
@@ -176,7 +176,7 @@ namespace DotSpatial.Data
             /// <summary>
             /// Initializes a new instance of the <see cref="TileCollectionEnumerator"/> class.
             /// </summary>
-            /// <param name="parent">The parent tileCollection</param>
+            /// <param name="parent">The parent tileCollection.</param>
             public TileCollectionEnumerator(TileCollection parent)
             {
                 _tiles = parent.Tiles;

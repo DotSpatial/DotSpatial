@@ -6,28 +6,31 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using DotSpatial.Controls;
-using GeoAPI.Geometries;
+using DotSpatial.Tests.Common;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Symbology.Tests
 {
     /// <summary>
     /// This is a test class for FeatureLayerTest and is intended
-    /// to contain all FeatureLayerTest Unit Tests
+    /// to contain all FeatureLayerTest Unit Tests.
     /// </summary>
     [TestFixture]
     internal class FeatureLayerTest
     {
         #region Methods
 
+        private readonly string _folder = Common.AbsolutePath("TestFiles");
+
         /// <summary>
-        /// A test for ExportSelection
+        /// A test for ExportSelection.
         /// </summary>
         [Test]
         public void ExportSelectionTest()
         {
-            string filename = Path.Combine("TestFiles", "soils.shp");
-            string fileOut = Path.Combine("TestFiles", "soilsExport.shp");
+            string filename = Path.Combine(_folder, "soils.shp");
+            string fileOut = Path.Combine(_folder, "soilsExport.shp");
 
             ShapefileLayerProvider provider = new ShapefileLayerProvider();
             var target = (FeatureLayer)provider.OpenLayer(filename, false, null, null);
@@ -41,7 +44,7 @@ namespace DotSpatial.Symbology.Tests
         }
 
         /// <summary>
-        /// A test for ExportSelection http://dotspatial.codeplex.com/workitem/203
+        /// A test for ExportSelection http://dotspatial.codeplex.com/workitem/203.
         /// </summary>
         [Test]
         public void ExportSelectionTestWithCulture()
@@ -49,8 +52,8 @@ namespace DotSpatial.Symbology.Tests
             Thread.CurrentThread.CurrentCulture = new CultureInfo("cs-CZ");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("cs-CZ");
 
-            string filename = Path.Combine("TestFiles", "soils.shp");
-            string fileOut = Path.Combine("TestFiles", "soilsExport.shp");
+            string filename = Path.Combine(_folder, "soils.shp");
+            string fileOut = Path.Combine(_folder, "soilsExport.shp");
 
             ShapefileLayerProvider provider = new ShapefileLayerProvider();
             var target = (FeatureLayer)provider.OpenLayer(filename, false, null, null);
@@ -74,8 +77,7 @@ namespace DotSpatial.Symbology.Tests
         [TestCase(false, true)]
         public void Select(bool selectionEnabled, bool catSelectionEnabled)
         {
-            PolygonCategory cat;
-            var fl = GetFeatureLayer(out cat);
+            var fl = GetFeatureLayer(out PolygonCategory cat);
             fl.SelectionEnabled = selectionEnabled;
             cat.SelectionEnabled = catSelectionEnabled;
             Envelope e = new Envelope(-72, -66, 40, 48);
@@ -106,8 +108,7 @@ namespace DotSpatial.Symbology.Tests
         [TestCase(false, true)]
         public void InvertSelection(bool selectionEnabled, bool catSelectionEnabled)
         {
-            PolygonCategory cat;
-            var fl = GetFeatureLayer(out cat);
+            var fl = GetFeatureLayer(out PolygonCategory cat);
             Envelope e = new Envelope(-72, -66, 40, 48);
             Assert.IsTrue(fl.Select(e, e, ClearStates.False));
 
@@ -142,8 +143,7 @@ namespace DotSpatial.Symbology.Tests
         [TestCase(false, true)]
         public void UnSelect(bool selectionEnabled, bool catSelectionEnabled)
         {
-            PolygonCategory cat;
-            var fl = GetFeatureLayer(out cat);
+            var fl = GetFeatureLayer(out PolygonCategory cat);
             Envelope e = new Envelope(-72, -66, 40, 48);
             Assert.IsTrue(fl.Select(e, e, ClearStates.False));
 
@@ -176,8 +176,7 @@ namespace DotSpatial.Symbology.Tests
         [TestCase(false)]
         public void SelectAll(bool selectionEnabled)
         {
-            PolygonCategory cat;
-            var fl = GetFeatureLayer(out cat);
+            var fl = GetFeatureLayer(out _);
             fl.SelectionEnabled = selectionEnabled;
             fl.SelectAll();
 
@@ -193,8 +192,7 @@ namespace DotSpatial.Symbology.Tests
         [TestCase(false)]
         public void UnSelectAll(bool selectionEnabled)
         {
-            PolygonCategory cat;
-            var fl = GetFeatureLayer(out cat);
+            var fl = GetFeatureLayer(out _);
             fl.SelectAll();
             fl.SelectionEnabled = selectionEnabled;
             fl.UnSelectAll();
@@ -211,7 +209,7 @@ namespace DotSpatial.Symbology.Tests
         {
             // load layer with us states
             ShapefileLayerProvider provider = new ShapefileLayerProvider();
-            var fl = (IFeatureLayer)provider.OpenLayer(Path.Combine(@"TestFiles", "50mil_us_states.shp"), false, null, null);
+            var fl = (IFeatureLayer)provider.OpenLayer(Common.AbsolutePath(Path.Combine(@"TestFiles", "50mil_us_states.shp")), false, null, null);
             Assert.IsNotNull(fl);
 
             // add two categories for testing category.SelectionEnabled

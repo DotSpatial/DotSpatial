@@ -30,8 +30,8 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="ToolDialog"/> class.
         /// </summary>
-        /// <param name="tool">The ITool to create the dialog box for</param>
-        /// <param name="dataSets">The list of available DataSets available</param>
+        /// <param name="tool">The ITool to create the dialog box for.</param>
+        /// <param name="dataSets">The list of available DataSets available.</param>
         /// <param name="mapExtent">Creates a new instance of the tool dialog with map extent.</param>
         public ToolDialog(ITool tool, List<DataSetArray> dataSets, Extent mapExtent)
         {
@@ -45,8 +45,8 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="ToolDialog"/> class.
         /// </summary>
-        /// <param name="tool">The ITool to create the dialog box for</param>
-        /// <param name="modelElements">A list of all model elements</param>
+        /// <param name="tool">The ITool to create the dialog box for.</param>
+        /// <param name="modelElements">A list of all model elements.</param>
         public ToolDialog(ITool tool, IEnumerable<ModelElement> modelElements)
         {
             // Required by the designer
@@ -90,7 +90,7 @@ namespace DotSpatial.Modeling.Forms
         public List<DataSetArray> DataSets { get; set; } = new List<DataSetArray>();
 
         /// <summary>
-        /// Gets the status of the tool
+        /// Gets the status of the tool.
         /// </summary>
         public ToolStatus ToolStatus
         {
@@ -105,9 +105,9 @@ namespace DotSpatial.Modeling.Forms
         #region Methods
 
         /// <summary>
-        /// This adds the Elements to the form incrementally lower down
+        /// This adds the Elements to the form incrementally lower down.
         /// </summary>
-        /// <param name="element">The element to add</param>
+        /// <param name="element">The element to add.</param>
         private void AddElement(DialogElement element)
         {
             _listOfDialogElements.Add(element);
@@ -128,7 +128,7 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// When the user clicks OK
+        /// When the user clicks OK.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -139,7 +139,7 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// When one of the DialogElements is clicked this event fires to populate the help
+        /// When one of the DialogElements is clicked this event fires to populate the help.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -182,9 +182,9 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// The constructor for the ToolDialog
+        /// The constructor for the ToolDialog.
         /// </summary>
-        /// <param name="tool">The ITool to create the dialog box for</param>
+        /// <param name="tool">The ITool to create the dialog box for.</param>
         private void Initialize(ITool tool)
         {
             SuspendLayout();
@@ -233,7 +233,7 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// If the user clicks out side of one of the tool elements
+        /// If the user clicks out side of one of the tool elements.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -253,7 +253,7 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// Fires when a parameter is changed
+        /// Fires when a parameter is changed.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         private void ParamValueChanged(Parameter sender)
@@ -312,7 +312,7 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// Adds Elements to the dialog based on what input Parameter the ITool contains
+        /// Adds Elements to the dialog based on what input Parameter the ITool contains.
         /// </summary>
         private void PopulateInputElements()
         {
@@ -339,7 +339,7 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// Adds Elements to the dialog based on what output Parameter the ITool contains
+        /// Adds Elements to the dialog based on what output Parameter the ITool contains.
         /// </summary>
         private void PopulateOutputElements()
         {

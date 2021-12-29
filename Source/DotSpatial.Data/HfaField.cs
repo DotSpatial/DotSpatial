@@ -109,7 +109,7 @@ using System.Text;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// HfaField
+    /// HfaField.
     /// </summary>
     public class HfaField
     {
@@ -157,7 +157,7 @@ namespace DotSpatial.Data
         public int NumBytes { get; set; }
 
         /// <summary>
-        /// Gets or sets '\0', '*' or 'p'
+        /// Gets or sets '\0', '*' or 'p'.
         /// </summary>
         public char Pointer { get; set; }
 
@@ -415,7 +415,7 @@ namespace DotSpatial.Data
         /// <param name="pReqReturn">The req return.</param>
         /// <param name="extraOffset">This is used in the case of 'object' pointers where the indexed object is further in the data block.</param>
         /// <returns>True, if the value could be extracted.</returns>
-        /// <exception cref="HfaInvalidCountException">Occurs if the count is less than zero for the header of a block of base data</exception>
+        /// <exception cref="HfaInvalidCountException">Occurs if the count is less than zero for the header of a block of base data.</exception>
         public bool ExtractInstValue(string pszField, int nIndexValue, byte[] data, long dataOffset, int nDataSize, char reqType, out object pReqReturn, out int extraOffset)
         {
             extraOffset = 0;

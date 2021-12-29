@@ -11,7 +11,7 @@ using System.Net;
 using BruTile;
 using BruTile.Cache;
 using BruTile.Web;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Plugins.WebMap
 {
@@ -69,11 +69,11 @@ namespace DotSpatial.Plugins.WebMap
             Bitmap bitMap = null;
             var zoomS = zoom.ToString(CultureInfo.InvariantCulture);
             var extent = ToBrutileExtent(envelope);
-            var tileInfo = ts.Schema.GetTilesInView(extent, zoomS).FirstOrDefault();
+            var tileInfo = ts.Schema.GetTileInfos(extent, zoom).FirstOrDefault();
 
             try
             {
-                var index = new TileIndex(x, y, zoomS);
+                var index = new TileIndex(x, y, zoom);
                 var tc = TileCache;
                 var bytes = tc?.Find(index);
                 if (bytes == null)
@@ -84,7 +84,7 @@ namespace DotSpatial.Plugins.WebMap
                     }
 
                     tileInfo.Index = index;
-                    bytes = ts.Provider.GetTile(tileInfo);
+                    bytes = ts.GetTile(tileInfo);
                     bitMap = new Bitmap(new MemoryStream(bytes));
                     tc?.Add(index, bytes);
 
@@ -97,7 +97,7 @@ namespace DotSpatial.Plugins.WebMap
             {
                 if (ex is WebException || ex is TimeoutException)
                 {
-                    bitMap = ExceptionToBitmap(ex, TileSource.Schema.GetTileWidth(zoomS), TileSource.Schema.GetTileHeight(zoomS));
+                    bitMap = ExceptionToBitmap(ex, TileSource.Schema.GetTileWidth(zoom), TileSource.Schema.GetTileHeight(zoom));
                 }
                 else
                 {

@@ -9,17 +9,17 @@ using System.Windows.Forms.Design;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// RasterColorSchemeEditor
+    /// RasterColorSchemeEditor.
     /// </summary>
     public class RasterColorSchemeEditor : UITypeEditor
     {
         /// <summary>
-        /// This should launch a frmRasterSymbolizer
+        /// This should launch a frmRasterSymbolizer.
         /// </summary>
-        /// <param name="context">ITypeDescriptorContext context</param>
-        /// <param name="provider">IServiceProvider provider</param>
-        /// <param name="value">object value</param>
-        /// <returns>A new RasterSymbolizer</returns>
+        /// <param name="context">ITypeDescriptorContext context.</param>
+        /// <param name="provider">IServiceProvider provider.</param>
+        /// <param name="value">object value.</param>
+        /// <returns>A new RasterSymbolizer.</returns>
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             IRasterSymbolizer rs = value as IRasterSymbolizer ?? new RasterSymbolizer();
@@ -33,10 +33,10 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// This controls the editor style and sets up a backup copy of the symbolizer
+        /// This controls the editor style and sets up a backup copy of the symbolizer.
         /// </summary>
-        /// <param name="context">ITypeDescriptorContext</param>
-        /// <returns>UITypeEditorEditStyle</returns>
+        /// <param name="context">ITypeDescriptorContext.</param>
+        /// <returns>UITypeEditorEditStyle.</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.Modal;

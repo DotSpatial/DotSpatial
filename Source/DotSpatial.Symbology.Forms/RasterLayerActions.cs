@@ -31,7 +31,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Shows the properties of the current raster legend item.
         /// </summary>
-        /// <param name="layer">The raster layer</param>
+        /// <param name="layer">The raster layer.</param>
         public void ShowProperties(IRasterLayer layer)
         {
             using (var dlg = new LayerDialog(layer, new RasterCategoryControl()))

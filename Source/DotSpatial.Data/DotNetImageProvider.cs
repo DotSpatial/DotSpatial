@@ -47,14 +47,14 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a new instance of an Image.
         /// </summary>
-        /// <param name="fileName">The string fileName to use</param>
-        /// <param name="width">The integer width in pixels</param>
-        /// <param name="height">The integer height in pixels</param>
-        /// <param name="inRam">Boolean, true if the entire contents should be stored in memory</param>
-        /// <param name="progHandler">A Progress handler to use</param>
+        /// <param name="fileName">The string fileName to use.</param>
+        /// <param name="width">The integer width in pixels.</param>
+        /// <param name="height">The integer height in pixels.</param>
+        /// <param name="inRam">Boolean, true if the entire contents should be stored in memory.</param>
+        /// <param name="progHandler">A Progress handler to use.</param>
         /// <param name="band">.Net type ignores this for now.</param>
         /// <returns>
-        /// A New IImageData object allowing access to the content of the image
+        /// A New IImageData object allowing access to the content of the image.
         /// </returns>
         public IImageData Create(string fileName, int width, int height, bool inRam, IProgressHandler progHandler, ImageBandType band)
         {
@@ -66,8 +66,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Opens a new Image with the specified fileName.
         /// </summary>
-        /// <param name="fileName">The string file to open</param>
-        /// <returns>An IImageData object</returns>
+        /// <param name="fileName">The string file to open.</param>
+        /// <returns>An IImageData object.</returns>
         public IImageData Open(string fileName)
         {
             InRamImageData data = new InRamImageData(fileName);
@@ -77,8 +77,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Opens a new Image with the specified fileName.
         /// </summary>
-        /// <param name="fileName">The string file to open</param>
-        /// <returns>An IDataSet object</returns>
+        /// <param name="fileName">The string file to open.</param>
+        /// <returns>An IDataSet object.</returns>
         IDataSet IDataProvider.Open(string fileName)
         {
             InRamImageData data = new InRamImageData(fileName);

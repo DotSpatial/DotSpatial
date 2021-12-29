@@ -68,7 +68,7 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Sets the printerSettings to the new settings and sets the result to OK
+        /// Sets the printerSettings to the new settings and sets the result to OK.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -105,7 +105,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Disgards the settings and sets dialogresult to cancel
+        /// Disgards the settings and sets dialogresult to cancel.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>

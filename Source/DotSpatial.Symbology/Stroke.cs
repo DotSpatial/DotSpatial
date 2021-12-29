@@ -34,7 +34,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets the stroke style of the inner stroke
+        /// Gets the stroke style of the inner stroke.
         /// </summary>
         [Serialize("StrokeStyle")]
         public StrokeStyle StrokeStyle
@@ -74,8 +74,8 @@ namespace DotSpatial.Symbology
         /// specifying marker decorations, rather than simply returning a pen. A pen
         /// is also returned publicly for convenience.
         /// </summary>
-        /// <param name="g">The Graphics device to draw to</param>
-        /// <param name="path">the GraphicsPath to draw</param>
+        /// <param name="g">The Graphics device to draw to.</param>
+        /// <param name="path">the GraphicsPath to draw.</param>
         /// <param name="scaleWidth">This is 1 for symbolic drawing, but could be
         /// any number for geographic drawing.</param>
         public virtual void DrawPath(Graphics g, GraphicsPath path, double scaleWidth)

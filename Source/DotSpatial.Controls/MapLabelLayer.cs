@@ -13,7 +13,6 @@ using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Controls
@@ -28,13 +27,13 @@ namespace DotSpatial.Controls
         private static readonly Caches CacheList = new Caches();
 
         /// <summary>
-        /// The existing labels, accessed for all map label layers, not just this instance
+        /// The existing labels, accessed for all map label layers, not just this instance.
         /// </summary>
         private static readonly List<RectangleF> ExistingLabels = new List<RectangleF>(); // for collision prevention, tracks existing labels.
 
         #endregion
 
-        #region  Constructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapLabelLayer"/> class.
@@ -57,7 +56,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="MapLabelLayer"/> class based on the specified feature layer.
         /// </summary>
-        /// <param name="inFeatureLayer">The feature layer to build the label layer from</param>
+        /// <param name="inFeatureLayer">The feature layer to build the label layer from.</param>
         public MapLabelLayer(IFeatureLayer inFeatureLayer)
             : base(inFeatureLayer)
         {
@@ -175,7 +174,7 @@ namespace DotSpatial.Controls
 
             Func<SizeF> labelSize = () => g.MeasureString(txt, CacheList.GetFont(symb));
 
-            IGeometry geo = f.Geometry;
+            Geometry geo = f.Geometry;
 
             if (geo.NumGeometries == 1)
             {
@@ -201,7 +200,7 @@ namespace DotSpatial.Controls
                     int longestIndex = 0;
                     for (int n = 0; n < geo.NumGeometries; n++)
                     {
-                        ILineString ls = geo.GetGeometryN(n) as ILineString;
+                        LineString ls = geo.GetGeometryN(n) as LineString;
                         double tempLength = 0;
                         if (ls != null) tempLength = ls.Length;
                         if (longestLine < tempLength)
@@ -254,7 +253,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Draws a label on a polygon with various different methods
+        /// Draws a label on a polygon with various different methods.
         /// </summary>
         /// <param name="e">The map args.</param>
         /// <param name="g">Graphics object used for drawing.</param>
@@ -272,7 +271,7 @@ namespace DotSpatial.Controls
             var angle = GetAngleToRotate(symb, f);
             Func<SizeF> labelSize = () => g.MeasureString(txt, CacheList.GetFont(symb));
 
-            IGeometry geo = f.Geometry;
+            Geometry geo = f.Geometry;
 
             if (geo.NumGeometries == 1)
             {
@@ -292,10 +291,10 @@ namespace DotSpatial.Controls
                 else
                 {
                     double largestArea = 0;
-                    IPolygon largest = null;
+                    Polygon largest = null;
                     for (int n = 0; n < geo.NumGeometries; n++)
                     {
-                        IPolygon pg = geo.GetGeometryN(n) as IPolygon;
+                        Polygon pg = geo.GetGeometryN(n) as Polygon;
                         if (pg == null) continue;
                         double tempArea = pg.Area;
                         if (largestArea < tempArea)
@@ -402,8 +401,8 @@ namespace DotSpatial.Controls
         /// directly, use OnDrawFeatures. This will not clear existing buffer content.
         /// For that call Initialize instead.
         /// </summary>
-        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
-        /// <param name="regions">The geographic regions to draw</param>
+        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space.</param>
+        /// <param name="regions">The geographic regions to draw.</param>
         /// <param name="selected">If this is true, nothing is painted, because selected labels get painted together with not selected labels.</param>
         public void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
@@ -494,9 +493,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the OnBufferChanged event
+        /// Fires the OnBufferChanged event.
         /// </summary>
-        /// <param name="clipRectangles">The Rectangle in pixels</param>
+        /// <param name="clipRectangles">The Rectangle in pixels.</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
             BufferChanged?.Invoke(this, new ClipArgs(clipRectangles));
@@ -557,13 +556,13 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Draws labels in a specified rectangle
+        /// Draws labels in a specified rectangle.
         /// </summary>
-        /// <param name="g">The graphics object to draw to</param>
-        /// <param name="labelText">The label text to draw</param>
-        /// <param name="labelBounds">The rectangle of the label</param>
-        /// <param name="symb">the Label Symbolizer to use when drawing the label</param>
-        /// <param name="feature">Feature to draw</param>
+        /// <param name="g">The graphics object to draw to.</param>
+        /// <param name="labelText">The label text to draw.</param>
+        /// <param name="labelBounds">The rectangle of the label.</param>
+        /// <param name="symb">the Label Symbolizer to use when drawing the label.</param>
+        /// <param name="feature">Feature to draw.</param>
         /// <param name="angle">Angle in degree the label gets rotated by.</param>
         private static void DrawLabel(Graphics g, string labelText, RectangleF labelBounds, ILabelSymbolizer symb, IFeature feature, float angle)
         {
@@ -650,7 +649,7 @@ namespace DotSpatial.Controls
         /// <param name="feature">Feature whose label gets rotated.</param>
         /// <param name="lineString">Line string to get the angle from if line orientation should be used.</param>
         /// <returns>Resulting angle in degree.</returns>
-        private static float GetAngleToRotate(ILabelSymbolizer symb, IFeature feature, IGeometry lineString = null)
+        private static float GetAngleToRotate(ILabelSymbolizer symb, IFeature feature, Geometry lineString = null)
         {
             if (symb.UseAngle)
             {
@@ -666,10 +665,9 @@ namespace DotSpatial.Controls
 
             if (symb.UseLineOrientation)
             {
-                LineString ls = lineString as LineString;
-                if (ls != null)
+                if (lineString is LineString ls1)
                 {
-                    ls = GetSegment(ls, symb);
+                    var ls = GetSegment(ls1, symb);
                     if (ls == null) return 0;
                     if (symb.LineOrientation == LineOrientation.Parallel)
                         return ToSingle(-ls.Angle);
@@ -686,26 +684,26 @@ namespace DotSpatial.Controls
         /// <param name="lineString">LineString to get the segment from.</param>
         /// <param name="symb">Symbolizer to get the LineLabelPlacement from.</param>
         /// <returns>Null on unnown LineLabelPlacementMethod else the calculated segment. </returns>
-        private static LineString GetSegment(LineString lineString, ILabelSymbolizer symb)
+        private static LineSegment GetSegment(LineString lineString, ILabelSymbolizer symb)
         {
-            if (lineString.Coordinates.Length <= 2) return lineString;
+            if (lineString.Coordinates.Length <= 2) return new LineSegment(lineString.StartPoint.Coordinate, lineString.EndPoint.Coordinate);
 
             var coords = lineString.Coordinates;
             switch (symb.LineLabelPlacementMethod)
             {
                 case LineLabelPlacementMethod.FirstSegment:
-                    return new LineString(new[] { coords[0], coords[1] });
+                    return new LineSegment(coords[0], coords[1]);
                 case LineLabelPlacementMethod.LastSegment:
-                    return new LineString(new[] { coords[coords.Length - 2], coords[coords.Length - 1] });
+                    return new LineSegment(coords[coords.Length - 2], coords[coords.Length - 1]);
                 case LineLabelPlacementMethod.MiddleSegment:
                     int start = (int)Math.Ceiling(coords.Length / 2D) - 1;
-                    return new LineString(new[] { coords[start], coords[start + 1] });
+                    return new LineSegment(coords[start], coords[start + 1]);
                 case LineLabelPlacementMethod.LongestSegment:
                     double length = 0;
-                    LineString temp = null;
+                    LineSegment temp = null;
                     for (int i = 0; i < coords.Length - 1; i++)
                     {
-                        LineString l = new LineString(new[] { coords[i], coords[i + 1] });
+                        LineSegment l = new LineSegment(coords[i], coords[i + 1]);
                         if (l.Length > length)
                         {
                             length = l.Length;
@@ -748,18 +746,18 @@ namespace DotSpatial.Controls
         /// <param name="symb">Symbolizer to figure out the look of the label.</param>
         /// <param name="angle">Angle in degree the label gets rotated by.</param>
         /// <returns>The RectangleF that is needed to draw the label.</returns>
-        private static RectangleF PlaceLineLabel(IGeometry lineString, Func<SizeF> labelSize, MapArgs e, ILabelSymbolizer symb, float angle)
+        private static RectangleF PlaceLineLabel(Geometry lineString, Func<SizeF> labelSize, MapArgs e, ILabelSymbolizer symb, float angle)
         {
             LineString ls = lineString as LineString;
             if (ls == null) return Rectangle.Empty;
 
-            ls = GetSegment(ls, symb);
-            if (ls == null) return Rectangle.Empty;
+            var ls1 = GetSegment(ls, symb);
+            if (ls1 == null) return Rectangle.Empty;
 
-            return PlaceLabel(ls.Centroid.Coordinate, e, labelSize, symb, angle);
+            return PlaceLabel(ls1.ToGeometry(Geometry.DefaultFactory).Centroid.Coordinate, e, labelSize, symb, angle);
         }
 
-        private static RectangleF PlacePointLabel(IGeometry f, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, float angle)
+        private static RectangleF PlacePointLabel(Geometry f, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, float angle)
         {
             Coordinate c = f.GetGeometryN(1).Coordinates[0];
             return PlaceLabel(c, e, labelSize, symb, angle);
@@ -774,9 +772,9 @@ namespace DotSpatial.Controls
         /// <param name="symb">The symbolizer that contains the drawing styles.</param>
         /// <param name="angle">The angle used for drawing.</param>
         /// <returns>The resulting drawing rectangle.</returns>
-        private static RectangleF PlacePolygonLabel(IGeometry geom, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, float angle)
+        private static RectangleF PlacePolygonLabel(Geometry geom, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, float angle)
         {
-            IPolygon pg = geom as IPolygon;
+            Polygon pg = geom as Polygon;
             if (pg == null) return RectangleF.Empty;
             Coordinate c;
             switch (symb.LabelPlacementMethod)

@@ -79,7 +79,7 @@ namespace DotSpatial.Symbology
         /// Tests the specified legend item to determine whether or not
         /// it can be dropped into the current item.
         /// </summary>
-        /// <param name="item">Any object that implements ILegendItem</param>
+        /// <param name="item">Any object that implements ILegendItem.</param>
         /// <returns>Boolean that is true if a drag-drop of the specified item will be allowed.</returns>
         bool CanReceiveItem(ILegendItem item);
 
@@ -92,17 +92,17 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Instructs this legend item to perform custom drawing for any symbols.
         /// </summary>
-        /// <param name="g">A Graphics surface to draw on</param>
+        /// <param name="g">A Graphics surface to draw on.</param>
         /// <param name="box">The rectangular coordinates that confine the symbol.</param>
         void LegendSymbolPainted(Graphics g, Rectangle box);
 
         /// <summary>
         /// Prints the formal legend content without any resize boxes or other notations.
         /// </summary>
-        /// <param name="g">The graphics object to print to</param>
-        /// <param name="font">The system.Drawing.Font to use for the lettering</param>
-        /// <param name="fontColor">The color of the font</param>
-        /// <param name="maxExtent">Assuming 0, 0 is the top left, this is the maximum extent</param>
+        /// <param name="g">The graphics object to print to.</param>
+        /// <param name="font">The system.Drawing.Font to use for the lettering.</param>
+        /// <param name="fontColor">The color of the font.</param>
+        /// <param name="maxExtent">Assuming 0, 0 is the top left, this is the maximum extent.</param>
         void PrintLegendItem(Graphics g, Font font, Color fontColor, SizeF maxExtent);
 
         #endregion

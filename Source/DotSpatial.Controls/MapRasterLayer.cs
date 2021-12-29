@@ -8,7 +8,7 @@ using System.Drawing;
 using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -62,7 +62,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="MapRasterLayer"/> class, and will create a "FallLeaves" image based on the raster values.
         /// </summary>
-        /// <param name="raster">The raster to use</param>
+        /// <param name="raster">The raster to use.</param>
         public MapRasterLayer(IRaster raster)
             : base(raster)
         {
@@ -146,7 +146,7 @@ namespace DotSpatial.Controls
         public Rectangle BufferRectangle { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the image layer is initialized
+        /// Gets or sets a value indicating whether the image layer is initialized.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -183,8 +183,8 @@ namespace DotSpatial.Controls
         /// directly, use OnDrawFeatures. This will not clear existing buffer content.
         /// For that call Initialize instead.
         /// </summary>
-        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
-        /// <param name="regions">The geographic regions to draw</param>
+        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space.</param>
+        /// <param name="regions">The geographic regions to draw.</param>
         /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features. Because rasters can't be selected they won't be drawn if selected is true.</param>
         public void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
@@ -254,9 +254,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the OnBufferChanged event
+        /// Fires the OnBufferChanged event.
         /// </summary>
-        /// <param name="clipRectangles">The Rectangle in pixels</param>
+        /// <param name="clipRectangles">The Rectangle in pixels.</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
             if (BufferChanged != null)
@@ -286,7 +286,7 @@ namespace DotSpatial.Controls
         /// This will not flip the back buffer to the front.
         /// </summary>
         /// <param name="args">The map arguments.</param>
-        /// <param name="regions">The regions </param>
+        /// <param name="regions">The regions. </param>
         /// <param name="clipRectangles">The clip rectangles.</param>
         private void DrawWindows(MapArgs args, IList<Extent> regions, IList<Rectangle> clipRectangles)
         {
@@ -307,7 +307,7 @@ namespace DotSpatial.Controls
             {
                 using (Bitmap bmp = BitmapGetter.GetBitmap(regions[i], clipRectangles[i]))
                 {
-                    if (bmp != null) g.DrawImage(bmp, clipRectangles[i]);
+                    if (bmp != null) g.DrawImage(bmp, new Rectangle(0, 0, clipRectangles[i].Width, clipRectangles[i].Height));
                 }
             }
 

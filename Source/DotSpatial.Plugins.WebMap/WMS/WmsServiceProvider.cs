@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using BruTile;
 using BruTile.Cache;
 using DotSpatial.Projections;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Plugins.WebMap.WMS
 {
@@ -77,7 +77,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
             var zoomS = zoom.ToString(CultureInfo.InvariantCulture);
             try
             {
-                var index = new TileIndex(x, y, zoom.ToString(CultureInfo.InvariantCulture));
+                var index = new TileIndex(x, y, zoom);
                 var tc = TileCache;
                 var bytes = tc?.Find(index);
                 if (bytes == null)
@@ -86,7 +86,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
                     double[] viewExtentZ = { 0.0, 0.0 };
                     Reproject.ReprojectPoints(mapVertices, viewExtentZ, Wgs84Proj, _data.CrsProjectionInfo, 0, mapVertices.Length / 2);
                     var geogEnv = new Envelope(mapVertices[0], mapVertices[2], mapVertices[1], mapVertices[3]);
-                    bytes = ts.Provider.GetTile(new TileInfo
+                    bytes = ts.GetTile(new TileInfo
                                                     {
                                                         Extent = ToBrutileExtent(geogEnv),
                                                         Index = index
@@ -103,7 +103,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
             {
                 if (ex is WebException || ex is TimeoutException)
                 {
-                    return ExceptionToBitmap(ex, TileSource.Schema.GetTileWidth(zoomS), TileSource.Schema.GetTileHeight(zoomS));
+                    return ExceptionToBitmap(ex, TileSource.Schema.GetTileWidth(zoom), TileSource.Schema.GetTileHeight(zoom));
                 }
 
                 Debug.WriteLine(ex.Message);

@@ -38,8 +38,8 @@ namespace DotSpatial.Symbology
         /// Initializes a new instance of the <see cref="ColorScheme"/> class using a predefined color scheme and the minimum and maximum specified
         /// from the raster itself.
         /// </summary>
-        /// <param name="schemeType">The predefined scheme to use</param>
-        /// <param name="raster">The raster to obtain the minimum and maximum settings from</param>
+        /// <param name="schemeType">The predefined scheme to use.</param>
+        /// <param name="raster">The raster to obtain the minimum and maximum settings from.</param>
         public ColorScheme(ColorSchemeType schemeType, IRaster raster)
         {
             Configure();
@@ -49,9 +49,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="ColorScheme"/> class, applying the specified color scheme, and using the minimum and maximum values indicated.
         /// </summary>
-        /// <param name="schemeType">The predefined color scheme</param>
-        /// <param name="min">The minimum</param>
-        /// <param name="max">The maximum</param>
+        /// <param name="schemeType">The predefined color scheme.</param>
+        /// <param name="min">The minimum.</param>
+        /// <param name="max">The maximum.</param>
         public ColorScheme(ColorSchemeType schemeType, double min, double max)
         {
             Configure();
@@ -103,7 +103,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the floating point value for the opacity
+        /// Gets or sets the floating point value for the opacity.
         /// </summary>
         [Serialize("Opacity")]
         public float Opacity
@@ -161,9 +161,9 @@ namespace DotSpatial.Symbology
         /// Applies the specified color scheme and uses the specified raster to define the
         /// minimum and maximum to use for the scheme.
         /// </summary>
-        /// <param name="schemeType">ColorSchemeType</param>
-        /// <param name="min">THe minimum value to use for the scheme</param>
-        /// <param name="max">THe maximum value to use for the scheme</param>
+        /// <param name="schemeType">ColorSchemeType.</param>
+        /// <param name="min">THe minimum value to use for the scheme.</param>
+        /// <param name="max">THe maximum value to use for the scheme.</param>
         public void ApplyScheme(ColorSchemeType schemeType, double min, double max)
         {
             if (Categories == null)
@@ -262,7 +262,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Clears the categories
+        /// Clears the categories.
         /// </summary>
         public override void ClearCategories()
         {
@@ -273,7 +273,7 @@ namespace DotSpatial.Symbology
         /// Creates the categories for this scheme based on statistics and values
         /// sampled from the specified raster.
         /// </summary>
-        /// <param name="raster">The raster to use when creating categories</param>
+        /// <param name="raster">The raster to use when creating categories.</param>
         public void CreateCategories(IRaster raster)
         {
             GetValues(raster);
@@ -282,11 +282,11 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates the category using a random fill color
+        /// Creates the category using a random fill color.
         /// </summary>
-        /// <param name="fillColor">The base color to use for creating the category</param>
-        /// <param name="size">For points this is the larger dimension, for lines this is the largest width</param>
-        /// <returns>A new IFeatureCategory that matches the type of this scheme</returns>
+        /// <param name="fillColor">The base color to use for creating the category.</param>
+        /// <param name="size">For points this is the larger dimension, for lines this is the largest width.</param>
+        /// <returns>A new IFeatureCategory that matches the type of this scheme.</returns>
         public override ICategory CreateNewCategory(Color fillColor, double size)
         {
             return new ColorCategory(null, null, fillColor, fillColor);
@@ -295,7 +295,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Uses the settings on this scheme to create a random category.
         /// </summary>
-        /// <returns>A new IFeatureCategory</returns>
+        /// <returns>A new IFeatureCategory.</returns>
         public override ICategory CreateRandomCategory()
         {
             Random rnd = new Random(DateTime.Now.Millisecond);
@@ -306,7 +306,7 @@ namespace DotSpatial.Symbology
         /// Attempts to decrease the index value of the specified category, and returns
         /// true if the move was successfull.
         /// </summary>
-        /// <param name="category">The category to decrease the index of</param>
+        /// <param name="category">The category to decrease the index of.</param>
         /// <returns>True, if the move was successfull.</returns>
         public override bool DecreaseCategoryIndex(ICategory category)
         {
@@ -330,7 +330,7 @@ namespace DotSpatial.Symbology
         /// number of cells, then it randomly samples the raster with MaxSampleCount
         /// values. Otherwise it gets all the values in the raster.
         /// </summary>
-        /// <param name="raster">The raster to sample</param>
+        /// <param name="raster">The raster to sample.</param>
         public void GetValues(IRaster raster)
         {
             Values = raster.GetRandomValues(EditorSettings.MaxSampleCount);
@@ -343,8 +343,8 @@ namespace DotSpatial.Symbology
         /// Attempts to increase the position of the specified category, and returns true
         /// if the index increase was successful.
         /// </summary>
-        /// <param name="category">The category to increase the position of</param>
-        /// <returns>Boolean, true if the item's position was increased</returns>
+        /// <param name="category">The category to increase the position of.</param>
+        /// <returns>Boolean, true if the item's position was increased.</returns>
         public override bool IncreaseCategoryIndex(ICategory category)
         {
             IColorCategory cc = category as IColorCategory;

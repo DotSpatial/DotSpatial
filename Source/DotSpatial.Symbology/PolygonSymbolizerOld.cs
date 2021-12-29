@@ -3,7 +3,7 @@
 
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -33,7 +33,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonSymbolizerOld"/> class.
         /// </summary>
-        /// <param name="selected">Boolean, true if this should use a standard selection symbology of light cyan coloring</param>
+        /// <param name="selected">Boolean, true if this should use a standard selection symbology of light cyan coloring.</param>
         public PolygonSymbolizerOld(bool selected)
         {
             _borderSymbolizer = new LineSymbolizer(selected);
@@ -43,8 +43,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonSymbolizerOld"/> class.
         /// </summary>
-        /// <param name="env">The Envelope representing the base geometric size of the layer. This helps to estimate a useful geographic line width</param>
-        /// <param name="selected">Boolean, true if this should use a standard selection symbology of light cyan coloring</param>
+        /// <param name="env">The Envelope representing the base geometric size of the layer. This helps to estimate a useful geographic line width.</param>
+        /// <param name="selected">Boolean, true if this should use a standard selection symbology of light cyan coloring.</param>
         public PolygonSymbolizerOld(Envelope env, bool selected)
         {
             _borderSymbolizer = new LineSymbolizer(env, selected);

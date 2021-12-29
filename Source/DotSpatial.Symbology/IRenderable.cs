@@ -56,7 +56,7 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Invalidates the drawing methods
+        /// Invalidates the drawing methods.
         /// </summary>
         void Invalidate();
 

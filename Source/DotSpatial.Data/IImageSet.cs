@@ -8,12 +8,12 @@ namespace DotSpatial.Data
 {
     /// <summary>
     /// IImageSet is simple interface that gives some basic information that is common between tiled images and
-    /// the more general image coverages
+    /// the more general image coverages.
     /// </summary>
     public interface IImageSet : IDataSet
     {
         /// <summary>
-        /// Gets the count of the images in the image set
+        /// Gets the count of the images in the image set.
         /// </summary>
         int Count { get; }
 
@@ -21,9 +21,9 @@ namespace DotSpatial.Data
         /// Uses the geographic envelope and the specified pixelSize in order to calculate an
         /// appropriate bitmap for display based on the various images in this set.
         /// </summary>
-        /// <param name="envelope">The geographic bounds to display</param>
-        /// <param name="pixelSize">The pixelSize of the bitmap to display</param>
-        /// <returns>A Bitmap showing the appropriate size and dimensions of the image</returns>
+        /// <param name="envelope">The geographic bounds to display.</param>
+        /// <param name="pixelSize">The pixelSize of the bitmap to display.</param>
+        /// <returns>A Bitmap showing the appropriate size and dimensions of the image.</returns>
         Bitmap GetBitmap(Extent envelope, Size pixelSize);
 
         /// <summary>

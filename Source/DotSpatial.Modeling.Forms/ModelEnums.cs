@@ -4,7 +4,7 @@
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// Definitions for the shapes that components can have in the modeler
+    /// Definitions for the shapes that components can have in the modeler.
     /// </summary>
     public enum ModelShape
     {
@@ -30,7 +30,7 @@ namespace DotSpatial.Modeling.Forms
     }
 
     /// <summary>
-    /// Used internally to decided if a tool has executed, is done, or finished in error
+    /// Used internally to decided if a tool has executed, is done, or finished in error.
     /// </summary>
     public enum ToolExecuteStatus
     {

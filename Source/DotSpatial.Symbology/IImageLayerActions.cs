@@ -6,22 +6,22 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// This interface provides ability to use in ImageLayer any custom actions (including GUI-dependent dialogs)
+    /// This interface provides ability to use in ImageLayer any custom actions (including GUI-dependent dialogs).
     /// </summary>
     public interface IImageLayerActions
     {
         #region Methods
 
         /// <summary>
-        /// Show export dialog
+        /// Show export dialog.
         /// </summary>
-        /// <param name="e">Image data</param>
+        /// <param name="e">Image data.</param>
         void ExportData(IImageData e);
 
         /// <summary>
-        /// Show properties dialog
+        /// Show properties dialog.
         /// </summary>
-        /// <param name="e">Image layer</param>
+        /// <param name="e">Image layer.</param>
         void ShowProperties(IImageLayer e);
 
         #endregion

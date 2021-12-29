@@ -46,10 +46,10 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <summary>
         /// Calculates the voronoi graph, but specifies a tolerance below which values should be considered equal.
         /// </summary>
-        /// <param name="vertices">The original points to use during the calculation</param>
-        /// <param name="tolerance">A double value that controls the test for equality</param>
+        /// <param name="vertices">The original points to use during the calculation.</param>
+        /// <param name="tolerance">A double value that controls the test for equality.</param>
         /// <param name="cleanup">This for Ben's code and should be passed as true if cleanup should be done.</param>
-        /// <returns>A VoronoiGraph structure containing the output geometries</returns>
+        /// <returns>A VoronoiGraph structure containing the output geometries.</returns>
         public static VoronoiGraph ComputeVoronoiGraph(double[] vertices, double tolerance, bool cleanup)
         {
             Vector2.Tolerance = tolerance;
@@ -63,8 +63,8 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// and will not use the cleanup algorithm, which breaks the HandleBoundaries
         /// method in the Voronoi class.
         /// </summary>
-        /// <param name="vertices">The original points to use during the calculation</param>
-        /// <returns>A VoronoiGraph structure containing the output geometries</returns>
+        /// <param name="vertices">The original points to use during the calculation.</param>
+        /// <returns>A VoronoiGraph structure containing the output geometries.</returns>
         public static VoronoiGraph ComputeVoronoiGraph(double[] vertices)
         {
             SortedDictionary<VEvent, VEvent> pq = new SortedDictionary<VEvent, VEvent>();
@@ -169,8 +169,8 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// Applies an optional cleanup method needed by Benjamine Ditter for laser data calculations.
         /// This is not used by the MapWindow calculations.
         /// </summary>
-        /// <param name="vg">The output voronoi graph created in the Compute Voronoi Graph section</param>
-        /// <param name="minLeftRightDist">A minimum left to right distance</param>
+        /// <param name="vg">The output voronoi graph created in the Compute Voronoi Graph section.</param>
+        /// <param name="minLeftRightDist">A minimum left to right distance.</param>
         /// <returns>The Voronoi Graph after it has been filtered.</returns>
         public static VoronoiGraph FilterVg(VoronoiGraph vg, double minLeftRightDist)
         {

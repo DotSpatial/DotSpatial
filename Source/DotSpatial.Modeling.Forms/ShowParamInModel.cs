@@ -4,7 +4,7 @@
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// Defines whether or not to add the parameter to the model
+    /// Defines whether or not to add the parameter to the model.
     /// </summary>
     public enum ShowParamInModel
     {

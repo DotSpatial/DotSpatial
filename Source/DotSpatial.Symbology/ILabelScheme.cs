@@ -14,7 +14,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the list of categories that make up this label scheme
+        /// Gets or sets the list of categories that make up this label scheme.
         /// </summary>
         IList<ILabelCategory> Categories { get; set; }
 
@@ -25,14 +25,14 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Adds a category to the scheme, and also names the category with an integer that has not yet been used.
         /// </summary>
-        /// <returns>A new category with a name that has not yet been used</returns>
+        /// <returns>A new category with a name that has not yet been used.</returns>
         ILabelCategory AddCategory();
 
         /// <summary>
         /// returns a duplicate scheme, where the categories are copied, but
         /// the underlying featureset is not duplicated.
         /// </summary>
-        /// <returns>A copy of this label scheme</returns>
+        /// <returns>A copy of this label scheme.</returns>
         ILabelScheme Copy();
 
         /// <summary>
@@ -42,8 +42,8 @@ namespace DotSpatial.Symbology
         /// priority. If this collection does not contain the category or it is already
         /// at index 0, this will return false.
         /// </summary>
-        /// <param name="category">The ILabelCategory to demote</param>
-        /// <returns>Boolean, true if the demotion was successful</returns>
+        /// <param name="category">The ILabelCategory to demote.</param>
+        /// <returns>Boolean, true if the demotion was successful.</returns>
         bool Demote(ILabelCategory category);
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace DotSpatial.Symbology
         /// or the category is already at the highest value, this returns false.
         /// </summary>
         /// <param name="category">The category to promote if possible.</param>
-        /// <returns>Boolean, true if the promotion was successful</returns>
+        /// <returns>Boolean, true if the promotion was successful.</returns>
         bool Promote(ILabelCategory category);
 
         #endregion

@@ -29,7 +29,7 @@ namespace DotSpatial.Data
         /// The default decimal count for double and long is 0, for Currency is 2, for float is
         /// 3, and for double is 8. These can be changed by changing the DecimalCount property.
         /// </summary>
-        /// <param name="inColumn">A System.Data.DataColumn to create a Field from</param>
+        /// <param name="inColumn">A System.Data.DataColumn to create a Field from.</param>
         public Field(DataColumn inColumn)
             : base(inColumn.ColumnName, inColumn.DataType, inColumn.Expression, inColumn.ColumnMapping)
         {
@@ -62,7 +62,7 @@ namespace DotSpatial.Data
         /// Initializes a new instance of the <see cref="Field"/> class with a specific name for a specified data type.
         /// </summary>
         /// <param name="inColumnName">The string name of the column.</param>
-        /// <param name="inDataType">The System.Type describing the datatype of the field</param>
+        /// <param name="inDataType">The System.Type describing the datatype of the field.</param>
         public Field(string inColumnName, Type inDataType)
             : base(inColumnName, inDataType)
         {
@@ -214,35 +214,9 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets the single character dBase code. Only some of these are supported with Esri.
-        /// C - Character (Chars, Strings, objects - as ToString(), and structs - as  )
-        /// D - Date (DateTime)
-        /// T - Time (DateTime)
-        /// N - Number (Short, Integer, Long, Float, Double, byte)
-        /// L - Logic (True-False, Yes-No)
-        /// F - Float
-        /// B - Double
+        /// The possible values are defined in FieldTypeCharacters.
         /// </summary>
-        public char TypeCharacter
-        {
-            get
-            {
-                if (DataType == typeof(bool)) return 'L';
-                if (DataType == typeof(DateTime)) return 'D';
-
-                // We are using numeric in most cases here, because that is the format most compatible with other
-                // Applications
-                if (DataType == typeof(float)) return 'N';
-                if (DataType == typeof(double)) return 'N';
-                if (DataType == typeof(decimal)) return 'N';
-                if (DataType == typeof(byte)) return 'N';
-                if (DataType == typeof(short)) return 'N';
-                if (DataType == typeof(int)) return 'N';
-                if (DataType == typeof(long)) return 'N';
-
-                // The default is to store it as a string type
-                return 'C';
-            }
-        }
+        public char TypeCharacter => FieldTypeCharacterMapperManager.Mapper.Map(DataType);
 
         /// <summary>
         /// Gets or sets the number of places to keep after the 0 in number formats.
@@ -256,7 +230,7 @@ namespace DotSpatial.Data
         public byte Length { get; set; }
 
         /// <summary>
-        /// Gets or sets the offset of the field on a row in the file
+        /// Gets or sets the offset of the field on a row in the file.
         /// </summary>
         public int DataAddress { get; set; }
 

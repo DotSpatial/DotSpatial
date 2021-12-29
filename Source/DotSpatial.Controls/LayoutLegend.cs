@@ -14,7 +14,7 @@ using DotSpatial.Symbology;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// Draws a legend for the layout
+    /// Draws a legend for the layout.
     /// </summary>
     public class LayoutLegend : LayoutElement
     {
@@ -30,7 +30,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region  Constructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LayoutLegend"/> class.
@@ -51,7 +51,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the color of the text
+        /// Gets or sets the color of the text.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -71,7 +71,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the font used to draw this text
+        /// Gets or sets the font used to draw this text.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -91,7 +91,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the layers to include in the legend
+        /// Gets or sets the layers to include in the legend.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -129,7 +129,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets a layout control
+        /// Gets or sets a layout control.
         /// </summary>
         [Browsable(false)]
         public virtual LayoutControl LayoutControl
@@ -155,7 +155,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the layoutmap to use to base the legend on
+        /// Gets or sets the layoutmap to use to base the legend on.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -175,13 +175,17 @@ namespace DotSpatial.Controls
                     _layers.Clear();
                     if (Map.MapControl != null)
                     {
-                        for (int i = Map.MapControl.Layers.Count - 1; i >= 0; i--)
+                        // find all the layers in the map - not including "mapgroup" type layers
+                        foreach (var layer in Map.MapControl.GetAllLayers())
                         {
-                            if (Map.MapControl.Layers[i].Checked)
+                            if (layer is IMapLayer lyr && lyr.Checked)
                             {
-                                _layers.Add(Map.MapControl.Layers[i]);
+                                _layers.Add(lyr);
                             }
                         }
+
+                        // reverse the list so that they draw in the correct order
+                        _layers.Reverse();
                     }
 
                     UpdateThumbnail();
@@ -195,7 +199,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the number of columns to use when rendering the legend
+        /// Gets or sets the number of columns to use when rendering the legend.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -215,7 +219,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the hinting used to draw the text
+        /// Gets or sets the hinting used to draw the text.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -241,8 +245,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object.
         /// </summary>
-        /// <param name="g">The graphics object to draw to</param>
-        /// <param name="printing">A boolean value indicating if the Draw code is being called to print</param>
+        /// <param name="g">The graphics object to draw to.</param>
+        /// <param name="printing">A boolean value indicating if the Draw code is being called to print.</param>
         public override void Draw(Graphics g, bool printing)
         {
             // Make sure we don't get any null reference exceptions
@@ -266,10 +270,9 @@ namespace DotSpatial.Controls
             // Loops through all of the legend items and populates the legend
             foreach (IMapLayer mapLayer in _layers)
             {
-                if (mapLayer.LegendItems == null)
-                    DrawLegendItem(g, mapLayer, itemSize, ref col, ref row, ref maxCol, ref maxRow);
-                else
-                    DrawLegendList(g, mapLayer.LegendItems, itemSize, ref col, ref row, ref maxCol, ref maxRow);
+                IMapLayer mapLayerClone = (IMapLayer)mapLayer.Clone();
+                DrawLegendItem(g, mapLayerClone, itemSize, ref col, ref row, ref maxCol, ref maxRow);
+                DrawLegendList(g, mapLayerClone.LegendItems, itemSize, ref col, ref row, ref maxCol, ref maxRow);
             }
 
             // Restored the old graphics settings
@@ -288,6 +291,11 @@ namespace DotSpatial.Controls
             }
 
             g.TranslateTransform(LocationF.X + (col * itemSize.Width), LocationF.Y + (row * itemSize.Height));
+            if (item.LegendText is null)
+            {
+                item.LegendText = string.Empty;
+            }
+
             item.PrintLegendItem(g, _font, _color, itemSize);
             g.TranslateTransform(-(LocationF.X + (col * itemSize.Width)), -(LocationF.Y + (row * itemSize.Height)));
             row++;

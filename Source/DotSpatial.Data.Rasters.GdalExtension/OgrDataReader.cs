@@ -378,7 +378,20 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         private static Color GetColor(ref string style, Parameter parameter)
         {
             var color = GetValue(ref style, parameter.Name);
-            return string.IsNullOrWhiteSpace(color) ? parameter.DefaultColor : ColorTranslator.FromHtml(color);
+
+            if (string.IsNullOrWhiteSpace(color))
+            {
+                return parameter.DefaultColor;
+            }
+
+            try
+            {
+                return ColorTranslator.FromHtml(color);
+            }
+            catch
+            {
+                return parameter.DefaultColor;
+            }
         }
 
         /// <summary>

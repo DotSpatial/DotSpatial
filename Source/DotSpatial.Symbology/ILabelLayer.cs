@@ -34,7 +34,7 @@ namespace DotSpatial.Symbology
         ILabelSymbolizer Symbolizer { get; set; }
 
         /// <summary>
-        /// Gets or sets the symbology
+        /// Gets or sets the symbology.
         /// </summary>
         ILabelScheme Symbology { get; set; }
 

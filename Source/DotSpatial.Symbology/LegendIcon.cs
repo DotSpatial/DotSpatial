@@ -7,7 +7,7 @@ using System.Drawing;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// LegendIcon
+    /// LegendIcon.
     /// </summary>
     [ToolboxItem(false)]
     public class LegendIcon : LegendItem
@@ -55,7 +55,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the legend symbol size (as an icon size).
         /// </summary>
-        /// <returns>The legend symbol size</returns>
+        /// <returns>The legend symbol size.</returns>
         public override Size GetLegendSymbolSize()
         {
             return _icon?.Size ?? new Size(16, 16);

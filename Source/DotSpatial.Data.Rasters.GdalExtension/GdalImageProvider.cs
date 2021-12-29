@@ -9,7 +9,7 @@ using OSGeo.GDAL;
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
     /// <summary>
-    /// GDalImageProvider acts as the factory to create IImageData files that use the GDAL libraries
+    /// GDalImageProvider acts as the factory to create IImageData files that use the GDAL libraries.
     /// </summary>
     public class GdalImageProvider : IImageDataProvider
     {
@@ -109,7 +109,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         }
 
         /// <summary>
-        /// http://www.gdal.org/formats_list.html
+        /// http://www.gdal.org/formats_list.html.
         /// </summary>
         /// <param name="fileName">The file name.</param>
         /// <returns>The driver.</returns>

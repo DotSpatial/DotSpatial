@@ -10,7 +10,7 @@ using DotSpatial.Controls;
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// PluginManager for dealing with additional plugins
+    /// PluginManager for dealing with additional plugins.
     /// </summary>
     [ToolboxItem(false)]
     public partial class LegacyPluginManager : Component
@@ -34,7 +34,7 @@ namespace DotSpatial.Compatibility
         /// <summary>
         /// Initializes a new instance of the <see cref="LegacyPluginManager"/> class.
         /// </summary>
-        /// <param name="container">A Container</param>
+        /// <param name="container">A Container.</param>
         public LegacyPluginManager(IContainer container)
         {
             container.Add(this);
@@ -45,17 +45,17 @@ namespace DotSpatial.Compatibility
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Legend associated with this plugin manager
+        /// Gets or sets the Legend associated with this plugin manager.
         /// </summary>
         public ILegend Legend { get; set; }
 
         /// <summary>
-        /// Gets or sets the Map associated with this plugin manager
+        /// Gets or sets the Map associated with this plugin manager.
         /// </summary>
         public IBasicMap Map { get; set; }
 
         /// <summary>
-        /// Gets or sets the MapMenuStrip associated with this plugin manager
+        /// Gets or sets the MapMenuStrip associated with this plugin manager.
         /// </summary>
         public MenuStrip MapMenuStrip
         {
@@ -81,7 +81,7 @@ namespace DotSpatial.Compatibility
         }
 
         /// <summary>
-        /// Gets or sets the MapToolStrip associated with this plugin manager
+        /// Gets or sets the MapToolStrip associated with this plugin manager.
         /// </summary>
         public ToolStrip MapToolstrip { get; set; }
 
@@ -118,7 +118,7 @@ namespace DotSpatial.Compatibility
         }
 
         /// <summary>
-        /// Gets or sets the Preview Map associated with this plugin manager
+        /// Gets or sets the Preview Map associated with this plugin manager.
         /// </summary>
         public IBasicMap PreviewMap { get; set; }
 

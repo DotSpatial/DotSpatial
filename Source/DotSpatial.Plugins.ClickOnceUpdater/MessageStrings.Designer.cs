@@ -19,7 +19,7 @@ namespace DotSpatial.Plugins.ClickOnceUpdater {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class MessageStrings {
@@ -81,7 +81,7 @@ namespace DotSpatial.Plugins.ClickOnceUpdater {
         /// <summary>
         ///   Looks up a localized string similar to The new version of the application cannot be downloaded at this time. 
         ///
-        /// Please check your network connection, or try again later. Error: {0}.
+        ///Please check your network connection, or try again later. Error: {0}.
         /// </summary>
         internal static string CantDownloadNewVersion {
             get {

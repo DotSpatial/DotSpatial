@@ -66,7 +66,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="fileName">The string path of a file to open using this BufferedBinaryReader.</param>
         /// <param name="progressHandler">Any implementation of IProgressHandler for receiving progress messages.</param>
-        /// <param name="expectedByteCount">A long specifying the number of bytes that will be written for the purposes of tracking progress</param>
+        /// <param name="expectedByteCount">A long specifying the number of bytes that will be written for the purposes of tracking progress.</param>
         public BufferedBinaryWriter(string fileName, IProgressHandler progressHandler, long expectedByteCount)
         {
             if (File.Exists(fileName))
@@ -106,7 +106,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the actual array of bytes currently in the buffer
+        /// Gets or sets the actual array of bytes currently in the buffer.
         /// </summary>
         public byte[] Buffer { get; set; }
 
@@ -140,7 +140,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets or sets the buffer size to read in chunks. This does not
-        /// describe the size of the actual
+        /// describe the size of the actual.
         /// </summary>
         public virtual int MaxBufferSize
         {
@@ -423,7 +423,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Reads a single-precision floading point from 4 bytes in the buffer, automatically loading the next buffer if necessary.
         /// </summary>
-        /// <param name="value">A single-precision floating point converted from four bytes</param>
+        /// <param name="value">A single-precision floating point converted from four bytes.</param>
         /// <param name="isLittleEndian">Boolean, true if the value should be returned with little endian byte ordering.</param>
         public virtual void Write(float value, bool isLittleEndian)
         {
