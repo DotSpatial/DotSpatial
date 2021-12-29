@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - JGD2011, EPSG from 6669 to 6687 (#1262)
+- Feature of determining the delta azimuth of three consecutive points (#1360)
 
 ### Changed
 - Switched to VS2019
