@@ -1287,6 +1287,58 @@ Math.Round(
             return Radian.FromDegrees(_decimalDegrees);
         }
 
+        /// <summary>
+        /// Returns delta azimuth of three consecutive points in degrees. Positive if the change is clockwise, negative if counter-clockwise.
+        /// </summary>
+        /// <example>
+        /// Azimuth change when moving throught three points:
+        /// <code lang="CS">
+        /// Position pos1 = new Position("49° 58' 57.468\"", "36° 9' 5.616\"");
+        /// Position pos2 = new Position("49° 58' 57.7554\"", "36° 9' 5.76\"");
+        /// Position pos3 = new Position("49° 58' 58.044\"", "36° 9' 5.9754\"");
+        /// double degreeDeltaAzimuth = GetDeltaAzimuth(pos1, pos2, pos3);
+        /// </code>
+        /// degreeDeltaAzimuth equals 7.94 degree. Clockwise turn was made, value is positive.
+        /// </example>
+        public double GetDeltaAzimuth(Position position1, Position position2, Position position3)
+        {
+            double tempBearing1 = (double)position2.BearingTo(position1).ToRadians();
+            double tempBearing2 = (double)position3.BearingTo(position2).ToRadians();
+            if (tempBearing1 == tempBearing2)
+            {
+                return 0;
+            }
+            if (tempBearing1 <= Math.PI * 0.5 && tempBearing2 >= Math.PI)
+            {
+                if (tempBearing2 <= Math.PI * 2 * 0.75)
+                {
+                    return Radian.ToDegrees(tempBearing2 - tempBearing1);
+                }
+                tempBearing1 += Math.PI;
+                tempBearing2 -= Math.PI;
+                return Radian.ToDegrees(tempBearing2 - tempBearing1);
+            }
+            if (tempBearing2 <= Math.PI * 0.5 && tempBearing1 >= Math.PI)
+            {
+                if (tempBearing1 <= Math.PI * 2 * 0.75)
+                {
+                    return Radian.ToDegrees(tempBearing2 - tempBearing1);
+                }
+                tempBearing2 += Math.PI;
+                tempBearing1 -= Math.PI;
+                return Radian.ToDegrees(tempBearing2 - tempBearing1);
+            }
+            if (tempBearing1 - tempBearing2 >= Math.PI)
+            {
+                tempBearing1 -= Math.PI;
+            }
+            else if (tempBearing2 - tempBearing1 >= Math.PI)
+            {
+                tempBearing2 -= Math.PI;
+            }
+            return Radian.ToDegrees(tempBearing2 - tempBearing1);
+        }
+
         #endregion Public Methods
 
         #region Overrides
