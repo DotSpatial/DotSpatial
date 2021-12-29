@@ -43,7 +43,7 @@ namespace DotSpatial.Plugins.ScaleBar
         #region Methods
 
         /// <summary>
-        /// Initialize the DotSpatial plugin
+        /// Initialize the DotSpatial plugin.
         /// </summary>
         public override void Activate()
         {
@@ -92,7 +92,7 @@ namespace DotSpatial.Plugins.ScaleBar
         }
 
         /// <summary>
-        /// Fires when the plugin should become inactive
+        /// Fires when the plugin should become inactive.
         /// </summary>
         public override void Deactivate()
         {
@@ -171,8 +171,7 @@ namespace DotSpatial.Plugins.ScaleBar
                 if (string.IsNullOrWhiteSpace(text)) return;
                 if (text.Contains(":")) text = text.Substring(text.IndexOf(":", StringComparison.InvariantCulture) + 1);
 
-                double nr;
-                if (double.TryParse(text, out nr)) ScaleTo(nr);
+                if (double.TryParse(text, out double nr)) ScaleTo(nr);
             }
             else if (!((e.KeyChar > 47 && e.KeyChar < 58) || e.KeyChar == 8))
             {
@@ -267,7 +266,7 @@ namespace DotSpatial.Plugins.ScaleBar
         /// <summary>
         /// Resize the Map to the given scale.
         /// </summary>
-        /// <param name="scale">The new scale</param>
+        /// <param name="scale">The new scale.</param>
         private void ScaleTo(double scale)
         {
             if (scale == 0 || App.Map.Projection == null) return;
@@ -299,8 +298,7 @@ namespace DotSpatial.Plugins.ScaleBar
             string str = e.SelectedItem.ToString();
             if (!str.Contains("["))
             {
-                double nr;
-                if (double.TryParse(str.Substring(str.IndexOf(":", StringComparison.InvariantCulture) + 1), out nr))
+                if (double.TryParse(str.Substring(str.IndexOf(":", StringComparison.InvariantCulture) + 1), out double nr))
                     ScaleTo(nr);
             }
         }

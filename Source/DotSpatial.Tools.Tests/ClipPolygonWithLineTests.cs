@@ -23,8 +23,8 @@ namespace DotSpatial.Tools.Tests
         {
             var target = new ClipPolygonWithLine();
 
-            IFeatureSet fsInput1 = FeatureSet.Open(@"Data\ClipPolygonWithLineTests\polygon.shp");
-            IFeatureSet fsInput2 = FeatureSet.Open(@"Data\ClipPolygonWithLineTests\line.shp");
+            IFeatureSet fsInput1 = FeatureSet.Open(Common.AbsolutePath(@"Data\ClipPolygonWithLineTests\polygon.shp"));
+            IFeatureSet fsInput2 = FeatureSet.Open(Common.AbsolutePath(@"Data\ClipPolygonWithLineTests\line.shp"));
             IFeatureSet fsOutput = new FeatureSet
             {
                 Filename = FileTools.GetTempFileName(".shp")

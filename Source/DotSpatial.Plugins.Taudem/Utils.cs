@@ -16,7 +16,7 @@ namespace DotSpatial.Plugins.Taudem
         /// <summary>
         /// Calculates the area of a part, without taking into consideration any other aspects of the polygon.
         /// </summary>
-        /// <param name="polygon">A MapWinGIS.Shape POLYGON, POLYGONZ, or POLYGONM</param>
+        /// <param name="polygon">A MapWinGIS.Shape POLYGON, POLYGONZ, or POLYGONM.</param>
         /// <param name="partIndex">The integer index of the part to obtain the area of.
         /// This value will be ignored if the shape only has one part, and the function
         /// will calculate the area of the entire shape.</param>

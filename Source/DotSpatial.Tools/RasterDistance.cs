@@ -39,12 +39,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -53,7 +53,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>Boolean, true if the execute was successful.</returns>
@@ -69,14 +69,14 @@ namespace DotSpatial.Tools
 
         /// <summary>
         /// Executes the Raster distance calculation
-        /// Ping Yang deleted static for external testing 10/2010
+        /// Ping Yang deleted static for external testing 10/2010.
         /// </summary>
-        /// <param name="input">The input raster</param>
-        /// <param name="output">The output raster</param>
+        /// <param name="input">The input raster.</param>
+        /// <param name="output">The output raster.</param>
         /// <param name="maxDistance">The maximum distance value. Cells with a larger distance to nearest
         /// target cell than maxDistance will be assigned 'no data' value.</param>
-        /// <param name="cancelProgressHandler">The progress handler</param>
-        /// <returns>true if execution was successful, false otherwise</returns>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>true if execution was successful, false otherwise.</returns>
         public bool Execute(IRaster input, IRaster output, double maxDistance, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
@@ -92,9 +92,7 @@ namespace DotSpatial.Tools
             output.Bounds = bounds;
 
             // internally we reference output as an integer type raster.
-            Raster<int> outRaster = output as Raster<int>;
-
-            if (outRaster != null)
+            if (output is Raster<int> outRaster)
             {
                 int numColumns = outRaster.NumColumns;
                 int numRows = outRaster.NumRows;
@@ -204,7 +202,7 @@ namespace DotSpatial.Tools
                     if (percent > lastUpdate)
                     {
                         lastUpdate += 1;
-                        cancelProgressHandler.Progress(string.Empty, lastUpdate, TextStrings.Pass1 + lastUpdate + TextStrings.progresscompleted);
+                        cancelProgressHandler.Progress(lastUpdate, TextStrings.Pass1 + lastUpdate + TextStrings.progresscompleted);
                         if (cancelProgressHandler.Cancel)
                         {
                             return false;
@@ -295,7 +293,7 @@ namespace DotSpatial.Tools
                     if (percent > lastUpdate)
                     {
                         lastUpdate += 1;
-                        cancelProgressHandler.Progress(string.Empty, lastUpdate, TextStrings.Pass2 + lastUpdate + TextStrings.progresscompleted);
+                        cancelProgressHandler.Progress(lastUpdate, TextStrings.Pass2 + lastUpdate + TextStrings.progresscompleted);
                         if (cancelProgressHandler.Cancel)
                         {
                             return false;
@@ -315,24 +313,24 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {
             _inputParam = new Parameter[2];
             _inputParam[0] = new RasterParam(TextStrings.inputRaster)
-                                 {
-                                     HelpText = TextStrings.InputRastercontainingtargetcells
-                                 };
+            {
+                HelpText = TextStrings.InputRastercontainingtargetcells
+            };
             _inputParam[1] = new DoubleParam(TextStrings.Maximumdistance, 100.0)
-                                 {
-                                     HelpText = TextStrings.Maximumdistancetobecalculated
-                                 };
+            {
+                HelpText = TextStrings.Maximumdistancetobecalculated
+            };
             _outputParam = new Parameter[2];
             _outputParam[0] = new RasterParam(TextStrings.OutputRaster)
-                                  {
-                                      HelpText = TextStrings.SelectresultrasterfileName
-                                  };
+            {
+                HelpText = TextStrings.SelectresultrasterfileName
+            };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
@@ -343,8 +341,8 @@ namespace DotSpatial.Tools
         /// <param name="input">Raster from which the row is read.</param>
         /// <param name="rowNumber">Number of the row that gets converted.</param>
         /// <param name="rowArray">The array where the row is saved. This array must be correctly dimensioned.</param>
-        /// <param name="dataVal">New value which will be assigned to value cells</param>
-        /// <param name="noDataVal">New value which will be assigned to 'no data value' cells</param>
+        /// <param name="dataVal">New value which will be assigned to value cells.</param>
+        /// <param name="noDataVal">New value which will be assigned to 'no data value' cells.</param>
         private static void ReadInputRow(IRaster input, int rowNumber, int[] rowArray, int dataVal, int noDataVal)
         {
             // IValueGrid vals = input.Value;

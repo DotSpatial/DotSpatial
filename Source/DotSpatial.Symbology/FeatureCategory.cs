@@ -61,7 +61,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the filter expression that is used to add members to generate a category based on this scheme.
         /// </summary>
-        /// <remarks>[Editor(typeof(ExpressionEditor), typeof(UITypeEditor))]</remarks>
+        /// <remarks>[Editor(typeof(ExpressionEditor), typeof(UITypeEditor))].</remarks>
         [Description("Gets or set the filter expression that is used to add members to generate a category based on this scheme.")]
         [Serialize("FilterExpression")]
         public string FilterExpression
@@ -78,7 +78,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the symbolizer used for this category
+        /// Gets or sets the symbolizer used for this category.
         /// </summary>
         [Serialize("SelectionSymbolizer")]
         public IFeatureSymbolizer SelectionSymbolizer
@@ -230,7 +230,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This applies the color to the top symbol stroke or pattern.
         /// </summary>
-        /// <param name="color">The Color to apply</param>
+        /// <param name="color">The Color to apply.</param>
         public virtual void SetColor(Color color)
         {
         }
@@ -260,7 +260,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Fires the SelectFeatures event
+        /// Fires the SelectFeatures event.
         /// </summary>
         protected virtual void OnSelectFeatures()
         {

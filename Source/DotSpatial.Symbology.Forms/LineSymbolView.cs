@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// LineSymbolView
+    /// LineSymbolView.
     /// </summary>
     [ToolboxItem(false)]
     public class LineSymbolView : Control
@@ -87,7 +87,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Custom drawing
+        /// Custom drawing.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)

@@ -3,13 +3,14 @@
 
 using System;
 using System.IO;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Controls.Tests
 {
     /// <summary>
     /// This is a test class for AppManagerTest and is intended
-    /// to contain all AppManagerTest Unit Tests
+    /// to contain all AppManagerTest Unit Tests.
     /// </summary>
     [TestFixture]
     public class AppManagerTest
@@ -17,7 +18,7 @@ namespace DotSpatial.Controls.Tests
         #region Methods
 
         /// <summary>
-        /// A test for GetCustomSettingDefault
+        /// A test for GetCustomSettingDefault.
         /// </summary>
         [Test]
         public void GetCustomSettingDefaultTest()
@@ -37,7 +38,7 @@ namespace DotSpatial.Controls.Tests
         }
 
         /// <summary>
-        /// A test for GetCustomSettingFromFile
+        /// A test for GetCustomSettingFromFile.
         /// </summary>
         [Test]
         public void GetCustomSettingFromFileTest()
@@ -55,7 +56,7 @@ namespace DotSpatial.Controls.Tests
             var actual = target.SerializationManager.GetCustomSetting(uniqueName, DateTime.Now.AddDays(1));
             Assert.AreEqual(expected, actual);
 
-            string path = Path.GetFullPath(Path.Combine("TestFiles", "SerializeTestWithCustomSettings.map.xml.dspx"));
+            string path = Path.Combine(Common.AbsolutePath("TestFiles"), "SerializeTestWithCustomSettings.map.xml.dspx");
 
             target.SerializationManager.SaveProject(path);
 
@@ -67,7 +68,7 @@ namespace DotSpatial.Controls.Tests
         }
 
         /// <summary>
-        /// A test for GetCustomSettingFromMemory
+        /// A test for GetCustomSettingFromMemory.
         /// </summary>
         [Test]
         public void GetCustomSettingFromMemoryTest()

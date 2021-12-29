@@ -62,12 +62,12 @@ namespace DotSpatial.Serialization
         #region Properties
 
         /// <summary>
-        /// Gets or sets the name of the assembly
+        /// Gets or sets the name of the assembly.
         /// </summary>
         public string Assembly { get; set; }
 
         /// <summary>
-        /// Gets or sets the CultureInfo of the Culture
+        /// Gets or sets the CultureInfo of the Culture.
         /// </summary>
         public string Culture { get; set; }
 
@@ -82,7 +82,7 @@ namespace DotSpatial.Serialization
         public string PublicKeyToken { get; set; }
 
         /// <summary>
-        /// Gets or sets the TypeName
+        /// Gets or sets the TypeName.
         /// </summary>
         public string TypeName { get; set; }
 

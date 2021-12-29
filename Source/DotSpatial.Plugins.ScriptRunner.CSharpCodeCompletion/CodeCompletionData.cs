@@ -185,10 +185,10 @@ namespace CSharpEditor
         /// <summary>
         /// Converts a member to text.
         /// Returns the declaration of the member as C# or VB code, e.g.
-        /// "public void MemberName(string parameter)"
+        /// "public void MemberName(string parameter)".
         /// </summary>
         /// <param name="entity">Entity that gets converted.</param>
-        /// <returns>The result of the conversion</returns>
+        /// <returns>The result of the conversion.</returns>
         private static string GetText(IEntity entity)
         {
             IAmbience ambience = MainForm.IsVisualBasic ? (IAmbience)VbAmbience : CsharpAmbience;

@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace DotSpatial.Serialization.Tests
 {
     /// <summary>
-    /// TestEnum
+    /// TestEnum.
     /// </summary>
     public enum TestEnum
     {
@@ -43,6 +43,7 @@ namespace DotSpatial.Serialization.Tests
         #region Fields
 
         private readonly List<string> _filesToRemove = new List<string>();
+        private readonly string _folder = Common.AbsolutePath("Data");
 
         #endregion
 
@@ -51,7 +52,7 @@ namespace DotSpatial.Serialization.Tests
         /// <summary>
         /// Deletes the temporary files.
         /// </summary>
-        [TestFixtureTearDown]
+        [TearDown]
         public void Clear()
         {
             foreach (var tempFile in _filesToRemove)
@@ -175,12 +176,12 @@ namespace DotSpatial.Serialization.Tests
         }
 
         /// <summary>
-        /// Test for DotSpatial Issue #254
+        /// Test for DotSpatial Issue #254.
         /// </summary>
         [Test]
         public void TestMapFrameIsNotNull()
         {
-            string filename = Path.Combine("Data", "test-RandomPts.shp");
+            string filename = Path.Combine(_folder, "test-RandomPts.shp");
             string projectFileName = FileTools.GetTempFileName(".dspx");
             _filesToRemove.Add(projectFileName);
 
@@ -206,12 +207,12 @@ namespace DotSpatial.Serialization.Tests
         }
 
         /// <summary>
-        /// Test for DotSpatial Issue #254
+        /// Test for DotSpatial Issue #254.
         /// </summary>
         [Test]
         public void TestMapFrameIsNotNullGroup()
         {
-            string filename = Path.Combine("Data", "test-RandomPts.shp");
+            string filename = Path.Combine(_folder, "test-RandomPts.shp");
             string projectFileName = FileTools.GetTempFileName(".dspx");
             _filesToRemove.Add(projectFileName);
 
@@ -251,7 +252,7 @@ namespace DotSpatial.Serialization.Tests
         [Test]
         public void TestMapPointLayer()
         {
-            string filename = Path.Combine("Data", "test-RandomPts.shp");
+            string filename = Path.Combine(_folder, "test-RandomPts.shp");
 
             IFeatureSet fs = FeatureSet.Open(filename);
             MapPointLayer l = new MapPointLayer(fs);

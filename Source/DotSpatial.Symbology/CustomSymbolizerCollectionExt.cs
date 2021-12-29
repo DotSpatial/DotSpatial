@@ -17,8 +17,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Saves a list of custom line symbolizers to a file.
         /// </summary>
-        /// <param name="self">The list of custom line symbolizers</param>
-        /// <param name="fileName">the file name</param>
+        /// <param name="self">The list of custom line symbolizers.</param>
+        /// <param name="fileName">the file name.</param>
         public static void Save(this IEnumerable<CustomLineSymbolizer> self, string fileName)
         {
             using (var myStream = File.Open(fileName, FileMode.Create))

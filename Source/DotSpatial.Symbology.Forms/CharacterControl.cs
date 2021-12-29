@@ -10,7 +10,7 @@ using System.Windows.Forms.Design;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// CharacterControl
+    /// CharacterControl.
     /// </summary>
     [DefaultEvent("PopupClicked")]
     public class CharacterControl : VerticalScrollControl
@@ -135,7 +135,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the selected character
+        /// Gets or sets the selected character.
         /// </summary>
         public byte SelectedChar { get; set; }
 
@@ -145,7 +145,7 @@ namespace DotSpatial.Symbology.Forms
         public string SelectedString => ((char)(SelectedChar + (TypeSet * 256))).ToString();
 
         /// <summary>
-        /// Gets or sets the background color for the selection
+        /// Gets or sets the background color for the selection.
         /// </summary>
         public Color SelectionBackColor { get; set; }
 

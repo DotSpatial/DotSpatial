@@ -15,7 +15,7 @@ namespace DotSpatial.Plugins.WebMap.Configuration
         /// <summary>
         /// Creates a new ServiceProviderElement.
         /// </summary>
-        /// <returns>The created ServiceProviderElement</returns>
+        /// <returns>The created ServiceProviderElement.</returns>
         protected override ConfigurationElement CreateNewElement()
         {
             return new ServiceProviderElement();

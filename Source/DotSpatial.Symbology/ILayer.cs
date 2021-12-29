@@ -10,7 +10,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// Just specifies the organization of interfaces that make up a layer.
     /// It is recommended to create derived classes that inherit from an
-    /// abstract layer that implements the majority of this shared functionality
+    /// abstract layer that implements the majority of this shared functionality.
     /// </summary>
     public interface ILayer : ILegendItem, IRenderable, ISelectable, IDynamicVisibility, IDisposable, IDisposeLock, IReproject
     {
@@ -56,7 +56,7 @@ namespace DotSpatial.Symbology
         IFrame MapFrame { get; set; }
 
         /// <summary>
-        /// Gets or sets the progress handler
+        /// Gets or sets the progress handler.
         /// </summary>
         IProgressHandler ProgressHandler { get; set; }
 

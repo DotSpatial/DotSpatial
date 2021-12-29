@@ -140,7 +140,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the progress handler for any progress messages like re-drawing images for rasters
+        /// Gets or sets the progress handler for any progress messages like re-drawing images for rasters.
         /// </summary>
         [Category("Controls")]
         [Description("Gets or sets the progress handler for any progress messages like re-drawing images for rasters")]
@@ -154,7 +154,7 @@ namespace DotSpatial.Controls
         public List<ILegendItem> RootNodes { get; set; }
 
         /// <summary>
-        /// Gets or sets the selection font color
+        /// Gets or sets the selection font color.
         /// </summary>
         [Category("Appearance")]
         [Description("Specifies the color of the font in selected legend items.")]
@@ -267,7 +267,7 @@ namespace DotSpatial.Controls
         public void RefreshNodes()
         {
             // do any code that needs to happen if content changes
-            _previousMouseDown = null; // to avoid memory leaks, because LegendBox contains reference to Layer
+            HideEditBox(false); // Hide the EditBox to avoid memory leaks, because _previousMouseDown contains reference to Layer. Do not simply set _previousMouseDown to null, because this would detach the EditBox from _previousMouseDown.
             IsInitialized = false;
             Invalidate();
         }
@@ -288,7 +288,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Overrides the drawing method to account for drawing lines when an item is being dragged to a new position.
         /// </summary>
-        /// <param name="e">A PaintEventArgs</param>
+        /// <param name="e">A PaintEventArgs.</param>
         protected override void OnDraw(PaintEventArgs e)
         {
             base.OnDraw(e);
@@ -316,13 +316,13 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Also hides the edit box so that it doesn't seem displaced from the item
+        /// Also hides the edit box so that it doesn't seem displaced from the item.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
         protected override void OnHorizontalScroll(object sender, ScrollEventArgs e)
         {
-            HideEditBox();
+            HideEditBox(true);
             base.OnHorizontalScroll(sender, e);
         }
 
@@ -470,7 +470,7 @@ namespace DotSpatial.Controls
         /// The coordinates are in legend coordinates, but a LegendBox is provided to define the
         /// coordinates of the specified object.
         /// </summary>
-        /// <param name="e">An ItemMouseEventArgs</param>
+        /// <param name="e">An ItemMouseEventArgs.</param>
         protected virtual void OnItemMouseDown(ItemMouseEventArgs e)
         {
             ItemMouseDown?.Invoke(this, e);
@@ -479,7 +479,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Fires the ItemMouseMove Event, which handles the mouse moving over one of the legend items.
         /// </summary>
-        /// <param name="e">An ItemMouseEventArgs</param>
+        /// <param name="e">An ItemMouseEventArgs.</param>
         protected virtual void OnItemMouseMove(ItemMouseEventArgs e)
         {
             ItemMouseMove?.Invoke(this, e);
@@ -565,10 +565,10 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Handles the case where the mouse down occurs.
         /// </summary>
-        /// <param name="e">A MouseEventArgs</param>
+        /// <param name="e">A MouseEventArgs.</param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            HideEditBox();
+            HideEditBox(true);
             if (_legendBoxes == null || _legendBoxes.Count == 0) return;
             Point loc = new Point(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
             foreach (LegendBox box in _legendBoxes)
@@ -587,7 +587,7 @@ namespace DotSpatial.Controls
         /// Performs the default handling for mouse movememnt, and decides
         /// whether or not to fire an ItemMouseMove event.
         /// </summary>
-        /// <param name="e">A MouseEventArgs</param>
+        /// <param name="e">A MouseEventArgs.</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             if (_legendBoxes == null) return;
@@ -645,7 +645,16 @@ namespace DotSpatial.Controls
                     }
                     else if (_dragTarget.Item.LegendType == LegendType.Layer && _dragItem.Item.LegendType == LegendType.Layer)
                     {
-                        boxOverLine = BoxFromItem(_dragTarget.Item.BottomMember());
+                        if (_dragTarget.Item.IsExpanded)
+                        {
+                            // if layer is expanded then we look for the bottom member of the target item
+                            boxOverLine = BoxFromItem(_dragTarget.Item.BottomMember());
+                        }
+                        else
+                        {
+                            // if layer is collapsed then just use the target item
+                            boxOverLine = _dragTarget;
+                        }
                     }
                     else
                     {
@@ -789,14 +798,14 @@ namespace DotSpatial.Controls
         /// <param name="e">The event args.</param>
         protected override void OnVerticalScroll(object sender, ScrollEventArgs e)
         {
-            HideEditBox();
+            HideEditBox(true);
             base.OnVerticalScroll(sender, e);
         }
 
         /// <summary>
         /// Recursive add method to handle nesting of menu items.
         /// </summary>
-        /// <param name="parent">The parent</param>
+        /// <param name="parent">The parent.</param>
         /// <param name="mi">The menu item.</param>
         private static void AddMenuItem(ToolStripItemCollection parent, SymbologyMenuItem mi)
         {
@@ -1145,10 +1154,14 @@ namespace DotSpatial.Controls
 
         private void EditBoxLostFocus(object sender, EventArgs e)
         {
-            HideEditBox();
+            HideEditBox(true);
         }
 
-        private void HideEditBox()
+        /// <summary>
+        /// Hides the edit box if it is visible.
+        /// </summary>
+        /// <param name="refreshNodes">Indicates whether RefreshNodes should be cold. This should be false, if the method is used inside RefreshNodes.</param>
+        private void HideEditBox(bool refreshNodes)
         {
             if (_editBox.Visible && !_ignoreHide)
             {
@@ -1158,7 +1171,7 @@ namespace DotSpatial.Controls
                 _editBox.Visible = false;
                 _editBox.Text = string.Empty;
                 _ignoreHide = false;
-                RefreshNodes();
+                if (refreshNodes) RefreshNodes();
             }
         }
 

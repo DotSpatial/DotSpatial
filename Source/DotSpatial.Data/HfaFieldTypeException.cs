@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// HfaFieldTypeException
+    /// HfaFieldTypeException.
     /// </summary>
     public class HfaFieldTypeException : ApplicationException
     {

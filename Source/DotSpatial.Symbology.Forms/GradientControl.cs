@@ -52,7 +52,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the position of the maximum handle
+        /// Gets or sets the position of the maximum handle.
         /// </summary>
         public float EndValue
         {
@@ -68,7 +68,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the maximum color
+        /// Gets or sets the maximum color.
         /// </summary>
         [Description("Gets or sets the color associated with the maximum side of the gradient slider.")]
         public Color MaximumColor
@@ -86,7 +86,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the minimum color
+        /// Gets or sets the minimum color.
         /// </summary>
         [Description("Gets or sets the color associated with the minimum side of the gradient slider.")]
         public Color MinimumColor
@@ -130,7 +130,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the position of the minimum handle
+        /// Gets or sets the position of the minimum handle.
         /// </summary>
         public float StartValue
         {

@@ -10,7 +10,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// Open File Element
+    /// Open File Element.
     /// </summary>
     public partial class OpenFileElement : DialogElement
     {
@@ -27,7 +27,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenFileElement"/> class.
         /// </summary>
-        /// <param name="param">The parameter this element represents</param>
+        /// <param name="param">The parameter this element represents.</param>
         /// <param name="text">Not used.</param>
         public OpenFileElement(FileParam param, string text)
         {
@@ -48,8 +48,8 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenFileElement"/> class.
         /// </summary>
-        /// <param name="inputParam">The parameter this element represents</param>
-        /// <param name="dataSets">An array of available data</param>
+        /// <param name="inputParam">The parameter this element represents.</param>
+        /// <param name="dataSets">An array of available data.</param>
         public OpenFileElement(FileParam inputParam, List<DataSetArray> dataSets)
         {
             // Needed by the designer
@@ -71,7 +71,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         #region Methods
 
         /// <summary>
-        /// updates the param if something's been changed
+        /// updates the param if something's been changed.
         /// </summary>
         public override void Refresh()
         {

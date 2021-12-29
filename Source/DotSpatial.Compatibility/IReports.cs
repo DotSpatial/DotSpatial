@@ -3,12 +3,12 @@
 
 using System.Drawing;
 
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// Reports
+    /// Reports.
     /// </summary>
     public interface IReports
     {

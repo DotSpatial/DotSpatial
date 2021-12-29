@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// SelectByAttributes
+    /// SelectByAttributes.
     /// </summary>
     public partial class SelectByAttributes : Form
     {
@@ -37,7 +37,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectByAttributes"/> class.
         /// </summary>
-        /// <param name="mapFrame">The MapFrame containing the layers</param>
+        /// <param name="mapFrame">The MapFrame containing the layers.</param>
         public SelectByAttributes(IFrame mapFrame)
         {
             _mapFrame = mapFrame;
@@ -49,7 +49,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectByAttributes"/> class.
         /// </summary>
-        /// <param name="layersToSelect">Layers to select</param>
+        /// <param name="layersToSelect">Layers to select.</param>
         public SelectByAttributes(params IFeatureLayer[] layersToSelect)
         {
             if (layersToSelect == null) throw new ArgumentNullException(nameof(layersToSelect));
@@ -65,7 +65,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the map frame to use for this control
+        /// Gets or sets the map frame to use for this control.
         /// </summary>
         public IFrame MapFrame
         {

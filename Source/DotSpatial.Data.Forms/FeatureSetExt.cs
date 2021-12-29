@@ -6,14 +6,14 @@ using System.Windows.Forms;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// Extension methods for <see cref="FeatureSet"/>
+    /// Extension methods for <see cref="FeatureSet"/>.
     /// </summary>
     public static class FeatureSetExt
     {
         /// <summary>
         /// Displays a dialog, allowing the users to open a raster.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         public static void Open(this FeatureSet self)
         {
             string filter = DataManager.DefaultDataManager.RasterReadFilter;

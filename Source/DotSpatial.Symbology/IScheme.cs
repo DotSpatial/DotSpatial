@@ -38,7 +38,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Adds a new scheme, assuming that the new scheme is the correct type.
         /// </summary>
-        /// <param name="category">The category to add</param>
+        /// <param name="category">The category to add.</param>
         void AddCategory(ICategory category);
 
         /// <summary>
@@ -49,22 +49,22 @@ namespace DotSpatial.Symbology
         void ApplySnapping(ICategory category);
 
         /// <summary>
-        /// Clears the categories
+        /// Clears the categories.
         /// </summary>
         void ClearCategories();
 
         /// <summary>
-        /// Creates the category using a random fill color
+        /// Creates the category using a random fill color.
         /// </summary>
-        /// <param name="fillColor">The base color to use for creating the category</param>
-        /// <param name="size">For points this is the maximal point size, for lines this is the maximum line width</param>
-        /// <returns>A new IFeatureCategory that matches the type of this scheme</returns>
+        /// <param name="fillColor">The base color to use for creating the category.</param>
+        /// <param name="size">For points this is the maximal point size, for lines this is the maximum line width.</param>
+        /// <returns>A new IFeatureCategory that matches the type of this scheme.</returns>
         ICategory CreateNewCategory(Color fillColor, double size);
 
         /// <summary>
         /// Uses the settings on this scheme to create a random category.
         /// </summary>
-        /// <returns>A new ICategory</returns>
+        /// <returns>A new ICategory.</returns>
         ICategory CreateRandomCategory();
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace DotSpatial.Symbology
         /// exchaning it with the category before it. If there is no
         /// category before it, then this does nothing.
         /// </summary>
-        /// <param name="category">The category to decrease the index of</param>
+        /// <param name="category">The category to decrease the index of.</param>
         /// <returns>True, if the index was decreased.</returns>
         bool DecreaseCategoryIndex(ICategory category);
 
@@ -81,38 +81,38 @@ namespace DotSpatial.Symbology
         /// surface in the specified bounding rectangle.
         /// </summary>
         /// <param name="index">The integer index of the feature to draw.</param>
-        /// <param name="g">The Graphics object to draw to</param>
-        /// <param name="bounds">The rectangular bounds to draw in</param>
+        /// <param name="g">The Graphics object to draw to.</param>
+        /// <param name="bounds">The rectangular bounds to draw in.</param>
         void DrawCategory(int index, Graphics g, Rectangle bounds);
 
         /// <summary>
         /// Re-orders the specified member by attempting to exchange it with the next higher
         /// index category. If there is no higher index, this does nothing.
         /// </summary>
-        /// <param name="category">The category to increase the index of</param>
+        /// <param name="category">The category to increase the index of.</param>
         /// <returns>True, if the index was increased.</returns>
         bool IncreaseCategoryIndex(ICategory category);
 
         /// <summary>
-        /// Inserts the category at the specified index
+        /// Inserts the category at the specified index.
         /// </summary>
-        /// <param name="index">The integer index where the category should be inserted</param>
-        /// <param name="category">The category to insert</param>
+        /// <param name="index">The integer index where the category should be inserted.</param>
+        /// <param name="category">The category to insert.</param>
         void InsertCategory(int index, ICategory category);
 
         /// <summary>
-        /// Removes the specified category
+        /// Removes the specified category.
         /// </summary>
-        /// <param name="category">The category to insert</param>
+        /// <param name="category">The category to insert.</param>
         void RemoveCategory(ICategory category);
 
         /// <summary>
-        /// Resumes the category events
+        /// Resumes the category events.
         /// </summary>
         void ResumeEvents();
 
         /// <summary>
-        /// Suspends the category events
+        /// Suspends the category events.
         /// </summary>
         void SuspendEvents();
 

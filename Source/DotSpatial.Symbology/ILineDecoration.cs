@@ -60,7 +60,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="g">The graphics object used for drawing.</param>
         /// <param name="path">The path that gets drawn.</param>
-        /// <param name="scaleWidth">The double scale width for controling markers</param>
+        /// <param name="scaleWidth">The double scale width for controling markers.</param>
         void Draw(Graphics g, GraphicsPath path, double scaleWidth);
 
         /// <summary>

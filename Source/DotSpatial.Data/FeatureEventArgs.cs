@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// FeatureEventArgs
+    /// FeatureEventArgs.
     /// </summary>
     public class FeatureEventArgs : EventArgs
     {

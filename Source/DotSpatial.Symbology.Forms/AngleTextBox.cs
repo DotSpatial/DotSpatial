@@ -101,7 +101,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Fires the AngleChanged event
+        /// Fires the AngleChanged event.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected void OnAngleChanged(EventArgs e)

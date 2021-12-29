@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// NonNumericException
+    /// NonNumericException.
     /// </summary>
     public class NonNumericException : InvalidOperationException
     {

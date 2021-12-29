@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// UnspecifiedFeaturetypeException
+    /// UnspecifiedFeaturetypeException.
     /// </summary>
     public class UnspecifiedFeaturetypeException : ApplicationException
     {

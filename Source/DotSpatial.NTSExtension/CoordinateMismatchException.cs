@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.NTSExtension
 {
     /// <summary>
-    /// CoordinateMismatchException
+    /// CoordinateMismatchException.
     /// </summary>
     public class CoordinateMismatchException : ArgumentException
     {

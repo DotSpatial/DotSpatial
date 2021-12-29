@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 
 namespace DotSpatial.Data
@@ -17,7 +17,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="LineShapefileShapeSource"/> class with the specified line shapefile as the source.
         /// </summary>
-        /// <param name="fileName">The string fileName</param>
+        /// <param name="fileName">The string fileName.</param>
         public LineShapefileShapeSource(string fileName)
             : base(fileName)
         {

@@ -1,14 +1,15 @@
-﻿using NUnit.Framework;
+﻿using DotSpatial.Tests.Common;
+using NUnit.Framework;
 
 namespace DotSpatial.Projections.Tests
 {
     [SetUpFixture]
     public class AssemblyInit
     {
-        [SetUp]
+        [OneTimeSetUp]
         public void RunBeforeAnyTests()
         {
-            GridShift.InitializeExternalGrids("GeogTransformGrids", false);
+            GridShift.InitializeExternalGrids(Common.AbsolutePath("GeogTransformGrids"), false);
         }
     }
 }

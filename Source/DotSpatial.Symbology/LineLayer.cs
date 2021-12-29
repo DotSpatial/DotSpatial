@@ -21,7 +21,7 @@ namespace DotSpatial.Symbology
         /// Initializes a new instance of the <see cref="LineLayer"/> class.
         /// </summary>
         /// <param name="inFeatureSet">A featureset that contains lines.</param>
-        /// <exception cref="LineFeatureTypeException">Thrown if a non-line featureSet is supplied</exception>
+        /// <exception cref="LineFeatureTypeException">Thrown if a non-line featureSet is supplied.</exception>
         public LineLayer(IFeatureSet inFeatureSet)
             : this(inFeatureSet, null)
         {
@@ -30,9 +30,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="LineLayer"/> class.
         /// </summary>
-        /// <param name="inFeatureSet">A featureset that contains lines</param>
-        /// <param name="progressHandler">An IProgressHandler for receiving status messages</param>
-        /// <exception cref="LineFeatureTypeException">Thrown if a non-line featureSet is supplied</exception>
+        /// <param name="inFeatureSet">A featureset that contains lines.</param>
+        /// <param name="progressHandler">An IProgressHandler for receiving status messages.</param>
+        /// <exception cref="LineFeatureTypeException">Thrown if a non-line featureSet is supplied.</exception>
         public LineLayer(IFeatureSet inFeatureSet, IProgressHandler progressHandler)
             : base(inFeatureSet, null, progressHandler)
         {
@@ -61,7 +61,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <remarks>
         /// [TypeConverter(typeof(GeneralTypeConverter))]
-        /// [Editor(typeof(LineSymbolizerEditor), typeof(UITypeEditor))]
+        /// [Editor(typeof(LineSymbolizerEditor), typeof(UITypeEditor))].
         /// </remarks>
         [Category("Appearance")]
         [Description("Gets or sets the set of characteristics that describe the selected features on this line layer.")]
@@ -85,9 +85,9 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <remarks>
         /// [TypeConverter(typeof(GeneralTypeConverter))]
-        /// [Editor(typeof(LineSymbolizerEditor), typeof(UITypeEditor))]
+        /// [Editor(typeof(LineSymbolizerEditor), typeof(UITypeEditor))].
         /// </remarks>
-        /// <exception cref="System.InvalidOperationException">Unable to assign a non-point symbolizer to a PointLayer</exception>
+        /// <exception cref="System.InvalidOperationException">Unable to assign a non-point symbolizer to a PointLayer.</exception>
         [Category("Appearance")]
         [Description("Gets or sets the set of characteristics that describe the un-selected features on this line layer.")]
         [ShallowCopy]
@@ -109,7 +109,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <remarks>
         /// [TypeConverter(typeof(GeneralTypeConverter))]
-        /// [Editor(typeof(LineSchemePropertyGridEditor), typeof(UITypeEditor))]
+        /// [Editor(typeof(LineSchemePropertyGridEditor), typeof(UITypeEditor))].
         /// </remarks>
         [Category("Appearance")]
         [Description("Gets or sets the line scheme subdividing the layer into categories.")]

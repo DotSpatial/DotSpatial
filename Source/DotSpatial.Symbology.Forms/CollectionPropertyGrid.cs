@@ -8,7 +8,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// CollectionPropertyGrid
+    /// CollectionPropertyGrid.
     /// </summary>
     public partial class CollectionPropertyGrid : Form
     {
@@ -26,7 +26,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="CollectionPropertyGrid"/> class.
         /// </summary>
-        /// <param name="list">The INamedList to display</param>
+        /// <param name="list">The INamedList to display.</param>
         public CollectionPropertyGrid(INamedList list)
         {
             InitializeComponent();
@@ -79,7 +79,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Occurs when the add button is clicked
+        /// Occurs when the add button is clicked.
         /// </summary>
         protected virtual void OnAddClicked()
         {
@@ -87,7 +87,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the ChangesApplied event
+        /// Fires the ChangesApplied event.
         /// </summary>
         protected virtual void OnApplyChanges()
         {

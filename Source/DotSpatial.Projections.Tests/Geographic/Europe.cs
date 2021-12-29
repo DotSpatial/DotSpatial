@@ -136,7 +136,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         }
 
 
-        [Test, Ignore]  
+        [Test, Ignore("")]  
         // to be removed eventually, replaced with Amersfoort, DutchRD is to be found in ProjectedCategories.Nationalgrids as it is a Projected coordinate system
         public void DutchRD()
         {

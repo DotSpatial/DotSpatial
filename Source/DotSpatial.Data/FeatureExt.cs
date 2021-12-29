@@ -4,16 +4,13 @@
 using System.Collections.Generic;
 using System.Data;
 using DotSpatial.NTSExtension;
-using DotSpatial.Serialization;
-using GeoAPI.Geometries;
-using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Buffer;
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Extension Methods for the Features
+    /// Extension Methods for the Features.
     /// </summary>
     public static class FeatureExt
     {
@@ -23,12 +20,12 @@ namespace DotSpatial.Data
         /// Generates a new feature from the buffer of this feature. The DataRow of
         /// the new feature will be null.
         /// </summary>
-        /// <param name="self">This feature</param>
-        /// <param name="distance">The double distance</param>
-        /// <returns>An IFeature representing the output from the buffer operation</returns>
+        /// <param name="self">This feature.</param>
+        /// <param name="distance">The double distance.</param>
+        /// <returns>An IFeature representing the output from the buffer operation.</returns>
         public static IFeature Buffer(this IFeature self, double distance)
         {
-            IGeometry g = self.Geometry.Buffer(distance);
+            Geometry g = self.Geometry.Buffer(distance);
             return new Feature(g);
         }
 
@@ -36,13 +33,13 @@ namespace DotSpatial.Data
         /// Generates a new feature from the buffer of this feature. The DataRow of
         /// the new feature will be null.
         /// </summary>
-        /// <param name="self">This feature</param>
-        /// <param name="distance">The double distance</param>
-        /// <param name="endCapStyle">The end cap style to use</param>
-        /// <returns>An IFeature representing the output from the buffer operation</returns>
+        /// <param name="self">This feature.</param>
+        /// <param name="distance">The double distance.</param>
+        /// <param name="endCapStyle">The end cap style to use.</param>
+        /// <returns>An IFeature representing the output from the buffer operation.</returns>
         public static IFeature Buffer(this IFeature self, double distance, EndCapStyle endCapStyle)
         {
-            IGeometry g = self.Geometry.Buffer(
+            Geometry g = self.Geometry.Buffer(
                 distance,
                 new BufferParameters
                 {
@@ -55,13 +52,13 @@ namespace DotSpatial.Data
         /// Generates a new feature from the buffer of this feature. The DataRow of
         /// the new feature will be null.
         /// </summary>
-        /// <param name="self">This feature</param>
-        /// <param name="distance">The double distance</param>
-        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle</param>
-        /// <returns>An IFeature representing the output from the buffer operation</returns>
+        /// <param name="self">This feature.</param>
+        /// <param name="distance">The double distance.</param>
+        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
+        /// <returns>An IFeature representing the output from the buffer operation.</returns>
         public static IFeature Buffer(this IFeature self, double distance, int quadrantSegments)
         {
-            IGeometry g = self.Geometry.Buffer(distance, quadrantSegments);
+            Geometry g = self.Geometry.Buffer(distance, quadrantSegments);
             return new Feature(g);
         }
 
@@ -69,14 +66,14 @@ namespace DotSpatial.Data
         /// Generates a new feature from the buffer of this feature. The DataRow of
         /// the new feature will be null.
         /// </summary>
-        /// <param name="self">This feature</param>
-        /// <param name="distance">The double distance</param>
-        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle</param>
-        /// <param name="endCapStyle">The end cap style to use</param>
-        /// <returns>An IFeature representing the output from the buffer operation</returns>
+        /// <param name="self">This feature.</param>
+        /// <param name="distance">The double distance.</param>
+        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
+        /// <param name="endCapStyle">The end cap style to use.</param>
+        /// <returns>An IFeature representing the output from the buffer operation.</returns>
         public static IFeature Buffer(this IFeature self, double distance, int quadrantSegments, EndCapStyle endCapStyle)
         {
-            IGeometry g = self.Geometry.Buffer(distance, quadrantSegments, endCapStyle);
+            Geometry g = self.Geometry.Buffer(distance, quadrantSegments, endCapStyle);
             return new Feature(g);
         }
 
@@ -86,7 +83,7 @@ namespace DotSpatial.Data
         /// If a column name exists in both places, it will copy those values to the destination featureset.
         /// </summary>
         /// <param name="self">The feature to calcualate the buffer for.</param>
-        /// <param name="distance">The double distance to use for calculating the buffer</param>
+        /// <param name="distance">The double distance to use for calculating the buffer.</param>
         /// <param name="destinationFeatureset">The output featureset to add this feature to and use
         /// as a reference for determining which data columns to copy.</param>
         /// <returns>The IFeature that represents the buffer feature.</returns>
@@ -111,8 +108,8 @@ namespace DotSpatial.Data
         /// If a column name exists in both places, it will copy those values to the destination featureset.
         /// </summary>
         /// <param name="self">The feature to calcualate the buffer for.</param>
-        /// <param name="distance">The double distance to use for calculating the buffer</param>
-        /// <param name="endCapStyle">The end cap style to use</param>
+        /// <param name="distance">The double distance to use for calculating the buffer.</param>
+        /// <param name="endCapStyle">The end cap style to use.</param>
         /// <param name="destinationFeatureset">The output featureset to add this feature to and use
         /// as a reference for determining which data columns to copy.</param>
         /// <returns>The IFeature that represents the buffer feature.</returns>
@@ -137,8 +134,8 @@ namespace DotSpatial.Data
         /// If a column name exists in both places, it will copy those values to the destination featureset.
         /// </summary>
         /// <param name="self">The feature to calcualate the buffer for.</param>
-        /// <param name="distance">The double distance to use for calculating the buffer</param>
-        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle</param>
+        /// <param name="distance">The double distance to use for calculating the buffer.</param>
+        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
         /// <param name="destinationFeatureset">The output featureset to add this feature to and use
         /// as a reference for determining which data columns to copy.</param>
         /// <returns>The IFeature that represents the buffer feature.</returns>
@@ -163,9 +160,9 @@ namespace DotSpatial.Data
         /// If a column name exists in both places, it will copy those values to the destination featureset.
         /// </summary>
         /// <param name="self">The feature to calcualate the buffer for.</param>
-        /// <param name="distance">The double distance to use for calculating the buffer</param>
-        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle</param>
-        /// <param name="endCapStyle">The end cap style to use</param>
+        /// <param name="distance">The double distance to use for calculating the buffer.</param>
+        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
+        /// <param name="endCapStyle">The end cap style to use.</param>
         /// <param name="destinationFeatureset">The output featureset to add this feature to and use
         /// as a reference for determining which data columns to copy.</param>
         /// <returns>The IFeature that represents the buffer feature.</returns>
@@ -198,7 +195,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Calculates a new feature that has a geometry that is the convex hull of this feature.
         /// </summary>
-        /// <param name="self">This feature</param>
+        /// <param name="self">This feature.</param>
         /// <returns>A new feature that is the convex hull of this feature.</returns>
         public static IFeature ConvexHull(this IFeature self)
         {
@@ -210,9 +207,9 @@ namespace DotSpatial.Data
         /// This also copies the attributes that are shared between this featureset and the
         /// specified destination featureset, and adds this feature to the destination featureset.
         /// </summary>
-        /// <param name="self">This feature</param>
-        /// <param name="destinationFeatureset">The destination featureset to add this feature to</param>
-        /// <returns>The newly created IFeature</returns>
+        /// <param name="self">This feature.</param>
+        /// <param name="destinationFeatureset">The destination featureset to add this feature to.</param>
+        /// <returns>The newly created IFeature.</returns>
         public static IFeature ConvexHull(this IFeature self, IFeatureSet destinationFeatureset)
         {
             IFeature f = ConvexHull(self);
@@ -231,14 +228,14 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a new Feature that has a geometry that is the difference between this feature and the specified feature.
         /// </summary>
-        /// <param name="self">This feature</param>
+        /// <param name="self">This feature.</param>
         /// <param name="other">The other feature to compare to.</param>
         /// <returns>A new feature that is the geometric difference between this feature and the specified feature.</returns>
-        public static IFeature Difference(this IFeature self, IGeometry other)
+        public static IFeature Difference(this IFeature self, Geometry other)
         {
             if (other == null) return self.Copy();
 
-            IGeometry g = self.Geometry.Difference(other);
+            Geometry g = self.Geometry.Difference(other);
             if (g == null || g.IsEmpty) return null;
 
             return new Feature(g);
@@ -249,7 +246,7 @@ namespace DotSpatial.Data
         /// This also copies the attributes that are shared between this featureset and the
         /// specified destination featureset, and adds this feature to the destination featureset.
         /// </summary>
-        /// <param name="self">This feature</param>
+        /// <param name="self">This feature.</param>
         /// <param name="other">The other feature to compare to.</param>
         /// <param name="destinationFeatureSet">The featureset to add the new feature to.</param>
         /// <param name="joinType">This clarifies the overall join strategy being used with regards to attribute fields.</param>
@@ -269,7 +266,7 @@ namespace DotSpatial.Data
         /// Creates a new GML string describing the location of this point.
         /// </summary>
         /// <param name="self">This feature.</param>
-        /// <returns>A String representing the Geographic Markup Language version of this point</returns>
+        /// <returns>A String representing the Geographic Markup Language version of this point.</returns>
         public static string ExportToGml(this IFeature self)
         {
             var geo = self.Geometry as Geometry;
@@ -279,12 +276,12 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a new Feature that has a geometry that is the intersection between this feature and the specified feature.
         /// </summary>
-        /// <param name="self">This feature</param>
+        /// <param name="self">This feature.</param>
         /// <param name="other">The other feature to compare to.</param>
         /// <returns>A new feature that is the geometric intersection between this feature and the specified feature.</returns>
-        public static IFeature Intersection(this IFeature self, IGeometry other)
+        public static IFeature Intersection(this IFeature self, Geometry other)
         {
-            IGeometry g = self.Geometry.Intersection(other);
+            Geometry g = self.Geometry.Intersection(other);
             if (g == null || g.IsEmpty) return null;
 
             return new Feature(g);
@@ -295,7 +292,7 @@ namespace DotSpatial.Data
         /// This also copies the attributes that are shared between this featureset and the
         /// specified destination featureset, and adds this feature to the destination featureset.
         /// </summary>
-        /// <param name="self">This feature</param>
+        /// <param name="self">This feature.</param>
         /// <param name="other">The other feature to compare to.</param>
         /// <param name="destinationFeatureSet">The featureset to add the new feature to.</param>
         /// <param name="joinType">This clarifies the overall join strategy being used with regards to attribute fields.</param>
@@ -322,13 +319,13 @@ namespace DotSpatial.Data
 
             if (self.FeatureType != FeatureType.Polygon) return self.Geometry.NumGeometries;
 
-            IPolygon p = self.Geometry as IPolygon;
+            Polygon p = self.Geometry as Polygon;
             if (p == null)
             {
                 // we have a multi-polygon situation
                 for (int i = 0; i < self.Geometry.NumGeometries; i++)
                 {
-                    p = self.Geometry.GetGeometryN(i) as IPolygon;
+                    p = self.Geometry.GetGeometryN(i) as Polygon;
                     if (p == null) continue;
 
                     count += 1; // Shell
@@ -363,7 +360,7 @@ namespace DotSpatial.Data
         /// <param name="radAngle">The rotation angle in radian.</param>
         public static void Rotate(this IFeature self, Coordinate origin, double radAngle)
         {
-            IGeometry geo = self.Geometry.Copy();
+            Geometry geo = self.Geometry.Copy();
             geo.Rotate(origin, radAngle);
             self.Geometry = geo;
             self.UpdateEnvelope();
@@ -383,12 +380,12 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a new Feature that has a geometry that is the symmetric difference between this feature and the specified feature.
         /// </summary>
-        /// <param name="self">This feature</param>
+        /// <param name="self">This feature.</param>
         /// <param name="other">The other feature to compare to.</param>
         /// <returns>A new feature that is the geometric symmetric difference between this feature and the specified feature.</returns>
-        public static IFeature SymmetricDifference(this IFeature self, IGeometry other)
+        public static IFeature SymmetricDifference(this IFeature self, Geometry other)
         {
-            IGeometry g = self.Geometry.SymmetricDifference(other);
+            Geometry g = self.Geometry.SymmetricDifference(other);
             if (g == null || g.IsEmpty) return null;
 
             return new Feature(g);
@@ -399,7 +396,7 @@ namespace DotSpatial.Data
         /// This also copies the attributes that are shared between this featureset and the
         /// specified destination featureset, and adds this feature to the destination featureset.
         /// </summary>
-        /// <param name="self">This feature</param>
+        /// <param name="self">This feature.</param>
         /// <param name="other">The other feature to compare to.</param>
         /// <param name="destinationFeatureSet">The featureset to add the new feature to.</param>
         /// <param name="joinType">This clarifies the overall join strategy being used with regards to attribute fields.</param>
@@ -418,12 +415,12 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a new Feature that has a geometry that is the union between this feature and the specified feature.
         /// </summary>
-        /// <param name="self">This feature</param>
+        /// <param name="self">This feature.</param>
         /// <param name="other">The other feature to compare to.</param>
         /// <returns>A new feature that is the geometric union between this feature and the specified feature.</returns>
-        public static IFeature Union(this IFeature self, IGeometry other)
+        public static IFeature Union(this IFeature self, Geometry other)
         {
-            IGeometry g = self.Geometry.Union(other);
+            Geometry g = self.Geometry.Union(other);
             if (g == null || g.IsEmpty) return null;
 
             return new Feature(g);
@@ -434,10 +431,10 @@ namespace DotSpatial.Data
         /// This also copies the attributes that are shared between this featureset and the
         /// specified destination featureset, and adds this feature to the destination featureset.
         /// </summary>
-        /// <param name="self">This feature</param>
+        /// <param name="self">This feature.</param>
         /// <param name="other">The other feature to compare to.</param>
         /// <param name="destinationFeatureSet">The featureset to add the new feature to.</param>
-        /// <param name="joinType">Clarifies how the attributes should be handled during the union</param>
+        /// <param name="joinType">Clarifies how the attributes should be handled during the union.</param>
         /// <returns>A new feature that is the geometric symmetric difference between this feature and the specified feature.</returns>
         public static IFeature Union(this IFeature self, IFeature other, IFeatureSet destinationFeatureSet, FieldJoinType joinType)
         {

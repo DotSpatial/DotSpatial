@@ -290,9 +290,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Sets the primary color of this symbol to the specified color if possible
+        /// Sets the primary color of this symbol to the specified color if possible.
         /// </summary>
-        /// <param name="color">The Color to assign</param>
+        /// <param name="color">The Color to assign.</param>
         public virtual void SetColor(Color color)
         {
         }

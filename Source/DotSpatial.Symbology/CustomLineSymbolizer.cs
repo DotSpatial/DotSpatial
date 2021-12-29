@@ -7,7 +7,7 @@ using System.ComponentModel;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// CustomLineSymbolizer
+    /// CustomLineSymbolizer.
     /// </summary>
     [Serializable]
     public class CustomLineSymbolizer : CustomSymbolizer
@@ -23,10 +23,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomLineSymbolizer"/> class.
         /// </summary>
-        /// <param name="uniqueName">the unique name</param>
-        /// <param name="name">the name of the custom symbolizer</param>
-        /// <param name="category">the map category of the custom symbolizer</param>
-        /// <param name="symbolizer">the associated line symbolizer</param>
+        /// <param name="uniqueName">the unique name.</param>
+        /// <param name="name">the name of the custom symbolizer.</param>
+        /// <param name="category">the map category of the custom symbolizer.</param>
+        /// <param name="symbolizer">the associated line symbolizer.</param>
         public CustomLineSymbolizer(string uniqueName, string name, string category, LineSymbolizer symbolizer)
         {
             UniqueName = uniqueName;
@@ -36,9 +36,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the line symbolizer
+        /// Gets or sets the line symbolizer.
         /// </summary>
-        /// <remarks>// Editor(typeof(LineSymbolizerEditor), typeof(UITypeEditor))</remarks>
+        /// <remarks>// Editor(typeof(LineSymbolizerEditor), typeof(UITypeEditor)).</remarks>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public new ILineSymbolizer Symbolizer
         {

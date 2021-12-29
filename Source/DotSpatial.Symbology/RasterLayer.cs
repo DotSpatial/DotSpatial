@@ -35,7 +35,7 @@ namespace DotSpatial.Symbology
         /// Initializes a new instance of the <see cref="RasterLayer"/> class.
         /// Opens the specified fileName using the layer manager.
         /// </summary>
-        /// <param name="fileName">The string fileName to use in order to open the file</param>
+        /// <param name="fileName">The string fileName to use in order to open the file.</param>
         /// <param name="symbolizer">The symbolizer to use for this layer.</param>
         public RasterLayer(string fileName, IRasterSymbolizer symbolizer)
         {
@@ -47,8 +47,8 @@ namespace DotSpatial.Symbology
         /// Initializes a new instance of the <see cref="RasterLayer"/> class.
         /// Opens the specified fileName and automatically creates a raster that can be used by this raster layer.
         /// </summary>
-        /// <param name="fileName">The string fileName to use in order to open the file</param>
-        /// <param name="inProgressHandler">The progress handler to show progress messages</param>
+        /// <param name="fileName">The string fileName to use in order to open the file.</param>
+        /// <param name="inProgressHandler">The progress handler to show progress messages.</param>
         public RasterLayer(string fileName, IProgressHandler inProgressHandler)
             : base(inProgressHandler)
         {
@@ -59,7 +59,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="RasterLayer"/> class using the progress handler defined on the DefaultLayerManager.
         /// </summary>
-        /// <param name="raster">The raster to create this layer for</param>
+        /// <param name="raster">The raster to create this layer for.</param>
         public RasterLayer(IRaster raster)
         {
             DataSet = raster;
@@ -69,8 +69,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="RasterLayer"/> class.
         /// </summary>
-        /// <param name="raster">The raster to create this layer for</param>
-        /// <param name="inProgressHandler">The Progress handler for any status updates</param>
+        /// <param name="raster">The raster to create this layer for.</param>
+        /// <param name="inProgressHandler">The Progress handler for any status updates.</param>
         public RasterLayer(IRaster raster, IProgressHandler inProgressHandler)
             : base(inProgressHandler)
         {
@@ -116,7 +116,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <remarks>
         /// [Editor(typeof(Forms.PropertyGridEditor), typeof(UITypeEditor))]
-        /// [TypeConverter(typeof(Forms.GeneralTypeConverter))]
+        /// [TypeConverter(typeof(Forms.GeneralTypeConverter))].
         /// </remarks>
         [Category("Bounds")]
         [Description("Shows more detail about the geographic position of the raster.")]
@@ -135,14 +135,14 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets the geographic height of the cells for this raster (North-South)
+        /// Gets the geographic height of the cells for this raster (North-South).
         /// </summary>
         [Category("Raster Properties")]
         [Description("The geographic width of each cell in this raster.")]
         public virtual double CellHeight => DataSet?.CellHeight ?? 0;
 
         /// <summary>
-        /// Gets the geographic width of the cells for this raster (East-West)
+        /// Gets the geographic width of the cells for this raster (East-West).
         /// </summary>
         [Category("Raster Properties")]
         [Description("The geographic width of each cell in this raster.")]
@@ -176,7 +176,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <remarks>
         /// [TypeConverter(typeof(Forms.GeneralTypeConverter))]
-        /// [Editor(typeof(Forms.PropertyGridEditor), typeof(UITypeEditor))]
+        /// [Editor(typeof(Forms.PropertyGridEditor), typeof(UITypeEditor))].
         /// </remarks>
         [Category("Data")]
         [DisplayName(@"Raster Properties")]
@@ -400,7 +400,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the collection of symbolzier properties to use for this raster.
         /// [Editor(typeof(Forms.RasterColorSchemeEditor), typeof(UITypeEditor))]
-        /// [TypeConverter(typeof(Forms.GeneralTypeConverter))]
+        /// [TypeConverter(typeof(Forms.GeneralTypeConverter))].
         /// </summary>
         [Category("Symbology")]
         [DisplayName(@"Color Scheme")]
@@ -502,7 +502,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         ///  Creates a bmp texture and saves it to the specified fileName.
         /// </summary>
-        /// <param name="fileName">The string fileName to write to</param>
+        /// <param name="fileName">The string fileName to write to.</param>
         /// <param name="bandType">The color band type.</param>
         public void ExportBitmap(string fileName, ImageBandType bandType)
         {
@@ -512,9 +512,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Creates a new filename and saves the content from the current BitmapGetter to the
         /// file format. This relies on the DataManager and will only be successful for
-        /// formats supported by the write format possibility. This will not update this raster
+        /// formats supported by the write format possibility. This will not update this raster.
         /// </summary>
-        /// <param name="fileName">The string fileName to write to</param>
+        /// <param name="fileName">The string fileName to write to.</param>
         /// <param name="progressHandler">The progress handler for creating a new bitmap.</param>
         /// <param name="bandType">The band type ot use.</param>
         public void ExportBitmap(string fileName, IProgressHandler progressHandler, ImageBandType bandType)
@@ -573,7 +573,7 @@ namespace DotSpatial.Symbology
         /// This only updates the bitmap representation of this raster. This can be overridden, but currently
         /// uses the default implementation.
         /// </summary>
-        /// <param name="progressHandler">An implementation of IProgressHandler to receive status messages</param>
+        /// <param name="progressHandler">An implementation of IProgressHandler to receive status messages.</param>
         public virtual void WriteBitmap(IProgressHandler progressHandler)
         {
             DefaultWriteBitmap(progressHandler);

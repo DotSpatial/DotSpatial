@@ -8,7 +8,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// ColorCategoryCollection
+    /// ColorCategoryCollection.
     /// </summary>
     [Serializable]
     public class ColorCategoryCollection : ChangeEventList<IColorCategory>
@@ -43,7 +43,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the parent scheme for this collection
+        /// Gets or sets the parent scheme for this collection.
         /// </summary>
         [Serialize("Scheme", ConstructorArgumentIndex = 0)]
         [ShallowCopy]

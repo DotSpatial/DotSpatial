@@ -67,12 +67,12 @@ namespace DotSpatial.Extensions
         #region Methods
 
         /// <summary>
-        /// Activates this extension
+        /// Activates this extension.
         /// </summary>
         void Activate();
 
         /// <summary>
-        /// Deactivates this extension
+        /// Deactivates this extension.
         /// </summary>
         void Deactivate();
 

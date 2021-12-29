@@ -2,12 +2,12 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// ShapeFactory
+    /// ShapeFactory.
     /// </summary>
     public class ShapeFactory
     {

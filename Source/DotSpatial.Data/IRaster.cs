@@ -196,17 +196,17 @@ namespace DotSpatial.Data
         object Tag { get; set; }
 
         /// <summary>
-        /// Gets or sets the value on the CurrentBand given a row and column undex
+        /// Gets or sets the value on the CurrentBand given a row and column undex.
         /// </summary>
         IValueGrid Value { get; set; }
 
         /// <summary>
-        /// Gets or sets the horizontal or longitude coordinate for the lower left cell in the grid
+        /// Gets or sets the horizontal or longitude coordinate for the lower left cell in the grid.
         /// </summary>
         double Xllcenter { get; set; }
 
         /// <summary>
-        /// Gets or sets the vertical or latitude coordinate for the lower left cell in the grid
+        /// Gets or sets the vertical or latitude coordinate for the lower left cell in the grid.
         /// </summary>
         double Yllcenter { get; set; }
 
@@ -215,22 +215,22 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// A raster can contain predefined colors for its categories, for example NLCD GeoTIFF has a palette
+        /// A raster can contain predefined colors for its categories, for example NLCD GeoTIFF has a palette.
         /// </summary>
-        /// <returns>null if raster has no category colors</returns>
+        /// <returns>null if raster has no category colors.</returns>
         Color[] CategoryColors();
 
         /// <summary>
-        /// A raster can contain predefined names for its categories
+        /// A raster can contain predefined names for its categories.
         /// </summary>
-        /// <returns>null if raster has no category names</returns>
+        /// <returns>null if raster has no category names.</returns>
         string[] CategoryNames();
 
         /// <summary>
         /// This only works for in-ram rasters. This basically makes a new raster that has all the same
-        /// in memory values
+        /// in memory values.
         /// </summary>
-        /// <returns>An IRaster that is a duplicate of this class</returns>
+        /// <returns>An IRaster that is a duplicate of this class.</returns>
         IRaster Copy();
 
         /// <summary>
@@ -250,8 +250,8 @@ namespace DotSpatial.Data
         /// Most raster methods are optimized for reading in lines or blocks at a time. This one is designed
         /// to be used for scattered points.
         /// </summary>
-        /// <param name="indices">The zero based integer index that is Row * NumColumnsInFile + Column</param>
-        /// <returns>The list of double values</returns>
+        /// <param name="indices">The zero based integer index that is Row * NumColumnsInFile + Column.</param>
+        /// <returns>The list of double values.</returns>
         List<double> GetValues(IEnumerable<long> indices);
 
         /// <summary>
@@ -259,10 +259,10 @@ namespace DotSpatial.Data
         /// and the extents are calculated, but the row and column values are in terms of the window,
         /// not the original raster. The band can be controlled by setting the "Current Band" first.
         /// </summary>
-        /// <param name="xOff">X axis or horizontal offset (0 based from left)</param>
-        /// <param name="yOff">Y axis or vertical offset (0 based from top)</param>
-        /// <param name="sizeX">Number of columns</param>
-        /// <param name="sizeY">Number of rows</param>
+        /// <param name="xOff">X axis or horizontal offset (0 based from left).</param>
+        /// <param name="yOff">Y axis or vertical offset (0 based from top).</param>
+        /// <param name="sizeX">Number of columns.</param>
+        /// <param name="sizeY">Number of rows.</param>
         /// <returns>An IRaster created from the appropriate type;.</returns>
         IRaster ReadBlock(int xOff, int yOff, int sizeX, int sizeY);
 
@@ -300,11 +300,11 @@ namespace DotSpatial.Data
         /// This writes the values to the file, even if the IRaster has more values than the xSize or ySize
         /// stipulate, and even if the source raster has values of a different type.
         /// </summary>
-        /// <param name="blockValues">The IRaster that contains data values to write to the file</param>
-        /// <param name="xOff">The 0 based integer horizontal offset from the left</param>
-        /// <param name="yOff">The 0 based integer vertical offset from the top</param>
-        /// <param name="xSize">The integer number of columns to write</param>
-        /// <param name="ySize">The integer number of rows to write</param>
+        /// <param name="blockValues">The IRaster that contains data values to write to the file.</param>
+        /// <param name="xOff">The 0 based integer horizontal offset from the left.</param>
+        /// <param name="yOff">The 0 based integer vertical offset from the top.</param>
+        /// <param name="xSize">The integer number of columns to write.</param>
+        /// <param name="ySize">The integer number of rows to write.</param>
         void WriteBlock(IRaster blockValues, int xOff, int yOff, int xSize, int ySize);
 
         /// <summary>

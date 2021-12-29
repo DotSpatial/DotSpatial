@@ -11,7 +11,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// LineSymbolizerEditor
+    /// LineSymbolizerEditor.
     /// </summary>
     public class PointSymbolizerEditor : UITypeEditor
     {
@@ -25,12 +25,12 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Launches a form for editing the line symbolizer
+        /// Launches a form for editing the line symbolizer.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <param name="provider">The service provider.</param>
         /// <param name="value">The point symbolizer.</param>
-        /// <returns>The resulting point symbolizer</returns>
+        /// <returns>The resulting point symbolizer.</returns>
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             _original = value as IPointSymbolizer;
@@ -48,7 +48,7 @@ namespace DotSpatial.Symbology.Forms
         /// Specifies that this should open a form and work using a modal behavior.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
-        /// <returns>The UITypeEditorEditStyle</returns>
+        /// <returns>The UITypeEditorEditStyle.</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.Modal;

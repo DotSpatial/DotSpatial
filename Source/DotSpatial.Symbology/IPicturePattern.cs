@@ -25,7 +25,7 @@ namespace DotSpatial.Symbology
         string DialogFilter { get; }
 
         /// <summary>
-        /// Gets or sets the image to use as a repeating texture
+        /// Gets or sets the image to use as a repeating texture.
         /// </summary>
         Image Picture { get; set; }
 

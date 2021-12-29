@@ -7,7 +7,7 @@ using System.IO;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Stream extensions
+    /// Stream extensions.
     /// </summary>
     public static class StreamExt
     {
@@ -31,7 +31,7 @@ namespace DotSpatial.Data
         /// is not little endian, it will reverse the individual memebrs.
         /// </summary>
         /// <param name="stream">The stream to read the values from.</param>
-        /// <returns>A double precision value</returns>
+        /// <returns>A double precision value.</returns>
         public static double ReadDouble(this Stream stream)
         {
             return ReadDouble(stream, 1)[0];
@@ -70,9 +70,9 @@ namespace DotSpatial.Data
         /// doesn't match the specified endian, then this will reverse the array of bytes,
         /// so that it corresponds with the big-endian format.
         /// </summary>
-        /// <param name="stream">The stream to read the value from</param>
+        /// <param name="stream">The stream to read the value from.</param>
         /// <param name="endian">Specifies what endian property should be used.</param>
-        /// <returns>The integer value</returns>
+        /// <returns>The integer value.</returns>
         public static int ReadInt32(this Stream stream, Endian endian = Endian.LittleEndian)
         {
             var val = new byte[4];
@@ -89,8 +89,8 @@ namespace DotSpatial.Data
         /// Reads the specified number of integers. If a value other than the
         /// systems endian format is specified the values will be reversed.
         /// </summary>
-        /// <param name="stream">The stream to read from</param>
-        /// <param name="count">The integer count of integers to read</param>
+        /// <param name="stream">The stream to read from.</param>
+        /// <param name="count">The integer count of integers to read.</param>
         /// <param name="endian">The endian order of the bytes.</param>
         /// <returns>The array of integers that will have count integers.</returns>
         public static int[] ReadInt32(this Stream stream, int count, Endian endian = Endian.LittleEndian)

@@ -16,7 +16,8 @@ using DotSpatial.Data.Forms;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using Point = System.Drawing.Point;
 using SelectionMode = DotSpatial.Symbology.SelectionMode;
 
 namespace DotSpatial.Controls
@@ -308,7 +309,7 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Gets or sets a value indicating whether the map is zoomed to its full extents.
-        /// Added by Eric Hullinger 1/3/2013
+        /// Added by Eric Hullinger 1/3/2013.
         /// </summary>
         public bool IsZoomedToMaxExtent { get; set; }
 
@@ -320,7 +321,7 @@ namespace DotSpatial.Controls
         public IMapLayerCollection Layers => _geoMapFrame?.Layers;
 
         /// <summary>
-        /// Gets or sets the legend to use when showing the layers from this map
+        /// Gets or sets the legend to use when showing the layers from this map.
         /// </summary>
         public ILegend Legend
         {
@@ -364,7 +365,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the dictionary of tools built into this project
+        /// Gets or sets the dictionary of tools built into this project.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -577,7 +578,7 @@ namespace DotSpatial.Controls
         /// Allows a mult-select open file dialog to specify several fileNames to add.
         /// Only files with supported vector extensions will be shown.
         /// </summary>
-        /// <returns>The list of added MapFeatureLayers</returns>
+        /// <returns>The list of added MapFeatureLayers.</returns>
         public virtual List<IMapFeatureLayer> AddFeatureLayers()
         {
             var sets = DataManager.DefaultDataManager.OpenVectors();
@@ -599,7 +600,7 @@ namespace DotSpatial.Controls
         /// Allows a mult-select open file dialog to specify several fileNames to add.
         /// Only files with supported image extensions will be shown.
         /// </summary>
-        /// <returns>The list of added MapImageLayers</returns>
+        /// <returns>The list of added MapImageLayers.</returns>
         public virtual List<IMapImageLayer> AddImageLayers()
         {
             var sets = DataManager.DefaultDataManager.OpenImages();
@@ -609,7 +610,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Adds the fileName as a new layer to the map, returning the new layer.
         /// </summary>
-        /// <param name="fileName">The string fileName of the layer to add</param>
+        /// <param name="fileName">The string fileName of the layer to add.</param>
         /// <returns>The IMapLayer added to the file.</returns>
         public virtual IMapLayer AddLayer(string fileName)
         {
@@ -620,7 +621,7 @@ namespace DotSpatial.Controls
         /// Uses the file dialog to allow selection of a fileName for opening the
         /// new layer, but does not allow multiple files to be added at once.
         /// </summary>
-        /// <returns>The newly opened IMapLayer</returns>
+        /// <returns>The newly opened IMapLayer.</returns>
         public virtual IMapLayer AddLayer()
         {
             if (DataManager.DefaultDataManager.ProgressHandler == null && ProgressHandler != null)
@@ -650,28 +651,24 @@ namespace DotSpatial.Controls
             var results = new List<IMapLayer>();
             foreach (var set in DataManager.DefaultDataManager.OpenFiles())
             {
-                var fs = set as IFeatureSet;
-                if (fs != null)
+                if (set is IFeatureSet fs)
                 {
                     results.Add(Layers.Add(fs));
                     continue;
                 }
 
-                var id = set as IImageData;
-                if (id != null)
+                if (set is IImageData id)
                 {
                     results.Add(Layers.Add(id));
                     continue;
                 }
 
-                var r = set as IRaster;
-                if (r != null)
+                if (set is IRaster r)
                 {
                     results.Add(Layers.Add(r));
                 }
 
-                var ss = set as ISelfLoadSet;
-                if (ss != null)
+                if (set is ISelfLoadSet ss)
                 {
                     results.Add(Layers.Add(ss));
                 }
@@ -724,9 +721,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets all map groups in the map including the nested groups
+        /// Gets all map groups in the map including the nested groups.
         /// </summary>
-        /// <returns>the list of the groups</returns>
+        /// <returns>the list of the groups.</returns>
         public List<IGroup> GetAllGroups()
         {
             return _geoMapFrame?.GetAllGroups();
@@ -737,16 +734,16 @@ namespace DotSpatial.Controls
         /// within groups. The group objects themselves are not included in this list,
         /// but all FeatureLayers, RasterLayers, ImageLayers and other layers are included.
         /// </summary>
-        /// <returns>The list of the layers</returns>
+        /// <returns>The list of the layers.</returns>
         public List<ILayer> GetAllLayers()
         {
             return _geoMapFrame?.GetAllLayers();
         }
 
         /// <summary>
-        /// Gets a list of just the feature layers regardless of whether they are lines, points, or polygons
+        /// Gets a list of just the feature layers regardless of whether they are lines, points, or polygons.
         /// </summary>
-        /// <returns>An array of IMapFeatureLayers</returns>
+        /// <returns>An array of IMapFeatureLayers.</returns>
         public IMapFeatureLayer[] GetFeatureLayers()
         {
             return MapFrame.Layers.OfType<IMapFeatureLayer>().ToArray();
@@ -776,17 +773,17 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets a list of just the line layers (and not the general layers).
         /// </summary>
-        /// <returns>The line layers</returns>
+        /// <returns>The line layers.</returns>
         public IMapLineLayer[] GetLineLayers()
         {
             return MapFrame.Layers.OfType<IMapLineLayer>().ToArray();
         }
 
         /// <summary>
-        /// Gets the MapFunction based on the string name
+        /// Gets the MapFunction based on the string name.
         /// </summary>
-        /// <param name="name">The string name to find</param>
-        /// <returns>The MapFunction with the specified name</returns>
+        /// <param name="name">The string name to find.</param>
+        /// <returns>The MapFunction with the specified name.</returns>
         public IMapFunction GetMapFunction(string name)
         {
             return MapFunctions.First(f => f.Name == name);
@@ -854,10 +851,10 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Converts a single point location into an equivalent geographic coordinate
+        /// Converts a single point location into an equivalent geographic coordinate.
         /// </summary>
-        /// <param name="position">The client coordinate relative to the map control</param>
-        /// <returns>The geographic ICoordinate interface</returns>
+        /// <param name="position">The client coordinate relative to the map control.</param>
+        /// <returns>The geographic ICoordinate interface.</returns>
         public Coordinate PixelToProj(Point position)
         {
             return _geoMapFrame.PixelToProj(position);
@@ -867,8 +864,8 @@ namespace DotSpatial.Controls
         /// Converts a rectangle in pixel coordinates relative to the map control into
         /// a geographic envelope.
         /// </summary>
-        /// <param name="rect">The rectangle to convert</param>
-        /// <returns>An Envelope interface</returns>
+        /// <param name="rect">The rectangle to convert.</param>
+        /// <returns>An Envelope interface.</returns>
         public Extent PixelToProj(Rectangle rect)
         {
             return _geoMapFrame.PixelToProj(rect);
@@ -897,7 +894,7 @@ namespace DotSpatial.Controls
         /// for doing vector drawing on much larger pages. The result will be centered in the
         /// specified target rectangle bounds.
         /// </summary>
-        /// <param name="device">The graphics device to print to</param>
+        /// <param name="device">The graphics device to print to.</param>
         /// <param name="targetRectangle">the rectangle where the map content should be drawn.</param>
         public void Print(Graphics device, Rectangle targetRectangle)
         {
@@ -910,9 +907,9 @@ namespace DotSpatial.Controls
         /// for doing vector drawing on much larger pages. The result will be centered in the
         /// specified target rectangle bounds.
         /// </summary>
-        /// <param name="device">The graphics device to print to</param>
+        /// <param name="device">The graphics device to print to.</param>
         /// <param name="targetRectangle">the rectangle where the map content should be drawn.</param>
-        /// <param name="targetEnvelope">the extents to print in the target rectangle</param>
+        /// <param name="targetEnvelope">the extents to print in the target rectangle.</param>
         public void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope)
         {
             MapFrame.Print(device, targetRectangle, targetEnvelope);
@@ -922,7 +919,7 @@ namespace DotSpatial.Controls
         /// Converts a single geographic location into the equivalent point on the
         /// screen relative to the top left corner of the map.
         /// </summary>
-        /// <param name="location">The geographic position to transform</param>
+        /// <param name="location">The geographic position to transform.</param>
         /// <returns>A Point with the new location.</returns>
         public Point ProjToPixel(Coordinate location)
         {
@@ -933,8 +930,8 @@ namespace DotSpatial.Controls
         /// Converts a single geographic envelope into an equivalent Rectangle
         /// as it would be drawn on the screen.
         /// </summary>
-        /// <param name="env">The geographic Envelope</param>
-        /// <returns>A Rectangle</returns>
+        /// <param name="env">The geographic Envelope.</param>
+        /// <returns>A Rectangle.</returns>
         public Rectangle ProjToPixel(Extent env)
         {
             return _geoMapFrame.ProjToPixel(env);
@@ -942,7 +939,7 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// This causes all of the data layers to re-draw themselves to the buffer, rather than just drawing
-        /// the buffer itself like what happens during "Invalidate"
+        /// the buffer itself like what happens during "Invalidate".
         /// </summary>
         public override void Refresh()
         {
@@ -977,8 +974,7 @@ namespace DotSpatial.Controls
         {
             var sfd = new SaveFileDialog();
             var layer = _geoMapFrame.Layers[0];
-            var mfl = layer as IMapFeatureLayer;
-            if (mfl != null)
+            if (layer is IMapFeatureLayer mfl)
             {
                 sfd.Filter = DataManager.DefaultDataManager.VectorWriteFilter;
                 if (sfd.ShowDialog() != DialogResult.OK)
@@ -990,8 +986,7 @@ namespace DotSpatial.Controls
                 return;
             }
 
-            var mrl = layer as IMapRasterLayer;
-            if (mrl != null)
+            if (layer is IMapRasterLayer mrl)
             {
                 sfd.Filter = DataManager.DefaultDataManager.RasterWriteFilter;
                 if (sfd.ShowDialog() != DialogResult.OK)
@@ -1003,8 +998,7 @@ namespace DotSpatial.Controls
                 return;
             }
 
-            var mil = layer as IMapImageLayer;
-            if (mil != null)
+            if (layer is IMapImageLayer mil)
             {
                 sfd.Filter = DataManager.DefaultDataManager.ImageWriteFilter;
                 if (sfd.ShowDialog() != DialogResult.OK)
@@ -1062,8 +1056,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Creates a snapshot that is scaled to fit to a bitmap of the specified width.
         /// </summary>
-        /// <param name="width">The width of the desired bitmap</param>
-        /// <returns>A bitmap with the specified width</returns>
+        /// <param name="width">The width of the desired bitmap.</param>
+        /// <returns>A bitmap with the specified width.</returns>
         public Bitmap SnapShot(int width)
         {
             var height = (int)(width * (MapFrame.ViewExtents.Height / MapFrame.ViewExtents.Width));
@@ -1120,7 +1114,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zooms to the next extent
+        /// Zooms to the next extent.
         /// </summary>
         public void ZoomToNext()
         {
@@ -1128,7 +1122,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zooms to the previous extent
+        /// Zooms to the previous extent.
         /// </summary>
         public void ZoomToPrevious()
         {
@@ -1195,7 +1189,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Handles removing event handlers for the map frame
+        /// Handles removing event handlers for the map frame.
         /// </summary>
         /// <param name="mapFrame">MapFrame the event handlers get removed from.</param>
         protected virtual void OnExcludeMapFrame(IMapFrame mapFrame)
@@ -1254,7 +1248,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the LayerAdded event
+        /// Fires the LayerAdded event.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -1294,7 +1288,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the OnMouseDown event on the Active Tools
+        /// Fires the OnMouseDown event on the Active Tools.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseDown(MouseEventArgs e)
@@ -1344,7 +1338,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the OnMouseWheel event for the active tools
+        /// Fires the OnMouseWheel event for the active tools.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseWheel(MouseEventArgs e)

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Extension Methods useful for the DotSpatial.Data.Img content
+    /// Extension Methods useful for the DotSpatial.Data.Img content.
     /// </summary>
     public static class HfaExt
     {
@@ -15,8 +15,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Given a string, this reads digits into a numeric value.
         /// </summary>
-        /// <param name="input">The string to read the integer from</param>
-        /// <returns>An integer read from the string</returns>
+        /// <param name="input">The string to read the integer from.</param>
+        /// <returns>An integer read from the string.</returns>
         public static int ExtractInteger(this string input)
         {
             List<char> number = new List<char>();
@@ -63,9 +63,9 @@ namespace DotSpatial.Data
         /// This variant of the ExtractTo algorithm effectively splits the string into the content
         /// before the delimeter and after the delimeter, not counting the delimeter.
         /// </summary>
-        /// <param name="input">The string input</param>
-        /// <param name="delimeter">The string delimeter</param>
-        /// <param name="remainder">the string remainder</param>
+        /// <param name="input">The string input.</param>
+        /// <param name="delimeter">The string delimeter.</param>
+        /// <param name="remainder">the string remainder.</param>
         /// <returns>The first extracted string.</returns>
         public static string ExtractTo(this string input, string delimeter, out string remainder)
         {
@@ -88,8 +88,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// This method returns a substring based on the next occurance of the specified delimeter.
         /// </summary>
-        /// <param name="input">The string input</param>
-        /// <param name="delimeter">The delimeter</param>
+        /// <param name="input">The string input.</param>
+        /// <param name="delimeter">The delimeter.</param>
         /// <returns>The substring.</returns>
         public static string SkipTo(this string input, string delimeter)
         {

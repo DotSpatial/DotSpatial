@@ -14,7 +14,8 @@ using DotSpatial.Projections;
 using DotSpatial.Projections.Forms;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using Point = System.Drawing.Point;
 
 namespace DotSpatial.Controls
 {
@@ -131,7 +132,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets the bottom (or height) of this client rectangle
+        /// Gets the bottom (or height) of this client rectangle.
         /// </summary>
         public int Bottom => ClientRectangle.Bottom;
 
@@ -185,7 +186,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets a set of rectangles that should be drawn during the next update
+        /// Gets or sets a set of rectangles that should be drawn during the next update.
         /// </summary>
         public List<Rectangle> ClipRegions
         {
@@ -201,7 +202,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the integer that specifies the chunk that is actively being drawn
+        /// Gets or sets the integer that specifies the chunk that is actively being drawn.
         /// </summary>
         public int CurrentChunk
         {
@@ -255,7 +256,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets the geographic extents
+        /// Gets the geographic extents.
         /// </summary>
         public Extent GeographicExtents => BufferToProj(View);
 
@@ -305,7 +306,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the layers
+        /// Gets or sets the layers.
         /// </summary>
         [Serialize("Layers")]
         public new IMapLayerCollection Layers
@@ -509,8 +510,7 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public override void Add(ILayer layer)
         {
-            IMapLayer ml = layer as IMapLayer;
-            if (ml != null)
+            if (layer is IMapLayer ml)
             {
                 _layers.Add(ml);
             }
@@ -519,7 +519,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// This will create a new layer from the featureset and add it.
         /// </summary>
-        /// <param name="featureSet">Any valid IFeatureSet that does not yet have drawing characteristics</param>
+        /// <param name="featureSet">Any valid IFeatureSet that does not yet have drawing characteristics.</param>
         public override void Add(IFeatureSet featureSet)
         {
             Layers.Add(featureSet);
@@ -530,8 +530,8 @@ namespace DotSpatial.Controls
         /// BufferToProj takes a pixel coordinate on the buffer and
         /// converts it to geographic coordinates.
         /// </summary>
-        /// <param name="position">A Point describing the pixel position on the back buffer</param>
-        /// <returns>An ICoordinate describing the geographic position</returns>
+        /// <param name="position">A Point describing the pixel position on the back buffer.</param>
+        /// <returns>An ICoordinate describing the geographic position.</returns>
         public Coordinate BufferToProj(Point position)
         {
             Envelope view = ViewExtents.ToEnvelope();
@@ -541,14 +541,14 @@ namespace DotSpatial.Controls
             x = (x * view.Width / _width) + view.MinX;
             y = view.MaxY - (y * view.Height / _height);
 
-            return new Coordinate(x, y, 0.0);
+            return new Coordinate(x, y);
         }
 
         /// <summary>
         /// This projects a rectangle relative to the buffer into and Envelope in geographic coordinates.
         /// </summary>
-        /// <param name="rect">A Rectangle</param>
-        /// <returns>An Envelope interface</returns>
+        /// <param name="rect">A Rectangle.</param>
+        /// <returns>An Envelope interface.</returns>
         public Extent BufferToProj(Rectangle rect)
         {
             if (ExtendBuffer)
@@ -603,8 +603,7 @@ namespace DotSpatial.Controls
             bool changed = false;
             foreach (ILayer layer in GetAllLayers())
             {
-                Envelope layerArea;
-                if (layer.ClearSelection(out layerArea, force))
+                if (layer.ClearSelection(out Envelope layerArea, force))
                 {
                     changed = true;
                     affectedAreas.ExpandToInclude(layerArea);
@@ -619,8 +618,7 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public override bool Contains(ILayer item)
         {
-            IMapLayer ml = item as IMapLayer;
-            return ml != null && _layers.Contains(ml);
+            return item is IMapLayer ml && _layers.Contains(ml);
         }
 
         /// <summary>
@@ -660,7 +658,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Converts the internal list of layers into a list of ILayer interfaces
+        /// Converts the internal list of layers into a list of ILayer interfaces.
         /// </summary>
         /// <returns>List of layers.</returns>
         public override IList<ILayer> GetLayers()
@@ -671,8 +669,7 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public override int IndexOf(ILayer item)
         {
-            IMapLayer ml = item as IMapLayer;
-            if (ml != null)
+            if (item is IMapLayer ml)
             {
                 return _layers.IndexOf(ml);
             }
@@ -722,11 +719,12 @@ namespace DotSpatial.Controls
                 }
             }
 
-            // Then labels
+            // Then labels. Layers higher in the draw hierarchy should be drawn on top, and so should their labels.
+            // In other words the drawing order of labels is given precedence from top layer to bottom layer.
             MapLabelLayer.ClearAllExistingLabels();
-            foreach (var layer in Layers)
+            for (int i = Layers.Count - 1; i >= 0; i--)
             {
-                InitializeLabels(regions, args, layer);
+                InitializeLabels(regions, args, Layers[i]);
             }
 
             // First draw all the vector content
@@ -777,8 +775,7 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public override void Insert(int index, ILayer layer)
         {
-            IMapLayer ml = layer as IMapLayer;
-            if (ml != null)
+            if (layer is IMapLayer ml)
             {
                 _layers.Insert(index, ml);
             }
@@ -811,7 +808,7 @@ namespace DotSpatial.Controls
         public void InvalidateLayers()
         {
             if (Layers == null) return;
-            foreach (ILayer layer in base.Layers)
+            foreach (ILayer layer in Layers)
             {
                 layer.Invalidate();
             }
@@ -821,7 +818,7 @@ namespace DotSpatial.Controls
         /// Pans the image for this map frame. Instead of drawing entirely new content, from all 5 zones,
         /// just the slivers of newly revealed area need to be re-drawn.
         /// </summary>
-        /// <param name="shift">A Point showing the amount to shift in pixels</param>
+        /// <param name="shift">A Point showing the amount to shift in pixels.</param>
         public virtual void Pan(Point shift)
         {
             _view = new Rectangle(_view.X + shift.X, _view.Y + shift.Y, _view.Width, _view.Height);
@@ -900,7 +897,7 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="device">Graphics object used for drawing.</param>
         /// <param name="targetRectangle">Rectangle to draw the content to.</param>
-        /// <param name="targetEnvelope">the extents to draw to the target rectangle</param>
+        /// <param name="targetEnvelope">the extents to draw to the target rectangle.</param>
         public virtual void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope)
         {
             MapArgs args = new MapArgs(targetRectangle, targetEnvelope, device);
@@ -928,7 +925,7 @@ namespace DotSpatial.Controls
         /// Converts a single geographic location into the equivalent point on the
         /// screen relative to the top left corner of the map.
         /// </summary>
-        /// <param name="location">The geographic position to transform</param>
+        /// <param name="location">The geographic position to transform.</param>
         /// <returns>A Point with the new location.</returns>
         public Point ProjToBuffer(Coordinate location)
         {
@@ -943,8 +940,8 @@ namespace DotSpatial.Controls
         /// Converts a single geographic envelope into an equivalent Rectangle
         /// as it would be drawn on the screen.
         /// </summary>
-        /// <param name="env">The geographic Envelope</param>
-        /// <returns>A Rectangle</returns>
+        /// <param name="env">The geographic Envelope.</param>
+        /// <returns>A Rectangle.</returns>
         public Rectangle ProjToBuffer(Extent env)
         {
             Coordinate tl = new Coordinate(env.MinX, env.MaxY);
@@ -957,8 +954,7 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public override bool Remove(ILayer layer)
         {
-            IMapLayer ml = layer as IMapLayer;
-            return ml != null && _layers.Remove(ml);
+            return layer is IMapLayer ml && _layers.Remove(ml);
         }
 
         /// <inheritdoc />
@@ -1026,7 +1022,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zooms to the next extent
+        /// Zooms to the next extent.
         /// </summary>
         public void ZoomToNext()
         {
@@ -1041,7 +1037,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zooms to the previous extent
+        /// Zooms to the previous extent.
         /// </summary>
         public void ZoomToPrevious()
         {
@@ -1067,8 +1063,7 @@ namespace DotSpatial.Controls
         /// <param name="collection">Collection the events get added to.</param>
         protected override void HandleLayerEvents(ILayerEvents collection)
         {
-            IMapLayerCollection glc = collection as IMapLayerCollection;
-            if (glc == null) return;
+            if (!(collection is IMapLayerCollection glc)) return;
             glc.BufferChanged += GeoLayerBufferChanged;
             glc.LayerAdded += LayerColectionLayerAdded;
             glc.LayerVisibleChanged += LayerCollectionLayerVisibleChanged;
@@ -1082,8 +1077,7 @@ namespace DotSpatial.Controls
         /// <param name="collection">Collection the events get removed from.</param>
         protected override void IgnoreLayerEvents(ILayerEvents collection)
         {
-            IMapLayerCollection glc = collection as IMapLayerCollection;
-            if (glc == null) return;
+            if (!(collection is IMapLayerCollection glc)) return;
             glc.BufferChanged -= GeoLayerBufferChanged;
             glc.LayerAdded -= LayerColectionLayerAdded;
             glc.LayerVisibleChanged -= LayerCollectionLayerVisibleChanged;
@@ -1100,8 +1094,7 @@ namespace DotSpatial.Controls
         {
             if (!layer.IsVisible) return;
 
-            var grp = layer as IMapGroup;
-            if (grp != null)
+            if (layer is IMapGroup grp)
             {
                 foreach (IMapLayer lyr in grp.Layers)
                 {
@@ -1111,8 +1104,7 @@ namespace DotSpatial.Controls
                 return;
             }
 
-            var mfl = layer as IMapFeatureLayer;
-            if (mfl != null && mfl.ShowLabels && mfl.LabelLayer != null && mfl.LabelLayer.VisibleAtExtent(args.GeographicExtents))
+            if (layer is IMapFeatureLayer mfl && mfl.ShowLabels && mfl.LabelLayer != null && mfl.LabelLayer.VisibleAtExtent(args.GeographicExtents))
             {
                 mfl.LabelLayer.DrawRegions(args, regions, false);
             }
@@ -1189,7 +1181,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the FinsihedRefresh event
+        /// Fires the FinsihedRefresh event.
         /// </summary>
         protected virtual void OnFinishedRefresh()
         {
@@ -1197,7 +1189,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the ScreenUpdated event
+        /// Fires the ScreenUpdated event.
         /// </summary>
         protected virtual void OnScreenUpdated()
         {
@@ -1208,7 +1200,7 @@ namespace DotSpatial.Controls
         /// If a BackBuffer.Extents exists, this will enlarge those extents to match the aspect ratio
         /// of the pixel view. If one doesn't exist, the _mapFrame.Extents will be used instead.
         /// </summary>
-        /// <param name="newEnv">The envelope to adjust</param>
+        /// <param name="newEnv">The envelope to adjust.</param>
         protected void ResetAspectRatio(Extent newEnv)
         {
             // Aspect Ratio Handling
@@ -1264,8 +1256,8 @@ namespace DotSpatial.Controls
             {
                 _backView.X = _width;
                 _backView.Y = _height;
-                _width = _width * ExtendBufferCoeff;
-                _height = _height * ExtendBufferCoeff;
+                _width *= ExtendBufferCoeff;
+                _height *= ExtendBufferCoeff;
             }
 
             return new Bitmap(_width, _height);
@@ -1331,8 +1323,7 @@ namespace DotSpatial.Controls
 
         private void LayerColectionLayerAdded(object sender, LayerEventArgs e)
         {
-            IMapLayer layer = e.Layer as IMapLayer;
-            if (layer == null) return;
+            if (!(e.Layer is IMapLayer layer)) return;
             if (!ExtentsInitialized || ViewExtents == null || ViewExtents.IsEmpty() || ViewExtents.Width == 0 || View.Height == 0)
             {
                 ExtentsInitialized = true;
@@ -1379,8 +1370,7 @@ namespace DotSpatial.Controls
         private void PrintLayer(IMapLayer layer, MapArgs args)
         {
             MapLabelLayer.ClearAllExistingLabels();
-            IMapGroup group = layer as IMapGroup;
-            if (group != null)
+            if (layer is IMapGroup group)
             {
                 foreach (IMapLayer subLayer in group.Layers)
                 {
@@ -1402,8 +1392,7 @@ namespace DotSpatial.Controls
                 geoLayer.DrawRegions(args, new List<Extent> { args.GeographicExtents }, i == 1);
             }
 
-            IMapFeatureLayer mfl = geoLayer as IMapFeatureLayer;
-            if (mfl == null || (mfl.UseDynamicVisibility && ViewExtents.Width > mfl.DynamicVisibilityWidth)) return;
+            if (!(geoLayer is IMapFeatureLayer mfl) || (mfl.UseDynamicVisibility && ViewExtents.Width > mfl.DynamicVisibilityWidth)) return;
 
             if (mfl.ShowLabels && mfl.LabelLayer != null)
             {
@@ -1417,7 +1406,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// When the Projection context menu is clicked
+        /// When the Projection context menu is clicked.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -1499,7 +1488,7 @@ namespace DotSpatial.Controls
         #region Classes
 
         /// <summary>
-        /// Transforms an IMapLayer enumerator into an ILayer Enumerator
+        /// Transforms an IMapLayer enumerator into an ILayer Enumerator.
         /// </summary>
         private class MapLayerEnumerator : IEnumerator<ILayer>
         {

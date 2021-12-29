@@ -4,10 +4,8 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-
 using DotSpatial.Serialization;
-
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -211,7 +209,7 @@ namespace DotSpatial.Data
         #endregion
 
         /// <summary>
-        /// Equality test
+        /// Equality test.
         /// </summary>
         /// <param name="left">First extent to test.</param>
         /// <param name="right">Second extent to test.</param>
@@ -223,7 +221,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Inequality test
+        /// Inequality test.
         /// </summary>
         /// <param name="left">First extent to test.</param>
         /// <param name="right">Second extent to test.</param>
@@ -382,7 +380,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Expand will adjust both the minimum and maximum by the specified sizeX and sizeY
+        /// Expand will adjust both the minimum and maximum by the specified sizeX and sizeY.
         /// </summary>
         /// <param name="padX">The amount to expand left and right.</param>
         /// <param name="padY">The amount to expand up and down.</param>
@@ -433,7 +431,7 @@ namespace DotSpatial.Data
         /// Spreads the values for the basic X, Y extents across the whole range of int.
         /// Repetition will occur, but it should be rare.
         /// </summary>
-        /// <returns>Integer</returns>
+        /// <returns>Integer.</returns>
         public override int GetHashCode()
         {
             // 215^4 ~ Int.MaxValue so the value will cover the range based mostly on first 2 sig figs.
@@ -651,8 +649,8 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="entireText">Complete text from which the values should be parsed.</param>
         /// <param name="name">The name of the dimension, like X.</param>
-        /// <param name="min">The minimum that gets assigned</param>
-        /// <param name="max">The maximum that gets assigned</param>
+        /// <param name="min">The minimum that gets assigned.</param>
+        /// <param name="max">The maximum that gets assigned.</param>
         /// <returns>Boolean, true if the parse was successful.</returns>
         private static bool TryExtract(string entireText, string name, out double min, out double max)
         {

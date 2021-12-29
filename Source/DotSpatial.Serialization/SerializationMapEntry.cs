@@ -45,8 +45,8 @@ namespace DotSpatial.Serialization
         /// <summary>
         /// Assigns the constructor argument index of this entry's attribute.
         /// </summary>
-        /// <param name="index">The constructor argument index to assign</param>
-        /// <returns>The SerializationMapEntry</returns>
+        /// <param name="index">The constructor argument index to assign.</param>
+        /// <returns>The SerializationMapEntry.</returns>
         public SerializationMapEntry AsConstructorArgument(int index)
         {
             Attribute.ConstructorArgumentIndex = index;
@@ -79,7 +79,7 @@ namespace DotSpatial.Serialization
         /// Assigns the formatter value of this entry's attribute.
         /// </summary>
         /// <param name="formatterType">The serialization formatter to use for the associated member.</param>
-        /// <returns>The SerializationMapEntry</returns>
+        /// <returns>The SerializationMapEntry.</returns>
         public SerializationMapEntry WithFormatterType(Type formatterType)
         {
             Attribute.Formatter = formatterType;

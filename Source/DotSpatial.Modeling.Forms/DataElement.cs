@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// Element for Data
+    /// Element for Data.
     /// </summary>
     public class DataElement : ModelElement
     {
@@ -19,8 +19,8 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="DataElement"/> class.
         /// </summary>
-        /// <param name="parameter">One of Brian's Parameter classes</param>
-        /// <param name="modelElements">A list of all the elements in the model</param>
+        /// <param name="parameter">One of Brian's Parameter classes.</param>
+        /// <param name="modelElements">A list of all the elements in the model.</param>
         public DataElement(Parameter parameter, List<ModelElement> modelElements)
             : base(modelElements)
         {
@@ -48,7 +48,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// When the user doulbe clicks on a tool call this method.
         /// </summary>
-        /// <returns>True</returns>
+        /// <returns>True.</returns>
         public override bool DoubleClick()
         {
             return true;

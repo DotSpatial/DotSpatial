@@ -22,18 +22,19 @@ namespace DotSpatial.Tools.Tests
         /// when using the ToolDialog for ClipPolygonWithPolygon.
         /// </summary>
         /// <remarks>
-        /// Issue: https://github.com/DotSpatial/DotSpatial/issues/892
+        /// Issue: https://github.com/DotSpatial/DotSpatial/issues/892.
         /// </remarks>
         [Test]
+        [Ignore("defective shapefile used for test that requires valid shapefile")]
         public void CopyAttributesToClipped()
         {
             var target = new ClipPolygonWithPolygon();
 
             // load input 1 Shapefile as IFeatureSet
-            IFeatureSet europeShape = Shapefile.OpenFile(@"Data\ClipPolygonWithPolygonTests\EUR_countries.shp");
+            IFeatureSet europeShape = Shapefile.OpenFile(Common.AbsolutePath(@"Data\ClipPolygonWithPolygonTests\EUR_countries.shp"));
 
             // load input 2 Shapefile as IFeatureSet
-            IFeatureSet belgiumShape = Shapefile.OpenFile(@"Data\ClipPolygonWithPolygonTests\Belgium.shp");
+            IFeatureSet belgiumShape = Shapefile.OpenFile(Common.AbsolutePath(@"Data\ClipPolygonWithPolygonTests\Belgium.shp"));
 
             // set output file as IFeatureSet shapefile
             IFeatureSet outputShape = new FeatureSet()
@@ -53,7 +54,12 @@ namespace DotSpatial.Tools.Tests
                 Assert.That(outputFile.DataTable.Columns[0].Caption.Equals("ID"));
                 Assert.That(outputFile.DataTable.Columns[1].Caption.Equals("Name"));
 
-                string[,] dataValues = { { "BE", "Belgium" }, { "DE", "Germany" }, { "LU", "Luxembourg" } };
+                string[,] dataValues =
+                {
+                    { "BE", "Belgium" },
+                    { "DE", "Germany" },
+                    { "LU", "Luxembourg" }
+                };
 
                 var mpCount = 0;
                 foreach (var feature in outputFile.Features)

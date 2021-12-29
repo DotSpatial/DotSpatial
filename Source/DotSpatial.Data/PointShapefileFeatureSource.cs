@@ -3,7 +3,7 @@
 
 using System;
 using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -70,7 +70,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc />
-        protected override void AppendGeometry(ShapefileHeader header, IGeometry feature, int numFeatures)
+        protected override void AppendGeometry(ShapefileHeader header, Geometry feature, int numFeatures)
         {
             var fi = new FileInfo(Filename);
             int offset = Convert.ToInt32(fi.Length / 2);

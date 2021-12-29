@@ -13,7 +13,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="LabelDrawState"/> class where selected is false but visible is true.
         /// </summary>
-        /// <param name="category">The category</param>
+        /// <param name="category">The category.</param>
         public LabelDrawState(ILabelCategory category)
         {
             Category = category;
@@ -23,9 +23,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="LabelDrawState"/> class.
         /// </summary>
-        /// <param name="category">The category</param>
-        /// <param name="selected">Boolean, true if the label is selected</param>
-        /// <param name="visible">Boolean, true if the label should be visible</param>
+        /// <param name="category">The category.</param>
+        /// <param name="selected">Boolean, true if the label is selected.</param>
+        /// <param name="visible">Boolean, true if the label should be visible.</param>
         public LabelDrawState(ILabelCategory category, bool selected, bool visible)
         {
             Category = category;

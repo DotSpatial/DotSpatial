@@ -41,14 +41,14 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <summary>
         /// Adds the specified object to the hash set collection.
         /// </summary>
-        /// <param name="item">The object to add</param>
+        /// <param name="item">The object to add.</param>
         public void Add(T item)
         {
             _h.Add(item, item);
         }
 
         /// <summary>
-        /// Clears the entire set
+        /// Clears the entire set.
         /// </summary>
         public void Clear()
         {
@@ -78,7 +78,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <summary>
         /// Gets the enumerator of the items in the set.
         /// </summary>
-        /// <returns>The enumerator of the items in the set</returns>
+        /// <returns>The enumerator of the items in the set.</returns>
         public IEnumerator<T> GetEnumerator()
         {
             return _h.Keys.GetEnumerator();
@@ -87,14 +87,14 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <summary>
         /// Gets the enumerator of the items in the set.
         /// </summary>
-        /// <returns>The enumerator of the items in the set</returns>
+        /// <returns>The enumerator of the items in the set.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _h.Keys.GetEnumerator();
         }
 
         /// <summary>
-        /// Removes the specified item
+        /// Removes the specified item.
         /// </summary>
         /// <param name="item">Item that gets removed.</param>
         /// <returns>True if the element is successfully found and removed; otherwise, false.</returns>

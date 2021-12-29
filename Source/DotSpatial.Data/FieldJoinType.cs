@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// FieldJoinType
+    /// FieldJoinType.
     /// </summary>
     public enum FieldJoinType
     {

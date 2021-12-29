@@ -16,7 +16,7 @@ namespace DotSpatial.Symbology
         new IPolygonSymbolizer SelectionSymbolizer { get; set; }
 
         /// <summary>
-        /// Gets or sets the symbolizer for this category
+        /// Gets or sets the symbolizer for this category.
         /// </summary>
         new IPolygonSymbolizer Symbolizer { get; set; }
 

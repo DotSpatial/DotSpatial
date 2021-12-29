@@ -9,7 +9,7 @@ using DotSpatial.Modeling.Forms.Elements;
 namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
-    /// Line Feature Parameter past back from a ITool to the toolbox manager
+    /// Line Feature Parameter past back from a ITool to the toolbox manager.
     /// </summary>
     public class LineFeatureSetParam : Parameter
     {
@@ -17,9 +17,9 @@ namespace DotSpatial.Modeling.Forms.Parameters
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LineFeatureSetParam"/> class.
-        /// Creates a new Line Feature Set parameter
+        /// Creates a new Line Feature Set parameter.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
+        /// <param name="name">The name of the parameter.</param>
         public LineFeatureSetParam(string name)
         {
             Name = name;
@@ -34,7 +34,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         #region Properties
 
         /// <summary>
-        /// Gets or sets the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input).
         /// </summary>
         public new IFeatureSet Value
         {
@@ -55,7 +55,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         #region Methods
 
         /// <summary>
-        /// Generates a default instance of the data type so that tools have something to write too
+        /// Generates a default instance of the data type so that tools have something to write too.
         /// </summary>
         /// <param name="path">Path of the generated shapefile.</param>
         public override void GenerateDefaultOutput(string path)

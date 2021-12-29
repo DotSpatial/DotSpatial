@@ -9,7 +9,7 @@ using DotSpatial.Controls;
 namespace DotSpatial.Plugins.WFSClient
 {
     /// <summary>
-    /// WfsServerParameters
+    /// WfsServerParameters.
     /// </summary>
     public partial class WfsServerParameters : Form
     {

@@ -19,7 +19,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         #region Properties
 
         /// <summary>
-        /// Gets a vector direction that indicates the direction of this
+        /// Gets a vector direction that indicates the direction of this.
         /// </summary>
         public Vector2 DirectionVector
         {
@@ -53,7 +53,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         }
 
         /// <summary>
-        /// Gets a value indicating whether both the VertexA and VertexB are infinite vectors
+        /// Gets a value indicating whether both the VertexA and VertexB are infinite vectors.
         /// </summary>
         public bool IsInfinite => VVertexA == Fortune.VVInfinite && VVertexB == Fortune.VVInfinite;
 
@@ -65,12 +65,12 @@ namespace DotSpatial.NTSExtension.Voronoi
         public bool IsPartlyInfinite => VVertexA == Fortune.VVInfinite || VVertexB == Fortune.VVInfinite;
 
         /// <summary>
-        /// Gets or sets the other original point in the dataset
+        /// Gets or sets the other original point in the dataset.
         /// </summary>
         public Vector2 LeftData { get; set; }
 
         /// <summary>
-        /// Gets the length of this edge
+        /// Gets the length of this edge.
         /// </summary>
         public double Length
         {
@@ -82,17 +82,17 @@ namespace DotSpatial.NTSExtension.Voronoi
         }
 
         /// <summary>
-        /// Gets or sets one of the original points in the dataset
+        /// Gets or sets one of the original points in the dataset.
         /// </summary>
         public Vector2 RightData { get; set; }
 
         /// <summary>
-        /// Gets or sets one of the endpoints for the segment that defines this edge
+        /// Gets or sets one of the endpoints for the segment that defines this edge.
         /// </summary>
         public Vector2 VVertexA { get; set; } = Fortune.VVUnkown;
 
         /// <summary>
-        /// Gets or sets the other endpoint for the segment that defines this edge
+        /// Gets or sets the other endpoint for the segment that defines this edge.
         /// </summary>
         public Vector2 VVertexB { get; set; } = Fortune.VVUnkown;
 
@@ -109,7 +109,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// Adds VertexA and VertexB sequentially, so that if VertexA is defined,
         /// then VertexB will become the specified vertex.
         /// </summary>
-        /// <param name="v">Vector that gets assigned to either VertexA or VertexB</param>
+        /// <param name="v">Vector that gets assigned to either VertexA or VertexB.</param>
         /// <exception cref="Exception">Thrown if VertexA and VertexB are both already set.</exception>
         public void AddVertex(Vector2 v)
         {

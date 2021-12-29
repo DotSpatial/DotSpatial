@@ -9,7 +9,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// SQLExpressionDialog
+    /// SQLExpressionDialog.
     /// </summary>
     public partial class SqlExpressionDialog : Form
     {
@@ -37,7 +37,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Attribute source instead of the table
+        /// Gets or sets the Attribute source instead of the table.
         /// </summary>
         public IAttributeSource AttributeSource
         {

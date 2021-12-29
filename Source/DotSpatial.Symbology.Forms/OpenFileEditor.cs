@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// UIOpenFileEditor
+    /// UIOpenFileEditor.
     /// </summary>
     public class OpenFileEditor : UITypeEditor
     {
@@ -30,10 +30,10 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Either allows the editor to work or else nips it in the butt
+        /// Either allows the editor to work or else nips it in the butt.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
-        /// <returns>The UITypeEditorEditStyle</returns>
+        /// <returns>The UITypeEditorEditStyle.</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.Modal;

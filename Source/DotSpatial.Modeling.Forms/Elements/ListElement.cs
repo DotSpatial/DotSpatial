@@ -7,7 +7,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// List Element for use in the tool dialog
+    /// List Element for use in the tool dialog.
     /// </summary>
     internal partial class ListElement : DialogElement
     {
@@ -20,7 +20,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="ListElement"/> class.
         /// </summary>
-        /// <param name="param">The parameter this element represents</param>
+        /// <param name="param">The parameter this element represents.</param>
         public ListElement(ListParam param)
         {
             // Needed by the designer
@@ -41,7 +41,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Parameter that the element represents
+        /// Gets or sets the Parameter that the element represents.
         /// </summary>
         public new ListParam Param
         {
@@ -67,7 +67,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// When the control is clicked this event fires
+        /// When the control is clicked this event fires.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -77,7 +77,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// This changes the color of the light and the tooltip of the light based on the status of the text in the box
+        /// This changes the color of the light and the tooltip of the light based on the status of the text in the box.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>

@@ -10,7 +10,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PolygonCategory
+    /// PolygonCategory.
     /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
     [Serializable]
@@ -30,9 +30,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonCategory"/> class that is made up from a simple color.
         /// </summary>
-        /// <param name="fillColor">The color to fill the polygons with</param>
-        /// <param name="outlineColor">The border color for the polygons</param>
-        /// <param name="outlineWidth">The width of the line drawn on the border</param>
+        /// <param name="fillColor">The color to fill the polygons with.</param>
+        /// <param name="outlineColor">The border color for the polygons.</param>
+        /// <param name="outlineWidth">The width of the line drawn on the border.</param>
         public PolygonCategory(Color fillColor, Color outlineColor, double outlineWidth)
         {
             Symbolizer = new PolygonSymbolizer(fillColor, outlineColor, outlineWidth);
@@ -42,9 +42,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonCategory"/> class with the specified image being tiled within the category.
         /// </summary>
-        /// <param name="picture">The picture to draw</param>
-        /// <param name="wrap">The way to wrap the picture</param>
-        /// <param name="angle">The angle to rotate the image</param>
+        /// <param name="picture">The picture to draw.</param>
+        /// <param name="wrap">The way to wrap the picture.</param>
+        /// <param name="angle">The angle to rotate the image.</param>
         public PolygonCategory(Image picture, WrapMode wrap, double angle)
         {
             Symbolizer = new PolygonSymbolizer(picture, wrap, angle);
@@ -55,11 +55,11 @@ namespace DotSpatial.Symbology
         /// Initializes a new instance of the <see cref="PolygonCategory"/> class with the specified image being tiled within the category.
         /// The simple outline characteristics are also defined.
         /// </summary>
-        /// <param name="picture">The picture to draw</param>
-        /// <param name="wrap">The way to wrap the picture</param>
-        /// <param name="angle">The angle to rotate the image</param>
-        /// <param name="outlineColor">The color to use</param>
-        /// <param name="outlineWidth">The outline width</param>
+        /// <param name="picture">The picture to draw.</param>
+        /// <param name="wrap">The way to wrap the picture.</param>
+        /// <param name="angle">The angle to rotate the image.</param>
+        /// <param name="outlineColor">The color to use.</param>
+        /// <param name="outlineWidth">The outline width.</param>
         public PolygonCategory(Image picture, WrapMode wrap, double angle, Color outlineColor, double outlineWidth)
         {
             Symbolizer = new PolygonSymbolizer(picture, wrap, angle, outlineColor, outlineWidth);
@@ -69,12 +69,12 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonCategory"/> class using a Gradient Pattern with the specified colors and angle.
         /// </summary>
-        /// <param name="startColor">The start color</param>
-        /// <param name="endColor">The end color</param>
-        /// <param name="angle">The direction of the gradient</param>
-        /// <param name="style">The type of gradient to use</param>
-        /// <param name="outlineColor">The color to use for the border symbolizer</param>
-        /// <param name="outlineWidth">The width of the line to use for the border symbolizer</param>
+        /// <param name="startColor">The start color.</param>
+        /// <param name="endColor">The end color.</param>
+        /// <param name="angle">The direction of the gradient.</param>
+        /// <param name="style">The type of gradient to use.</param>
+        /// <param name="outlineColor">The color to use for the border symbolizer.</param>
+        /// <param name="outlineWidth">The width of the line to use for the border symbolizer.</param>
         public PolygonCategory(Color startColor, Color endColor, double angle, GradientType style, Color outlineColor, double outlineWidth)
         {
             Symbolizer = new PolygonSymbolizer(startColor, endColor, angle, style, outlineColor, outlineWidth);
@@ -85,7 +85,7 @@ namespace DotSpatial.Symbology
         /// Initializes a new instance of the <see cref="PolygonCategory"/> class based on a symbolizer,
         /// and uses the same symbolizer, but with a fill and border color of light cyan for the selection symbolizer.
         /// </summary>
-        /// <param name="polygonSymbolizer">The symbolizer to use in order to create a category</param>
+        /// <param name="polygonSymbolizer">The symbolizer to use in order to create a category.</param>
         public PolygonCategory(IPolygonSymbolizer polygonSymbolizer)
         {
             Symbolizer = polygonSymbolizer;
@@ -115,7 +115,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the symbolizer for this category
+        /// Gets or sets the symbolizer for this category.
         /// </summary>
         [Description("Gets or sets the symbolizer for this category")]
         public new IPolygonSymbolizer Symbolizer
@@ -163,7 +163,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// A string representation of this category.
         /// </summary>
-        /// <returns>String</returns>
+        /// <returns>String.</returns>
         public override string ToString()
         {
             return "Filter: " + FilterExpression + " Color: " + Symbolizer.GetFillColor();

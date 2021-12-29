@@ -17,8 +17,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="CollectiveIndex{T}"/> class.
         /// </summary>
-        /// <param name="inCollection">The IEnumerable&lt;T&gt; specified during the event"/></param>
-        /// <param name="inIndex">The integer index associated with this event</param>
+        /// <param name="inCollection">The IEnumerable&lt;T&gt; specified during the event"/>.</param>
+        /// <param name="inIndex">The integer index associated with this event.</param>
         public CollectiveIndex(IEnumerable<T> inCollection, int inIndex)
         {
             Index = inIndex;

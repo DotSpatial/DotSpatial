@@ -65,7 +65,7 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Activates this provider
+        /// Activates this provider.
         /// </summary>
         public virtual void Activate()
         {
@@ -73,7 +73,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Deactivates this provider
+        /// Deactivates this provider.
         /// </summary>
         public virtual void Deactivate()
         {

@@ -11,7 +11,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the symbolizer for this category
+        /// Gets or sets the symbolizer for this category.
         /// </summary>
         new ILineSymbolizer Symbolizer { get; set; }
 

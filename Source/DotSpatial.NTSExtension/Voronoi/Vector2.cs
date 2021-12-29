@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 // The Original Code is from a code project example:
 // http://www.codeproject.com/KB/recipes/fortunevoronoi.aspx
@@ -11,7 +11,7 @@ using GeoAPI.Geometries;
 namespace DotSpatial.NTSExtension.Voronoi
 {
     /// <summary>
-    /// A vector class, implementing all interesting features of vectors
+    /// A vector class, implementing all interesting features of vectors.
     /// </summary>
     public struct Vector2
     {
@@ -23,12 +23,12 @@ namespace DotSpatial.NTSExtension.Voronoi
         public static double Tolerance;
 
         /// <summary>
-        /// The x coordinate
+        /// The x coordinate.
         /// </summary>
         public readonly double X;
 
         /// <summary>
-        /// The y coordinate
+        /// The y coordinate.
         /// </summary>
         public readonly double Y;
 
@@ -50,7 +50,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector2"/> struct.
         /// </summary>
-        /// <param name="x">The elements of the vector</param>
+        /// <param name="x">The elements of the vector.</param>
         public Vector2(params double[] x)
         {
             X = x[0];
@@ -62,7 +62,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         #region Properties
 
         /// <summary>
-        /// Gets the dot product of this vector with itself
+        /// Gets the dot product of this vector with itself.
         /// </summary>
         public double SquaredLength => this * this;
 
@@ -71,18 +71,18 @@ namespace DotSpatial.NTSExtension.Voronoi
         #region Operators
 
         /// <summary>
-        /// Calculates the vector sum of these two vectors
+        /// Calculates the vector sum of these two vectors.
         /// </summary>
-        /// <param name="a">One vector to add</param>
-        /// <param name="b">The second vector to add</param>
-        /// <returns>The vector sum of the specified vectors</returns>
+        /// <param name="a">One vector to add.</param>
+        /// <param name="b">The second vector to add.</param>
+        /// <returns>The vector sum of the specified vectors.</returns>
         public static Vector2 operator +(Vector2 a, Vector2 b)
         {
             return new Vector2(a.X + b.X, a.Y + b.Y);
         }
 
         /// <summary>
-        /// Overrides equality to use the tolerant equality
+        /// Overrides equality to use the tolerant equality.
         /// </summary>
         /// <param name="a">First vector to check.</param>
         /// <param name="b">Second vector to check.</param>
@@ -93,7 +93,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         }
 
         /// <summary>
-        /// Overrides equality to use the tolerant equality test
+        /// Overrides equality to use the tolerant equality test.
         /// </summary>
         /// <param name="a">First vector to check.</param>
         /// <param name="b">Second vector to check.</param>
@@ -104,7 +104,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         }
 
         /// <summary>
-        /// Get the scalar product of two vectors
+        /// Get the scalar product of two vectors.
         /// </summary>
         /// <param name="a">First vector to multiply.</param>
         /// <param name="b">Second vector to multiply.</param>
@@ -115,11 +115,11 @@ namespace DotSpatial.NTSExtension.Voronoi
         }
 
         /// <summary>
-        /// Multiplies the vector by a scalar
+        /// Multiplies the vector by a scalar.
         /// </summary>
-        /// <param name="a">The vector to modify</param>
-        /// <param name="scale">The double scale to multiply</param>
-        /// <returns>A new Vector2</returns>
+        /// <param name="a">The vector to modify.</param>
+        /// <param name="scale">The double scale to multiply.</param>
+        /// <returns>A new Vector2.</returns>
         public static Vector2 operator *(Vector2 a, double scale)
         {
             return new Vector2(a.X * scale, a.Y * scale);
@@ -137,11 +137,11 @@ namespace DotSpatial.NTSExtension.Voronoi
         }
 
         /// <summary>
-        /// Calculates the vector sum of these two vectors
+        /// Calculates the vector sum of these two vectors.
         /// </summary>
-        /// <param name="a">One vector to add</param>
-        /// <param name="b">The second vector to add</param>
-        /// <returns>The vector sum of the specified vectors</returns>
+        /// <param name="a">One vector to add.</param>
+        /// <param name="b">The second vector to add.</param>
+        /// <returns>The vector sum of the specified vectors.</returns>
         public static Vector2 operator -(Vector2 a, Vector2 b)
         {
             return new Vector2(a.X - b.X, a.Y - b.Y);
@@ -161,10 +161,10 @@ namespace DotSpatial.NTSExtension.Voronoi
         }
 
         /// <summary>
-        /// Calculates the euclidean distance from this cell to another
+        /// Calculates the euclidean distance from this cell to another.
         /// </summary>
         /// <param name="other">Second cell for distance calculation.</param>
-        /// <returns>Vector2 stuff</returns>
+        /// <returns>Vector2 stuff.</returns>
         public double Distance(Vector2 other)
         {
             double dx = X - other.X;
@@ -187,7 +187,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <summary>
         /// Retrieves a hashcode that is dependent on the elements.
         /// </summary>
-        /// <returns>The hashcode</returns>
+        /// <returns>The hashcode.</returns>
         public override int GetHashCode()
         {
             return X.GetHashCode() * Y.GetHashCode();
@@ -203,9 +203,9 @@ namespace DotSpatial.NTSExtension.Voronoi
         }
 
         /// <summary>
-        /// Convert the vector into a reconstructable string representation
+        /// Convert the vector into a reconstructable string representation.
         /// </summary>
-        /// <returns>A string from which the vector can be rebuilt</returns>
+        /// <returns>A string from which the vector can be rebuilt.</returns>
         public override string ToString()
         {
             return "(" + X + "," + Y + ")";

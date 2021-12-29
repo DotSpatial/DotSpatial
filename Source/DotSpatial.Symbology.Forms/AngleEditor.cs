@@ -9,7 +9,7 @@ using System.Windows.Forms.Design;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// CharacterCodeEditor
+    /// CharacterCodeEditor.
     /// </summary>
     public class AngleEditor : UITypeEditor
     {
@@ -35,7 +35,7 @@ namespace DotSpatial.Symbology.Forms
         /// Edits a value based on some user input which is collected from a character control.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
-        /// <param name="provider">The service provider</param>
+        /// <param name="provider">The service provider.</param>
         /// <param name="value">The angle value.</param>
         /// <returns>The angle.</returns>
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)

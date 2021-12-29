@@ -269,7 +269,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Saves a single row to the data source.
         /// </summary>
-        /// <param name="index">the integer row (or FID) index</param>
+        /// <param name="index">the integer row (or FID) index.</param>
         /// <param name="values">The object array holding the new values to store.</param>
         public virtual void Edit(int index, Dictionary<string, object> values)
         {
@@ -287,7 +287,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Saves a single row to the data source.
         /// </summary>
-        /// <param name="index">the integer row (or FID) index</param>
+        /// <param name="index">the integer row (or FID) index.</param>
         /// <param name="values">The object array holding the new values to store.</param>
         public virtual void Edit(int index, DataRow values)
         {
@@ -325,8 +325,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Edit the specified rows via a client supplied callback.
         /// </summary>
-        /// <param name="indices">rows to edit</param>
-        /// <param name="rowCallback">client supplied callback</param>
+        /// <param name="indices">rows to edit.</param>
+        /// <param name="rowCallback">client supplied callback.</param>
         public virtual void Edit(IEnumerable<int> indices, RowEditEvent rowCallback)
         {
             if (GetFileLength() == 0) return;
@@ -638,7 +638,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Saves this Table to the specified fileName.
         /// </summary>
-        /// <param name="fileName">The string fileName to save to</param>
+        /// <param name="fileName">The string fileName to save to.</param>
         /// <param name="overwrite">A boolean indicating whether or not to write over the file if it exists.</param>
         public void SaveAs(string fileName, bool overwrite)
         {
@@ -660,7 +660,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Reads just the content requested in order to satisfy the paging ability of VirtualMode for the DataGridView.
         /// </summary>
-        /// <param name="startRow">The 0 based integer index of the start row</param>
+        /// <param name="startRow">The 0 based integer index of the start row.</param>
         /// <param name="dataValues">The DataTable with the 0 row corresponding to the start row. If this exceeds the size of the data table, it will add rows.</param>
         public void SetAttributes(int startRow, DataTable dataValues)
         {
@@ -686,8 +686,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Reads just the content requested in order to satisfy the paging ability of VirtualMode for the DataGridView.
         /// </summary>
-        /// <param name="lowerPageBoundary">starting row</param>
-        /// <param name="rowsPerPage">number of rows to return</param>
+        /// <param name="lowerPageBoundary">starting row.</param>
+        /// <param name="rowsPerPage">number of rows to return.</param>
         /// <returns>A DataTable containing the data that was read.</returns>
         public DataTable SupplyPageOfData(int lowerPageBoundary, int rowsPerPage)
         {
@@ -730,9 +730,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Reads just the content requested.
         /// </summary>
-        /// <param name="lowerPageBoundary">starting row</param>
-        /// <param name="rowsPerPage">number of rows to return</param>
-        /// <param name="fieldName">field for which data is to be returned</param>
+        /// <param name="lowerPageBoundary">starting row.</param>
+        /// <param name="rowsPerPage">number of rows to return.</param>
+        /// <param name="fieldName">field for which data is to be returned.</param>
         /// <returns>The data that was read.</returns>
         public object[] SupplyPageOfData(int lowerPageBoundary, int rowsPerPage, string fieldName)
         {
@@ -773,9 +773,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Reads just the contents requested. Faster than returning the entire record if you have lots of attributes but only want a few.
         /// </summary>
-        /// <param name="lowerPageBoundary">starting row</param>
-        /// <param name="rowsPerPage">number of rows to return</param>
-        /// <param name="fieldNames">fields for which data is to be returned</param>
+        /// <param name="lowerPageBoundary">starting row.</param>
+        /// <param name="rowsPerPage">number of rows to return.</param>
+        /// <param name="fieldNames">fields for which data is to be returned.</param>
         /// <returns>The data that was read.</returns>
         public object[,] SupplyPageOfData(int lowerPageBoundary, int rowsPerPage, IEnumerable<string> fieldNames)
         {
@@ -849,10 +849,10 @@ namespace DotSpatial.Data
         /// This systematically copies all the existing values to a new data column with the same properties,
         /// but with a new data type. Values that cannot convert will be set to null.
         /// </summary>
-        /// <param name="oldDataColumn">The old data column to update</param>
-        /// <param name="newDataType">The new data type that the column should become</param>
-        /// <param name="currentRow">The row up to which values should be changed for</param>
-        /// <param name="columnIndex">The column index of the field being changed</param>
+        /// <param name="oldDataColumn">The old data column to update.</param>
+        /// <param name="newDataType">The new data type that the column should become.</param>
+        /// <param name="currentRow">The row up to which values should be changed for.</param>
+        /// <param name="columnIndex">The column index of the field being changed.</param>
         /// <param name="table"> The Table to apply this strategy to.</param>
         /// <returns>An integer list showing the index values of the rows where the conversion failed.</returns>
         public List<int> UpgradeColumn(Field oldDataColumn, Type newDataType, int currentRow, int columnIndex, DataTable table)
@@ -926,9 +926,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Writes an integer so that it is formatted for dbf. This is still buggy since it is possible to lose info here.
         /// </summary>
-        /// <param name="number">The long value</param>
+        /// <param name="number">The long value.</param>
         /// <param name="length">The length of the field.</param>
-        /// <param name="decimalCount">The number of digits after the decimal</param>
+        /// <param name="decimalCount">The number of digits after the decimal.</param>
         public void Write(long number, int length, int decimalCount)
         {
             string str = number.ToString();
@@ -1063,9 +1063,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Writes a number of spaces equal to numspaces
+        /// Writes a number of spaces equal to numspaces.
         /// </summary>
-        /// <param name="numspaces">The integer number of spaces to write</param>
+        /// <param name="numspaces">The integer number of spaces to write.</param>
         public void WriteSpaces(int numspaces)
         {
             for (int i = 0; i < numspaces; i++)
@@ -1077,7 +1077,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// This appends the content of one datarow to a dBase file.
         /// </summary>
-        /// <exception cref="ArgumentNullException">The columnValues parameter was null</exception>
+        /// <exception cref="ArgumentNullException">The columnValues parameter was null.</exception>
         /// <exception cref="InvalidOperationException">Header records need to be written first.</exception>
         /// <exception cref="InvalidDataException">Table property of columnValues parameter cannot be null.</exception>
         public void WriteTable()
@@ -1157,7 +1157,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Cleanup after finished calling OverwriteDataRow
+        /// Cleanup after finished calling OverwriteDataRow.
         /// </summary>
         private void EndEdit()
         {
@@ -1260,9 +1260,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Common code for editing an existing row in the data source.
         /// </summary>
-        /// <param name="index">The index</param>
-        /// <param name="values">The values</param>
-        /// <param name="ncs">The number converter</param>
+        /// <param name="index">The index.</param>
+        /// <param name="values">The values.</param>
+        /// <param name="ncs">The number converter.</param>
         private void OverwriteDataRow(int index, object values, NumberConverter[] ncs)
         {
             // We allow passing in either DataRow values or Dictionary, so figure out which
@@ -1289,7 +1289,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Parse the character data for one column into an object ready for insertion into a data row.
         /// </summary>
-        /// <param name="field">The field</param>
+        /// <param name="field">The field.</param>
         /// <param name="currentRow">The row number.</param>
         /// <param name="cBuffer">The character data.</param>
         /// <param name="table">The table.</param>
@@ -1398,7 +1398,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// This function is the main entry point of parsing the columns.
         /// </summary>
-        /// <param name="field">The field</param>
+        /// <param name="field">The field.</param>
         /// <param name="currentRow">The row number.</param>
         /// <param name="bBuffer">The byte data.</param>
         /// <param name="startIndex">The start index.</param>
@@ -1499,7 +1499,7 @@ namespace DotSpatial.Data
         /// padded with blanks. Each field is expected to start with a space or a astrisk indicating if the value is
         /// valid or <c>null</c>.
         /// </summary>
-        /// <param name="field">The field</param>
+        /// <param name="field">The field.</param>
         /// <param name="currentRow">The row number.</param>
         /// <param name="cBuffer">The char data.</param>
         /// <param name="table">The table.</param>

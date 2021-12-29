@@ -96,7 +96,7 @@ Namespace Manhattan
         ''' <param name="p2"></param>
         ''' <param name="i2"></param>
         ''' <returns></returns>
-        Public Shared Function canMerge(ByVal p1 As manhattanPolygon, <System.Runtime.InteropServices.Out()> ByRef i1 As Integer, ByVal p2 As manhattanPolygon, <System.Runtime.InteropServices.Out()> ByRef i2 As Integer) As Boolean
+        Public Shared Function canMerge(ByVal p1 As manhattanPolygon, <Runtime.InteropServices.Out()> ByRef i1 As Integer, ByVal p2 As manhattanPolygon, <Runtime.InteropServices.Out()> ByRef i2 As Integer) As Boolean
             If p1.bounds.disjoint(p2.bounds) Then
                 i1 = -1 ' for compiler
                 i2 = -1 ' for compiler
@@ -184,7 +184,7 @@ Namespace Manhattan
         ''' <param name="first"></param>
         ''' <param name="last"></param>
         ''' <param name="hole"></param>
-        Public Shared Sub makeHole(ByVal l As List(Of manhattanCustomLink), ByVal first As Integer, ByVal last As Integer, <System.Runtime.InteropServices.Out()> ByRef hole As List(Of manhattanCustomLink))
+        Public Shared Sub makeHole(ByVal l As List(Of manhattanCustomLink), ByVal first As Integer, ByVal last As Integer, <Runtime.InteropServices.Out()> ByRef hole As List(Of manhattanCustomLink))
             If first + 1 < last Then
                 hole = l.GetRange(first + 1, last - (first + 1))
                 'holes often have complementary initial and final links
@@ -204,7 +204,7 @@ Namespace Manhattan
         ''' <param name="first"></param>
         ''' <param name="last"></param>
         ''' <returns></returns>
-        Public Shared Function hasHole(ByVal l As List(Of manhattanCustomLink), <System.Runtime.InteropServices.Out()> ByRef first As Integer, <System.Runtime.InteropServices.Out()> ByRef last As Integer) As Boolean
+        Public Shared Function hasHole(ByVal l As List(Of manhattanCustomLink), <Runtime.InteropServices.Out()> ByRef first As Integer, <Runtime.InteropServices.Out()> ByRef last As Integer) As Boolean
             For first = 0 To l.Count - 2
                 Dim link As manhattanCustomLink = l(first)
                 Dim dir As manhattanCustomLink.manhattanDirection = link.dir

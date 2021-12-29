@@ -37,12 +37,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -51,7 +51,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>Boolean, true if the method was successful.</returns>
@@ -69,7 +69,7 @@ namespace DotSpatial.Tools
         /// </summary>
         /// <param name="input1">The original input raster.</param>
         /// <param name="input2">The second input raster.</param>
-        /// <param name="output">The output raster</param>
+        /// <param name="output">The output raster.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>Boolean, true if the method was successful.</returns>
         public bool Execute(IRaster input1, IRaster input2, IRaster output, ICancelProgressHandler cancelProgressHandler)
@@ -79,7 +79,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {

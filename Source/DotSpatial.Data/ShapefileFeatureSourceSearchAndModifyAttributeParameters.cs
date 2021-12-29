@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// ShapefileFeatureSourceSearchAndModifyAttributeParameters
+    /// ShapefileFeatureSourceSearchAndModifyAttributeParameters.
     /// </summary>
     internal class ShapefileFeatureSourceSearchAndModifyAttributeParameters
     {
@@ -15,7 +15,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="ShapefileFeatureSourceSearchAndModifyAttributeParameters"/> class.
         /// </summary>
-        /// <param name="featureEditCallback">The featureEditCallback</param>
+        /// <param name="featureEditCallback">The featureEditCallback.</param>
         public ShapefileFeatureSourceSearchAndModifyAttributeParameters(FeatureSourceRowEditEvent featureEditCallback)
         {
             FeatureEditCallback = featureEditCallback;

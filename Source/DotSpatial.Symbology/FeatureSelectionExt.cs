@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 using DotSpatial.Data;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -19,7 +19,7 @@ namespace DotSpatial.Symbology
         /// the features are not already in the feature list, since this is simply trying
         /// to select those features.
         /// </summary>
-        /// <param name="self">The IFeatureSelection to add the range to</param>
+        /// <param name="self">The IFeatureSelection to add the range to.</param>
         /// <param name="features">The features being selected.</param>
         public static void AddRange(this IFeatureSelection self, IEnumerable<IFeature> features)
         {
@@ -40,7 +40,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="self">The IFeatureSelection that this should be applied to.</param>
         /// <param name="region">The geographic region to add.</param>
-        /// <returns>True if any item was actually added to the collection</returns>
+        /// <returns>True if any item was actually added to the collection.</returns>
         public static bool AddRegion(this IFeatureSelection self, Envelope region)
         {
             Envelope ignoreMe;
@@ -50,7 +50,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Removes the entire list of features.
         /// </summary>
-        /// <param name="self">The IFeatureSelection to remove the range from</param>
+        /// <param name="self">The IFeatureSelection to remove the range from.</param>
         /// <param name="features">The enumerable collection of IFeatures.</param>
         public static void RemoveRange(this IFeatureSelection self, IEnumerable<IFeature> features)
         {
@@ -69,7 +69,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="self">The IFeatureSelection that this should be applied to.</param>
         /// <param name="region">The geographic region to remove.</param>
-        /// <returns>Boolean, true if the collection was changed</returns>
+        /// <returns>Boolean, true if the collection was changed.</returns>
         public static bool RemoveRegion(this IFeatureSelection self, Envelope region)
         {
             Envelope ignoreMe;

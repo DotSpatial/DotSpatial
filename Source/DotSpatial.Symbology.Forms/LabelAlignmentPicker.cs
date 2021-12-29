@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// LabelAlignmentControl
+    /// LabelAlignmentControl.
     /// </summary>
     [ToolboxItem(false)]
     [DefaultEvent("ValueChanged")]
@@ -86,7 +86,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Handles mouse movements that highlight internal buttons
+        /// Handles mouse movements that highlight internal buttons.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseMove(MouseEventArgs e)
@@ -151,7 +151,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Custom drawing
+        /// Custom drawing.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)

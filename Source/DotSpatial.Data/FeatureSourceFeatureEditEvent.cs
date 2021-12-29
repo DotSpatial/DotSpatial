@@ -4,9 +4,9 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Callback specified when calling IFeatureSource.SearchAndModifyAttributes
+    /// Callback specified when calling IFeatureSource.SearchAndModifyAttributes.
     /// </summary>
     /// <param name="e">The event args.</param>
-    /// <returns>Boolean</returns>
+    /// <returns>Boolean.</returns>
     public delegate bool FeatureSourceRowEditEvent(FeatureSourceRowEditEventArgs e);
 }

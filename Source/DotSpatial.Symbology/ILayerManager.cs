@@ -101,21 +101,21 @@ namespace DotSpatial.Symbology
         /// An instance of the dataset should be created and then returned. By this time, the fileName
         /// will already be checked to see if it exists, and deleted if the user wants to overwrite it.
         /// </summary>
-        /// <param name="name">The string fileName for the new instance</param>
-        /// <param name="driverCode">The string short name of the driver for creating the raster</param>
-        /// <param name="xSize">The number of columns in the raster</param>
-        /// <param name="ySize">The number of rows in the raster</param>
-        /// <param name="numBands">The number of bands to create in the raster</param>
-        /// <param name="dataType">The data type to use for the raster</param>
+        /// <param name="name">The string fileName for the new instance.</param>
+        /// <param name="driverCode">The string short name of the driver for creating the raster.</param>
+        /// <param name="xSize">The number of columns in the raster.</param>
+        /// <param name="ySize">The number of rows in the raster.</param>
+        /// <param name="numBands">The number of bands to create in the raster.</param>
+        /// <param name="dataType">The data type to use for the raster.</param>
         /// <param name="options">The options to be used.</param>
-        /// <returns>An IRaster</returns>
+        /// <returns>An IRaster.</returns>
         IRasterLayer CreateRasterLayer(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType, string[] options);
 
         /// <summary>
         /// Checks a dialog filter and returns a list of just the extensions.
         /// </summary>
-        /// <param name="dialogFilter">The Dialog Filter to read extensions from</param>
-        /// <returns>A list of extensions</returns>
+        /// <param name="dialogFilter">The Dialog Filter to read extensions from.</param>
+        /// <returns>A list of extensions.</returns>
         List<string> GetSupportedExtensions(string dialogFilter);
 
         /// <summary>
@@ -145,23 +145,23 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This launches an open file dialog and attempts to load the specified file.
         /// </summary>
-        /// <param name="container">The layer will be created in the specified collection</param>
-        /// <returns>A Layer</returns>
+        /// <param name="container">The layer will be created in the specified collection.</param>
+        /// <returns>A Layer.</returns>
         ILayer OpenLayer(ICollection<ILayer> container);
 
         /// <summary>
         /// This launches an open file dialog and attempts to load the specified file.
         /// </summary>
         /// <param name="progressHandler">Specifies the progressHandler to receive progress messages. This value overrides the property on this DataManager.</param>
-        /// <returns>A Layer</returns>
+        /// <returns>A Layer.</returns>
         ILayer OpenLayer(IProgressHandler progressHandler);
 
         /// <summary>
         /// Opens a new layer and automatically adds it to the specified container.
         /// </summary>
         /// <param name="fileName">A String fileName to attempt to open.</param>
-        /// <param name="container">The container (usually a LayerCollection) to add to</param>
-        /// <returns>The layer after it has been created and added to the container</returns>
+        /// <param name="container">The container (usually a LayerCollection) to add to.</param>
+        /// <returns>The layer after it has been created and added to the container.</returns>
         ILayer OpenLayer(string fileName, ICollection<ILayer> container);
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="fileName">A String fileName to attempt to open.</param>
         /// <param name="progressHandler">Specifies the progressHandler to receive progress messages. This value overrides the property on this DataManager.</param>
-        /// <returns>A Layer</returns>
+        /// <returns>A Layer.</returns>
         ILayer OpenLayer(string fileName, IProgressHandler progressHandler);
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="fileName">A String fileName to attempt to open.</param>
         /// <param name="inRam">A boolean value that if true will attempt to force a load of the data into memory. This value overrides the property on this DataManager.</param>
-        /// <param name="container">any valid IContainer that this should be added to</param>
+        /// <param name="container">any valid IContainer that this should be added to.</param>
         /// <param name="progressHandler">Specifies the progressHandler to receive progress messages. This value overrides the property on this DataManager.</param>
         /// <returns>A layer.</returns>
         ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler);
@@ -194,27 +194,27 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This opens a file, but populates the dialog filter with only raster formats.
         /// </summary>
-        /// <returns>An IRaster with the data from the file specified in an open file dialog</returns>
+        /// <returns>An IRaster with the data from the file specified in an open file dialog.</returns>
         IRasterLayer OpenRasterLayer();
 
         /// <summary>
-        /// This attempts to open the specified raster file and returns an associated layer
+        /// This attempts to open the specified raster file and returns an associated layer.
         /// </summary>
-        /// <param name="fileName">The string fileName to open</param>
-        /// <returns>An IRaster with the data from the file specified in an open file dialog</returns>
+        /// <param name="fileName">The string fileName to open.</param>
+        /// <returns>An IRaster with the data from the file specified in an open file dialog.</returns>
         IRasterLayer OpenRasterLayer(string fileName);
 
         /// <summary>
         /// This opens a file, but populates the dialog filter with only raster formats.
         /// </summary>
-        /// <returns>An IFeatureSet with the data from the file specified in a dialog</returns>
+        /// <returns>An IFeatureSet with the data from the file specified in a dialog.</returns>
         IFeatureLayer OpenVectorLayer();
 
         /// <summary>
-        /// This attempts to open the specified vector file and returns an associated layer
+        /// This attempts to open the specified vector file and returns an associated layer.
         /// </summary>
-        /// <param name="fileName">the string fileName to open</param>
-        /// <returns>An IFeatureSet with the data from the file specified in a dialog</returns>
+        /// <param name="fileName">the string fileName to open.</param>
+        /// <returns>An IFeatureSet with the data from the file specified in a dialog.</returns>
         IFeatureLayer OpenVectorLayer(string fileName);
 
         #endregion

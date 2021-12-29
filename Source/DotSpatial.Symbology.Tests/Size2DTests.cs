@@ -18,7 +18,7 @@ namespace DotSpatial.Symbology.Tests
         /// <summary>
         /// Gets the test cases for the Size2D == checks. This is also used for the Size2D != checks.
         /// </summary>
-        public IEnumerable<TestCaseData> EqualityOperatorWorksTestCases
+        public static IEnumerable<TestCaseData> EqualityOperatorWorksTestCases
         {
             get
             {
@@ -33,7 +33,7 @@ namespace DotSpatial.Symbology.Tests
         /// <summary>
         /// Gets the test cases for the Size2D.Equals(object) checks.
         /// </summary>
-        public IEnumerable<TestCaseData> EqualsObjectWorksTestCases
+        public static IEnumerable<TestCaseData> EqualsObjectWorksTestCases
         {
             get
             {
@@ -47,7 +47,7 @@ namespace DotSpatial.Symbology.Tests
         /// <summary>
         /// Gets the test cases for the Size2D.Equals(Size2D) checks.
         /// </summary>
-        public IEnumerable<TestCaseData> EqualsSize2DWorksTestCases
+        public static IEnumerable<TestCaseData> EqualsSize2DWorksTestCases
         {
             get
             {

@@ -6,7 +6,7 @@ using System.IO;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// FileItem
+    /// FileItem.
     /// </summary>
     internal class FileItem : DirectoryItem
     {
@@ -22,7 +22,7 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="FileItem"/> class with the specified path.
         /// </summary>
-        /// <param name="path">Gets or sets a string path</param>
+        /// <param name="path">Gets or sets a string path.</param>
         public FileItem(string path)
             : base(path)
         {
@@ -72,7 +72,7 @@ namespace DotSpatial.Data.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the FileInfo
+        /// Gets or sets the FileInfo.
         /// </summary>
         public FileInfo Info { get; set; }
 

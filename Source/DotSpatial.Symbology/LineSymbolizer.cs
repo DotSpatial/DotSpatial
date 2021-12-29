@@ -9,7 +9,8 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using Point = System.Drawing.Point;
 
 namespace DotSpatial.Symbology
 {
@@ -43,11 +44,11 @@ namespace DotSpatial.Symbology
         /// This creates a new set of cartographic lines that together form a line with a border. Since a compound
         /// pen is used, it is possible to use this to create a transparent line with just two border parts.
         /// </summary>
-        /// <param name="fillColor">The fill color for the line</param>
-        /// <param name="borderColor">The border color of the line</param>
-        /// <param name="width">The width of the entire line</param>
-        /// <param name="dash">The dash pattern to use</param>
-        /// <param name="caps">The style of the start and end caps</param>
+        /// <param name="fillColor">The fill color for the line.</param>
+        /// <param name="borderColor">The border color of the line.</param>
+        /// <param name="width">The width of the entire line.</param>
+        /// <param name="dash">The dash pattern to use.</param>
+        /// <param name="caps">The style of the start and end caps.</param>
         public LineSymbolizer(Color fillColor, Color borderColor, double width, DashStyle dash, LineCap caps)
             : this(fillColor, borderColor, width, dash, caps, caps)
         {
@@ -58,12 +59,12 @@ namespace DotSpatial.Symbology
         /// This creates a new set of cartographic lines that together form a line with a border. Since a compound
         /// pen is used, it is possible to use this to create a transparent line with just two border parts.
         /// </summary>
-        /// <param name="fillColor">The fill color for the line</param>
-        /// <param name="borderColor">The border color of the line</param>
-        /// <param name="width">The width of the entire line</param>
-        /// <param name="dash">The dash pattern to use</param>
-        /// <param name="startCap">The style of the start cap</param>
-        /// <param name="endCap">The style of the end cap</param>
+        /// <param name="fillColor">The fill color for the line.</param>
+        /// <param name="borderColor">The border color of the line.</param>
+        /// <param name="width">The width of the entire line.</param>
+        /// <param name="dash">The dash pattern to use.</param>
+        /// <param name="startCap">The style of the start cap.</param>
+        /// <param name="endCap">The style of the end cap.</param>
         public LineSymbolizer(Color fillColor, Color borderColor, double width, DashStyle dash, LineCap startCap, LineCap endCap)
         {
             _strokes = new CopyList<IStroke>();
@@ -115,8 +116,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="LineSymbolizer"/> class with the specified color and width.
         /// </summary>
-        /// <param name="color">The color</param>
-        /// <param name="width">The line width</param>
+        /// <param name="color">The color.</param>
+        /// <param name="width">The line width.</param>
         public LineSymbolizer(Color color, double width)
         {
             _strokes = new CopyList<IStroke>
@@ -130,7 +131,7 @@ namespace DotSpatial.Symbology
         /// Creates a line symbolizer that has a width that is scaled in proportion to the specified envelope as 1/100th of the
         /// width of the envelope.
         /// </summary>
-        /// <param name="env">not used</param>
+        /// <param name="env">not used.</param>
         /// <param name="selected">Boolean, true if this should be symbolized like a selected line.</param>
         public LineSymbolizer(Envelope env, bool selected)
         {
@@ -150,7 +151,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <remarks>
         /// [Editor(typeof(StrokesEditor), typeof(UITypeEditor))]
-        /// [TypeConverter(typeof(GeneralTypeConverter))]
+        /// [TypeConverter(typeof(GeneralTypeConverter))].
         /// </remarks>
         [Description("Controls multiple layers of pens, drawn on top of each other. From object.")]
         [Serialize("Strokes")]
@@ -196,8 +197,7 @@ namespace DotSpatial.Symbology
                 GraphicsPath p = new GraphicsPath();
                 p.AddLine(new Point(target.X, target.Y + (target.Height / 2)), new Point(target.Right, target.Y + (target.Height / 2)));
 
-                var cs = stroke as ICartographicStroke;
-                if (cs != null)
+                if (stroke is ICartographicStroke cs)
                 {
                     cs.DrawLegendPath(g, p, 1);
                 }
@@ -212,8 +212,8 @@ namespace DotSpatial.Symbology
         /// Sequentially draws all of the strokes using the specified graphics path.
         /// </summary>
         /// <param name="g">The graphics device to draw to.</param>
-        /// <param name="gp">The graphics path that describes the pathway to draw</param>
-        /// <param name="scaleWidth">The double scale width that when multiplied by the width gives a measure in pixels</param>
+        /// <param name="gp">The graphics path that describes the pathway to draw.</param>
+        /// <param name="scaleWidth">The double scale width that when multiplied by the width gives a measure in pixels.</param>
         public virtual void DrawPath(Graphics g, GraphicsPath gp, double scaleWidth)
         {
             foreach (var stroke in _strokes)
@@ -288,8 +288,7 @@ namespace DotSpatial.Symbology
             if (_strokes == null) return;
             if (_strokes.Count == 0) return;
 
-            var ss = _strokes[_strokes.Count - 1] as ISimpleStroke;
-            if (ss != null)
+            if (_strokes[_strokes.Count - 1] is ISimpleStroke ss)
             {
                 ss.Color = fillColor;
             }
@@ -299,8 +298,8 @@ namespace DotSpatial.Symbology
         /// Sets the outline, assuming that the symbolizer either supports outlines, or
         /// else by using a second symbol layer.
         /// </summary>
-        /// <param name="outlineColor">The color of the outline</param>
-        /// <param name="width">The width of the outline in pixels</param>
+        /// <param name="outlineColor">The color of the outline.</param>
+        /// <param name="width">The width of the outline in pixels.</param>
         public override void SetOutline(Color outlineColor, double width)
         {
             var w = GetWidth();

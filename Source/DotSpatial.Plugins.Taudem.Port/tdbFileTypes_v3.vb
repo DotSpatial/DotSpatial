@@ -284,7 +284,7 @@ Public Class tdbFileTypes_v3
                 Offset = 1
             End If
             GetRelativePath = GetRelativePath & Filename.Substring(Len(a(i)) + Offset)
-        Catch e As System.Exception
+        Catch e As Exception
             Return ""
         End Try
     End Function

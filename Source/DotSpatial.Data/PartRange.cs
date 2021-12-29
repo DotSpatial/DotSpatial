@@ -26,7 +26,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="PartRange"/> class.
         /// </summary>
-        /// <param name="allVertices">An array of all the vertex locations</param>
+        /// <param name="allVertices">An array of all the vertex locations.</param>
         /// <param name="shapeOffset">The point index of the shape. </param>
         /// <param name="partOffset">The ponit index of the part.</param>
         /// <param name="featureType">The type of features.</param>
@@ -81,7 +81,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Calculates the area and if the area is negative, this is considered a hole.
         /// </summary>
-        /// <returns>Boolean, true if this has a negative area and should be thought of as a hole</returns>
+        /// <returns>Boolean, true if this has a negative area and should be thought of as a hole.</returns>
         public bool IsHole()
         {
             // If the area is actually half of the "area" calculated below.

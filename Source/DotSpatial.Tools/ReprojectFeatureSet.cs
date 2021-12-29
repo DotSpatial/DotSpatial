@@ -39,12 +39,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input parameter array
+        /// Gets the input parameter array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output parameter array
+        /// Gets the output parameter array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -53,7 +53,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if successful
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
@@ -63,10 +63,9 @@ namespace DotSpatial.Tools
             input1?.FillAttributes();
 
             ProjectionParam source = _inputParam[1] as ProjectionParam;
-            ProjectionParam dest = _inputParam[2] as ProjectionParam;
             ProjectionInfo pSource = source?.Value;
 
-            if (dest == null) return false;
+            if (!(_inputParam[2] is ProjectionParam dest)) return false;
 
             IFeatureSet output = _outputParam[0].Value as IFeatureSet;
 
@@ -78,7 +77,7 @@ namespace DotSpatial.Tools
         /// </summary>
         /// <param name="featureSet">The input FeatureSet.</param>
         /// <param name="sourceProjection">The input Expression string to select features to Delete.</param>
-        /// <param name="destProjection">The target projected coordinate system to reproject the featureset to</param>
+        /// <param name="destProjection">The target projected coordinate system to reproject the featureset to.</param>
         /// <param name="output">The output FeatureSet.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>

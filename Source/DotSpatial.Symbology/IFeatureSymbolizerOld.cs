@@ -30,7 +30,7 @@ namespace DotSpatial.Symbology
         bool IsTextured { get; set; }
 
         /// <summary>
-        /// Gets or sets a string name to help identify this Symbolizer
+        /// Gets or sets a string name to help identify this Symbolizer.
         /// </summary>
         string Name { get; set; }
 
@@ -44,7 +44,7 @@ namespace DotSpatial.Symbology
         float Opacity { get; set; }
 
         /// <summary>
-        /// Gets or sets the string TextureFile to define the fill texture
+        /// Gets or sets the string TextureFile to define the fill texture.
         /// </summary>
         string TextureFile { get; set; }
 

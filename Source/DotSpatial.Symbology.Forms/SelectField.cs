@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// SelectField class
+    /// SelectField class.
     /// </summary>
     public partial class SelectField : Form
     {

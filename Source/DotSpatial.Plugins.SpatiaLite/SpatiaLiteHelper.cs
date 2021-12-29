@@ -89,7 +89,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// <summary>
         /// Sets the environment variables so that SpatiaLite can find the dll's.
         /// </summary>
-        /// <returns>true if successful</returns>
+        /// <returns>true if successful.</returns>
         public static bool SetEnvironmentVars()
         {
             try
@@ -123,8 +123,8 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// <summary>
         /// Finds all column names in the database table.
         /// </summary>
-        /// <param name="tableName">table name</param>
-        /// <returns>list of all column names</returns>
+        /// <param name="tableName">table name.</param>
+        /// <returns>list of all column names.</returns>
         public List<string> GetColumnNames(string tableName)
         {
             var columnNameList = new List<string>();
@@ -148,7 +148,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// <summary>
         /// Finds a list of all valid geometry columns in the database.
         /// </summary>
-        /// <returns>the list of geometry columns</returns>
+        /// <returns>the list of geometry columns.</returns>
         public List<GeometryColumnInfo> GetGeometryColumns()
         {
             if (_version4Plus)
@@ -240,7 +240,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// <summary>
         /// Finds all table names in the SpatiaLite database.
         /// </summary>
-        /// <returns>a list of all table names</returns>
+        /// <returns>a list of all table names.</returns>
         public List<string> GetTableNames()
         {
             var tableNameList = new List<string>();
@@ -265,10 +265,10 @@ namespace DotSpatial.Plugins.SpatiaLite
         }
 
         /// <summary>
-        /// Reads the complete feature set from the database
+        /// Reads the complete feature set from the database.
         /// </summary>
-        /// <param name="featureSetInfo">information about the table</param>
-        /// <returns>the resulting feature set</returns>
+        /// <param name="featureSetInfo">information about the table.</param>
+        /// <returns>the resulting feature set.</returns>
         public IFeatureSet ReadFeatureSet(GeometryColumnInfo featureSetInfo)
         {
             var sql = $"SELECT * FROM '{featureSetInfo.TableName}'";
@@ -276,11 +276,11 @@ namespace DotSpatial.Plugins.SpatiaLite
         }
 
         /// <summary>
-        /// Reads the complete feature set from the database
+        /// Reads the complete feature set from the database.
         /// </summary>
-        /// <param name="featureSetInfo">information about the table</param>
-        /// <param name="sql">the sql query</param>
-        /// <returns>the resulting feature set</returns>
+        /// <param name="featureSetInfo">information about the table.</param>
+        /// <param name="sql">the sql query.</param>
+        /// <returns>the resulting feature set.</returns>
         public IFeatureSet ReadFeatureSet(GeometryColumnInfo featureSetInfo, string sql)
         {
             var fType = GetGeometryType(featureSetInfo.GeometryType);
@@ -395,7 +395,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         }
 
         /// <summary>
-        /// Returns true if the schema is a valid schema (has a geometry_columns table)
+        /// Returns true if the schema is a valid schema (has a geometry_columns table).
         /// </summary>
         /// <param name="connString">The connectionstring for the database.</param>
         /// <returns>True, if the schema has a geometry_columns table.</returns>
@@ -416,11 +416,11 @@ namespace DotSpatial.Plugins.SpatiaLite
         }
 
         /// <summary>
-        /// Creates a SQLite command
+        /// Creates a SQLite command.
         /// </summary>
-        /// <param name="conString">connection string</param>
-        /// <param name="cmdText">command text</param>
-        /// <returns>the SpatiaLite command object</returns>
+        /// <param name="conString">connection string.</param>
+        /// <param name="cmdText">command text.</param>
+        /// <returns>the SpatiaLite command object.</returns>
         private static SQLiteCommand CreateCommand(string conString, string cmdText)
         {
             var con = new SQLiteConnection(conString);

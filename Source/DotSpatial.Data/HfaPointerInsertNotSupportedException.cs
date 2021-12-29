@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// HfaPointerInsertNotSupportedException
+    /// HfaPointerInsertNotSupportedException.
     /// </summary>
     public class HfaPointerInsertNotSupportedException : ApplicationException
     {

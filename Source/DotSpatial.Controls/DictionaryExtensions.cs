@@ -18,7 +18,7 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <typeparam name="TKey">Type of the key.</typeparam>
         /// <typeparam name="TValue">Type of the value.</typeparam>
-        /// <param name="dic">this</param>
+        /// <param name="dic">this.</param>
         /// <param name="key">They key whose value should be returned.</param>
         /// <param name="valueFactory">Creates the value that gets added to the dict.</param>
         /// <returns>The value belonging to the key.</returns>

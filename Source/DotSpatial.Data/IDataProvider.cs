@@ -6,7 +6,7 @@ using System.ComponentModel.Composition;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// IDataProvider is what you implement to expand the data handling methods of DotSpatial
+    /// IDataProvider is what you implement to expand the data handling methods of DotSpatial.
     /// </summary>
     [InheritedExport]
     public interface IDataProvider

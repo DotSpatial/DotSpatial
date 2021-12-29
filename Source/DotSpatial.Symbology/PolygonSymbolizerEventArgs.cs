@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PolygonSymbolizerEventArgs
+    /// PolygonSymbolizerEventArgs.
     /// </summary>
     public class PolygonSymbolizerEventArgs : FeatureSymbolizerEventArgs
     {
@@ -24,7 +24,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Symbolizer, casting it to an IPolygonSymbolizer
+        /// Gets or sets the Symbolizer, casting it to an IPolygonSymbolizer.
         /// </summary>
         public new IPolygonSymbolizer Symbolizer
         {

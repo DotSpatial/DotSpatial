@@ -3,7 +3,7 @@
 
 using System;
 using System.Data;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -18,7 +18,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the datarow containing all the attributes related to this geometry
+        /// Gets or sets the datarow containing all the attributes related to this geometry.
         /// </summary>
         DataRow DataRow { get; set; }
 
@@ -36,9 +36,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets a valid IBasicGeometry associated with the data elements of this feature.
         /// This will be enough geometry information to cast into a full fledged geometry
-        /// that can be used in coordination with DotSpatial.Analysis
+        /// that can be used in coordination with DotSpatial.Analysis.
         /// </summary>
-        IGeometry Geometry { get; set; }
+        Geometry Geometry { get; set; }
 
         /// <summary>
         /// Gets or sets a reference to the IFeatureLayer that contains this item.
@@ -59,7 +59,7 @@ namespace DotSpatial.Data
         /// Creates a deep copy of this feature. the new datarow created will not be connected
         /// to a data Table, so it should be added to one.
         /// </summary>
-        /// <returns>Returns a deep copy of this feature as an IFeature</returns>
+        /// <returns>Returns a deep copy of this feature as an IFeature.</returns>
         IFeature Copy();
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a new shape based on this feature by itself.
         /// </summary>
-        /// <returns>A Shape object</returns>
+        /// <returns>A Shape object.</returns>
         Shape ToShape();
 
         /// <summary>
