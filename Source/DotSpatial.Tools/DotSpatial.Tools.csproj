@@ -168,6 +168,7 @@
     <None Include="app.config" />
     <None Include="DotSpatial.Tools.snk" />
     <None Include="DotSpatial.Tools.nuspec" />
+    <Compile Include="InterSectionTool.cs" />
     <None Include="packages.config" />
     <None Include="Resources\Union.bmp" />
   </ItemGroup>
