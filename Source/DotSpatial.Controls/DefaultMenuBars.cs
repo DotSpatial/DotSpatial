@@ -9,7 +9,7 @@ using System.Xml;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using Msg = DotSpatial.Controls.MessageStrings;
 
 namespace DotSpatial.Controls
@@ -250,7 +250,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Add Data to the Map
+        /// Add Data to the Map.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -265,7 +265,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Deselect all features in all layers
+        /// Deselect all features in all layers.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -280,7 +280,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Identifier Tool
+        /// Identifier Tool.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -435,7 +435,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Remove currently selected layer from the Map
+        /// Remove currently selected layer from the Map.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -510,7 +510,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Select or deselect Features
+        /// Select or deselect Features.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -520,7 +520,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zoom In
+        /// Zoom In.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -530,7 +530,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zoom to previous extent
+        /// Zoom to previous extent.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -540,7 +540,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zoom Out
+        /// Zoom Out.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -550,7 +550,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zoom to previous extent
+        /// Zoom to previous extent.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -591,7 +591,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zoom to the currently selected layer
+        /// Zoom to the currently selected layer.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -605,7 +605,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Zoom to maximum extents
+        /// Zoom to maximum extents.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>

@@ -17,12 +17,12 @@ namespace DotSpatial.Symbology
         IImageSymbolizer Symbolizer { get; set; }
 
         /// <summary>
-        /// Gets or sets the dataset specifically as an IImageData object
+        /// Gets or sets the dataset specifically as an IImageData object.
         /// </summary>
         new IImageData DataSet { get; set; }
 
         /// <summary>
-        /// Gets or sets the image being drawn by this layer
+        /// Gets or sets the image being drawn by this layer.
         /// </summary>
         IImageData Image { get; set; }
     }

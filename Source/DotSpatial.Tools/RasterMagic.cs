@@ -3,7 +3,7 @@
 
 using System;
 using DotSpatial.Data;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Tools
 {
@@ -67,10 +67,10 @@ namespace DotSpatial.Tools
             // Figures out which raster has smaller cells
             var smallestCellRaster = input1.CellWidth < input2.CellWidth ? input1 : input2;
             var envelope = UnionEnvelope(input1, input2);
-            envelope.MinX = envelope.MinX + (smallestCellRaster.CellWidth / 2);
-            envelope.MinY = envelope.MinY - (smallestCellRaster.CellHeight / 2);
-            envelope.MaxX = envelope.MaxX + (smallestCellRaster.CellWidth / 2);
-            envelope.MaxY = envelope.MaxY - (smallestCellRaster.CellHeight / 2);
+            envelope.MinX += (smallestCellRaster.CellWidth / 2);
+            envelope.MinY -= (smallestCellRaster.CellHeight / 2);
+            envelope.MaxX += (smallestCellRaster.CellWidth / 2);
+            envelope.MaxY -= (smallestCellRaster.CellHeight / 2);
 
             // Given the envelope of the two rasters we calculate the number of columns / rows
             int noOfCol = Convert.ToInt32(Math.Abs(envelope.Width / smallestCellRaster.CellWidth));
@@ -131,7 +131,7 @@ namespace DotSpatial.Tools
                 // only update when increment in persentage
                 if (current > previous)
                 {
-                    cancelProgressHandler.Progress(string.Empty, current, current + TextStrings.progresscompleted);
+                    cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
                 }
 
                 previous = current;

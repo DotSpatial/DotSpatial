@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// Contains IWin32Window Owner
+    /// Contains IWin32Window Owner.
     /// </summary>
     public interface IIWin32WindowOwner
     {

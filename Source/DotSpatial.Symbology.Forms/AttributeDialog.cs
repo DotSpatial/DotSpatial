@@ -16,7 +16,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeDialog"/> class.
         /// </summary>
-        /// <param name="featureLayer">The feature layer associated with this instance and displayed in the editor</param>
+        /// <param name="featureLayer">The feature layer associated with this instance and displayed in the editor.</param>
         public AttributeDialog(IFeatureLayer featureLayer)
         {
             InitializeComponent();

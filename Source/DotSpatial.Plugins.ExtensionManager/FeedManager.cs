@@ -9,7 +9,7 @@ using DotSpatial.Plugins.ExtensionManager.Properties;
 namespace DotSpatial.Plugins.ExtensionManager
 {
     /// <summary>
-    /// FeedManager
+    /// FeedManager.
     /// </summary>
     internal static class FeedManager
     {

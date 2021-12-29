@@ -57,7 +57,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Calculates the Southerland-Hodgman clip using the actual drawing coordinates.
         /// This hopefully will be much faster than NTS which seems unncessarilly slow to calculate.
-        /// http://www.codeguru.com/cpp/misc/misc/graphics/article.php/c8965
+        /// http://www.codeguru.com/cpp/misc/misc/graphics/article.php/c8965.
         /// </summary>
         /// <param name="points">Points that get clipped.</param>
         /// <returns>A modified list of points that has been clipped to the drawing bounds.</returns>
@@ -76,10 +76,10 @@ namespace DotSpatial.Controls
         /// Calculates the Southerland-Hodgman clip using the actual drawing coordinates.
         /// This specific overload works with arrays of doubles instead of PointF structures.
         /// This hopefully will be much faster than NTS which seems unncessarilly slow to calculate.
-        /// http://www.codeguru.com/cpp/misc/misc/graphics/article.php/c8965
+        /// http://www.codeguru.com/cpp/misc/misc/graphics/article.php/c8965.
         /// </summary>
         /// <param name="vertexValues">The list of arrays of doubles where the X index is 0 and the Y index is 1.</param>
-        /// <returns>A modified list of points that has been clipped to the drawing bounds</returns>
+        /// <returns>A modified list of points that has been clipped to the drawing bounds.</returns>
         public List<double[]> Clip(List<double[]> vertexValues)
         {
             List<double[]> result = vertexValues;

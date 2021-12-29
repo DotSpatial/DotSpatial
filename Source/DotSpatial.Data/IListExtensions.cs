@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// This class handles some extension methods for <see cref="IList{T}"/>
+    /// This class handles some extension methods for <see cref="IList{T}"/>.
     /// </summary>
     public static class IListExtensions
     {
@@ -16,8 +16,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Decreases the index of the specified item by one.
         /// </summary>
-        /// <typeparam name="T">The type of the list</typeparam>
-        /// <param name="self">This list</param>
+        /// <typeparam name="T">The type of the list.</typeparam>
+        /// <param name="self">This list.</param>
         /// <param name="item">the item of type T to decrease the index of.</param>
         /// <returns>True, if the index was decreased.</returns>
         public static bool DecreaseIndex<T>(this IList<T> self, T item)
@@ -37,9 +37,9 @@ namespace DotSpatial.Data
         /// This extension method helps by simply increasing the index value of the specified item
         /// by one.
         /// </summary>
-        /// <typeparam name="T">The generic type of this list</typeparam>
-        /// <param name="self">This list</param>
-        /// <param name="item">The item to increase the index of</param>
+        /// <typeparam name="T">The generic type of this list.</typeparam>
+        /// <param name="self">This list.</param>
+        /// <param name="item">The item to increase the index of.</param>
         /// <returns>True, if the index was increased.</returns>
         public static bool IncreaseIndex<T>(this IList<T> self, T item)
         {

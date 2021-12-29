@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Serialization
 {
     /// <summary>
-    /// BaseCollection
+    /// BaseCollection.
     /// </summary>
     /// <typeparam name="T">Type of the items in the collection.</typeparam>
     public class BaseCollection<T> : ICollection<T>
@@ -112,10 +112,10 @@ namespace DotSpatial.Serialization
         }
 
         /// <summary>
-        /// Copies the items from this collection to the specified array
+        /// Copies the items from this collection to the specified array.
         /// </summary>
-        /// <param name="array">The array to copy to</param>
-        /// <param name="arrayIndex">The zero based integer array index to start copying to</param>
+        /// <param name="array">The array to copy to.</param>
+        /// <param name="arrayIndex">The zero based integer array index to start copying to.</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
             InnerList.CopyTo(array, arrayIndex);
@@ -166,7 +166,7 @@ namespace DotSpatial.Serialization
         /// <summary>
         /// Removes the specified item from the collection.
         /// </summary>
-        /// <param name="item">The item to remove from the collection</param>
+        /// <param name="item">The item to remove from the collection.</param>
         /// <returns>Boolean, true if the remove operation is successful. </returns>
         public bool Remove(T item)
         {
@@ -198,7 +198,7 @@ namespace DotSpatial.Serialization
         /// This allows any handlers that connect to the item to be removed in the event
         /// that the item is no longer anywhere in the list.
         /// </summary>
-        /// <param name="item">The item to be removed</param>
+        /// <param name="item">The item to be removed.</param>
         protected void Exclude(T item)
         {
             if (!InnerList.Contains(item))
@@ -240,7 +240,7 @@ namespace DotSpatial.Serialization
 
         /// <summary>
         /// Occurs any time an item is removed from the collection and no longer
-        /// exists anywhere in the collection
+        /// exists anywhere in the collection.
         /// </summary>
         /// <param name="item">Item that gets excluded.</param>
         protected virtual void OnExclude(T item)
@@ -249,7 +249,7 @@ namespace DotSpatial.Serialization
 
         /// <summary>
         /// Occurs any time an item is added or inserted into the collection
-        /// and did not previously exist in the collection
+        /// and did not previously exist in the collection.
         /// </summary>
         /// <param name="item">Item that gets included.</param>
         protected virtual void OnInclude(T item)
@@ -284,7 +284,7 @@ namespace DotSpatial.Serialization
         }
 
         /// <summary>
-        /// Occurs after a new item has been inserted, and fires IncludeComplete
+        /// Occurs after a new item has been inserted, and fires IncludeComplete.
         /// </summary>
         /// <param name="index">Index where the item should be inserted.</param>
         /// <param name="value">Item that should be inserted.</param>
@@ -304,7 +304,7 @@ namespace DotSpatial.Serialization
         }
 
         /// <summary>
-        /// Fires after the remove operation, ensuring that OnExclude gets called
+        /// Fires after the remove operation, ensuring that OnExclude gets called.
         /// </summary>
         /// <param name="index">Index where the item should be removed.</param>
         /// <param name="value">Item that should be removed.</param>
@@ -327,7 +327,7 @@ namespace DotSpatial.Serialization
         }
 
         /// <summary>
-        /// Fires after the set operation, ensuring that the item is removed
+        /// Fires after the set operation, ensuring that the item is removed.
         /// </summary>
         /// <param name="index">The index.</param>
         /// <param name="oldValue">The old value.</param>

@@ -22,7 +22,7 @@ namespace DotSpatial.Data
         /// <param name="numBands">The number of bands to create in the raster.</param>
         /// <param name="dataType">The data type to use for the raster.</param>
         /// <param name="options">The options to be used.</param>
-        /// <returns>An IRaster</returns>
+        /// <returns>An IRaster.</returns>
         IRaster Create(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType, string[] options);
 
         /// <summary>

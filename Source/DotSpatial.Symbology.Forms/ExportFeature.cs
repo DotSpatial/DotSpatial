@@ -11,7 +11,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// ExportFeature
+    /// ExportFeature.
     /// </summary>
     public partial class ExportFeature : Form
     {

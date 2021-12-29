@@ -4,7 +4,7 @@
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
     /// <summary>
-    /// OgrDataProvider
+    /// OgrDataProvider.
     /// </summary>
     public class OgrDataProvider : IDataProvider
     {
@@ -25,7 +25,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         public string Description => "GDAL/OGR Vector";
 
         /// <summary>
-        /// Gets the dialog filter to use when opening a file
+        /// Gets the dialog filter to use when opening a file.
         /// </summary>
         public string DialogReadFilter => "OGR Vectors|*.shp;*.kml;*.dxf";
 

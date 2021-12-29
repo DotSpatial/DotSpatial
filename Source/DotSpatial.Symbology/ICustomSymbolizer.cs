@@ -40,24 +40,24 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Jiri's code to load from XML
+        /// Jiri's code to load from XML.
         /// </summary>
-        /// <param name="xmlDataSource">The xml Data source to load the symbology from</param>
-        /// <param name="uniqueName">A Unique name for the symbology item</param>
+        /// <param name="xmlDataSource">The xml Data source to load the symbology from.</param>
+        /// <param name="uniqueName">A Unique name for the symbology item.</param>
         void LoadFromXml(string xmlDataSource, string uniqueName);
 
         /// <summary>
-        /// Jiri's code to load from XML
+        /// Jiri's code to load from XML.
         /// </summary>
-        /// <param name="xmlDataSource">The xml Data source to load the symbology from</param>
-        /// <param name="group">The organizational group or category</param>
-        /// <param name="name">The string name within the specified group or category</param>
+        /// <param name="xmlDataSource">The xml Data source to load the symbology from.</param>
+        /// <param name="group">The organizational group or category.</param>
+        /// <param name="name">The string name within the specified group or category.</param>
         void LoadFromXml(string xmlDataSource, string group, string name);
 
         /// <summary>
-        /// Jiri's code to save to XML
+        /// Jiri's code to save to XML.
         /// </summary>
-        /// <param name="xmlDataSource">The xml data source to load the symbology from</param>
+        /// <param name="xmlDataSource">The xml data source to load the symbology from.</param>
         void SaveToXml(string xmlDataSource);
 
         #endregion

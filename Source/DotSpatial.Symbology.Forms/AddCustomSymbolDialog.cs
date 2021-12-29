@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// AddCustomSymbolDialog
+    /// AddCustomSymbolDialog.
     /// </summary>
     public partial class AddCustomSymbolDialog : Form
     {
@@ -71,9 +71,9 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Creates the new custom symbolizer with the specified name and category
+        /// Creates the new custom symbolizer with the specified name and category.
         /// </summary>
-        /// <returns>the custom symbolizer</returns>
+        /// <returns>the custom symbolizer.</returns>
         private CustomSymbolizer CreateCustomSymbolizer()
         {
             CustomSymbolizer custSym = null;

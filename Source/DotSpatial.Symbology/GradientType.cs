@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// GradientType
+    /// GradientType.
     /// </summary>
     public enum GradientType
     {

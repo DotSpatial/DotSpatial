@@ -4,7 +4,7 @@
 namespace DotSpatial.Data.MiscUtil
 {
     /// <summary>
-    /// ClassNullOp
+    /// ClassNullOp.
     /// </summary>
     /// <typeparam name="T">Type of the operator.</typeparam>
     internal sealed class ClassNullOp<T> : INullOp<T>
@@ -16,9 +16,9 @@ namespace DotSpatial.Data.MiscUtil
         /// Increments the accumulator only if the value is non-null. If the accumulator is null,
         /// then the accumulator is given the new value; otherwise the accumulator and value are added.
         /// </summary>
-        /// <param name="accumulator">The current total to be incremented (can be null)</param>
-        /// <param name="value">The value to be tested and added to the accumulator</param>
-        /// <returns>True if the value is non-null, else false - i.e. "has the accumulator been updated?"</returns>
+        /// <param name="accumulator">The current total to be incremented (can be null).</param>
+        /// <param name="value">The value to be tested and added to the accumulator.</param>
+        /// <returns>True if the value is non-null, else false - i.e. "has the accumulator been updated?".</returns>
         public bool AddIfNotNull(ref T accumulator, T value)
         {
             if (value == null) return false;
@@ -28,10 +28,10 @@ namespace DotSpatial.Data.MiscUtil
         }
 
         /// <summary>
-        /// Indicates if the supplied value is non-null, for reference-types or Nullable&lt;T&gt;
+        /// Indicates if the supplied value is non-null, for reference-types or Nullable&lt;T&gt;.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns>True for non-null values, else false</returns>
+        /// <returns>True for non-null values, else false.</returns>
         public bool HasValue(T value)
         {
             return value != null;

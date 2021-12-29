@@ -23,8 +23,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawArgs"/> class.
         /// </summary>
-        /// <param name="inGraphics">A System.Windows.Drawing.Graphics object</param>
-        /// <param name="inDrawWindow">A DotSpatial.Drawing.DrawWindow to draw to</param>
+        /// <param name="inGraphics">A System.Windows.Drawing.Graphics object.</param>
+        /// <param name="inDrawWindow">A DotSpatial.Drawing.DrawWindow to draw to.</param>
         public DrawArgs(Graphics inGraphics, DrawWindow inDrawWindow)
             : this(inGraphics, inDrawWindow, 0, 0)
         {
@@ -33,9 +33,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawArgs"/> class.
         /// </summary>
-        /// <param name="inGraphics">A System.Windows.Drawing.Graphics object</param>
-        /// <param name="inDrawWindow">A DotSpatial.Drawing.DrawWindow to draw to</param>
-        /// <param name="inPart">An integer part representing a value from 0 to NumParts being drawn</param>
+        /// <param name="inGraphics">A System.Windows.Drawing.Graphics object.</param>
+        /// <param name="inDrawWindow">A DotSpatial.Drawing.DrawWindow to draw to.</param>
+        /// <param name="inPart">An integer part representing a value from 0 to NumParts being drawn.</param>
         public DrawArgs(Graphics inGraphics, DrawWindow inDrawWindow, int inPart)
             : this(inGraphics, inDrawWindow, inPart, 0)
         {
@@ -44,10 +44,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawArgs"/> class.
         /// </summary>
-        /// <param name="inGraphics">A System.Windows.Drawing.Graphics object</param>
-        /// <param name="inDrawWindow">A DotSpatial.Drawing.DrawWindow to draw to</param>
-        /// <param name="inPart">An integer part representing a value from 0 to NumParts being drawn</param>
-        /// <param name="inStage">The integer stage representing an object that has several stages, for all of the parts to be passed through</param>
+        /// <param name="inGraphics">A System.Windows.Drawing.Graphics object.</param>
+        /// <param name="inDrawWindow">A DotSpatial.Drawing.DrawWindow to draw to.</param>
+        /// <param name="inPart">An integer part representing a value from 0 to NumParts being drawn.</param>
+        /// <param name="inStage">The integer stage representing an object that has several stages, for all of the parts to be passed through.</param>
         public DrawArgs(Graphics inGraphics, DrawWindow inDrawWindow, int inPart, int inStage)
         {
             _graphics = inGraphics;

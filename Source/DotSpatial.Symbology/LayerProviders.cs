@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// LayerProviders
+    /// LayerProviders.
     /// </summary>
     public class LayerProviders : EventArgs
     {
@@ -22,7 +22,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="LayerProviders"/> class.
         /// </summary>
-        /// <param name="providers">Specifies a list of IDataProviders</param>
+        /// <param name="providers">Specifies a list of IDataProviders.</param>
         public LayerProviders(List<ILayerProvider> providers)
         {
             _providers = providers;

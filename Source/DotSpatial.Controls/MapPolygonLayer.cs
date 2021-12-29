@@ -10,7 +10,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -44,8 +44,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="MapPolygonLayer"/> class.
         /// </summary>
-        /// <param name="featureSet">A featureset that contains polygons</param>
-        /// <param name="container">An IContainer that the polygon layer should be created in</param>
+        /// <param name="featureSet">A featureset that contains polygons.</param>
+        /// <param name="container">An IContainer that the polygon layer should be created in.</param>
         public MapPolygonLayer(IFeatureSet featureSet, ICollection<ILayer> container)
             : base(featureSet, container, null)
         {
@@ -56,7 +56,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="MapPolygonLayer"/> class.
         /// </summary>
-        /// <param name="featureSet">A featureset that contains polygons</param>
+        /// <param name="featureSet">A featureset that contains polygons.</param>
         /// <param name="container">An IContainer that the polygon layer should be created in.</param>
         /// <param name="notFinished">Indicates whether the OnFinishedLoading event should be suppressed after loading finished.</param>
         public MapPolygonLayer(IFeatureSet featureSet, ICollection<ILayer> container, bool notFinished)
@@ -169,12 +169,11 @@ namespace DotSpatial.Controls
         /// This is testing the idea of using an input parameter type that is marked as out
         /// instead of a return type.
         /// </summary>
-        /// <param name="result">The result of the creation</param>
-        /// <returns>Boolean, true if a layer can be created</returns>
+        /// <param name="result">The result of the creation.</param>
+        /// <returns>Boolean, true if a layer can be created.</returns>
         public override bool CreateLayerFromSelectedFeatures(out IFeatureLayer result)
         {
-            MapPolygonLayer temp;
-            bool resultOk = CreateLayerFromSelectedFeatures(out temp);
+            bool resultOk = CreateLayerFromSelectedFeatures(out MapPolygonLayer temp);
             result = temp;
             return resultOk;
         }
@@ -182,8 +181,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// This is the strong typed version of the same process that is specific to geo point layers.
         /// </summary>
-        /// <param name="result">The new GeoPointLayer to be created</param>
-        /// <returns>Boolean, true if there were any values in the selection</returns>
+        /// <param name="result">The new GeoPointLayer to be created.</param>
+        /// <returns>Boolean, true if there were any values in the selection.</returns>
         public virtual bool CreateLayerFromSelectedFeatures(out MapPolygonLayer result)
         {
             result = null;
@@ -266,8 +265,8 @@ namespace DotSpatial.Controls
         /// directly, use OnDrawFeatures. This will not clear existing buffer content.
         /// For that call Initialize instead.
         /// </summary>
-        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
-        /// <param name="regions">The geographic regions to draw</param>
+        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space.</param>
+        /// <param name="regions">The geographic regions to draw.</param>
         /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
         public virtual void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
@@ -327,9 +326,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the OnBufferChanged event
+        /// Fires the OnBufferChanged event.
         /// </summary>
-        /// <param name="clipRectangles">The Rectangle in pixels</param>
+        /// <param name="clipRectangles">The Rectangle in pixels.</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
             BufferChanged?.Invoke(this, new ClipArgs(clipRectangles));
@@ -506,10 +505,8 @@ namespace DotSpatial.Controls
         // This draws the individual polygon features
         private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features, bool selected)
         {
-            Dictionary<FastDrawnState, GraphicsPath> paths;
-
             // First, use the coordinates to build the drawing paths
-            BuildPaths(e, features, out paths, selected);
+            BuildPaths(e, features, out Dictionary<FastDrawnState, GraphicsPath> paths, selected);
 
             // Next draw all the paths using the various category symbols.
             DrawPaths(e, paths, selected);
@@ -524,10 +521,9 @@ namespace DotSpatial.Controls
         private void DrawFeatures(MapArgs e, IEnumerable<int> indices, bool selected)
         {
             if (DataSet.ShapeIndices == null) return;
-            Dictionary<FastDrawnState, GraphicsPath> paths;
 
             // First, use the coordinates to build the drawing paths
-            BuildPaths(e, indices, out paths, selected);
+            BuildPaths(e, indices, out Dictionary<FastDrawnState, GraphicsPath> paths, selected);
 
             // Next draw all the paths using the various category symbols.
             DrawPaths(e, paths, selected);
@@ -564,15 +560,14 @@ namespace DotSpatial.Controls
                 float b = Convert.ToSingle((e.MaxY - catBounds.MinY) * e.Dy);
                 bounds.Height = b - bounds.Y;
 
-                var ps = (selected && kvp.Key.Selected ? category.SelectionSymbolizer : category.Symbolizer) as PolygonSymbolizer;
-                if (ps == null) continue;
+                var featSym = selected && kvp.Key.Selected ? category.SelectionSymbolizer : category.Symbolizer;
+                if (!(featSym is PolygonSymbolizer ps)) continue;
 
                 g.SmoothingMode = ps.GetSmoothingMode();
 
                 foreach (IPattern pattern in ps.Patterns)
                 {
-                    IGradientPattern gp = pattern as IGradientPattern;
-                    if (gp != null)
+                    if (pattern is IGradientPattern gp)
                     {
                         gp.Bounds = bounds;
                     }

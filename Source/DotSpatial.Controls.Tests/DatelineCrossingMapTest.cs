@@ -105,11 +105,10 @@ namespace DotSpatial.Controls.Tests
         /// Checks that normalize can handle strange areas.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void NormalizeDoesNotChokeOnStupidArea()
         {
             var ext = new Extent(-1e38, -90, -1.0001e38, 90);
-            ext.Normalised();
+            Assert.Throws<ArgumentException>(() => ext.Normalised());
         }
 
         /// <summary>

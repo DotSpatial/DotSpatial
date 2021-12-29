@@ -11,7 +11,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// PolygonSymbolizerEditor
+    /// PolygonSymbolizerEditor.
     /// </summary>
     public class PolygonSymbolizerEditor : UITypeEditor
     {
@@ -25,12 +25,12 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Launches a form for editing the line symbolizer
+        /// Launches a form for editing the line symbolizer.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <param name="provider">The service provider.</param>
-        /// <param name="value">A polygon symbolizer</param>
-        /// <returns>The polygon symbolizer</returns>
+        /// <param name="value">A polygon symbolizer.</param>
+        /// <returns>The polygon symbolizer.</returns>
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             _original = value as IPolygonSymbolizer;

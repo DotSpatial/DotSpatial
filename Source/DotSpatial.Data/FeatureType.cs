@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// An abreviated list for quick classification
+    /// An abreviated list for quick classification.
     /// </summary>
     public enum FeatureType
     {

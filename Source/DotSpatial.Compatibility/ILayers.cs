@@ -9,7 +9,7 @@ using DotSpatial.Symbology;
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// Layers
+    /// Layers.
     /// </summary>
     public interface ILayers
     {
@@ -33,7 +33,7 @@ namespace DotSpatial.Compatibility
         #endregion
 
         /// <summary>
-        /// Returns the layer object corresponding the the specified <c>LayerHandle</c>
+        /// Returns the layer object corresponding the the specified <c>LayerHandle</c>.
         /// </summary>
         /// <param name="layerHandle">Handle of the layer.</param>
         ILayerOld this[int layerHandle] { get; }
@@ -41,7 +41,7 @@ namespace DotSpatial.Compatibility
         #region Methods
 
         /// <summary>
-        /// Default add layer overload. Displays an open file dialog
+        /// Default add layer overload. Displays an open file dialog.
         /// </summary>
         /// <returns>An array of <c>DotSpatial.Interfaces.Layer</c> objects.</returns>
         ILayerOld[] Add();
@@ -57,7 +57,7 @@ namespace DotSpatial.Compatibility
         /// Adds a layer by fileName. The layer name is also set.
         /// </summary>
         /// <param name="fileName">Name of the file that should be added.</param>
-        /// <param name="layerName">Layername that gets assigned</param>
+        /// <param name="layerName">Layername that gets assigned.</param>
         /// <returns>Returns a <c>Layer</c> object.</returns>
         ILayerOld Add(string fileName, string layerName);
 
@@ -72,7 +72,7 @@ namespace DotSpatial.Compatibility
         /// Adds an <c>Image</c> layer to the DotSpatial with the specified layer name.
         /// </summary>
         /// <param name="imageObject">The IImageData object that gets added.</param>
-        /// <param name="layerName">Layername that gets assigned</param>
+        /// <param name="layerName">Layername that gets assigned.</param>
         /// <returns>Returns a <c>Layer</c> object.</returns>
         ILayerOld Add(IImageData imageObject, string layerName);
 
@@ -87,7 +87,7 @@ namespace DotSpatial.Compatibility
         /// Adds a <c>FeatureSet</c> layer to the DotSpatial with the specified layer name.
         /// </summary>
         /// <param name="featuresetObject">The IFeatureSet object that gets added.</param>
-        /// <param name="layerName">Layername that gets assigned</param>
+        /// <param name="layerName">Layername that gets assigned.</param>
         /// <returns>Returns a <c>Layer</c> object.</returns>
         ILayerOld Add(IFeatureSet featuresetObject, string layerName);
 
@@ -95,7 +95,7 @@ namespace DotSpatial.Compatibility
         /// Adds a <c>FeatureSet</c> layer to the DotSpatial with the specified properties.
         /// </summary>
         /// <param name="featuresetObject">The IFeatureSet object that gets added.</param>
-        /// <param name="layerName">Layername that gets assigned</param>
+        /// <param name="layerName">Layername that gets assigned.</param>
         /// <param name="color">The fill color that gets assigned.</param>
         /// <param name="outlineColor">The outline color that gets assigned.</param>
         /// <returns>Returns a <c>Layer</c> object.</returns>
@@ -105,7 +105,7 @@ namespace DotSpatial.Compatibility
         /// Adds a <c>FeatureSet</c> layer to the DotSpatial with the specified properties.
         /// </summary>
         /// <param name="featuresetObject">The IFeatureSet object that gets added.</param>
-        /// <param name="layerName">Layername that gets assigned</param>
+        /// <param name="layerName">Layername that gets assigned.</param>
         /// <param name="color">The fill color that gets assigned.</param>
         /// <param name="outlineColor">The outline color that gets assigned.</param>
         /// <param name="lineOrPointSize">The size of the line or point.</param>
@@ -131,7 +131,7 @@ namespace DotSpatial.Compatibility
         /// Adds a <c>Raster</c> layer to the DotSpatial with the specified layer name.
         /// </summary>
         /// <param name="gridObject">The IRaster that gets added.</param>
-        /// <param name="layerName">Layername that gets assigned</param>
+        /// <param name="layerName">Layername that gets assigned.</param>
         /// <returns>Returns a <c>Layer</c> object.</returns>
         ILayerOld Add(IRaster gridObject, string layerName);
 
@@ -140,7 +140,7 @@ namespace DotSpatial.Compatibility
         /// </summary>
         /// <param name="gridObject">The IRaster that gets added.</param>
         /// <param name="colorScheme">The color scheme used for drawing.</param>
-        /// <param name="layerName">Layername that gets assigned</param>
+        /// <param name="layerName">Layername that gets assigned.</param>
         /// <returns>Returns a <c>Layer</c> object.</returns>
         ILayerOld Add(IRaster gridObject, IRasterSymbolizer colorScheme, string layerName);
 
@@ -148,7 +148,7 @@ namespace DotSpatial.Compatibility
         /// Adds a layer by fileName. The layer name is also set, as well as the legend visibility.
         /// </summary>
         /// <param name="fileName">Name of the file that should be added.</param>
-        /// <param name="layerName">Layername that gets assigned</param>
+        /// <param name="layerName">Layername that gets assigned.</param>
         /// <param name="visibleInLegend">Indicates whether or not the layer is visible upon adding it.</param>
         /// <returns>Returns a <c>Layer</c> object.</returns>
         ILayerOld Add(string fileName, string layerName, bool visibleInLegend);
@@ -193,7 +193,7 @@ namespace DotSpatial.Compatibility
         void MoveLayer(int handle, int newPosition, int targetGroup);
 
         /// <summary>
-        /// Rebuilds a grid layer using the specified <c>GridColorScheme</c>
+        /// Rebuilds a grid layer using the specified <c>GridColorScheme</c>.
         /// </summary>
         /// <param name="layerHandle">Handle of the grid layer.</param>
         /// <param name="gridObject">Grid object corresponding to that layer handle.</param>

@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// IDescriptor
+    /// IDescriptor.
     /// </summary>
     public interface IDescriptor : IMatchable, IRandomizable, ICloneable
     {

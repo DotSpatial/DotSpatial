@@ -9,7 +9,7 @@ using NuGet;
 namespace DotSpatial.Plugins.ExtensionManager
 {
     /// <summary>
-    /// DownloadForm
+    /// DownloadForm.
     /// </summary>
     internal partial class DownloadForm : Form
     {

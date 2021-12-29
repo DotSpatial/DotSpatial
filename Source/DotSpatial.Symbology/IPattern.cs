@@ -17,7 +17,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets the rectangular bounds. This controls how the gradient is drawn, and
-        /// should be set to the envelope of the entire layer being drawn
+        /// should be set to the envelope of the entire layer being drawn.
         /// </summary>
         RectangleF Bounds { get; set; }
 
@@ -48,18 +48,18 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Draws the borders for this graphics path by sequentially drawing all
-        /// the strokes in the border symbolizer
+        /// the strokes in the border symbolizer.
         /// </summary>
-        /// <param name="g">The Graphics device to draw to </param>
-        /// <param name="gp">The GraphicsPath that describes the outline to draw</param>
-        /// <param name="scaleWidth">The scaleWidth to use for scaling the line width </param>
+        /// <param name="g">The Graphics device to draw to. </param>
+        /// <param name="gp">The GraphicsPath that describes the outline to draw.</param>
+        /// <param name="scaleWidth">The scaleWidth to use for scaling the line width. </param>
         void DrawPath(Graphics g, GraphicsPath gp, double scaleWidth);
 
         /// <summary>
-        /// Fills the specified graphics path with the pattern specified by this object
+        /// Fills the specified graphics path with the pattern specified by this object.
         /// </summary>
-        /// <param name="g">The Graphics device to draw to</param>
-        /// <param name="gp">The GraphicsPath that describes the closed shape to fill</param>
+        /// <param name="g">The Graphics device to draw to.</param>
+        /// <param name="gp">The GraphicsPath that describes the closed shape to fill.</param>
         void FillPath(Graphics g, GraphicsPath gp);
 
         /// <summary>

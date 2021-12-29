@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// LegendType
+    /// LegendType.
     /// </summary>
     public enum LegendType
     {

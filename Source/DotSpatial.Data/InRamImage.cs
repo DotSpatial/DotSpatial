@@ -38,7 +38,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the raster bounds
+        /// Gets or sets the raster bounds.
         /// </summary>
         public IRasterBounds Bounds { get; set; }
 
@@ -64,13 +64,13 @@ namespace DotSpatial.Data
         /// images matching the resolution of the screen can be used.
         /// </summary>
         /// <param name="envelope">
-        /// The geographic extents to retrieve data for
+        /// The geographic extents to retrieve data for.
         /// </param>
         /// <param name="window">
-        /// The rectangle that defines the size of the drawing area in pixels
+        /// The rectangle that defines the size of the drawing area in pixels.
         /// </param>
         /// <returns>
-        /// A bitmap captured from the main image
+        /// A bitmap captured from the main image.
         /// </returns>
         public Bitmap GetBitmap(Extent envelope, Rectangle window)
         {
@@ -126,9 +126,9 @@ namespace DotSpatial.Data
         /// The window gives the corresponding pixel dimensions for the image, so that
         /// images matching the resolution of the screen can be used.
         /// </summary>
-        /// <param name="envelope">The geographic extents to retrieve data for</param>
-        /// <param name="size">The rectangle that defines the size of the drawing area in pixels</param>
-        /// <returns>A bitmap captured from the main image </returns>
+        /// <param name="envelope">The geographic extents to retrieve data for.</param>
+        /// <param name="size">The rectangle that defines the size of the drawing area in pixels.</param>
+        /// <returns>A bitmap captured from the main image. </returns>
         public Bitmap GetBitmap(Extent envelope, Size size)
         {
             return GetBitmap(envelope, new Rectangle(new Point(0, 0), size));

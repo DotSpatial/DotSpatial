@@ -10,7 +10,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -44,7 +44,7 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapPointLayer"/> class.
-        /// Creates a new instance of the point layer where the container is specified
+        /// Creates a new instance of the point layer where the container is specified.
         /// </summary>
         /// <param name="featureSet">The point feature set used as data source.</param>
         /// <param name="container">An IContainer that the point layer should be created in.</param>
@@ -57,7 +57,7 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapPointLayer"/> class.
-        /// Creates a new instance of the point layer where the container is specified
+        /// Creates a new instance of the point layer where the container is specified.
         /// </summary>
         /// <param name="featureSet">The point feature set used as data source.</param>
         /// <param name="container">An IContainer that the point layer should be created in.</param>
@@ -142,7 +142,7 @@ namespace DotSpatial.Controls
         /// does not generate a point layer, an exception will be thrown.
         /// </summary>
         /// <param name="fileName">A string fileName to create a point layer for.</param>
-        /// <param name="progressHandler">Any valid implementation of IProgressHandler for receiving progress messages</param>
+        /// <param name="progressHandler">Any valid implementation of IProgressHandler for receiving progress messages.</param>
         /// <returns>A GeoPointLayer created from the specified fileName.</returns>
         public static new MapPointLayer OpenFile(string fileName, IProgressHandler progressHandler)
         {
@@ -188,12 +188,11 @@ namespace DotSpatial.Controls
         /// This is testing the idea of using an input parameter type that is marked as out
         /// instead of a return type.
         /// </summary>
-        /// <param name="result">The result of the creation</param>
-        /// <returns>Boolean, true if a layer can be created</returns>
+        /// <param name="result">The result of the creation.</param>
+        /// <returns>Boolean, true if a layer can be created.</returns>
         public override bool CreateLayerFromSelectedFeatures(out IFeatureLayer result)
         {
-            MapPointLayer temp;
-            bool resultOk = CreateLayerFromSelectedFeatures(out temp);
+            bool resultOk = CreateLayerFromSelectedFeatures(out MapPointLayer temp);
             result = temp;
             return resultOk;
         }
@@ -201,8 +200,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// This is the strong typed version of the same process that is specific to geo point layers.
         /// </summary>
-        /// <param name="result">The new GeoPointLayer to be created</param>
-        /// <returns>Boolean, true if there were any values in the selection</returns>
+        /// <param name="result">The new GeoPointLayer to be created.</param>
+        /// <returns>Boolean, true if there were any values in the selection.</returns>
         public virtual bool CreateLayerFromSelectedFeatures(out MapPointLayer result)
         {
             result = null;
@@ -281,8 +280,8 @@ namespace DotSpatial.Controls
         /// directly, use OnDrawFeatures. This will not clear existing buffer content.
         /// For that call Initialize instead.
         /// </summary>
-        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
-        /// <param name="regions">The geographic regions to draw</param>
+        /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space.</param>
+        /// <param name="regions">The geographic regions to draw.</param>
         /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
         public virtual void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
@@ -371,9 +370,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the OnBufferChanged event
+        /// Fires the OnBufferChanged event.
         /// </summary>
-        /// <param name="clipRectangles">The Rectangle in pixels</param>
+        /// <param name="clipRectangles">The Rectangle in pixels.</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
             if (BufferChanged != null)
@@ -465,8 +464,7 @@ namespace DotSpatial.Controls
                     if (!state.Visible || state.Category == null) continue;
                     if (selected && !state.Selected) continue;
 
-                    IPointCategory pc = state.Category as IPointCategory;
-                    if (pc == null) continue;
+                    if (!(state.Category is IPointCategory pc)) continue;
 
                     IPointSymbolizer ps = selected ? pc.SelectionSymbolizer : pc.Symbolizer;
                     if (ps == null) continue;
@@ -507,8 +505,7 @@ namespace DotSpatial.Controls
 
                 if (selected && !ds.IsSelected) continue;
 
-                IPointCategory pc = ds.SchemeCategory as IPointCategory;
-                if (pc == null) continue;
+                if (!(ds.SchemeCategory is IPointCategory pc)) continue;
 
                 IPointSymbolizer ps = selected ? pc.SelectionSymbolizer : pc.Symbolizer;
                 if (ps == null) continue;
@@ -534,14 +531,11 @@ namespace DotSpatial.Controls
         /// <param name="origTransform">The original transformation that is used to position the point.</param>
         private void DrawPoint(double ptX, double ptY, MapArgs e, IPointSymbolizer ps, Graphics g, Matrix origTransform)
         {
-            var pt = new Point
-            {
-                X = Convert.ToInt32((ptX - e.MinX) * e.Dx),
-                Y = Convert.ToInt32((e.MaxY - ptY) * e.Dy)
-            };
+            var x = Convert.ToInt32((ptX - e.MinX) * e.Dx);
+            var y = Convert.ToInt32((e.MaxY - ptY) * e.Dy);
             double scaleSize = ps.GetScale(e);
             Matrix shift = origTransform.Clone();
-            shift.Translate(pt.X, pt.Y);
+            shift.Translate(x, y);
             g.Transform = shift;
             ps.Draw(g, scaleSize);
         }

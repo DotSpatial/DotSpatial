@@ -15,7 +15,7 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// This opens a file, but populates the dialog filter with only vector formats.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <returns>An IFeatureSet with the data from the file specified in a dialog, or null if nothing load.</returns>
         public static IFeatureSet OpenVector(this IDataManager self)
         {
@@ -28,7 +28,7 @@ namespace DotSpatial.Data.Forms
         /// This uses an open dialog filter with only vector extensions but where multi-select is
         /// enabled, hence allowing multiple vectors to be returned in this list.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <returns>The enumerable or vectors.</returns>
         public static IEnumerable<IFeatureSet> OpenVectors(this IDataManager self)
         {
@@ -44,8 +44,8 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// This opens a file, but populates the dialog filter with only raster formats.
         /// </summary>
-        /// <param name="self">this</param>
-        /// <returns>for now an IDataSet</returns>
+        /// <param name="self">this.</param>
+        /// <returns>for now an IDataSet.</returns>
         public static IImageData OpenImage(this IDataManager self)
         {
             var ofd = new OpenFileDialog { Filter = self.ImageReadFilter };
@@ -57,7 +57,7 @@ namespace DotSpatial.Data.Forms
         /// This uses an open dialog filter with only image extensions for supported image formats,
         /// but where multi-select is enabled, and so allowing multiple images to be returned at once.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <returns>An Enumerable with the opened IImageData objects.</returns>
         public static IEnumerable<IImageData> OpenImages(this IDataManager self)
         {
@@ -73,8 +73,8 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// This launches an open file dialog and attempts to load the specified file.
         /// </summary>
-        /// <param name="self">this</param>
-        /// <returns>An IDataSet with the data from the file specified in an open file dialog</returns>
+        /// <param name="self">this.</param>
+        /// <returns>An IDataSet with the data from the file specified in an open file dialog.</returns>
         public static IDataSet OpenFile(this IDataManager self)
         {
             var ofd = new OpenFileDialog { Filter = self.DialogReadFilter };
@@ -86,7 +86,7 @@ namespace DotSpatial.Data.Forms
         /// This launches an open file dialog that allows loading of several files at once
         /// and returns the datasets in a list.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <returns>An enumerable of all the files that were opened.</returns>
         public static IEnumerable<IDataSet> OpenFiles(this IDataManager self)
         {
@@ -110,8 +110,8 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// This opens a file, but populates the dialog filter with only raster formats.
         /// </summary>
-        /// <param name="self">this</param>
-        /// <returns>An IRaster with the data from the file specified in an open file dialog</returns>
+        /// <param name="self">this.</param>
+        /// <returns>An IRaster with the data from the file specified in an open file dialog.</returns>
         public static IRaster OpenRaster(this IDataManager self)
         {
             var ofd = new OpenFileDialog { Filter = self.RasterReadFilter };
@@ -123,7 +123,7 @@ namespace DotSpatial.Data.Forms
         /// This uses an open dialog filter with only raster extensions but where multi-select is
         /// enabled, hence allowing multiple rasters to be returned in this list.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <returns>An enumerable or rasters.</returns>
         public static IEnumerable<IRaster> OpenRasters(this IDataManager self)
         {

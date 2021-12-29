@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// IntervalSnapMethods
+    /// IntervalSnapMethods.
     /// </summary>
     public enum IntervalSnapMethod
     {

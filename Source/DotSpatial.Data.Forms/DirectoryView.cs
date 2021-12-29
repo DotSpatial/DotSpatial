@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// DirectoryView
+    /// DirectoryView.
     /// </summary>
     public class DirectoryView : ScrollingControl
     {
@@ -72,7 +72,7 @@ namespace DotSpatial.Data.Forms
         }
 
         /// <summary>
-        /// Gets or sets the collection of DirectoryItems to draw in this control
+        /// Gets or sets the collection of DirectoryItems to draw in this control.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -101,7 +101,7 @@ namespace DotSpatial.Data.Forms
         #region Methods
 
         /// <summary>
-        /// Removes the existing Directory Items from the control
+        /// Removes the existing Directory Items from the control.
         /// </summary>
         public virtual void Clear()
         {
@@ -112,7 +112,7 @@ namespace DotSpatial.Data.Forms
         /// Updates the buffer in order to correctly re-draw this item, if it is on the page, and then invalidates
         /// the area where this will be drawn.
         /// </summary>
-        /// <param name="item">The directory item to invalidate</param>
+        /// <param name="item">The directory item to invalidate.</param>
         public void RefreshItem(DirectoryItem item)
         {
             Graphics g = Graphics.FromImage(Page);
@@ -153,7 +153,7 @@ namespace DotSpatial.Data.Forms
         }
 
         /// <summary>
-        /// Draws
+        /// Draws.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnInitialize(PaintEventArgs e)

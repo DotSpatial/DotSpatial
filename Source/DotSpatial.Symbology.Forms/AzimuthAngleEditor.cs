@@ -9,7 +9,7 @@ using System.Windows.Forms.Design;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// AzimuthAngleEditor
+    /// AzimuthAngleEditor.
     /// </summary>
     public class AzimuthAngleEditor : UITypeEditor
     {

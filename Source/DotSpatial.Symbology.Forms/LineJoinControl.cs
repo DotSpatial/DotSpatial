@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// LineJoinControl
+    /// LineJoinControl.
     /// </summary>
     [DefaultEvent("ValueChanged")]
     [DefaultProperty("Value")]
@@ -44,7 +44,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the string text
+        /// Gets or sets the string text.
         /// </summary>
         public override string Text
         {
@@ -92,7 +92,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Fires the on value changed event
+        /// Fires the on value changed event.
         /// </summary>
         protected virtual void OnValueChanged()
         {

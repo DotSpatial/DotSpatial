@@ -79,7 +79,7 @@ namespace DotSpatial.Symbology
         public Dictionary<IFeature, LabelDrawState> DrawnStates { get; set; }
 
         /// <summary>
-        /// Gets or sets the indexed collection of drawn states
+        /// Gets or sets the indexed collection of drawn states.
         /// </summary>
         public FastLabelDrawnState[] FastDrawnStates { get; set; }
 
@@ -227,7 +227,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Removes the features in the given region.
         /// </summary>
-        /// <param name="region">the geographic region to remove the feature from the selection on this layer</param>
+        /// <param name="region">the geographic region to remove the feature from the selection on this layer.</param>
         /// <returns>Boolean true if any features were removed from the selection.</returns>
         public bool UnSelect(Extent region)
         {
@@ -275,7 +275,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Fires the selection cleared event
+        /// Fires the selection cleared event.
         /// </summary>
         /// <param name="args">The arguments.</param>
         protected virtual void OnSelectionCleared(FeatureChangeArgs args)

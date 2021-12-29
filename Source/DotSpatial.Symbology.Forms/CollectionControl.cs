@@ -128,7 +128,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Refreshes the items in the list to accurately reflect the current collection
+        /// Refreshes the items in the list to accurately reflect the current collection.
         /// </summary>
         public void RefreshList()
         {
@@ -144,7 +144,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the AddClicked event
+        /// Fires the AddClicked event.
         /// </summary>
         protected virtual void OnAdd()
         {
@@ -153,7 +153,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the ListChanged event
+        /// Fires the ListChanged event.
         /// </summary>
         protected virtual void OnListChanged()
         {
@@ -161,7 +161,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the OnOrderChanged event
+        /// Fires the OnOrderChanged event.
         /// </summary>
         protected virtual void OnOrderChanged()
         {
@@ -170,7 +170,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the RemoveCLicked event
+        /// Fires the RemoveCLicked event.
         /// </summary>
         protected virtual void OnRemoveClick()
         {
@@ -179,7 +179,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the SelectedItemChanged event
+        /// Fires the SelectedItemChanged event.
         /// </summary>
         protected virtual void OnSelectedItemChanged()
         {

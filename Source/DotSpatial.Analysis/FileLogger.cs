@@ -112,12 +112,18 @@ namespace DotSpatial.Analysis
         /// <summary>
         /// This is not really used because this saves data to a file.
         /// </summary>
-        /// <param name="key">A basic string to help categorize the message, usually just the message with no percentage information.</param>
         /// <param name="percent">The string percent to appear in a progress message.</param>
-        /// <param name="message">The string message combining both the key and the percent information.</param>
-        public virtual void Progress(string key, int percent, string message)
+        /// <param name="message">The string message including the percent information if wanted.</param>
+        public virtual void Progress(int percent, string message)
         {
             // We don't actually want to save progress messages to the file
+        }
+
+        /// <summary>
+        /// This is not really used because progress isn't used either.
+        /// </summary>
+        public virtual void Reset()
+        {
         }
 
         /// <summary>
@@ -156,7 +162,7 @@ namespace DotSpatial.Analysis
                 tw.WriteLine(message);
             }
         }
-
+        
         /// <summary>
         /// Handles the situation where a status message has been posted.
         /// </summary>

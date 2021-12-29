@@ -45,7 +45,7 @@ namespace DotSpatial.Data
         /// Initializes a new instance of the <see cref="ProgressMeter"/> class that simply keeps track of progress and is capable of sending progress messages.
         /// This assumes a MaxValue of 100 unless it is changed later.
         /// </summary>
-        /// <param name="progressHandler">Any valid IProgressHandler that will display progress messages</param>
+        /// <param name="progressHandler">Any valid IProgressHandler that will display progress messages.</param>
         /// <param name="baseMessage">A base message to use as the basic status for this progress handler.</param>
         public ProgressMeter(IProgressHandler progressHandler, string baseMessage)
             : this(progressHandler, baseMessage, 100)
@@ -55,7 +55,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="ProgressMeter"/> class that simply keeps track of progress and is capable of sending progress messages.
         /// </summary>
-        /// <param name="progressHandler">Any valid implementation if IProgressHandler that will handle the progress function</param>
+        /// <param name="progressHandler">Any valid implementation if IProgressHandler that will handle the progress function.</param>
         /// <param name="baseMessage">The message without any progress information.</param>
         /// <param name="endValue">Percent should show a range between the MinValue and MaxValue. MinValue is assumed to be 0.</param>
         public ProgressMeter(IProgressHandler progressHandler, string baseMessage, object endValue)
@@ -187,7 +187,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the progress handler for this meter
+        /// Gets or sets the progress handler for this meter.
         /// </summary>
         public IProgressHandler ProgressHandler { get; set; }
 
@@ -256,17 +256,17 @@ namespace DotSpatial.Data
             BaseMessage = "Ready.";
             if (Silent) return;
 
-            ProgressHandler?.Progress(BaseMessage, _prog, BaseMessage);
+            ProgressHandler?.Progress(_prog, BaseMessage);
         }
 
         /// <summary>
-        /// Sends a progress message to the IProgressHandler interface with the current message and progress
+        /// Sends a progress message to the IProgressHandler interface with the current message and progress.
         /// </summary>
         public void SendProgress()
         {
             if (Silent) return;
 
-            ProgressHandler?.Progress(BaseMessage, _prog, BaseMessage + ", " + _prog + "% Complete.");
+            ProgressHandler?.Progress(_prog, BaseMessage + ", " + _prog + "% Complete.");
         }
 
         #endregion

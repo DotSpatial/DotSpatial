@@ -12,14 +12,14 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Creates a new instance of the Africa Class
         /// </summary>
-        [TestFixtureSetUp]
+        [SetUp]
         public void Initialize()
         {
-            
+
         }
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void Aitoffsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.Aitoffsphere;
@@ -28,7 +28,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void Behrmannsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.Behrmannsphere;
@@ -45,7 +45,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void CrasterParabolicsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.CrasterParabolicsphere;
@@ -62,7 +62,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void EckertIIIsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.EckertIIIsphere;
@@ -71,7 +71,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void EckertIIsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.EckertIIsphere;
@@ -80,7 +80,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void EckertIsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.EckertIsphere;
@@ -97,7 +97,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void EckertVIsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.EckertVIsphere;
@@ -106,7 +106,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void EckertVsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.EckertVsphere;
@@ -131,7 +131,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void FlatPolarQuarticsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.FlatPolarQuarticsphere;
@@ -148,7 +148,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void HammerAitoffsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.HammerAitoffsphere;
@@ -157,7 +157,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void Loximuthalsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.Loximuthalsphere;
@@ -190,7 +190,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void PlateCarreesphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.PlateCarreesphere;
@@ -207,7 +207,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void QuarticAuthalicsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.QuarticAuthalicsphere;
@@ -232,7 +232,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void Timessphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.Timessphere;
@@ -249,7 +249,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void VerticalPerspectivesphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.VerticalPerspectivesphere;
@@ -258,7 +258,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WinkelIIsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.WinkelIIsphere;
@@ -267,7 +267,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WinkelIsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.WinkelIsphere;
@@ -276,7 +276,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WinkelTripelNGSsphere()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.WorldSpheroid.WinkelTripelNGSsphere;

@@ -12,7 +12,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// A list that also includes several events during its existing activities.
     /// List is fussy about inheritance, unfortunately, so this wraps a list
-    /// and then makes this class much more inheritable
+    /// and then makes this class much more inheritable.
     /// </summary>
     /// <typeparam name="T">Type of the contained items.</typeparam>
     public class EventList<T> : IEventList<T>
@@ -20,7 +20,7 @@ namespace DotSpatial.Data
         #region Fields
 
         /// <summary>
-        /// The internal list of items
+        /// The internal list of items.
         /// </summary>
         private List<T> _list;
 
@@ -287,10 +287,10 @@ namespace DotSpatial.Data
         #region Indexers
 
         /// <summary>
-        /// The default, indexed value of type T
+        /// The default, indexed value of type T.
         /// </summary>
-        /// <param name="index">The numeric index</param>
-        /// <returns>An object of type T corresponding to the index value specified</returns>
+        /// <param name="index">The numeric index.</param>
+        /// <returns>An object of type T corresponding to the index value specified.</returns>
         public virtual T this[int index]
         {
             get
@@ -338,7 +338,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;
+        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;.
         /// </summary>
         /// <param name="collection">collection: The collection whose elements should be added to the end of the
         /// System.Collections.Generic.List&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null,
@@ -429,7 +429,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Converts the elements in the current EventList&lt;T&gt; to another type, and returns a list containing the converted elements.
         /// </summary>
-        /// <typeparam name="TOutput">The output type to convert to</typeparam>
+        /// <typeparam name="TOutput">The output type to convert to.</typeparam>
         /// <param name="converter">A System.Converter&lt;TInput, TOutput&gt; delegate that converts each element from one type to another type.</param>
         /// <returns>A EventList&lt;T&gt; of the target type containing the converted elements from the current EventList&lt;T&gt;.</returns>
         /// <exception cref="System.ArgumentNullException">converter is null.</exception>
@@ -441,7 +441,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Copies a range of elements from the EventList&lt;T&gt; to a compatible one-dimensional array, starting at the specified index of the target array.
         /// </summary>
-        /// <param name="index">The zero-based index in the source EventList&lt;T&gt; at which copying begins</param>
+        /// <param name="index">The zero-based index in the source EventList&lt;T&gt; at which copying begins.</param>
         /// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from EventList&lt;T&gt;. The System.Array must have zero-based indexing.</param>
         /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
         /// <param name="count">The number of elements to copy.</param>
@@ -459,8 +459,8 @@ namespace DotSpatial.Data
         /// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.Generic.List&lt;T&gt;. The System.Array must have zero-based indexing.</param>
         /// <param name="arrayIndex"> The zero-based index in array at which copying begins.</param>
         /// <exception cref="System.ArgumentException">System.ArgumentException: arrayIndex is equal to or greater than the length of array.-or-The number of elements in the source System.Collections.Generic.List&lt;T&gt; is greater than the available space from arrayIndex to the end of the destination array. </exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">arrayIndex is less than 0</exception>
-        /// <exception cref="System.ArgumentNullException">array is null</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">arrayIndex is less than 0.</exception>
+        /// <exception cref="System.ArgumentNullException">array is null.</exception>
         public virtual void CopyTo(T[] array, int arrayIndex)
         {
             _list.CopyTo(array, arrayIndex);
@@ -494,9 +494,9 @@ namespace DotSpatial.Data
         /// <param name="startIndex">The zero-based starting index of the search.</param>
         /// <param name="count">The number of elements in the section to search.</param>
         /// <param name="match"> The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
-        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, –1</returns>
+        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, –1.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">startIndex is outside the range of valid indexes for the EventList&lt;T&gt;.-or-count is less than 0.-or-startIndex and count do not specify a valid section in the EventList&lt;T&gt;.</exception>
-        /// <exception cref="System.ArgumentNullException">match is null</exception>
+        /// <exception cref="System.ArgumentNullException">match is null.</exception>
         public virtual int FindIndex(int startIndex, int count, Predicate<T> match)
         {
             return _list.FindIndex(startIndex, count, match);
@@ -531,7 +531,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the element to search for.</param>
         /// <returns>The last element that matches the conditions defined by the specified predicate, if found; otherwise, the default value for type T.</returns>
-        /// <exception cref= "System.ArgumentNullException">match is null."</exception>
+        /// <exception cref= "System.ArgumentNullException">match is null.".</exception>
         public virtual T FindLast(Predicate<T> match)
         {
             return _list.FindLast(match);
@@ -752,7 +752,7 @@ namespace DotSpatial.Data
         /// Removes the all the elements that match the conditions defined by the specified predicate.
         /// </summary>
         /// <param name="match">The System.Predicate&lt;T&gt; delegate that defines the conditions of the elements to remove.</param>
-        /// <returns>The number of elements removed from the EventList&lt;T&gt;</returns>
+        /// <returns>The number of elements removed from the EventList&lt;T&gt;.</returns>
         /// <exception cref="System.ArgumentNullException">match is null.</exception>
         /// <exception cref="System.ApplicationException">Unable to remove while the ReadOnly property is set to true.</exception>
         public virtual int RemoveAll(Predicate<T> match)
@@ -1004,7 +1004,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets an Enumerator
+        /// Gets an Enumerator.
         /// </summary>
         /// <returns>The enumerator.</returns>
         IEnumerator IEnumerable.GetEnumerator()
@@ -1022,7 +1022,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Fires the AfterItemAdded Event
+        /// Fires the AfterItemAdded Event.
         /// </summary>
         /// <param name="item">The item that was added.</param>
         /// <param name="index">The index where the item was added.</param>
@@ -1059,7 +1059,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// fires the AfterListReversed Event
+        /// fires the AfterListReversed Event.
         /// </summary>
         protected void OnAfterListReversed()
         {

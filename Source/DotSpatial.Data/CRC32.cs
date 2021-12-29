@@ -79,10 +79,10 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Calculates the CRC-32-IEEE 802.3 Checksum for png according to:
-        /// x^32 + x^26 + x^23 + x^22 + x^16 + + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x + 1
+        /// x^32 + x^26 + x^23 + x^22 + x^16 + + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x + 1.
         /// </summary>
         /// <param name="value">Values used for calculation.</param>
-        /// <returns>A UInt32 value stored in a long because UINT32 is not CLS compliant</returns>
+        /// <returns>A UInt32 value stored in a long because UINT32 is not CLS compliant.</returns>
         public static long GetCrc2(byte[] value)
         {
             uint val = UpdateCrc(0xffffffff, value, value.Length) ^ 0xffffffff;
@@ -97,7 +97,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Calculates the CRC-32-IEEE 802.3 Checksum for png according to:
-        /// x^32 + x^26 + x^23 + x^22 + x^16 + + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x + 1
+        /// x^32 + x^26 + x^23 + x^22 + x^16 + + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x + 1.
         /// </summary>
         /// <param name="value">Values used for calculation.</param>
         /// <returns>The calculated checksum.</returns>

@@ -104,9 +104,9 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Attempts to read the boolean value from the specified attribute, translating it from a text equivalent.
         /// </summary>
-        /// <param name="attribute">The string name of the attribute to read from the CurrentElement</param>
+        /// <param name="attribute">The string name of the attribute to read from the CurrentElement.</param>
         /// <returns>A boolean value based on parsing the text.</returns>
-        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified</exception>
+        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified.</exception>
         public bool ReadBool(string attribute)
         {
             if (CurrentElement == null)
@@ -132,9 +132,9 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Attempts to read the color from a text representation of an argb integer value.
         /// </summary>
-        /// <param name="attribute">The name of the attribute to read from the CurrentElement</param>
-        /// <returns>A Color structure</returns>
-        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified</exception>
+        /// <param name="attribute">The name of the attribute to read from the CurrentElement.</param>
+        /// <returns>A Color structure.</returns>
+        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified.</exception>
         public Color ReadColor(string attribute)
         {
             if (CurrentElement == null)
@@ -162,9 +162,9 @@ namespace DotSpatial.Data.Forms
         /// Attempts to read the double value from the specified attribute, translating it from
         /// a text equivalent via parsing.
         /// </summary>
-        /// <param name="attribute">The string name of the attribute to read from the CurrentElement</param>
-        /// <returns>A double value parsed from the inner text of the specified attribute on the CurrentElement</returns>
-        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified</exception>
+        /// <param name="attribute">The string name of the attribute to read from the CurrentElement.</param>
+        /// <returns>A double value parsed from the inner text of the specified attribute on the CurrentElement.</returns>
+        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified.</exception>
         public double ReadDouble(string attribute)
         {
             if (CurrentElement == null)
@@ -191,9 +191,9 @@ namespace DotSpatial.Data.Forms
         /// Attempts to read the integer value from the specified attribute, translating it from
         /// a text equivalent via parsing.
         /// </summary>
-        /// <param name="attribute">The string name of the attribute to read from the CurrentElement</param>
-        /// <returns>An integer parsed from the inner text of the specified attribute on the CurrentElement</returns>
-        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified</exception>
+        /// <param name="attribute">The string name of the attribute to read from the CurrentElement.</param>
+        /// <returns>An integer parsed from the inner text of the specified attribute on the CurrentElement.</returns>
+        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified.</exception>
         public int ReadInteger(string attribute)
         {
             if (CurrentElement == null)
@@ -222,8 +222,8 @@ namespace DotSpatial.Data.Forms
         /// exist, the default value is returned.
         /// </summary>
         /// <param name="attribute">The string name for the attribute to read from the CurrentElement.</param>
-        /// <returns>A string specifying the value</returns>
-        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified</exception>
+        /// <returns>A string specifying the value.</returns>
+        /// <exception cref="TryXmlDocumentException">CurrentElement Not Specified.</exception>
         public string ReadText(string attribute)
         {
             if (CurrentElement == null)

@@ -16,7 +16,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// Gets or sets t he dynamic visibility mode. This controls whether the layer is visible when zoomed in closer than the dynamic
-        /// visiblity width or only when further away from the dynamic visibility width
+        /// visiblity width or only when further away from the dynamic visibility width.
         /// </summary>
         DynamicVisibilityMode DynamicVisibilityMode { get; set; }
 

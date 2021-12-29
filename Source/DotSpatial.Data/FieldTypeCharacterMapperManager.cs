@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Manages the Default Mappings of Fields
+    /// Manages the Default Mappings of Fields.
     /// </summary>
     public class FieldTypeCharacterMapperManager
     {

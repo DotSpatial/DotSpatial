@@ -17,7 +17,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="IndividualIndexCancel{T}"/> class.
         /// </summary>
-        /// <param name="inListItem">an object that is being interacted with in the list</param>
+        /// <param name="inListItem">an object that is being interacted with in the list.</param>
         public IndividualIndexCancel(T inListItem)
         {
             ListItem = inListItem;
@@ -26,7 +26,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="IndividualIndexCancel{T}"/> class.
         /// </summary>
-        /// <param name="inListItem">The list item that the event belongs to</param>
+        /// <param name="inListItem">The list item that the event belongs to.</param>
         /// <param name="inIndex">The list index, if any, that is specified.</param>
         public IndividualIndexCancel(T inListItem, int inIndex)
         {

@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Hfa
+    /// Hfa.
     /// </summary>
     public static class Hfa
     {
@@ -15,8 +15,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the bitcount of a single member of the specified data type.
         /// </summary>
-        /// <param name="dataType">The data type to get the byte count of</param>
-        /// <returns>An integer that represents the bit count of the specified type</returns>
+        /// <param name="dataType">The data type to get the byte count of.</param>
+        /// <returns>An integer that represents the bit count of the specified type.</returns>
         public static int GetBitCount(this HfaEpt dataType)
         {
             switch (dataType)
@@ -52,10 +52,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Obtains the 4 byte equivalent for 32 bit Integer values
+        /// Obtains the 4 byte equivalent for 32 bit Integer values.
         /// </summary>
-        /// <param name="value">The unsigned integer value to convert into bytes</param>
-        /// <returns>The bytes in LittleEndian standard, regardless of the system architecture</returns>
+        /// <param name="value">The unsigned integer value to convert into bytes.</param>
+        /// <returns>The bytes in LittleEndian standard, regardless of the system architecture.</returns>
         public static byte[] LittleEndian(int value)
         {
             byte[] bValue = BitConverter.GetBytes(value);
@@ -63,10 +63,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Obtains the 4 byte equivalent for 32bit floating point values
+        /// Obtains the 4 byte equivalent for 32bit floating point values.
         /// </summary>
-        /// <param name="value">The unsigned integer value to convert into bytes</param>
-        /// <returns>The bytes in LittleEndian standard, regardless of the system architecture</returns>
+        /// <param name="value">The unsigned integer value to convert into bytes.</param>
+        /// <returns>The bytes in LittleEndian standard, regardless of the system architecture.</returns>
         public static byte[] LittleEndian(float value)
         {
             byte[] bValue = BitConverter.GetBytes(value);
@@ -74,10 +74,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Obtains the 8 byte equivalent for 64 bit floating point values
+        /// Obtains the 8 byte equivalent for 64 bit floating point values.
         /// </summary>
-        /// <param name="value">The unsigned integer value to convert into bytes</param>
-        /// <returns>The bytes in LittleEndian standard, regardless of the system architecture</returns>
+        /// <param name="value">The unsigned integer value to convert into bytes.</param>
+        /// <returns>The bytes in LittleEndian standard, regardless of the system architecture.</returns>
         public static byte[] LittleEndian(double value)
         {
             byte[] bValue = BitConverter.GetBytes(value);
@@ -96,10 +96,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Obtains the 4 byte equivalent for 32 bit Unsigned Integer values
+        /// Obtains the 4 byte equivalent for 32 bit Unsigned Integer values.
         /// </summary>
-        /// <param name="value">The unsigned integer value to convert into bytes</param>
-        /// <returns>The bytes in LittleEndian standard, regardless of the system architecture</returns>
+        /// <param name="value">The unsigned integer value to convert into bytes.</param>
+        /// <returns>The bytes in LittleEndian standard, regardless of the system architecture.</returns>
         public static byte[] LittleEndianAsUint32(long value)
         {
             byte[] bValue = BitConverter.GetBytes(Convert.ToUInt32(value));
@@ -123,7 +123,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="data">The data.</param>
         /// <param name="offset">The offset to start reading.</param>
-        /// <returns>The value</returns>
+        /// <returns>The value.</returns>
         public static double ReadDouble(byte[] data, long offset)
         {
             byte[] vals = new byte[8];
@@ -192,7 +192,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="data">The data.</param>
         /// <param name="offset">The offset to start reading.</param>
-        /// <returns>A UInt16 value stored in an int because UInt16 is not CLS Compliant</returns>
+        /// <returns>A UInt16 value stored in an int because UInt16 is not CLS Compliant.</returns>
         public static int ReadUInt16(byte[] data, long offset)
         {
             byte[] vals = new byte[2];
@@ -206,7 +206,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="data">The data.</param>
         /// <param name="offset">The offset to start reading.</param>
-        /// <returns>A UInt32 value stored in a long because UInt32 is not CLS Compliant</returns>
+        /// <returns>A UInt32 value stored in a long because UInt32 is not CLS Compliant.</returns>
         public static long ReadUInt32(byte[] data, long offset)
         {
             byte[] vals = new byte[4];

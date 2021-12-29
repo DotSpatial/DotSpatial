@@ -57,7 +57,7 @@ namespace DotSpatial.Controls
         public virtual Rectangle GlyphBounds => new Rectangle(Map.Bounds.Right - 25, Map.Bounds.Bottom - 25, 25, 25);
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not this glyph currently holds the mouse
+        /// Gets or sets a value indicating whether or not this glyph currently holds the mouse.
         /// </summary>
         public bool HasMouse { get; set; }
 
@@ -139,7 +139,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Occurs when the mouse clicks on the glyph
+        /// Occurs when the mouse clicks on the glyph.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected virtual void OnGlpyhClick(GeoMouseArgs e)
@@ -147,7 +147,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Occurs when the mouse leaves the glyph
+        /// Occurs when the mouse leaves the glyph.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected virtual void OnGlyphMouseEnter(GeoMouseArgs e)
@@ -159,7 +159,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Occurs when the mouse enters the glyph
+        /// Occurs when the mouse enters the glyph.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected virtual void OnGlyphMouseLeave(GeoMouseArgs e)

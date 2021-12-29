@@ -139,7 +139,7 @@ namespace DotSpatial.Data
         /// This will return the correct shapefile type by reading the fileName.
         /// </summary>
         /// <param name="fileName">A string specifying the file with the extension .shp to open.</param>
-        /// <returns>A correct shapefile object which is exclusively for reading the .shp data</returns>
+        /// <returns>A correct shapefile object which is exclusively for reading the .shp data.</returns>
         public static new Shapefile OpenFile(string fileName)
         {
             return OpenFile(fileName, DataManager.DefaultDataManager.ProgressHandler);
@@ -149,9 +149,9 @@ namespace DotSpatial.Data
         /// This will return the correct shapefile type by reading the fileName.
         /// </summary>
         /// <param name="fileName">A string specifying the file with the extension .shp to open.</param>
-        /// <param name="progressHandler">receives progress messages and overrides the ProgressHandler on the DataManager.DefaultDataManager</param>
+        /// <param name="progressHandler">receives progress messages and overrides the ProgressHandler on the DataManager.DefaultDataManager.</param>
         /// <exception cref="NotImplementedException">Throws a NotImplementedException if the ShapeType of the loaded file is NullShape or MultiPatch.</exception>
-        /// <returns>A correct shapefile object which is exclusively for reading the .shp data</returns>
+        /// <returns>A correct shapefile object which is exclusively for reading the .shp data.</returns>
         public static new Shapefile OpenFile(string fileName, IProgressHandler progressHandler)
         {
             var ext = Path.GetExtension(fileName)?.ToLower();
@@ -202,10 +202,10 @@ namespace DotSpatial.Data
         /// Reads 8 bytes from the specified byte array starting with offset.
         /// If IsBigEndian = true, then this flips the order of the byte values.
         /// </summary>
-        /// <param name="value">An array of bytes that is at least 8 bytes in length from the startIndex</param>
-        /// <param name="startIndex">A 0 based integer index where the double value begins</param>
-        /// <param name="isLittleEndian">If this is true, then the order of the bytes is reversed before being converted to a double</param>
-        /// <returns>A double created from reading the byte array</returns>
+        /// <param name="value">An array of bytes that is at least 8 bytes in length from the startIndex.</param>
+        /// <param name="startIndex">A 0 based integer index where the double value begins.</param>
+        /// <param name="isLittleEndian">If this is true, then the order of the bytes is reversed before being converted to a double.</param>
+        /// <returns>A double created from reading the byte array.</returns>
         public static double ToDouble(byte[] value, ref int startIndex, bool isLittleEndian)
         {
             // Some systems run BigEndian by default, others run little endian.
@@ -228,10 +228,10 @@ namespace DotSpatial.Data
         /// Reads 4 bytes from the specified byte array starting with offset.
         /// If IsBigEndian = true, then this flips the order of the byte values.
         /// </summary>
-        /// <param name="value">An array of bytes that is at least 4 bytes in length from the startIndex</param>
-        /// <param name="startIndex">A 0 based integer index where the double value begins</param>
-        /// <param name="isLittleEndian">If this is true, then the order of the bytes is reversed before being converted to a double</param>
-        /// <returns>A double created from reading the byte array</returns>
+        /// <param name="value">An array of bytes that is at least 4 bytes in length from the startIndex.</param>
+        /// <param name="startIndex">A 0 based integer index where the double value begins.</param>
+        /// <param name="isLittleEndian">If this is true, then the order of the bytes is reversed before being converted to a double.</param>
+        /// <returns>A double created from reading the byte array.</returns>
         public static int ToInt(byte[] value, ref int startIndex, bool isLittleEndian)
         {
             // Some systems run BigEndian by default, others run little endian.
@@ -252,12 +252,12 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Converts the double value into bytes and inserts them starting at startIndex into the destArray
+        /// Converts the double value into bytes and inserts them starting at startIndex into the destArray.
         /// </summary>
-        /// <param name="destArray">A byte array where the values should be written</param>
-        /// <param name="startIndex">The starting index where the values should be inserted</param>
-        /// <param name="value">The double value to convert</param>
-        /// <param name="isLittleEndian">Specifies whether the value should be written as big or little endian</param>
+        /// <param name="destArray">A byte array where the values should be written.</param>
+        /// <param name="startIndex">The starting index where the values should be inserted.</param>
+        /// <param name="value">The double value to convert.</param>
+        /// <param name="isLittleEndian">Specifies whether the value should be written as big or little endian.</param>
         public static void WriteBytes(byte[] destArray, int startIndex, double value, bool isLittleEndian)
         {
             // Some systems run BigEndian by default, others run little endian.
@@ -281,10 +281,10 @@ namespace DotSpatial.Data
         /// This will correct this system's natural byte order to reflect what is required to match the
         /// shapefiles specification.
         /// </summary>
-        /// <param name="destArray">A byte array where the values should be written</param>
-        /// <param name="startIndex">The starting index where the values should be inserted</param>
-        /// <param name="value">The integer value to convert</param>
-        /// <param name="isLittleEndian">Specifies whether the value should be written as big or little endian</param>
+        /// <param name="destArray">A byte array where the values should be written.</param>
+        /// <param name="startIndex">The starting index where the values should be inserted.</param>
+        /// <param name="value">The integer value to convert.</param>
+        /// <param name="isLittleEndian">Specifies whether the value should be written as big or little endian.</param>
         public static void WriteBytes(byte[] destArray, int startIndex, int value, bool isLittleEndian)
         {
             // Some systems run BigEndian by default, others run little endian.
@@ -309,8 +309,8 @@ namespace DotSpatial.Data
         /// but don't know the total length of a new file until cycling through the entire file. It is easier, therefore
         /// to update the length after editing.
         /// </summary>
-        /// <param name="fileName">A string fileName</param>
-        /// <param name="length">The integer length of the file in 16-bit words</param>
+        /// <param name="fileName">A string fileName.</param>
+        /// <param name="length">The integer length of the file in 16-bit words.</param>
         public static void WriteFileLength(string fileName, int length)
         {
             using (var fs = new FileStream(fileName, FileMode.Open))
@@ -325,10 +325,10 @@ namespace DotSpatial.Data
         /// in the file with the new file length. This is generally because we want to write the header first,
         /// but don't know the total length of a new file until cycling through the entire file. It is easier, therefore
         /// to update the length after editing.
-        /// Note: performs seek
+        /// Note: performs seek.
         /// </summary>
-        /// <param name="stream">stream to edit</param>
-        /// <param name="length">The integer length of the file in 16-bit words</param>
+        /// <param name="stream">stream to edit.</param>
+        /// <param name="length">The integer length of the file in 16-bit words.</param>
         public static void WriteFileLength(Stream stream, int length)
         {
             stream.Seek(0, SeekOrigin.Begin);
@@ -366,7 +366,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// saves a single row to the data source.
         /// </summary>
-        /// <param name="index">the integer row (or FID) index</param>
+        /// <param name="index">the integer row (or FID) index.</param>
         /// <param name="values">The object array holding the new values to store.</param>
         public override void Edit(int index, Dictionary<string, object> values)
         {
@@ -376,7 +376,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// saves a single row to the data source.
         /// </summary>
-        /// <param name="index">the integer row (or FID) index</param>
+        /// <param name="index">the integer row (or FID) index.</param>
         /// <param name="values">The object array holding the new values to store.</param>
         public override void Edit(int index, DataRow values)
         {
@@ -430,10 +430,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads just the content requested in order to satisfy the paging ability of VirtualMode for the DataGridView
+        /// Reads just the content requested in order to satisfy the paging ability of VirtualMode for the DataGridView.
         /// </summary>
-        /// <param name="startIndex">The integer lower page boundary</param>
-        /// <param name="numRows">The integer number of attribute rows to return for the page</param>
+        /// <param name="startIndex">The integer lower page boundary.</param>
+        /// <param name="numRows">The integer number of attribute rows to return for the page.</param>
         /// <param name="fieldNames">The list or array of fieldnames to return.</param>
         /// <returns>A DataTable populated with data rows with only the specified values.</returns>
         public override DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
@@ -492,10 +492,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the count of members that match the expression
+        /// Gets the count of members that match the expression.
         /// </summary>
-        /// <param name="expressions">The string expression to test</param>
-        /// <param name="progressHandler">THe progress handler that can also cancel the counting</param>
+        /// <param name="expressions">The string expression to test.</param>
+        /// <param name="progressHandler">THe progress handler that can also cancel the counting.</param>
         /// <param name="maxSampleSize">The integer maximum sample size from which to draw counts. If this is negative, it will not be used.</param>
         /// <returns>The integer count of the members that match the expression.</returns>
         public override int[] GetCounts(string[] expressions, ICancelProgressHandler progressHandler, int maxSampleSize)
@@ -598,7 +598,7 @@ namespace DotSpatial.Data
         /// Reads the entire index file in order to get a breakdown of how shapes are broken up.
         /// </summary>
         /// <param name="fileName">A string fileName of the .shx file to read.</param>
-        /// <returns>A List of ShapeHeaders that give offsets and lengths so that reading can be optimized</returns>
+        /// <returns>A List of ShapeHeaders that give offsets and lengths so that reading can be optimized.</returns>
         public List<ShapeHeader> ReadIndexFile(string fileName)
         {
             string shxFilename = fileName;
@@ -683,7 +683,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Automatically uses the fileName of this shapefile to save the projection
+        /// Automatically uses the fileName of this shapefile to save the projection.
         /// </summary>
         public void SaveProjection()
         {
@@ -711,7 +711,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Converts a page of content from a DataTable format, saving it back to the source.
         /// </summary>
-        /// <param name="startIndex">The 0 based integer index representing the first row in the file (corresponding to the 0 row of the data table)</param>
+        /// <param name="startIndex">The 0 based integer index representing the first row in the file (corresponding to the 0 row of the data table).</param>
         /// <param name="pageValues">The DataTable representing the rows to set. If the row count is larger than the dataset, this will add the rows instead.</param>
         public new void SetAttributes(int startIndex, DataTable pageValues)
         {

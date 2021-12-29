@@ -75,7 +75,7 @@ namespace DotSpatial.Modeling.Forms
         public virtual Bitmap Icon { get; set; }
 
         /// <summary>
-        /// Gets the input paramater array,
+        /// Gets the input paramater array,.
         /// </summary>
         public abstract Parameter[] InputParameters { get; }
 
@@ -101,7 +101,7 @@ namespace DotSpatial.Modeling.Forms
         public abstract Parameter[] OutputParameters { get; }
 
         /// <summary>
-        /// Gets or sets a brief description displayed when the user hovers over the tool in the toolbox
+        /// Gets or sets a brief description displayed when the user hovers over the tool in the toolbox.
         /// </summary>
         public virtual string ToolTip { get; set; }
 
@@ -110,14 +110,14 @@ namespace DotSpatial.Modeling.Forms
         #region Methods
 
         /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if successful
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
-        /// <param name="cancelProgressHandler">A cancel progress handler that used to indicate how much of the tool is done</param>
+        /// <param name="cancelProgressHandler">A cancel progress handler that used to indicate how much of the tool is done.</param>
         /// <returns>True, if the tool was executed successfully.</returns>
         public abstract bool Execute(ICancelProgressHandler cancelProgressHandler);
 
         /// <summary>
-        /// The parameters array should be populated with default values here
+        /// The parameters array should be populated with default values here.
         /// </summary>
         public abstract void Initialize();
 

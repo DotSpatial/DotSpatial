@@ -6,7 +6,7 @@ using System.Globalization;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// CulturePreferences
+    /// CulturePreferences.
     /// </summary>
     public static class CulturePreferences
     {

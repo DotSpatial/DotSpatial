@@ -7,7 +7,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// RasterEditorSettings
+    /// RasterEditorSettings.
     /// </summary>
     [Serializable]
     public class RasterEditorSettings : EditorSettings
@@ -36,7 +36,7 @@ namespace DotSpatial.Symbology
         public double Max { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum value that will contribute to statistics
+        /// Gets or sets the minimum value that will contribute to statistics.
         /// </summary>
         [Serialize("Min")]
         public double Min { get; set; }

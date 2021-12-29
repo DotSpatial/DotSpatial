@@ -41,12 +41,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -55,15 +55,13 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
-        /// <param name="cancelProgressHandler">The progress handler</param>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
-            IFeatureSet self = _inputParam[0].Value as IFeatureSet;
-            IFeatureSet other = _inputParam[1].Value as IFeatureSet;
-            if (self == null || other == null) return false;
+            if (!(_inputParam[0].Value is IFeatureSet self) || !(_inputParam[1].Value is IFeatureSet other)) return false;
 
             self.FillAttributes();
             other.FillAttributes();
@@ -74,12 +72,12 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the Union Opaeration tool programmatically
+        /// Executes the Union Opaeration tool programmatically.
         /// </summary>
-        /// <param name="self">The input are feature set</param>
-        /// <param name="other">The second input feature set</param>
-        /// <param name="output">The output feature set</param>
-        /// <param name="cancelProgressHandler">The progress handler</param>
+        /// <param name="self">The input are feature set.</param>
+        /// <param name="other">The second input feature set.</param>
+        /// <param name="output">The output feature set.</param>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
         public bool Execute(IFeatureSet self, IFeatureSet other, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
@@ -116,7 +114,7 @@ namespace DotSpatial.Tools
                 }
 
                 previous = Convert.ToInt32(Math.Round(i * 40D / max));
-                cancelProgressHandler.Progress(string.Empty, previous, previous + TextStrings.progresscompleted);
+                cancelProgressHandler.Progress(previous, previous + TextStrings.progresscompleted);
             }
 
             max = other.Features.Count;
@@ -141,7 +139,7 @@ namespace DotSpatial.Tools
                 }
 
                 previous = Convert.ToInt32(Math.Round((i * 40D / max) + 40D));
-                cancelProgressHandler.Progress(string.Empty, previous, previous + TextStrings.progresscompleted);
+                cancelProgressHandler.Progress(previous, previous + TextStrings.progresscompleted);
             }
 
             max = tempFeatureSet.Features.Count;
@@ -162,7 +160,7 @@ namespace DotSpatial.Tools
                     return false;
                 }
 
-                cancelProgressHandler.Progress(string.Empty, previous, previous + TextStrings.progresscompleted);
+                cancelProgressHandler.Progress(previous, previous + TextStrings.progresscompleted);
             }
 
             max = tempOutput.Features.Count;
@@ -182,7 +180,7 @@ namespace DotSpatial.Tools
                 }
 
                 previous = Convert.ToInt32(Math.Round((i * 10D / max) + 90D));
-                cancelProgressHandler.Progress(string.Empty, previous, previous + TextStrings.progresscompleted);
+                cancelProgressHandler.Progress(previous, previous + TextStrings.progresscompleted);
             }
 
             output.SaveAs(output.Filename, true);
@@ -190,19 +188,19 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {
             _inputParam = new Parameter[2];
             _inputParam[0] = new FeatureSetParam(TextStrings.BaseFeatureSet)
-                                 {
-                                     HelpText = TextStrings.MainFeatureset
-                                 };
+            {
+                HelpText = TextStrings.MainFeatureset
+            };
             _inputParam[1] = new FeatureSetParam(TextStrings.ChildFeatureSet)
-                                 {
-                                     HelpText = TextStrings.SecondFeatureset
-                                 };
+            {
+                HelpText = TextStrings.SecondFeatureset
+            };
             _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.UnionFeatureSet);
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);

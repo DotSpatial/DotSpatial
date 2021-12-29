@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// DashSlider
+    /// DashSlider.
     /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public class DashSlider
@@ -87,7 +87,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Draws the current control
+        /// Draws the current control.
         /// </summary>
         /// <param name="g">The graphics object used for drawing.</param>
         /// <param name="clipRectangle">The clip rectangle.</param>

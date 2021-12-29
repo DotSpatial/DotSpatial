@@ -55,7 +55,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets a FeatureSetPack from the WKB
+        /// Gets a FeatureSetPack from the WKB.
         /// </summary>
         /// <param name="data">Data to get the feature sets from.</param>
         /// <returns>The feature sets gotten from the data.</returns>
@@ -260,7 +260,7 @@ namespace DotSpatial.Data
         /// Calculates the area and if the area is negative, this is considered a hole.
         /// </summary>
         /// <param name="coords">Coordinates whose direction gets checked.</param>
-        /// <returns>Boolean, true if this has a negative area and should be thought of as a hole</returns>
+        /// <returns>Boolean, true if this has a negative area and should be thought of as a hole.</returns>
         private static bool IsCounterClockwise(double[] coords)
         {
             double area = 0;
@@ -670,7 +670,7 @@ namespace DotSpatial.Data
         /// Using Array.Reverse does not work because it has the unwanted effect of flipping
         /// the X and Y values.
         /// </summary>
-        /// <param name="coords">The double precision XY coordinate array of vertices</param>
+        /// <param name="coords">The double precision XY coordinate array of vertices.</param>
         /// <returns>The double array in reverse order.</returns>
         private static double[] ReverseCoords(double[] coords)
         {

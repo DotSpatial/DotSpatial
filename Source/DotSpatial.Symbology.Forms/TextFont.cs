@@ -253,10 +253,10 @@ namespace DotSpatial.Symbology.Forms
         /// Draws the specified text to the specified graphics object in the specified location,
         /// but using all of the parameters specified by this TextFont object.
         /// </summary>
-        /// <param name="g">The Graphics surface to draw to</param>
-        /// <param name="text">The string text to draw</param>
-        /// <param name="x">The x coordinate of the top left position</param>
-        /// <param name="y">The y coordinate of the top left position</param>
+        /// <param name="g">The Graphics surface to draw to.</param>
+        /// <param name="text">The string text to draw.</param>
+        /// <param name="x">The x coordinate of the top left position.</param>
+        /// <param name="y">The y coordinate of the top left position.</param>
         public void Draw(Graphics g, string text, float x, float y)
         {
             Setup();
@@ -267,9 +267,9 @@ namespace DotSpatial.Symbology.Forms
         /// Draws the specified text to the specified graphics object in the specified location,
         /// but using all of the parameters specified by this TextFont object.
         /// </summary>
-        /// <param name="g">The Graphics surface to draw to</param>
-        /// <param name="text">The string text to draw</param>
-        /// <param name="location">The PointF describing the location to draw</param>
+        /// <param name="g">The Graphics surface to draw to.</param>
+        /// <param name="text">The string text to draw.</param>
+        /// <param name="location">The PointF describing the location to draw.</param>
         public void Draw(Graphics g, string text, PointF location)
         {
             Setup();
@@ -280,8 +280,8 @@ namespace DotSpatial.Symbology.Forms
         /// Draws the specified text to the specified graphics object within the specified box.
         /// </summary>
         /// <param name="g">The graphics surface to draw to.</param>
-        /// <param name="text">The text to draw</param>
-        /// <param name="box">The rectangular box to draw within</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="box">The rectangular box to draw within.</param>
         public void Draw(Graphics g, string text, RectangleF box)
         {
             Setup();
@@ -290,7 +290,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// This returns the actual internal font. Be careful not to dispose this.
         /// </summary>
-        /// <returns>A System.Font</returns>
+        /// <returns>A System.Font.</returns>
         public Font GetFont()
         {
             Setup(); // in case the font is not yet valid
@@ -314,7 +314,7 @@ namespace DotSpatial.Symbology.Forms
         /// Assigns the parameters from the specifed StringFormat class to the members of
         /// this TextFont.
         /// </summary>
-        /// <param name="format">The StringFormat to apply to this object</param>
+        /// <param name="format">The StringFormat to apply to this object.</param>
         public void SetFormat(StringFormat format)
         {
             _alignment = format.Alignment;
@@ -327,9 +327,9 @@ namespace DotSpatial.Symbology.Forms
         /// Handles drawing for point location drawing.
         /// </summary>
         /// <param name="g">The Graphics surface to draw to.</param>
-        /// <param name="text">The string to draw</param>
-        /// <param name="x">The x floating point value</param>
-        /// <param name="y">The y floating point value</param>
+        /// <param name="text">The string to draw.</param>
+        /// <param name="x">The x floating point value.</param>
+        /// <param name="y">The y floating point value.</param>
         protected virtual void OnDraw(Graphics g, string text, float x, float y)
         {
             g.DrawString(text, _font, _brush, x, y, _format);
@@ -338,9 +338,9 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Handles drawing for drawing that falls within a rectangleF structure.
         /// </summary>
-        /// <param name="g">The Graphics surface to draw to</param>
-        /// <param name="text">The string to draw</param>
-        /// <param name="box">The RectangleF structure</param>
+        /// <param name="g">The Graphics surface to draw to.</param>
+        /// <param name="text">The string to draw.</param>
+        /// <param name="box">The RectangleF structure.</param>
         protected virtual void OnDraw(Graphics g, string text, RectangleF box)
         {
             g.DrawString(text, _font, _brush, box, _format);

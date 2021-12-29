@@ -90,7 +90,7 @@ namespace DotSpatial.Plugins.TableEditor
         }
 
         /// <summary>
-        /// Open attribute table
+        /// Open attribute table.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>

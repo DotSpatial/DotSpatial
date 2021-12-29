@@ -8,7 +8,7 @@ using System.Data;
 using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.NTSExtension;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -114,9 +114,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Adds all of the specified index values to the selection
+        /// Adds all of the specified index values to the selection.
         /// </summary>
-        /// <param name="indices">The indices to add</param>
+        /// <param name="indices">The indices to add.</param>
         public void AddRange(IEnumerable<int> indices)
         {
             foreach (int index in indices)
@@ -134,8 +134,8 @@ namespace DotSpatial.Symbology
         /// acting on the feature, so Contains, for instance, would work with points.
         /// </summary>
         /// <param name="region">The region that contains the features that get added.</param>
-        /// <param name="affectedArea">The affected area of this addition</param>
-        /// <returns>True if any item was actually added to the collection</returns>
+        /// <param name="affectedArea">The affected area of this addition.</param>
+        /// <returns>True if any item was actually added to the collection.</returns>
         public bool AddRegion(Envelope region, out Envelope affectedArea)
         {
             Action<FastDrawnState> addToSelection = state => state.Selected = SelectionState;
@@ -320,10 +320,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Inverts the selection based on the current SelectionMode
+        /// Inverts the selection based on the current SelectionMode.
         /// </summary>
-        /// <param name="region">The geographic region to reverse the selected state</param>
-        /// <param name="affectedArea">The affected area to invert</param>
+        /// <param name="region">The geographic region to reverse the selected state.</param>
+        /// <param name="affectedArea">The affected area to invert.</param>
         /// <returns>True, if the selection was changed.</returns>
         public bool InvertSelection(Envelope region, out Envelope affectedArea)
         {
@@ -355,7 +355,7 @@ namespace DotSpatial.Symbology
         /// values, this returns false, even if others were successfully removed.
         /// This will also return false if none of the states were changed.
         /// </summary>
-        /// <param name="indices">The indices to remove</param>
+        /// <param name="indices">The indices to remove.</param>
         /// <returns>True if the selection was changed.</returns>
         public bool RemoveRange(IEnumerable<int> indices)
         {
@@ -383,9 +383,9 @@ namespace DotSpatial.Symbology
         /// the SelectionMode. If it passes, it will remove the feature from
         /// the selection.
         /// </summary>
-        /// <param name="region">The geographic region to remove</param>
+        /// <param name="region">The geographic region to remove.</param>
         /// <param name="affectedArea">A geographic area that was affected by this change.</param>
-        /// <returns>Boolean, true if the collection was changed</returns>
+        /// <returns>Boolean, true if the collection was changed.</returns>
         public bool RemoveRegion(Envelope region, out Envelope affectedArea)
         {
             Action<FastDrawnState> removeFromSelection = state => state.Selected = !SelectionState;
@@ -419,7 +419,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Exports the members of this collection as a list of IFeature.
         /// </summary>
-        /// <returns>A List of IFeature</returns>
+        /// <returns>A List of IFeature.</returns>
         public List<IFeature> ToFeatureList()
         {
             List<IFeature> result = new List<IFeature>();
@@ -468,7 +468,7 @@ namespace DotSpatial.Symbology
             bool somethingChanged = false;
             SuspendChanges();
             Extent affected = new Extent();
-            IPolygon reg = region.ToPolygon();
+            Polygon reg = region.ToPolygon();
             ShapeRange env = new ShapeRange(region);
 
             for (int shp = 0; shp < _layer.DrawnStates.Length; shp++)
@@ -501,7 +501,7 @@ namespace DotSpatial.Symbology
                         }
                         else
                         {
-                            IGeometry g = _layer.DataSet.GetFeature(shp).Geometry;
+                            Geometry g = _layer.DataSet.GetFeature(shp).Geometry;
                             doAction = reg.Disjoint(g);
                         }
 
@@ -510,7 +510,7 @@ namespace DotSpatial.Symbology
 
                 if (shape.Extent.Intersects(region))
                 {
-                    IGeometry geom = _layer.DataSet.GetFeature(shp).Geometry;
+                    Geometry geom = _layer.DataSet.GetFeature(shp).Geometry;
                     switch (SelectionMode)
                     {
                         case SelectionMode.Contains:
@@ -574,7 +574,7 @@ namespace DotSpatial.Symbology
         #region Classes
 
         /// <summary>
-        /// This class cycles through the members
+        /// This class cycles through the members.
         /// </summary>
         private class IndexSelectionEnumerator : IEnumerator<int>
         {

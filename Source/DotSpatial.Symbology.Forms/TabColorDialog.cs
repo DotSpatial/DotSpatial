@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// TabColorDialog
+    /// TabColorDialog.
     /// </summary>
     public partial class TabColorDialog : Form
     {
@@ -52,7 +52,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the start color for this control
+        /// Gets or sets the start color for this control.
         /// </summary>
         public Color StartColor
         {
@@ -72,7 +72,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Fires the ChangesApplied event
+        /// Fires the ChangesApplied event.
         /// </summary>
         protected virtual void OnApplyChanges()
         {

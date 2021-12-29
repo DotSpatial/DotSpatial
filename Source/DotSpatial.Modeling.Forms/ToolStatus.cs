@@ -4,7 +4,7 @@
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// Indicates the allowed values for the status of the element, illustrated by the light
+    /// Indicates the allowed values for the status of the element, illustrated by the light.
     /// </summary>
     public enum ToolStatus
     {

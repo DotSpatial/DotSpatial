@@ -16,7 +16,7 @@ namespace DotSpatial.Symbology
         int Chunk { get; set; }
 
         /// <summary>
-        /// Gets or sets the scheme category
+        /// Gets or sets the scheme category.
         /// </summary>
         IFeatureCategory SchemeCategory { get; set; }
 

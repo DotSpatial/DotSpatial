@@ -8,7 +8,7 @@ using System.IO;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// BinaryRasterProvider
+    /// BinaryRasterProvider.
     /// </summary>
     public class BinaryRasterProvider : IRasterProvider
     {
@@ -44,7 +44,7 @@ namespace DotSpatial.Data
         public virtual string Name => "DotSpatial";
 
         /// <summary>
-        /// Gets or sets the control or method that should report on progress
+        /// Gets or sets the control or method that should report on progress.
         /// </summary>
         public IProgressHandler ProgressHandler { get; set; }
 
@@ -76,14 +76,14 @@ namespace DotSpatial.Data
         /// An instance of the dataset should be created and then returned. By this time, the fileName
         /// will already be checked to see if it exists, and deleted if the user wants to overwrite it.
         /// </summary>
-        /// <param name="name">The string fileName for the new instance</param>
-        /// <param name="driverCode">The string short name of the driver for creating the raster</param>
-        /// <param name="xSize">The number of columns in the raster</param>
-        /// <param name="ySize">The number of rows in the raster</param>
-        /// <param name="numBands">The number of bands to create in the raster</param>
-        /// <param name="dataType">The data type to use for the raster</param>
+        /// <param name="name">The string fileName for the new instance.</param>
+        /// <param name="driverCode">The string short name of the driver for creating the raster.</param>
+        /// <param name="xSize">The number of columns in the raster.</param>
+        /// <param name="ySize">The number of rows in the raster.</param>
+        /// <param name="numBands">The number of bands to create in the raster.</param>
+        /// <param name="dataType">The data type to use for the raster.</param>
         /// <param name="options">The options to be used.</param>
-        /// <returns>An IRaster</returns>
+        /// <returns>An IRaster.</returns>
         public IRaster Create(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType, string[] options)
         {
             if (dataType == typeof(byte))
@@ -225,7 +225,7 @@ namespace DotSpatial.Data
         /// this method when this plugin is selected from the Add Other Data option in the
         /// file menu.
         /// </summary>
-        /// <returns>null</returns>
+        /// <returns>null.</returns>
         public virtual List<IDataSet> Open()
         {
             // This data provider uses a file format, and not the 'other data' methods.

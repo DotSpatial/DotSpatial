@@ -8,7 +8,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// This extends the ChangeEventList by providing methods that allow access by an object Key, and will pass
+    /// This extends the ChangeEventList by providing methods that allow access by an object Key, and will pass.
     /// </summary>
     /// <typeparam name="T">Type of the items in the event list.</typeparam>
     public class LayerEventList<T> : ChangeEventList<T>, ILayerEventList<T>, IDisposable, IDisposeLock
@@ -154,9 +154,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This selects the layer with the specified integer index
+        /// This selects the layer with the specified integer index.
         /// </summary>
-        /// <param name="index">THe zero based integer index</param>
+        /// <param name="index">THe zero based integer index.</param>
         public void SelectLayer(int index)
         {
             SelectedLayer = this[index];
@@ -250,10 +250,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Fires the LayerAdded event
+        /// Fires the LayerAdded event.
         /// </summary>
-        /// <param name="sender">The layer that was added</param>
-        /// <param name="e">LayerEventArgs</param>
+        /// <param name="sender">The layer that was added.</param>
+        /// <param name="e">LayerEventArgs.</param>
         protected virtual void OnLayerAdded(object sender, LayerEventArgs e)
         {
             if (EventsSuspended) return;
@@ -265,7 +265,7 @@ namespace DotSpatial.Symbology
         /// Fires the LayerMoved event.
         /// </summary>
         /// <param name="sender">The layer that was moved.</param>
-        /// <param name="e">LayerEventArgs</param>
+        /// <param name="e">LayerEventArgs.</param>
         protected virtual void OnLayerMoved(object sender, LayerMovedEventArgs e)
         {
             if (EventsSuspended) return;
@@ -287,15 +287,15 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Fires the LayerSelected event and adjusts the selected state of the layer.
         /// </summary>
-        /// <param name="layer">The layer to select</param>
-        /// <param name="selected">Boolean, true if the specified layer is selected</param>
+        /// <param name="layer">The layer to select.</param>
+        /// <param name="selected">Boolean, true if the specified layer is selected.</param>
         protected virtual void OnLayerSelected(ILayer layer, bool selected)
         {
             LayerSelected?.Invoke(this, new LayerSelectedEventArgs(layer, selected));
         }
 
         /// <summary>
-        /// Fires the ItemChanged event and the MembersChanged event and resets any cached lists
+        /// Fires the ItemChanged event and the MembersChanged event and resets any cached lists.
         /// </summary>
         protected override void OnListChanged()
         {
@@ -340,20 +340,20 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Fires the selection changed event
+        /// Fires the selection changed event.
         /// </summary>
-        /// <param name="sender">the object sender of the event</param>
-        /// <param name="args">The FeatureLayerSelectionEventArgs of the layer</param>
+        /// <param name="sender">the object sender of the event.</param>
+        /// <param name="args">The FeatureLayerSelectionEventArgs of the layer.</param>
         protected virtual void OnSelectionChanging(object sender, FeatureLayerSelectionEventArgs args)
         {
             SelectionChanging?.Invoke(sender, args);
         }
 
         /// <summary>
-        /// Fires the ZoomToLayer method when one of the layers fires its ZoomTo event
+        /// Fires the ZoomToLayer method when one of the layers fires its ZoomTo event.
         /// </summary>
-        /// <param name="sender">The layer to zoom to</param>
-        /// <param name="e">The extent of the layer</param>
+        /// <param name="sender">The layer to zoom to.</param>
+        /// <param name="e">The extent of the layer.</param>
         protected virtual void OnZoomToLayer(object sender, EnvelopeArgs e)
         {
             // Just forward the event

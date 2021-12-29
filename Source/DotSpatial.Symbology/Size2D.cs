@@ -26,8 +26,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="Size2D"/> class.
         /// </summary>
-        /// <param name="width">The double width</param>
-        /// <param name="height">The double height</param>
+        /// <param name="width">The double width.</param>
+        /// <param name="height">The double height.</param>
         public Size2D(double width, double height)
         {
             Width = width;
@@ -98,7 +98,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Tests for equality against another size.
         /// </summary>
-        /// <param name="size">the size to compare this size to</param>
+        /// <param name="size">the size to compare this size to.</param>
         /// <returns>boolean, true if the height and width are the same in each case.</returns>
         public bool Equals(Size2D size)
         {

@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Changeable
+    /// Changeable.
     /// </summary>
     public class Changeable
     {

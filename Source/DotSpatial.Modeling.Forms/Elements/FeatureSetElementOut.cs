@@ -11,7 +11,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// Feature Set element out
+    /// Feature Set element out.
     /// </summary>
     public partial class FeatureSetElementOut : DialogElement
     {
@@ -20,8 +20,8 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureSetElementOut"/> class.
         /// </summary>
-        /// <param name="outputParam">The parameter this element represents</param>
-        /// <param name="dataSets">An array of available data</param>
+        /// <param name="outputParam">The parameter this element represents.</param>
+        /// <param name="dataSets">An array of available data.</param>
         public FeatureSetElementOut(FeatureSetParam outputParam, List<DataSetArray> dataSets)
         {
             // Needed by the designer

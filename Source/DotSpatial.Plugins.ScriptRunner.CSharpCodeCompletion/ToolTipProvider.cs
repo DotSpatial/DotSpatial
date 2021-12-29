@@ -35,7 +35,7 @@ using ICSharpCode.TextEditor;
 namespace CSharpEditor
 {
     /// <summary>
-    /// ToolTipProvider
+    /// ToolTipProvider.
     /// </summary>
     internal sealed class ToolTipProvider
     {

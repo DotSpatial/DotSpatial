@@ -11,7 +11,7 @@ namespace DotSpatial.Data
     /// A registry used to map CLR cultures and encodings to dBase language driver id (LDID) encoding specifiers.
     /// </summary>
     /// <remarks>
-    /// Lookup values are taken from Esri's <a href="http://downloads.esri.com/support/documentation/pad_/ArcPad_RefGuide_1105.pdf"> ArcPad Reference Guide</a>
+    /// Lookup values are taken from Esri's. <a href="http://downloads.esri.com/support/documentation/pad_/ArcPad_RefGuide_1105.pdf"> ArcPad Reference Guide</a>
     /// </remarks>
     internal static class DbaseLocaleRegistry
     {

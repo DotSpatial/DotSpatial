@@ -13,7 +13,7 @@ namespace DotSpatial.Data
     /// Q2 (Quartile 1 to Median)
     /// Q3 (Median to Quartile 3)
     /// Q4 (Q3 to Q3 + 3/2 the Interquartile range
-    /// High Outlier (Greater than Q3 plus the interquartile range
+    /// High Outlier (Greater than Q3 plus the interquartile range.
     /// </summary>
     public class BoxStatistics
     {
@@ -42,7 +42,7 @@ namespace DotSpatial.Data
         public object LowWhisker { get; set; }
 
         /// <summary>
-        /// Gets or sets the Median value (the value of the middle member)
+        /// Gets or sets the Median value (the value of the middle member).
         /// </summary>
         public object Median { get; set; }
     }

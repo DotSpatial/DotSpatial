@@ -18,7 +18,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureSetParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
+        /// <param name="name">The name of the parameter.</param>
         public FeatureSetParam(string name)
         {
             Name = name;
@@ -31,7 +31,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         #region Properties
 
         /// <summary>
-        /// Gets or sets the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input).
         /// </summary>
         public new IFeatureSet Value
         {

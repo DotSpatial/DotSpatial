@@ -16,8 +16,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Calculates the intersection by casting the floating point values to integer values.
         /// </summary>
-        /// <param name="self">This rectangle</param>
-        /// <param name="other">The floating point rectangle to calculate against</param>
+        /// <param name="self">This rectangle.</param>
+        /// <param name="other">The floating point rectangle to calculate against.</param>
         /// <returns>True, if this intersects with the other rectangle.</returns>
         public static bool IntersectsWith(this Rectangle self, RectangleF other)
         {
@@ -29,7 +29,7 @@ namespace DotSpatial.Data
         /// Tests the location of the point. If the point is outside of the current rectangle, then the bounds
         /// of the rectangle are adjusted to include the new point.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <param name="newPoint">The point that gets included.</param>
         public static void ExpandToInclude(this Rectangle self, Point newPoint)
         {
@@ -46,8 +46,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Expands the rectangle by the specified integer distance in all directions.
         /// </summary>
-        /// <param name="self">The rectangle to expand</param>
-        /// <param name="distance">The distance </param>
+        /// <param name="self">The rectangle to expand.</param>
+        /// <param name="distance">The distance. </param>
         /// <returns>The expanded rectangle.</returns>
         public static Rectangle ExpandBy(this Rectangle self, int distance)
         {
@@ -57,7 +57,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Expands the rectangle by the specified integer distances.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <param name="dx">Distance to add in x direction.</param>
         /// <param name="dy">Distance to add in y direction.</param>
         /// <returns>The expanded rectangle.</returns>

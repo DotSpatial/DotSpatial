@@ -51,9 +51,9 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Handles the actions that the tool controls during the OnMouseDown event
+        /// Handles the actions that the tool controls during the OnMouseDown event.
         /// </summary>
-        /// <param name="e">The event args</param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseDown(GeoMouseArgs e)
         {
             if (e.Button == MouseButtons.Left && _preventDrag == false)
@@ -69,7 +69,7 @@ namespace DotSpatial.Controls
         /// Handles the mouse move event, changing the viewing extents to match the movements
         /// of the mouse if the left mouse button is down.
         /// </summary>
-        /// <param name="e">The event args</param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseMove(GeoMouseArgs e)
         {
             if (_dragStart != Point.Empty && _preventDrag == false)
@@ -94,9 +94,9 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Mouse Up
+        /// Mouse Up.
         /// </summary>
-        /// <param name="e">The event args</param>
+        /// <param name="e">The event args.</param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
             if (e.Button == MouseButtons.Left && IsDragging)

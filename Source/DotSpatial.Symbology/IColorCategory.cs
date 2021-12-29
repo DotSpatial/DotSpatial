@@ -43,7 +43,7 @@ namespace DotSpatial.Symbology
         /// This is primarilly used in the BiValue situation where a color needs to be generated
         /// somewhere between the startvalue and the endvalue.
         /// </summary>
-        /// <param name="value">The integer value to be converted into a color from the range on this colorbreak</param>
+        /// <param name="value">The integer value to be converted into a color from the range on this colorbreak.</param>
         /// <returns>A color that is selected from the range values.</returns>
         Color CalculateColor(double value);
 

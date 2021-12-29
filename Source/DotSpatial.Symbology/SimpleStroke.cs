@@ -38,7 +38,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleStroke"/> class.
         /// </summary>
-        /// <param name="width">The double width of the line to set</param>
+        /// <param name="width">The double width of the line to set.</param>
         public SimpleStroke(double width)
         {
             Width = width;
@@ -47,7 +47,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleStroke"/> class.
         /// </summary>
-        /// <param name="color">The color to use for the stroke</param>
+        /// <param name="color">The color to use for the stroke.</param>
         public SimpleStroke(Color color)
         {
             Color = color;
@@ -57,8 +57,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleStroke"/> class.
         /// </summary>
-        /// <param name="width">The double width of the line to set</param>
-        /// <param name="color">The color to use for the stroke</param>
+        /// <param name="width">The double width of the line to set.</param>
+        /// <param name="color">The color to use for the stroke.</param>
         public SimpleStroke(double width, Color color)
         {
             Width = width;
@@ -70,7 +70,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the color for this drawing layer
+        /// Gets or sets the color for this drawing layer.
         /// </summary>
         [Serialize("Color")]
         public Color Color
@@ -87,7 +87,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the dash style
+        /// Gets or sets the dash style.
         /// </summary>
         [Serialize("DashStyle")]
         public DashStyle DashStyle

@@ -13,7 +13,6 @@ using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Data.Forms;
 using DotSpatial.Symbology.Forms.Properties;
-using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology.Forms
 {
@@ -48,9 +47,9 @@ namespace DotSpatial.Symbology.Forms
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TableEditorControl"/> class for editing a feature layer's attribute values.
-        /// This allows interaction with the map. If a row is selected in the Table the corresponding row is selected in the map
+        /// This allows interaction with the map. If a row is selected in the Table the corresponding row is selected in the map.
         /// </summary>
-        /// <param name="layer">The symbolizer on the map</param>
+        /// <param name="layer">The symbolizer on the map.</param>
         public TableEditorControl(IFeatureLayer layer)
         {
             InitializeComponent();
@@ -97,7 +96,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the feature layer used by this data Table
+        /// Gets or sets the feature layer used by this data Table.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Browsable(false)]
@@ -376,7 +375,7 @@ namespace DotSpatial.Symbology.Forms
             IFeature currentFeature = _featureLayer.DataSet.FeatureFromRow(drv.Row);
             LayerFrame frame = _featureLayer.ParentMapFrame() as LayerFrame;
             if (frame == null) return;
-            Envelope env = currentFeature.Geometry.EnvelopeInternal.Clone();
+            var env = currentFeature.Geometry.EnvelopeInternal.Copy();
 
             if (env.Width == 0 || env.Height == 0)
             {
@@ -398,7 +397,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the OnRefreshMap event whenver the RefreshMap button click
+        /// Fires the OnRefreshMap event whenver the RefreshMap button click.
         /// </summary>
         protected virtual void OnRefreshMap()
         {
@@ -410,7 +409,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the SelectionChanged event whenver the selection on this dialog has been altered
+        /// Fires the SelectionChanged event whenver the selection on this dialog has been altered.
         /// </summary>
         protected virtual void OnSelectionChanged()
         {
@@ -422,7 +421,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the SelectioinZoom event whenver the selectionZoom button click
+        /// Fires the SelectioinZoom event whenver the selectionZoom button click.
         /// </summary>
         protected virtual void OnSelectionZoom()
         {
@@ -434,7 +433,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the OnFieldCalculation event whenver the zoomToShapeBeingEdited menu click
+        /// Fires the OnFieldCalculation event whenver the zoomToShapeBeingEdited menu click.
         /// </summary>
         protected virtual void OnzoomToShapeBeingEdited()
         {
@@ -747,10 +746,10 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Will find the string in the attribute Table (Search Operation)
+        /// Will find the string in the attribute Table (Search Operation).
         /// </summary>
-        /// <param name="exp">the string to be found</param>
-        /// <returns>true if the string was found, false otherwise</returns>
+        /// <param name="exp">the string to be found.</param>
+        /// <returns>true if the string was found, false otherwise.</returns>
         private bool FindString(string exp)
         {
             if (exp == null) return false;
@@ -1007,8 +1006,8 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Will find the string in the dataGridView and replace it.
         /// </summary>
-        /// <param name="exp">Find expression string</param>
-        /// <param name="expReplace">replace expression string</param>
+        /// <param name="exp">Find expression string.</param>
+        /// <param name="expReplace">replace expression string.</param>
         /// <returns>True, if something was replaced.</returns>
         private bool ReplaceString(string exp, string expReplace)
         {

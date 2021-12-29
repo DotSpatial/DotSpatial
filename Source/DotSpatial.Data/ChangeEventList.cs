@@ -9,7 +9,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// A list that also includes several events during its existing activities.
     /// List is fussy about inheritance, unfortunately, so this wraps a list
-    /// and then makes this class much more inheritable
+    /// and then makes this class much more inheritable.
     /// </summary>
     /// <typeparam name="T">The type of the items in the list.</typeparam>
     public class ChangeEventList<T> : CopyList<T>, IChangeEventList<T>
@@ -49,7 +49,7 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;
+        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;.
         /// </summary>
         /// <param name="collection">collection: The collection whose elements should be added to the end of the
         /// System.Collections.Generic.List&lt;T&gt;. The collection itself cannot be null, but it can contain elements that are null,
@@ -304,7 +304,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// This is a notification that characteristics of one of the members of the list may have changed,
-        /// requiring a refresh, but may not involve a change to the the list itself
+        /// requiring a refresh, but may not involve a change to the the list itself.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>

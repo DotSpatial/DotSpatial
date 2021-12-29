@@ -74,8 +74,8 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the UITypeEditorEditStyle, which in this case is drop down.
         /// </summary>
-        /// <param name="context">not used</param>
-        /// <returns>The UITypeEditorEditStyle</returns>
+        /// <param name="context">not used.</param>
+        /// <returns>The UITypeEditorEditStyle.</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;

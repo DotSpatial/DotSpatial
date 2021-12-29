@@ -7,7 +7,8 @@ using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using Point = System.Drawing.Point;
 
 namespace DotSpatial.Plugins.ShapeEditor
 {
@@ -83,8 +84,8 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// mouse coords.
         /// </summary>
         /// <param name="e">The event args.</param>
-        /// <param name="snappedCoord">set if a coordinate is found</param>
-        /// <returns>true if snap found</returns>
+        /// <param name="snappedCoord">set if a coordinate is found.</param>
+        /// <returns>true if snap found.</returns>
         protected bool ComputeSnappedLocation(GeoMouseArgs e, ref Coordinate snappedCoord)
         {
             if (SnapLayers == null || e == null || Map == null)
@@ -137,8 +138,8 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <summary>
         /// Perform any drawing necessary for snapping (e.g. draw a circle around snapped location).
         /// </summary>
-        /// <param name="graphics">graphics to draw on</param>
-        /// <param name="pos">point where the circles center will be</param>
+        /// <param name="graphics">graphics to draw on.</param>
+        /// <param name="pos">point where the circles center will be.</param>
         protected void DoSnapDrawing(Graphics graphics, Point pos)
         {
             if (IsSnapped)

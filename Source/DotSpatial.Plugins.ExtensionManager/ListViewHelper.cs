@@ -16,7 +16,7 @@ using NuGet;
 namespace DotSpatial.Plugins.ExtensionManager
 {
     /// <summary>
-    /// ListViewHelper
+    /// ListViewHelper.
     /// </summary>
     internal class ListViewHelper
     {
@@ -27,7 +27,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// </summary>
         /// <param name="list">List with the packages.</param>
         /// <param name="listView">Listview to add the packages to.</param>
-        /// <param name="pagenumber">PageNumber</param>
+        /// <param name="pagenumber">PageNumber.</param>
         public void AddPackages(IEnumerable<IPackage> list, ListView listView, int pagenumber)
         {
             if (list == null)

@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// PointShape
+    /// PointShape.
     /// </summary>
     public static class PointShape
     {

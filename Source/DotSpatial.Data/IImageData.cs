@@ -20,7 +20,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets or sets an integer indicating how many bytes exist for each pixel.
-        /// Eg. 32 ARGB = 4, 24 RGB = 3, 16 bit GrayScale = 2
+        /// Eg. 32 ARGB = 4, 24 RGB = 3, 16 bit GrayScale = 2.
         /// </summary>
         int BytesPerPixel { get; set; }
 
@@ -60,7 +60,7 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Forces the image to read values from the graphic image format to the byte array format
+        /// Forces the image to read values from the graphic image format to the byte array format.
         /// </summary>
         void CopyBitmapToValues();
 
@@ -91,15 +91,15 @@ namespace DotSpatial.Data
         IEnumerable<Color> GetColorPalette();
 
         /// <summary>
-        /// Opens the file, assuming that the fileName has already been specified
+        /// Opens the file, assuming that the fileName has already been specified.
         /// </summary>
         void Open();
 
         /// <summary>
         /// Gets a block of data directly, converted into a bitmap.
         /// </summary>
-        /// <param name="xOffset">The zero based integer column offset from the left</param>
-        /// <param name="yOffset">The zero based integer row offset from the top</param>
+        /// <param name="xOffset">The zero based integer column offset from the left.</param>
+        /// <param name="yOffset">The zero based integer row offset from the top.</param>
         /// <param name="xSize">The integer number of pixel columns in the block. </param>
         /// <param name="ySize">The integer number of pixel rows in the block.</param>
         /// <returns>A Bitmap that is xSize, ySize.</returns>
@@ -120,8 +120,8 @@ namespace DotSpatial.Data
         /// Sets the color value into the byte array based on the row and column position of the pixel.
         /// </summary>
         /// <param name="row">The integer row index of the pixel to set the color of.</param>
-        /// <param name="column">The integer column index of the pixel to set the color of</param>
-        /// <param name="color">The color to copy values from</param>
+        /// <param name="column">The integer column index of the pixel to set the color of.</param>
+        /// <param name="color">The color to copy values from.</param>
         void SetColor(int row, int column, Color color);
 
         /// <summary>
@@ -141,8 +141,8 @@ namespace DotSpatial.Data
         /// Saves a bitmap of data as a continuous block into the specified location.
         /// </summary>
         /// <param name="value">The bitmap value to save.</param>
-        /// <param name="xOffset">The zero based integer column offset from the left</param>
-        /// <param name="yOffset">The zero based integer row offset from the top</param>
+        /// <param name="xOffset">The zero based integer column offset from the left.</param>
+        /// <param name="yOffset">The zero based integer row offset from the top.</param>
         void WriteBlock(Bitmap value, int xOffset, int yOffset);
 
         #endregion

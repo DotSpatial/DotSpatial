@@ -11,7 +11,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// LineSymbolizerEditor
+    /// LineSymbolizerEditor.
     /// </summary>
     public class LineSymbolizerEditor : UITypeEditor
     {
@@ -25,7 +25,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Launches a form for editing the line symbolizer
+        /// Launches a form for editing the line symbolizer.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <param name="provider">The service provider.</param>
@@ -47,10 +47,10 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Indicates to launch a form, rather than using a drop-down edit style
+        /// Indicates to launch a form, rather than using a drop-down edit style.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
-        /// <returns>The UITypeEditorEditStyle</returns>
+        /// <returns>The UITypeEditorEditStyle.</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.Modal;

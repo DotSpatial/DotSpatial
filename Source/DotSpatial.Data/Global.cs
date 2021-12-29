@@ -66,8 +66,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// This attempts to convert a value into an integer. If it fails, it returns 0.
         /// </summary>
-        /// <param name="expression">The expression to test</param>
-        /// <returns>true if the value could be cast as a double, false otherwise</returns>
+        /// <param name="expression">The expression to test.</param>
+        /// <returns>true if the value could be cast as a double, false otherwise.</returns>
         public static int GetInteger(object expression)
         {
             int retNum;
@@ -91,10 +91,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the string form of the number using culture settings
+        /// Gets the string form of the number using culture settings.
         /// </summary>
-        /// <param name="expression">The expression to obtain the string for</param>
-        /// <returns>A string</returns>
+        /// <param name="expression">The expression to obtain the string for.</param>
+        /// <returns>A string.</returns>
         public static string GetString(object expression)
         {
             return System.Convert.ToString(expression, CulturePreferences.CultureInformation.NumberFormat);
@@ -103,8 +103,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Tests an expression to see if it can be converted into a byte.
         /// </summary>
-        /// <param name="expression">The expression to test</param>
-        /// <returns>true if the value could be cast as a double, false otherwise</returns>
+        /// <param name="expression">The expression to test.</param>
+        /// <returns>true if the value could be cast as a double, false otherwise.</returns>
         public static bool IsByte(object expression)
         {
             byte retNum;
@@ -115,8 +115,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Tests an expression to see if it can be converted into a double.
         /// </summary>
-        /// <param name="expression">The expression to test</param>
-        /// <returns>true if the value could be cast as a double, false otherwise</returns>
+        /// <param name="expression">The expression to test.</param>
+        /// <returns>true if the value could be cast as a double, false otherwise.</returns>
         public static bool IsDouble(object expression)
         {
             double retNum;
@@ -128,8 +128,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Tests an expression to see if it can be converted into a float.
         /// </summary>
-        /// <param name="expression">The expression to test</param>
-        /// <returns>true if the value could be cast as a double, false otherwise</returns>
+        /// <param name="expression">The expression to test.</param>
+        /// <returns>true if the value could be cast as a double, false otherwise.</returns>
         public static bool IsFloat(object expression)
         {
             float retNum;
@@ -140,8 +140,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Tests an expression to see if it can be converted into an integer.
         /// </summary>
-        /// <param name="expression">The expression to test</param>
-        /// <returns>true if the value could be cast as an integer, false otherwise</returns>
+        /// <param name="expression">The expression to test.</param>
+        /// <returns>true if the value could be cast as an integer, false otherwise.</returns>
         public static bool IsInteger(object expression)
         {
             int retNum;
@@ -152,8 +152,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Tests an expression to see if it can be converted into a short.
         /// </summary>
-        /// <param name="expression">The expression to test</param>
-        /// <returns>true if the value could be cast as a double, false otherwise</returns>
+        /// <param name="expression">The expression to test.</param>
+        /// <returns>true if the value could be cast as a double, false otherwise.</returns>
         public static bool IsShort(object expression)
         {
             short retNum;
@@ -274,18 +274,18 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Uses the standard enum parsing, but returns it cast as the specified T parameter
+        /// Uses the standard enum parsing, but returns it cast as the specified T parameter.
         /// </summary>
-        /// <typeparam name="T">The type of the enum to use</typeparam>
-        /// <param name="text">The string to parse into a copy of the enumeration</param>
-        /// <returns>an enumeration of the specified type</returns>
+        /// <typeparam name="T">The type of the enum to use.</typeparam>
+        /// <param name="text">The string to parse into a copy of the enumeration.</param>
+        /// <returns>an enumeration of the specified type.</returns>
         public static T ParseEnum<T>(string text)
         {
             return SafeCastTo<T>(Enum.Parse(typeof(T), text));
         }
 
         /// <summary>
-        /// A Generic Safe Casting method that should simply exist as part of the core framework
+        /// A Generic Safe Casting method that should simply exist as part of the core framework.
         /// </summary>
         /// <typeparam name="T">The type of the member to attempt to cast to.</typeparam>
         /// <param name="obj">The original object to attempt to System.Convert.</param>

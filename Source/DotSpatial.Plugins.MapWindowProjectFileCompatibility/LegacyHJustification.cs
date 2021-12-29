@@ -4,7 +4,7 @@
 namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 {
     /// <summary>
-    /// LegacyHJustification
+    /// LegacyHJustification.
     /// </summary>
     public enum LegacyHJustification
     {

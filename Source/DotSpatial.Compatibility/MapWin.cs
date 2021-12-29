@@ -9,7 +9,7 @@ using DotSpatial.Controls;
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// MapWin
+    /// MapWin.
     /// </summary>
     public class MapWin : IMapWin
     {
@@ -26,10 +26,10 @@ namespace DotSpatial.Compatibility
         /// Initializes a new instance of the <see cref="MapWin"/> class where the Map, Legend, Form and MenuStrip
         /// are all specified.
         /// </summary>
-        /// <param name="inMap">Any valid implementation of IBasicMap</param>
-        /// <param name="inLegend">Any valid implementation of ILegend</param>
-        /// <param name="inMainForm">Any valid windows Form</param>
-        /// <param name="inMenuStrip">Any valid windows MenuStrip</param>
+        /// <param name="inMap">Any valid implementation of IBasicMap.</param>
+        /// <param name="inLegend">Any valid implementation of ILegend.</param>
+        /// <param name="inMainForm">Any valid windows Form.</param>
+        /// <param name="inMenuStrip">Any valid windows MenuStrip.</param>
         public MapWin(IBasicMap inMap, ILegend inLegend, Form inMainForm, MenuStrip inMenuStrip)
         {
             Map = inMap;
@@ -73,17 +73,17 @@ namespace DotSpatial.Compatibility
         }
 
         /// <summary>
-        /// Gets or sets the legend to use for this MapWin
+        /// Gets or sets the legend to use for this MapWin.
         /// </summary>
         public ILegend Legend { get; set; }
 
         /// <summary>
-        /// Gets or sets the main form to use for this MapWin
+        /// Gets or sets the main form to use for this MapWin.
         /// </summary>
         public Form MainForm { get; set; }
 
         /// <summary>
-        /// Gets or sets the basic map for this MapWin
+        /// Gets or sets the basic map for this MapWin.
         /// </summary>
         public IBasicMap Map { get; set; }
 
@@ -93,7 +93,7 @@ namespace DotSpatial.Compatibility
         public IMenus Menus => new Menus(MenuStrip);
 
         /// <summary>
-        /// Gets or sets the menu strip to use for this MapWin
+        /// Gets or sets the menu strip to use for this MapWin.
         /// </summary>
         public MenuStrip MenuStrip { get; set; }
 
@@ -206,7 +206,7 @@ namespace DotSpatial.Compatibility
         ///  Prompt the user to select a projection, and return the PROJ4 representation of this
         ///  projection. Specify the dialog caption and an optional default projection ("" for none).
         /// </summary>
-        /// <param name="dialogCaption">The text to be displayed on the dialog, e.g. "Please select a projection."</param>
+        /// <param name="dialogCaption">The text to be displayed on the dialog, e.g. "Please select a projection.".</param>
         /// <param name="defaultProjection">The PROJ4 projection string of the projection to default to, "" for none.</param>
         /// <returns>The PROJ4 string of the selected projection.</returns>
         public string GetProjectionFromUser(string dialogCaption, string defaultProjection)
@@ -223,7 +223,7 @@ namespace DotSpatial.Compatibility
         }
 
         /// <summary>
-        /// Refreshes Dynamic Visibility
+        /// Refreshes Dynamic Visibility.
         /// </summary>
         public void RefreshDynamicVisibility()
         {

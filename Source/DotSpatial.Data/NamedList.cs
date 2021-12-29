@@ -87,8 +87,8 @@ namespace DotSpatial.Data
         /// Gets or sets the item corresponding to the specified name. Setting this
         /// will re-use the same name and position in the list, but set a new object.
         /// </summary>
-        /// <param name="name">The string name of the item to obtain</param>
-        /// <returns>The item of type T corresponding to the specified name</returns>
+        /// <param name="name">The string name of the item to obtain.</param>
+        /// <returns>The item of type T corresponding to the specified name.</returns>
         public T this[string name]
         {
             get
@@ -141,7 +141,7 @@ namespace DotSpatial.Data
         /// This enables the INamedList to work with items even
         /// if it doesn't know the strong type.
         /// </summary>
-        /// <param name="name">The string name of the item to retrieve</param>
+        /// <param name="name">The string name of the item to retrieve.</param>
         /// <returns>The actual item cast as an object.</returns>
         public object GetItem(string name)
         {
@@ -149,9 +149,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the string name for the specified item
+        /// Gets the string name for the specified item.
         /// </summary>
-        /// <param name="item">The item of type T to find the name for</param>
+        /// <param name="item">The item of type T to find the name for.</param>
         /// <returns>The string name corresponding to the specified item.</returns>
         public string GetName(T item)
         {
@@ -159,7 +159,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the name of the item corresponding
+        /// Gets the name of the item corresponding.
         /// </summary>
         /// <param name="value">The item cast as an object.</param>
         /// <returns>The string name of the specified object, or null if the cast fails.</returns>
@@ -278,14 +278,14 @@ namespace DotSpatial.Data
         /// <summary>
         /// Removes the item with the specified name from the list.
         /// </summary>
-        /// <param name="name">The string name of the item to remove</param>
+        /// <param name="name">The string name of the item to remove.</param>
         public void Remove(string name)
         {
             Remove(_items[name]);
         }
 
         /// <summary>
-        /// Removes the specified item
+        /// Removes the specified item.
         /// </summary>
         /// <param name="item">The item to remove.</param>
         public void Remove(T item)

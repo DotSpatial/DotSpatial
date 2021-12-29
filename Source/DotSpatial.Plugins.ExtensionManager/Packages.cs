@@ -12,7 +12,7 @@ using PackageManager = NuGet.PackageManager;
 namespace DotSpatial.Plugins.ExtensionManager
 {
     /// <summary>
-    /// Packages
+    /// Packages.
     /// </summary>
     internal class Packages
     {

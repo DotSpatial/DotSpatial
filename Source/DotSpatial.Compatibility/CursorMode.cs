@@ -6,7 +6,7 @@ namespace DotSpatial.Compatibility
 #pragma warning disable SA1300 // Element must begin with upper-case letter
 
     /// <summary>
-    /// CursorModes
+    /// CursorModes.
     /// </summary>
     public enum CursorMode
     {

@@ -12,7 +12,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// JoinDialog
+    /// JoinDialog.
     /// </summary>
     public partial class JoinDialog : Form
     {

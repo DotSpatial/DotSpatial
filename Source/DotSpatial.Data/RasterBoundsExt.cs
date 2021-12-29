@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -162,7 +162,7 @@ namespace DotSpatial.Data
         /// <param name="numColumns">The new number of columns.</param>
         /// <returns>
         /// X = [0] + [1] * Column + [2] * Row
-        /// Y = [3] + [4] * Column + [5] * Row
+        /// Y = [3] + [4] * Column + [5] * Row.
         /// </returns>
         public static IRasterBounds ResampleTransform(this IRasterBounds bounds, int numRows, int numColumns)
         {
@@ -211,7 +211,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Re-defines the double precision affine transform values based on the specified System.Drawing2D.Matrix.
         /// </summary>
-        /// <param name="bounds">The bounds to adjust based on the matrix</param>
+        /// <param name="bounds">The bounds to adjust based on the matrix.</param>
         /// <param name="matrix">The matrix to use as a guide for adjustments.</param>
         public static void SetAffineMatrix(this IRasterBounds bounds, Matrix matrix)
         {
@@ -301,10 +301,10 @@ namespace DotSpatial.Data
         /// Given any input row or column, this returns the appropriate geographic location for the
         /// position of the center of the cell.
         /// </summary>
-        /// <param name="bounds">The raster bounds to perform the calculation on</param>
-        /// <param name="row">The integer row index from 0 to numRows - 1</param>
-        /// <param name="column">The integer column index from 0 to numColumns - 1</param>
-        /// <returns>The geographic position of the center of the specified cell</returns>
+        /// <param name="bounds">The raster bounds to perform the calculation on.</param>
+        /// <param name="row">The integer row index from 0 to numRows - 1.</param>
+        /// <param name="column">The integer column index from 0 to numColumns - 1.</param>
+        /// <returns>The geographic position of the center of the specified cell.</returns>
         public static Coordinate CellCenterToProj(this IRasterBounds bounds, int row, int column)
         {
             return new AffineTransform(bounds.AffineCoefficients).CellCenterToProj(row, column);
@@ -313,10 +313,10 @@ namespace DotSpatial.Data
         /// <summary>
         /// Given the row and column, this returns the geographic position of the top left corner of the cell.
         /// </summary>
-        /// <param name="bounds">The raster bounds to perform the calculation on</param>
-        /// <param name="row">The integer row index from 0 to numRows - 1</param>
-        /// <param name="column">The integer column index from 0 to numColumns - 1</param>
-        /// <returns>The geographic position of the top left corner of the specified cell</returns>
+        /// <param name="bounds">The raster bounds to perform the calculation on.</param>
+        /// <param name="row">The integer row index from 0 to numRows - 1.</param>
+        /// <param name="column">The integer column index from 0 to numColumns - 1.</param>
+        /// <returns>The geographic position of the top left corner of the specified cell.</returns>
         public static Coordinate CellTopLeftToProj(this IRasterBounds bounds, int row, int column)
         {
             return new AffineTransform(bounds.AffineCoefficients).CellTopLeftToProj(row, column);
@@ -325,10 +325,10 @@ namespace DotSpatial.Data
         /// <summary>
         /// Given the row and column, this returns the geographic position of the top right corner of the cell.
         /// </summary>
-        /// <param name="bounds">The raster bounds to perform the calculation on</param>
-        /// <param name="row">The integer row index from 0 to numRows - 1</param>
-        /// <param name="column">The integer column index from 0 to numColumns - 1</param>
-        /// <returns>The geographic position of the top right corner of the specified cell</returns>
+        /// <param name="bounds">The raster bounds to perform the calculation on.</param>
+        /// <param name="row">The integer row index from 0 to numRows - 1.</param>
+        /// <param name="column">The integer column index from 0 to numColumns - 1.</param>
+        /// <returns>The geographic position of the top right corner of the specified cell.</returns>
         public static Coordinate CellTopRightToProj(this IRasterBounds bounds, int row, int column)
         {
             return new AffineTransform(bounds.AffineCoefficients).CellTopRightToProj(row, column);
@@ -337,10 +337,10 @@ namespace DotSpatial.Data
         /// <summary>
         /// Given the row and column, this returns the geographic position of the bottom left corner of the cell.
         /// </summary>
-        /// <param name="bounds">The raster bounds to perform the calculation on</param>
-        /// <param name="row">The integer row index from 0 to numRows - 1</param>
-        /// <param name="column">The integer column index from 0 to numColumns - 1</param>
-        /// <returns>The geographic position of the bottom left corner of the specified cell</returns>
+        /// <param name="bounds">The raster bounds to perform the calculation on.</param>
+        /// <param name="row">The integer row index from 0 to numRows - 1.</param>
+        /// <param name="column">The integer column index from 0 to numColumns - 1.</param>
+        /// <returns>The geographic position of the bottom left corner of the specified cell.</returns>
         public static Coordinate CellBottomLeftToProj(this IRasterBounds bounds, int row, int column)
         {
             return new AffineTransform(bounds.AffineCoefficients).CellBottomLeftToProj(row, column);
@@ -349,10 +349,10 @@ namespace DotSpatial.Data
         /// <summary>
         /// Given the row and column, this returns the geographic position of the bottom right corner of the cell.
         /// </summary>
-        /// <param name="bounds">The raster bounds to perform the calculation on</param>
-        /// <param name="row">The integer row index from 0 to numRows - 1</param>
-        /// <param name="column">The integer column index from 0 to numColumns - 1</param>
-        /// <returns>The geographic position of the bottom right corner of the specified cell</returns>
+        /// <param name="bounds">The raster bounds to perform the calculation on.</param>
+        /// <param name="row">The integer row index from 0 to numRows - 1.</param>
+        /// <param name="column">The integer column index from 0 to numColumns - 1.</param>
+        /// <returns>The geographic position of the bottom right corner of the specified cell.</returns>
         public static Coordinate CellBottomRightToProj(this IRasterBounds bounds, int row, int column)
         {
             return new AffineTransform(bounds.AffineCoefficients).CellBottomRightToProj(row, column);
@@ -361,8 +361,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Returns the row col index.
         /// </summary>
-        /// <param name="bounds">The raster bounds to perform the calculation on</param>
-        /// <param name="location">Gets or sets the ICoordinate</param>
+        /// <param name="bounds">The raster bounds to perform the calculation on.</param>
+        /// <param name="location">Gets or sets the ICoordinate.</param>
         /// <returns>An RcIndex that shows the best row or column index for the specified coordinate.</returns>
         public static RcIndex ProjToCell(this IRasterBounds bounds, Coordinate location)
         {
@@ -374,7 +374,13 @@ namespace DotSpatial.Data
 
             return pc;
         }
- 
+
+        /// <summary>
+        /// Returns the row col index.
+        /// </summary>
+        /// <param name="bounds">The raster bounds to perform the calculation on.</param>
+        /// <param name="location">Gets or sets the ICoordinate.</param>
+        /// <returns>An RcIndex that shows the best row or column index for the specified coordinate.</returns>
         public static RcIndex ProjToCellWithOverflow(this IRasterBounds bounds, Coordinate location)
         {
             var pc = new AffineTransform(bounds.AffineCoefficients).ProjToCell(location);
@@ -390,7 +396,7 @@ namespace DotSpatial.Data
         /// If geographic extent partially contains extent of IRasterBounds, than returns rectangle which contains needed edges of full raster image.
         /// It back projects all four corners of the extent and returns the bounding rectangle clipped by the image rectangle.
         /// </summary>
-        /// <param name="self">Instance of <see cref="IRasterBounds"/></param>
+        /// <param name="self">Instance of <see cref="IRasterBounds"/>.</param>
         /// <param name="extent">Extent to test.</param>
         /// <returns>Rectangle in pixel (cell) coordinates.</returns>
         public static Rectangle CellsContainingExtent(this IRasterBounds self, Extent extent)

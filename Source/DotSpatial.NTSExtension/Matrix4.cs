@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.NTSExtension
 {
     /// <summary>
-    /// Matrix4
+    /// Matrix4.
     /// </summary>
     public class Matrix4 : MatrixD, IMatrix4
     {
@@ -36,8 +36,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Creates a 4 x 4 matrix that can be used to rotate a 3D vector about the X axis.
         /// </summary>
-        /// <param name="degrees">The counter-clockwise angle of rotation when looking at the origin from the positive axis</param>
-        /// <returns>A 4x4 rotation matrix</returns>
+        /// <param name="degrees">The counter-clockwise angle of rotation when looking at the origin from the positive axis.</param>
+        /// <returns>A 4x4 rotation matrix.</returns>
         public static Matrix4 RotationX(double degrees)
         {
             Matrix4 result = new Matrix4();
@@ -53,8 +53,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Creates a 4 x 4 matrix that can be used to rotate a 3D vector about the Y axis.
         /// </summary>
-        /// <param name="degrees">The counter-clockwise angle of rotation when looking at the origin from the positive axis</param>
-        /// <returns>A 4x4 rotation matrix</returns>
+        /// <param name="degrees">The counter-clockwise angle of rotation when looking at the origin from the positive axis.</param>
+        /// <returns>A 4x4 rotation matrix.</returns>
         public static Matrix4 RotationY(double degrees)
         {
             Matrix4 result = new Matrix4();
@@ -70,8 +70,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Creates a 4 x 4 matrix that can be used to rotate a 3D vector about the Z axis.
         /// </summary>
-        /// <param name="degrees">The counter-clockwise angle of rotation when looking at the origin from the positive axis</param>
-        /// <returns>A 4x4 rotation matrix</returns>
+        /// <param name="degrees">The counter-clockwise angle of rotation when looking at the origin from the positive axis.</param>
+        /// <returns>A 4x4 rotation matrix.</returns>
         public static Matrix4 RotationZ(double degrees)
         {
             Matrix4 result = new Matrix4();
@@ -90,10 +90,10 @@ namespace DotSpatial.NTSExtension
         /// that if a 3D vector is transformed by this matrix, the last row will
         /// control the translation terms.
         /// </summary>
-        /// <param name="x">The translation in the x direction</param>
-        /// <param name="y">The translation in the y direction</param>
-        /// <param name="z">The translation in the z direction</param>
-        /// <returns>The translation matrix</returns>
+        /// <param name="x">The translation in the x direction.</param>
+        /// <param name="y">The translation in the y direction.</param>
+        /// <param name="z">The translation in the z direction.</param>
+        /// <returns>The translation matrix.</returns>
         public static Matrix4 Translation(double x, double y, double z)
         {
             Matrix4 result = new Matrix4();
@@ -107,7 +107,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Rotates this matrix by the specified angle in degrees about the X axis.
         /// </summary>
-        /// <param name="degrees">Specified the angle in degrees to rotate counter clockwise about the positive axis</param>
+        /// <param name="degrees">Specified the angle in degrees to rotate counter clockwise about the positive axis.</param>
         /// <returns>The rotated matrix.</returns>
         public IMatrix4 RotateX(double degrees)
         {
@@ -141,9 +141,9 @@ namespace DotSpatial.NTSExtension
         /// Translates the matrix by the specified amount in each of the directions
         /// by multiplying by a translation matrix created from the specified values.
         /// </summary>
-        /// <param name="x">The translation in the X coordinate</param>
-        /// <param name="y">The translation in the Y coordinate</param>
-        /// <param name="z">The translation in the Z coordinate</param>
+        /// <param name="x">The translation in the X coordinate.</param>
+        /// <param name="y">The translation in the Y coordinate.</param>
+        /// <param name="z">The translation in the Z coordinate.</param>
         /// <returns>The translate matrix.</returns>
         public IMatrix4 Translate(double x, double y, double z)
         {

@@ -28,8 +28,6 @@ namespace DotSpatial.Tools
             Name = TextStrings.NoDataValueChange;
             Category = TextStrings.RasterOverlay;
             Description = TextStrings.NoDataValueChangeDescription;
-
-            // this.ToolTip = TextStrings.NoDataValueChange;
         }
 
         #endregion
@@ -37,12 +35,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -51,9 +49,9 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
-        /// <param name="cancelProgressHandler">The progress handler</param>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
@@ -67,14 +65,14 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the Erase Opaeration tool programmatically
-        /// Ping Yang deleted static for external testing 01/2010
+        /// Executes the Erase Opaeration tool programmatically.
+        /// Ping Yang deleted static for external testing 01/2010.
         /// </summary>
-        /// <param name="input">The input raster</param>
-        /// <param name="oldValue">The original double value representing no-data</param>
-        /// <param name="newValue">The new double value representing no-data</param>
-        /// <param name="output">The output raster</param>
-        /// <param name="cancelProgressHandler">The progress handler</param>
+        /// <param name="input">The input raster.</param>
+        /// <param name="oldValue">The original double value representing no-data.</param>
+        /// <param name="newValue">The new double value representing no-data.</param>
+        /// <param name="output">The output raster.</param>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
         public bool Execute(IRaster input, double oldValue, double newValue, IRaster output, ICancelProgressHandler cancelProgressHandler)
         {
@@ -124,7 +122,7 @@ namespace DotSpatial.Tools
                 // only update when increment in persentage
                 if (current > previous)
                 {
-                    cancelProgressHandler.Progress(string.Empty, current, current + TextStrings.progresscompleted);
+                    cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
                 }
 
                 previous = current;
@@ -136,7 +134,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {
@@ -174,9 +172,7 @@ namespace DotSpatial.Tools
                 return;
             }
 
-            IRaster inputTemp = _inputParam[0].Value as IRaster;
-            StringParam string1 = _inputParam[1] as StringParam;
-            if (string1 != null && inputTemp != null)
+            if (_inputParam[1] is StringParam string1 && _inputParam[0].Value is IRaster inputTemp)
             {
                 string1.Value = inputTemp.NoDataValue.ToString();
             }

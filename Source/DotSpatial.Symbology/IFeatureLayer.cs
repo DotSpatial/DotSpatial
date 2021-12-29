@@ -64,7 +64,7 @@ namespace DotSpatial.Symbology
         bool EditMode { get; set; }
 
         /// <summary>
-        /// Gets or sets the label layer
+        /// Gets or sets the label layer.
         /// </summary>
         [Category("General")]
         [Description("Gets or sets the label layer associated with this feature layer.")]
@@ -98,7 +98,7 @@ namespace DotSpatial.Symbology
         bool Snappable { get; set; }
 
         /// <summary>
-        /// Gets or sets and interface for the shared symbol characteristics between point, line and polygon features
+        /// Gets or sets and interface for the shared symbol characteristics between point, line and polygon features.
         /// </summary>
         IFeatureSymbolizer Symbolizer { get; set; }
 
@@ -129,9 +129,9 @@ namespace DotSpatial.Symbology
         /// This method actually draws the image to the snapshot using the graphics object. This should be
         /// overridden in sub-classes because the drawing methods are very different.
         /// </summary>
-        /// <param name="g">A graphics object to draw to</param>
+        /// <param name="g">A graphics object to draw to.</param>
         /// <param name="p">A projection handling interface designed to translate geographic coordinates to screen
-        /// coordinates</param>
+        /// coordinates.</param>
         void DrawSnapShot(Graphics g, IProj p);
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace DotSpatial.Symbology
         /// Selects the specified list of features. If the specified feature is already selected,
         /// this method will not alter it.
         /// </summary>
-        /// <param name="featureIndices">A List of integers representing the zero-based feature index values</param>
+        /// <param name="featureIndices">A List of integers representing the zero-based feature index values.</param>
         void Select(IEnumerable<int> featureIndices);
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace DotSpatial.Symbology
         void Select(IFeature feature);
 
         /// <summary>
-        /// Cycles through all the features and selects them
+        /// Cycles through all the features and selects them.
         /// </summary>
         void SelectAll();
 
@@ -217,15 +217,15 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Modifies the features with a new selection based on the modifyMode.
         /// </summary>
-        /// <param name="filterExpression">The string filter expression to use</param>
+        /// <param name="filterExpression">The string filter expression to use.</param>
         /// <param name="modifyMode">Determines how the newly chosen features should interact with the existing
-        /// selection</param>
+        /// selection.</param>
         void SelectByAttribute(string filterExpression, ModifySelectionMode modifyMode);
 
         /// <summary>
         /// Sets the category for the specified shape index regardless of whether this layer is in edit mode.
         /// </summary>
-        /// <param name="index">The 0 based integer shape index</param>
+        /// <param name="index">The 0 based integer shape index.</param>
         /// <param name="category">The category for this feature. The exact kind of category depends on the
         /// feature type.</param>
         void SetCategory(int index, IFeatureCategory category);
@@ -234,8 +234,8 @@ namespace DotSpatial.Symbology
         /// Sets the visible characteristic for a given feature, rather than using the index
         /// regardless of whether this layer is in edit mode.
         /// </summary>
-        /// <param name="feature">The actual reference to the feature object to update</param>
-        /// <param name="category">The new category to use for the specified feature</param>
+        /// <param name="feature">The actual reference to the feature object to update.</param>
+        /// <param name="category">The new category to use for the specified feature.</param>
         void SetCategory(IFeature feature, IFeatureCategory category);
 
         /// <summary>
@@ -273,8 +273,8 @@ namespace DotSpatial.Symbology
         /// draping of vector content onto a texture. It also doesn't worry about selections.
         /// </summary>
         /// <param name="geographicExtent">The extent to use when computing the snapshot.</param>
-        /// <param name="width">The integer height of the bitmap</param>
-        /// <returns>A Bitmap object</returns>
+        /// <param name="width">The integer height of the bitmap.</param>
+        /// <returns>A Bitmap object.</returns>
         Bitmap SnapShot(Extent geographicExtent, int width);
 
         /// <summary>
@@ -292,7 +292,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Removes the specified feature from the selection.
         /// </summary>
-        /// <param name="feature">The feature to remove</param>
+        /// <param name="feature">The feature to remove.</param>
         void UnSelect(IFeature feature);
 
         /// <summary>

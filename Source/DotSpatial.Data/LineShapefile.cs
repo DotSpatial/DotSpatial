@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using GeoAPI.Geometries;
+using DotSpatial.NTSExtension;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// A shapefile class that handles the special case where the vectors are lines
+    /// A shapefile class that handles the special case where the vectors are lines.
     /// </summary>
     public class LineShapefile : Shapefile
     {
@@ -26,7 +27,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="LineShapefile"/> class that is loaded from the supplied fileName.
         /// </summary>
-        /// <param name="fileName">The string fileName of the polygon shapefile to load</param>
+        /// <param name="fileName">The string fileName of the polygon shapefile to load.</param>
         public LineShapefile(string fileName)
             : this()
         {
@@ -37,7 +38,7 @@ namespace DotSpatial.Data
         /// Opens a shapefile.
         /// </summary>
         /// <param name="fileName">The string fileName of the line shapefile to load.</param>
-        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
+        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler.</param>
         public void Open(string fileName, IProgressHandler progressHandler)
         {
             if (!File.Exists(fileName)) return;
@@ -130,7 +131,7 @@ namespace DotSpatial.Data
         /// Gets the specified feature by constructing it from the vertices, rather
         /// than requiring that all the features be created. (which takes up a lot of memory).
         /// </summary>
-        /// <param name="index">The integer index</param>
+        /// <param name="index">The integer index.</param>
         /// <returns>The feature belonging to the specified index.</returns>
         public override IFeature GetFeature(int index)
         {
@@ -461,8 +462,6 @@ namespace DotSpatial.Data
                 List<int> parts = new List<int>();
                 List<Coordinate> points = new List<Coordinate>();
 
-                addPoints(parts, points, f);
-
                 bool isNullShape = false;
                 int contentLength;
 
@@ -474,6 +473,7 @@ namespace DotSpatial.Data
                 }
                 else
                 {
+                    addPoints(parts, points, f);
                     contentLength = GetContentLength(parts.Count, points.Count, shapefile.Header.ShapeType);
                 }
 
@@ -525,8 +525,8 @@ namespace DotSpatial.Data
 
                     if (shapefile.Header.ShapeType == expectedZType)
                     {
-                        shpStream.WriteLe(f.Geometry.EnvelopeInternal.Minimum.Z);
-                        shpStream.WriteLe(f.Geometry.EnvelopeInternal.Maximum.Z);
+                        shpStream.WriteLe(f.Geometry.MinZ());
+                        shpStream.WriteLe(f.Geometry.MaxZ());
                         double[] zVals = new double[points.Count];
                         for (int i = 0; i < points.Count; i++)
                         {
@@ -538,8 +538,8 @@ namespace DotSpatial.Data
 
                     if (shapefile.Header.ShapeType == expectedMType || shapefile.Header.ShapeType == expectedZType)
                     {
-                        shpStream.WriteLe(f.Geometry.EnvelopeInternal.Minimum.M);
-                        shpStream.WriteLe(f.Geometry.EnvelopeInternal.Maximum.M);
+                        shpStream.WriteLe(f.Geometry.MinM());
+                        shpStream.WriteLe(f.Geometry.MaxM());
 
                         double[] mVals = new double[points.Count];
                         for (int i = 0; i < points.Count; i++)
@@ -599,7 +599,7 @@ namespace DotSpatial.Data
             for (int iPart = 0; iPart < f.Geometry.NumGeometries; iPart++)
             {
                 parts.Add(points.Count);
-                ILineString bl = f.Geometry.GetGeometryN(iPart) as ILineString;
+                LineString bl = f.Geometry.GetGeometryN(iPart) as LineString;
                 if (bl == null) continue;
                 points.AddRange(bl.Coordinates);
             }

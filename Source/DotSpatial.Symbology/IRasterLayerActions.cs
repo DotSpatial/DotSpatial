@@ -6,20 +6,20 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// This interface provides ability to use in RasterLayer any custom actions (including GUI-dependent dialogs)
+    /// This interface provides ability to use in RasterLayer any custom actions (including GUI-dependent dialogs).
     /// </summary>
     public interface IRasterLayerActions
     {
         /// <summary>
-        /// SHow properties dialog
+        /// SHow properties dialog.
         /// </summary>
-        /// <param name="e">Raster layer</param>
+        /// <param name="e">Raster layer.</param>
         void ShowProperties(IRasterLayer e);
 
         /// <summary>
-        /// Show export dialog
+        /// Show export dialog.
         /// </summary>
-        /// <param name="e">Raster</param>
+        /// <param name="e">Raster.</param>
         void ExportData(IRaster e);
     }
 }

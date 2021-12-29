@@ -19,7 +19,7 @@ namespace DotSpatial.Symbology
         HatchStyle HatchStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the fore color of the hatch pattern
+        /// Gets or sets the fore color of the hatch pattern.
         /// </summary>
         Color ForeColor { get; set; }
 

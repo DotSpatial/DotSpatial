@@ -14,7 +14,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets the FeatureSymbolizerOld determining the shared properties. This is actually still the PointSymbolizerOld
         /// and should not be used directly on Polygons or Lines.
         /// </summary>
-        /// <exception cref="System.InvalidOperationException">Unable to assign a non-point symbolizer to a PointLayer</exception>
+        /// <exception cref="System.InvalidOperationException">Unable to assign a non-point symbolizer to a PointLayer.</exception>
         new IPointSymbolizer Symbolizer { get; set; }
 
         /// <summary>

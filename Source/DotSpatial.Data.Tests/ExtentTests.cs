@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using DotSpatial.NTSExtension;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
@@ -23,7 +22,7 @@ namespace DotSpatial.Data.Tests
         public void ExtentToSmallArrayCtorTest()
         {
             // ReSharper disable once ObjectCreationAsStatement
-            Assert.Throws<IndexOutOfRangeException>(delegate { new Extent(new double[] { 9, 3, 4 }); });
+            Assert.Throws<IndexOutOfRangeException>(() => { new Extent(new double[] { 9, 3, 4 }); });
         }
 
         /// <summary>
@@ -33,7 +32,7 @@ namespace DotSpatial.Data.Tests
         public void ExtentArrayWrongOffsetCtorTest()
         {
             // ReSharper disable once ObjectCreationAsStatement
-            Assert.Throws<IndexOutOfRangeException>(delegate { new Extent(new double[] { 9, 3, 4, 5, 6 }, 2); });
+            Assert.Throws<IndexOutOfRangeException>(() => { new Extent(new double[] { 9, 3, 4, 5, 6 }, 2); });
         }
 
         /// <summary>
@@ -59,7 +58,7 @@ namespace DotSpatial.Data.Tests
         public void ExtentNullEnvelopeCtorTest()
         {
             // ReSharper disable once ObjectCreationAsStatement
-            Assert.Throws<ArgumentNullException>(delegate { new Extent(null as Envelope); });
+            Assert.Throws<ArgumentNullException>(() => { new Extent(null as Envelope); });
         }
 
         /// <summary>
@@ -101,6 +100,7 @@ namespace DotSpatial.Data.Tests
         /// This checks whether setting the properties works correctly.
         /// </summary>
         [Test(Description = "This checks whether setting the properties works correctly.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:Simplify object initialization", Justification = "Setting X and Y is needed for testing.")]
         public void ExtentSetPropertiesTest()
         {
             // ReSharper disable once UseObjectOrCollectionInitializer
@@ -145,7 +145,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether copying from a null extent results in an ArgumentNullException.")]
         public void ExtentCopyFromNullTest()
         {
-            Assert.Throws<ArgumentNullException>(delegate { new Extent().CopyFrom(null); });
+            Assert.Throws<ArgumentNullException>(() => { new Extent().CopyFrom(null); });
         }
 
         /// <summary>
@@ -219,9 +219,9 @@ namespace DotSpatial.Data.Tests
             e = Extent.Parse("X[25|67], Y[34|89]");
             Assert.AreEqual(new Extent(25, 34, 67, 89), e, "Error while parsing Extent.");
 
-            Assert.Throws<ExtentParseException>(delegate { Extent.Parse("X[25|67], Y[34|x]"); }, "Should throw ExtentParseException on letter instead of value.");
-            Assert.Throws<ExtentParseException>(delegate { Extent.Parse("X[25|67], Y[34|]"); }, "Should throw ExtentParseException on empty field instead of value.");
-            Assert.Throws<ExtentParseException>(delegate { Extent.Parse("X[25|67], Y[3,4]"); }, "Should throw ExtentParseException on , instead of |.");
+            Assert.Throws<ExtentParseException>(() => { Extent.Parse("X[25|67], Y[34|x]"); }, "Should throw ExtentParseException on letter instead of value.");
+            Assert.Throws<ExtentParseException>(() => { Extent.Parse("X[25|67], Y[34|]"); }, "Should throw ExtentParseException on empty field instead of value.");
+            Assert.Throws<ExtentParseException>(() => { Extent.Parse("X[25|67], Y[3,4]"); }, "Should throw ExtentParseException on , instead of |.");
         }
 
         /// <summary>
@@ -230,31 +230,28 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether Extent.TryParse works as expected.")]
         public void ExtentTryParseTest()
         {
-            Extent e;
-            string error;
-
-            Assert.IsTrue(Extent.TryParse("X[25|67], Y[34|89], M[3|4], Z[2|7]", out e, out error), "Extent.TryParse('X[25|67], Y[34|89], M[3|4], Z[2|7]', out e, out error)");
+            Assert.IsTrue(Extent.TryParse("X[25|67], Y[34|89], M[3|4], Z[2|7]", out Extent e, out _), "Extent.TryParse('X[25|67], Y[34|89], M[3|4], Z[2|7]', out e, out error)");
             Assert.AreEqual(new ExtentMz(25, 34, 3, 2, 67, 89, 4, 7), e, "Error while trying to parse ExtentMz.");
 
-            Assert.IsTrue(Extent.TryParse("X[25|67], Y[34|89], M[3|4]", out e, out error), "Extent.TryParse('X[25|67], Y[34|89], M[3|4]',out e, out error)");
+            Assert.IsTrue(Extent.TryParse("X[25|67], Y[34|89], M[3|4]", out e, out _), "Extent.TryParse('X[25|67], Y[34|89], M[3|4]',out e, out error)");
             Assert.AreEqual(new ExtentM(25, 34, 3, 67, 89, 4), e, "Error while trying to parse ExtentM.");
 
-            Assert.IsTrue(Extent.TryParse("X[25|67], Y[34|89]", out e, out error), "Extent.TryParse('X[25|67], Y[34|89]', out e, out error)");
+            Assert.IsTrue(Extent.TryParse("X[25|67], Y[34|89]", out e, out _), "Extent.TryParse('X[25|67], Y[34|89]', out e, out error)");
             Assert.AreEqual(new Extent(25, 34, 67, 89), e, "Error while trying to parse Extent.");
 
-            Assert.IsFalse(Extent.TryParse("X[25|67], Y[34|x]", out e, out error), "Extent.TryParse('X[25|67], Y[34|x]', out e, out error)");
+            Assert.IsFalse(Extent.TryParse("X[25|67], Y[34|x]", out _, out string error), "Extent.TryParse('X[25|67], Y[34|x]', out e, out error)");
             Assert.AreEqual(error, "Y", "TryParse letter instead of value");
 
-            Assert.IsFalse(Extent.TryParse("X[|25], Y[34|23]", out e, out error), "Extent.TryParse('X[25|], Y[34|23]', out e, out error)");
+            Assert.IsFalse(Extent.TryParse("X[|25], Y[34|23]", out _, out error), "Extent.TryParse('X[25|], Y[34|23]', out e, out error)");
             Assert.AreEqual(error, "X", "TryParse empty field instead of value.");
 
-            Assert.IsFalse(Extent.TryParse("X[25|67], Y[3|4], M[2,3]", out e, out error), "Extent.TryParse('X[25|67], Y[3|4], M[2,3]', out e, out error)");
+            Assert.IsFalse(Extent.TryParse("X[25|67], Y[3|4], M[2,3]", out _, out error), "Extent.TryParse('X[25|67], Y[3|4], M[2,3]', out e, out error)");
             Assert.AreEqual(error, "M", "TryParse , instead of |");
 
-            Assert.IsFalse(Extent.TryParse("X[25|67], Y[3|4], M[2|3], Z[]", out e, out error), "Extent.TryParse('X[25|67], Y[3|4], M[2|3], Z[]', out e, out error)");
+            Assert.IsFalse(Extent.TryParse("X[25|67], Y[3|4], M[2|3], Z[]", out _, out error), "Extent.TryParse('X[25|67], Y[3|4], M[2|3], Z[]', out e, out error)");
             Assert.AreEqual(error, "Z", "TryParse no values");
 
-            Assert.IsFalse(Extent.TryParse("X[25|67], Y[3|4], M[2.3], Z[3|4]", out e, out error), "Extent.TryParse('X[25|67], Y[3|4], M[2|3], Z[]', out e, out error)");
+            Assert.IsFalse(Extent.TryParse("X[25|67], Y[3|4], M[2.3], Z[3|4]", out _, out error), "Extent.TryParse('X[25|67], Y[3|4], M[2|3], Z[]', out e, out error)");
             Assert.AreEqual(error, "M", ". instead of |");
         }
 
@@ -266,8 +263,8 @@ namespace DotSpatial.Data.Tests
         {
             Extent e = new Extent();
 
-            Assert.Throws<ArgumentNullException>(delegate { e.SetCenter(null); }, "ExtentSetCenter throws on null Coordinate");
-            Assert.Throws<ArgumentNullException>(delegate { e.SetCenter(null, 3, 4); }, "ExtentSetCenter with height and width throws on null Coordinate");
+            Assert.Throws<ArgumentNullException>(() => { e.SetCenter(null); }, "ExtentSetCenter throws on null Coordinate");
+            Assert.Throws<ArgumentNullException>(() => { e.SetCenter(null, 3, 4); }, "ExtentSetCenter with height and width throws on null Coordinate");
         }
 
         /// <summary>
@@ -424,7 +421,7 @@ namespace DotSpatial.Data.Tests
             Extent contained = new Extent(0, 0, 10, 20);
 
             // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.Throws<ArgumentNullException>(delegate { contained.Within(container); });
+            Assert.Throws<ArgumentNullException>(() => { contained.Within(container); });
         }
 
         /// <summary>
@@ -458,7 +455,7 @@ namespace DotSpatial.Data.Tests
             Extent contained = new Extent(0, 0, 10, 20);
 
             // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.Throws<ArgumentNullException>(delegate { contained.Within(container); });
+            Assert.Throws<ArgumentNullException>(() => { contained.Within(container); });
         }
 
         /// <summary>
@@ -492,7 +489,7 @@ namespace DotSpatial.Data.Tests
             Envelope contained = null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.Throws<ArgumentNullException>(delegate { container.Contains(contained); });
+            Assert.Throws<ArgumentNullException>(() => { container.Contains(contained); });
         }
 
         /// <summary>
@@ -526,7 +523,7 @@ namespace DotSpatial.Data.Tests
             Extent contained = null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.Throws<ArgumentNullException>(delegate { container.Contains(contained); });
+            Assert.Throws<ArgumentNullException>(() => { container.Contains(contained); });
         }
 
         /// <summary>
@@ -559,7 +556,7 @@ namespace DotSpatial.Data.Tests
             Coordinate c = null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.Throws<ArgumentNullException>(delegate { container.Contains(c); });
+            Assert.Throws<ArgumentNullException>(() => { container.Contains(c); });
         }
 
         /// <summary>
@@ -593,7 +590,7 @@ namespace DotSpatial.Data.Tests
             Extent contained = null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.Throws<ArgumentNullException>(delegate { container.Intersects(contained); });
+            Assert.Throws<ArgumentNullException>(() => { container.Intersects(contained); });
         }
 
         /// <summary>
@@ -627,7 +624,7 @@ namespace DotSpatial.Data.Tests
             Envelope contained = null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.Throws<ArgumentNullException>(delegate { container.Intersects(contained); });
+            Assert.Throws<ArgumentNullException>(() => { container.Intersects(contained); });
         }
 
         /// <summary>
@@ -661,7 +658,7 @@ namespace DotSpatial.Data.Tests
             Coordinate c = null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.Throws<ArgumentNullException>(delegate { container.Intersects(c); });
+            Assert.Throws<ArgumentNullException>(() => { container.Intersects(c); });
         }
 
         /// <summary>
@@ -777,7 +774,7 @@ namespace DotSpatial.Data.Tests
         public void ExtentIntersectionNullExtentTest()
         {
             Extent e1 = new Extent(0, 0, 10, 10);
-            Assert.Throws<ArgumentNullException>(delegate { e1.Intersection(null); });
+            Assert.Throws<ArgumentNullException>(() => { e1.Intersection(null); });
         }
 
         /// <summary>

@@ -39,12 +39,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -53,7 +53,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True if the method worked.</returns>
@@ -102,7 +102,7 @@ namespace DotSpatial.Tools
                     // only update when increment in percentage
                     if (current > previous)
                     {
-                        cancelProgressHandler.Progress(string.Empty, current, current + TextStrings.progresscompleted);
+                        cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
                     }
 
                     previous = current;

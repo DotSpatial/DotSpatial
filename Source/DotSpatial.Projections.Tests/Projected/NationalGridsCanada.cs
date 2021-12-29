@@ -11,7 +11,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Creates a new instance of the Africa Class
         /// </summary>
-        [TestFixtureSetUp]
+        [SetUp]
         public void Initialize()
         {
             
@@ -41,7 +41,7 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
         [Test]
-        [Ignore] // GridShiftMissingException
+        [Ignore("")] // GridShiftMissingException
         public void NAD192710TMAEPForest()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD192710TMAEPForest;
@@ -49,7 +49,7 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
         [Test]
-        [Ignore] // GridShiftMissingException
+        [Ignore("")] // GridShiftMissingException
         public void NAD192710TMAEPResource()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD192710TMAEPResource;
@@ -57,7 +57,7 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
         [Test]
-        [Ignore] // GridShiftMissingException
+        [Ignore("")] // GridShiftMissingException
         public void NAD19273TM111()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD19273TM111;
@@ -65,7 +65,7 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
         [Test]
-        [Ignore] // GridShiftMissingException
+        [Ignore("")] // GridShiftMissingException
         public void NAD19273TM114()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD19273TM114;
@@ -73,7 +73,7 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
         [Test]
-        [Ignore] // GridShiftMissingException
+        [Ignore("")] // GridShiftMissingException
         public void NAD19273TM117()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD19273TM117;
@@ -81,7 +81,7 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
         [Test]
-        [Ignore] // GridShiftMissingException
+        [Ignore("")] // GridShiftMissingException
         public void NAD19273TM120()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD19273TM120;
@@ -321,7 +321,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
         
         [Test]
-        [Ignore] // GridShiftMissingException
+        [Ignore("")] // GridShiftMissingException
         public void NAD1927MTM1()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD1927MTM1;
@@ -330,7 +330,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
         
         [Test]
-        [Ignore] // GridShiftMissingException
+        [Ignore("")] // GridShiftMissingException
         public void NAD1927MTM2()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD1927MTM2;
@@ -339,7 +339,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
         
         [Test]
-        [Ignore] // GridShiftMissingException
+        [Ignore("")] // GridShiftMissingException
         public void NAD1927MTM3()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD1927MTM3;
@@ -348,7 +348,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
         
         [Test]
-        [Ignore] // GridShiftMissingException
+        [Ignore("")] // GridShiftMissingException
         public void NAD1927MTM4()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD1927MTM4;
@@ -357,7 +357,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
         
         [Test]
-        [Ignore] // GridShiftMissingException
+        [Ignore("")] // GridShiftMissingException
         public void NAD1927MTM5()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD1927MTM5;
@@ -366,7 +366,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
         
         [Test]
-        [Ignore] // GridShiftMissingException
+        [Ignore("")] // GridShiftMissingException
         public void NAD1927MTM6()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD1927MTM6;

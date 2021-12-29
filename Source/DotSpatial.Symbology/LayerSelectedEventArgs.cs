@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// LayerSelectedEventArgs
+    /// LayerSelectedEventArgs.
     /// </summary>
     public class LayerSelectedEventArgs : LayerEventArgs
     {

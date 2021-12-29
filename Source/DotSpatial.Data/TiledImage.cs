@@ -268,14 +268,14 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This should be overridden with custom file handling
+        /// This should be overridden with custom file handling.
         /// </summary>
         public virtual void Open()
         {
         }
 
         /// <summary>
-        /// Not implemented
+        /// Not implemented.
         /// </summary>
         /// <param name="xOffset">The x offset.</param>
         /// <param name="yOffset">The y offset.</param>
@@ -306,7 +306,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Not Implemented
+        /// Not Implemented.
         /// </summary>
         /// <param name="value">The color palette.</param>
         public void SetColorPalette(IEnumerable<Color> value)
@@ -318,14 +318,14 @@ namespace DotSpatial.Data
         /// Calls a method that calculates the proper image bounds for each of the extents of the tiles,
         /// given the affine coefficients for the whole image.
         /// </summary>
-        /// <param name="affine"> x' = A + Bx + Cy; y' = D + Ex + Fy</param>
+        /// <param name="affine"> x' = A + Bx + Cy; y' = D + Ex + Fy.</param>
         public void SetTileBounds(double[] affine)
         {
             TileCollection.SetTileBounds(affine);
         }
 
         /// <summary>
-        /// Not implemented
+        /// Not implemented.
         /// </summary>
         public void UpdateOverviews()
         {
@@ -333,7 +333,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Not Implemented
+        /// Not Implemented.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="xOffset">The x offset.</param>

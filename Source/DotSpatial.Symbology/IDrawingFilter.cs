@@ -24,7 +24,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the scheme category to use
+        /// Gets or sets the scheme category to use.
         /// </summary>
         IFeatureCategory Category { get; set; }
 
@@ -87,12 +87,12 @@ namespace DotSpatial.Symbology
         bool UseChunks { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this filter should use the Selected
+        /// Gets or sets a value indicating whether this filter should use the Selected.
         /// </summary>
         bool UseSelection { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the filter should consider the IsVisible property
+        /// Gets or sets a value indicating whether the filter should consider the IsVisible property.
         /// </summary>
         bool UseVisibility { get; set; }
 
@@ -109,7 +109,7 @@ namespace DotSpatial.Symbology
         /// This uses the feature as the key and attempts to find the specified drawn state
         /// that describes selection, chunk and category.
         /// </summary>
-        /// <param name="key">The feature</param>
+        /// <param name="key">The feature.</param>
         /// <remarks>The strength is that if someone inserts a new member or re-orders
         /// the features in the featureset, we don't forget which ones are selected.
         /// The disadvantage is that duplicate features in the same featureset
@@ -134,7 +134,7 @@ namespace DotSpatial.Symbology
         /// expressions on the remaining categories to change the categories for those members.
         /// This means that an item will be classified as the last filter that it qualifies for.
         /// </summary>
-        /// <param name="scheme">The scheme of categories to apply to the drawing states</param>
+        /// <param name="scheme">The scheme of categories to apply to the drawing states.</param>
         void ApplyScheme(IFeatureScheme scheme);
 
         /// <summary>
@@ -143,8 +143,8 @@ namespace DotSpatial.Symbology
         /// selection state to unselected. This can be overridden in sub-classes to come up
         /// with a different default state.
         /// </summary>
-        /// <param name="index">The integer index to get the default state of</param>
-        /// <returns>An IDrawnState</returns>
+        /// <param name="index">The integer index to get the default state of.</param>
+        /// <returns>An IDrawnState.</returns>
         IDrawnState GetDefaultState(int index);
 
         /// <summary>

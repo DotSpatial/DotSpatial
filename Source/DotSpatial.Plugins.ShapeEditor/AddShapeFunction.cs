@@ -11,7 +11,6 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.NTSExtension;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using Point = System.Drawing.Point;
 

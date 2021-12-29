@@ -8,7 +8,7 @@ using DotSpatial.Modeling.Forms.Elements;
 namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
-    /// A File access parameter
+    /// A File access parameter.
     /// </summary>
     public class FileParam : Parameter
     {
@@ -17,7 +17,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="FileParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
+        /// <param name="name">The name of the parameter.</param>
         /// <param name="filter">The string dialog filter to use.</param>
         public FileParam(string name, string filter)
         {
@@ -30,7 +30,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="FileParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
+        /// <param name="name">The name of the parameter.</param>
         public FileParam(string name)
         {
             Name = name;
@@ -41,8 +41,8 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="FileParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
-        /// <param name="value">A TextFile</param>
+        /// <param name="name">The name of the parameter.</param>
+        /// <param name="value">A TextFile.</param>
         public FileParam(string name, TextFile value)
         {
             Name = name;
@@ -61,7 +61,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         public string DialogFilter { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input).
         /// </summary>
         public new TextFile Value
         {
@@ -82,7 +82,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         #region Methods
 
         /// <summary>
-        /// Generates a default instance of the data type so that tools have something to write too
+        /// Generates a default instance of the data type so that tools have something to write too.
         /// </summary>
         /// <param name="path">Path of the generated text file.</param>
         public override void GenerateDefaultOutput(string path)

@@ -36,7 +36,7 @@ namespace DotSpatial.Controls.Header
         /// <summary>
         /// Gets or sets a value indicating whether the userdefined toolstrip-order won't be saved/loaded.
         /// </summary>
-        /// <remarks>Enables the user to ignore Toolstrippositionsaving (e.g. in DesignMode)</remarks>
+        /// <remarks>Enables the user to ignore Toolstrippositionsaving (e.g. in DesignMode).</remarks>
         public bool IgnoreToolstripPositionSaving { get; set; }
 
         #endregion
@@ -306,10 +306,10 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Remove item from the standard toolbar or ribbon control
+        /// Remove item from the standard toolbar or ribbon control.
         /// </summary>
         /// <param name="key">
-        /// The string itemName to remove from the standard toolbar or ribbon control
+        /// The string itemName to remove from the standard toolbar or ribbon control.
         /// </param>
         public override void Remove(string key)
         {
@@ -685,11 +685,11 @@ namespace DotSpatial.Controls.Header
         }
 
         /// <summary>
-        /// Unchecks all toolstrip buttons except the current button
+        /// Unchecks all toolstrip buttons except the current button.
         /// </summary>
         /// <param name="checkedButton">
         /// The toolstrip button which should
-        /// stay checked
+        /// stay checked.
         /// </param>
         private void UncheckButtonsExcept(ToolStripButton checkedButton)
         {

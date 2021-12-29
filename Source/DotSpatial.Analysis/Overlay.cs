@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
-
 using DotSpatial.Data;
 
 namespace DotSpatial.Analysis
@@ -86,7 +85,7 @@ namespace DotSpatial.Analysis
                     }
 
                     int progress = Convert.ToInt32(i * 100 / targetFeatures.ShapeIndices.Count);
-                    cancelProgressHandler.Progress(string.Empty, progress, string.Empty);
+                    cancelProgressHandler.Progress(progress, string.Empty);
                 }
             }
 

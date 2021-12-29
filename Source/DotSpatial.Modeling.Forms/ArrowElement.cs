@@ -5,14 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using Point = System.Drawing.Point;
 
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// An arrow
+    /// An arrow.
     /// </summary>
     public class ArrowElement : ModelElement
     {
@@ -27,9 +26,9 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="ArrowElement"/> class.
         /// </summary>
-        /// <param name="sourceElement">The element the arrow starts at</param>
-        /// <param name="destElement">the element the arrow ends at</param>
-        /// <param name="modelElements">A list of all the elements in the model</param>
+        /// <param name="sourceElement">The element the arrow starts at.</param>
+        /// <param name="destElement">the element the arrow ends at.</param>
+        /// <param name="modelElements">A list of all the elements in the model.</param>
         public ArrowElement(ModelElement sourceElement, ModelElement destElement, List<ModelElement> modelElements)
             : base(modelElements)
         {
@@ -71,11 +70,11 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Returns true if the element intersect the rectangle from the parent class.
         /// </summary>
-        /// <param name="rect">The rectangle to test must be in the virtual modeling coordinant plane</param>
+        /// <param name="rect">The rectangle to test must be in the virtual modeling coordinant plane.</param>
         /// <returns>True if the element intersect the rectangle from the parent class.</returns>
         public override bool ElementInRectangle(Rectangle rect)
         {
-            IGeometry rectanglePoly;
+            Geometry rectanglePoly;
             if ((rect.Height == 0) && (rect.Width == 0))
             {
                 rectanglePoly = new NetTopologySuite.Geometries.Point(rect.X, rect.Y);
@@ -121,9 +120,9 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// Repaints the form with cool background and stuff
+        /// Repaints the form with cool background and stuff.
         /// </summary>
-        /// <param name="graph">The graphics object to paint to, the element will be drawn to 0, 0</param>
+        /// <param name="graph">The graphics object to paint to, the element will be drawn to 0, 0.</param>
         public override void Paint(Graphics graph)
         {
             // Draws Rectangular Shapes
@@ -159,7 +158,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Calculates if a point is within the shape that defines the element.
         /// </summary>
-        /// <param name="point">A point to test in the virtual modeling plane</param>
+        /// <param name="point">A point to test in the virtual modeling plane.</param>
         /// <returns>True, if the point is within the shape that defines the element.</returns>
         public override bool PointInElement(Point point)
         {

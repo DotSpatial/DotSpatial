@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Carries event arguments for the generic IEventList
+    /// Carries event arguments for the generic IEventList.
     /// </summary>
     /// <typeparam name="T">Type of the comparison.</typeparam>
     public class ComparisonArgs<T> : EventArgs
@@ -16,7 +16,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="ComparisonArgs{T}"/> class.
         /// </summary>
-        /// <param name="inComparison">The System.Comparison&lt;T&gt; being used by this action </param>
+        /// <param name="inComparison">The System.Comparison&lt;T&gt; being used by this action. </param>
         public ComparisonArgs(Comparison<T> inComparison)
         {
             Comparison = inComparison;

@@ -774,9 +774,6 @@ Reproject the layer to match the map coordinate system? This will not affect the
   <data name="LoadingPluginsPercentComplete" xml:space="preserve">
     <value>Loading Plugins - {0}, {1}% complete.</value>
   </data>
-  <data name="LoadingPlugins" xml:space="preserve">
-    <value>Loading Plugins</value>
-  </data>
   <data name="ErrorWhileWhileActivating" xml:space="preserve">
     <value>Error while activating {0}.</value>
   </data>

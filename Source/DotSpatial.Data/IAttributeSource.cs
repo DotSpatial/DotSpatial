@@ -14,16 +14,16 @@ namespace DotSpatial.Data
         /// <summary>
         /// Supplies a page of content in the form of a data Table.
         /// </summary>
-        /// <param name="startIndex">The integer lower page boundary</param>
-        /// <param name="numRows">The integer number of rows to return for the page</param>
+        /// <param name="startIndex">The integer lower page boundary.</param>
+        /// <param name="numRows">The integer number of rows to return for the page.</param>
         /// <returns>A DataTable made up with the virtual row content.</returns>
         DataTable GetAttributes(int startIndex, int numRows);
 
         /// <summary>
-        /// Reads just the content requested in order to satisfy the paging ability of VirtualMode for the DataGridView
+        /// Reads just the content requested in order to satisfy the paging ability of VirtualMode for the DataGridView.
         /// </summary>
-        /// <param name="startIndex">The integer lower page boundary</param>
-        /// <param name="numRows">The integer number of attribute values to return for the page</param>
+        /// <param name="startIndex">The integer lower page boundary.</param>
+        /// <param name="numRows">The integer number of attribute values to return for the page.</param>
         /// <param name="fieldNames">The list or array of fieldnames to return.</param>
         /// <returns>A DataTable populated with data rows with only the specified values.</returns>
         DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames);
@@ -31,7 +31,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Converts a page of content from a DataTable format, saving it back to the source.
         /// </summary>
-        /// <param name="startIndex">The 0 based integer index representing the first row in the file (corresponding to the 0 row of the data table)</param>
+        /// <param name="startIndex">The 0 based integer index representing the first row in the file (corresponding to the 0 row of the data table).</param>
         /// <param name="pageValues">The DataTable representing the rows to set. If the row count is larger than the dataset, this will add the rows instead.</param>
         void SetAttributes(int startIndex, DataTable pageValues);
 
@@ -42,10 +42,10 @@ namespace DotSpatial.Data
         int NumRows();
 
         /// <summary>
-        /// Gets the column with the specified name
+        /// Gets the column with the specified name.
         /// </summary>
-        /// <param name="name">the name to search</param>
-        /// <returns>the Field matching the specified name</returns>
+        /// <param name="name">the name to search.</param>
+        /// <returns>the Field matching the specified name.</returns>
         DataColumn GetColumn(string name);
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// saves a single row to the data source.
         /// </summary>
-        /// <param name="index">the integer row (or FID) index</param>
+        /// <param name="index">the integer row (or FID) index.</param>
         /// <param name="values">The dictionary of object values by string field name holding the new values to store.</param>
         void Edit(int index, Dictionary<string, object> values);
 
@@ -77,17 +77,17 @@ namespace DotSpatial.Data
         /// <summary>
         /// saves a single row to the data source.
         /// </summary>
-        /// <param name="index">the integer row (or FID) index</param>
+        /// <param name="index">the integer row (or FID) index.</param>
         /// <param name="values">The dictionary of object values by string field name holding the new values to store.</param>
         void Edit(int index, DataRow values);
 
         /// <summary>
         /// Given a string expression, this returns the count of the members that satisfy that expression.
         /// </summary>
-        /// <param name="expressions">The array of string expressions to test</param>
+        /// <param name="expressions">The array of string expressions to test.</param>
         /// <param name="progressHandler">The progress handler that might also instruct this step to be canceled.</param>
         /// <param name="maxSampleSize">The integer maximum sample size from which to draw counts. If this is negative, it will not be used.</param>
-        /// <returns>An array of integer counts of the members that match the expression</returns>
+        /// <returns>An array of integer counts of the members that match the expression.</returns>
         int[] GetCounts(string[] expressions, ICancelProgressHandler progressHandler, int maxSampleSize);
     }
 }

@@ -10,7 +10,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// FeatureSizeRangeControl
+    /// FeatureSizeRangeControl.
     /// </summary>
     [DefaultEvent("SizeRangeChanged")]
     public partial class FeatureSizeRangeControl : UserControl
@@ -107,7 +107,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Initializes this point size range control.
         /// </summary>
-        /// <param name="args">The SizeRangeEventArgs</param>
+        /// <param name="args">The SizeRangeEventArgs.</param>
         public void Initialize(SizeRangeEventArgs args)
         {
             if (_sizeRange == null) return;
@@ -236,7 +236,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the SizeRangeChanged event args
+        /// Fires the SizeRangeChanged event args.
         /// </summary>
         protected virtual void OnSizeRangeChanged()
         {

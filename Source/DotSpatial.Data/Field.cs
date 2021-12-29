@@ -29,7 +29,7 @@ namespace DotSpatial.Data
         /// The default decimal count for double and long is 0, for Currency is 2, for float is
         /// 3, and for double is 8. These can be changed by changing the DecimalCount property.
         /// </summary>
-        /// <param name="inColumn">A System.Data.DataColumn to create a Field from</param>
+        /// <param name="inColumn">A System.Data.DataColumn to create a Field from.</param>
         public Field(DataColumn inColumn)
             : base(inColumn.ColumnName, inColumn.DataType, inColumn.Expression, inColumn.ColumnMapping)
         {
@@ -62,7 +62,7 @@ namespace DotSpatial.Data
         /// Initializes a new instance of the <see cref="Field"/> class with a specific name for a specified data type.
         /// </summary>
         /// <param name="inColumnName">The string name of the column.</param>
-        /// <param name="inDataType">The System.Type describing the datatype of the field</param>
+        /// <param name="inDataType">The System.Type describing the datatype of the field.</param>
         public Field(string inColumnName, Type inDataType)
             : base(inColumnName, inDataType)
         {
@@ -230,7 +230,7 @@ namespace DotSpatial.Data
         public byte Length { get; set; }
 
         /// <summary>
-        /// Gets or sets the offset of the field on a row in the file
+        /// Gets or sets the offset of the field on a row in the file.
         /// </summary>
         public int DataAddress { get; set; }
 

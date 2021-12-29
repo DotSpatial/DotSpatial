@@ -25,10 +25,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomPolygonSymbolizer"/> class.
         /// </summary>
-        /// <param name="uniqueName">the unique name</param>
-        /// <param name="name">the name of the custom symbolizer</param>
-        /// <param name="category">the map category of the custom symbolizer</param>
-        /// <param name="symbolizer">the associated Polygon symbolizer</param>
+        /// <param name="uniqueName">the unique name.</param>
+        /// <param name="name">the name of the custom symbolizer.</param>
+        /// <param name="category">the map category of the custom symbolizer.</param>
+        /// <param name="symbolizer">the associated Polygon symbolizer.</param>
         public CustomPolygonSymbolizer(string uniqueName, string name, string category, PolygonSymbolizer symbolizer)
         {
             UniqueName = uniqueName;
@@ -42,10 +42,10 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Polygon symbolizer
+        /// Gets or sets the Polygon symbolizer.
         /// </summary>
         /// <remarks>
-        /// [Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))]
+        /// [Editor(typeof(PolygonSymbolizerEditor), typeof(UITypeEditor))].
         /// </remarks>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public new IPolygonSymbolizer Symbolizer

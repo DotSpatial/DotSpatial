@@ -392,7 +392,7 @@ namespace DotSpatial.Serialization
         /// <summary>
         /// Creates and populates an object from the given XML element.
         /// </summary>
-        /// <param name="element">The element containing the object description</param>
+        /// <param name="element">The element containing the object description.</param>
         /// <param name="parent">The parent.</param>
         /// <returns>
         /// A populated object specified by the given XML element.

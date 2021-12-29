@@ -7,7 +7,7 @@ using System.ComponentModel;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// The same as a ListEventArgs, but provides an option to cancel the event
+    /// The same as a ListEventArgs, but provides an option to cancel the event.
     /// </summary>
     /// <typeparam name="T">Type of the contained items.</typeparam>
     public class CollectiveIndexCompareCancel<T> : CancelEventArgs

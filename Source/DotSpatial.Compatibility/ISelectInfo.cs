@@ -4,7 +4,7 @@
 using System.Collections;
 using System.Drawing;
 
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Compatibility
 {

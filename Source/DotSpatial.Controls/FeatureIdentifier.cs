@@ -90,7 +90,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Clears the items in the tree
+        /// Clears the items in the tree.
         /// </summary>
         public virtual void Clear()
         {
@@ -149,7 +149,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Adds a new node to the tree view with the layer name
+        /// Adds a new node to the tree view with the layer name.
         /// </summary>
         /// <param name="layer">The layer.</param>
         /// <param name="bounds">The bounds.</param>

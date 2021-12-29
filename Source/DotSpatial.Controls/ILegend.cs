@@ -51,7 +51,7 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// Given the current list of Maps or 3DMaps, it
-        /// rebuilds the treeview nodes
+        /// rebuilds the treeview nodes.
         /// </summary>
         void RefreshNodes();
 

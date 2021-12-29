@@ -10,7 +10,7 @@ using System.Text;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// BgdRaster
+    /// BgdRaster.
     /// </summary>
     /// <typeparam name="T">Type of the raster.</typeparam>
     public class BgdRaster<T> : Raster<T>
@@ -30,8 +30,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="BgdRaster{T}"/> class, attempting to store the entire structure in memory if possible.
         /// </summary>
-        /// <param name="numRows">The number of rows in the raster</param>
-        /// <param name="numColumns">The number of columns in the raster</param>
+        /// <param name="numRows">The number of rows in the raster.</param>
+        /// <param name="numColumns">The number of columns in the raster.</param>
         public BgdRaster(int numRows, int numColumns)
             : base(numRows, numColumns)
         {
@@ -41,8 +41,8 @@ namespace DotSpatial.Data
         /// Initializes a new instance of the <see cref="BgdRaster{T}"/> class.
         /// </summary>
         /// <param name="fileName">Name of the file that should be written by this BgdRaster instance.</param>
-        /// <param name="numRows">The number of rows in the raster</param>
-        /// <param name="numColumns">The number of columns in the raster</param>
+        /// <param name="numRows">The number of rows in the raster.</param>
+        /// <param name="numColumns">The number of columns in the raster.</param>
         public BgdRaster(string fileName, int numRows, int numColumns)
             : base(numRows, numColumns)
         {
@@ -72,7 +72,7 @@ namespace DotSpatial.Data
         /// an unusually arranged collection of values are required. Sorting the list before calling
         /// this should significantly improve performance.
         /// </summary>
-        /// <param name="indices">A list or array of long values that are (Row * NumRowsInFile + Column)</param>
+        /// <param name="indices">A list or array of long values that are (Row * NumRowsInFile + Column).</param>
         /// <returns>A List{T} of values that belong to the given indices.</returns>
         public override List<T> GetValuesT(IEnumerable<long> indices)
         {
@@ -109,9 +109,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Writes the header, regardless of which subtype of binary raster this is written for
+        /// Writes the header, regardless of which subtype of binary raster this is written for.
         /// </summary>
-        /// <param name="fileName">The string fileName specifying what file to load</param>
+        /// <param name="fileName">The string fileName specifying what file to load.</param>
         public void ReadHeader(string fileName)
         {
             using (var br = new BinaryReader(new FileStream(fileName, FileMode.Open)))
@@ -192,11 +192,11 @@ namespace DotSpatial.Data
         /// <summary>
         /// Writes the bgd content from the specified jagged array of values to the file.
         /// </summary>
-        /// <param name="buffer">The data</param>
-        /// <param name="xOff">The horizontal offset</param>
-        /// <param name="yOff">The vertical offset</param>
-        /// <param name="xSize">The number of values to write horizontally</param>
-        /// <param name="ySize">The number of values to write vertically</param>
+        /// <param name="buffer">The data.</param>
+        /// <param name="xOff">The horizontal offset.</param>
+        /// <param name="yOff">The vertical offset.</param>
+        /// <param name="xSize">The number of values to write horizontally.</param>
+        /// <param name="ySize">The number of values to write vertically.</param>
         public override void WriteRaster(T[][] buffer, int xOff, int yOff, int xSize, int ySize)
         {
             var pm = new ProgressMeter(ProgressHandler, DataStrings.ReadingValuesFrom_S.Replace("%S", Filename), NumRowsInFile)
@@ -227,9 +227,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Copies the raster header, and if copyValues is true, the values to the specified file </summary>
-        /// <param name="fileName">The full path of the file to copy content to to</param>
-        /// <param name="copyValues">Boolean, true if this should copy values as well as just header information</param>
+        /// Copies the raster header, and if copyValues is true, the values to the specified file. </summary>
+        /// <param name="fileName">The full path of the file to copy content to to.</param>
+        /// <param name="copyValues">Boolean, true if this should copy values as well as just header information.</param>
         public override void Copy(string fileName, bool copyValues)
         {
             if (copyValues)
@@ -288,7 +288,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Saves the content from this file using the current fileName and header information
+        /// Saves the content from this file using the current fileName and header information.
         /// </summary>
         public override void Save()
         {

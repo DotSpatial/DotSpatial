@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- Switched to VS2019
+- Switched to .Net Framework 4.7.2
+- Updated StyleCop.Analyzers to 1.1.118
+- Switched from DotSpatial.NetTopologySuite/DotSpatial.GeoAPI to NetTopologySuite 2.4.0
+- Updated NUnit to 3.13.2
+
+### Fixed
+- Bug in extent calculation in WebMap plugin (#1367)
+
+## V2.0.1
+
 Be aware that code written for 1.9 will not work out of the box because DotSpatial.Topology was replaced by DotSpatial.GeoAPI and DotSpatial.NetTopologySuite (#786). Have a look at the [Wiki](https://github.com/DotSpatial/DotSpatial/wiki/Switching-from-DotSpatial-1.9-to-2.0) for more information.
 
 ### Added
@@ -159,4 +171,5 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Potential Bug in RasterBoundsExt class CellsContainingExtent(...) method (#1332)
 - Potential bug in EnvelopeExt (and ExtentExt) class Reproportion(...) method (#1326)
 - Bug in AzimuthalEquidistant class (#1342)
-- Bug in extent calculation in WebMap plugin (#1367)
+- Bug in moving legend items (#1368)
+- Bug in ExtentExt.Reproportion discussed in #1351 (#1370)

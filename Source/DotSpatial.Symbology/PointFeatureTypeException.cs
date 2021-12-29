@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PointFeatureTypeException
+    /// PointFeatureTypeException.
     /// </summary>
     public class PointFeatureTypeException : ArgumentException
     {
@@ -23,7 +23,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PointFeatureTypeException"/> class.
         /// </summary>
-        /// <param name="message">The string error message to include in the exception</param>
+        /// <param name="message">The string error message to include in the exception.</param>
         public PointFeatureTypeException(string message)
             : base(message)
         {
