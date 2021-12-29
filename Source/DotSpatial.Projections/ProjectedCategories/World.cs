@@ -12,6 +12,8 @@
 // --------------------|------------|------------------------------------------------------------
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
 // Jiri Kadlec         | 11/20/2010 |  Updated the proj4 string definition of Web Mercator Auxiliary Sphere
+// Christoph Perger    | 20/10/2017 |  Updated the proj4 string definition of EquidistantCylindrical
+// Christoph Perger    | 23/10/2017 |  Updated the proj4 string definition of PlateCarreeworld
 // ********************************************************************************************************
 
 #pragma warning disable 1591
@@ -86,7 +88,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             EckertVIworld = ProjectionInfo.FromProj4String("+proj=eck6 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
             EckertVworld = ProjectionInfo.FromProj4String("+ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
             EquidistantConicworld = ProjectionInfo.FromProj4String("+proj=eqdc +lat_0=0 +lon_0=0 +lat_1=60 +lat_2=60 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
-            EquidistantCylindricalworld = ProjectionInfo.FromProj4String("+proj=eqc +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
+            EquidistantCylindricalworld = ProjectionInfo.FromProj4String("+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
             FlatPolarQuarticworld = ProjectionInfo.FromProj4String("+ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
             Fullerworld = ProjectionInfo.FromProj4String("+ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
             GallStereographicworld = ProjectionInfo.FromProj4String("+proj=gall +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
@@ -95,7 +97,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             Mercatorworld = ProjectionInfo.FromProj4String("+proj=merc +lat_ts=0 +lon_0=0 +k=1.000000 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
             MillerCylindricalworld = ProjectionInfo.FromProj4String("+proj=mill +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +R_A +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
             Mollweideworld = ProjectionInfo.FromProj4String("+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
-            PlateCarreeworld = ProjectionInfo.FromProj4String("+ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
+            PlateCarreeworld = ProjectionInfo.FromProj4String("+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs");
             Polyconicworld = ProjectionInfo.FromProj4String("+proj=poly +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
             QuarticAuthalicworld = ProjectionInfo.FromProj4String("+ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
             Robinsonworld = ProjectionInfo.FromProj4String("+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
