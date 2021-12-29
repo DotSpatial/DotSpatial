@@ -17,6 +17,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Bug in extent calculation in WebMap plugin (#1367)
+- Issues related to the Plate Carree projection (#1078)
+- Multiple Changes on handling of GsdNadTable (#1059) 
 
 ## V2.0.1
 
