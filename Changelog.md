@@ -161,3 +161,4 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Bug in AzimuthalEquidistant class (#1342)
 - Bug in moving legend items (#1368)
 - Bug in ExtentExt.Reproportion discussed in #1351 (#1370)
+- Fixed angle calculation for second and third quadrant (#1405)
