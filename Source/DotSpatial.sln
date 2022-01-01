@@ -134,6 +134,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.NTSExtension", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.ScaleBar", "DotSpatial.Plugins.ScaleBar\DotSpatial.Plugins.ScaleBar.csproj", "{6F295436-734C-4588-9214-1FD281C89BB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.NTSExtension.Tests", "DotSpatial.NTSExtension.Tests\DotSpatial.NTSExtension.Tests.csproj", "{3826966F-8D8F-47BF-8A41-20C03D94320F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -360,6 +362,10 @@ Global
 		{6F295436-734C-4588-9214-1FD281C89BB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F295436-734C-4588-9214-1FD281C89BB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F295436-734C-4588-9214-1FD281C89BB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3826966F-8D8F-47BF-8A41-20C03D94320F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3826966F-8D8F-47BF-8A41-20C03D94320F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3826966F-8D8F-47BF-8A41-20C03D94320F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3826966F-8D8F-47BF-8A41-20C03D94320F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -420,6 +426,7 @@ Global
 		{84FD5045-5DE8-4950-A083-77789573F430} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{034F7ADE-AC2A-48AE-9CF2-0686EEA97C25} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{6F295436-734C-4588-9214-1FD281C89BB6} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
+		{3826966F-8D8F-47BF-8A41-20C03D94320F} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8B430BA-FDC2-4A09-B7CF-47AAA201EA8B}
