@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// HueSlider
+    /// HueSlider.
     /// </summary>
     [DefaultEvent("PositionChanging")]
     public class HueSlider : Control
@@ -215,8 +215,8 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Uses the hue values from the specified start and end color to set the handle positions.
         /// </summary>
-        /// <param name="startColor">The start color that represents the left hue</param>
-        /// <param name="endColor">The start color that represents the right hue</param>
+        /// <param name="startColor">The start color that represents the left hue.</param>
+        /// <param name="endColor">The start color that represents the right hue.</param>
         public void SetRange(Color startColor, Color endColor)
         {
             int hStart = (int)startColor.GetHue();
@@ -303,7 +303,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Handles slider dragging
+        /// Handles slider dragging.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseMove(MouseEventArgs e)
@@ -353,7 +353,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Handles the mouse up situation
+        /// Handles the mouse up situation.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseUp(MouseEventArgs e)
@@ -369,7 +369,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Draw the clipped portion
+        /// Draw the clipped portion.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)

@@ -6,7 +6,7 @@ using System.IO;
 namespace DotSpatial.Tests.Common
 {
     /// <summary>
-    /// FileTools
+    /// FileTools.
     /// </summary>
     public static class FileTools
     {

@@ -8,7 +8,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// ProgressCancelDialog
+    /// ProgressCancelDialog.
     /// </summary>
     public partial class ProgressCancelDialog : Form, ICancelProgressHandler
     {

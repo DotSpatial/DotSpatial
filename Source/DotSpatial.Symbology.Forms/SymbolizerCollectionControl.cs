@@ -12,7 +12,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// This control displays a list box where each item is a preview of a category symbolizer
+    /// This control displays a list box where each item is a preview of a category symbolizer.
     /// </summary>
     public partial class SymbolizerCollectionControl : UserControl
     {
@@ -136,7 +136,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Refreshes the items in the list to accuratly reflect the current collection
+        /// Refreshes the items in the list to accuratly reflect the current collection.
         /// </summary>
         public void RefreshList()
         {
@@ -178,7 +178,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the AddClicked event
+        /// Fires the AddClicked event.
         /// </summary>
         protected virtual void OnAdd()
         {
@@ -187,7 +187,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the ListChanged event
+        /// Fires the ListChanged event.
         /// </summary>
         protected virtual void OnListChanged()
         {
@@ -195,7 +195,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the OnOrderChanged event
+        /// Fires the OnOrderChanged event.
         /// </summary>
         protected virtual void OnOrderChanged()
         {
@@ -204,7 +204,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the RemoveCLicked event
+        /// Fires the RemoveCLicked event.
         /// </summary>
         protected virtual void OnRemoveClick()
         {
@@ -213,7 +213,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the SelectedItemChanged event
+        /// Fires the SelectedItemChanged event.
         /// </summary>
         protected virtual void OnSelectedItemChanged()
         {
@@ -243,7 +243,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Draws a preview of a point symbolizer inside of the specified rectangle
+        /// Draws a preview of a point symbolizer inside of the specified rectangle.
         /// </summary>
         /// <param name="sym">The point symbolizer.</param>
         /// <param name="g">The graphics object used for drawing.</param>
@@ -267,7 +267,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Draws a preview of a polygon symbolizer inside of the specified rectangle
+        /// Draws a preview of a polygon symbolizer inside of the specified rectangle.
         /// </summary>
         /// <param name="sym">The polygon symbolizer.</param>
         /// <param name="g">The graphics object used for drawing.</param>

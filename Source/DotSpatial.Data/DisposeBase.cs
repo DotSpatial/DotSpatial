@@ -39,7 +39,7 @@ namespace DotSpatial.Data
         public bool IsDisposeLocked => _disposeCount > 0;
 
         /// <summary>
-        /// Disposes
+        /// Disposes.
         /// </summary>
         public void Dispose()
         {

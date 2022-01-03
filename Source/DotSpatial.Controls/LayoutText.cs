@@ -44,7 +44,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the color of the text
+        /// Gets or sets the color of the text.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -64,7 +64,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the content alignment
+        /// Gets or sets the content alignment.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -84,7 +84,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the font used to draw this text
+        /// Gets or sets the font used to draw this text.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -104,7 +104,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the text thats drawn in the graphics object
+        /// Gets or sets the text thats drawn in the graphics object.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -125,7 +125,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the hinting used to draw the text
+        /// Gets or sets the hinting used to draw the text.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -149,10 +149,10 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
+        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object.
         /// </summary>
-        /// <param name="g">The graphics object to draw to</param>
-        /// <param name="printing">Boolean, true if printing to the file</param>
+        /// <param name="g">The graphics object to draw to.</param>
+        /// <param name="printing">Boolean, true if printing to the file.</param>
         public override void Draw(Graphics g, bool printing)
         {
             g.TextRenderingHint = _textHint;

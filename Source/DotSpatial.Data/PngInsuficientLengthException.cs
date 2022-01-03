@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// PngInsuficientLengthException
+    /// PngInsuficientLengthException.
     /// </summary>
     public class PngInsuficientLengthException : ArgumentException
     {

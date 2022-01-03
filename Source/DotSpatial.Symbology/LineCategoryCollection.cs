@@ -7,7 +7,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// This is simply an alias to make things a tad (though not much) more understandable
+    /// This is simply an alias to make things a tad (though not much) more understandable.
     /// </summary>
     public class LineCategoryCollection : ChangeEventList<ILineCategory>
     {
@@ -35,7 +35,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the parent line scheme
+        /// Gets or sets the parent line scheme.
         /// </summary>
         public ILineScheme Scheme
         {

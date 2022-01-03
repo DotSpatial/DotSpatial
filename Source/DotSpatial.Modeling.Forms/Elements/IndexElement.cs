@@ -46,7 +46,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         public string Expression => _expression;
 
         /// <summary>
-        /// Gets or sets the Parameter that the element represents
+        /// Gets or sets the Parameter that the element represents.
         /// </summary>
         public new IndexParam Param
         {
@@ -113,7 +113,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// When the text box is clicked this event fires
+        /// When the text box is clicked this event fires.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>

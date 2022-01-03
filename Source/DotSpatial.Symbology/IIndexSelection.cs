@@ -13,7 +13,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets the integer count of the members in the collection
+        /// Gets the integer count of the members in the collection.
         /// </summary>
         new int Count { get; }
 
@@ -24,11 +24,11 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Adds a range of indices all at once.
         /// </summary>
-        /// <param name="indices">The indices to add</param>
+        /// <param name="indices">The indices to add.</param>
         void AddRange(IEnumerable<int> indices);
 
         /// <summary>
-        /// Clears the selection
+        /// Clears the selection.
         /// </summary>
         new void Clear();
 

@@ -39,7 +39,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the color of the text
+        /// Gets or sets the color of the text.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -59,7 +59,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the style of the north arrow to draw
+        /// Gets or sets the style of the north arrow to draw.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -79,7 +79,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the rotations of the north arrow
+        /// Gets or sets the rotations of the north arrow.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -103,10 +103,10 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
+        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object.
         /// </summary>
-        /// <param name="g">The graphics object to draw to</param>
-        /// <param name="printing">boolean, true if printing to the actual paper/document, false if drawing as a control</param>
+        /// <param name="g">The graphics object to draw to.</param>
+        /// <param name="printing">boolean, true if printing to the actual paper/document, false if drawing as a control.</param>
         public override void Draw(Graphics g, bool printing)
         {
             GraphicsPath gp = new GraphicsPath();

@@ -11,7 +11,7 @@ using DotSpatial.Symbology;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// MapGroup
+    /// MapGroup.
     /// </summary>
     public class MapGroup : Group, IMapGroup
     {
@@ -48,9 +48,9 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGroup"/> class that sits in a layer list and uses the specified progress handler.
         /// </summary>
-        /// <param name="container">the layer list</param>
+        /// <param name="container">the layer list.</param>
         /// <param name="frame">The map frame.</param>
-        /// <param name="progressHandler">the progress handler</param>
+        /// <param name="progressHandler">the progress handler.</param>
         public MapGroup(ICollection<IMapLayer> container, IMapFrame frame, IProgressHandler progressHandler)
             : base(frame, progressHandler)
         {
@@ -238,7 +238,7 @@ namespace DotSpatial.Controls
         /// Gets the layers cast as ILayer without any information about the actual drawing methods.
         /// This is useful for handling methods that my come from various types of maps.
         /// </summary>
-        /// <returns>An enumerable collection of ILayer</returns>
+        /// <returns>An enumerable collection of ILayer.</returns>
         public override IList<ILayer> GetLayers()
         {
             return _layers.Cast<ILayer>().ToList();
@@ -313,7 +313,7 @@ namespace DotSpatial.Controls
         #region Classes
 
         /// <summary>
-        /// Transforms an IMapLayer enumerator into an ILayer Enumerator
+        /// Transforms an IMapLayer enumerator into an ILayer Enumerator.
         /// </summary>
         private class MapLayerEnumerator : IEnumerator<ILayer>
         {

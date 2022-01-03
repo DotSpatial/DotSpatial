@@ -5,7 +5,7 @@ using System;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Tools
 {
@@ -39,12 +39,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -53,7 +53,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>Boolean, true if the method was successful.</returns>
@@ -146,7 +146,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {
@@ -184,20 +184,17 @@ namespace DotSpatial.Tools
                 return;
             }
 
-            IRaster inputTemp = _inputParam[0].Value as IRaster;
-            if (inputTemp == null)
+            if (!(_inputParam[0].Value is IRaster inputTemp))
             {
                 return;
             }
 
-            DoubleParam inParam1 = _inputParam[1] as DoubleParam;
-            if (inParam1 != null)
+            if (_inputParam[1] is DoubleParam inParam1)
             {
                 inParam1.Value = inputTemp.CellHeight;
             }
 
-            DoubleParam inParam2 = _inputParam[2] as DoubleParam;
-            if (inParam2 != null)
+            if (_inputParam[2] is DoubleParam inParam2)
             {
                 inParam2.Value = inputTemp.CellWidth;
             }

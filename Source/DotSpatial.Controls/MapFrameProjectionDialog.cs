@@ -68,7 +68,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets projection
+        /// Gets or sets projection.
         /// </summary>
         public ProjectionInfo Projection
         {

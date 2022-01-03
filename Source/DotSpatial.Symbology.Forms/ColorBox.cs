@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// ColorBox
+    /// ColorBox.
     /// </summary>
     [DefaultEvent("SelectedItemChanged")]
     [DefaultProperty("Value")]
@@ -59,7 +59,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the text for the label portion
+        /// Gets or sets the text for the label portion.
         /// </summary>
         [Category("Appearance")]
         [Description("Gets or sets the text for the label portion")]
@@ -78,7 +78,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the selected color
+        /// Gets or sets the selected color.
         /// </summary>
         [Category("Appearance")]
         [Description("Gets or sets the selected color")]

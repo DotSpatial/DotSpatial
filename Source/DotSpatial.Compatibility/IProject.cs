@@ -6,7 +6,7 @@ using System.Collections;
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// Project
+    /// Project.
     /// </summary>
     public interface IProject
     {
@@ -29,13 +29,13 @@ namespace DotSpatial.Compatibility
 
         /// <summary>
         /// Gets or sets the current map units, in the format
-        /// "Meters", "Feet", etc
+        /// "Meters", "Feet", etc.
         /// </summary>
         string MapUnits { get; set; }
 
         /// <summary>
         /// Gets or sets the current alternate display units, in the format
-        /// "Meters", "Feet", etc
+        /// "Meters", "Feet", etc.
         /// </summary>
         string MapUnitsAlternate { get; set; }
 
@@ -46,12 +46,12 @@ namespace DotSpatial.Compatibility
 
         /// <summary>
         /// Gets or sets the current project projection, in the format
-        /// "+proj=tmerc +ellps=WGS84 etc etc +datum=WGS84"
+        /// "+proj=tmerc +ellps=WGS84 etc etc +datum=WGS84".
         /// </summary>
         string ProjectProjection { get; set; }
 
         /// <summary>
-        /// Gets an ArrayList of the recent projects (the full path to the projects)
+        /// Gets an ArrayList of the recent projects (the full path to the projects).
         /// </summary>
         ArrayList RecentProjects { get; }
 

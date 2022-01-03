@@ -123,7 +123,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Add default tab controls to the dock manager
+        /// Add default tab controls to the dock manager.
         /// </summary>
         public void AddDefaultTabControls()
         {

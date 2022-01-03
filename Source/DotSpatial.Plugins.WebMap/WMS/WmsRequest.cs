@@ -11,7 +11,7 @@ using BruTile.Web;
 namespace DotSpatial.Plugins.WebMap.WMS
 {
     /// <summary>
-    /// WmsRequest
+    /// WmsRequest.
     /// </summary>
     public class WmsRequest : IRequest
     {

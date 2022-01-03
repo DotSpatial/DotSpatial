@@ -168,14 +168,14 @@ Public Class tdbChoices_v3
     Public Function SaveConfig() As Boolean
         Dim Root As XmlElement
         Dim Path As String
-        Dim Reader As System.IO.StreamReader
+        Dim Reader As IO.StreamReader
         Dim Ver As String
         Dim tStr As String
 
         Try
             Ver = 1.0 'App.VersionString()
             Path = System.IO.Path.GetTempFileName()
-            Reader = New System.IO.StreamReader(Path)
+            Reader = New IO.StreamReader(Path)
             tStr = Reader.ReadToEnd()
             m_Doc.LoadXml("<taudem_options type='configurationfile' version='" + Ver + "'>" + tStr + "</taudem_options>")
             Root = m_Doc.DocumentElement
@@ -189,7 +189,7 @@ Public Class tdbChoices_v3
             System.IO.File.Delete(Path)
 
             Return True
-        Catch ex As System.Exception
+        Catch ex As Exception
             MsgBox(ex.Message)
             Return False
         End Try

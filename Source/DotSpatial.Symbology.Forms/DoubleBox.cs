@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// A User control for entering double values into text boxes
+    /// A User control for entering double values into text boxes.
     /// </summary>
     [DefaultEvent("TextChanged")]
     [DefaultProperty("Value")]
@@ -58,21 +58,21 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the invalid background color
+        /// Gets or sets the invalid background color.
         /// </summary>
         [Category("Appearance")]
         [Description("Gets or sets the background color to use when the value is invalid")]
         public Color BackColorInvalid { get; set; }
 
         /// <summary>
-        /// Gets or sets the normal background color
+        /// Gets or sets the normal background color.
         /// </summary>
         [Category("Appearance")]
         [Description("Gets or sets the normal background color to use")]
         public Color BackColorRegular { get; set; }
 
         /// <summary>
-        /// Gets or sets the caption
+        /// Gets or sets the caption.
         /// </summary>
         [Category("Appearance")]
         [Localizable(true)]
@@ -125,14 +125,14 @@ namespace DotSpatial.Symbology.Forms
         public bool IsValid { get; set; }
 
         /// <summary>
-        /// Gets or sets the string number format
+        /// Gets or sets the string number format.
         /// </summary>
         [Category("Behavior")]
         [Description("Gets or sets the string number format that controls how values appear")]
         public string NumberFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets the tool tip text for regular help
+        /// Gets or sets the tool tip text for regular help.
         /// </summary>
         [Category("Behavior")]
         [Description("Gets or sets the regular tool tip help string")]
@@ -195,7 +195,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Fires TextChanged
+        /// Fires TextChanged.
         /// </summary>
         protected virtual void OnTextChanged()
         {
@@ -203,7 +203,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires ValidChanged
+        /// Fires ValidChanged.
         /// </summary>
         protected virtual void OnValidChanged()
         {

@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// SizeRangeEventArgs
+    /// SizeRangeEventArgs.
     /// </summary>
     public class SizeRangeEventArgs : EventArgs
     {

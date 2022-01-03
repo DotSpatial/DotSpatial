@@ -176,7 +176,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// behavior that handles the internal variables only.
         /// </summary>
         /// <param name="envelope">The envelope to grab image data for.</param>
-        /// <param name="window">A Rectangle</param>
+        /// <param name="window">A Rectangle.</param>
         /// <returns>The image.</returns>
         public override Bitmap GetBitmap(Extent envelope, Rectangle window)
         {
@@ -265,8 +265,8 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// Gets a block of data directly, converted into a bitmap.  This always writes
         /// to the base layer, not the overviews.
         /// </summary>
-        /// <param name="xOffset">The zero based integer column offset from the left</param>
-        /// <param name="yOffset">The zero based integer row offset from the top</param>
+        /// <param name="xOffset">The zero based integer column offset from the left.</param>
+        /// <param name="yOffset">The zero based integer row offset from the top.</param>
         /// <param name="xSize">The integer number of pixel columns in the block. </param>
         /// <param name="ySize">The integer number of pixel rows in the block.</param>
         /// <returns>A Bitmap that is xSize, ySize.</returns>
@@ -337,8 +337,8 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// This always writes to the base image, and not the overviews.
         /// </summary>
         /// <param name="value">The bitmap value to save.</param>
-        /// <param name="xOffset">The zero based integer column offset from the left</param>
-        /// <param name="yOffset">The zero based integer row offset from the top</param>
+        /// <param name="xOffset">The zero based integer column offset from the left.</param>
+        /// <param name="yOffset">The zero based integer row offset from the top.</param>
         public override void WriteBlock(Bitmap value, int xOffset, int yOffset)
         {
             if (_dataset == null)
@@ -410,7 +410,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// Finds the closest color in the table based on the hamming distance.
         /// </summary>
         /// <param name="vals">The values.</param>
-        /// <param name="offset">The offset</param>
+        /// <param name="offset">The offset.</param>
         /// <param name="colorTable">The color table.</param>
         /// <returns>The closest color.</returns>
         private static byte MatchColor(byte[] vals, int offset, byte[][] colorTable)

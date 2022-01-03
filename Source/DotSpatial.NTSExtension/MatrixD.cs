@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.NTSExtension
 {
     /// <summary>
-    /// A 4 x 4 matrix is required for transformations in 3 dimensions
+    /// A 4 x 4 matrix is required for transformations in 3 dimensions.
     /// </summary>
     public class MatrixD : IMatrixD
     {
@@ -19,7 +19,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Initializes a new instance of the <see cref="MatrixD"/> class that is a square of the given size.
         /// </summary>
-        /// <param name="m">The size of the matrix to create</param>
+        /// <param name="m">The size of the matrix to create.</param>
         public MatrixD(int m)
         {
             _values = new double[m, m];
@@ -30,8 +30,8 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Initializes a new instance of the <see cref="MatrixD"/> class with m rows and n columns.
         /// </summary>
-        /// <param name="m">The row size of the matrix to create</param>
-        /// <param name="n">The column size of the matrix to create</param>
+        /// <param name="m">The row size of the matrix to create.</param>
+        /// <param name="n">The column size of the matrix to create.</param>
         public MatrixD(int m, int n)
         {
             _values = new double[m, n];
@@ -63,17 +63,17 @@ namespace DotSpatial.NTSExtension
         public int N { get; private set; }
 
         /// <summary>
-        /// Gets the number of columns
+        /// Gets the number of columns.
         /// </summary>
         public int NumColumns => N;
 
         /// <summary>
-        /// Gets the number of rows
+        /// Gets the number of rows.
         /// </summary>
         public int NumRows => M;
 
         /// <summary>
-        /// Gets or sets the values for this matrix
+        /// Gets or sets the values for this matrix.
         /// </summary>
         public double[,] Values
         {
@@ -98,7 +98,7 @@ namespace DotSpatial.NTSExtension
         /// Matrix multiplication only works if the number of columns of the first matrix is the same as the number of rows of the second matrix.
         /// The first matrix is this object, so this will only work if inMatrix has the same number of rows as this matrix has columns.
         /// </summary>
-        /// <param name="inMatrix">The IMatrix to multiply against this matrix</param>
+        /// <param name="inMatrix">The IMatrix to multiply against this matrix.</param>
         /// <returns>Result of the multiplication.</returns>
         /// <exception cref="ArgumentException">Thrown if number of columns of the first matrix differs from the number of rows from the second matrix.</exception>
         public IMatrixD Multiply(IMatrixD inMatrix)
@@ -146,7 +146,7 @@ namespace DotSpatial.NTSExtension
         /// Matrix multiplication only works if the number of columns of the first matrix is the same as the number of rows of the second matrix.
         /// The first matrix is this object, so this will only work if inMatrix has the same number of rows as this matrix has columns.
         /// </summary>
-        /// <param name="inMatrix">The IMatrix to multiply against this matrix</param>
+        /// <param name="inMatrix">The IMatrix to multiply against this matrix.</param>
         /// <returns>Result of the multiplication.</returns>
         /// <exception cref="ArgumentException">Thrown if inMatrix is not a IMatrixD or the number of columns of the first matrix differs from the number of rows from the second matrix.</exception>
         IMatrix IMatrix.Multiply(IMatrix inMatrix)

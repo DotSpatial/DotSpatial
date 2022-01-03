@@ -49,9 +49,9 @@ namespace DotSpatial.Symbology
         /// option in the file menu.
         /// </summary>
         /// <param name="fileName">A string specifying the complete path and extension of the file to open.</param>
-        /// <param name="inRam">A boolean that, if ture, will request that the data be loaded into memory</param>
-        /// <param name="container">Any valid IContainer that should have the new layer automatically added to it</param>
-        /// <param name="progressHandler">An IProgressHandler interface for status messages</param>
+        /// <param name="inRam">A boolean that, if ture, will request that the data be loaded into memory.</param>
+        /// <param name="container">Any valid IContainer that should have the new layer automatically added to it.</param>
+        /// <param name="progressHandler">An IProgressHandler interface for status messages.</param>
         /// <returns>A List of IDataSets to be added to the Map. These can also be groups of datasets.</returns>
         ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler);
 

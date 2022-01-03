@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// SegmentRange
+    /// SegmentRange.
     /// </summary>
     public class SegmentRange : IEnumerable<Segment>
     {
@@ -29,12 +29,12 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets the feature type
+        /// Gets the feature type.
         /// </summary>
         public FeatureType FeatureType { get; }
 
         /// <summary>
-        /// Gets the part
+        /// Gets the part.
         /// </summary>
         public PartRange Part { get; }
 
@@ -108,16 +108,16 @@ namespace DotSpatial.Data
             #region Methods
 
             /// <summary>
-            /// Does nothing
+            /// Does nothing.
             /// </summary>
             public void Dispose()
             {
             }
 
             /// <summary>
-            /// Advances the enumerator to the next member
+            /// Advances the enumerator to the next member.
             /// </summary>
-            /// <returns>True if a member is found, false if there are no more members</returns>
+            /// <returns>True if a member is found, false if there are no more members.</returns>
             public bool MoveNext()
             {
                 _index++;

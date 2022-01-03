@@ -58,8 +58,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets a list of all predefined custom symbols that belong to the specific category.
         /// </summary>
-        /// <param name="categoryName">The name of the category group</param>
-        /// <returns>The list of custom symbols</returns>
+        /// <param name="categoryName">The name of the category group.</param>
+        /// <returns>The list of custom symbols.</returns>
         public List<CustomLineSymbolizer> GetSymbolsByCategory(string categoryName)
         {
             if (categoryName != string.Empty)

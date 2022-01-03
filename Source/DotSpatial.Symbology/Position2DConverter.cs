@@ -8,18 +8,18 @@ using System.Globalization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Position2DConverter
+    /// Position2DConverter.
     /// </summary>
     public class Position2DConverter : ExpandableObjectConverter
     {
         #region Methods
 
         /// <summary>
-        /// True if the source type is a string
+        /// True if the source type is a string.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <param name="sourceType">The source type.</param>
-        /// <returns>Boolean, true if source type is a string</returns>
+        /// <returns>Boolean, true if source type is a string.</returns>
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             if (sourceType == typeof(string)) return true;
@@ -28,7 +28,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Uses a string to return a new Position2D
+        /// Uses a string to return a new Position2D.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <param name="culture">The culture info.</param>
@@ -72,7 +72,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a string from the specified Position2D
+        /// Creates a string from the specified Position2D.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <param name="culture">The culture info.</param>

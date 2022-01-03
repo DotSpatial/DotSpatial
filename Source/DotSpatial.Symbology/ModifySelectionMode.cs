@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// ModifySelectionModes
+    /// ModifySelectionModes.
     /// </summary>
     public enum ModifySelectionMode
     {

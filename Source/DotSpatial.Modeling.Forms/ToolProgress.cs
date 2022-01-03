@@ -8,7 +8,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// A form which shows the progress of a tool
+    /// A form which shows the progress of a tool.
     /// </summary>
     public partial class ToolProgress : Form, ICancelProgressHandler
     {
@@ -23,7 +23,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="ToolProgress"/> class.
         /// </summary>
-        /// <param name="numTools">The number of tools that are going to be executed</param>
+        /// <param name="numTools">The number of tools that are going to be executed.</param>
         public ToolProgress(int numTools)
         {
             InitializeComponent();
@@ -55,7 +55,7 @@ namespace DotSpatial.Modeling.Forms
         #region Methods
 
         /// <summary>
-        /// This method should be called when the process has been completed
+        /// This method should be called when the process has been completed.
         /// </summary>
         public void ExecutionComplete()
         {
@@ -73,8 +73,8 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Handles the progress method necessary to implement IProgress.
         /// </summary>
-        /// <param name="percent">The integer percentage from 0 to 100 that is used to control the progress bar</param>
-        /// <param name="message">The actual complete message to show..this is also ignored</param>
+        /// <param name="percent">The integer percentage from 0 to 100 that is used to control the progress bar.</param>
+        /// <param name="message">The actual complete message to show.</param>
         public void Progress(int percent, string message)
         {
             if (InvokeRequired)

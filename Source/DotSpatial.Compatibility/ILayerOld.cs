@@ -4,12 +4,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using DotSpatial.Data;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// Layer
+    /// Layer.
     /// </summary>
     public interface ILayerOld
     {
@@ -186,7 +186,7 @@ namespace DotSpatial.Compatibility
         Color OutlineColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the Point Image Scheme object for a given point layer. To be used from DotSpatial only
+        /// Gets or sets the Point Image Scheme object for a given point layer. To be used from DotSpatial only.
         /// </summary>
         object PointImageScheme { get; set; }
 
@@ -210,7 +210,7 @@ namespace DotSpatial.Compatibility
         /// Gets or sets the projection of this layer.
         /// Projections must be / will be in PROJ4 format.
         /// If no projection is present, "" will be returned.
-        /// If an invalid projection is provided, it's not guaranteed to be saved!
+        /// If an invalid projection is provided, it's not guaranteed to be saved!.
         /// </summary>
         string Projection { get; set; }
 
@@ -309,7 +309,7 @@ namespace DotSpatial.Compatibility
         /// <summary>
         /// Sets the font to use for all labels on this layer.
         /// </summary>
-        /// <param name="fontName">Name of the font or font family. Example:  "Arial"</param>
+        /// <param name="fontName">Name of the font or font family. Example:  "Arial".</param>
         /// <param name="fontSize">Size of the font.</param>
         void Font(string fontName, int fontSize);
 
@@ -363,7 +363,7 @@ namespace DotSpatial.Compatibility
         /// Saves the shapefile rendering properties to a .mwsr file whose base fileName matches the shapefile.
         /// Function call is ignored and returns false if the layer is a grid.
         /// </summary>
-        /// <returns>False if the layer is a grid</returns>
+        /// <returns>False if the layer is a grid.</returns>
         bool SaveShapeLayerProps();
 
         /// <summary>
@@ -392,7 +392,7 @@ namespace DotSpatial.Compatibility
         /// <summary>
         /// Returns information about the given layer in a human-readible string.
         /// </summary>
-        /// <returns>Information about the given layer</returns>
+        /// <returns>Information about the given layer.</returns>
         string ToString();
 
         /// <summary>

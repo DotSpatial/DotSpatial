@@ -3,7 +3,8 @@
 
 using System;
 using DotSpatial.Data.Rasters.GdalExtension;
-using GeoAPI.Geometries;
+using DotSpatial.Tests.Common;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
@@ -62,7 +63,7 @@ namespace DotSpatial.Data.Tests
         public void GdalRasterTest()
         {
             var rp = new GdalRasterProvider();
-            var raster = rp.Open(@"Data\Grids\sample_geotiff.tif");
+            var raster = rp.Open(Common.AbsolutePath(@"Data\Grids\sample_geotiff.tif"));
             var at = new AffineTransform(raster.Bounds.AffineCoefficients);
             Assert.AreEqual(at.CellCenterToProj(0, 0), new Coordinate(-179.9499969, 89.9499969)); // correct location from sample_geotiff.tfw
         }

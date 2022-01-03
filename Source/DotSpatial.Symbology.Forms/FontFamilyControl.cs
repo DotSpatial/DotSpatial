@@ -67,9 +67,9 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Gets the selected family name as a FontFamily object
+        /// Gets the selected family name as a FontFamily object.
         /// </summary>
-        /// <returns>A FontFamily object</returns>
+        /// <returns>A FontFamily object.</returns>
         public FontFamily GetSelectedFamily()
         {
             return new FontFamily(ffdNames.SelectedItem.ToString());

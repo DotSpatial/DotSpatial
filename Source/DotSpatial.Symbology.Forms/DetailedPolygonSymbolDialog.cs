@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// DetailedPolygonSymbolDialog
+    /// DetailedPolygonSymbolDialog.
     /// </summary>
     public partial class DetailedPolygonSymbolDialog : Form
     {
@@ -69,7 +69,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Fires the ChangesApplied event
+        /// Fires the ChangesApplied event.
         /// </summary>
         protected virtual void OnApplyChanges()
         {

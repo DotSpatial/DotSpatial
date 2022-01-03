@@ -19,7 +19,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="toPath">Contains the path that defines the endpoint of the relative path.</param>
         /// <returns>The relative path from the start directory to the end path.</returns>
-        /// <exception cref="ArgumentNullException">Occurs when the toPath is NULL</exception>
+        /// <exception cref="ArgumentNullException">Occurs when the toPath is NULL.</exception>
         // http://weblogs.asp.net/pwelter34/archive/2006/02/08/create-a-relative-path-code-snippet.aspx
         public static string RelativePathTo(string toPath)
         {

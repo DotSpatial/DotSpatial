@@ -13,7 +13,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Creates a new instance of the Africa Class
         /// </summary>
-        [TestFixtureSetUp]
+        [SetUp]
         public void Initialize()
         {
             

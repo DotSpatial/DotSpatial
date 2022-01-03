@@ -4,23 +4,23 @@
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// MapCursorModes
+    /// MapCursorModes.
     /// </summary>
-    /// <item>AppStarting</item>
-    /// <item>Arrow</item>
-    /// <item>Cross</item>
-    /// <item>Help</item>
-    /// <item>IBeam</item>
-    /// <item>MapDefault</item>
-    /// <item>No</item>
-    /// <item>SizeAll</item>
-    /// <item>SizeNESW</item>
-    /// <item>SizeNS</item>
-    /// <item>SizeNWSE</item>
-    /// <item>SizeWE</item>
-    /// <item>UpArrow</item>
-    /// <item>UserDefined</item>
-    /// <item>Wait</item>
+    /// <item>AppStarting.</item>
+    /// <item>Arrow.</item>
+    /// <item>Cross.</item>
+    /// <item>Help.</item>
+    /// <item>IBeam.</item>
+    /// <item>MapDefault.</item>
+    /// <item>No.</item>
+    /// <item>SizeAll.</item>
+    /// <item>SizeNESW.</item>
+    /// <item>SizeNS.</item>
+    /// <item>SizeNWSE.</item>
+    /// <item>SizeWE.</item>
+    /// <item>UpArrow.</item>
+    /// <item>UserDefined.</item>
+    /// <item>Wait.</item>
     public enum MapCursorMode
     {
         /// <summary>

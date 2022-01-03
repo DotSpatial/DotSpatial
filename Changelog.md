@@ -3,6 +3,25 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- JGD2011, EPSG from 6669 to 6687 (#1262)
+- Feature of determining the delta azimuth of three consecutive points (#1360)
+- InterSectionTool (#945) 
+
+### Changed
+- Switched to VS2019
+- Switched to .Net Framework 4.7.2
+- Updated StyleCop.Analyzers to 1.1.118
+- Switched from DotSpatial.NetTopologySuite/DotSpatial.GeoAPI to NetTopologySuite 2.4.0
+- Updated NUnit to 3.13.2
+
+### Fixed
+- Bug in extent calculation in WebMap plugin (#1367)
+- Issues related to the Plate Carree projection (#1078)
+- Multiple Changes on handling of GsdNadTable (#1059) 
+
+## V2.0.1
+
 Be aware that code written for 1.9 will not work out of the box because DotSpatial.Topology was replaced by DotSpatial.GeoAPI and DotSpatial.NetTopologySuite (#786). Have a look at the [Wiki](https://github.com/DotSpatial/DotSpatial/wiki/Switching-from-DotSpatial-1.9-to-2.0) for more information.
 
 ### Added
@@ -67,6 +86,7 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Removed unnecessary methods in LayoutControl
 
 ### Fixed
+- Plate Carree projection (EPSG: 32662) not found (#1078)
 - Satellite's missing properties (#958)
 - Parameters for the Austrian Bundesmeldenetz in DotSpatial.Projections.ProjectedCategories.NationalGrids are incorrect (#855)
 - Raster extent shifts from correct extent (#725)

@@ -10,7 +10,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// SymbologyProgressBar
+    /// SymbologyProgressBar.
     /// </summary>
     [ToolboxItem(false)]
     public class SymbologyProgressBar : ProgressBar, IProgressHandler
@@ -68,7 +68,7 @@ namespace DotSpatial.Symbology.Forms
         /// This method is thread safe so that people calling this method don't cause a cross-thread violation
         /// by updating the progress indicator from a different thread.
         /// </summary>
-        /// <param name="percent">The integer percent from 0 to 100</param>
+        /// <param name="percent">The integer percent from 0 to 100.</param>
         /// <param name="message">A message including the percent information if wanted.</param>
         public void Progress(int percent, string message)
         {
@@ -95,7 +95,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Controls the drawing of this bar.
         /// </summary>
-        /// <param name="e">The PaintEventArgs for this paint action</param>
+        /// <param name="e">The PaintEventArgs for this paint action.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
             Bitmap bmp = new Bitmap(Width, Height);
@@ -141,7 +141,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Prevent flicker
+        /// Prevent flicker.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaintBackground(PaintEventArgs e)

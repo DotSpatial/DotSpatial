@@ -8,7 +8,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// ImageCategoryControl
+    /// ImageCategoryControl.
     /// </summary>
     public partial class ImageCategoryControl : UserControl, ICategoryControl
     {
@@ -94,7 +94,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Applies the changes that have been specified in this control
+        /// Applies the changes that have been specified in this control.
         /// </summary>
         protected virtual void OnApplyChanges()
         {

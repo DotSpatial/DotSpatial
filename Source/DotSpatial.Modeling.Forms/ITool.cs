@@ -8,7 +8,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// Defines the way a tool interfaces with the toolbox
+    /// Defines the way a tool interfaces with the toolbox.
     /// </summary>
     [InheritedExport]
     public interface ITool
@@ -82,12 +82,12 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Once the parameters have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
-        /// <param name="cancelProgressHandler">A cancel progress handler that used to indicate how much of the tool is done</param>
+        /// <param name="cancelProgressHandler">A cancel progress handler that used to indicate how much of the tool is done.</param>
         /// <returns>True, if executed succesfully.</returns>
         bool Execute(ICancelProgressHandler cancelProgressHandler);
 
         /// <summary>
-        /// The parameters array should be populated with default values here
+        /// The parameters array should be populated with default values here.
         /// </summary>
         void Initialize();
 

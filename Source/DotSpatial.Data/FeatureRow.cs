@@ -3,7 +3,7 @@
 
 using System;
 using System.Data;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
 namespace DotSpatial.Data
@@ -17,7 +17,7 @@ namespace DotSpatial.Data
 
         private readonly FeatureTable _featureTable;
         private IExtent _extent;
-        private IGeometry _geometry;
+        private Geometry _geometry;
         private Shape _shape;
 
         #endregion
@@ -54,7 +54,7 @@ namespace DotSpatial.Data
                     }
 
                     // Accessing property here to try to create geometry.
-                    IGeometry lazyGeom = Geometry;
+                    Geometry lazyGeom = Geometry;
                     if (lazyGeom == null) return null;
 
                     _extent = lazyGeom.EnvelopeInternal.ToExtent();
@@ -88,7 +88,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets a lazily created and cached geometry.
         /// </summary>
-        public IGeometry Geometry
+        public Geometry Geometry
         {
             get
             {
@@ -99,7 +99,7 @@ namespace DotSpatial.Data
                         return _shape?.ToGeometry(_featureTable.GeometryFactory);
                     }
 
-                    WKBReader reader = new WKBReader(_featureTable.GeometryFactory);
+                    WKBReader reader = new WKBReader();
                     byte[] geometryBytes = (byte[])this[_featureTable.GeometryColumn];
 
                     _geometry = reader.Read(geometryBytes);

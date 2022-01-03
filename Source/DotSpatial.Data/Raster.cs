@@ -282,7 +282,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets or sets the integer count of the number of columns in the source or file that this
-        /// raster is a window from. (Usually this will be the same as NumColumns)
+        /// raster is a window from. (Usually this will be the same as NumColumns).
         /// </summary>
         [Category("Window")]
         [Description("Gets or sets the integer count of the number of columns in the source or file that this raster is a window from. (Usually this will be the same as NumColumns)")]
@@ -414,7 +414,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the value on the CurrentBand given a row and column undex
+        /// Gets or sets the value on the CurrentBand given a row and column undex.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -539,7 +539,7 @@ namespace DotSpatial.Data
         /// <param name="numBands">The number of bands to create in the raster.</param>
         /// <param name="dataType">The data type to use for the raster.</param>
         /// <param name="options">The options to be used.</param>
-        /// <returns>An IRaster</returns>
+        /// <returns>An IRaster.</returns>
         public static IRaster CreateRaster(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType, string[] options)
         {
             return DataManager.DefaultDataManager.CreateRaster(name, driverCode, xSize, ySize, numBands, dataType, options);
@@ -548,8 +548,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// For DotSpatial style binary grids, this returns the filetype.
         /// </summary>
-        /// <param name="filename">The fileName with extension to test</param>
-        /// <returns>A GridFileTypes enumeration listing which file type this is</returns>
+        /// <param name="filename">The fileName with extension to test.</param>
+        /// <returns>A GridFileTypes enumeration listing which file type this is.</returns>
         public static RasterFileType GetGridFileType(string filename)
         {
             // Get the extension with period from the fileName
@@ -594,7 +594,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Opens the given file.
         /// </summary>
-        /// <param name="fileName">The string full path for the fileName to open</param>
+        /// <param name="fileName">The string full path for the fileName to open.</param>
         /// <returns>A Raster object which is actually one of the type specific rasters, like FloatRaster.</returns>
         public static IRaster OpenFile(string fileName)
         {
@@ -610,7 +610,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Returns a native raster of the appropriate file type and data type by parsing the fileName.
         /// </summary>
-        /// <param name="fileName">The string fileName to attempt to open with a native format</param>
+        /// <param name="fileName">The string fileName to attempt to open with a native format.</param>
         /// <param name="inRam">The boolean value.</param>
         /// <returns>An IRaster which has been opened to the specified file.</returns>
         public static IRaster OpenFile(string fileName, bool inRam)
@@ -627,9 +627,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Returns a native raster of the appropriate file type and data type by parsing the fileName.
         /// </summary>
-        /// <param name="fileName">The string fileName to attempt to open with a native format</param>
+        /// <param name="fileName">The string fileName to attempt to open with a native format.</param>
         /// <param name="inRam">The boolean value.</param>
-        /// <param name="progressHandler">An overriding progress manager for this process</param>
+        /// <param name="progressHandler">An overriding progress manager for this process.</param>
         /// <returns>An IRaster which has been opened to the specified file.</returns>
         public static IRaster OpenFile(string fileName, bool inRam, IProgressHandler progressHandler)
         {
@@ -777,7 +777,7 @@ namespace DotSpatial.Data
         /// Saves the current raster to the specified file, using the specified driver, but with the
         /// options currently specified in the Options property.
         /// </summary>
-        /// <param name="fileName">The string fileName to save this raster as</param>
+        /// <param name="fileName">The string fileName to save this raster as.</param>
         /// <param name="driverCode">The string driver code.</param>
         public virtual void SaveAs(string fileName, string driverCode)
         {
@@ -819,7 +819,7 @@ namespace DotSpatial.Data
         /// so that strong typed access methods are available, instead of just the regular methods.
         /// </summary>
         /// <typeparam name="T">The type (int, short, float, etc.)</typeparam>
-        /// <returns>The Raster&lt;T&gt; where T are value types like int, short, float"/></returns>
+        /// <returns>The Raster&lt;T&gt; where T are value types like int, short, float"/>.</returns>
         public Raster<T> ToRaster<T>()
             where T : IEquatable<T>, IComparable<T>
         {
@@ -830,7 +830,7 @@ namespace DotSpatial.Data
         /// Gets this raster (or its Internal Raster) as the appropriately typed raster
         /// so that strong typed access methods are available, instead of just the regular methods.
         /// </summary>
-        /// <returns>A Raster&lt;int&gt;</returns>
+        /// <returns>A Raster&lt;int&gt;.</returns>
         public Raster<int> ToIntRaster()
         {
             return ToRaster<int>();
@@ -840,7 +840,7 @@ namespace DotSpatial.Data
         /// Gets this raster (or its Internal Raster) as the appropriately typed raster
         /// so that strong typed access methods are available, instead of just the regular methods.
         /// </summary>
-        /// <returns>A Raster&lt;short&gt;</returns>
+        /// <returns>A Raster&lt;short&gt;.</returns>
         public Raster<short> ToShortRaster()
         {
             return ToRaster<short>();
@@ -850,7 +850,7 @@ namespace DotSpatial.Data
         /// Gets this raster (or its Internal Raster) as the appropriately typed raster
         /// so that strong typed access methods are available, instead of just the regular methods.
         /// </summary>
-        /// <returns>A Raster&lt;float&gt;</returns>
+        /// <returns>A Raster&lt;float&gt;.</returns>
         public Raster<float> ToFloatRaster()
         {
             return ToRaster<float>();
@@ -891,8 +891,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Fires the FileExists method. If this returns true, then the action should be cancelled.
         /// </summary>
-        /// <param name="fileName">The fileName to write to</param>
-        /// <returns>Boolean, true if the user doesn't want to overwrite</returns>
+        /// <param name="fileName">The fileName to write to.</param>
+        /// <returns>Boolean, true if the user doesn't want to overwrite.</returns>
         protected bool OnFileExists(string fileName)
         {
             if (FileExists != null)

@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// An element for DialogSpacing
+    /// An element for DialogSpacing.
     /// </summary>
     public partial class DialogSpacerElement : DialogElement
     {

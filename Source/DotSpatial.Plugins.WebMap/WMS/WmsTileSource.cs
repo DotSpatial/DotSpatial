@@ -25,10 +25,10 @@ namespace DotSpatial.Plugins.WebMap.WMS
         #region Methods
 
         /// <summary>
-        /// Creates a new WmsTileSource
+        /// Creates a new WmsTileSource.
         /// </summary>
         /// <param name="info">WmsInfo with the data needed for creation.</param>
-        /// <returns>The created WmsTileSource</returns>
+        /// <returns>The created WmsTileSource.</returns>
         public static WmsTileSource Create(WmsInfo info)
         {
             var schema = new TileSchema

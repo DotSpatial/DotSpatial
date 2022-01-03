@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// OpenDataDialog
+    /// OpenDataDialog.
     /// </summary>
     public class OpenDataDialog : Form
     {

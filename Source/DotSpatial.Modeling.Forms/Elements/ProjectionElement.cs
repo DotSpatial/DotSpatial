@@ -9,7 +9,7 @@ using DotSpatial.Projections.Forms;
 namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
-    /// ProjectionElement
+    /// ProjectionElement.
     /// </summary>
     internal partial class ProjectionElement : DialogElement
     {

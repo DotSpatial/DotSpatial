@@ -12,7 +12,7 @@ using DotSpatial.Symbology;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// This map draws geographic coordinates directly to pixel coordinates
+    /// This map draws geographic coordinates directly to pixel coordinates.
     /// </summary>
     public interface IMap : IBasicMap
     {
@@ -65,7 +65,7 @@ namespace DotSpatial.Controls
         new IMapFrame MapFrame { get; set; }
 
         /// <summary>
-        /// Gets or sets the dictionary of tools built into this project
+        /// Gets or sets the dictionary of tools built into this project.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -108,7 +108,7 @@ namespace DotSpatial.Controls
         /// Allows a mult-select open file dialog to specify several fileNames to add.
         /// Only files with supported vector extensions will be shown.
         /// </summary>
-        /// <returns>The list of added MapFeatureLayers</returns>
+        /// <returns>The list of added MapFeatureLayers.</returns>
         List<IMapFeatureLayer> AddFeatureLayers();
 
         /// <summary>
@@ -122,25 +122,25 @@ namespace DotSpatial.Controls
         /// Allows a mult-select open file dialog to specify several fileNames to add.
         /// Only files with supported image extensions will be shown.
         /// </summary>
-        /// <returns>The list of added MapImageLayers</returns>
+        /// <returns>The list of added MapImageLayers.</returns>
         List<IMapImageLayer> AddImageLayers();
 
         /// <summary>
         /// Creates a new layer from the specified fileName and adds it to the map.
         /// </summary>
-        /// <param name="fileName">The string fileName to add to the map</param>
-        /// <returns>The newly created IMapLayer</returns>
+        /// <param name="fileName">The string fileName to add to the map.</param>
+        /// <returns>The newly created IMapLayer.</returns>
         IMapLayer AddLayer(string fileName);
 
         /// <summary>
         /// Uses the file dialog to allow selection of a fileName for opening the
         /// new layer, but does not allow multiple files to be added at once.
         /// </summary>
-        /// <returns>The newly opened IMapLayer</returns>
+        /// <returns>The newly opened IMapLayer.</returns>
         new IMapLayer AddLayer();
 
         /// <summary>
-        /// Adds a new layer to the map by using an open file dialog
+        /// Adds a new layer to the map by using an open file dialog.
         /// </summary>
         /// <returns>An IMapLayer that represents the layer in the map.</returns>
         List<IMapLayer> AddLayers();
@@ -149,7 +149,7 @@ namespace DotSpatial.Controls
         /// Allows an open file dialog without multi-select enabled to add a single
         /// raster to the map as a layer, and returns the added layer.
         /// </summary>
-        /// <returns>The IMapRasterLayer that was added</returns>
+        /// <returns>The IMapRasterLayer that was added.</returns>
         IMapRasterLayer AddRasterLayer();
 
         /// <summary>
@@ -160,9 +160,9 @@ namespace DotSpatial.Controls
         List<IMapRasterLayer> AddRasterLayers();
 
         /// <summary>
-        /// Gets a list of just the feature layers regardless of whether they are lines, points, or polygons
+        /// Gets a list of just the feature layers regardless of whether they are lines, points, or polygons.
         /// </summary>
-        /// <returns>An array of IMapFeatureLayers</returns>
+        /// <returns>An array of IMapFeatureLayers.</returns>
         IMapFeatureLayer[] GetFeatureLayers();
 
         /// <summary>
@@ -173,26 +173,26 @@ namespace DotSpatial.Controls
         IMapImageLayer[] GetImageLayers();
 
         /// <summary>
-        /// Gets a list of just the line layers (and not the general layers)
+        /// Gets a list of just the line layers (and not the general layers).
         /// </summary>
         /// <returns>The line layers.</returns>
         IMapLineLayer[] GetLineLayers();
 
         /// <summary>
-        /// Gets the MapFunction based on the string name
+        /// Gets the MapFunction based on the string name.
         /// </summary>
-        /// <param name="name">The string name to find</param>
-        /// <returns>The MapFunction with the specified name</returns>
+        /// <param name="name">The string name to find.</param>
+        /// <returns>The MapFunction with the specified name.</returns>
         IMapFunction GetMapFunction(string name);
 
         /// <summary>
-        /// Gets a list of just the point layers (and not the general layers)
+        /// Gets a list of just the point layers (and not the general layers).
         /// </summary>
         /// <returns>The point layers.</returns>
         IMapPointLayer[] GetPointLayers();
 
         /// <summary>
-        /// Gets a list of just the polygon layers (and not the general layers)
+        /// Gets a list of just the polygon layers (and not the general layers).
         /// </summary>
         /// <returns>The polygon layers.</returns>
         IMapPolygonLayer[] GetPolygonLayers();
@@ -206,7 +206,7 @@ namespace DotSpatial.Controls
 
         /// <summary>
         /// This causes all of the datalayers to re-draw themselves to the buffer, rather than just drawing
-        /// the buffer itself like what happens during "Invalidate"
+        /// the buffer itself like what happens during "Invalidate".
         /// </summary>
         void Refresh();
 
@@ -232,12 +232,12 @@ namespace DotSpatial.Controls
         void ZoomOut();
 
         /// <summary>
-        /// Zooms to the next extent of the map
+        /// Zooms to the next extent of the map.
         /// </summary>
         void ZoomToNext();
 
         /// <summary>
-        /// Zooms to the previous extent of the map
+        /// Zooms to the previous extent of the map.
         /// </summary>
         void ZoomToPrevious();
 

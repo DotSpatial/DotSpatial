@@ -11,7 +11,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// DataSet
+    /// DataSet.
     /// </summary>
     public class DataSet : DisposeBase, IDataSet
     {
@@ -41,7 +41,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets a value indicating whether the DotSpatial.Projections assembly is loaded
+        /// Gets a value indicating whether the DotSpatial.Projections assembly is loaded.
         /// </summary>
         /// <returns>Boolean, true if the value can reproject.</returns>
         [Browsable(false)]
@@ -108,7 +108,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the string name
+        /// Gets or sets the string name.
         /// </summary>
         public string Name { get; set; }
 
@@ -225,7 +225,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This can be overridden in specific classes if necessary
+        /// This can be overridden in specific classes if necessary.
         /// </summary>
         public virtual void Close()
         {

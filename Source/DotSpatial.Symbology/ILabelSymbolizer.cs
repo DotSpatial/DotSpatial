@@ -4,7 +4,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -45,7 +45,7 @@ namespace DotSpatial.Symbology
         bool BackColorEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets the border color
+        /// Gets or sets the border color.
         /// </summary>
         [Category("Border")]
         [Description("Gets or sets the border color")]
@@ -73,7 +73,7 @@ namespace DotSpatial.Symbology
         bool DropShadowEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets an X and Y geographic offset that is only used if ScaleMode is set to Geographic
+        /// Gets or sets an X and Y geographic offset that is only used if ScaleMode is set to Geographic.
         /// </summary>
         [Category("Shadow")]
         [Description("Gets or sets an X and Y geographic offset that is only used if ScaleMode is set to Geographic.")]
@@ -239,7 +239,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Uses the properties defined on this symbolizer to return a font.
         /// </summary>
-        /// <returns>A new font</returns>
+        /// <returns>A new font.</returns>
         Font GetFont();
 
         #endregion

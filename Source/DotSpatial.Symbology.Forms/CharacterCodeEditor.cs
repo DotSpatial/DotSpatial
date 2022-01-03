@@ -9,7 +9,7 @@ using System.Windows.Forms.Design;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// CharacterCodeEditor
+    /// CharacterCodeEditor.
     /// </summary>
     public class CharacterCodeEditor : UITypeEditor
     {
@@ -30,7 +30,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
         /// <param name="provider">The service provider.</param>
-        /// <param name="value">Not used</param>
+        /// <param name="value">Not used.</param>
         /// <returns>Returns the selected character.</returns>
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
@@ -45,7 +45,7 @@ namespace DotSpatial.Symbology.Forms
         /// Gets the UITypeEditorEditStyle, which in this case is drop down.
         /// </summary>
         /// <param name="context">The type descriptor context.</param>
-        /// <returns>The UITypeEditorEditStyle</returns>
+        /// <returns>The UITypeEditorEditStyle.</returns>
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;

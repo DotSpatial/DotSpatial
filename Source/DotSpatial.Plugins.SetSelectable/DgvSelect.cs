@@ -100,7 +100,7 @@ namespace DotSpatial.Plugins.SetSelectable
             for (int i = collection.Count - 1; i >= 0; i--)
             {
                 IFeatureLayer mLayer = collection[i] as IFeatureLayer;
-                if (mLayer != null)
+                if (mLayer != null && _layers.Count > 0)
                 {
                     int index = _layers.FindIndex(f => ReferenceEquals(f.Layer, mLayer));
                     if (index != reverseI)

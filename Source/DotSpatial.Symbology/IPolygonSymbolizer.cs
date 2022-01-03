@@ -14,7 +14,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the method for drawing the lines that make up the borders of this polygon
+        /// Gets or sets the method for drawing the lines that make up the borders of this polygon.
         /// </summary>
         ILineSymbolizer OutlineSymbolizer { get; set; }
 
@@ -42,15 +42,15 @@ namespace DotSpatial.Symbology
         double GetOutlineWidth();
 
         /// <summary>
-        /// Sets the color, forcing a simple pattern if necessary
+        /// Sets the color, forcing a simple pattern if necessary.
         /// </summary>
-        /// <param name="color">Gets the color of the top-most pattern</param>
+        /// <param name="color">Gets the color of the top-most pattern.</param>
         void SetFillColor(Color color);
 
         /// <summary>
         /// Forces the specified width to be the width of every stroke outlining every pattern.
         /// </summary>
-        /// <param name="width">The width to force as the outline width</param>
+        /// <param name="width">The width to force as the outline width.</param>
         void SetOutlineWidth(double width);
 
         #endregion

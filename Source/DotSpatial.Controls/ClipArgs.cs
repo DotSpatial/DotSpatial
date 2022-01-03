@@ -26,7 +26,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="ClipArgs"/> class from a single rectangle instead of a list of rectangles.
         /// </summary>
-        /// <param name="clipRectangle">The clip rectangle</param>
+        /// <param name="clipRectangle">The clip rectangle.</param>
         public ClipArgs(Rectangle clipRectangle)
             : this(new List<Rectangle>
                    {

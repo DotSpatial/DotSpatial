@@ -52,7 +52,7 @@ namespace DotSpatial.Compatibility
         /// <param name="y1">First y coordinate.</param>
         /// <param name="x2">Second x coordinate.</param>
         /// <param name="y2">Second y coordinate.</param>
-        /// <param name="pixelWidth">Width of the line in pixels</param>
+        /// <param name="pixelWidth">Width of the line in pixels.</param>
         /// <param name="color">Color to draw the line with.</param>
         void DrawLine(double x1, double y1, double x2, double y2, int pixelWidth, Color color);
 

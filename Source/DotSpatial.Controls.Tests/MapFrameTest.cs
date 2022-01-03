@@ -10,13 +10,13 @@ using TestMethod = NUnit.Framework.TestAttribute;
 namespace DotSpatial.Controls.Tests
 {
     /// <summary>
-    /// This is a test class for MapFrame and is intended to contain all MapFrame Unit Tests
+    /// This is a test class for MapFrame and is intended to contain all MapFrame Unit Tests.
     /// </summary>
     [TestClass]
     public class MapFrameTest
     {
         /// <summary>
-        /// Test if the new GetAllLayers() method returns the correct number of layers if the map has groups
+        /// Test if the new GetAllLayers() method returns the correct number of layers if the map has groups.
         /// </summary>
         [TestMethod]
         public void GetAllLayersTest()
@@ -40,7 +40,7 @@ namespace DotSpatial.Controls.Tests
         }
 
         /// <summary>
-        /// Test if the new GetAllLayers() method returns the correct number of layers if the map has groups
+        /// Test if the new GetAllLayers() method returns the correct number of layers if the map has groups.
         /// </summary>
         [TestMethod]
         public void GetAllGroupsTest()

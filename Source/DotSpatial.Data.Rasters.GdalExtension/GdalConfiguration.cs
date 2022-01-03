@@ -86,7 +86,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <summary>
         /// Method to ensure the static constructor is being called.
         /// </summary>
-        /// <remarks>Be sure to call this function before using Gdal/Ogr/Osr</remarks>
+        /// <remarks>Be sure to call this function before using Gdal/Ogr/Osr.</remarks>
         public static void ConfigureOgr()
         {
             if (_configuredOgr) return;
@@ -101,7 +101,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <summary>
         /// Method to ensure the static constructor is being called.
         /// </summary>
-        /// <remarks>Be sure to call this function before using Gdal/Ogr/Osr</remarks>
+        /// <remarks>Be sure to call this function before using Gdal/Ogr/Osr.</remarks>
         public static void ConfigureGdal()
         {
             if (_configuredGdal) return;
@@ -116,7 +116,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <summary>
         /// Function to determine which platform we're on.
         /// </summary>
-        /// <returns>The plattform string</returns>
+        /// <returns>The plattform string.</returns>
         private static string GetPlatform()
         {
             return IntPtr.Size == 4 ? "x86" : "x64";

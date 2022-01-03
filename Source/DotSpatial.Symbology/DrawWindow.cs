@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using DotSpatial.NTSExtension;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -32,22 +32,6 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DrawWindow"/> class with the specified coordinates.
-        /// </summary>
-        /// <param name="x1">The first x-value.</param>
-        /// <param name="x2">The second x-value.</param>
-        /// <param name="y1">The first y-value.</param>
-        /// <param name="y2">The second y-value.</param>
-        /// <param name="z1">The first z-value.</param>
-        /// <param name="z2">The second z-value.</param>
-        public DrawWindow(double x1, double x2, double y1, double y2, double z1, double z2)
-            : base(x1, x2, y1, y2)
-        {
-            this.InitZ(z1, z2);
-            _geographicView = new Envelope(x1, x2, y1, y2);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DrawWindow"/> class based on the specified Envelope.
         /// The envelope becomes the GeographicView for this DrawWindow.
         /// </summary>
@@ -55,7 +39,7 @@ namespace DotSpatial.Symbology
         public DrawWindow(Envelope env)
             : base(env)
         {
-            _geographicView = env.Clone();
+            _geographicView = env.Copy();
         }
 
         #endregion
@@ -88,21 +72,12 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Replaces the inherited clone in order to make a copy of the DrawWindow.
-        /// </summary>
-        /// <returns>A copy of the DrawWindow.</returns>
-        public new object Clone()
-        {
-            return Copy();
-        }
-
-        /// <summary>
         /// Replaces the inherited Envelope copy in order to create a copy of the DrawWindow instead.
         /// </summary>
         /// <returns>A copy of the DrawWindow.</returns>
-        public DrawWindow Copy()
+        public new DrawWindow Copy()
         {
-            Envelope env = base.Clone();
+            Envelope env = base.Copy();
             return new DrawWindow(env)
             {
                 GeographicView = _geographicView
@@ -174,27 +149,27 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="inX">The x value.</param>
         /// <param name="inY">The y value.</param>
-        /// <returns>A PointF</returns>
+        /// <returns>A PointF.</returns>
         public PointF ProjToDrawWindow(double inX, double inY)
         {
             double x = inX - MinX;
             double y = inY - MinY;
-            x = x / Width;
-            y = y / Height;
+            x /= Width;
+            y /= Height;
             return new PointF(Convert.ToSingle(x), Convert.ToSingle(y));
         }
 
         /// <summary>
         /// Converts two dimensions of the specified coordinate into a two dimensional PointF.
         /// </summary>
-        /// <param name="inCoord">Any valid ICoordinate</param>
-        /// <returns>A PointF</returns>
+        /// <param name="inCoord">Any valid ICoordinate.</param>
+        /// <returns>A PointF.</returns>
         public PointF ProjToDrawWindow(Coordinate inCoord)
         {
             double x = inCoord.X - MinX;
             double y = inCoord.Y - MinY;
-            x = x / Width;
-            y = y / Height;
+            x /= Width;
+            y /= Height;
             return new PointF(Convert.ToSingle(x), Convert.ToSingle(y));
         }
 
@@ -216,8 +191,8 @@ namespace DotSpatial.Symbology
             {
                 double x = inCoords[i].X - minX;
                 double y = inCoords[i].Y - minY;
-                x = x / w;
-                y = y / h;
+                x /= w;
+                y /= h;
                 result[i] = new PointF(Convert.ToSingle(x), Convert.ToSingle(y));
             }
 

@@ -24,7 +24,7 @@ namespace DotSpatial.Data
         #region Methods
 
         /// <summary>
-        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;
+        /// Adds the elements of the specified collection to the end of the System.Collections.Generic.List&lt;T&gt;.
         /// </summary>
         /// <param name="collection">collection: The collection whose elements should be added to the end of the
         /// System.Collections.Generic.List&lt;T&gt;. The collection itself cannot be null, but it can contain

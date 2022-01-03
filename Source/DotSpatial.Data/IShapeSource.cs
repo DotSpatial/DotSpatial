@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -23,7 +23,7 @@ namespace DotSpatial.Data
         /// <param name="startIndex">The integer offset of the first shape to test. When this returns, the offset is set to the integer index of the last shape tested, regardless of whether or not it was returned.</param>
         /// <param name="count">The integer count of the maximum number of shapes to return here. </param>
         /// <param name="envelope">The geographic extents that can be used to limit the shapes. If this is null, then no envelope is used.</param>
-        /// <returns>The Dictionary with FID indices and Shape values</returns>
+        /// <returns>The Dictionary with FID indices and Shape values.</returns>
         Dictionary<int, Shape> GetShapes(ref int startIndex, int count, Envelope envelope);
 
         /// <summary>

@@ -7,7 +7,7 @@ using System.Drawing;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Returns the bitmap
+    /// Returns the bitmap.
     /// </summary>
     public interface IGetBitmap : IDisposable, IDisposeLock, IContainRasterBounds
     {
@@ -25,13 +25,13 @@ namespace DotSpatial.Data
         /// images matching the resolution of the screen can be used.
         /// </summary>
         /// <param name="envelope">
-        /// The geographic extents to retrieve data for
+        /// The geographic extents to retrieve data for.
         /// </param>
         /// <param name="size">
-        /// The rectangle that defines the size of the drawing area in pixels
+        /// The rectangle that defines the size of the drawing area in pixels.
         /// </param>
         /// <returns>
-        /// A bitmap captured from the main image
+        /// A bitmap captured from the main image.
         /// </returns>
         Bitmap GetBitmap(Extent envelope, Size size);
 
@@ -41,13 +41,13 @@ namespace DotSpatial.Data
         /// images matching the resolution of the screen can be used.
         /// </summary>
         /// <param name="envelope">
-        /// The geographic extents to retrieve data for
+        /// The geographic extents to retrieve data for.
         /// </param>
         /// <param name="window">
-        /// The rectangle that defines the size of the drawing area in pixels
+        /// The rectangle that defines the size of the drawing area in pixels.
         /// </param>
         /// <returns>
-        /// A bitmap captured from the main image
+        /// A bitmap captured from the main image.
         /// </returns>
         Bitmap GetBitmap(Extent envelope, Rectangle window);
     }

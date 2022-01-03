@@ -19,8 +19,8 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSetArray"/> class that holds a name and a dataset.
         /// </summary>
-        /// <param name="name"> The name of the DataSet in this object</param>
-        /// <param name="dataSet">The IDataSet in this object</param>
+        /// <param name="name"> The name of the DataSet in this object.</param>
+        /// <param name="dataSet">The IDataSet in this object.</param>
         public DataSetArray(string name, IDataSet dataSet)
         {
             Name = name;
@@ -46,7 +46,7 @@ namespace DotSpatial.Modeling.Forms
         #region Methods
 
         /// <summary>
-        /// Returns the Name
+        /// Returns the Name.
         /// </summary>
         /// <returns>The name.</returns>
         public override string ToString()

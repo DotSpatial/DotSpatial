@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// VertexRange
+    /// VertexRange.
     /// </summary>
     public class VertexRange : IEnumerable<Vertex>
     {
@@ -23,7 +23,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="VertexRange"/> class.
         /// </summary>
-        /// <param name="allVertices">An array of all the vertex locations</param>
+        /// <param name="allVertices">An array of all the vertex locations.</param>
         /// <param name="shapeOffset">The shape offset.</param>
         /// <param name="partOffset">The part offset.</param>
         public VertexRange(double[] allVertices, int shapeOffset, int partOffset)
@@ -65,7 +65,7 @@ namespace DotSpatial.Data
         public int StartIndex => ShapeOffset + PartOffset;
 
         /// <summary>
-        /// Gets or sets the vertices
+        /// Gets or sets the vertices.
         /// </summary>
         public double[] Vertices { get; set; }
 
@@ -126,9 +126,9 @@ namespace DotSpatial.Data
             /// <summary>
             /// Initializes a new instance of the <see cref="VertexRangeEnumerator"/> class.
             /// </summary>
-            /// <param name="vertices">The vertices to create</param>
-            /// <param name="start">The integer index of the first included vertex </param>
-            /// <param name="end">The integer index of the last included vertex</param>
+            /// <param name="vertices">The vertices to create.</param>
+            /// <param name="start">The integer index of the first included vertex. </param>
+            /// <param name="end">The integer index of the last included vertex.</param>
             public VertexRangeEnumerator(double[] vertices, int start, int end)
             {
                 _start = start;
@@ -153,7 +153,7 @@ namespace DotSpatial.Data
             #region Methods
 
             /// <summary>
-            /// This does nothing
+            /// This does nothing.
             /// </summary>
             public void Dispose()
             {
@@ -173,7 +173,7 @@ namespace DotSpatial.Data
             }
 
             /// <summary>
-            /// Resets this enumerator to the beginning of the range of vertices
+            /// Resets this enumerator to the beginning of the range of vertices.
             /// </summary>
             public void Reset()
             {

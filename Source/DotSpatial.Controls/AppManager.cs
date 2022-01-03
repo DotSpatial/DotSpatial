@@ -142,11 +142,11 @@ namespace DotSpatial.Controls
         public static string BaseDirectory { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether extensions should be placed in <see cref="BaseDirectory"/>
+        /// Gets or sets a value indicating whether extensions should be placed in <see cref="BaseDirectory"/>.
         /// </summary>
         /// <value>
         /// <c>true</c> if extensions should be placed in <see cref="BaseDirectory"/>; otherwise, extensions will be placed in a user profile folder based on the entry assembly name.
-        /// This must be set before calling LoadExtensions();
+        /// This must be set before calling LoadExtensions();.
         /// </value>
         public static bool UseBaseDirectoryForExtensionsDirectory { get; set; }
 

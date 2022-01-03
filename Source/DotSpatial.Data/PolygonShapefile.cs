@@ -4,13 +4,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// A shapefile class that handles the special case where the data is made up of polygons
+    /// A shapefile class that handles the special case where the data is made up of polygons.
     /// </summary>
     public class PolygonShapefile : Shapefile
     {
@@ -25,7 +24,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonShapefile"/> class that is loaded from the supplied fileName.
         /// </summary>
-        /// <param name="fileName">The string fileName of the polygon shapefile to load</param>
+        /// <param name="fileName">The string fileName of the polygon shapefile to load.</param>
         public PolygonShapefile(string fileName)
             : this()
         {
@@ -36,7 +35,7 @@ namespace DotSpatial.Data
         /// Opens a shapefile.
         /// </summary>
         /// <param name="fileName">The string fileName of the polygon shapefile to load.</param>
-        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
+        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler.</param>
         public void Open(string fileName, IProgressHandler progressHandler)
         {
             if (!File.Exists(fileName)) return;
@@ -129,7 +128,7 @@ namespace DotSpatial.Data
         /// Gets the specified feature by constructing it from the vertices, rather
         /// than requiring that all the features be created. (which takes up a lot of memory).
         /// </summary>
-        /// <param name="index">The integer index</param>
+        /// <param name="index">The integer index.</param>
         /// <returns>The polygon feature belonging to the given index.</returns>
         public override IFeature GetFeature(int index)
         {
@@ -178,13 +177,13 @@ namespace DotSpatial.Data
             for (int iPart = 0; iPart < f.Geometry.NumGeometries; iPart++)
             {
                 parts.Add(points.Count);
-                IPolygon pg = f.Geometry.GetGeometryN(iPart) as IPolygon;
+                Polygon pg = f.Geometry.GetGeometryN(iPart) as Polygon;
                 if (pg == null) continue;
 
-                ILineString bl = pg.Shell;
+                LinearRing bl = pg.Shell;
 
                 // Exterior rings need to be clockwise
-                IEnumerable<Coordinate> coords = CGAlgorithms.IsCCW(bl.Coordinates) ? bl.Coordinates.Reverse() : bl.Coordinates;
+                IEnumerable<Coordinate> coords = bl.IsCCW ? bl.Coordinates.Reverse() : bl.Coordinates;
                 points.AddRange(coords);
 
                 foreach (var hole in pg.Holes)
@@ -192,7 +191,7 @@ namespace DotSpatial.Data
                     parts.Add(points.Count);
 
                     // Interior rings need to be counter-clockwise
-                    IEnumerable<Coordinate> holeCoords = CGAlgorithms.IsCCW(hole.Coordinates) ? hole.Coordinates : hole.Coordinates.Reverse();
+                    IEnumerable<Coordinate> holeCoords = hole.IsCCW ? hole.Coordinates : hole.Coordinates.Reverse();
                     points.AddRange(holeCoords);
                 }
             }

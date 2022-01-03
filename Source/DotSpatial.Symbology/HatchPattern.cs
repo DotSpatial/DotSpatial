@@ -8,7 +8,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// HatchPattern
+    /// HatchPattern.
     /// </summary>
     public class HatchPattern : Pattern, IHatchPattern
     {
@@ -34,9 +34,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="HatchPattern"/> class.
         /// </summary>
-        /// <param name="style">The hatch style to use</param>
-        /// <param name="foreColor">the forecolor to use</param>
-        /// <param name="backColor">the background color to use</param>
+        /// <param name="style">The hatch style to use.</param>
+        /// <param name="foreColor">the forecolor to use.</param>
+        /// <param name="backColor">the background color to use.</param>
         public HatchPattern(HatchStyle style, Color foreColor, Color backColor)
         {
             HatchStyle = style;
@@ -127,10 +127,10 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Instructs the drawing code to fill the specified path with the specified pattern
+        /// Instructs the drawing code to fill the specified path with the specified pattern.
         /// </summary>
-        /// <param name="g">The Graphics device to draw to</param>
-        /// <param name="gp">The GraphicsPath to fill</param>
+        /// <param name="g">The Graphics device to draw to.</param>
+        /// <param name="gp">The GraphicsPath to fill.</param>
         public override void FillPath(Graphics g, GraphicsPath gp)
         {
             using (HatchBrush hb = new HatchBrush(HatchStyle, _foreColor, _backColor))

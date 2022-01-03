@@ -10,7 +10,7 @@ using Microsoft.CSharp.RuntimeBinder;
 namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 {
     /// <summary>
-    /// LegacyDeserializer
+    /// LegacyDeserializer.
     /// </summary>
     internal static class LegacyDeserializer
     {

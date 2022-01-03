@@ -74,7 +74,7 @@ using System.IO;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// HfaType
+    /// HfaType.
     /// </summary>
     public class HfaType
     {
@@ -86,7 +86,7 @@ namespace DotSpatial.Data
         public int FieldCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of fields
+        /// Gets or sets the list of fields.
         /// </summary>
         public List<HfaField> Fields { get; set; }
 
@@ -226,10 +226,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Originally Initialize
+        /// Originally Initialize.
         /// </summary>
-        /// <param name="input">The input string that contains content for this type</param>
-        /// <returns>The remaining string content, unless this fails in which case this may return null</returns>
+        /// <param name="input">The input string that contains content for this type.</param>
+        /// <returns>The remaining string content, unless this fails in which case this may return null.</returns>
         public string Intialize(string input)
         {
             if (!input.Contains("{")) return null;

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Projections.Forms
 {
     /// <summary>
-    /// ProjectionSelectDialog
+    /// ProjectionSelectDialog.
     /// </summary>
     public partial class ProjectionSelectDialog : Form
     {
@@ -35,7 +35,7 @@ namespace DotSpatial.Projections.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the currently chosen coordinate system
+        /// Gets or sets the currently chosen coordinate system.
         /// </summary>
         public ProjectionInfo SelectedCoordinateSystem
         {
@@ -55,7 +55,7 @@ namespace DotSpatial.Projections.Forms
         #region Methods
 
         /// <summary>
-        /// Fires the ChangesApplied event
+        /// Fires the ChangesApplied event.
         /// </summary>
         protected virtual void OnApplyChanges()
         {

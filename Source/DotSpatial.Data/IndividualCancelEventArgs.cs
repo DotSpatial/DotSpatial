@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// The same as a ListEventArgs, but provides an option to cancel the event
+    /// The same as a ListEventArgs, but provides an option to cancel the event.
     /// </summary>
     /// <typeparam name="T">Type of the contained items.</typeparam>
     public class IndividualCancelEventArgs<T> : CancelEventArgs
@@ -20,7 +20,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="IndividualCancelEventArgs{T}"/> class.
         /// </summary>
-        /// <param name="inListItem">an object that is being interacted with in the list</param>
+        /// <param name="inListItem">an object that is being interacted with in the list.</param>
         public IndividualCancelEventArgs(T inListItem)
         {
             ListItem = inListItem;

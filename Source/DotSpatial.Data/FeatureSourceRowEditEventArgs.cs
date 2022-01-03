@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// FeatureSourceRowEditEvent arguments
+    /// FeatureSourceRowEditEvent arguments.
     /// </summary>
     public class FeatureSourceRowEditEventArgs
     {

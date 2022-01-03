@@ -342,7 +342,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         }
 
         /// <summary>
-        /// Gets the mean, standard deviation, minimum and maximum
+        /// Gets the mean, standard deviation, minimum and maximum.
         /// </summary>
         public override void GetStatistics()
         {
@@ -396,7 +396,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// an unusually arranged collection of values are required.  Sorting the list before calling
         /// this should significantly improve performance.
         /// </summary>
-        /// <param name="indices">A list or array of long values that are (Row * NumRowsInFile + Column)</param>
+        /// <param name="indices">A list or array of long values that are (Row * NumRowsInFile + Column).</param>
         /// <returns>The values.</returns>
         public override List<T> GetValuesT(IEnumerable<long> indices)
         {
@@ -446,13 +446,13 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         }
 
         /// <summary>
-        /// Reads values from the raster to the jagged array of values
+        /// Reads values from the raster to the jagged array of values.
         /// </summary>
-        /// <param name="xOff">The horizontal offset from the left to start reading from</param>
-        /// <param name="yOff">The vertical offset from the top to start reading from</param>
-        /// <param name="sizeX">The number of cells to read horizontally</param>
-        /// <param name="sizeY">The number of cells ot read vertically</param>
-        /// <returns>A jagged array of values from the raster</returns>
+        /// <param name="xOff">The horizontal offset from the left to start reading from.</param>
+        /// <param name="yOff">The vertical offset from the top to start reading from.</param>
+        /// <param name="sizeX">The number of cells to read horizontally.</param>
+        /// <param name="sizeY">The number of cells ot read vertically.</param>
+        /// <returns>A jagged array of values from the raster.</returns>
         public override T[][] ReadRaster(int xOff, int yOff, int sizeX, int sizeY)
         {
             T[][] result = new T[sizeY][];
@@ -495,13 +495,13 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         }
 
         /// <summary>
-        /// Writes values from the jagged array to the raster at the specified location
+        /// Writes values from the jagged array to the raster at the specified location.
         /// </summary>
-        /// <param name="buffer">A jagged array of values to write to the raster</param>
-        /// <param name="xOff">The horizontal offset from the left to start reading from</param>
-        /// <param name="yOff">The vertical offset from the top to start reading from</param>
-        /// <param name="xSize">The number of cells to write horizontally</param>
-        /// <param name="ySize">The number of cells ot write vertically</param>
+        /// <param name="buffer">A jagged array of values to write to the raster.</param>
+        /// <param name="xOff">The horizontal offset from the left to start reading from.</param>
+        /// <param name="yOff">The vertical offset from the top to start reading from.</param>
+        /// <param name="xSize">The number of cells to write horizontally.</param>
+        /// <param name="ySize">The number of cells ot write vertically.</param>
         public override void WriteRaster(T[][] buffer, int xOff, int yOff, int xSize, int ySize)
         {
             if (_band == null)
@@ -543,7 +543,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         }
 
         /// <summary>
-        /// Updates the header information about the projection and the affine coefficients
+        /// Updates the header information about the projection and the affine coefficients.
         /// </summary>
         protected override void UpdateHeader()
         {
@@ -561,7 +561,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <param name="complete">Percent of completeness.</param>
         /// <param name="message">Message is not used.</param>
         /// <param name="data">Data is not used.</param>
-        /// <returns>0</returns>
+        /// <returns>0.</returns>
         private int GdalProgressFunc(double complete, IntPtr message, IntPtr data)
         {
             ProgressHandler.Progress(Convert.ToInt32(complete), "Copy Progress");

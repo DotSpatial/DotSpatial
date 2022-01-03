@@ -8,7 +8,7 @@ namespace DotSpatial.Controls.Header
     /// <summary>
     /// By using this interface, the developers can create a button, menu, ribbon tab. etc
     /// without considering whether the user interface is ribbon style or standard toolbar
-    /// style
+    /// style.
     /// </summary>
     public interface IHeaderControl
     {
@@ -27,13 +27,13 @@ namespace DotSpatial.Controls.Header
         /// This will add a new item that will appear on the standard toolbar or ribbon control.
         /// </summary>
         /// <param name="item">The item that gets added.</param>
-        /// <returns>Added GUI item</returns>
+        /// <returns>Added GUI item.</returns>
         object Add(HeaderItem item);
 
         /// <summary>
-        /// Remove item from the standard toolbar or ribbon control
+        /// Remove item from the standard toolbar or ribbon control.
         /// </summary>
-        /// <param name="key">The string itemName to remove from the standard toolbar or ribbon control</param>
+        /// <param name="key">The string itemName to remove from the standard toolbar or ribbon control.</param>
         void Remove(string key);
 
         /// <summary>

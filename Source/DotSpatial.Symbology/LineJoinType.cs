@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// Specifies the OGC type of connection that can occur between two segments
+    /// Specifies the OGC type of connection that can occur between two segments.
     /// </summary>
     public enum LineJoinType
     {

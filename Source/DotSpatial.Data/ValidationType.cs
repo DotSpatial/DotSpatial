@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// ValidationType
+    /// ValidationType.
     /// </summary>
     public enum ValidationType
     {

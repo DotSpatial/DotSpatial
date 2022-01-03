@@ -33,7 +33,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageLayer"/> class by opening the specified fileName.
         /// </summary>
-        /// <param name="fileName">The fileName to open</param>
+        /// <param name="fileName">The fileName to open.</param>
         public ImageLayer(string fileName)
         {
             Symbolizer = new ImageSymbolizer();
@@ -44,9 +44,9 @@ namespace DotSpatial.Symbology
         /// Initializes a new instance of the <see cref="ImageLayer"/> class by opening the specified fileName, relaying progress to the
         /// specified handler, and automatically adds the new layer to the specified container.
         /// </summary>
-        /// <param name="fileName">The fileName to open</param>
-        /// <param name="progressHandler">A ProgressHandler that can receive progress updates</param>
-        /// <param name="container">The layer list that should contain this image layer</param>
+        /// <param name="fileName">The fileName to open.</param>
+        /// <param name="progressHandler">A ProgressHandler that can receive progress updates.</param>
+        /// <param name="container">The layer list that should contain this image layer.</param>
         public ImageLayer(string fileName, IProgressHandler progressHandler, ICollection<ILayer> container)
             : base(container)
         {
@@ -58,8 +58,8 @@ namespace DotSpatial.Symbology
         /// Initializes a new instance of the <see cref="ImageLayer"/> class by opening the specified fileName and
         /// relaying progress to the specified handler.
         /// </summary>
-        /// <param name="fileName">The fileName to open</param>
-        /// <param name="progressHandler">The progressHandler</param>
+        /// <param name="fileName">The fileName to open.</param>
+        /// <param name="progressHandler">The progressHandler.</param>
         public ImageLayer(string fileName, IProgressHandler progressHandler)
         {
             Symbolizer = new ImageSymbolizer();
@@ -69,7 +69,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageLayer"/> class.
         /// </summary>
-        /// <param name="baseImage">The image to draw as a layer</param>
+        /// <param name="baseImage">The image to draw as a layer.</param>
         public ImageLayer(IImageData baseImage)
         {
             Symbolizer = new ImageSymbolizer();
@@ -79,8 +79,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageLayer"/> class.
         /// </summary>
-        /// <param name="baseImage">The image to draw as a layer</param>
-        /// <param name="container">The Layers collection that keeps track of the image layer</param>
+        /// <param name="baseImage">The image to draw as a layer.</param>
+        /// <param name="container">The Layers collection that keeps track of the image layer.</param>
         public ImageLayer(IImageData baseImage, ICollection<ILayer> container)
             : base(container)
         {
@@ -119,7 +119,7 @@ namespace DotSpatial.Symbology
         public override Extent Extent => DataSet?.Extent;
 
         /// <summary>
-        /// Gets or sets the image being drawn by this layer
+        /// Gets or sets the image being drawn by this layer.
         /// </summary>
         public IImageData Image
         {
@@ -135,7 +135,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets custom actions for ImageLayer
+        /// Gets or sets custom actions for ImageLayer.
         /// </summary>
         [Browsable(false)]
         public IImageLayerActions ImageLayerActions { get; set; }
@@ -204,7 +204,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Handles when this layer should show its properties by firing the event on the shared event sender
+        /// Handles when this layer should show its properties by firing the event on the shared event sender.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnShowProperties(HandledEventArgs e)

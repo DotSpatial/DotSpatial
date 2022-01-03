@@ -46,7 +46,7 @@ Public Class TaudemPlugin
     Private StartPtX As Integer = -1
     Private StartPtY As Integer = -1
     Private EraseLast As Boolean = False
-    Private mycolor As New System.Drawing.Color
+    Private mycolor As New Drawing.Color
 
     'Public Sub ProjectLoading(ByVal ProjectFile As String, ByVal SettingsString As String) Implements MapWindow.Interfaces.IPlugin.ProjectLoading
     '    'dpa 4/22/2005 Save the base grid file name to the MW project
@@ -501,7 +501,7 @@ Public Class TaudemPlugin
         End Get
     End Property
 
-    Public Property AutoFormIcon() As System.Drawing.Icon
+    Public Property AutoFormIcon() As Drawing.Icon
         Get
             If Not g_AutoForm Is Nothing Then
                 Return g_AutoForm.Icon
@@ -509,7 +509,7 @@ Public Class TaudemPlugin
                 Return Nothing
             End If
         End Get
-        Set(ByVal value As System.Drawing.Icon)
+        Set(ByVal value As Drawing.Icon)
             If Not g_AutoForm Is Nothing Then
                 g_AutoForm.Icon = value
                 g_AutoForm.ShowIcon = (Not value Is Nothing)

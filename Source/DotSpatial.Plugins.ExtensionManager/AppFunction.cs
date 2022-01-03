@@ -8,7 +8,7 @@ using DotSpatial.Plugins.ExtensionManager.Properties;
 namespace DotSpatial.Plugins.ExtensionManager
 {
     /// <summary>
-    /// An AppFunction
+    /// An AppFunction.
     /// </summary>
     public class AppFunction : MapFunctionGlyph
     {

@@ -7,7 +7,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// FeatureEditorSettings
+    /// FeatureEditorSettings.
     /// </summary>
     [Serializable]
     public class FeatureEditorSettings : EditorSettings
@@ -61,7 +61,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the double size for the last item in the range
+        /// Gets or sets the double size for the last item in the range.
         /// </summary>
         [Serialize("EndSize")]
         public double EndSize
@@ -78,7 +78,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the field name that categories are based on
+        /// Gets or sets the field name that categories are based on.
         /// </summary>
         [Serialize("FieldName")]
         public string FieldName
@@ -113,7 +113,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the normalization field
+        /// Gets or sets the normalization field.
         /// </summary>
         [Serialize("NormField")]
         public string NormField
@@ -130,7 +130,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the double start size for point or line size ranges
+        /// Gets or sets the double start size for point or line size ranges.
         /// </summary>
         [Serialize("StartSize")]
         public double StartSize

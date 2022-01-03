@@ -9,7 +9,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// An add feature tool
+    /// An add feature tool.
     /// </summary>
     public class AddFeature : Tool
     {
@@ -56,7 +56,7 @@ namespace DotSpatial.Tools
         /// Once the parameters have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
-        /// <returns>True if executed successfully</returns>
+        /// <returns>True if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet input1 = _inputParam[0].Value as IFeatureSet;

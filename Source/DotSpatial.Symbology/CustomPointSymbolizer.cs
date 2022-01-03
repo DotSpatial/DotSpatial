@@ -25,10 +25,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomPointSymbolizer"/> class.
         /// </summary>
-        /// <param name="uniqueName">the unique name</param>
-        /// <param name="name">the name of the custom symbolizer</param>
-        /// <param name="category">the map category of the custom symbolizer</param>
-        /// <param name="symbolizer">the associated Point symbolizer</param>
+        /// <param name="uniqueName">the unique name.</param>
+        /// <param name="name">the name of the custom symbolizer.</param>
+        /// <param name="category">the map category of the custom symbolizer.</param>
+        /// <param name="symbolizer">the associated Point symbolizer.</param>
         public CustomPointSymbolizer(string uniqueName, string name, string category, PointSymbolizer symbolizer)
         {
             UniqueName = uniqueName;
@@ -42,10 +42,10 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Point symbolizer
+        /// Gets or sets the Point symbolizer.
         /// </summary>
         /// <remarks>
-        /// [Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor))]
+        /// [Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor))].
         /// </remarks>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public new IPointSymbolizer Symbolizer

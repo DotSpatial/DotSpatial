@@ -75,7 +75,7 @@ namespace DotSpatial.Controls.DefaultRequiredImports
         /// <summary>
         /// Shows the progress with the given message.
         /// </summary>
-        /// <param name="percent">The integer percent from 0 to 100</param>
+        /// <param name="percent">The integer percent from 0 to 100.</param>
         /// <param name="message">A message including the percent information if wanted.</param>
         public void Progress(int percent, string message)
         {

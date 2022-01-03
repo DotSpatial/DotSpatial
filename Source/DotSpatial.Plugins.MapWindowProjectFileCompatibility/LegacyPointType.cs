@@ -4,7 +4,7 @@
 namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 {
     /// <summary>
-    /// PointTypes
+    /// PointTypes.
     /// </summary>
     public enum LegacyPointType
     {

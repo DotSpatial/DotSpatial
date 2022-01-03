@@ -24,8 +24,8 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void CanReadDataRowWithZeroDates()
         {
-            const string Path = @"Data\Shapefiles\DateShapefile\DateShapefile.dbf";
-            var at = new AttributeTable(Path);
+            string path = Common.AbsolutePath(@"Data\Shapefiles\DateShapefile\DateShapefile.dbf");
+            var at = new AttributeTable(path);
             var dt = at.SupplyPageOfData(0, 1);
             Assert.IsNotNull(dt);
             Assert.IsNotNull(dt.Rows[0]);
@@ -74,7 +74,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void ReadNullValues()
         {
-            const string Path = @"Data\Shapefiles\NullValues.dbf";
+            string path = Common.AbsolutePath(@"Data\Shapefiles\NullValues.dbf");
 
             var expectedRows = new object[6][];
             expectedRows[0] = new object[] { DBNull.Value, DBNull.Value, DBNull.Value, DBNull.Value, DBNull.Value };
@@ -84,7 +84,7 @@ namespace DotSpatial.Data.Tests
             expectedRows[4] = new object[] { DBNull.Value, 1.0, DBNull.Value, false, DBNull.Value };
             expectedRows[5] = new object[] { 1234567890, 123456.0987, new DateTime(2016, 12, 31), DBNull.Value, "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takima" };
 
-            var at = new AttributeTable(Path);
+            var at = new AttributeTable(path);
             var dt = at.SupplyPageOfData(0, expectedRows.Length);
 
             Assert.IsNotNull(dt);

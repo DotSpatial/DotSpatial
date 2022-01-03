@@ -4,7 +4,7 @@
 using System;
 using System.ComponentModel;
 using DotSpatial.Serialization;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -26,8 +26,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="Position2D"/> class.
         /// </summary>
-        /// <param name="x">The X or horizontal coordinate</param>
-        /// <param name="y">The Y or vertical coordinate</param>
+        /// <param name="x">The X or horizontal coordinate.</param>
+        /// <param name="y">The Y or vertical coordinate.</param>
         public Position2D(double x, double y)
         {
             X = x;
@@ -64,7 +64,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Randomizes the position by selecting a random position from -1000 to 1000 for X and Y
+        /// Randomizes the position by selecting a random position from -1000 to 1000 for X and Y.
         /// </summary>
         /// <param name="generator">The random number generator so that a seed can be chosen.</param>
         protected override void OnRandomize(Random generator)

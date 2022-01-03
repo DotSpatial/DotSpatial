@@ -90,7 +90,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the MenuItems that should appear in the context menu of the legend for this category
+        /// Gets or sets the MenuItems that should appear in the context menu of the legend for this category.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -146,7 +146,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this legend item has been selected in the legend
+        /// Gets or sets a value indicating whether this legend item has been selected in the legend.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -192,7 +192,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the symbol mode for the legend. By default this should be "Symbol", but this can be overridden
+        /// Gets or sets the symbol mode for the legend. By default this should be "Symbol", but this can be overridden.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -335,7 +335,7 @@ namespace DotSpatial.Symbology
         /// Draws the symbol for this specific category to the legend.
         /// </summary>
         /// <param name="g">Graphics object used for drawing.</param>
-        /// <param name="box">Rectangle</param>
+        /// <param name="box">Rectangle.</param>
         public virtual void LegendSymbolPainted(Graphics g, Rectangle box)
         {
         }
@@ -343,10 +343,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Prints the formal legend content without any resize boxes or other notations.
         /// </summary>
-        /// <param name="g">The graphics object to print to</param>
-        /// <param name="font">The system.Drawing.Font to use for the lettering</param>
-        /// <param name="fontColor">The color of the font</param>
-        /// <param name="maxExtent">Assuming 0, 0 is the top left, this is the maximum extent</param>
+        /// <param name="g">The graphics object to print to.</param>
+        /// <param name="font">The system.Drawing.Font to use for the lettering.</param>
+        /// <param name="fontColor">The color of the font.</param>
+        /// <param name="maxExtent">Assuming 0, 0 is the top left, this is the maximum extent.</param>
         public void PrintLegendItem(Graphics g, Font font, Color fontColor, SizeF maxExtent)
         {
             string text = LegendText;
@@ -441,7 +441,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Handles updating event handlers during a copy process.
         /// </summary>
-        /// <param name="copy">The duplicate descriptor</param>
+        /// <param name="copy">The duplicate descriptor.</param>
         protected override void OnCopy(Descriptor copy)
         {
             LegendItem myCopy = copy as LegendItem;
@@ -465,7 +465,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Fires the ItemChanged event
+        /// Fires the ItemChanged event.
         /// </summary>
         protected virtual void OnItemChanged()
         {
@@ -508,7 +508,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Configures the default settings of the legend item
+        /// Configures the default settings of the legend item.
         /// </summary>
         private void Configure()
         {

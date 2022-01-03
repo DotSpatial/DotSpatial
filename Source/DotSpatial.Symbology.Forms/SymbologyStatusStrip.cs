@@ -25,7 +25,7 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        private delegate void UpdateProg( int percent, string message);
+        private delegate void UpdateProg(int percent, string message);
 
         #region Properties
 
@@ -47,7 +47,7 @@ namespace DotSpatial.Symbology.Forms
         /// This method is thread safe so that people calling this method don't cause a cross-thread violation
         /// by updating the progress indicator from a different thread.
         /// </summary>
-        /// <param name="percent">The integer percent from 0 to 100</param>
+        /// <param name="percent">The integer percent from 0 to 100.</param>
         /// <param name="message">A message including the percent information if wanted.</param>
         public void Progress(int percent, string message)
         {

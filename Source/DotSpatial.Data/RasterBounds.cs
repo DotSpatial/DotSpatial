@@ -8,7 +8,7 @@ using System.IO;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// RasterBounds
+    /// RasterBounds.
     /// </summary>
     public class RasterBounds : IRasterBounds
     {
@@ -36,9 +36,9 @@ namespace DotSpatial.Data
         /// Initializes a new instance of the <see cref="RasterBounds"/> class.
         /// This attempts to read the very simple 6 number world file associated with an image.
         /// </summary>
-        /// <param name="numRows">The number of rows in this raster</param>
-        /// <param name="numColumns">The number of columns in this raster</param>
-        /// <param name="worldFileName">A world file to attempt to read</param>
+        /// <param name="numRows">The number of rows in this raster.</param>
+        /// <param name="numColumns">The number of columns in this raster.</param>
+        /// <param name="worldFileName">A world file to attempt to read.</param>
         public RasterBounds(int numRows, int numColumns, string worldFileName)
         {
             _numRows = numRows;
@@ -50,8 +50,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="RasterBounds"/> class.
         /// </summary>
-        /// <param name="numRows">The number of rows for this raster</param>
-        /// <param name="numColumns">The number of columns for this raster</param>
+        /// <param name="numRows">The number of rows for this raster.</param>
+        /// <param name="numColumns">The number of columns for this raster.</param>
         /// <param name="affineCoefficients">The affine coefficients describing the location of this raster.</param>
         public RasterBounds(int numRows, int numColumns, double[] affineCoefficients)
         {
@@ -63,9 +63,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="RasterBounds"/> class that is georeferenced to the specified envelope.
         /// </summary>
-        /// <param name="numRows">The number of rows</param>
-        /// <param name="numColumns">The number of columns</param>
-        /// <param name="bounds">The bounding envelope</param>
+        /// <param name="numRows">The number of rows.</param>
+        /// <param name="numColumns">The number of columns.</param>
+        /// <param name="bounds">The bounding envelope.</param>
         public RasterBounds(int numRows, int numColumns, Extent bounds)
         {
             _affine = new double[6];
@@ -82,7 +82,7 @@ namespace DotSpatial.Data
         /// Gets or sets the double affine coefficients that control the world-file
         /// positioning of this image. X' and Y' are real world coords.
         /// X' = [0] + [1] * Column + [2] * Row
-        /// Y' = [3] + [4] * Column + [5] * Row
+        /// Y' = [3] + [4] * Column + [5] * Row.
         /// </summary>
         [Category("GeoReference")]
         [Description("X' = [0] + [1] * Column + [2] * Row, Y' = [3] + [4] * Column + [5] * Row")]
@@ -375,7 +375,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Attempts to save the data to the file listed in WorldFile
+        /// Attempts to save the data to the file listed in WorldFile.
         /// </summary>
         public virtual void Save()
         {

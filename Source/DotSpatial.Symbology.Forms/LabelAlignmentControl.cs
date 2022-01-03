@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// LabelAlignmentControl
+    /// LabelAlignmentControl.
     /// </summary>
     [DefaultEvent("ValueChanged")]
     [DefaultProperty("Value")]

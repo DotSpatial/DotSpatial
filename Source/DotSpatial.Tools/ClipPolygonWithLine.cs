@@ -7,14 +7,12 @@ using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Clip Polygon with line tool
+    /// Clip Polygon with line tool.
     /// </summary>
     public class ClipPolygonWithLine : Tool
     {
@@ -54,7 +52,7 @@ namespace DotSpatial.Tools
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -63,7 +61,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Accurate Clip Polygon with Line
+        /// Accurate Clip Polygon with Line.
         /// </summary>
         /// <param name="polygon">The polygon to clip.</param>
         /// <param name="line">The line used for clipping.</param>
@@ -132,8 +130,7 @@ namespace DotSpatial.Tools
             {
                 // multiple parts
                 FixMultiPartPoly(ref polygon);
-                IFeature[] polyParts;
-                SeparateParts(ref polygon, out polyParts);
+                SeparateParts(ref polygon, out IFeature[] polyParts);
                 IFeatureSet holeSf = new FeatureSet(FeatureType.Polygon);
                 IFeatureSet tempResult = new FeatureSet(FeatureType.Polygon);
                 IFeatureSet modPolySf = new FeatureSet(FeatureType.Polygon);
@@ -142,7 +139,7 @@ namespace DotSpatial.Tools
                 for (int i = 0; i <= numParts - 1; i++)
                 {
                     IFeature currPart = polyParts[i];
-                    if (!CGAlgorithms.IsCCW(currPart.Geometry.Coordinates))
+                    if (!NetTopologySuite.Algorithm.Orientation.IsCCW(currPart.Geometry.Coordinates))
                     {
                         if (speedOptimized)
                         {
@@ -192,7 +189,7 @@ namespace DotSpatial.Tools
         /// <param name="polygonFeatureSet">The shapefile of polygons that are to be clipped.</param>
         /// <param name="polygon">The polygon used for clipping.</param>
         /// <param name="resultFeatureSet">The result shapefile for the resulting polygons to be saved (in-memory).</param>
-        /// <param name="copyAttributes">True if copying attrs</param>
+        /// <param name="copyAttributes">True if copying attributes.</param>
         /// <returns>False if an error was encountered, true otherwise.</returns>
         public static bool ClipPolygonFeatureSetWithPolygon(IFeatureSet polygonFeatureSet, IFeature polygon, IFeatureSet resultFeatureSet, bool copyAttributes)
         {
@@ -398,7 +395,7 @@ namespace DotSpatial.Tools
         /// <param name="intersectPts">Array of all possible intersect points.</param>
         /// <param name="validIntersects">Array that will contain only the valid intersect points in sorted order.</param>
         /// <param name="startPt">The reference point to sort the valid intersect points by.</param>
-        public static void FindAndSortValidIntersects(int numIntersects, ref IPoint[] intersectPts, ref IPoint[] validIntersects, ref IPoint startPt)
+        public static void FindAndSortValidIntersects(int numIntersects, ref Point[] intersectPts, ref Point[] validIntersects, ref Point startPt)
         {
             for (int i = 0; i <= numIntersects - 1; i++)
             {
@@ -409,15 +406,15 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Find the intersection points of lines that cross a polygon
+        /// Find the intersection points of lines that cross a polygon.
         /// </summary>
-        /// <param name="lineFeatureSet">The line features</param>
-        /// <param name="polygon">The polygon feature</param>
-        /// <param name="intersectsPerLineSeg">Output array of intersection counts</param>
-        /// <param name="intersectionPts">Output array of intersection points</param>
-        /// <param name="polyIntersectLocs">Output array of intersection locations in reference to polygon vertex indices</param>
+        /// <param name="lineFeatureSet">The line features.</param>
+        /// <param name="polygon">The polygon feature.</param>
+        /// <param name="intersectsPerLineSeg">Output array of intersection counts.</param>
+        /// <param name="intersectionPts">Output array of intersection points.</param>
+        /// <param name="polyIntersectLocs">Output array of intersection locations in reference to polygon vertex indices.</param>
         /// <returns>Number of found intersections.</returns>
-        public static int FindIntersections(IFeatureSet lineFeatureSet, IFeature polygon, out int[] intersectsPerLineSeg, out IPoint[][] intersectionPts, out int[][] polyIntersectLocs)
+        public static int FindIntersections(IFeatureSet lineFeatureSet, IFeature polygon, out int[] intersectsPerLineSeg, out Point[][] intersectionPts, out int[][] polyIntersectLocs)
         {
             int numSignChanges = 0; // tracks number of determinant sign changes
             int numLines = lineFeatureSet.Features.Count;
@@ -426,7 +423,7 @@ namespace DotSpatial.Tools
             bool[][] signChanges = new bool[numLines][]; // keeps track of where sign changes occur
             int[][] changeLocations = new int[numLines][];
             int[] intersectsPerLine = new int[numLines];
-            IPoint[][] intersectPts = new IPoint[numLines][];
+            Point[][] intersectPts = new Point[numLines][];
 
             IList<Coordinate> coorPoly = polygon.Geometry.Coordinates;
 
@@ -438,13 +435,13 @@ namespace DotSpatial.Tools
                 int numChangesPerLine = 0;
                 detSigns[lineNo] = new int[numVerticies];
                 signChanges[lineNo] = new bool[numVerticies];
-                intersectPts[lineNo] = new IPoint[numVerticies];
+                intersectPts[lineNo] = new Point[numVerticies];
                 changeLocations[lineNo] = new int[numVerticies];
 
                 for (int vertNo = 0; vertNo <= numVerticies - 1; vertNo++)
                 {
                     intersectPts[lineNo][vertNo] = Point.Empty;
-                    IPoint intersectPt = Point.Empty;
+                    Point intersectPt = Point.Empty;
 
                     // Calculate the determinant (3x3 square matrix)
                     double si = TurboDeterm(coorPoly[vertNo].X, coorLine[0].X, coorLine[1].X, coorPoly[vertNo].Y, coorLine[0].Y, coorLine[1].Y);
@@ -500,7 +497,7 @@ namespace DotSpatial.Tools
                                               };
                                 LineString polyTestLine2 = new LineString(secCoor.ToArray());
                                 bool validIntersect = polyTestLine1.Intersects(polyTestLine2);
-                                IGeometry inPt = polyTestLine1.Intersection(polyTestLine2);
+                                Geometry inPt = polyTestLine1.Intersection(polyTestLine2);
                                 if (inPt.Coordinates.Length == 1)
                                 {
                                     intersectPt = new Point(inPt.Coordinate);
@@ -556,11 +553,10 @@ namespace DotSpatial.Tools
             if (numParts < 1) return;
 
             // Multiple parts exist
-            IFeature[] parts;
-            SeparateParts(ref polygon, out parts);
+            SeparateParts(ref polygon, out IFeature[] parts);
             for (int i = 0; i <= numParts - 1; i++)
             {
-                bool currIsClockwise = !CGAlgorithms.IsCCW(parts[i].Geometry.Coordinates);
+                bool currIsClockwise = !NetTopologySuite.Algorithm.Orientation.IsCCW(parts[i].Geometry.Coordinates);
                 bool partIsHole = false;
 
                 // Decide if the current part is an island or a hole.
@@ -597,10 +593,9 @@ namespace DotSpatial.Tools
             }
 
             // done looping through parts and correcting orientation (if necessary)
-            IFeature resultShp;
 
             // resultShp.Create(polygon.ShapeType);
-            CombineParts(ref parts, out resultShp);
+            CombineParts(ref parts, out IFeature resultShp);
             polygon = resultShp;
 
             // done with multiple parts
@@ -612,7 +607,7 @@ namespace DotSpatial.Tools
         /// <param name="pt0">The first point.</param>
         /// <param name="pt1">The second point.</param>
         /// <returns>The distance between pt0 and pt1.</returns>
-        public static double PtDistance(ref IPoint pt0, ref IPoint pt1)
+        public static double PtDistance(ref Point pt0, ref Point pt1)
         {
             double xDiff = pt1.X - pt0.X;
             double yDiff = pt1.Y - pt0.Y;
@@ -657,7 +652,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Once the parameters have been configured the Execute command can be called, it returns true if successful
+        /// Once the parameters have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
@@ -721,7 +716,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The parameters array should be populated with default values here
+        /// The parameters array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {
@@ -759,8 +754,7 @@ namespace DotSpatial.Tools
             int numLinePts = line.Geometry.NumPoints;
             int numLineSegs = numLinePts - 1;
             int numPolyPts = polygon.Geometry.NumPoints;
-            int[] intersectsPerSeg;
-            IPoint[][] intersectPts = new IPoint[numLineSegs][];
+            Point[][] intersectPts = new Point[numLineSegs][];
             int[][] polyIntLocs = new int[numLineSegs][];
 
             // intersection occurs between polygon point indexed by polyIntLoc[][] and the previous point.
@@ -779,12 +773,12 @@ namespace DotSpatial.Tools
                 lineSegment = new Feature(FeatureType.Line, secCoordinate);
                 lineSegments.Features.Add(lineSegment);
 
-                intersectPts[i] = new IPoint[numPolyPts];
+                intersectPts[i] = new Point[numPolyPts];
                 polyIntLocs[i] = new int[numPolyPts];
             }
 
             // find number of intersections, intersection pts, and locations for each 2pt segment
-            int numIntersects = FindIntersections(lineSegments, polygon, out intersectsPerSeg, out intersectPts, out polyIntLocs);
+            int numIntersects = FindIntersections(lineSegments, polygon, out int[] intersectsPerSeg, out intersectPts, out polyIntLocs);
 
             if (numIntersects == 0)
             {
@@ -794,7 +788,7 @@ namespace DotSpatial.Tools
             IFeature insideLine = new Feature();
             List<Coordinate> insideLineList = new List<Coordinate>();
 
-            IPoint startIntersect = Point.Empty;
+            Point startIntersect = Point.Empty;
             bool startIntExists = false;
             bool validInsideLine = false;
             int insideStart = 0;
@@ -946,7 +940,7 @@ namespace DotSpatial.Tools
         /// <param name="validIntersects">Array that will contain only the valid intersect points in sorted order.</param>
         /// <param name="startPt">The reference point to sort the valid intersect points by.</param>
         /// <param name="polyLoc">Array with corresponding indicies to where an intersect pt occurs in polygon.</param>
-        private static void FindAndSortValidIntersects(int numIntersects, ref IPoint[] intersectPts, ref IPoint[] validIntersects, ref IPoint startPt, ref int[] polyLoc)
+        private static void FindAndSortValidIntersects(int numIntersects, ref Point[] intersectPts, ref Point[] validIntersects, ref Point startPt, ref int[] polyLoc)
         {
             for (int i = 0; i <= numIntersects - 1; i++)
             {
@@ -970,8 +964,7 @@ namespace DotSpatial.Tools
             int numLinePts = line.Geometry.NumPoints;
             int numLineSegs = numLinePts - 1;
             int numPolyPts = polygon.Geometry.NumPoints;
-            int[] intersectsPerSeg;
-            IPoint[][] intersectPts = new IPoint[numLineSegs][];
+            Point[][] intersectPts = new Point[numLineSegs][];
             int[][] polyIntLocs = new int[numLineSegs][];
 
             // intersection occurs between polygon point indexed by polyIntLoc[][] and the previous point.
@@ -987,11 +980,11 @@ namespace DotSpatial.Tools
                 IFeature lineSegment = new Feature(FeatureType.Line, secCoordinate);
                 lineSegments.Features.Add(lineSegment);
 
-                intersectPts[i] = new IPoint[numPolyPts];
+                intersectPts[i] = new Point[numPolyPts];
                 polyIntLocs[i] = new int[numPolyPts];
             }
 
-            if (FindIntersections(lineSegments, polygon, out intersectsPerSeg, out intersectPts, out polyIntLocs) == 0) return true; // entire line is inside the polygon, no splitting occurs
+            if (FindIntersections(lineSegments, polygon, out int[] intersectsPerSeg, out intersectPts, out polyIntLocs) == 0) return true; // entire line is inside the polygon, no splitting occurs
 
             // intersections exist! Find out where.
             List<Coordinate> intersectSegList = new List<Coordinate>();
@@ -1017,8 +1010,8 @@ namespace DotSpatial.Tools
                 {
                     // there should always be an even # of intersects for a line of all inside pts
                     // find intersecting segments that will split the polygon
-                    IPoint[] intPts = new IPoint[numSegIntersects];
-                    IPoint startPt = new Point(lineSegments.Features[i].Geometry.Coordinates[0]);
+                    Point[] intPts = new Point[numSegIntersects];
+                    Point startPt = new Point(lineSegments.Features[i].Geometry.Coordinates[0]);
                     FindAndSortValidIntersects(numSegIntersects, ref intersectPts[i], ref intPts, ref startPt, ref polyIntLocs[i]);
 
                     for (int j = 0; j <= numSegIntersects - 1; j++)
@@ -1061,8 +1054,7 @@ namespace DotSpatial.Tools
             int numLinePts = line.Geometry.NumPoints;
             int numLineSegs = numLinePts - 1;
             int numPolyPts = polygon.Geometry.NumPoints;
-            int[] intersectsPerSeg;
-            IPoint[][] intersectPts = new IPoint[numLineSegs][];
+            Point[][] intersectPts = new Point[numLineSegs][];
             int[][] polyIntLocs = new int[numLineSegs][];
 
             // intersection occurs between polygon point indexed by polyIntLoc[][] and the previous point..
@@ -1082,14 +1074,14 @@ namespace DotSpatial.Tools
                 IFeature lineSegment = new Feature(FeatureType.Line, secCoordinate);
                 lineSegments.Features.Add(lineSegment);
 
-                intersectPts[i] = new IPoint[numPolyPts];
+                intersectPts[i] = new Point[numPolyPts];
                 polyIntLocs[i] = new int[numPolyPts];
             }
 
             // Add polygon to result feature set for loop
             resultFeatureSet.Features.Add(polygon);
 
-            int numOriginalIntersects = FindIntersections(lineSegments, polygon, out intersectsPerSeg, out intersectPts, out polyIntLocs);
+            int numOriginalIntersects = FindIntersections(lineSegments, polygon, out int[] intersectsPerSeg, out intersectPts, out polyIntLocs);
             if (numOriginalIntersects < 1) return true;
 
             for (int nCurrentCut = 1; nCurrentCut <= (numOriginalIntersects / 2); nCurrentCut++)
@@ -1102,7 +1094,7 @@ namespace DotSpatial.Tools
                     numPolyPts = feature.Geometry.NumPoints;
                     for (int i = 0; i <= numLineSegs - 1; i++)
                     {
-                        intersectPts[i] = new IPoint[numPolyPts];
+                        intersectPts[i] = new Point[numPolyPts];
                         polyIntLocs[i] = new int[numPolyPts];
                     }
 
@@ -1139,8 +1131,8 @@ namespace DotSpatial.Tools
                             {
                                 // there should always be an even # of intersects for a line of all outside pts
                                 // find the valid intersect points from our array
-                                IPoint[] intPts = new IPoint[numSegIntersects];
-                                IPoint startPt = new Point(lineSegments.Features[i].Geometry.Coordinates[0]);
+                                Point[] intPts = new Point[numSegIntersects];
+                                Point startPt = new Point(lineSegments.Features[i].Geometry.Coordinates[0]);
 
                                 FindAndSortValidIntersects(numSegIntersects, ref intersectPts[i], ref intPts, ref startPt, ref polyIntLocs[i]);
 
@@ -1203,8 +1195,7 @@ namespace DotSpatial.Tools
             int numLinePts = line.Geometry.NumPoints;
             int numLineSegs = numLinePts - 1;
             int numPolyPts = polygon.Geometry.NumPoints;
-            int[] intersectsPerSeg;
-            IPoint[][] intersectPts = new IPoint[numLineSegs][];
+            Point[][] intersectPts = new Point[numLineSegs][];
             int[][] polyIntLocs = new int[numLineSegs][];
 
             // intersection occurs between polygon point indexed by polyIntLoc[][] and the previous point.
@@ -1221,12 +1212,12 @@ namespace DotSpatial.Tools
                 IFeature lineSegment = new Feature(FeatureType.Line, secCoordinate);
                 lineSegments.Features.Add(lineSegment);
 
-                intersectPts[i] = new IPoint[numPolyPts];
+                intersectPts[i] = new Point[numPolyPts];
                 polyIntLocs[i] = new int[numPolyPts];
             }
 
             // find number of intersections, intersection pts, and locations for each 2pt segment
-            int numIntersects = FindIntersections(lineSegments, polygon, out intersectsPerSeg, out intersectPts, out polyIntLocs);
+            int numIntersects = FindIntersections(lineSegments, polygon, out int[] intersectsPerSeg, out intersectPts, out polyIntLocs);
             if (numIntersects == 0) return false;
 
             // CASE: If no split was made, try using the whole line.
@@ -1243,12 +1234,12 @@ namespace DotSpatial.Tools
             return true;
         }
 
-        private static bool ProcessPartInAndOutWithWholeLine(ref bool[] insidePts, ref IFeature line, ref IFeature polygon, ref IFeatureSet resultFeatureSet, int numIntersects, int numLineSegs, IPoint[][] intersectPts, int[][] polyIntLocs, int numPolyPts, List<IFeature> colLineParts, List<Coordinate> colPolyIntLocPoints)
+        private static bool ProcessPartInAndOutWithWholeLine(ref bool[] insidePts, ref IFeature line, ref IFeature polygon, ref IFeatureSet resultFeatureSet, int numIntersects, int numLineSegs, Point[][] intersectPts, int[][] polyIntLocs, int numPolyPts, List<IFeature> colLineParts, List<Coordinate> colPolyIntLocPoints)
         {
-            IPoint[] intPts = new IPoint[numIntersects];
-            IPoint startPt = new Point(line.Geometry.Coordinates[0]);
-            IPoint firstIntPt = null;
-            IPoint lastIntPt = null;
+            Point[] intPts = new Point[numIntersects];
+            Point startPt = new Point(line.Geometry.Coordinates[0]);
+            Point firstIntPt = null;
+            Point lastIntPt = null;
             List<int> listIntLocs = new List<int>();
             List<int> listLinePartIndexValuesForOrigLine = new List<int>();
             List<List<int>> colListForEachLinePart = new List<List<int>>();
@@ -1281,7 +1272,7 @@ namespace DotSpatial.Tools
                             {
                                 firstIntPt = intersectPts[i][j]; // first intersection for this cut
                                 nNewLineStartIndex = i;
-                                listNewLine.Add(new Coordinate(intersectPts[i][j].X, intersectPts[i][j].Y, 0.0));
+                                listNewLine.Add(new Coordinate(intersectPts[i][j].X, intersectPts[i][j].Y));
                                 listLinePartStartEndIndexValues.Add(listNewLine.Count - 1);
                             }
                             else
@@ -1304,7 +1295,7 @@ namespace DotSpatial.Tools
                     }
                     else if (firstIntPt != null && lastIntPt != null)
                     {
-                        listNewLine.Add(new Coordinate(lastIntPt.X, lastIntPt.Y, 0.0));
+                        listNewLine.Add(new Coordinate(lastIntPt.X, lastIntPt.Y));
                         listLinePartStartEndIndexValues.Add(listNewLine.Count - 1);
 
                         colListForEachLinePart.Add(new List<int>(listLinePartIndexValuesForOrigLine));
@@ -1478,10 +1469,7 @@ namespace DotSpatial.Tools
             int numResults = resultFeatureSet.Features.Count;
 
             // we can now make two new polygons by splitting the original one with the line segment
-            IFeature poly1;
-            IFeature poly2;
-
-            SplitPolyInTwo(ref line, ref polygon, polyStart, polyEnd, out poly1, out poly2);
+            SplitPolyInTwo(ref line, ref polygon, polyStart, polyEnd, out IFeature poly1, out IFeature poly2);
             if (numResults == 0)
             {
                 // if this split creates a sliver, we do not want to add either poly
@@ -1535,7 +1523,7 @@ namespace DotSpatial.Tools
         /// <param name="startPt">Point in line segment used as reference.</param>
         /// <param name="intersectPts">Array of points that lie on the same line as startPt.</param>
         /// <param name="polyLoc">Array indexing where in polygon an intersect occurs.</param>
-        private static void SortIntersectAndLocationArrays(ref IPoint startPt, ref IPoint[] intersectPts, ref int[] polyLoc)
+        private static void SortIntersectAndLocationArrays(ref Point startPt, ref Point[] intersectPts, ref int[] polyLoc)
         {
             double dist1;
             int numIntersectPts = intersectPts.Length;
@@ -1549,7 +1537,7 @@ namespace DotSpatial.Tools
                 if (dist1 > dist2)
                 {
                     // need to swap locations
-                    IPoint tempPt = intersectPts[0];
+                    Point tempPt = intersectPts[0];
                     intersectPts[0] = intersectPts[1];
                     intersectPts[1] = tempPt;
 
@@ -1564,11 +1552,11 @@ namespace DotSpatial.Tools
                 // use insertion sort for small arrays
                 for (int i = 0; i <= numIntersectPts - 1; i++)
                 {
-                    IPoint compPt1 = intersectPts[i];
+                    Point compPt1 = intersectPts[i];
                     int tempLoc1 = polyLoc[i];
                     dist1 = startPt.Distance(compPt1);
                     int c = i;
-                    IPoint compPt2 = c != 0 ? intersectPts[c - 1] : intersectPts[0];
+                    Point compPt2 = c != 0 ? intersectPts[c - 1] : intersectPts[0];
                     while (c > 0 && PtDistance(ref startPt, ref compPt2) > dist1)
                     {
                         intersectPts[c] = intersectPts[c - 1];
@@ -1605,7 +1593,7 @@ namespace DotSpatial.Tools
         /// </summary>
         /// <param name="startPt">Point in line segment used as reference.</param>
         /// <param name="intersectPts">Array of points that lie on the same line as startPt.</param>
-        private static void SortPointsArray(ref IPoint startPt, ref IPoint[] intersectPts)
+        private static void SortPointsArray(ref Point startPt, ref Point[] intersectPts)
         {
             double dist1;
             int numIntersectPts = intersectPts.Length;
@@ -1619,7 +1607,7 @@ namespace DotSpatial.Tools
                 if (dist1 > dist2)
                 {
                     // need to swap locations
-                    IPoint tempPt = intersectPts[0];
+                    Point tempPt = intersectPts[0];
                     intersectPts[0] = intersectPts[1];
                     intersectPts[1] = tempPt;
                 }
@@ -1629,10 +1617,10 @@ namespace DotSpatial.Tools
                 // use insertion sort for small arrays
                 for (int i = 0; i <= numIntersectPts - 1; i++)
                 {
-                    IPoint compPt1 = intersectPts[i];
+                    Point compPt1 = intersectPts[i];
                     dist1 = PtDistance(ref startPt, ref compPt1);
                     int c = i;
-                    IPoint compPt2 = c != 0 ? intersectPts[c - 1] : intersectPts[0];
+                    Point compPt2 = c != 0 ? intersectPts[c - 1] : intersectPts[0];
                     while (c > 0 && PtDistance(ref startPt, ref compPt2) > dist1)
                     {
                         intersectPts[c] = intersectPts[c - 1];

@@ -6,14 +6,14 @@ using System.Windows.Forms;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// Extension methods for <see cref="Raster"/>
+    /// Extension methods for <see cref="Raster"/>.
     /// </summary>
     public static class RasterExt
     {
         /// <summary>
         /// Displays a dialog, allowing the users to open a raster.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         public static void Open(this Raster self)
         {
             if (self.Filename == null)

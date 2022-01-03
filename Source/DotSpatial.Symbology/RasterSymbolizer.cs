@@ -14,7 +14,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// RasterSymbolizer
+    /// RasterSymbolizer.
     /// </summary>
     [Serializable]
     public class RasterSymbolizer : LegendItem, IRasterSymbolizer
@@ -46,7 +46,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="RasterSymbolizer"/> class.
         /// </summary>
-        /// <param name="layer">The parent item</param>
+        /// <param name="layer">The parent item.</param>
         public RasterSymbolizer(IRasterLayer layer)
         {
             SetParentItem(layer);
@@ -462,7 +462,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Causes the raster to calculate a hillshade based on this symbolizer
+        /// Causes the raster to calculate a hillshade based on this symbolizer.
         /// </summary>
         public void CreateHillShade()
         {
@@ -470,9 +470,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Causes the raster to calculate a hillshade using the specified progress handler
+        /// Causes the raster to calculate a hillshade using the specified progress handler.
         /// </summary>
-        /// <param name="progressHandler">The progress handler to use</param>
+        /// <param name="progressHandler">The progress handler to use.</param>
         public void CreateHillShade(IProgressHandler progressHandler)
         {
             _hillshade = Raster.CreateHillShade(_shadedRelief, progressHandler);
@@ -482,7 +482,7 @@ namespace DotSpatial.Symbology
         /// Gets the color information for a specific value. This does not include any hillshade information.
         /// </summary>
         /// <param name="value">Specifies the value to obtain a color for.</param>
-        /// <returns>A Color</returns>
+        /// <returns>A Color.</returns>
         public virtual Color GetColor(double value)
         {
             if (value == Raster.NoDataValue) return NoDataColor;
@@ -499,10 +499,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a bitmap based on the specified RasterSymbolizer
+        /// Creates a bitmap based on the specified RasterSymbolizer.
         /// </summary>
-        /// <param name="bitmap"> the bitmap to paint to</param>
-        /// <param name="progressHandler">The progress handler</param>
+        /// <param name="bitmap"> the bitmap to paint to.</param>
+        /// <param name="progressHandler">The progress handler.</param>
         public void PaintShadingToBitmap(Bitmap bitmap, IProgressHandler progressHandler)
         {
             BitmapData bmpData;
@@ -597,7 +597,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Fires the on color scheme changed event
+        /// Fires the on color scheme changed event.
         /// </summary>
         protected virtual void OnColorSchemeChanged()
         {
@@ -617,7 +617,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Fires the SymbologyChanged event
+        /// Fires the SymbologyChanged event.
         /// </summary>
         protected virtual void OnSymbologyChange()
         {

@@ -4,7 +4,7 @@
 namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 {
     /// <summary>
-    /// LayerType
+    /// LayerType.
     /// </summary>
     public enum LegacyLayerType
     {

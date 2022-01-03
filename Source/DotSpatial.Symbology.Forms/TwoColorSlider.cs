@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// TwoColorSlider
+    /// TwoColorSlider.
     /// </summary>
     [DefaultEvent("PositionChanging")]
     public class TwoColorSlider : Control
@@ -249,10 +249,10 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Uses the lightness of hte specified values ot set the left and right values for this slider
+        /// Uses the lightness of hte specified values ot set the left and right values for this slider.
         /// </summary>
-        /// <param name="startColor">The color that specifies the left lightness</param>
-        /// <param name="endColor">The color that specifies the right lightness</param>
+        /// <param name="startColor">The color that specifies the left lightness.</param>
+        /// <param name="endColor">The color that specifies the right lightness.</param>
         public void SetLightness(Color startColor, Color endColor)
         {
             float lStart = startColor.GetBrightness();
@@ -265,8 +265,8 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Uses the saturation of the specified values to set the left and right values for this slider.
         /// </summary>
-        /// <param name="startColor">The color that specifies the left saturation</param>
-        /// <param name="endColor">The color that specifies the right saturation</param>
+        /// <param name="startColor">The color that specifies the left saturation.</param>
+        /// <param name="endColor">The color that specifies the right saturation.</param>
         public void SetSaturation(Color startColor, Color endColor)
         {
             float sStart = startColor.GetSaturation();

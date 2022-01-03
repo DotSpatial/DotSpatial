@@ -15,9 +15,9 @@ namespace DotSpatial.Symbology
         /// the IMatchable interface, and do not match, this returns false. If any public
         /// properties are value types, and they are not equal, then this returns false.
         /// </summary>
-        /// <param name="self">This matchable item </param>
-        /// <param name="other">The other item to compare to this item</param>
-        /// <returns>Boolean, true if there is a match</returns>
+        /// <param name="self">This matchable item. </param>
+        /// <param name="other">The other item to compare to this item.</param>
+        /// <returns>Boolean, true if there is a match.</returns>
         public static bool Matches(this IMatchable self, IMatchable other)
         {
             List<string> ignoreMe;

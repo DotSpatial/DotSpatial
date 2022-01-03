@@ -17,7 +17,7 @@ namespace DotSpatial.Tests.Common
         /// a and b is smaller than that value. This is good for verifying equality
         /// for up to about 15 places.
         /// </summary>
-        /// <param name="a">One value </param>
+        /// <param name="a">One value. </param>
         /// <param name="b">The value to compare to.</param>
         public static void AreEqual15(double a, double b)
         {

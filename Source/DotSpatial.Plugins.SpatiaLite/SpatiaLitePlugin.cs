@@ -17,7 +17,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         #region Methods
 
         /// <summary>
-        /// When the plugin is activated
+        /// When the plugin is activated.
         /// </summary>
         public override void Activate()
         {
@@ -91,7 +91,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         }
 
         /// <summary>
-        /// When the plugin is deactivated
+        /// When the plugin is deactivated.
         /// </summary>
         public override void Deactivate()
         {

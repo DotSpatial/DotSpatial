@@ -9,7 +9,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PicturePattern
+    /// PicturePattern.
     /// </summary>
     public class PicturePattern : Pattern, IPicturePattern
     {
@@ -34,9 +34,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PicturePattern"/> class with the specified image.
         /// </summary>
-        /// <param name="picture">The picture to draw</param>
-        /// <param name="wrap">The way to wrap the picture</param>
-        /// <param name="angle">The angle to rotate the image</param>
+        /// <param name="picture">The picture to draw.</param>
+        /// <param name="wrap">The way to wrap the picture.</param>
+        /// <param name="angle">The angle to rotate the image.</param>
         public PicturePattern(Image picture, WrapMode wrap, double angle)
         {
             Picture = picture;
@@ -111,8 +111,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Instructs the drawing code to fill the specified path with the specified image.
         /// </summary>
-        /// <param name="g">The Graphics device to draw to</param>
-        /// <param name="gp">The GraphicsPath to fill</param>
+        /// <param name="g">The Graphics device to draw to.</param>
+        /// <param name="gp">The GraphicsPath to fill.</param>
         public override void FillPath(Graphics g, GraphicsPath gp)
         {
             if (Picture == null) return;
