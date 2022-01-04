@@ -12,6 +12,7 @@ using System.Reflection;
 using DotSpatial.Data;
 using DotSpatial.Plugins.SpatiaLite.Properties;
 using DotSpatial.Projections;
+using NetTopologySuite.IO;
 
 namespace DotSpatial.Plugins.SpatiaLite
 {
@@ -296,7 +297,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             {
                 cmd.Connection.Open();
 
-                var wkbr = new SpatiaLiteWkbReader();
+                var wkbr = new GaiaGeoReader();
 
                 var rdr = cmd.ExecuteReader();
 
