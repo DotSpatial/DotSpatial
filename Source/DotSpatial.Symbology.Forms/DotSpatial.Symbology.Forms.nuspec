@@ -19,11 +19,11 @@
       <dependency id="DotSpatial.Projections" version="$PackageVersion$"/>
       <dependency id="DotSpatial.Serialization" version="$PackageVersion$"/>
       <dependency id="DotSpatial.Symbology" version="$PackageVersion$"/>
-      <dependency id="DotSpatial.NetTopologySuite" />
-      <dependency id="DotSpatial.GeoAPI" />
+      <dependency id="DotSpatial.NetTopologySuite" version="1.14.4" />
+      <dependency id="DotSpatial.GeoAPI" version="1.7.4.3" />
     </dependencies>
   </metadata>
   <files>
-    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net40-Client\" />
+    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net452\" />
   </files>
 </package>

@@ -14,7 +14,7 @@
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial</tags>
     <dependencies>
-      <dependency id="DotSpatial.Positioning" />
+      <dependency id="DotSpatial.Positioning" version="$PackageVersion$" />
     </dependencies>
   </metadata>
 </package>

@@ -15,6 +15,6 @@
     <tags>Spatial GIS DotSpatial</tags>
   </metadata>
   <files>
-    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net40-Client\" />
+    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net452\" />
   </files>
 </package>
