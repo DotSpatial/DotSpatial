@@ -14,9 +14,9 @@
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial</tags>
     <dependencies>
+      <dependency id="DotSpatial.NTSExtension" version="$PackageVersion$" />
       <dependency id="DotSpatial.Serialization" version="$PackageVersion$" />
-      <dependency id="DotSpatial.NetTopologySuite" />
-      <dependency id="DotSpatial.GeoAPI" />
+      <dependency id="NetTopologySuite" version="2.4.0" />
       <dependency id="DotSpatial.Projections" version="$PackageVersion$" />
     </dependencies>
   </metadata>

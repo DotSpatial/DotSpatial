@@ -24,8 +24,8 @@
     </references>
   </metadata>
   <files>
-    <file src="Lib\Brutile.dll" target="lib\net40-client"/>
-    <file src="Lib\Brutile.Desktop.dll" target="lib\net40-client"/>
-    <file src="app.config" target="lib\net40-client\DotSpatial.Plugins.WebMap.dll.config" />
+    <file src="Lib\Brutile.dll" target="lib\net452"/>
+    <file src="Lib\Brutile.Desktop.dll" target="lib\net452"/>
+    <file src="app.config" target="lib\net452\DotSpatial.Plugins.WebMap.dll.config" />
   </files>
 </package>
