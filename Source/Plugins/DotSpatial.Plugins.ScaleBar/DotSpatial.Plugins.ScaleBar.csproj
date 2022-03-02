@@ -97,27 +97,27 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DotSpatial.Controls\DotSpatial.Controls.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Controls\DotSpatial.Controls.csproj">
       <Project>{01a845c6-d391-4258-81b0-c6abf23d3364}</Project>
       <Name>DotSpatial.Controls</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotSpatial.Data\DotSpatial.Data.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Data\DotSpatial.Data.csproj">
       <Project>{c1018695-3401-47a9-b195-abd3a20c2489}</Project>
       <Name>DotSpatial.Data</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotSpatial.Extensions\DotSpatial.Extensions.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Extensions\DotSpatial.Extensions.csproj">
       <Project>{9108b04d-a3de-4981-b66f-496078d462fe}</Project>
       <Name>DotSpatial.Extensions</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotSpatial.Projections\DotSpatial.Projections.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <Project>{d286df06-21fa-40be-b384-6aca509ac98c}</Project>
       <Name>DotSpatial.Projections</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
       <Project>{21c1d7a7-e8e5-4590-a921-2287ad43cb98}</Project>
       <Name>DotSpatial.Symbology</Name>
       <Private>False</Private>

@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Angle_ExtraCharactersWereEncountered" xml:space="preserve">
+    <value>Extra characters were encountered while parsing an angular measurement.  Only hours, minutes, and seconds are allowed.</value>
+  </data>
+  <data name="Angle_InvalidFormat" xml:space="preserve">
+    <value>The specified format could not be fully recognized as an angular measurement.</value>
+  </data>
+  <data name="Angle_InvalidInterval" xml:space="preserve">
+    <value>The interval must be a value greater than zero, between 0 and 60.</value>
+  </data>
+  <data name="Angle_InvalidToStringFormat" xml:space="preserve">
+    <value>Invalid format for Angle.ToString() method.</value>
+  </data>
+  <data name="Angle_OnlyRightmostIsDecimal" xml:space="preserve">
+    <value>Only the right-most number of a sexagesimal measurement can be a fractional value.</value>
+  </data>
+  <data name="Angle_TypeMismatch" xml:space="preserve">
+    <value>An Angle can only be compared with Angle, Double, or String values.</value>
+  </data>
+  <data name="Area_InvalidFormat" xml:space="preserve">
+    <value>The specified format could not be fully recognized as an area measurement.</value>
+  </data>
+  <data name="Area_InvalidNumericPortion" xml:space="preserve">
+    <value>The numeric portion of the area measurement could not be recognized.</value>
+  </data>
+  <data name="Area_InvalidUnitPortion" xml:space="preserve">
+    <value>The unit portion of the area measurement could not be recognized.</value>
+  </data>
+  <data name="Azimuth_ConversionNotImplemented" xml:space="preserve">
+    <value>The azimuth cannot be converted to a because no conversion has been implemented internally.  Please contact info@DotSpatial.Positioning.com with the source and destination unit types.</value>
+  </data>
+  <data name="Azimuth_InvalidComparisonType" xml:space="preserve">
+    <value>An Azimuth can only be compared with another Azimuth, or a Double.</value>
+  </data>
+  <data name="Common_Empty" xml:space="preserve">
+    <value>Empty</value>
+  </data>
+  <data name="Common_Infinity" xml:space="preserve">
+    <value>Infinity</value>
+  </data>
+  <data name="Distance_ConversionNotImplemented" xml:space="preserve">
+    <value>The distance cannot be converted because no conversion has been implemented internally.  Please contact info@DotSpatial.Positioning.com with the source and destination unit types.</value>
+  </data>
+  <data name="Distance_InvalidComparisonType" xml:space="preserve">
+    <value>Distance objects can only be compared with other Distance objects.</value>
+  </data>
+  <data name="Distance_InvalidFormat" xml:space="preserve">
+    <value>The specified format could not be fully recognized as a distance measurement.</value>
+  </data>
+  <data name="Distance_InvalidNumericPortion" xml:space="preserve">
+    <value>The numeric portion of the distance measurement could not be recognized.</value>
+  </data>
+  <data name="Distance_InvalidUnitPortion" xml:space="preserve">
+    <value>The unit portion of the distance measurement could not be recognized.</value>
+  </data>
+  <data name="GeographicSize_InvalidFormat" xml:space="preserve">
+    <value>The specified value could not be parsed into a GeographicSize object because two delimited values are required (Width, Height).</value>
+  </data>
+  <data name="Latitude_DecimalOrSexagesimalRequired" xml:space="preserve">
+    <value>The Parse method requires a decimal or sexagesimal measurement.</value>
+  </data>
+  <data name="Latitude_InvalidComparisonType" xml:space="preserve">
+    <value>A Latitude can only be compared with another Latitude, Double or String.</value>
+  </data>
+  <data name="Latitude_InvalidFormat" xml:space="preserve">
+    <value>The specified format could not be fully recognized as a latitude.</value>
+  </data>
+  <data name="Latitude_InvalidHemisphere" xml:space="preserve">
+    <value>The hemisphere specified for the ToHemisphere method cannot be 'None'.  A value of 'North' or 'South' is required.</value>
+  </data>
+  <data name="Latitude_LatitudeHemisphereExpected" xml:space="preserve">
+    <value>The hemisphere specified indicates a longitude but a latitude is expected.</value>
+  </data>
+  <data name="Latitude_OnlyRightmostIsDecimal" xml:space="preserve">
+    <value>Only the right-most number can be a floating-point value.</value>
+  </data>
+  <data name="Longitude_DecimalOrSexagesimalRequired" xml:space="preserve">
+    <value>The Parse method requires a decimal or sexagesimal measurement.</value>
+  </data>
+  <data name="Longitude_InvalidComparisonType" xml:space="preserve">
+    <value>A Longitude can only be compared with another Longitude, Double or String.</value>
+  </data>
+  <data name="Longitude_InvalidFormat" xml:space="preserve">
+    <value>The specified format could not be fully recognized as a longitude.</value>
+  </data>
+  <data name="Longitude_InvalidHemisphere" xml:space="preserve">
+    <value>The hemisphere specified for the ToHemisphere method cannot be 'None'.  A value of 'East' or 'West' is required.</value>
+  </data>
+  <data name="Longitude_LongitudeHemisphereExpected" xml:space="preserve">
+    <value>The hemisphere specified indicates a latitude but a longitude is expected.</value>
+  </data>
+  <data name="Longitude_OnlyRightmostIsDecimal" xml:space="preserve">
+    <value>Only the right-most number can be a floating-point value.</value>
+  </data>
+  <data name="Position_DuplicateZoneInformation" xml:space="preserve">
+    <value>Duplicate UTM zone information was found when trying to parse a UTM coordinate.</value>
+  </data>
+  <data name="Position_InvalidFormat" xml:space="preserve">
+    <value>The specified format could not be fully recognized as a spherical or UTM coordinate.</value>
+  </data>
+  <data name="Position_InvalidUTMCoordinate" xml:space="preserve">
+    <value>The specified string could not be recognized as a valid UTM coordinate.</value>
+  </data>
+  <data name="Position_InvalidZoneLetter" xml:space="preserve">
+    <value>A UTM zone letter can only be one character long.  Multiple characters were encountered.</value>
+  </data>
+  <data name="Position_InvalidZoneNumber" xml:space="preserve">
+    <value>A UTM zone number can only be one or two characters long.  Multiple characters were encountered.</value>
+  </data>
+  <data name="Position_NoUTMZoneLetter" xml:space="preserve">
+    <value>No UTM zone letter could be located within the specified string.</value>
+  </data>
+  <data name="Position_NoUTMZoneNumber" xml:space="preserve">
+    <value>No UTM zone number could be located within the specified string.</value>
+  </data>
+  <data name="PositionCollection_AreaError" xml:space="preserve">
+    <value>The total area could not be calculated.</value>
+  </data>
+  <data name="PositionCollection_DistanceError" xml:space="preserve">
+    <value>The total distance could not be calculated.</value>
+  </data>
+  <data name="PositionCollection_RangeMustBeAboveZero" xml:space="preserve">
+    <value>The range must be a distance greater than or equal to zero.</value>
+  </data>
+  <data name="RectangleD_HeightMustBeAboveZero" xml:space="preserve">
+    <value>Height must be a number greater than zero.</value>
+  </data>
+  <data name="RectangleD_InvalidFormat" xml:space="preserve">
+    <value>The specified value could not be parsed into a RectangleD object because four delimited values are required (Top, Left, Bottom, Right).</value>
+  </data>
+  <data name="RectangleD_WidthMustBeAboveZero" xml:space="preserve">
+    <value>Width must be a number greater than zero.</value>
+  </data>
+  <data name="SizeD_InvalidFormat" xml:space="preserve">
+    <value>Two values must be supplied to create a SizeD object from a string.  Verify that the CultureInfo passed matches the delimiter used to separate the values.</value>
+  </data>
+  <data name="Speed_InvalidFormat" xml:space="preserve">
+    <value>The specified format could not be fully recognized as a speed measurement.</value>
+  </data>
+  <data name="Speed_InvalidNumericPortion" xml:space="preserve">
+    <value>The numeric portion of the speed measurement could not be recognized.</value>
+  </data>
+  <data name="Speed_InvalidUnitPortion" xml:space="preserve">
+    <value>The unit portion of the speed measurement could not be recognized.</value>
+  </data>
+  <data name="TrialLicense_ExpirationDate" xml:space="preserve">
+    <value>Trial License Expires {0} ({1} days remaining)</value>
+  </data>
+  <data name="TrialLicense_ExtendTrial" xml:space="preserve">
+    <value>Would you like to go online to try and extend your free trial now?</value>
+  </data>
+  <data name="TrialLicense_InvalidLicenseKey" xml:space="preserve">
+    <value>Purchased license keys cannot be used as trial license keys.  Please use another key or contact DotSpatial.Positioning for further assistance.</value>
+  </data>
+  <data name="TrialLicense_LicenseExpired" xml:space="preserve">
+    <value>Sorry, the trial key for the following DotSpatial.Positioning assembly expired on {0}.  You can go online to try and extend your trial another month, or you can purchase a license key online.\r\n\r\n{1}</value>
+  </data>
+  <data name="TrialLicense_LicenseExpiredDialogTitle" xml:space="preserve">
+    <value>DotSpatial.Positioning Trial Has Expired</value>
+  </data>
+  <data name="DotSpatial.PositioningLicenseProvider_AskToGoOnline" xml:space="preserve">
+    <value>Would you like to go online now to activate your trial?  An email address will not be required unless you're behind a proxy server.</value>
+  </data>
+  <data name="DotSpatial.PositioningLicenseProvider_ExecutionStoppedDialogTitle" xml:space="preserve">
+    <value>{0} Stopped Execution</value>
+  </data>
+  <data name="DotSpatial.PositioningLicenseProvider_ExecutionStoppedNeedKeys" xml:space="preserve">
+    <value>Execution of the current application has been stopped by an exception, but this message will go away once trial license keys have been provided, or the reference the assembly has been removed.</value>
+  </data>
+  <data name="DotSpatial.PositioningLicenseProvider_ExecutionStoppedVisitWebSite" xml:space="preserve">
+    <value>Execution of the current application has been stopped by an exception, but this message will go away once trial license keys have been provided.  Please visit http://dotspatial.codeplex.com/FreeTrialLicenseKeys.aspx to obtain free license keys for any of our products.</value>
+  </data>
+  <data name="DotSpatial.PositioningLicenseProvider_GoOnlineForTrialKeys" xml:space="preserve">
+    <value>Do you want to go online to activate free trial license keys?</value>
+  </data>
+  <data name="DotSpatial.PositioningLicenseProvider_InvalidLicenseKey" xml:space="preserve">
+    <value>An invalid license key was encountered while attempting to grant a license to a DotSpatial.Positioning object.  The invalid key is "{0}"</value>
+  </data>
+  <data name="DotSpatial.PositioningLicenseProvider_InvalidMajorVersion" xml:space="preserve">
+    <value>The license key for {0} is valid for a different major version of the software.  Please visit http://dotspatial.codeplex.com/Shop for pricing on products for this version.  Updates to DotSpatial.Positioning software are always free for each minor version change (e.g. versions 2.0 through 2.999)</value>
+  </data>
+  <data name="DotSpatial.PositioningLicenseProvider_InvalidPlatform" xml:space="preserve">
+    <value>The license key for {0} is not valid for the current .NET platform.  Please contact support@DotSpatial.Positioning.com for assistance or visit http://dotspatial.codeplex.com/Shop for pricing on products for this platform.</value>
+  </data>
+  <data name="DotSpatial.PositioningLicenseProvider_LicenseKeyDialogTitle" xml:space="preserve">
+    <value>A DotSpatial.Positioning License Key Is Required</value>
+  </data>
+  <data name="DotSpatial.PositioningLicenseProvider_LicenseKeyIsRequired" xml:space="preserve">
+    <value>A license key is required for this DotSpatial.Positioning assembly to function.  You can activate a free thirty-day trial online at http://dotspatial.codeplex.com.</value>
+  </data>
+  <data name="DotSpatial.PositioningLicenseProvider_ValidOwnerLicense" xml:space="preserve">
+    <value>A valid owner license has been granted for {0}</value>
+  </data>
+  <data name="DotSpatial.PositioningLicenseProvider_ValidTrialLicense" xml:space="preserve">
+    <value>A trial license has been granted for {0} until {1}</value>
+  </data>
+  <data name="DotSpatial.PositioningLicense_InvalidLicenseKey" xml:space="preserve">
+    <value>The specified license key is invalid.  Please contact DotSpatial.Positioning to look up license keys you have purchased: http://dotspatial.codeplex.com/Secured/LicenseKeys.aspx.</value>
+  </data>
+	<data name="Position_DistanceTo_Null_Ellipsoid">
+		<value xml:space="preserve">The Position.DistanceTo method requires a non-null ellipsoid parameter.</value>
+	</data>
+</root>

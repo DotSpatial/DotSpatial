@@ -96,15 +96,15 @@
     <Compile Include="SlopeTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DotSpatial.Analysis\DotSpatial.Analysis.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Analysis\DotSpatial.Analysis.csproj">
       <Project>{f124e7c5-33cc-4b17-8c45-01e7d2e47dab}</Project>
       <Name>DotSpatial.Analysis</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotSpatial.Controls\DotSpatial.Controls.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Controls\DotSpatial.Controls.csproj">
       <Project>{01a845c6-d391-4258-81b0-c6abf23d3364}</Project>
       <Name>DotSpatial.Controls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
       <Project>{7b7195e7-c20e-49b9-9cb0-4f451a2463b6}</Project>
       <Name>DotSpatial.Data.Forms</Name>
     </ProjectReference>
@@ -112,23 +112,23 @@
       <Project>{51c6e16e-920e-4d36-b41e-d48abef837e7}</Project>
       <Name>DotSpatial.Data.Rasters.GdalExtension</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotSpatial.Data\DotSpatial.Data.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Data\DotSpatial.Data.csproj">
       <Project>{c1018695-3401-47a9-b195-abd3a20c2489}</Project>
       <Name>DotSpatial.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj">
       <Project>{7ed7b00d-56ee-47cf-aaa5-34a09e40a566}</Project>
       <Name>DotSpatial.Modeling.Forms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotSpatial.Projections\DotSpatial.Projections.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <Project>{d286df06-21fa-40be-b384-6aca509ac98c}</Project>
       <Name>DotSpatial.Projections</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
       <Project>{9b692e11-0273-4331-9b15-1670093eddbf}</Project>
       <Name>DotSpatial.Serialization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
       <Project>{21c1d7a7-e8e5-4590-a921-2287ad43cb98}</Project>
       <Name>DotSpatial.Symbology</Name>
     </ProjectReference>
@@ -136,7 +136,7 @@
       <Project>{95114a54-769f-4a90-a346-c2cf85523aad}</Project>
       <Name>DotSpatial.Tests.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotSpatial.Tools\DotSpatial.Tools.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Tools\DotSpatial.Tools.csproj">
       <Project>{878a9c2c-21ac-4e63-9819-715b66b63cf5}</Project>
       <Name>DotSpatial.Tools</Name>
     </ProjectReference>

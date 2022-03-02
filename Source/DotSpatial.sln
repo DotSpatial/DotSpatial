@@ -2,37 +2,37 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Serialization", "DotSpatial.Serialization\DotSpatial.Serialization.csproj", "{9B692E11-0273-4331-9B15-1670093EDDBF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Serialization", "Core\DotSpatial.Serialization\DotSpatial.Serialization.csproj", "{9B692E11-0273-4331-9B15-1670093EDDBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Projections", "DotSpatial.Projections\DotSpatial.Projections.csproj", "{D286DF06-21FA-40BE-B384-6ACA509AC98C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Projections", "Core\DotSpatial.Projections\DotSpatial.Projections.csproj", "{D286DF06-21FA-40BE-B384-6ACA509AC98C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Data", "DotSpatial.Data\DotSpatial.Data.csproj", "{C1018695-3401-47A9-B195-ABD3A20C2489}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Data", "Core\DotSpatial.Data\DotSpatial.Data.csproj", "{C1018695-3401-47A9-B195-ABD3A20C2489}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Symbology", "DotSpatial.Symbology\DotSpatial.Symbology.csproj", "{21C1D7A7-E8E5-4590-A921-2287AD43CB98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Symbology", "Core\DotSpatial.Symbology\DotSpatial.Symbology.csproj", "{21C1D7A7-E8E5-4590-A921-2287AD43CB98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Controls", "DotSpatial.Controls\DotSpatial.Controls.csproj", "{01A845C6-D391-4258-81B0-C6ABF23D3364}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Controls", "Core\DotSpatial.Controls\DotSpatial.Controls.csproj", "{01A845C6-D391-4258-81B0-C6ABF23D3364}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Compatibility", "DotSpatial.Compatibility\DotSpatial.Compatibility.csproj", "{56E70075-71E0-4FDA-BCA6-CF7581112354}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Compatibility", "Core\DotSpatial.Compatibility\DotSpatial.Compatibility.csproj", "{56E70075-71E0-4FDA-BCA6-CF7581112354}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Analysis", "DotSpatial.Analysis\DotSpatial.Analysis.csproj", "{F124E7C5-33CC-4B17-8C45-01E7D2E47DAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Analysis", "Core\DotSpatial.Analysis\DotSpatial.Analysis.csproj", "{F124E7C5-33CC-4B17-8C45-01E7D2E47DAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Tools", "DotSpatial.Tools\DotSpatial.Tools.csproj", "{878A9C2C-21AC-4E63-9819-715B66B63CF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Tools", "Core\DotSpatial.Tools\DotSpatial.Tools.csproj", "{878A9C2C-21AC-4E63-9819-715B66B63CF5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Data.Rasters.GdalExtension", "Extensions\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.csproj", "{51C6E16E-920E-4D36-B41E-D48ABEF837E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning", "DotSpatial.Positioning\DotSpatial.Positioning.csproj", "{26E18588-B04D-4987-BF36-8206A7E36FF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning", "Core\DotSpatial.Positioning\DotSpatial.Positioning.csproj", "{26E18588-B04D-4987-BF36-8206A7E36FF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning.Design", "DotSpatial.Positioning.Design\DotSpatial.Positioning.Design.csproj", "{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning.Design", "Core\DotSpatial.Positioning.Design\DotSpatial.Positioning.Design.csproj", "{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning.Forms", "DotSpatial.Positioning.Forms\DotSpatial.Positioning.Forms.csproj", "{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning.Forms", "Core\DotSpatial.Positioning.Forms\DotSpatial.Positioning.Forms.csproj", "{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Data.Forms", "DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj", "{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Data.Forms", "Core\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj", "{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Modeling.Forms", "DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj", "{7ED7B00D-56EE-47CF-AAA5-34A09E40A566}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Modeling.Forms", "Core\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj", "{7ED7B00D-56EE-47CF-AAA5-34A09E40A566}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Projections.Forms", "DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj", "{1DA244CE-5862-4DFB-8943-244A80B7E3EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Projections.Forms", "Core\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj", "{1DA244CE-5862-4DFB-8943-244A80B7E3EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Symbology.Forms", "DotSpatial.Symbology.Forms\DotSpatial.Symbology.Forms.csproj", "{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Symbology.Forms", "Core\DotSpatial.Symbology.Forms\DotSpatial.Symbology.Forms.csproj", "{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1DB6E371-0643-46F2-8EAD-B7D92AD133D5}"
 	ProjectSection(SolutionItems) = preProject
@@ -63,7 +63,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.Taudem",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.Help", "Plugins\DotSpatial.Plugins.Help\DotSpatial.Plugins.Help.csproj", "{2609869B-5A49-4E93-8FC6-3B1D06C59C96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Extensions", "DotSpatial.Extensions\DotSpatial.Extensions.csproj", "{9108B04D-A3DE-4981-B66F-496078D462FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Extensions", "Core\DotSpatial.Extensions\DotSpatial.Extensions.csproj", "{9108B04D-A3DE-4981-B66F-496078D462FE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.ToolManager", "Plugins\DotSpatial.Plugins.ToolManager\DotSpatial.Plugins.ToolManager.csproj", "{7888B17F-915E-4648-9C49-8B4B42808B7B}"
 EndProject
@@ -130,7 +130,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.Extensio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SetSelectable", "Plugins\DotSpatial.Plugins.SetSelectable\DotSpatial.Plugins.SetSelectable.csproj", "{84FD5045-5DE8-4950-A083-77789573F430}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.NTSExtension", "DotSpatial.NTSExtension\DotSpatial.NTSExtension.csproj", "{034F7ADE-AC2A-48AE-9CF2-0686EEA97C25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.NTSExtension", "Core\DotSpatial.NTSExtension\DotSpatial.NTSExtension.csproj", "{034F7ADE-AC2A-48AE-9CF2-0686EEA97C25}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.ScaleBar", "Plugins\DotSpatial.Plugins.ScaleBar\DotSpatial.Plugins.ScaleBar.csproj", "{6F295436-734C-4588-9214-1FD281C89BB6}"
 EndProject

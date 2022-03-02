@@ -1,0 +1,133 @@
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT license. See License.txt file in the project root for full license information.
+
+using System;
+using System.Windows.Forms;
+using DotSpatial.Data;
+
+namespace DotSpatial.Modeling.Forms
+{
+    /// <summary>
+    /// A form which shows the progress of a tool.
+    /// </summary>
+    public partial class ToolProgress : Form, ICancelProgressHandler
+    {
+        #region Fields
+
+        private bool _executionComplete;
+
+        #endregion
+
+        #region  Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ToolProgress"/> class.
+        /// </summary>
+        /// <param name="numTools">The number of tools that are going to be executed.</param>
+        public ToolProgress(int numTools)
+        {
+            InitializeComponent();
+            _progressBarTool.Maximum = 100;
+            _progressBarTool.Minimum = 0;
+            _executionComplete = false;
+        }
+
+        #endregion
+
+        private delegate void UpdateExecComp();
+
+        private delegate void UpdateProg(int percent, string message);
+
+        #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether the cancel button was pressed.
+        /// </summary>
+        public bool Cancel { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the number of tools that have been successfully executed.
+        /// </summary>
+        public int ToolProgressCount { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// This method should be called when the process has been completed.
+        /// </summary>
+        public void ExecutionComplete()
+        {
+            if (InvokeRequired)
+            {
+                UpdateExecComp uec = UpdateExecutionComplete;
+                BeginInvoke(uec);
+            }
+            else
+            {
+                UpdateExecutionComplete();
+            }
+        }
+
+        /// <summary>
+        /// Handles the progress method necessary to implement IProgress.
+        /// </summary>
+        /// <param name="percent">The integer percentage from 0 to 100 that is used to control the progress bar.</param>
+        /// <param name="message">The actual complete message to show.</param>
+        public void Progress(int percent, string message)
+        {
+            if (InvokeRequired)
+            {
+                UpdateProg prg = UpdateProgress;
+                BeginInvoke(prg, percent, message);
+            }
+            else
+            {
+                UpdateProgress(percent, message);
+            }
+        }
+
+        /// <summary>
+        /// Resets the progress.
+        /// </summary>
+        public void Reset()
+        {
+            Progress(0, string.Empty);
+        }
+
+        private void BtnCancelClick(object sender, EventArgs e)
+        {
+            if (_executionComplete)
+                Close();
+            else
+                Cancel = true;
+        }
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void UpdateExecutionComplete()
+        {
+            _btnCancel.Text = ModelingMessageStrings.Close;
+            _executionComplete = true;
+        }
+
+        private void UpdateProgress(int percent, string message)
+        {
+            if (percent < 0) percent = 0;
+            if (percent > 100) percent = 100;
+
+            _progressBarTool.Value = percent;
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                _txtBoxStatus.AppendText("\r\n" + DateTime.Now + ": " + message);
+            }
+        }
+             
+
+        #endregion
+    }
+}

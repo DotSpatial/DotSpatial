@@ -69,7 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DotSpatial.Controls\DotSpatial.Controls.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Controls\DotSpatial.Controls.csproj">
       <Project>{01a845c6-d391-4258-81b0-c6abf23d3364}</Project>
       <Name>DotSpatial.Controls</Name>
     </ProjectReference>

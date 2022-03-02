@@ -209,7 +209,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DotSpatial.Projections\DotSpatial.Projections.csproj">
+    <ProjectReference Include="..\..\Core\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
       <Name>DotSpatial.Projections</Name>
     </ProjectReference>

@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+	<data name="btnReverseLight.Location" type="System.Drawing.Point, System.Drawing">
+		<value>144, 127</value>
+	</data>
+	<data name="btnReverseLight.Size" type="System.Drawing.Size, System.Drawing">
+		<value>28, 23</value>
+	</data>
+	<assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+	<data name="btnReverseLight.TabIndex" type="System.Int32, mscorlib">
+		<value>9</value>
+	</data>
+	<data name="&gt;&gt;btnReverseLight.Name" xml:space="preserve">
+    <value>btnReverseLight</value>
+  </data>
+	<data name="&gt;&gt;btnReverseLight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;btnReverseLight.Parent" xml:space="preserve">
+    <value>tabHSL</value>
+  </data>
+	<data name="&gt;&gt;btnReverseLight.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+	<data name="btnReverseSat.Location" type="System.Drawing.Point, System.Drawing">
+		<value>144, 78</value>
+	</data>
+	<data name="btnReverseSat.Size" type="System.Drawing.Size, System.Drawing">
+		<value>28, 23</value>
+	</data>
+	<data name="btnReverseSat.TabIndex" type="System.Int32, mscorlib">
+		<value>6</value>
+	</data>
+	<data name="&gt;&gt;btnReverseSat.Name" xml:space="preserve">
+    <value>btnReverseSat</value>
+  </data>
+	<data name="&gt;&gt;btnReverseSat.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;btnReverseSat.Parent" xml:space="preserve">
+    <value>tabHSL</value>
+  </data>
+	<data name="&gt;&gt;btnReverseSat.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+	<data name="btnReverseHue.Location" type="System.Drawing.Point, System.Drawing">
+		<value>144, 29</value>
+	</data>
+	<data name="btnReverseHue.Size" type="System.Drawing.Size, System.Drawing">
+		<value>28, 23</value>
+	</data>
+	<data name="btnReverseHue.TabIndex" type="System.Int32, mscorlib">
+		<value>2</value>
+	</data>
+	<data name="&gt;&gt;btnReverseHue.Name" xml:space="preserve">
+    <value>btnReverseHue</value>
+  </data>
+	<data name="&gt;&gt;btnReverseHue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;btnReverseHue.Parent" xml:space="preserve">
+    <value>tabHSL</value>
+  </data>
+	<data name="&gt;&gt;btnReverseHue.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+	<data name="sldLightness.Location" type="System.Drawing.Point, System.Drawing">
+		<value>15, 127</value>
+	</data>
+	<data name="sldLightness.Size" type="System.Drawing.Size, System.Drawing">
+		<value>123, 23</value>
+	</data>
+	<data name="sldLightness.TabIndex" type="System.Int32, mscorlib">
+		<value>8</value>
+	</data>
+	<data name="sldLightness.Text" xml:space="preserve">
+    <value>twoColorSlider2</value>
+  </data>
+	<data name="&gt;&gt;sldLightness.Name" xml:space="preserve">
+    <value>sldLightness</value>
+  </data>
+	<data name="&gt;&gt;sldLightness.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.TwoColorSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+	<data name="&gt;&gt;sldLightness.Parent" xml:space="preserve">
+    <value>tabHSL</value>
+  </data>
+	<data name="&gt;&gt;sldLightness.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+	<data name="sldSaturation.Location" type="System.Drawing.Point, System.Drawing">
+		<value>15, 78</value>
+	</data>
+	<data name="sldSaturation.Size" type="System.Drawing.Size, System.Drawing">
+		<value>122, 23</value>
+	</data>
+	<data name="sldSaturation.TabIndex" type="System.Int32, mscorlib">
+		<value>5</value>
+	</data>
+	<data name="sldSaturation.Text" xml:space="preserve">
+    <value>twoColorSlider1</value>
+  </data>
+	<data name="&gt;&gt;sldSaturation.Name" xml:space="preserve">
+    <value>sldSaturation</value>
+  </data>
+	<data name="&gt;&gt;sldSaturation.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.TwoColorSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+	<data name="&gt;&gt;sldSaturation.Parent" xml:space="preserve">
+    <value>tabHSL</value>
+  </data>
+	<data name="&gt;&gt;sldSaturation.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+	<assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+	<data name="btnHueShift.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+		<value>NoControl</value>
+	</data>
+	<data name="btnHueShift.Location" type="System.Drawing.Point, System.Drawing">
+		<value>178, 29</value>
+	</data>
+	<data name="btnHueShift.Size" type="System.Drawing.Size, System.Drawing">
+		<value>21, 23</value>
+	</data>
+	<data name="btnHueShift.TabIndex" type="System.Int32, mscorlib">
+		<value>3</value>
+	</data>
+	<data name="&gt;&gt;btnHueShift.Name" xml:space="preserve">
+    <value>btnHueShift</value>
+  </data>
+	<data name="&gt;&gt;btnHueShift.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;btnHueShift.Parent" xml:space="preserve">
+    <value>tabHSL</value>
+  </data>
+	<data name="&gt;&gt;btnHueShift.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+	<data name="sldHue.Location" type="System.Drawing.Point, System.Drawing">
+		<value>16, 29</value>
+	</data>
+	<data name="sldHue.Size" type="System.Drawing.Size, System.Drawing">
+		<value>122, 23</value>
+	</data>
+	<data name="sldHue.TabIndex" type="System.Int32, mscorlib">
+		<value>1</value>
+	</data>
+	<data name="sldHue.Text" xml:space="preserve">
+    <value>hueSlider1</value>
+  </data>
+	<data name="&gt;&gt;sldHue.Name" xml:space="preserve">
+    <value>sldHue</value>
+  </data>
+	<data name="&gt;&gt;sldHue.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.HueSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+	<data name="&gt;&gt;sldHue.Parent" xml:space="preserve">
+    <value>tabHSL</value>
+  </data>
+	<data name="&gt;&gt;sldHue.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+	<data name="lblHueRange.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="lblHueRange.Location" type="System.Drawing.Point, System.Drawing">
+		<value>9, 13</value>
+	</data>
+	<data name="lblHueRange.Size" type="System.Drawing.Size, System.Drawing">
+		<value>65, 13</value>
+	</data>
+	<data name="lblHueRange.TabIndex" type="System.Int32, mscorlib">
+		<value>0</value>
+	</data>
+	<data name="lblHueRange.Text" xml:space="preserve">
+    <value>Farbton-Bereich:</value>
+  </data>
+	<data name="&gt;&gt;lblHueRange.Name" xml:space="preserve">
+    <value>lblHueRange</value>
+  </data>
+	<data name="&gt;&gt;lblHueRange.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;lblHueRange.Parent" xml:space="preserve">
+    <value>tabHSL</value>
+  </data>
+	<data name="&gt;&gt;lblHueRange.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+	<data name="lblSaturationRange.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="lblSaturationRange.Location" type="System.Drawing.Point, System.Drawing">
+		<value>9, 62</value>
+	</data>
+	<data name="lblSaturationRange.Size" type="System.Drawing.Size, System.Drawing">
+		<value>93, 13</value>
+	</data>
+	<data name="lblSaturationRange.TabIndex" type="System.Int32, mscorlib">
+		<value>4</value>
+	</data>
+	<data name="lblSaturationRange.Text" xml:space="preserve">
+    <value>Sättigungs-Bereich:</value>
+  </data>
+	<data name="&gt;&gt;lblSaturationRange.Name" xml:space="preserve">
+    <value>lblSaturationRange</value>
+  </data>
+	<data name="&gt;&gt;lblSaturationRange.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;lblSaturationRange.Parent" xml:space="preserve">
+    <value>tabHSL</value>
+  </data>
+	<data name="&gt;&gt;lblSaturationRange.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+	<data name="lblLightnessRange.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="lblLightnessRange.Location" type="System.Drawing.Point, System.Drawing">
+		<value>9, 111</value>
+	</data>
+	<data name="lblLightnessRange.Size" type="System.Drawing.Size, System.Drawing">
+		<value>90, 13</value>
+	</data>
+	<data name="lblLightnessRange.TabIndex" type="System.Int32, mscorlib">
+		<value>7</value>
+	</data>
+	<data name="lblLightnessRange.Text" xml:space="preserve">
+    <value>Helligkeits-Bereich:</value>
+  </data>
+	<data name="&gt;&gt;lblLightnessRange.Name" xml:space="preserve">
+    <value>lblLightnessRange</value>
+  </data>
+	<data name="&gt;&gt;lblLightnessRange.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;lblLightnessRange.Parent" xml:space="preserve">
+    <value>tabHSL</value>
+  </data>
+	<data name="&gt;&gt;lblLightnessRange.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+	<data name="tabHSL.Location" type="System.Drawing.Point, System.Drawing">
+		<value>4, 22</value>
+	</data>
+	<data name="tabHSL.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+		<value>3, 3, 3, 3</value>
+	</data>
+	<data name="tabHSL.Size" type="System.Drawing.Size, System.Drawing">
+		<value>209, 163</value>
+	</data>
+	<data name="tabHSL.TabIndex" type="System.Int32, mscorlib">
+		<value>0</value>
+	</data>
+	<data name="tabHSL.Text" xml:space="preserve">
+    <value>HSL</value>
+  </data>
+	<data name="&gt;&gt;tabHSL.Name" xml:space="preserve">
+    <value>tabHSL</value>
+  </data>
+	<data name="&gt;&gt;tabHSL.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;tabHSL.Parent" xml:space="preserve">
+    <value>tabColorRange</value>
+  </data>
+	<data name="&gt;&gt;tabHSL.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+	<data name="cbEndColor.Location" type="System.Drawing.Point, System.Drawing">
+		<value>33, 106</value>
+	</data>
+	<data name="cbEndColor.Size" type="System.Drawing.Size, System.Drawing">
+		<value>40, 25</value>
+	</data>
+	<data name="cbEndColor.TabIndex" type="System.Int32, mscorlib">
+		<value>2</value>
+	</data>
+	<data name="cbEndColor.Text" xml:space="preserve">
+    <value>colorButton2</value>
+  </data>
+	<data name="&gt;&gt;cbEndColor.Name" xml:space="preserve">
+    <value>cbEndColor</value>
+  </data>
+	<data name="&gt;&gt;cbEndColor.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+	<data name="&gt;&gt;cbEndColor.Parent" xml:space="preserve">
+    <value>tabRGB</value>
+  </data>
+	<data name="&gt;&gt;cbEndColor.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+	<data name="rampSlider2.Location" type="System.Drawing.Point, System.Drawing">
+		<value>93, 106</value>
+	</data>
+	<data name="rampSlider2.Size" type="System.Drawing.Size, System.Drawing">
+		<value>97, 25</value>
+	</data>
+	<data name="rampSlider2.TabIndex" type="System.Int32, mscorlib">
+		<value>5</value>
+	</data>
+	<data name="rampSlider2.Text" xml:space="preserve">
+    <value>rampSlider2</value>
+  </data>
+	<data name="&gt;&gt;rampSlider2.Name" xml:space="preserve">
+    <value>rampSlider2</value>
+  </data>
+	<data name="&gt;&gt;rampSlider2.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+	<data name="&gt;&gt;rampSlider2.Parent" xml:space="preserve">
+    <value>tabRGB</value>
+  </data>
+	<data name="&gt;&gt;rampSlider2.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+	<data name="cbStartColor.Location" type="System.Drawing.Point, System.Drawing">
+		<value>33, 38</value>
+	</data>
+	<data name="cbStartColor.Size" type="System.Drawing.Size, System.Drawing">
+		<value>40, 25</value>
+	</data>
+	<data name="cbStartColor.TabIndex" type="System.Int32, mscorlib">
+		<value>0</value>
+	</data>
+	<data name="cbStartColor.Text" xml:space="preserve">
+    <value>colorButton1</value>
+  </data>
+	<data name="&gt;&gt;cbStartColor.Name" xml:space="preserve">
+    <value>cbStartColor</value>
+  </data>
+	<data name="&gt;&gt;cbStartColor.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+	<data name="&gt;&gt;cbStartColor.Parent" xml:space="preserve">
+    <value>tabRGB</value>
+  </data>
+	<data name="&gt;&gt;cbStartColor.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+	<data name="rampSlider1.Location" type="System.Drawing.Point, System.Drawing">
+		<value>93, 38</value>
+	</data>
+	<data name="rampSlider1.Size" type="System.Drawing.Size, System.Drawing">
+		<value>97, 25</value>
+	</data>
+	<data name="rampSlider1.TabIndex" type="System.Int32, mscorlib">
+		<value>4</value>
+	</data>
+	<data name="rampSlider1.Text" xml:space="preserve">
+    <value>rampSlider1</value>
+  </data>
+	<data name="&gt;&gt;rampSlider1.Name" xml:space="preserve">
+    <value>rampSlider1</value>
+  </data>
+	<data name="&gt;&gt;rampSlider1.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+	<data name="&gt;&gt;rampSlider1.Parent" xml:space="preserve">
+    <value>tabRGB</value>
+  </data>
+	<data name="&gt;&gt;rampSlider1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+	<data name="lblEndColor.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="lblEndColor.Location" type="System.Drawing.Point, System.Drawing">
+		<value>8, 80</value>
+	</data>
+	<data name="lblEndColor.Size" type="System.Drawing.Size, System.Drawing">
+		<value>53, 13</value>
+	</data>
+	<data name="lblEndColor.TabIndex" type="System.Int32, mscorlib">
+		<value>3</value>
+	</data>
+	<data name="lblEndColor.Text" xml:space="preserve">
+    <value>&amp; Endfarbe</value>
+  </data>
+	<data name="&gt;&gt;lblEndColor.Name" xml:space="preserve">
+    <value>lblEndColor</value>
+  </data>
+	<data name="&gt;&gt;lblEndColor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;lblEndColor.Parent" xml:space="preserve">
+    <value>tabRGB</value>
+  </data>
+	<data name="&gt;&gt;lblEndColor.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+	<data name="lblStartColor.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="lblStartColor.Location" type="System.Drawing.Point, System.Drawing">
+		<value>8, 12</value>
+	</data>
+	<data name="lblStartColor.Size" type="System.Drawing.Size, System.Drawing">
+		<value>56, 13</value>
+	</data>
+	<data name="lblStartColor.TabIndex" type="System.Int32, mscorlib">
+		<value>1</value>
+	</data>
+	<data name="lblStartColor.Text" xml:space="preserve">
+    <value>Startfarbe</value>
+  </data>
+	<data name="&gt;&gt;lblStartColor.Name" xml:space="preserve">
+    <value>lblStartColor</value>
+  </data>
+	<data name="&gt;&gt;lblStartColor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;lblStartColor.Parent" xml:space="preserve">
+    <value>tabRGB</value>
+  </data>
+	<data name="&gt;&gt;lblStartColor.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+	<data name="tabRGB.Location" type="System.Drawing.Point, System.Drawing">
+		<value>4, 22</value>
+	</data>
+	<data name="tabRGB.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+		<value>3, 3, 3, 3</value>
+	</data>
+	<data name="tabRGB.Size" type="System.Drawing.Size, System.Drawing">
+		<value>209, 163</value>
+	</data>
+	<data name="tabRGB.TabIndex" type="System.Int32, mscorlib">
+		<value>1</value>
+	</data>
+	<data name="tabRGB.Text" xml:space="preserve">
+    <value>RGB</value>
+  </data>
+	<data name="&gt;&gt;tabRGB.Name" xml:space="preserve">
+    <value>tabRGB</value>
+  </data>
+	<data name="&gt;&gt;tabRGB.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;tabRGB.Parent" xml:space="preserve">
+    <value>tabColorRange</value>
+  </data>
+	<data name="&gt;&gt;tabRGB.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+	<data name="tabColorRange.Location" type="System.Drawing.Point, System.Drawing">
+		<value>6, 23</value>
+	</data>
+	<data name="tabColorRange.Size" type="System.Drawing.Size, System.Drawing">
+		<value>217, 189</value>
+	</data>
+	<data name="tabColorRange.TabIndex" type="System.Int32, mscorlib">
+		<value>12</value>
+	</data>
+	<data name="&gt;&gt;tabColorRange.Name" xml:space="preserve">
+    <value>tabColorRange</value>
+  </data>
+	<data name="&gt;&gt;tabColorRange.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;tabColorRange.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+	<data name="&gt;&gt;tabColorRange.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+	<data name="chkUseColorRange.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="chkUseColorRange.Location" type="System.Drawing.Point, System.Drawing">
+		<value>6, 0</value>
+	</data>
+	<data name="chkUseColorRange.Size" type="System.Drawing.Size, System.Drawing">
+		<value>107, 17</value>
+	</data>
+	<data name="chkUseColorRange.TabIndex" type="System.Int32, mscorlib">
+		<value>11</value>
+	</data>
+	<data name="chkUseColorRange.Text" xml:space="preserve">
+    <value>Benuzte Farbbereich</value>
+  </data>
+	<data name="&gt;&gt;chkUseColorRange.Name" xml:space="preserve">
+    <value>chkUseColorRange</value>
+  </data>
+	<data name="&gt;&gt;chkUseColorRange.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;chkUseColorRange.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+	<data name="&gt;&gt;chkUseColorRange.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+	<data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+		<value>Fill</value>
+	</data>
+	<data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+		<value>0, 0</value>
+	</data>
+	<data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+		<value>227, 219</value>
+	</data>
+	<data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+		<value>0</value>
+	</data>
+	<data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+	<data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+	<metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+		<value>True</value>
+	</metadata>
+	<data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+		<value>227, 219</value>
+	</data>
+	<data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>TabColorControl</value>
+  </data>
+	<data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

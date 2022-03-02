@@ -1,0 +1,901 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="progresscompleted" xml:space="preserve">
+    <value>%完成</value>
+  </data>
+  <data name="Analysis" xml:space="preserve">
+    <value>分析</value>
+  </data>
+  <data name="Buffer" xml:space="preserve">
+    <value>缓冲区</value>
+  </data>
+  <data name="BufferDistance" xml:space="preserve">
+    <value>缓冲区距离</value>
+  </data>
+  <data name="Calculatesproximitydistance" xml:space="preserve">
+    <value>计算每一个像元到临近目标像元的距离</value>
+  </data>
+  <data name="Calculateseuclideandistance" xml:space="preserve">
+    <value>计算每个栅格像元到最近目标像元的欧氏距离</value>
+  </data>
+  <data name="ClipRasterLayer" xml:space="preserve">
+    <value>裁剪栅格图层</value>
+  </data>
+  <data name="ClipRasterLayerwithPolygon" xml:space="preserve">
+    <value>采用多边形裁剪栅格图层</value>
+  </data>
+  <data name="Conversion" xml:space="preserve">
+    <value>转换</value>
+  </data>
+  <data name="Generalization" xml:space="preserve">
+    <value>综合</value>
+  </data>
+  <data name="InputFirstRaster" xml:space="preserve">
+    <value>输入初始栅格图层</value>
+  </data>
+  <data name="InputPolygonforclipingtoRaster" xml:space="preserve">
+    <value>输入多边形用于裁剪</value>
+  </data>
+  <data name="inputRaster" xml:space="preserve">
+    <value>输入栅格图层</value>
+  </data>
+  <data name="InputRastercontainingtargetcells" xml:space="preserve">
+    <value>输入包含目标像元的栅格数据</value>
+  </data>
+  <data name="input1Raster" xml:space="preserve">
+    <value>输入栅格图层1</value>
+  </data>
+  <data name="input2PolygonforCliping" xml:space="preserve">
+    <value>输入第二个进行裁剪的多边形</value>
+  </data>
+  <data name="InputFeatureSet" xml:space="preserve">
+    <value>输入要素集</value>
+  </data>
+  <data name="Interpolation" xml:space="preserve">
+    <value>内插</value>
+  </data>
+  <data name="MapWindowBuffer" xml:space="preserve">
+    <value>MapWindow缓冲工具</value>
+  </data>
+  <data name="MapWindowRasterClip" xml:space="preserve">
+    <value>MapWindow栅格数据裁剪</value>
+  </data>
+  <data name="OutputPolygonFeatureSet" xml:space="preserve">
+    <value>输出多边形要素集</value>
+  </data>
+  <data name="Pass1" xml:space="preserve">
+    <value>进度1:</value>
+  </data>
+  <data name="Pass2" xml:space="preserve">
+    <value>进度2:</value>
+  </data>
+  <data name="RasterOverlay" xml:space="preserve">
+    <value>栅格叠加</value>
+  </data>
+  <data name="ResultRasterDirectory" xml:space="preserve">
+    <value>选择目标栅格图层目录和名称</value>
+  </data>
+  <data name="SpatialReference" xml:space="preserve">
+    <value>空间参照</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>空间统计</value>
+  </data>
+  <data name="TerrainAnalysis" xml:space="preserve">
+    <value>地形分析</value>
+  </data>
+  <data name="ThiswillChangethecellsize" xml:space="preserve">
+    <value>将改变栅格图元的大小</value>
+  </data>
+  <data name="ClipGridswithPolygon" xml:space="preserve">
+    <value>将进行多边形裁剪栅格</value>
+  </data>
+  <data name="Subtractsecondraste" xml:space="preserve">
+    <value>将逐个像元使栅格图层1栅格图层2相减</value>
+  </data>
+  <data name="VectorOverlay" xml:space="preserve">
+    <value>矢量叠加</value>
+  </data>
+  <data name="BufferDescription" xml:space="preserve">
+    <value>将加入多边形指定距离的缓冲区</value>
+  </data>
+  <data name="Bufferwithdistance" xml:space="preserve">
+    <value>指定距离建缓冲区</value>
+  </data>
+  <data name="newrasteronspecifiedfeatureset" xml:space="preserve">
+    <value>采用指定字段和值建立新栅格数据</value>
+  </data>
+  <data name="DesiredCellSize" xml:space="preserve">
+    <value>需要指定的像元大小或者指定大小为0以计算像元尺寸</value>
+  </data>
+  <data name="InputPolygontochange" xml:space="preserve">
+    <value>输入多边形以裁剪栅格数据</value>
+  </data>
+  <data name="input1polygontoRaster" xml:space="preserve">
+    <value>在栅格层上输入多边形1</value>
+  </data>
+  <data name="ISU" xml:space="preserve">
+    <value>爱达荷州立大学</value>
+  </data>
+  <data name="MapWindowFeatureToRaster" xml:space="preserve">
+    <value>MapWindow 矢量栅格转换</value>
+  </data>
+  <data name="MapWindowDevelopmentTeam" xml:space="preserve">
+    <value>MapWindow开发小组</value>
+  </data>
+  <data name="MapWindow.Tools" xml:space="preserve">
+    <value>MapWindow工具箱</value>
+  </data>
+  <data name="OutputRaster" xml:space="preserve">
+    <value>栅格数据输出.</value>
+  </data>
+  <data name="Resultofaverageslope" xml:space="preserve">
+    <value>选中采用平均坡度值的输出要素集</value>
+  </data>
+  <data name="Themaximumnumber" xml:space="preserve">
+    <value>行数/列数的极限容量是 8000, 如果一个像元值过小将会被调整.  采用零值计算每个像元的值，使宽度值和高度值达到256个像元。</value>
+  </data>
+  <data name="stringnameoffield" xml:space="preserve">
+    <value>在数据表中用到的字段字符串名</value>
+  </data>
+  <data name="Thevalueofeachcell" xml:space="preserve">
+    <value>每个格网的值要么被赋予字段的值，要么将解析为一个数字的字符串</value>
+  </data>
+  <data name="InputRasterforCliping" xml:space="preserve">
+    <value> 输入要裁剪的栅格数据</value>
+  </data>
+  <data name="BaseFeatureSet" xml:space="preserve">
+    <value>基础要素集</value>
+  </data>
+  <data name="computesvoronoipolygons" xml:space="preserve">
+    <value>此工具通过确定离该点最近的区域，计算周围每个点的Voronoi多边形</value>
+  </data>
+  <data name="computethevoronoidiagram" xml:space="preserve">
+    <value>该工具使用财富算法来计算给定的点集Voronoi图。在此图中，每一个多边形区域，代表该多边形内的任何一点是比其他点最接近原始点的多边形</value>
+  </data>
+  <data name="CreateVoronoiPolygons" xml:space="preserve">
+    <value>创建Voronoi多边形</value>
+  </data>
+  <data name="EliminateSecondFeatureset" xml:space="preserve">
+    <value>此工具将把第二个数据集从初始数据集中删除</value>
+  </data>
+  <data name="Erase" xml:space="preserve">
+    <value>擦除</value>
+  </data>
+  <data name="Erase2ndinput" xml:space="preserve">
+    <value>从数据2从数据1中删除</value>
+  </data>
+  <data name="ErasedResultFeatureSet" xml:space="preserve">
+    <value>删除结果数据集</value>
+  </data>
+  <data name="input2Raster" xml:space="preserve">
+    <value>数据栅格数据2</value>
+  </data>
+  <data name="InputSecondRasterforMerging" xml:space="preserve">
+    <value>输入用于融合栅格数据2</value>
+  </data>
+  <data name="MapWindowErase" xml:space="preserve">
+    <value>MapWindow删除</value>
+  </data>
+  <data name="MapWindowRasterMerge" xml:space="preserve">
+    <value>MapWindow栅格数据融合</value>
+  </data>
+  <data name="MapWindowTheissenPolygons" xml:space="preserve">
+    <value>MapWindow泰森多边形</value>
+  </data>
+  <data name="MergeRasterLayers" xml:space="preserve">
+    <value>融合栅格数据层</value>
+  </data>
+  <data name="MergeTwoRasterLayer" xml:space="preserve">
+    <value>此工具将逐个像元融合栅格数据层</value>
+  </data>
+  <data name="MergetwoRasterLayers" xml:space="preserve">
+    <value>融合两个栅格数据层</value>
+  </data>
+  <data name="PointFeatureSet" xml:space="preserve">
+    <value>点要素集</value>
+  </data>
+  <data name="PolygonFeatureSet" xml:space="preserve">
+    <value>多边形要素集</value>
+  </data>
+  <data name="RemoveFeatureSet" xml:space="preserve">
+    <value>移除要素集</value>
+  </data>
+  <data name="ThiessenPolygons" xml:space="preserve">
+    <value>泰森多边形</value>
+  </data>
+  <data name="addallfeatures" xml:space="preserve">
+    <value>此工具将加入所有输入要素和属性</value>
+  </data>
+  <data name="AddFeature" xml:space="preserve">
+    <value>加入要素</value>
+  </data>
+  <data name="addFeatureFeatureSet" xml:space="preserve">
+    <value>该工具将要素加入到要素集中</value>
+  </data>
+  <data name="AddFeatureintheFeatureSet" xml:space="preserve">
+    <value>加入要素到要素集中</value>
+  </data>
+  <data name="AddRasterLayers" xml:space="preserve">
+    <value>加入栅格数据层</value>
+  </data>
+  <data name="AddTwoRasteLayer" xml:space="preserve">
+    <value>此工具将逐个像元加入栅格数据层</value>
+  </data>
+  <data name="AddtwoRasterLayers" xml:space="preserve">
+    <value>加入两个栅格数据层</value>
+  </data>
+  <data name="Aggregate" xml:space="preserve">
+    <value>聚合</value>
+  </data>
+  <data name="AggregateToollip" xml:space="preserve">
+    <value>把要素集中的多个要素合并聚集为一个要素</value>
+  </data>
+  <data name="Area" xml:space="preserve">
+    <value>面积</value>
+  </data>
+  <data name="averageslopeinarribute" xml:space="preserve">
+    <value>将计算平均坡度并将坡度值赋予每个多边形的属性中</value>
+  </data>
+  <data name="AveSlope" xml:space="preserve">
+    <value>平均坡度</value>
+  </data>
+  <data name="boxSlopeInPercentage" xml:space="preserve">
+    <value>栅格数据中的坡度（在一个方块中计算出每个格网的高度值</value>
+  </data>
+  <data name="CalculateAreas" xml:space="preserve">
+    <value>计算面积</value>
+  </data>
+  <data name="CalculateSlopegivenpolygons" xml:space="preserve">
+    <value>计算指定多边形的平均坡度</value>
+  </data>
+  <data name="CalculateSlopewithmorepreference" xml:space="preserve">
+    <value>根据用户设置参数计算指定多边形的平均坡度</value>
+  </data>
+  <data name="Calculatestheareaofpolygons" xml:space="preserve">
+    <value>计算多边形的面积</value>
+  </data>
+  <data name="CellSize" xml:space="preserve">
+    <value>像元大小</value>
+  </data>
+  <data name="ChangeCellSize" xml:space="preserve">
+    <value>改变像元大小</value>
+  </data>
+  <data name="ChildFeatureSet" xml:space="preserve">
+    <value>子要素集</value>
+  </data>
+  <data name="Clipbounds" xml:space="preserve">
+    <value>裁剪边界</value>
+  </data>
+  <data name="ClipFeatureSetWithPolygon" xml:space="preserve">
+    <value>用多边形裁剪要素集</value>
+  </data>
+  <data name="Clippedfeatureset" xml:space="preserve">
+    <value>经过裁剪的要素集</value>
+  </data>
+  <data name="ClipPolygonwithLine" xml:space="preserve">
+    <value>用线裁剪多边形</value>
+  </data>
+  <data name="Clipslayerwithlayer" xml:space="preserve">
+    <value>用另一图层裁剪该图层</value>
+  </data>
+  <data name="Convertedfeatureset" xml:space="preserve">
+    <value>经过转换的要素集</value>
+  </data>
+  <data name="DeleteFeatures" xml:space="preserve">
+    <value>删除要素</value>
+  </data>
+  <data name="DeleteFeaturesfromFeatureSet" xml:space="preserve">
+    <value>从数据集中删除要素</value>
+  </data>
+  <data name="deleteuserselectedFeatures" xml:space="preserve">
+    <value>此工具将从要素集中删除用户选择的要素</value>
+  </data>
+  <data name="DesiredOutputProjection" xml:space="preserve">
+    <value>目标输出投影</value>
+  </data>
+  <data name="DisplayingistheOldCellHight" xml:space="preserve">
+    <value>显示的是原有的像元高度。采用“改变”输入新值“不改变”保留旧值</value>
+  </data>
+  <data name="DouglasPeuckerlinesimplification" xml:space="preserve">
+    <value>此工具将采用道格拉斯线简化算法减少折线上点的个数</value>
+  </data>
+  <data name="DPlinesimplification" xml:space="preserve">
+    <value>道格拉斯线简化</value>
+  </data>
+  <data name="Exceptioninclipin" xml:space="preserve">
+    <value>采用线裁剪多边形时出现的异常</value>
+  </data>
+  <data name="ExpressionSelectFeatures" xml:space="preserve">
+    <value>从数据集中选择要素的表达式</value>
+  </data>
+  <data name="featuresetcontainareainterest" xml:space="preserve">
+    <value>该要素集包含要进行计算平均坡度的兴趣区域</value>
+  </data>
+  <data name="featuresetcreated" xml:space="preserve">
+    <value>从栅格数据经过栅格矢量转换创建的要素集</value>
+  </data>
+  <data name="Featuresettoclip" xml:space="preserve">
+    <value>要进行裁剪的要素</value>
+  </data>
+  <data name="FeatureToRaster" xml:space="preserve">
+    <value>矢量栅格转换</value>
+  </data>
+  <data name="Fieldnamecolomavrageslope" xml:space="preserve">
+    <value>请输入平均坡度的字段名，该坡度列将加入到属性中</value>
+  </data>
+  <data name="Fieldnameforavrageslope" xml:space="preserve">
+    <value>平均坡度的字段名</value>
+  </data>
+  <data name="FindAverageSlope" xml:space="preserve">
+    <value>计算平均坡度</value>
+  </data>
+  <data name="FindAvrageSlopeExtented" xml:space="preserve">
+    <value>计算扩展的平均坡度</value>
+  </data>
+  <data name="FixedCount" xml:space="preserve">
+    <value>固定数目</value>
+  </data>
+  <data name="FixedDistance" xml:space="preserve">
+    <value>固定距离</value>
+  </data>
+  <data name="FixedDistanceHelpText" xml:space="preserve">
+    <value>固定距离: 当使用一个固定距离进行查询但是仍得不到点数的最小值时，查询半径在自动变大直到满足最小值。输入0或无极小值。\n\n固定数目: 当使用固定值进行查询时，将会查找半径范围内的所有点。</value>
+  </data>
+  <data name="Generateaverageslope" xml:space="preserve">
+    <value>此工具将生成给定多边形的平均坡度</value>
+  </data>
+  <data name="GenerateCentroid" xml:space="preserve">
+    <value>生成质心</value>
+  </data>
+  <data name="generatecentroidFeatureSet" xml:space="preserve">
+    <value>此工具将从输入数据集中生成质心数据集</value>
+  </data>
+  <data name="GenerateCentroidfrominputFeatureSet" xml:space="preserve">
+    <value>从输入数据集中生成质心</value>
+  </data>
+  <data name="generatenewraster" xml:space="preserve">
+    <value>此工具将从给定多边形中生成新的栅格层</value>
+  </data>
+  <data name="generatepolygonfromraster" xml:space="preserve">
+    <value>此工具将从栅格数据中生成多边形数据集</value>
+  </data>
+  <data name="Generateslopefromraster" xml:space="preserve">
+    <value>此工具将根据给定的高程栅格数据中生成坡度栅格数据</value>
+  </data>
+  <data name="GenerateslopeRasterLayer" xml:space="preserve">
+    <value>生成坡度栅格图层</value>
+  </data>
+  <data name="Givenafeatureset" xml:space="preserve">
+    <value>给定一个数据集，该工具将所有要素合并为一个Shape文件，与之相接的多边形将失去分隔边界</value>
+  </data>
+  <data name="Index" xml:space="preserve">
+    <value>索引</value>
+  </data>
+  <data name="IndexNotoOverwrite" xml:space="preserve">
+    <value>将被覆盖的要素的索引</value>
+  </data>
+  <data name="Indexofareaofinterestfeature" xml:space="preserve">
+    <value>兴趣区域要素的索引</value>
+  </data>
+  <data name="indexspecificarea" xml:space="preserve">
+    <value>该索引为特定兴趣区域的要素索引</value>
+  </data>
+  <data name="input1altitudeRaster" xml:space="preserve">
+    <value>输入高程栅格数据1</value>
+  </data>
+  <data name="input1FeatureSet" xml:space="preserve">
+    <value>输入要素集1</value>
+  </data>
+  <data name="input1polygonfeatureset" xml:space="preserve">
+    <value>输入多边形要素集1</value>
+  </data>
+  <data name="input1PolygonShapefile" xml:space="preserve">
+    <value>输入多边形Shapefile1</value>
+  </data>
+  <data name="input2FeatureSettoAdd" xml:space="preserve">
+    <value>输入要相加的要素集2</value>
+  </data>
+  <data name="input2FeatureSettoOverwrite" xml:space="preserve">
+    <value>输入要覆盖的要素集2</value>
+  </data>
+  <data name="input2LineforCliping" xml:space="preserve">
+    <value>输入要裁剪的线2</value>
+  </data>
+  <data name="InputFeatureSetaddnewfeatures" xml:space="preserve">
+    <value>输入要加入新要素的要素集</value>
+  </data>
+  <data name="InputFeatureSettobeoverwrite" xml:space="preserve">
+    <value>输入要进行覆盖的数据集</value>
+  </data>
+  <data name="InputFeatureSettodelete" xml:space="preserve">
+    <value>输入要进行删除要素的要素集</value>
+  </data>
+  <data name="InputFeatureSettogenerate" xml:space="preserve">
+    <value>输入要进行生成质心要素的要素集</value>
+  </data>
+  <data name="InputFeatureSettoreproject" xml:space="preserve">
+    <value>输入要进行投影转换的数据集</value>
+  </data>
+  <data name="Inputlineforcliping" xml:space="preserve">
+    <value>输入要进行裁剪的线</value>
+  </data>
+  <data name="InputnewcellHight" xml:space="preserve">
+    <value>输入新像元高度</value>
+  </data>
+  <data name="InputnewcellWidth" xml:space="preserve">
+    <value>输入新像元宽度</value>
+  </data>
+  <data name="InputPolygonforCliping" xml:space="preserve">
+    <value>输入要进行裁剪的多边形</value>
+  </data>
+  <data name="InputRasterforaverageslopecalculation" xml:space="preserve">
+    <value>输入要进行平均坡度计算的栅格数据</value>
+  </data>
+  <data name="inputrastetoconvert" xml:space="preserve">
+    <value>输入要进行转换到多边形数据集的栅格数据</value>
+  </data>
+  <data name="InputSecondRasterforAdding" xml:space="preserve">
+    <value>输入要进行相加的栅格图层</value>
+  </data>
+  <data name="InputSecondRasterforMultiply" xml:space="preserve">
+    <value>输入要进行相乘的栅格图层</value>
+  </data>
+  <data name="InputSecondRasterforSubtract" xml:space="preserve">
+    <value>输入要进行相减的栅格图层</value>
+  </data>
+  <data name="inputtheareaofinterest" xml:space="preserve">
+    <value>输入兴趣区域</value>
+  </data>
+  <data name="InputtheRasterforCellsizeChange" xml:space="preserve">
+    <value>输入要进行像元大小改变的栅格图层</value>
+  </data>
+  <data name="inputZfactor" xml:space="preserve">
+    <value>输入Z值</value>
+  </data>
+  <data name="InputZfactorforslopedisplay" xml:space="preserve">
+    <value>输入要进行坡度显示的Z值</value>
+  </data>
+  <data name="InverseDistanceWeighting" xml:space="preserve">
+    <value>逆距离加权</value>
+  </data>
+  <data name="layercontainsvalues" xml:space="preserve">
+    <value>输入点要素集中包含需要进行插值的字段</value>
+  </data>
+  <data name="LineFeatureSet" xml:space="preserve">
+    <value>线要素集</value>
+  </data>
+  <data name="MainFeatureset" xml:space="preserve">
+    <value>主要要素集</value>
+  </data>
+  <data name="MapWindowAddFeature" xml:space="preserve">
+    <value>MapWindow增加要素工具</value>
+  </data>
+  <data name="MapWindowAggregate" xml:space="preserve">
+    <value>MapWindow 聚合工具</value>
+  </data>
+  <data name="MapWindowCalculateAreas" xml:space="preserve">
+    <value>MapWindow 面积计算工具</value>
+  </data>
+  <data name="MapWindowChangeCellSize" xml:space="preserve">
+    <value>MapWindow 像元大小设置工具</value>
+  </data>
+  <data name="MapWindowChangeNoDataValues" xml:space="preserve">
+    <value>MapWindow无值设置工具</value>
+  </data>
+  <data name="MapWindowClip" xml:space="preserve">
+    <value>MapWindow裁剪工具</value>
+  </data>
+  <data name="MapWindowDeleteFeatures" xml:space="preserve">
+    <value>MapWindow 删除要素工具</value>
+  </data>
+  <data name="MapWindowFindAverageSlope" xml:space="preserve">
+    <value>MapWindow 计算平均坡度工具</value>
+  </data>
+  <data name="MapWindowFindAverageSlopeExtented" xml:space="preserve">
+    <value>MapWindow 计算平均坡度扩展工具..</value>
+  </data>
+  <data name="MapWindowGenerateCentroid" xml:space="preserve">
+    <value>MapWindow 生成质心工具</value>
+  </data>
+  <data name="MapWindowInverseDistance" xml:space="preserve">
+    <value>MapWindow 逆距离加权工具</value>
+  </data>
+  <data name="MapWindowLineSimplification" xml:space="preserve">
+    <value>MapWindow 线简化工具</value>
+  </data>
+  <data name="MapWindowOverWriteFeature" xml:space="preserve">
+    <value>MapWindow 覆盖要素工具</value>
+  </data>
+  <data name="MapWindowPolygonClipWithLine" xml:space="preserve">
+    <value>MapWindow线裁剪面工具</value>
+  </data>
+  <data name="MapWindowRasterAdd" xml:space="preserve">
+    <value>MapWindow 增加栅格数据工具</value>
+  </data>
+  <data name="MapWindowRasterEuclideanDistance" xml:space="preserve">
+    <value>MapWindow 栅格数据计算欧氏距离工具</value>
+  </data>
+  <data name="MapWindowRasterMultiply" xml:space="preserve">
+    <value>MapWindow 栅格数据相乘工具</value>
+  </data>
+  <data name="MapWindowRasterSlope" xml:space="preserve">
+    <value>MapWindow 栅格数据坡度计算</value>
+  </data>
+  <data name="MapWindowRasterSubtraction" xml:space="preserve">
+    <value>MapWindow 栅格数据相减工具</value>
+  </data>
+  <data name="MapWindowReprojectFeatures" xml:space="preserve">
+    <value>MapWindow 要素投影</value>
+  </data>
+  <data name="MapWindowSimpeRasterToPolygon" xml:space="preserve">
+    <value>MapWindow 简单栅格数据 转换</value>
+  </data>
+  <data name="MapWindowUnion" xml:space="preserve">
+    <value>MapWindow 合并</value>
+  </data>
+  <data name="Maximumdistance" xml:space="preserve">
+    <value>最大距离</value>
+  </data>
+  <data name="Maximumdistancetobecalculated" xml:space="preserve">
+    <value>将进行最大距离的计算。离目标像元比“最大距离”值大的像元值将被赋无值</value>
+  </data>
+  <data name="MinMaxdistance" xml:space="preserve">
+    <value>最大/最小距离</value>
+  </data>
+  <data name="MinMaxnumberofpoints" xml:space="preserve">
+    <value>最大/最小点个数</value>
+  </data>
+  <data name="MultiplyRasterLayers" xml:space="preserve">
+    <value>乘以栅格数据层</value>
+  </data>
+  <data name="NeighborhoodType" xml:space="preserve">
+    <value>邻近类型</value>
+  </data>
+  <data name="Newnumberofpoints" xml:space="preserve">
+    <value>点的个数:</value>
+  </data>
+  <data name="newrastername" xml:space="preserve">
+    <value>新生成的栅格数据以输出栅格数据命名</value>
+  </data>
+  <data name="Oneparameterinnull" xml:space="preserve">
+    <value>其中一个参数层为空</value>
+  </data>
+  <data name="Optional" xml:space="preserve">
+    <value>可选项 -保留默认值为无值或输入已知值</value>
+  </data>
+  <data name="Optionaltochange" xml:space="preserve">
+    <value>该项为可选项，用户可以修改该值。缺省设置为无值赋值</value>
+  </data>
+  <data name="Originalnumberofpoints" xml:space="preserve">
+    <value>最初的点个数：</value>
+  </data>
+  <data name="OutputFeatureSet" xml:space="preserve">
+    <value>要素集输出</value>
+  </data>
+  <data name="Outputfeaturesetwithaverageslope" xml:space="preserve">
+    <value>根据平均坡度输出要素集</value>
+  </data>
+  <data name="OutputShapefile" xml:space="preserve">
+    <value> Shapefile输出</value>
+  </data>
+  <data name="OutputslopeRaster" xml:space="preserve">
+    <value>坡度栅格输出</value>
+  </data>
+  <data name="Outputwithaverageslope" xml:space="preserve">
+    <value>根据平均坡度输出要素集</value>
+  </data>
+  <data name="OverWriteFeature" xml:space="preserve">
+    <value>要素覆盖</value>
+  </data>
+  <data name="OverWriteFeaturebyindex" xml:space="preserve">
+    <value>此工具将根据要素集索引覆盖要素集</value>
+  </data>
+  <data name="OverWriteFeatureinFeature" xml:space="preserve">
+    <value>此操作将覆盖要素集中的要素</value>
+  </data>
+  <data name="OverWriteFeatureintheFeatureSet" xml:space="preserve">
+    <value>覆盖要素集中的要素</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>能量</value>
+  </data>
+  <data name="Raster" xml:space="preserve">
+    <value>栅格</value>
+  </data>
+  <data name="RasterDistance" xml:space="preserve">
+    <value>栅格距离</value>
+  </data>
+  <data name="RasterDistanceproximity" xml:space="preserve">
+    <value>栅格近似距离</value>
+  </data>
+  <data name="rasterfrompointfeature" xml:space="preserve">
+    <value>此工具采用逆距离加权从点要素集中生成栅格</value>
+  </data>
+  <data name="RasterToPolygon" xml:space="preserve">
+    <value>栅格到矢量转换</value>
+  </data>
+  <data name="ReprojectFeatures" xml:space="preserve">
+    <value>投影转换要素</value>
+  </data>
+  <data name="Reprojectsallcoordinates" xml:space="preserve">
+    <value>使要素集中的所有坐标经过投影转换到指定的坐标系统</value>
+  </data>
+  <data name="reprojectspecifiedfeatureset" xml:space="preserve">
+    <value>此工具使指定的要素集投影转换到一个新的坐标系统</value>
+  </data>
+  <data name="ResultShapefile" xml:space="preserve">
+    <value>Shapefile结果文件</value>
+  </data>
+  <data name="SecondFeatureset" xml:space="preserve">
+    <value>第二要素集</value>
+  </data>
+  <data name="secondinputlayer" xml:space="preserve">
+    <value>要输入的第二要素层必须为多边形要素集</value>
+  </data>
+  <data name="SelectFeaturestoDelete" xml:space="preserve">
+    <value>选择要删除的要素</value>
+  </data>
+  <data name="SelectResultFeatureSetDirectory" xml:space="preserve">
+    <value>选择结果要素集的路径和名称</value>
+  </data>
+  <data name="SelectresultrasterfileName" xml:space="preserve">
+    <value>选择结果栅格文件名称</value>
+  </data>
+  <data name="SelectResultShapefileDirectory" xml:space="preserve">
+    <value>选择结果Shapefile的路径和名称</value>
+  </data>
+  <data name="SelecttheResultofOutput" xml:space="preserve">
+    <value>根据属性表中平均坡度选择结果输出要素集</value>
+  </data>
+  <data name="Selectthetypeofneighborhood" xml:space="preserve">
+    <value>当需要查找点要素时请选择临近区域的类型。\n\n固定距离: 当使用一个固定距离进行查询但是仍得不到点数的最小值时，查询半径在自动变大直到满足最小值。输入0或无极小值。\n\n固定数目: 当使用固定值进行查询时，将会查找半径范围内的所有点。</value>
+  </data>
+  <data name="SimplifyLines" xml:space="preserve">
+    <value>简化线</value>
+  </data>
+  <data name="Slopegridfileisnull" xml:space="preserve">
+    <value>坡度格网文件为空.</value>
+  </data>
+  <data name="slopeinpercentage" xml:space="preserve">
+    <value>百分比坡度</value>
+  </data>
+  <data name="slopeinpercentageindegree" xml:space="preserve">
+    <value>百分比坡度为正值否则将值将编程度数</value>
+  </data>
+  <data name="SlopeRasterLayer" xml:space="preserve">
+    <value>坡度栅格图层</value>
+  </data>
+  <data name="SourceProjection" xml:space="preserve">
+    <value>源投影</value>
+  </data>
+  <data name="sourceprojectiondifferent" xml:space="preserve">
+    <value>如果源投影与数据集中的要素投影不一致</value>
+  </data>
+  <data name="SubtractRasterLayer" xml:space="preserve">
+    <value>提取栅格数据层</value>
+  </data>
+  <data name="Thecellsizeingeographicunits" xml:space="preserve">
+    <value>在输入数据层中地理单位的像元大小。如果为0则宽度为输入图层的范围大小除以255</value>
+  </data>
+  <data name="Thedestinationprojection" xml:space="preserve">
+    <value>目标投影</value>
+  </data>
+  <data name="Theinfluenceofdistance" xml:space="preserve">
+    <value>影响点的距离。一个高数值的值将减少影响点的距离，一个低值将增加影响点的距离。</value>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>容差</value>
+  </data>
+  <data name="toolcalculatesareaeachpolygon" xml:space="preserve">
+    <value>此工具计算多边形要素集中每个多边形的面积并加结果加入到输出要素集的属性表中</value>
+  </data>
+  <data name="toolcombinespolygons" xml:space="preserve">
+    <value>此工具把多个多边形合并为一个多边形，包括所有的形状</value>
+  </data>
+  <data name="tooltakesafeatureset" xml:space="preserve">
+    <value>此工具提取一个要素集和多边形要素集并且根据多边形要素集进行裁剪</value>
+  </data>
+  <data name="Union" xml:space="preserve">
+    <value>合并</value>
+  </data>
+  <data name="UnionFeatureSet" xml:space="preserve">
+    <value>合并要素集</value>
+  </data>
+  <data name="UnioningShapes" xml:space="preserve">
+    <value>合并shape文件</value>
+  </data>
+  <data name="Unionofinputs" xml:space="preserve">
+    <value>合并输入数据</value>
+  </data>
+  <data name="UserinputNewValue" xml:space="preserve">
+    <value>用户可输入一个值代替原有的值</value>
+  </data>
+  <data name="UserNewValues" xml:space="preserve">
+    <value>用户输入的新值</value>
+  </data>
+  <data name="Zvalue" xml:space="preserve">
+    <value>Z高程值</value>
+  </data>
+  <data name="ChangeNoDataValues" xml:space="preserve">
+    <value>此工具将进行赋无值操作</value>
+  </data>
+  <data name="InputRasternoValue" xml:space="preserve">
+    <value>输入要进行赋无值操作的栅格数据</value>
+  </data>
+  <data name="Generateaverageslopewithpreferences" xml:space="preserve">
+    <value>此工具将根据用户设置对指定的多边形生成平均坡度</value>
+    <comment>This will Generate the average slope in the given polygons with more user preferences.</comment>
+  </data>
+  <data name="GenerateRasterfromPolygon" xml:space="preserve">
+    <value>此工具将从给定的多边形中生成栅格图层</value>
+  </data>
+  <data name="Multiplytworasters" xml:space="preserve">
+    <value>此工具将逐个像元使两个栅格图层相乘</value>
+  </data>
+  <data name="BinToolDescription" xml:space="preserve">
+    <value>This bins the values of a raster so that there will be large regions of equal values.</value>
+  </data>
+  <data name="ConvertingLAS" xml:space="preserve">
+    <value>从LAS点云生成</value>
+  </data>
+  <data name="DotSpatialRasterFromLAS" xml:space="preserve">
+    <value>从LAS文件生成栅格数据</value>
+  </data>
+  <data name="GeographicExtent" xml:space="preserve">
+    <value>设置输出栅格文件的地理坐标范围。</value>
+  </data>
+  <data name="HelpLASTool" xml:space="preserve">
+    <value>该工具根据LAS文件中点云的高程值进行内插生成栅格文件.</value>
+  </data>
+  <data name="lasFilename" xml:space="preserve">
+    <value>LAS文件名</value>
+  </data>
+  <data name="LasFullpath" xml:space="preserve">
+    <value>输入LAS文件的路径</value>
+  </data>
+  <data name="NoDataValueChange" xml:space="preserve">
+    <value>改变无数据栅格</value>
+  </data>
+  <data name="numberofcolums" xml:space="preserve">
+    <value>设置输出栅格文件的列数.</value>
+  </data>
+  <data name="numberofrows" xml:space="preserve">
+    <value>设置输出栅格文件的行数.</value>
+  </data>
+  <data name="NumColumns" xml:space="preserve">
+    <value>列数</value>
+  </data>
+  <data name="NumRows" xml:space="preserve">
+    <value>行数</value>
+  </data>
+  <data name="Progresstoraster" xml:space="preserve">
+    <value>栅格</value>
+  </data>
+  <data name="RasterExtent" xml:space="preserve">
+    <value>栅格文件的范围</value>
+  </data>
+  <data name="RasterFromLAS" xml:space="preserve">
+    <value>从LAS文件生成栅格数据</value>
+  </data>
+  <data name="ToolFromLasToRaster" xml:space="preserve">
+    <value>该工具从LAS点云数据中生成该区域的栅格数据</value>
+  </data>
+</root>
