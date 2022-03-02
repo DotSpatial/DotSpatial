@@ -5,6 +5,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace DotSpatial.Symbology.Forms
 {
@@ -147,45 +148,45 @@ namespace DotSpatial.Symbology.Forms
             ColorChanged?.Invoke(this, new ColorRangeEventArgs(_startColor, _endColor, HueShift, _hsl, chkUseColorRange.Checked));
         }
 
-        private void BtnHueShiftMouseDown(object sender, MouseEventArgs e)
+        private void BtnHueShiftMouseDown(object? sender, MouseEventArgs e)
         {
             tmrHueShift.Start();
         }
 
-        private void BtnHueShiftMouseUp(object sender, MouseEventArgs e)
+        private void BtnHueShiftMouseUp(object? sender, MouseEventArgs e)
         {
             tmrHueShift.Stop();
         }
 
-        private void BtnReverseHueClick(object sender, EventArgs e)
+        private void BtnReverseHueClick(object? sender, EventArgs e)
         {
             sldHue.Inverted = !sldHue.Inverted;
             SetHsl();
         }
 
-        private void BtnReverseLightClick(object sender, EventArgs e)
+        private void BtnReverseLightClick(object? sender, EventArgs e)
         {
             sldLightness.Inverted = !sldLightness.Inverted;
             SetHsl();
         }
 
-        private void BtnReverseSatClick(object sender, EventArgs e)
+        private void BtnReverseSatClick(object? sender, EventArgs e)
         {
             sldSaturation.Inverted = !sldSaturation.Inverted;
             SetHsl();
         }
 
-        private void CbEndColorColorChanged(object sender, EventArgs e)
+        private void CbEndColorColorChanged(object? sender, EventArgs e)
         {
             SetRgb();
         }
 
-        private void CbStartColorColorChanged(object sender, EventArgs e)
+        private void CbStartColorColorChanged(object? sender, EventArgs e)
         {
             SetRgb();
         }
 
-        private void ChkUseColorRangeCheckedChanged(object sender, EventArgs e)
+        private void ChkUseColorRangeCheckedChanged(object? sender, EventArgs e)
         {
             OnColorChanged();
         }
@@ -258,22 +259,22 @@ namespace DotSpatial.Symbology.Forms
             _startLight = _startColor.GetBrightness();
         }
 
-        private void SldHuePositionChanging(object sender, EventArgs e)
+        private void SldHuePositionChanging(object? sender, EventArgs e)
         {
             SetHsl();
         }
 
-        private void SldLightnessPositionChanging(object sender, EventArgs e)
+        private void SldLightnessPositionChanging(object? sender, EventArgs e)
         {
             SetHsl();
         }
 
-        private void SldSaturationPositionChanging(object sender, EventArgs e)
+        private void SldSaturationPositionChanging(object? sender, EventArgs e)
         {
             SetHsl();
         }
 
-        private void TmrHueShiftTick(object sender, EventArgs e)
+        private void TmrHueShiftTick(object? sender, EventArgs e)
         {
             int shift = sldHue.Inverted ? 36 : -36;
             _ignoreUpdates = true;

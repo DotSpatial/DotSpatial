@@ -197,8 +197,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// </returns>
         public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
-            var s = indexes[0] as string;
-            if (s != null)
+            if (indexes[0] is string s)
             {
                 XAttribute attr = _node.Attribute(s);
                 if (attr != null)
@@ -300,8 +299,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// </returns>
         public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
         {
-            var s = indexes[0] as string;
-            if (s != null)
+            if (indexes[0] is string s)
             {
                 _node.SetAttributeValue(s, value);
                 return true;

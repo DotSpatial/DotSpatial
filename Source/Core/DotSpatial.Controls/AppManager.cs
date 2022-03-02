@@ -128,7 +128,11 @@ namespace DotSpatial.Controls
                 else
                 {
                     // by placing data in the AppData location, ClickOnce appications won't be subject to limits on size.
-                    Assembly asm = Assembly.GetEntryAssembly();
+                    Assembly? asm = Assembly.GetEntryAssembly();
+
+                    if (asm == null)
+                        return "";
+
                     absolutePathToExtensions = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), asm.ManifestModule.Name, ExtensionsDirectory);
                 }
 
@@ -336,7 +340,7 @@ namespace DotSpatial.Controls
         /// <returns>
         /// Null if the extension is not present.
         /// </returns>
-        public IExtension GetExtension(string assemblyTitle)
+        public IExtension? GetExtension(string assemblyTitle)
         {
             return Extensions.FirstOrDefault(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ","));
         }
@@ -349,7 +353,7 @@ namespace DotSpatial.Controls
         /// <returns>
         /// Null if the extension is not present.
         /// </returns>
-        public IExtension GetExtension(string assemblyTitle, string version)
+        public IExtension? GetExtension(string assemblyTitle, string version)
         {
             return Extensions.FirstOrDefault(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ",") && t.Version == version);
         }
@@ -370,7 +374,7 @@ namespace DotSpatial.Controls
             PackageManager.RemovePendingPackagesAndExtensions();
             _splashScreen = SplashScreenHelper.GetSplashScreenManager();
 
-            Thread updateThread = new Thread(AppLoadExtensions);
+            Thread updateThread = new (AppLoadExtensions);
             updateThread.Start();
 
             // Update splash screen's progress bar while thread is active.
@@ -493,7 +497,10 @@ namespace DotSpatial.Controls
 
         private static string PrefixWithEllipsis(string text, int length)
         {
-            if (text.Length <= length) return text;
+            if (text.Length <= length)
+            {
+                return text;
+            }
 
             return "..." + text.Substring(Math.Max(2, text.Length - length - 3));
         }
@@ -507,10 +514,13 @@ namespace DotSpatial.Controls
             }
             catch (ReflectionTypeLoadException ex)
             {
-                Type type = ex.Types[0];
+                var type = ex.Types[0];
                 string typeAssembly = type != null ? type.Assembly.ToString() : string.Empty;
 
-                string message = string.Format(MessageStrings.AppManager_SkippingExtension, typeAssembly, ex.LoaderExceptions.First().Message);
+                var first = ex.LoaderExceptions.First();
+                var msg = first != null ? first.Message : string.Empty;
+
+                string message = string.Format(MessageStrings.AppManager_SkippingExtension, typeAssembly, msg);
                 Trace.WriteLine(message);
                 MessageBox.Show(message);
             }
@@ -571,7 +581,7 @@ namespace DotSpatial.Controls
         /// <param name="sender">Sender that fired the event.</param>
         /// <param name="args">The event data.</param>
         /// <returns>The first assembly that was found.</returns>
-        private Assembly CurrentDomainAssemblyResolve(object sender, ResolveEventArgs args)
+        private Assembly CurrentDomainAssemblyResolve(object? sender, ResolveEventArgs args)
         {
             var knownExtensions = new[] { "dll", "exe" };
             string assemblyName = new AssemblyName(args.Name).Name;
@@ -611,7 +621,8 @@ namespace DotSpatial.Controls
             var catalog = new AggregateCatalog();
 
             // Add main exe
-            Assembly mainExe = Assembly.GetEntryAssembly();
+            Assembly? mainExe = Assembly.GetEntryAssembly();
+          
             if (mainExe != null)
             {
                 // if there is a managed entry assembly running, add it.

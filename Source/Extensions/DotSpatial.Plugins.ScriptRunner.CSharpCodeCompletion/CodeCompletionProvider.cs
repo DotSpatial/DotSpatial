@@ -94,9 +94,9 @@ namespace CSharpEditor
         {
             // We can return code-completion items like this:
             // return new ICompletionData[] {new DefaultCompletionData("Text", "Description", 1)};
-            NRefactoryResolver resolver = new NRefactoryResolver(_mainForm.MyProjectContent.Language);
+            NRefactoryResolver resolver = new(_mainForm.MyProjectContent.Language);
             ResolveResult rr = resolver.Resolve(FindExpression(textArea), _mainForm.ParseInformation, textArea.MotherTextEditorControl.Text);
-            List<ICompletionData> resultList = new List<ICompletionData>();
+            List<ICompletionData> resultList = new();
 
             ArrayList completionData = rr?.GetCompletionData(_mainForm.MyProjectContent);
             if (completionData != null)
@@ -140,26 +140,23 @@ namespace CSharpEditor
         private void AddCompletionData(List<ICompletionData> resultList, ArrayList completionData)
         {
             // used to store the method names for grouping overloads
-            Dictionary<string, CodeCompletionData> nameDictionary = new Dictionary<string, CodeCompletionData>();
+            Dictionary<string, CodeCompletionData> nameDictionary = new();
 
             // Add the completion data as returned by SharpDevelop.Dom to the
             // list for the text editor
             foreach (object obj in completionData)
             {
-                var s = obj as string;
-                if (s != null)
+                if (obj is string s)
                 {
                     // namespace names are returned as string
                     resultList.Add(new DefaultCompletionData(s, "namespace " + obj, 5));
                 }
-                else if (obj is IClass)
+                else if (obj is IClass c)
                 {
-                    IClass c = (IClass)obj;
                     resultList.Add(new CodeCompletionData(c));
                 }
-                else if (obj is IMember)
+                else if (obj is IMember m)
                 {
-                    IMember m = (IMember)obj;
                     if (m is IMethod && (m as IMethod).IsConstructor)
                     {
                         // Skip constructors
@@ -168,8 +165,7 @@ namespace CSharpEditor
 
                     // Group results by name and add "(x Overloads)" to the
                     // description if there are multiple results with the same name.
-                    CodeCompletionData data;
-                    if (nameDictionary.TryGetValue(m.Name, out data))
+                    if (nameDictionary.TryGetValue(m.Name, out CodeCompletionData data))
                     {
                         data.AddOverload();
                     }

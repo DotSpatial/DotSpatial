@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
-using DotSpatial.Plugins.Contourer.Properties;
 
 namespace DotSpatial.Plugins.Contourer
 {

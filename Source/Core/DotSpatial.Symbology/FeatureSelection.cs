@@ -104,7 +104,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                return _envelope ?? (_envelope = GetEnvelope());
+                return _envelope ??= GetEnvelope();
             }
 
             protected set
@@ -252,7 +252,7 @@ namespace DotSpatial.Symbology
                 Geometry reg;
                 if (region.Width == 0 && region.Height == 0)
                 {
-                    reg = new Point(region.MinX, region.MaxY);
+                    reg = new NetTopologySuite.Geometries.Point(region.MinX, region.MaxY);
                 }
                 else if (region.Height == 0 || region.Width == 0)
                 {

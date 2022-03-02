@@ -122,8 +122,7 @@ namespace DotSpatial.Projections.Transforms
                 p[I] = xy[x];
                 for (nn = 20; nn > 0; --nn)
                 {
-                    double[] fp;
-                    double[] f = Proj.Zpolyd1(p, _bf, NBF, out fp);
+                    double[] f = Proj.Zpolyd1(p, _bf, NBF, out double[] fp);
                     f[R] -= xy[y];
                     f[I] -= xy[x];
                     double den = fp[R] * fp[R] + fp[I] * fp[I];

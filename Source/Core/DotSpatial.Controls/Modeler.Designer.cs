@@ -35,8 +35,8 @@ namespace DotSpatial.Controls
             this._panelHScroll = new System.Windows.Forms.Panel();
             this._horScroll = new System.Windows.Forms.HScrollBar();
             this._verScroll = new System.Windows.Forms.VScrollBar();
-            this._contMenuRc = new System.Windows.Forms.ContextMenu();
-            this._menuItem1 = new System.Windows.Forms.MenuItem();
+            this._contMenuRc = new System.Windows.Forms.ContextMenuStrip();
+            this._menuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this._panelHScroll.SuspendLayout();
             this.SuspendLayout();
             //
@@ -59,14 +59,13 @@ namespace DotSpatial.Controls
             //
             // _contMenuRc
             //
-            this._contMenuRc.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this._contMenuRc.Items.AddRange(new System.Windows.Forms.ToolStripMenuItem[] {
                                                                                         this._menuItem1});
             resources.ApplyResources(this._contMenuRc, "_contMenuRc");
             //
             // _menuItem1
             //
             resources.ApplyResources(this._menuItem1, "_menuItem1");
-            this._menuItem1.Index = 0;
             //
             // Modeler
             //
@@ -82,9 +81,9 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        private ContextMenu _contMenuRc;
+        private ContextMenuStrip _contMenuRc;
         private HScrollBar _horScroll;
-        private MenuItem _menuItem1;
+        private ToolStripMenuItem _menuItem1;
         private Panel _panelHScroll;
         private VScrollBar _verScroll;
 

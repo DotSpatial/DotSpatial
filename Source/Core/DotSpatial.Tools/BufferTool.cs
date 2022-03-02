@@ -5,6 +5,7 @@ using DotSpatial.Analysis;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
+using Buffer = DotSpatial.Analysis.Buffer;
 
 namespace DotSpatial.Tools
 {

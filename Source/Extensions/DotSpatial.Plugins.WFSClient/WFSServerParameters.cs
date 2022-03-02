@@ -46,9 +46,9 @@ namespace DotSpatial.Plugins.WFSClient
         {
             if (_wfsClient.Fields == null) return;
 
-            DataTable table = new DataTable();
-            DataColumn dLayer = new DataColumn("Name");
-            DataColumn dGeom = new DataColumn("Type");
+            DataTable table = new();
+            DataColumn dLayer = new("Name");
+            DataColumn dGeom = new("Type");
             table.Columns.Add(dLayer);
             table.Columns.Add(dGeom);
             foreach (var feature in _wfsClient.Fields.Keys)
@@ -105,9 +105,9 @@ namespace DotSpatial.Plugins.WFSClient
             }
 
             uxVersion.Text = "Server type: " + _wfsClient.Wfs.Version;
-            DataTable table = new DataTable();
-            DataColumn dLayer = new DataColumn("Layer");
-            DataColumn dGeom = new DataColumn("Geometry");
+            DataTable table = new();
+            DataColumn dLayer = new("Layer");
+            DataColumn dGeom = new("Geometry");
             table.Columns.Add(dLayer);
             table.Columns.Add(dGeom);
             foreach (var feature in _wfsClient.Wfs.FeatureTypeList.FeatureTypes)

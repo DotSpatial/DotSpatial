@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using DotSpatial.Symbology;
+using Timer = System.Windows.Forms.Timer;
 
 namespace DotSpatial.Data.Forms
 {

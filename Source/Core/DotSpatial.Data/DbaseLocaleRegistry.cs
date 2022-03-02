@@ -17,9 +17,9 @@ namespace DotSpatial.Data
     {
         #region Fields
 
-        private static readonly Dictionary<byte, CultureWithEncoding> DbaseToEncoding = new Dictionary<byte, CultureWithEncoding>();
+        private static readonly Dictionary<byte, CultureWithEncoding> DbaseToEncoding = new();
 
-        private static readonly Dictionary<Encoding, byte> EncodingToDbase = new Dictionary<Encoding, byte>();
+        private static readonly Dictionary<Encoding, byte> EncodingToDbase = new();
 
         #endregion
 
@@ -27,6 +27,7 @@ namespace DotSpatial.Data
 
         static DbaseLocaleRegistry()
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             SetupDbaseToEncodingMap();
             SetupEncodingToDbaseMap();
         }
@@ -45,6 +46,8 @@ namespace DotSpatial.Data
             Mac
         }
 
+        public static void DoNothing() { }
+
         #region Methods
 
         /// <summary>
@@ -54,8 +57,7 @@ namespace DotSpatial.Data
         /// <returns>A <see cref="CultureInfo"/> which uses the encoding represented by <paramref name="dBaseEncoding"/> by default.</returns>
         public static CultureInfo GetCulture(byte dBaseEncoding)
         {
-            CultureWithEncoding pair;
-            return DbaseToEncoding.TryGetValue(dBaseEncoding, out pair) ? pair.CultureInfo : CultureInfo.InvariantCulture;
+            return DbaseToEncoding.TryGetValue(dBaseEncoding, out CultureWithEncoding pair) ? pair.CultureInfo : CultureInfo.InvariantCulture;
         }
 
         /// <summary>
@@ -65,8 +67,7 @@ namespace DotSpatial.Data
         /// <returns>An <see cref="Encoding"/> which corresponds to the the <paramref name="dBaseEncoding"/> code established by Esri.</returns>
         public static Encoding GetEncoding(byte dBaseEncoding)
         {
-            CultureWithEncoding pair;
-            return DbaseToEncoding.TryGetValue(dBaseEncoding, out pair) ? pair.Encoding : Encoding.Default;
+            return DbaseToEncoding.TryGetValue(dBaseEncoding, out CultureWithEncoding pair) ? pair.Encoding : Encoding.Default;
         }
 
         /// <summary>
@@ -77,8 +78,14 @@ namespace DotSpatial.Data
         /// <remarks>0x57 (Windows ANSI) is returned as a default if there is no associated LDID for the given encoding.</remarks>
         public static byte GetLanguageDriverId(Encoding encoding)
         {
-            byte ldid;
-            return EncodingToDbase.TryGetValue(encoding, out ldid) ? ldid : (byte)0x57;
+            if (EncodingToDbase.TryGetValue(encoding, out byte ldid))
+            {
+                return ldid;
+            }
+            else
+            {
+                return 0x57;
+            }
         }
 
         // Values from the ArcPad reference guide.
@@ -207,12 +214,12 @@ namespace DotSpatial.Data
                 {
                     if (_encoding == null)
                     {
-                        switch (_codePageChoice)
+                        return _codePageChoice switch
                         {
-                            case CodePageChoice.Ansi: return Encoding.GetEncoding(CultureInfo.TextInfo.ANSICodePage);
-                            case CodePageChoice.Mac: return Encoding.GetEncoding(CultureInfo.TextInfo.MacCodePage);
-                            default: return Encoding.GetEncoding(CultureInfo.TextInfo.OEMCodePage);
-                        }
+                            CodePageChoice.Ansi => Encoding.GetEncoding(CultureInfo.TextInfo.ANSICodePage),
+                            CodePageChoice.Mac => Encoding.GetEncoding(CultureInfo.TextInfo.MacCodePage),
+                            _ => Encoding.GetEncoding(CultureInfo.TextInfo.OEMCodePage),
+                        };
                     }
 
                     return _encoding;

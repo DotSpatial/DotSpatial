@@ -3,7 +3,6 @@
 
 using System.IO;
 using DotSpatial.Data;
-using DotSpatial.Plugins.SpatiaLite.Properties;
 using DotSpatial.Serialization;
 
 namespace DotSpatial.Plugins.SpatiaLite
@@ -45,8 +44,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         {
             var connectionString = SqLiteHelper.GetSqLiteConnectionString(filePath);
 
-            string error;
-            var file = SpatiaLiteHelper.Open(connectionString, out error);
+            var file = SpatiaLiteHelper.Open(connectionString, out string error);
 
             if (file == null) throw new FileLoadException(string.Format(Resources.DatabaseNotValid, filePath, error));
 

@@ -1,11 +1,12 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
-using System;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
 using NetTopologySuite.Geometries;
+using System;
+using NtsPoint = NetTopologySuite.Geometries.Point;
 
 namespace DotSpatial.Tools
 {
@@ -148,11 +149,11 @@ namespace DotSpatial.Tools
                     for (int shpindx = 0; shpindx < output.Features.Count; shpindx++)
                     {
                         IFeature tempFeat = output.Features[shpindx];
-                        Point pt1 = new Point(xCent, yCent);
-                        Point pt2 = new Point(xCent - dxHalf, yCent - dyHalf);
-                        Point pt3 = new Point(xCent + dxHalf, yCent - dyHalf);
-                        Point pt4 = new Point(xCent + dxHalf, yCent + dyHalf);
-                        Point pt5 = new Point(xCent - dxHalf, yCent + dyHalf);
+                        NtsPoint pt1 = new NtsPoint(xCent, yCent);
+                        NtsPoint pt2 = new NtsPoint(xCent - dxHalf, yCent - dyHalf);
+                        NtsPoint pt3 = new NtsPoint(xCent + dxHalf, yCent - dyHalf);
+                        NtsPoint pt4 = new NtsPoint(xCent + dxHalf, yCent + dyHalf);
+                        NtsPoint pt5 = new NtsPoint(xCent - dxHalf, yCent + dyHalf);
                         if ((((!tempFeat.Geometry.Covers(pt1) && !tempFeat.Geometry.Covers(pt2)) && !tempFeat.Geometry.Covers(pt3)) && !tempFeat.Geometry.Covers(pt4)) && !tempFeat.Geometry.Covers(pt5))
                         {
                             continue;

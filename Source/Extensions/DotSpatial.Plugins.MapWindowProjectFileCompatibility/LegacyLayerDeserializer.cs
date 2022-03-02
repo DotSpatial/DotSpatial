@@ -101,8 +101,10 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
             int fieldIndex = Convert.ToInt32(labels["Field"]) - 1;
             var fieldName = featureLayer.DataSet.DataTable.Columns[fieldIndex].ColumnName;
 
-            var symbolizer = new LabelSymbolizer();
-            symbolizer.FontFamily = labels["Font"];
+            var symbolizer = new LabelSymbolizer
+            {
+                FontFamily = labels["Font"]
+            };
 
             try
             {

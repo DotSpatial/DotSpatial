@@ -23,11 +23,11 @@ namespace DotSpatial.Plugins.ShapeEditor
     {
         #region Fields
 
-        private ContextMenu _context;
+        private ContextMenuStrip _context;
         private CoordinateDialog _coordinateDialog;
         private List<Coordinate> _coordinates;
         private IFeatureSet _featureSet;
-        private MenuItem _finishPart;
+        private ToolStripItem _finishPart;
         private IFeatureLayer _layer;
         private Point _mousePosition;
         private List<List<Coordinate>> _parts;
@@ -92,7 +92,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         /// <param name="sender">The sender of the DeleteShape event.</param>
         /// <param name="e">An empty EventArgument.</param>
-        public void DeleteShape(object sender, EventArgs e)
+        public void DeleteShape(object? sender, EventArgs e)
         {
             _coordinates = new List<Coordinate>();
             _parts = new List<List<Coordinate>>();
@@ -116,9 +116,9 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         /// <param name="sender">The object sender.</param>
         /// <param name="e">An empty EventArgs class.</param>
-        public void FinishPart(object sender, EventArgs e)
+        public void FinishPart(object? sender, EventArgs e)
         {
-            if (_featureSet.FeatureType == FeatureType.Polygon && !_coordinates[0].Equals2D(_coordinates[_coordinates.Count - 1])) _coordinates.Add(_coordinates[0]); // close polygons because they must be closed
+            if (_featureSet.FeatureType == FeatureType.Polygon && !_coordinates[0].Equals2D(_coordinates[^1])) _coordinates.Add(_coordinates[0]); // close polygons because they must be closed
 
             _parts.Add(_coordinates);
             _coordinates = new List<Coordinate>();
@@ -134,7 +134,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             if (_featureSet != null && !_featureSet.IsDisposed)
             {
-                Feature f = null;
+                Feature? f = null;
                 if (_featureSet.FeatureType == FeatureType.MultiPoint)
                 {
                     f = new Feature(new MultiPoint(_coordinates.CastToPointArray()));
@@ -143,7 +143,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 if (_featureSet.FeatureType == FeatureType.Line || _featureSet.FeatureType == FeatureType.Polygon)
                 {
                     FinishPart(sender, e);
-                    Shape shp = new Shape(_featureSet.FeatureType);
+                    Shape shp = new(_featureSet.FeatureType);
                     foreach (List<Coordinate> part in _parts)
                     {
                         if (part.Count >= 2)
@@ -218,11 +218,11 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
             {
-                if (_context.MenuItems.Contains(_finishPart)) _context.MenuItems.Remove(_finishPart);
+                if (_context.Items.Contains(_finishPart)) _context.Items.Remove(_finishPart);
             }
-            else if (!_context.MenuItems.Contains(_finishPart))
+            else if (!_context.Items.Contains(_finishPart))
             {
-                _context.MenuItems.Add(1, _finishPart);
+                _context.Items.Insert(1, _finishPart);
             }
 
             _coordinateDialog.Show();
@@ -257,10 +257,10 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             if (_coordinates != null && _coordinates.Count > 1)
             {
-                LineString ls = new LineString(_coordinates.ToArray());
-                FeatureSet fs = new FeatureSet(FeatureType.Line);
+                LineString ls = new(_coordinates.ToArray());
+                FeatureSet fs = new(FeatureType.Line);
                 fs.Features.Add(new Feature(ls));
-                MapLineLayer gll = new MapLineLayer(fs)
+                MapLineLayer gll = new(fs)
                 {
                     Symbolizer =
                     {
@@ -301,9 +301,9 @@ namespace DotSpatial.Plugins.ShapeEditor
             // Draw any completed parts first so that they are behind my active drawing content.
             if (_parts != null)
             {
-                GraphicsPath gp = new GraphicsPath();
+                GraphicsPath gp = new();
 
-                List<Point> partPoints = new List<Point>();
+                List<Point> partPoints = new();
                 foreach (List<Coordinate> part in _parts)
                 {
                     partPoints.AddRange(part.Select(c => Map.ProjToPixel(c)));
@@ -329,10 +329,10 @@ namespace DotSpatial.Plugins.ShapeEditor
                 }
             }
 
-            Pen bluePen = new Pen(Color.Blue, 2F);
-            Pen redPen = new Pen(Color.Red, 3F);
+            Pen bluePen = new(Color.Blue, 2F);
+            Pen redPen = new(Color.Red, 3F);
             Brush redBrush = new SolidBrush(Color.Red);
-            List<Point> points = new List<Point>();
+            List<Point> points = new();
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             if (_coordinates != null)
             {
@@ -354,7 +354,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 {
                     if (_featureSet.FeatureType != FeatureType.MultiPoint)
                     {
-                        e.Graphics.DrawLine(redPen, points[points.Count - 1], _mousePosition);
+                        e.Graphics.DrawLine(redPen, points[^1], _mousePosition);
                     }
                 }
             }
@@ -387,8 +387,8 @@ namespace DotSpatial.Plugins.ShapeEditor
             if (_coordinates != null && _coordinates.Count > 0)
             {
                 List<Point> points = _coordinates.Select(coord => Map.ProjToPixel(coord)).ToList();
-                Rectangle oldRect = SymbologyGlobal.GetRectangle(_mousePosition, points[points.Count - 1]);
-                Rectangle newRect = SymbologyGlobal.GetRectangle(e.Location, points[points.Count - 1]);
+                Rectangle oldRect = SymbologyGlobal.GetRectangle(_mousePosition, points[^1]);
+                Rectangle newRect = SymbologyGlobal.GetRectangle(e.Location, points[^1]);
                 Rectangle invalid = Rectangle.Union(newRect, oldRect);
                 invalid.Inflate(20, 20);
                 Map.Invalidate(invalid);
@@ -428,7 +428,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     ComputeSnappedLocation(e, ref snappedCoord);
 
                     // End snapping changes
-                    Feature f = new Feature(snappedCoord);
+                    Feature f = new(snappedCoord);
                     _featureSet.Features.Add(f);
                     _featureSet.ShapeIndices = null; // Reset shape indices
                     _featureSet.UpdateExtent();
@@ -456,8 +456,8 @@ namespace DotSpatial.Plugins.ShapeEditor
                     _coordinates.Add(snappedCoord); // Snapping changes
                     if (_coordinates.Count > 1)
                     {
-                        Point p1 = Map.ProjToPixel(_coordinates[_coordinates.Count - 1]);
-                        Point p2 = Map.ProjToPixel(_coordinates[_coordinates.Count - 2]);
+                        Point p1 = Map.ProjToPixel(_coordinates[^1]);
+                        Point p2 = Map.ProjToPixel(_coordinates[^2]);
                         Rectangle invalid = SymbologyGlobal.GetRectangle(p1, p2);
                         invalid.Inflate(20, 20);
                         Map.Invalidate(invalid);
@@ -493,15 +493,13 @@ namespace DotSpatial.Plugins.ShapeEditor
         private void Configure()
         {
             YieldStyle = YieldStyles.LeftButton | YieldStyles.RightButton;
-            _context = new ContextMenu();
-            _context.MenuItems.Add("Delete", DeleteShape);
-            _finishPart = new MenuItem("Finish Part", FinishPart);
-            _context.MenuItems.Add(_finishPart);
-            _context.MenuItems.Add("Finish Shape", FinishShape);
+            _context = new ContextMenuStrip();
+            _context.Items.Add("Delete", null, DeleteShape);
+            _finishPart = _context.Items.Add("Finish Part", null, FinishPart);
             _parts = new List<List<Coordinate>>();
         }
 
-        private void CoordinateDialogFormClosing(object sender, FormClosingEventArgs e)
+        private void CoordinateDialogFormClosing(object? sender, FormClosingEventArgs e)
         {
             // This signals that we are done with editing, and should therefore close up shop
             Enabled = false;

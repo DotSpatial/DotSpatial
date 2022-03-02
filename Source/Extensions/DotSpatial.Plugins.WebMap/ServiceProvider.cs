@@ -22,8 +22,7 @@ namespace DotSpatial.Plugins.WebMap
         /// <param name="name">Name of the service provider.</param>
         public ServiceProvider(string name)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         #endregion

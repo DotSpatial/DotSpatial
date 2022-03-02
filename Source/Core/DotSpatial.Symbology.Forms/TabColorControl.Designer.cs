@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace DotSpatial.Symbology.Forms
 {

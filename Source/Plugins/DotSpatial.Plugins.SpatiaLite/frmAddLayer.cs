@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
-using DotSpatial.Plugins.SpatiaLite.Properties;
 
 namespace DotSpatial.Plugins.SpatiaLite
 {
@@ -41,8 +40,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         {
             foreach (DataGridViewRow r in dgGeometryColumns.SelectedRows)
             {
-                GeometryColumnInfo item = r.DataBoundItem as GeometryColumnInfo;
-                if (item != null)
+                if (r.DataBoundItem is GeometryColumnInfo item)
                 {
                     IFeatureSet fs = _slh.ReadFeatureSet(item);
                     _mainMap.Layers.Add(fs);

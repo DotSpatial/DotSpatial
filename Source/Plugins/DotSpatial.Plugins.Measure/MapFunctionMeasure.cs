@@ -119,24 +119,24 @@ namespace DotSpatial.Plugins.Measure
 
             bool hasMouse = Map.ClientRectangle.Contains(mouseTest);
 
-            Pen bluePen = new Pen(Color.Blue, 2F);
-            Pen redPen = new Pen(Color.Red, 3F);
+            Pen bluePen = new(Color.Blue, 2F);
+            Pen redPen = new(Color.Red, 3F);
             Brush redBrush = new SolidBrush(Color.Red);
 
-            List<Point> points = new List<Point>();
+            List<Point> points = new();
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             Brush blue = new SolidBrush(Color.FromArgb(60, 0, 0, 255));
 
             if (_previousParts != null && _previousParts.Count > 0)
             {
-                GraphicsPath previous = new GraphicsPath
+                GraphicsPath previous = new()
                 {
                     FillMode = FillMode.Winding
                 };
-                List<Point> allPoints = new List<Point>();
+                List<Point> allPoints = new();
                 foreach (List<Coordinate> part in _previousParts)
                 {
-                    List<Point> prt = new List<Point>();
+                    List<Point> prt = new();
                     foreach (Coordinate c in part)
                     {
                         prt.Add(Map.ProjToPixel(c));
@@ -144,13 +144,17 @@ namespace DotSpatial.Plugins.Measure
 
                     previous.AddLines(prt.ToArray());
                     allPoints.AddRange(prt);
-                    if (_areaMode) previous.CloseFigure();
+                    if (_areaMode)
+                    {
+                        previous.CloseFigure();
+                    }
+
                     previous.StartFigure();
                 }
 
                 if (_areaMode && _coordinates != null)
                 {
-                    List<Point> fillPts = new List<Point>();
+                    List<Point> fillPts = new();
                     if ((!_standBy && _coordinates.Count > 2) || _coordinates.Count > 3)
                     {
                         foreach (Coordinate c in _coordinates)
@@ -201,7 +205,7 @@ namespace DotSpatial.Plugins.Measure
 
                 if (points.Count > 0 && _standBy == false && hasMouse)
                 {
-                    e.Graphics.DrawLine(redPen, points[points.Count - 1], _mousePosition);
+                    e.Graphics.DrawLine(redPen, points[^1], _mousePosition);
                     if (_areaMode && points.Count > 1)
                     {
                         e.Graphics.DrawLine(redPen, points[0], _mousePosition);
@@ -254,7 +258,12 @@ namespace DotSpatial.Plugins.Measure
             else
             {
                 List<Coordinate> tempPolygon = _coordinates.ToList();
-                if (!c1.Equals2D(_coordinates[_coordinates.Count - 1])) tempPolygon.Add(c1); // don't add the current coordinate again if it was added by mouse click
+
+                if (!c1.Equals2D(_coordinates[^1]))
+                {
+                    tempPolygon.Add(c1); // don't add the current coordinate again if it was added by mouse click
+                }
+
                 if (tempPolygon.Count < 3)
                 {
                     if (tempPolygon.Count > 1)
@@ -269,7 +278,7 @@ namespace DotSpatial.Plugins.Measure
                 }
 
                 tempPolygon.Add(_coordinates[0]); // changed by jany_ (2016-06-09) close the polygon, because they must be closed by definition
-                Polygon pg = new Polygon(new LinearRing(tempPolygon.ToArray()));
+                Polygon pg = new(new LinearRing(tempPolygon.ToArray()));
 
                 double area = GetArea(tempPolygon.ToArray());
 
@@ -283,8 +292,8 @@ namespace DotSpatial.Plugins.Measure
             if (_coordinates.Count > 0)
             {
                 List<Point> points = _coordinates.Select(coord => Map.ProjToPixel(coord)).ToList();
-                Rectangle oldRect = SymbologyGlobal.GetRectangle(_mousePosition, points[points.Count - 1]);
-                Rectangle newRect = SymbologyGlobal.GetRectangle(e.Location, points[points.Count - 1]);
+                Rectangle oldRect = SymbologyGlobal.GetRectangle(_mousePosition, points[^1]);
+                Rectangle newRect = SymbologyGlobal.GetRectangle(e.Location, points[^1]);
                 Rectangle invalid = Rectangle.Union(newRect, oldRect);
                 invalid.Inflate(20, 20);
                 Map.Invalidate(invalid);
@@ -388,11 +397,14 @@ namespace DotSpatial.Plugins.Measure
             _measureDialog = new MeasureDialog();
             HandleMeasureDialogEvents();
 
-            if (Map is Control map) map.MouseLeave += MapMouseLeave;
+            if (Map is Control map)
+            {
+                map.MouseLeave += MapMouseLeave;
+            }
             Name = "MapFunctionMeasure";
         }
 
-        private void CoordinateDialogFormClosing(object sender, FormClosingEventArgs e1)
+        private void CoordinateDialogFormClosing(object? sender, FormClosingEventArgs e1)
         {
             // This signals that we are done with editing, and should therefore close up shop
             Enabled = false;
@@ -432,7 +444,7 @@ namespace DotSpatial.Plugins.Measure
 
         private double GetDist(Coordinate c1)
         {
-            Coordinate c2 = _coordinates[_coordinates.Count - 1];
+            Coordinate c2 = _coordinates[^1];
             double dx = Math.Abs(c2.X - c1.X);
             double dy = Math.Abs(c2.Y - c1.Y);
             double dist;
@@ -468,12 +480,12 @@ namespace DotSpatial.Plugins.Measure
             _measureDialog.MeasurementsCleared += MeasureDialogMeasurementsCleared;
         }
 
-        private void MapMouseLeave(object sender, EventArgs e)
+        private void MapMouseLeave(object? sender, EventArgs e)
         {
             Map.Invalidate();
         }
 
-        private void MeasureDialogMeasurementsCleared(object sender, EventArgs e)
+        private void MeasureDialogMeasurementsCleared(object? sender, EventArgs e)
         {
             _previousParts.Clear();
             _coordinates?.Clear();
@@ -487,7 +499,7 @@ namespace DotSpatial.Plugins.Measure
             _measureDialog.TotalArea = 0;
         }
 
-        private void MeasureDialogMeasureModeChanged(object sender, EventArgs e)
+        private void MeasureDialogMeasureModeChanged(object? sender, EventArgs e)
         {
             _previousParts.Clear();
 

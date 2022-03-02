@@ -55,19 +55,14 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             get
             {
-                switch (_cmbFeatureType.SelectedIndex)
+                return _cmbFeatureType.SelectedIndex switch
                 {
-                    case 0:
-                        return FeatureType.Point;
-                    case 1:
-                        return FeatureType.Line;
-                    case 2:
-                        return FeatureType.Polygon;
-                    case 3:
-                        return FeatureType.MultiPoint;
-                }
-
-                return FeatureType.Unspecified;
+                    0 => FeatureType.Point,
+                    1 => FeatureType.Line,
+                    2 => FeatureType.Polygon,
+                    3 => FeatureType.MultiPoint,
+                    _ => FeatureType.Unspecified,
+                };
             }
         }
 

@@ -199,7 +199,7 @@ namespace DotSpatial.Controls
                     case FunctionMode.ZoomIn:
                         try
                         {
-                            MemoryStream ms = new MemoryStream(Images.cursorZoomIn);
+                            MemoryStream ms = new(Images.cursorZoomIn);
                             Cursor = new Cursor(ms);
                         }
                         catch
@@ -211,7 +211,7 @@ namespace DotSpatial.Controls
                     case FunctionMode.ZoomOut:
                         try
                         {
-                            MemoryStream ms = new MemoryStream(Images.cursorZoomOut);
+                            MemoryStream ms = new(Images.cursorZoomOut);
                             Cursor = new Cursor(ms);
                         }
                         catch
@@ -233,7 +233,7 @@ namespace DotSpatial.Controls
                     case FunctionMode.Pan:
                         try
                         {
-                            MemoryStream ms = new MemoryStream(Images.cursorHand);
+                            MemoryStream ms = new(Images.cursorHand);
                             Cursor = new Cursor(ms);
                         }
                         catch
@@ -246,7 +246,7 @@ namespace DotSpatial.Controls
                     case FunctionMode.Select:
                         try
                         {
-                            MemoryStream ms = new MemoryStream(Images.cursorSelect);
+                            MemoryStream ms = new(Images.cursorSelect);
                             Cursor = new Cursor(ms);
                         }
                         catch
@@ -1468,7 +1468,7 @@ namespace DotSpatial.Controls
                 // the current height or width is smaller than minExt
                 double x = ViewExtents.Center.X;
                 double y = ViewExtents.Center.Y;
-                Extent newExtent = new Extent(x - (minExt / 2), y - (minExt / 2), x + (minExt / 2), y + (minExt / 2)); // resize to stay above the minExt
+                Extent newExtent = new(x - (minExt / 2), y - (minExt / 2), x + (minExt / 2), y + (minExt / 2)); // resize to stay above the minExt
 
                 // changed by jany_ (2016-04-14) Remember the last minimum extent in case MapFrame.ResetAspectRatio decides to resize the ViewExtent to something smaller than this.
                 // We don't want to cause a loop between this point and MapFrame.ResetAspectRatio switching ViewExtent between minExt and the corresponding extent that comes from fitting minExt to the maps aspect ratio.
@@ -1488,8 +1488,6 @@ namespace DotSpatial.Controls
         {
             MapFrame = new MapFrame(this, new Extent(0, 0, 0, 0));
 
-            // _resizeEndTimer = new Timer {Interval = 100};
-            // _resizeEndTimer.Tick += _resizeEndTimer_Tick;
             IMapFunction info = new MapFunctionIdentify(this);
             IMapFunction pan = new MapFunctionPan(this);
             IMapFunction label = new MapFunctionLabelSelect(this);
@@ -1521,8 +1519,12 @@ namespace DotSpatial.Controls
 
             CollisionDetection = false;
 
-            IMapFunction keyNavigation = MapFunctions.Find(f => f.GetType() == typeof(MapFunctionKeyNavigation));
-            ActivateMapFunction(keyNavigation);
+            var keyNavigation = MapFunctions.Find(f => f.GetType() == typeof(MapFunctionKeyNavigation));
+
+            if (keyNavigation != null)
+            {
+                ActivateMapFunction(keyNavigation);
+            }
 
             // changed by Jiri Kadlec - default function mode is none
             FunctionMode = FunctionMode.None;

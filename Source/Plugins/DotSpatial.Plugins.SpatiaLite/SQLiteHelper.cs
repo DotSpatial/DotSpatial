@@ -42,7 +42,7 @@ namespace DotSpatial.Plugins.SpatiaLite
                 return false;
             }
 
-            FileInfo dbFileInfo = new FileInfo(dbPath);
+            FileInfo dbFileInfo = new(dbPath);
             return dbFileInfo.Length != 0;
         }
 
@@ -53,7 +53,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// <returns>The connection string.</returns>
         public static string GetSqLiteConnectionString(string dbFileName)
         {
-            SQLiteConnectionStringBuilder conn = new SQLiteConnectionStringBuilder
+            SQLiteConnectionStringBuilder conn = new()
             {
                 DataSource = dbFileName,
                 Version = 3,
@@ -71,7 +71,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// <returns>The file name.</returns>
         public static string GetSqLiteFileName(string sqliteConnString)
         {
-            SQLiteConnectionStringBuilder conn = new SQLiteConnectionStringBuilder(sqliteConnString);
+            SQLiteConnectionStringBuilder conn = new(sqliteConnString);
             return conn.DataSource;
         }
         #endregion

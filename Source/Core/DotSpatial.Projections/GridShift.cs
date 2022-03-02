@@ -63,8 +63,7 @@ namespace DotSpatial.Projections
                 /* keep trying till we find a Table that works from the ones listed */
                 foreach (string name in names)
                 {
-                    Lazy<NadTable> tableLazy;
-                    if (!_shift.Tables.TryGetValue(name, out tableLazy)) continue;
+                    if (!_shift.Tables.TryGetValue(name, out Lazy<NadTable> tableLazy)) continue;
 
                     var table = tableLazy.Value;
 

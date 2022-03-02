@@ -28,8 +28,8 @@ namespace DotSpatial.Plugins.LiDAR
         /// <param name="e">The event args.</param>
         public void ButtonClick(object sender, EventArgs e)
         {
-            LiDarLayer lay = new LiDarLayer
-                             {
+            LiDarLayer lay = new()
+            {
                                  LegendText = "LiDARLayer"
                              };
             App.Map.Layers.Add(lay);

@@ -163,7 +163,7 @@ namespace DotSpatial.Projections.Tests
             string prjFile = System.IO.Path.GetTempFileName();
             try
             {
-                System.IO.File.WriteAllText(prjFile, Properties.Resources.ResourceManager.GetString(resourceName, Properties.Resources.Culture));
+                System.IO.File.WriteAllText(prjFile, Resources.ResourceManager.GetString(resourceName, Resources.Culture));
                 ProjectionInfo info = ProjectionInfo.Open(prjFile);
 
                 Assert.AreEqual("WGS_1984_Web_Mercator_Auxiliary_Sphere", info.Name);

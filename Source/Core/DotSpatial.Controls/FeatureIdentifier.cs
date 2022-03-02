@@ -19,10 +19,10 @@ namespace DotSpatial.Controls
         #region Fields
 
         private readonly Dictionary<string, string> _featureIdFields;
-        private readonly MenuItem _mnuAssignIdField;
-        private readonly MenuItem _mnuSelectMenu;
+        private readonly ToolStripMenuItem _mnuAssignIdField;
+        private readonly ToolStripMenuItem _mnuSelectMenu;
 
-        private readonly ContextMenu _mnuTreeContext;
+        private readonly ContextMenuStrip _mnuTreeContext;
         private Extent _activeRegion;
         private string _previouslySelectedLayerName;
 
@@ -37,12 +37,12 @@ namespace DotSpatial.Controls
         {
             InitializeComponent();
             treFeatures.MouseUp += TreFeaturesMouseUp;
-            _mnuTreeContext = new ContextMenu();
-            _mnuSelectMenu = new MenuItem("Select Feature");
+            _mnuTreeContext = new ContextMenuStrip();
+            _mnuSelectMenu = new ToolStripMenuItem("Select Feature");
             _mnuSelectMenu.Click += SelectMenuClick;
 
             // The "ID Field" seems more like a display caption.
-            _mnuAssignIdField = new MenuItem("Assign ID Field");
+            _mnuAssignIdField = new ToolStripMenuItem("Assign ID Field");
             _mnuAssignIdField.Click += MnuAssignIdFieldClick;
             _featureIdFields = new Dictionary<string, string>();
         }
@@ -169,10 +169,9 @@ namespace DotSpatial.Controls
             treFeatures.ResumeLayout();
         }
 
-        private void MnuAssignIdFieldClick(object sender, EventArgs e)
+        private void MnuAssignIdFieldClick(object? sender, EventArgs e)
         {
-            var fl = treFeatures.SelectedNode.Tag as IFeatureLayer;
-            if (fl != null)
+            if (treFeatures.SelectedNode.Tag is IFeatureLayer fl)
             {
                 var lstBox = new ListBoxDialog();
 
@@ -214,20 +213,18 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void SelectMenuClick(object sender, EventArgs e)
+        private void SelectMenuClick(object? sender, EventArgs e)
         {
-            var feature = treFeatures.SelectedNode.Tag as IFeature;
             var layer = treFeatures.SelectedNode.Parent.Tag as IFeatureLayer;
-            if (feature != null)
+            if (treFeatures.SelectedNode.Tag is IFeature feature)
             {
                 layer?.Select(feature);
             }
         }
 
-        private void TreFeaturesAfterSelect(object sender, TreeViewEventArgs e)
+        private void TreFeaturesAfterSelect(object? sender, TreeViewEventArgs e)
         {
-            var f = e.Node.Tag as IFeature;
-            if (f == null)
+            if (e.Node?.Tag is not IFeature f)
             {
                 dgvAttributes.DataSource = null;
                 return;
@@ -254,29 +251,28 @@ namespace DotSpatial.Controls
             dgvAttributes.DataSource = dt;
         }
 
-        private void TreFeaturesMouseUp(object sender, MouseEventArgs e)
+        private void TreFeaturesMouseUp(object? sender, MouseEventArgs e)
         {
             // Create a customized context menu on right click in the tree.
             if (e.Button == MouseButtons.Right)
             {
                 var clickedNode = treFeatures.GetNodeAt(e.X, e.Y);
+
                 if (clickedNode != null)
                 {
-                    var f = clickedNode.Tag as IFeature;
-                    if (f != null)
+                    if (clickedNode.Tag is IFeature)
                     {
                         treFeatures.SelectedNode = clickedNode;
-                        _mnuTreeContext.MenuItems.Clear();
-                        _mnuTreeContext.MenuItems.Add(_mnuSelectMenu);
+                        _mnuTreeContext.Items.Clear();
+                        _mnuTreeContext.Items.Add(_mnuSelectMenu);
                         _mnuTreeContext.Show(treFeatures, e.Location);
                     }
 
-                    var fl = clickedNode.Tag as IFeatureLayer;
-                    if (fl != null)
+                    if (clickedNode.Tag is IFeatureLayer)
                     {
                         treFeatures.SelectedNode = clickedNode;
-                        _mnuTreeContext.MenuItems.Clear();
-                        _mnuTreeContext.MenuItems.Add(_mnuAssignIdField);
+                        _mnuTreeContext.Items.Clear();
+                        _mnuTreeContext.Items.Add(_mnuAssignIdField);
                         _mnuTreeContext.Show(treFeatures, e.Location);
                     }
                 }

@@ -3,7 +3,6 @@
 
 using System;
 using System.Windows.Forms;
-
 using DotSpatial.Data;
 
 namespace DotSpatial.Analysis

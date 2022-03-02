@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Reflection;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
-using DotSpatial.Plugins.About.Properties;
 
 namespace DotSpatial.Plugins.About
 {
@@ -29,9 +28,9 @@ namespace DotSpatial.Plugins.About
             base.Deactivate();
         }
 
-        private static void ButtonClick(object sender, EventArgs e)
+        private static void ButtonClick(object? sender, EventArgs e)
         {
-            Assembly assembly = Assembly.GetEntryAssembly();
+            Assembly? assembly = Assembly.GetEntryAssembly();
             var form = new AboutBox { AppEntryAssembly = assembly };
 
             if (assembly != null && assembly.Location != null)

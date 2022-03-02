@@ -442,7 +442,7 @@ namespace DotSpatial.Plugins.Taudem
                                 tmpSlope = (tmpSlope / 30.48) * 100;
                                 break;
                             case ElevationUnits.Feet:
-                                tmpSlope = tmpSlope * 100;
+                                tmpSlope *= 100;
                                 break;
                         }
 
@@ -462,7 +462,7 @@ namespace DotSpatial.Plugins.Taudem
                     switch (elevUnits)
                     {
                         case ElevationUnits.Meters:
-                            tmpSlope = tmpSlope * 100;
+                            tmpSlope *= 100;
                             break;
                         case ElevationUnits.Centimeters:
                             break;

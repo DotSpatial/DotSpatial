@@ -152,7 +152,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void FilePathTest1()
         {
-            FeatureSet target = new FeatureSet();
+            FeatureSet target = new();
             string relativeFilePath = @"inner\states.shp";
             string expectedFullPath = Path.Combine(Directory.GetCurrentDirectory(), relativeFilePath);
 
@@ -170,7 +170,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void FilePathTest2()
         {
-            FeatureSet target = new FeatureSet();
+            FeatureSet target = new();
             string relativeFilePath = @"..\..\states.shp";
             string expectedFullPath = Path.GetFullPath(relativeFilePath);
 
@@ -188,7 +188,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void FilePathTestWithSpaces()
         {
-            FeatureSet target = new FeatureSet();
+            FeatureSet target = new();
             string relPath1 = @"folder";
             string relPath2 = @"name\states.shp";
             string relativeFilePath = relPath1 + " " + relPath2;
@@ -273,8 +273,8 @@ namespace DotSpatial.Data.Tests
 
             try
             {
-                List<Coordinate> coords = new List<Coordinate>
-                                          {
+                List<Coordinate> coords = new()
+                {
                                               new CoordinateZM(1, 2, 7, 4),
                                               new CoordinateZM(3, 4, 5, 6),
                                               new CoordinateZM(5, 6, 3, 8),
@@ -368,7 +368,7 @@ namespace DotSpatial.Data.Tests
         {
             string missingFileExt = Path.GetExtension(missingFile);
 
-            List<string> extensions = new List<string>() { ".shp", ".shx", ".dbf", ".prj" };
+            List<string> extensions = new() { ".shp", ".shx", ".dbf", ".prj" };
             extensions.Remove(missingFileExt);
 
             var source = Path.Combine(_shapefiles, missingFile);

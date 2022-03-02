@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
-using DotSpatial.Plugins.SpatiaLite.Properties;
 
 namespace DotSpatial.Plugins.SpatiaLite
 {

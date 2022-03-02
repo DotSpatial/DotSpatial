@@ -47,7 +47,7 @@ namespace DotSpatial.Data.Tests
                     double fracRow = rand.NextDouble();
                     double dX = (c[1] * fracCol) + (c[2] * fracRow);
                     double dY = (c[4] * fracCol) + (c[5] * fracRow);
-                    Coordinate point = new Coordinate(corner.X + dX, corner.Y + dY);
+                    Coordinate point = new(corner.X + dX, corner.Y + dY);
                     Assert.AreEqual(at.ProjToCell(point), new RcIndex(row, col));
                 }
             }

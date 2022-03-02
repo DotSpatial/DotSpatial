@@ -20,7 +20,7 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void PanLeftAcrossDatelineShowsTwoViews()
         {
-            DatelineCrossingMap map = new DatelineCrossingMap
+            DatelineCrossingMap map = new()
             {
                 Size = new Size(100, 100),
                 ViewExtents = new Extent(-175, -10, -155, 10)
@@ -39,7 +39,7 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void PanRightAcrossDatelineShowsTwoViews()
         {
-            DatelineCrossingMap map = new DatelineCrossingMap
+            DatelineCrossingMap map = new()
             {
                 Size = new Size(100, 100),
                 ViewExtents = new Extent(155, -10, 175, 10)
@@ -58,7 +58,7 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void PanThroughDatelineNormalizesView()
         {
-            DatelineCrossingMap map = new DatelineCrossingMap
+            DatelineCrossingMap map = new()
             {
                 Size = new Size(100, 100),
                 ViewExtents = new Extent(155, -10, 175, 10)

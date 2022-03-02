@@ -62,7 +62,7 @@ namespace DotSpatial.Plugins.Measure
             this.tsbDistance.CheckOnClick = true;
             this.tsbDistance.CheckState = CheckState.Checked;
             this.tsbDistance.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this.tsbDistance.Image = Properties.Resources.Line;
+            this.tsbDistance.Image = Resources.Line;
             resources.ApplyResources(this.tsbDistance, "tsbDistance");
             this.tsbDistance.Name = "tsbDistance";
             this.tsbDistance.Click += new EventHandler(this.DistanceButtonClick);
@@ -70,7 +70,7 @@ namespace DotSpatial.Plugins.Measure
             // tsbArea
             this.tsbArea.CheckOnClick = true;
             this.tsbArea.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this.tsbArea.Image = Properties.Resources.Area;
+            this.tsbArea.Image = Resources.Area;
             resources.ApplyResources(this.tsbArea, "tsbArea");
             this.tsbArea.Name = "tsbArea";
             this.tsbArea.Click += new EventHandler(this.AreaButtonClick);

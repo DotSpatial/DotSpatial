@@ -75,7 +75,7 @@ namespace DotSpatial.Plugins.ToolManager
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        public void ButtonClick(object sender, EventArgs e)
+        public void ButtonClick(object? sender, EventArgs e)
         {
             ShowToolsPanel();
         }

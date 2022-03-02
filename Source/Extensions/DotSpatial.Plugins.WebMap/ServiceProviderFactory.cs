@@ -13,7 +13,6 @@ using BruTile.Cache;
 using BruTile.Predefined;
 using BruTile.Web;
 using DotSpatial.Plugins.WebMap.Configuration;
-using DotSpatial.Plugins.WebMap.Properties;
 using DotSpatial.Plugins.WebMap.WMS;
 
 namespace DotSpatial.Plugins.WebMap
@@ -33,9 +32,9 @@ namespace DotSpatial.Plugins.WebMap
         /// <returns>The created service provider.</returns>
         public static ServiceProvider Create(string name, string url = null)
         {
-            var servEq = (Func<string, bool>)(s => name.Equals(s, StringComparison.InvariantCultureIgnoreCase));
+            bool servEq(string s) => name.Equals(s, StringComparison.InvariantCultureIgnoreCase);
 
-            var fileCache = (Func<ITileCache<byte[]>>)(() => new FileCache(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TileCache", name), string.Empty, new TimeSpan(30, 0, 0, 0)));
+            ITileCache<byte[]> fileCache() => new FileCache(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TileCache", name), string.Empty, new TimeSpan(30, 0, 0, 0));
 
             if (servEq(Resources.EsriHydroBaseMap))
             {

@@ -54,8 +54,7 @@ namespace DotSpatial.Projections.AuthorityCodes
         {
             get
             {
-                ProjectionInfo pi;
-                if (_authorityCodeToProjectionInfo.TryGetValue(authorityCodeOrName, out pi))
+                if (_authorityCodeToProjectionInfo.TryGetValue(authorityCodeOrName, out ProjectionInfo pi))
                     return pi;
                 if (_authorityNameToProjectionInfo.TryGetValue(authorityCodeOrName, out pi))
                     return pi;
@@ -130,11 +129,11 @@ namespace DotSpatial.Projections.AuthorityCodes
         {
             var pos = authorityCode.IndexOf(':');
             if (pos == -1)
-                throw new ArgumentOutOfRangeException("authorityCode", "Invalid authorityCode");
+                throw new ArgumentOutOfRangeException(nameof(authorityCode), "Invalid authorityCode");
 
             if (!replace && _authorityCodeToProjectionInfo.ContainsKey(authorityCode))
             {
-                throw new ArgumentOutOfRangeException("authorityCode", "Such projection already added.");
+                throw new ArgumentOutOfRangeException(nameof(authorityCode), "Such projection already added.");
             }
             ProjectionInfo pi;
             try
@@ -159,7 +158,7 @@ namespace DotSpatial.Projections.AuthorityCodes
 
             if (!replace && _authorityNameToProjectionInfo.ContainsKey(name))
             {
-                throw new ArgumentOutOfRangeException("name", "Such projection already added.");
+                throw new ArgumentOutOfRangeException(nameof(name), "Such projection already added.");
             }
             _authorityNameToProjectionInfo[name] = pi;
         }

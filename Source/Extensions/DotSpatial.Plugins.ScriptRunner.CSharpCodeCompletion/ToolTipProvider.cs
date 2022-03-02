@@ -65,13 +65,13 @@ namespace CSharpEditor
         /// <param name="editor">The editor.</param>
         public static void Attach(MainForm mainForm, TextEditorControl editor)
         {
-            ToolTipProvider tp = new ToolTipProvider(mainForm, editor);
+            ToolTipProvider tp = new(mainForm, editor);
             editor.ActiveTextAreaControl.TextArea.ToolTipRequest += tp.OnToolTipRequest;
         }
 
         private static string GetMemberText(IAmbience ambience, IEntity member)
         {
-            StringBuilder text = new StringBuilder();
+            StringBuilder text = new();
             if (member is IField)
             {
                 text.Append(ambience.Convert(member as IField));
@@ -123,11 +123,10 @@ namespace CSharpEditor
             {
                 return GetMemberText(ambience, ((MemberResolveResult)result).ResolvedMember);
             }
-            else if (result is LocalResolveResult)
+            else if (result is LocalResolveResult rr)
             {
-                LocalResolveResult rr = (LocalResolveResult)result;
                 ambience.ConversionFlags = ConversionFlags.UseFullyQualifiedTypeNames | ConversionFlags.ShowReturnType;
-                StringBuilder b = new StringBuilder();
+                StringBuilder b = new();
                 if (rr.IsParameter) b.Append("parameter ");
                 else b.Append("local variable ");
                 b.Append(ambience.Convert(rr.Field));
@@ -177,7 +176,7 @@ namespace CSharpEditor
                 }
 
                 TextArea textArea = _editor.ActiveTextAreaControl.TextArea;
-                NRefactoryResolver resolver = new NRefactoryResolver(_mainForm.MyProjectContent.Language);
+                NRefactoryResolver resolver = new(_mainForm.MyProjectContent.Language);
                 ResolveResult rr = resolver.Resolve(expression, _mainForm.ParseInformation, textArea.MotherTextEditorControl.Text);
                 string toolTipText = GetText(rr);
                 if (toolTipText != null)

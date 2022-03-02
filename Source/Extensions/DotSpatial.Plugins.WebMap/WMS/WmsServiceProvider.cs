@@ -74,7 +74,6 @@ namespace DotSpatial.Plugins.WebMap.WMS
             var ts = TileSource;
             if (ts == null) return null;
 
-            var zoomS = zoom.ToString(CultureInfo.InvariantCulture);
             try
             {
                 var index = new TileIndex(x, y, zoom);

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+	
+	<PropertyGroup>
+		<OutputPath>$(SolutionDir)bin\$(Configuration)\Windows Extensions\$(MSBuildProjectName)\</OutputPath>
+		<disabletransitiveprojectreferences>true</disabletransitiveprojectreferences>
+	</PropertyGroup>
+</Project>

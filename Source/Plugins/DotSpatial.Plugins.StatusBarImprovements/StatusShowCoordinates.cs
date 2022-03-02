@@ -14,11 +14,24 @@ namespace DotSpatial.Plugins.StatusBarImprovements
     {
         #region Fields
 
-        private Map _map;
-        private StatusPanel _xPanel;
-        private StatusPanel _yPanel;
+        private Map? _map;
+        private readonly StatusPanel _xPanel;
+        private readonly StatusPanel _yPanel;
 
         #endregion
+
+        public StatusShowCoordinates()
+        {
+            _xPanel = new StatusPanel
+            {
+                Width = 160
+            };
+
+            _yPanel = new StatusPanel
+            {
+                Width = 160
+            };
+        }
 
         #region Methods
 
@@ -28,14 +41,6 @@ namespace DotSpatial.Plugins.StatusBarImprovements
             _map = (Map)App.Map;
             _map.GeoMouseMove += MapGeoMouseMove;
 
-            _xPanel = new StatusPanel
-                     {
-                         Width = 160
-                     };
-            _yPanel = new StatusPanel
-                     {
-                         Width = 160
-                     };
             App.ProgressHandler.Add(_xPanel);
             App.ProgressHandler.Add(_yPanel);
 
@@ -45,7 +50,10 @@ namespace DotSpatial.Plugins.StatusBarImprovements
         /// <inheritdoc />
         public override void Deactivate()
         {
-            _map.GeoMouseMove -= MapGeoMouseMove;
+            if (_map != null)
+            {
+                _map.GeoMouseMove -= MapGeoMouseMove;
+            }
 
             App.ProgressHandler.Remove(_xPanel);
             App.ProgressHandler.Remove(_yPanel);
@@ -54,7 +62,7 @@ namespace DotSpatial.Plugins.StatusBarImprovements
             base.Deactivate();
         }
 
-        private void MapGeoMouseMove(object sender, GeoMouseArgs e)
+        private void MapGeoMouseMove(object? sender, GeoMouseArgs e)
         {
             _xPanel.Caption = string.Format("X: {0:.#####}", e.GeographicLocation.X);
             _yPanel.Caption = string.Format("Y: {0:.#####}", e.GeographicLocation.Y);

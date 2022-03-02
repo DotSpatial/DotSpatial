@@ -7,9 +7,8 @@ using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
-using DotSpatial.Plugins.ScaleBar.Properties;
 using DotSpatial.Symbology;
-using NetTopologySuite.Geometries;
+using NtsPoint = NetTopologySuite.Geometries.Point;
 
 namespace DotSpatial.Plugins.ScaleBar
 {
@@ -21,7 +20,7 @@ namespace DotSpatial.Plugins.ScaleBar
         #region Fields
 
         private const string StrKeyScaleBarDropDown = "kScaleBarDropDown";
-        private ToolStripComboBox _combo;
+        private ToolStripComboBox? _combo;
         private bool _ignore;
 
         private DropDownActionItem _scaleDropDown;
@@ -48,13 +47,13 @@ namespace DotSpatial.Plugins.ScaleBar
         public override void Activate()
         {
             _scaleDropDown = new DropDownActionItem
-                             {
-                                 AllowEditingText = true,
-                                 Caption = Resources.ScaleBar_Box_Text,
-                                 ToolTipText = Resources.ScaleBar_Box_ToolTip,
-                                 Width = 45,
-                                 Key = StrKeyScaleBarDropDown
-                             };
+            {
+                AllowEditingText = true,
+                Caption = Resources.ScaleBar_Box_Text,
+                ToolTipText = Resources.ScaleBar_Box_ToolTip,
+                Width = 45,
+                Key = StrKeyScaleBarDropDown
+            };
             _scaleDropDown.Items.Add("[" + Resources.Custom + "]");
 
             foreach (int k in new[] { 100, 250, 500, 1000, 1500, 2250 })
@@ -160,18 +159,32 @@ namespace DotSpatial.Plugins.ScaleBar
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void ComboKeyPress(object sender, KeyPressEventArgs e)
+        private void ComboKeyPress(object? sender, KeyPressEventArgs e)
         {
-            if (_ignore) return;
+            if (_ignore)
+            {
+                return;
+            }
 
             if (e.KeyChar == 13)
             {
                 // Enter starts scaling
                 var text = _combo.Text;
-                if (string.IsNullOrWhiteSpace(text)) return;
-                if (text.Contains(":")) text = text.Substring(text.IndexOf(":", StringComparison.InvariantCulture) + 1);
 
-                if (double.TryParse(text, out double nr)) ScaleTo(nr);
+                if (string.IsNullOrWhiteSpace(text))
+                {
+                    return;
+                }
+
+                if (text.Contains(':'))
+                {
+                    text = text[(text.IndexOf(":", StringComparison.InvariantCulture) + 1)..];
+                }
+
+                if (double.TryParse(text, out double nr))
+                {
+                    ScaleTo(nr);
+                }
             }
             else if (!((e.KeyChar > 47 && e.KeyChar < 58) || e.KeyChar == 8))
             {
@@ -193,7 +206,9 @@ namespace DotSpatial.Plugins.ScaleBar
                 double dMapWidthInMeters;
 
                 if (App.Map.Projection == null)
+                {
                     return;
+                }
 
                 if (App.Map.Projection.IsLatLon)
                 {
@@ -239,7 +254,7 @@ namespace DotSpatial.Plugins.ScaleBar
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void LayerAdded(object sender, LayerEventArgs e)
+        private void LayerAdded(object? sender, LayerEventArgs e)
         {
             ComputeMapScale();
         }
@@ -249,7 +264,7 @@ namespace DotSpatial.Plugins.ScaleBar
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void MapFrameExtentsChanged(object sender, ExtentArgs e)
+        private void MapFrameExtentsChanged(object? sender, ExtentArgs e)
         {
             ComputeMapScale();
         }
@@ -269,14 +284,17 @@ namespace DotSpatial.Plugins.ScaleBar
         /// <param name="scale">The new scale.</param>
         private void ScaleTo(double scale)
         {
-            if (scale == 0 || App.Map.Projection == null) return;
+            if (scale == 0 || App.Map.Projection == null)
+            {
+                return;
+            }
 
             var ext = App.Map.ViewExtents;
 
             // TODO this works for Meter-based coordinate-systems. How must this be done for lat/long?
             if (ext.Width != 0)
             {
-                Point centerpoint = new Point((ext.MinX + ext.MaxX) / 2, (ext.MinY + ext.MaxY) / 2);
+                NtsPoint centerpoint = new((ext.MinX + ext.MaxX) / 2, (ext.MinY + ext.MaxY) / 2);
                 const double DInchesPerMeter = 39.3700787401575;
                 double dScreenWidthInMeters = (App.Map.BufferedImage.Width / App.Map.BufferedImage.HorizontalResolution) / DInchesPerMeter;
                 double newwidth = ((scale * dScreenWidthInMeters) / App.Map.Projection.Unit.Meters) / 2;
@@ -292,14 +310,19 @@ namespace DotSpatial.Plugins.ScaleBar
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void ScaleToSelected(object sender, SelectedValueChangedEventArgs e)
+        private void ScaleToSelected(object? sender, SelectedValueChangedEventArgs e)
         {
-            if (_ignore) return;
-            string str = e.SelectedItem.ToString();
-            if (!str.Contains("["))
+            if (_ignore)
             {
-                if (double.TryParse(str.Substring(str.IndexOf(":", StringComparison.InvariantCulture) + 1), out double nr))
+                return;
+            }
+            string str = e.SelectedItem.ToString();
+            if (!str.Contains('['))
+            {
+                if (double.TryParse(str.AsSpan(str.IndexOf(":", StringComparison.InvariantCulture) + 1), out double nr))
+                {
                     ScaleTo(nr);
+                }
             }
         }
 
@@ -308,7 +331,7 @@ namespace DotSpatial.Plugins.ScaleBar
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void SerializationManagerDeserializing(object sender, SerializingEventArgs e)
+        private void SerializationManagerDeserializing(object? sender, SerializingEventArgs e)
         {
             AddHandler();
             ComputeMapScale();

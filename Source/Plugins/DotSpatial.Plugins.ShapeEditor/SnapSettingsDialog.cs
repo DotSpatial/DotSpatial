@@ -19,7 +19,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         public SnapSettingsDialog(IMap map)
         {
             InitializeComponent();
-            List<SnapLayer> snaplist = new List<SnapLayer>();
+            List<SnapLayer> snaplist = new();
 
             foreach (var layer in map.GetFeatureLayers())
             {

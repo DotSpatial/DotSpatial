@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
-using DotSpatial.Plugins.TableEditor.Properties;
 using DotSpatial.Symbology;
 
 namespace DotSpatial.Plugins.TableEditor
@@ -59,8 +58,7 @@ namespace DotSpatial.Plugins.TableEditor
 
         private void AddContextMenuItems(ILayer addedLayer)
         {
-            IMapGroup grp = addedLayer as IMapGroup;
-            if (grp != null)
+            if (addedLayer is IMapGroup grp)
             {
                 // map.layerAdded event doesn't fire for groups. Therefore, it's necessary
                 // to handle this event separately for groups.
@@ -94,16 +92,17 @@ namespace DotSpatial.Plugins.TableEditor
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void AttributeTableClick(object sender, EventArgs e)
+        private void AttributeTableClick(object? sender, EventArgs e)
         {
             IMapFrame mainMapFrame = App.Map.MapFrame;
             List<ILayer> layers = mainMapFrame.GetAllLayers();
 
             foreach (ILayer layer in layers.Where(l => l.IsSelected))
             {
-                IFeatureLayer fl = layer as IFeatureLayer;
-
-                if (fl == null) continue;
+                if (layer is not IFeatureLayer fl)
+                {
+                    continue;
+                }
 
                 ShowAttributes(fl);
             }
@@ -118,7 +117,7 @@ namespace DotSpatial.Plugins.TableEditor
             }
         }
 
-        private void MapLayerAdded(object sender, LayerEventArgs e)
+        private void MapLayerAdded(object? sender, LayerEventArgs e)
         {
             if (e.Layer == null) return;
 
@@ -137,14 +136,13 @@ namespace DotSpatial.Plugins.TableEditor
             }
         }
 
-        private void SerializationManagerDeserializing(object sender, SerializingEventArgs e)
+        private void SerializationManagerDeserializing(object? sender, SerializingEventArgs e)
         {
             // context menu items are added to layers when opening a project
             // this call is necessary because the LayerAdded event doesn't fire when a project is opened.
             foreach (ILayer layer in App.Map.MapFrame.GetAllLayers())
             {
-                IFeatureLayer fl = layer as IFeatureLayer;
-                if (fl != null)
+                if (layer is IFeatureLayer fl)
                 {
                     if (!fl.ContextMenuItems.Exists(item => item.Name == Resources.AttributeTableEditor))
                     {

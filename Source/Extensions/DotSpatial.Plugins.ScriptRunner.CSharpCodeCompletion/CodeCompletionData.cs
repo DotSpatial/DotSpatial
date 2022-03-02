@@ -26,8 +26,8 @@ namespace CSharpEditor
     {
         #region Fields
 
-        private static readonly CSharpAmbience CsharpAmbience = new CSharpAmbience();
-        private static readonly VBNetAmbience VbAmbience = new VBNetAmbience();
+        private static readonly CSharpAmbience CsharpAmbience = new();
+        private static readonly VBNetAmbience VbAmbience = new();
         private readonly IClass _c;
         private readonly IMember _member;
         private string _description;
@@ -96,10 +96,10 @@ namespace CSharpEditor
         public static string XmlDocumentationToText(string xmlDoc)
         {
             Debug.WriteLine(xmlDoc);
-            StringBuilder b = new StringBuilder();
+            StringBuilder b = new();
             try
             {
-                using (XmlTextReader reader = new XmlTextReader(new StringReader("<root>" + xmlDoc + "</root>")))
+                using (XmlTextReader reader = new(new StringReader("<root>" + xmlDoc + "</root>")))
                 {
                     reader.XmlResolver = null;
                     while (reader.Read())
@@ -164,11 +164,11 @@ namespace CSharpEditor
 
         private static int GetClassImageIndex(IClass c)
         {
-            switch (c.ClassType)
+            return c.ClassType switch
             {
-                case ClassType.Enum: return 4;
-                default: return 0;
-            }
+                ClassType.Enum => 4,
+                _ => 0,
+            };
         }
 
         private static int GetMemberImageIndex(IMember member)
@@ -193,20 +193,15 @@ namespace CSharpEditor
         {
             IAmbience ambience = MainForm.IsVisualBasic ? (IAmbience)VbAmbience : CsharpAmbience;
 
-            var method = entity as IMethod;
-            if (method != null) return ambience.Convert(method);
+            if (entity is IMethod method) return ambience.Convert(method);
 
-            var property = entity as IProperty;
-            if (property != null) return ambience.Convert(property);
+            if (entity is IProperty property) return ambience.Convert(property);
 
-            var entityAsEvent = entity as IEvent;
-            if (entityAsEvent != null) return ambience.Convert(entityAsEvent);
+            if (entity is IEvent entityAsEvent) return ambience.Convert(entityAsEvent);
 
-            var field = entity as IField;
-            if (field != null) return ambience.Convert(field);
+            if (entity is IField field) return ambience.Convert(field);
 
-            var entityAsClass = entity as IClass;
-            if (entityAsClass != null) return ambience.Convert(entityAsClass);
+            if (entity is IClass entityAsClass) return ambience.Convert(entityAsClass);
 
             // unknown entity:
             return entity.ToString();

@@ -7,7 +7,6 @@ using System.Globalization;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
-using DotSpatial.Plugins.Contourer.Properties;
 using DotSpatial.Symbology;
 
 namespace DotSpatial.Plugins.Contourer
@@ -28,16 +27,16 @@ namespace DotSpatial.Plugins.Contourer
 
         private void AddMenuItems(IHeaderControl header)
         {
-            SimpleActionItem contourerItem = new SimpleActionItem("Contour...", MenuClick)
+            SimpleActionItem contourerItem = new("Contour...", MenuClick)
                                                  {
                                                      Key = "kC"
                                                  };
             header.Add(contourerItem);
         }
 
-        private void MenuClick(object sender, EventArgs e)
+        private void MenuClick(object? sender, EventArgs e)
         {
-            using (FormContour frm = new FormContour())
+            using (FormContour frm = new())
             {
                 frm.Layers = App.Map.GetRasterLayers();
                 if (frm.Layers.GetLength(0) <= 0)
@@ -56,12 +55,12 @@ namespace DotSpatial.Plugins.Contourer
                 {
                     case Contour.ContourType.Line:
                         {
-                            LineScheme ls = new LineScheme();
+                            LineScheme ls = new();
                             ls.Categories.Clear();
 
                             for (int i = 0; i < frm.Color.GetLength(0); i++)
                             {
-                                LineCategory lc = new LineCategory(frm.Color[i], 2.0)
+                                LineCategory lc = new(frm.Color[i], 2.0)
                                                       {
                                                           FilterExpression = "[Value] = " + frm.Lev[i],
                                                           LegendText = frm.Lev[i].ToString(CultureInfo.InvariantCulture)
@@ -77,12 +76,12 @@ namespace DotSpatial.Plugins.Contourer
 
                     case Contour.ContourType.Polygon:
                         {
-                            PolygonScheme ps = new PolygonScheme();
+                            PolygonScheme ps = new();
                             ps.Categories.Clear();
 
                             for (int i = 0; i < frm.Color.GetLength(0); i++)
                             {
-                                PolygonCategory pc = new PolygonCategory(frm.Color[i], Color.Transparent, 0)
+                                PolygonCategory pc = new(frm.Color[i], Color.Transparent, 0)
                                                          {
                                                              FilterExpression = "[Lev] = " + i,
                                                              LegendText = frm.Lev[i] + " - " + frm.Lev[i + 1]

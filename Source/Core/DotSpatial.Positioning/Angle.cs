@@ -466,7 +466,7 @@ namespace DotSpatial.Positioning
 #else
                 return Math.Round(
                     (Math.Abs(
-                        _DecimalDegrees - Truncate(_DecimalDegrees)) * 60.0), MaximumPrecisionDigits - 2);
+                        _decimalDegrees - Truncate(_decimalDegrees)) * 60.0), MAXIMUM_PRECISION_DIGITS - 2);
 #endif
             }
         }
@@ -505,7 +505,7 @@ namespace DotSpatial.Positioning
 #if Framework20 && !PocketPC
                 return (int)Math.Truncate(_decimalDegrees);
 #else
-                return Truncate(_DecimalDegrees);
+                return Truncate(_decimalDegrees);
 #endif
             }
         }

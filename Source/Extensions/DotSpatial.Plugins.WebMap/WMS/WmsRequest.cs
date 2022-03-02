@@ -38,13 +38,13 @@ namespace DotSpatial.Plugins.WebMap.WMS
         {
             // Prepare url string
             var au = baseUrl.AbsoluteUri;
-            if (au.IndexOf("SERVICE=WMS", StringComparison.OrdinalIgnoreCase) == -1)
+            if (!au.Contains("SERVICE=WMS", StringComparison.OrdinalIgnoreCase))
             {
                 if (au.EndsWith("?") || au.EndsWith("&"))
                 {
                     au += "SERVICE=WMS";
                 }
-                else if (au.Contains("?"))
+                else if (au.Contains('?'))
                 {
                     au += "&SERVICE=WMS";
                 }

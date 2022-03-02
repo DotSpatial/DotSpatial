@@ -610,7 +610,7 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
-        private ContextMenu _elevationQuickPick;
+        private ContextMenuStrip _elevationQuickPick;
         private DataGridViewImageColumn dataGridViewImageColumn1;
         private DoubleBox dbxElevationFactor;
         private DoubleBox dbxMax;

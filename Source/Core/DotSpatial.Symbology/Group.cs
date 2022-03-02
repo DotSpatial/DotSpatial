@@ -6,9 +6,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using DotSpatial.Data;
 using NetTopologySuite.Geometries;
 
+[assembly: InternalsVisibleTo("DotSpatial.Symbology.Tests")]
 namespace DotSpatial.Symbology
 {
     /// <summary>

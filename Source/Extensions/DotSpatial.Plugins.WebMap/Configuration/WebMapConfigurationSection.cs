@@ -17,7 +17,7 @@ namespace DotSpatial.Plugins.WebMap.Configuration
         /// </summary>
         [ConfigurationProperty("Services", IsDefaultCollection = false)]
         [ConfigurationCollection(typeof(ServiceProviderElementCollection))]
-        public ServiceProviderElementCollection Services => (ServiceProviderElementCollection)this["Services"];
+        public ServiceProviderElementCollection Services => (ServiceProviderElementCollection)this[nameof(Services)];
 
         #endregion
     }

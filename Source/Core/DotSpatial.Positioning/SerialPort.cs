@@ -15,10 +15,10 @@
 // | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
 // ********************************************************************************************************
 
-using System;
-using System.IO;
-using System.IO.Ports;
 using System.Text;
+using System.IO.Ports;
+using System.IO;
+using System;
 
 namespace DotSpatial.Positioning
 {

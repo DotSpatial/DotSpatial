@@ -106,8 +106,7 @@ namespace DotSpatial.Plugins.WebMap
             }
 
             // Esri Hyro Base Map Fix, the server doesn't put image in the response header.
-            var ts1 = ts as ArcGisTileSource;
-            if (ts1 != null)
+            if (ts is ArcGisTileSource ts1)
             {
                 try
                 {

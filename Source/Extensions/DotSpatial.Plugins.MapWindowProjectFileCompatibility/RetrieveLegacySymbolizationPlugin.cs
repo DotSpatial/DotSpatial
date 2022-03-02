@@ -30,8 +30,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 
         private void IterateThroughAnyGroupsToFindLayers(ILayer layer)
         {
-            MapGroup g = layer as MapGroup;
-            if (g == null)
+            if (layer is not MapGroup g)
             {
                 LegacyLayerDeserializer.TryDeserialization(layer, App.Map);
             }

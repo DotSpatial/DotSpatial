@@ -32,8 +32,7 @@ namespace DotSpatial.Projections
         /// <returns>Boolean, true if there is a match</returns>
         public static bool Matches(this IProjMatchable self, IProjMatchable other)
         {
-            List<string> ignoreMe;
-            return self.Matches(other, out ignoreMe);
+            return self.Matches(other, out List<string> ignoreMe);
         }
     }
 }

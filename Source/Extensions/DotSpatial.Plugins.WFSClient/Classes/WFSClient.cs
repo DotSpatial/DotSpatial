@@ -169,11 +169,11 @@ namespace DotSpatial.Plugins.WFSClient.Classes
         {
             var strReq = new StringBuilder(url);
 
-            if (!url.Contains("?"))
-                strReq.Append("?");
+            if (!url.Contains('?'))
+                strReq.Append('?');
 
             if (!strReq.ToString().EndsWith("&") && !strReq.ToString().EndsWith("?"))
-                strReq.Append("&");
+                strReq.Append('&');
 
             if (!url.ToLower().Contains("service=wfs"))
                 strReq.AppendFormat("SERVICE=WFS&");
@@ -196,7 +196,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             if (server != string.Empty)
                 Server = server;
 
-            Uri u = new Uri(Server);
+            Uri u = new(Server);
 
             Stream stream;
             if (u.IsAbsoluteUri && u.IsFile)
@@ -233,7 +233,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             if (!string.IsNullOrWhiteSpace(server))
                 Server = server;
 
-            Uri u = new Uri(Server);
+            Uri u = new(Server);
 
             Stream stream;
             if (u.IsAbsoluteUri && u.IsFile)
@@ -271,7 +271,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             if (server != string.Empty)
                 Server = server;
 
-            Uri u = new Uri(Server);
+            Uri u = new(Server);
             Stream stream;
             if (u.IsAbsoluteUri && u.IsFile)
             {
@@ -291,7 +291,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
         private static Coordinate[] ExtractCoordinates(DirectPositionListType rings)
         {
             string[] listpoints = rings.Text.Split(' ');
-            List<Coordinate> lstCoor = new List<Coordinate>();
+            List<Coordinate> lstCoor = new();
 
             for (int i = 0; i < listpoints.Length; i += 2)
             {
@@ -351,21 +351,21 @@ namespace DotSpatial.Plugins.WFSClient.Classes
         {
             var strReq = new StringBuilder(url);
 
-            if (!url.Contains("?"))
+            if (!url.Contains('?'))
             {
-                strReq.Append("?");
+                strReq.Append('?');
             }
             else
             {
                 if (!url.EndsWith("?"))
                 {
-                    strReq = new StringBuilder(url.Substring(0, url.IndexOf("?", StringComparison.Ordinal)));
-                    strReq.Append("?");
+                    strReq = new StringBuilder(url[..url.IndexOf("?", StringComparison.Ordinal)]);
+                    strReq.Append('?');
                 }
             }
 
             if (!strReq.ToString().EndsWith("&") && !strReq.ToString().EndsWith("?"))
-                strReq.Append("&");
+                strReq.Append('&');
 
             if (!url.ToLower().Contains("service=wfs"))
                 strReq.AppendFormat("SERVICE=WFS&");
@@ -385,21 +385,21 @@ namespace DotSpatial.Plugins.WFSClient.Classes
         {
             var strReq = new StringBuilder(url);
 
-            if (!url.Contains("?"))
+            if (!url.Contains('?'))
             {
-                strReq.Append("?");
+                strReq.Append('?');
             }
             else
             {
                 if (!url.EndsWith("?"))
                 {
-                    strReq = new StringBuilder(url.Substring(0, url.IndexOf("?", StringComparison.Ordinal)));
-                    strReq.Append("?");
+                    strReq = new StringBuilder(url[..url.IndexOf("?", StringComparison.Ordinal)]);
+                    strReq.Append('?');
                 }
             }
 
             if (!strReq.ToString().EndsWith("&") && !strReq.ToString().EndsWith("?"))
-                strReq.Append("&");
+                strReq.Append('&');
 
             if (!url.ToLower().Contains("service=wfs"))
                 strReq.AppendFormat("SERVICE=WFS&");
@@ -733,7 +733,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
 
         private void ParseGetCapabilities(Stream stream)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(WfsCapabilitiesType));
+            XmlSerializer serializer = new(typeof(WfsCapabilitiesType));
             Wfs = (WfsCapabilitiesType)serializer.Deserialize(stream);
         }
 

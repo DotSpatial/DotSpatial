@@ -5,7 +5,6 @@ using System;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
-using DotSpatial.Plugins.Measure.Properties;
 
 namespace DotSpatial.Plugins.Measure
 {
@@ -14,7 +13,7 @@ namespace DotSpatial.Plugins.Measure
     /// </summary>
     public class MeasurePlugin : Extension
     {
-        private MapFunctionMeasure _painter;
+        private MapFunctionMeasure? _painter;
 
         /// <inheritdoc />
         public override void Activate()
@@ -30,13 +29,17 @@ namespace DotSpatial.Plugins.Measure
             base.Deactivate();
         }
 
-        private void MeasureToolClick(object sender, EventArgs e)
+        private void MeasureToolClick(object? sender, EventArgs e)
         {
             if (_painter == null)
+            {
                 _painter = new MapFunctionMeasure(App.Map);
+            }
 
             if (!App.Map.MapFunctions.Contains(_painter))
+            {
                 App.Map.MapFunctions.Add(_painter);
+            }
 
             App.Map.FunctionMode = FunctionMode.None;
             App.Map.Cursor = Cursors.Cross;

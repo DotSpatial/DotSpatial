@@ -46,8 +46,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 
             if (!Convert.ToBoolean(xmlRoot["ViewBackColor_UseDefault"]))
             {
-                var mapControl = _map as Control;
-                if (mapControl != null)
+                if (_map is Control mapControl)
                     mapControl.BackColor = LegacyDeserializer.GetColor(xmlRoot["ViewBackColor"]);
 
                 _map.Invalidate();
@@ -129,7 +128,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 
         private static Layer GetLineLayer(dynamic layer)
         {
-            MapLineLayer lineLayer = new MapLineLayer(FeatureSet.OpenFile(layer["Path"]));
+            MapLineLayer lineLayer = new(FeatureSet.OpenFile(layer["Path"]));
             LegacyDeserializer.DeserializeLayer(layer, lineLayer);
 
             return lineLayer;
@@ -137,7 +136,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 
         private static Layer GetPointLayer(dynamic layer)
         {
-            MapPointLayer pointLayer = new MapPointLayer(FeatureSet.OpenFile(layer["Path"]));
+            MapPointLayer pointLayer = new(FeatureSet.OpenFile(layer["Path"]));
             LegacyDeserializer.DeserializeLayer(layer, pointLayer);
 
             return pointLayer;
@@ -145,7 +144,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 
         private static Layer GetPolygonLayer(dynamic layer)
         {
-            MapPolygonLayer polyLayer = new MapPolygonLayer(FeatureSet.OpenFile(layer["Path"]));
+            MapPolygonLayer polyLayer = new(FeatureSet.OpenFile(layer["Path"]));
             LegacyDeserializer.DeserializeLayer(layer, polyLayer);
 
             return polyLayer;
@@ -157,7 +156,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
             // the groups are serialized in the correct order in the files we have examined.
             foreach (var group in groups)
             {
-                MapGroup g = new MapGroup
+                MapGroup g = new()
                 {
                     LegendText = group["Name"],
                     IsExpanded = Convert.ToBoolean(group["Expanded"])

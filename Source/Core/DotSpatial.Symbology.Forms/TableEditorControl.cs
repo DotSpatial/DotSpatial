@@ -12,7 +12,6 @@ using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Data.Forms;
-using DotSpatial.Symbology.Forms.Properties;
 
 namespace DotSpatial.Symbology.Forms
 {
@@ -324,7 +323,7 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="file">The file path.</param>
         public void DisplayFilePathLabel(string file)
         {
-            lblFilePath.Text = File.Exists(file) ? Path.GetFullPath(file) : Resources.TableEditorControl_FileNameInMemory;
+            lblFilePath.Text = File.Exists(file) ? Path.GetFullPath(file) : "In memory";
         }
 
         /// <summary>

@@ -2303,8 +2303,8 @@ namespace DotSpatial.Controls
                     case MouseMode.Default:
                         if (SelectedLayoutElements.Count < 1)
                         {
-                            for (var i = 0; i < _contextMenuRight.MenuItems.Count; i++)
-                                _contextMenuRight.MenuItems[i].Enabled = false;
+                            for (var i = 0; i < _contextMenuRight.Items.Count; i++)
+                                _contextMenuRight.Items[i].Enabled = false;
                         }
                         else if (SelectedLayoutElements.Count == 1)
                         {
@@ -2313,8 +2313,8 @@ namespace DotSpatial.Controls
                         }
 
                         _contextMenuRight.Show(this, e.Location);
-                        for (var i = 0; i < _contextMenuRight.MenuItems.Count; i++)
-                            _contextMenuRight.MenuItems[i].Enabled = true;
+                        for (var i = 0; i < _contextMenuRight.Items.Count; i++)
+                            _contextMenuRight.Items[i].Enabled = true;
                         break;
                 }
             }

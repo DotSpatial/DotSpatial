@@ -149,8 +149,7 @@ namespace DotSpatial.Controls
         /// <returns>The found custom settings.</returns>
         public T GetCustomSetting<T>(string uniqueName, T defaultValue)
         {
-            object result;
-            if (_customSettings.TryGetValue(uniqueName, out result)) return (T)result;
+            if (_customSettings.TryGetValue(uniqueName, out object result)) return (T)result;
             return defaultValue;
         }
 
@@ -282,7 +281,7 @@ namespace DotSpatial.Controls
 
             var graph = CreateObjectGraph(_applicationManager, new string[0]);
 
-            XmlSerializer s = new XmlSerializer();
+            XmlSerializer s = new ();
             string xml = s.Serialize(graph);
 
             bool isProviderPresent = false;

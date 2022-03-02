@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 
+[assembly: InternalsVisibleTo("DotSpatial.Projections.Tests")]
 namespace DotSpatial.Projections
 {
     internal class DatumsHandler
@@ -37,8 +39,7 @@ namespace DotSpatial.Projections
                 var ent = _entries;
                 if (ent == null) return null;
 
-                DatumEntry de;
-                if (ent.TryGetValue(name, out de))
+                if (ent.TryGetValue(name, out DatumEntry de))
                     return de;
                 return null;
             }

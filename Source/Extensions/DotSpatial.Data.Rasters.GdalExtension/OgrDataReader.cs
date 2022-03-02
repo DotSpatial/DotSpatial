@@ -553,8 +553,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
             for (int i = 0; i < regex.Count; i++)
             {
-                float val;
-                if (float.TryParse(regex[i].Value, NumberStyles.Number, CultureInfo.InvariantCulture, out val) && val > 0)
+                if (float.TryParse(regex[i].Value, NumberStyles.Number, CultureInfo.InvariantCulture, out float val) && val > 0)
                 {
                     nums.Add(val);
                 }
@@ -572,11 +571,10 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             try
             {
-                SpatialReference osrSpatialref = layer.GetSpatialRef();
+                OSGeo.OSR.SpatialReference osrSpatialref = layer.GetSpatialRef();
                 if (osrSpatialref != null)
                 {
-                    string sProj4String;
-                    osrSpatialref.ExportToProj4(out sProj4String);
+                    osrSpatialref.ExportToProj4(out string sProj4String);
                     return ProjectionInfo.FromProj4String(sProj4String);
                 }
             }
@@ -696,19 +694,10 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
                 case FieldType.OFTDateTime:
                     {
-                        int year;
-                        int month;
-                        int day;
-
-                        int h;
-                        int m;
-                        int s;
-                        int flag;
-
-                        feature.GetFieldAsDateTime(i, out year, out month, out day, out h, out m, out s, out flag);
+                        feature.GetFieldAsDateTime(i, out int year, out int month, out int day, out int h, out int m, out float s, out _);
                         try
                         {
-                            return new DateTime(year, month, day, h, m, s);
+                            return new DateTime(year, month, day, h, m, Convert.ToInt32(Math.Min(s, int.MaxValue)));
                         }
                         catch (ArgumentOutOfRangeException)
                         {

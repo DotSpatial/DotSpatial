@@ -18,7 +18,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         #region Fields
 
         private readonly IHeaderControl _header;
-        private IFeatureLayer _activeLayer;
+        private IFeatureLayer? _activeLayer;
         private SimpleActionItem _addShape;
         private AddShapeFunction _addShapeFunction;
         private bool _disposed;
@@ -141,7 +141,6 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             const string ShapeEditorMenuKey = "kShapeEditor";
 
-            // _Header.Add(new RootItem(ShapeEditorMenuKey, "Shape Editing"));
             _header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.New, NewButtonClick)
             {
                 GroupCaption = "Shape Editor",
@@ -169,7 +168,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             });
         }
 
-        private void AddShapeButtonClick(object sender, EventArgs e)
+        private void AddShapeButtonClick(object? sender, EventArgs e)
         {
             if (_geoMap == null)
             {
@@ -205,12 +204,12 @@ namespace DotSpatial.Plugins.ShapeEditor
             _addShapeFunction.Activate();
         }
 
-        private void LayersLayerSelected(object sender, LayerSelectedEventArgs e)
+        private void LayersLayerSelected(object? sender, LayerSelectedEventArgs e)
         {
             SetActiveLayer(e.Layer);
         }
 
-        private void MapFrameLayerSelected(object sender, LayerSelectedEventArgs e)
+        private void MapFrameLayerSelected(object? sender, LayerSelectedEventArgs e)
         {
             if (!e.IsSelected && e.Layer == _activeLayer)
             {
@@ -232,12 +231,15 @@ namespace DotSpatial.Plugins.ShapeEditor
                 UpdateAddShapeFunctionLayer();
         }
 
-        private void MapFrameOnLayerRemoved(object sender, LayerEventArgs e)
+        private void MapFrameOnLayerRemoved(object? sender, LayerEventArgs e)
         {
-            if (e.Layer == _activeLayer) _activeLayer = null;
+            if (e.Layer == _activeLayer)
+            {
+                _activeLayer = null;
+            }
         }
 
-        private void MoveVertexButtonClick(object sender, EventArgs e)
+        private void MoveVertexButtonClick(object? sender, EventArgs e)
         {
             if (_geoMap == null)
             {
@@ -257,7 +259,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 };
             }
 
-            if (_geoMap.MapFunctions.Contains(_moveVertexFunction) == false)
+            if (!_geoMap.MapFunctions.Contains(_moveVertexFunction))
             {
                 _geoMap.MapFunctions.Add(_moveVertexFunction);
             }
@@ -269,15 +271,15 @@ namespace DotSpatial.Plugins.ShapeEditor
             _moveVertexFunction.Activate();
         }
 
-        private void NewButtonClick(object sender, EventArgs e)
+        private void NewButtonClick(object? sender, EventArgs e)
         {
-            FeatureTypeDialog dlg = new FeatureTypeDialog();
+            FeatureTypeDialog dlg = new();
             if (dlg.ShowDialog() != DialogResult.OK)
             {
                 return;
             }
 
-            FeatureSet fs = new FeatureSet(dlg.FeatureType);
+            FeatureSet fs = new(dlg.FeatureType);
             if (_geoMap.Projection != null)
             {
                 fs.Projection = _geoMap.Projection;
@@ -326,8 +328,7 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         private void SetActiveLayer(ILayer layer)
         {
-            IFeatureLayer fl = layer as IFeatureLayer;
-            if (fl == null)
+            if (layer is not IFeatureLayer fl)
             {
                 _addShape.Enabled = false;
             }
@@ -350,9 +351,9 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
         }
 
-        private void SnappingButtonClick(object sender, EventArgs e)
+        private void SnappingButtonClick(object? sender, EventArgs e)
         {
-            using (SnapSettingsDialog dlg = new SnapSettingsDialog(_geoMap)
+            using (SnapSettingsDialog dlg = new(_geoMap)
             {
                 DoSnapping = _doSnapping
             })

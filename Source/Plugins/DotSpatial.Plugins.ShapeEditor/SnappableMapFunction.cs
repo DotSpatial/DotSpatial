@@ -91,7 +91,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             if (SnapLayers == null || e == null || Map == null)
                 return false;
 
-            Rectangle mouseRect = new Rectangle(e.X - SnapTol, e.Y - SnapTol, SnapTol * 2, SnapTol * 2);
+            Rectangle mouseRect = new(e.X - SnapTol, e.Y - SnapTol, SnapTol * 2, SnapTol * 2);
 
             Extent pix = Map.PixelToProj(mouseRect);
             if (pix == null)
@@ -130,7 +130,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             // Invalidate the region around the mouse so that the previous snap colors are erased.
             if ((prevWasSnapped || IsSnapped) && DoSnapping)
             {
-                Rectangle invalid = new Rectangle(pos.X - 30, pos.Y - 30, 60, 60);
+                Rectangle invalid = new(pos.X - 30, pos.Y - 30, 60, 60);
                 Map.Invalidate(invalid);
             }
         }

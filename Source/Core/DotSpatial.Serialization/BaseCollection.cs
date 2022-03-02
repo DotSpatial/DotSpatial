@@ -225,7 +225,7 @@ namespace DotSpatial.Serialization
         /// </summary>
         protected virtual void OnClear()
         {
-            List<T> deleteList = new List<T>();
+            List<T> deleteList = new();
 
             foreach (T item in InnerList)
             {

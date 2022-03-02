@@ -50,8 +50,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 
             if (!Convert.ToBoolean(mapwin4Section["ViewBackColor_UseDefault"]))
             {
-                var mapControl = _map as Control;
-                if (mapControl != null)
+                if (_map is Control mapControl)
                     mapControl.BackColor = LegacyDeserializer.GetColor(mapwin4Section["ViewBackColor"]);
 
                 _map.Invalidate();
@@ -124,8 +123,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                     LegendText = group["Name"],
                     IsExpanded = Convert.ToBoolean(group["Expanded"])
                 };
-                List<ILayer> gl;
-                if (allLayers.TryGetValue(gInd, out gl))
+                if (allLayers.TryGetValue(gInd, out List<ILayer> gl))
                 {
                     foreach (var layer in gl)
                     {

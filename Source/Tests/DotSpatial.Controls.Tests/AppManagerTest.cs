@@ -23,8 +23,8 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void GetCustomSettingDefaultTest()
         {
-            Map map = new Map();
-            AppManager target = new AppManager
+            Map map = new();
+            AppManager target = new()
             {
                 Map = map
             };
@@ -43,8 +43,8 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void GetCustomSettingFromFileTest()
         {
-            Map map = new Map();
-            AppManager target = new AppManager
+            Map map = new();
+            AppManager target = new()
             {
                 Map = map
             };
@@ -73,8 +73,8 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void GetCustomSettingFromMemoryTest()
         {
-            Map map = new Map();
-            AppManager target = new AppManager
+            Map map = new();
+            AppManager target = new()
             {
                 Map = map
             };

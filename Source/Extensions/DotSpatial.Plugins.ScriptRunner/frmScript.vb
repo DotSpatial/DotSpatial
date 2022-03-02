@@ -34,20 +34,19 @@ Imports System.Threading
 Imports System.Windows.Forms
 Imports DotSpatial.Controls
 
-Public Class frmScript
+Public Class FrmScript
     'Inherits MapWindow.baseForm '5/5/2008 jk
-    Inherits System.Windows.Forms.Form
+    Inherits Form
 
-    Private _appMgr As AppManager
+    Private ReadOnly _appMgr As AppManager
 
 #Region "Declarations"
     'changed by Jiri Kadlec
-    Private resources As System.Resources.ResourceManager = _
-                New System.Resources.ResourceManager("MapWindow.GlobalResource", System.Reflection.Assembly.GetExecutingAssembly())
+    Private ReadOnly resources As New Resources.ResourceManager("MapWindow.GlobalResource", Assembly.GetExecutingAssembly())
     'Public Declare Function LockWindowUpdate Lib "user32" (ByVal hWnd As Integer) As Integer
 #End Region
 
-    Private pDefaultScript_VB As String = _
+    Private ReadOnly pDefaultScript_VB As String =
                 "Imports DotSpatial.Controls" & vbCrLf _
                 & "Imports System.Windows.Forms" & vbCrLf _
                 & "Imports Microsoft.VisualBasic" & vbCrLf _
@@ -60,158 +59,158 @@ Public Class frmScript
                 & "  End Sub" & vbCrLf _
                 & "End Module"
 
-    Private pDefaultPlugin_VB As String = _
+    Private ReadOnly pDefaultPlugin_VB As String =
                 "Imports DotSpatial.Controls" & vbCrLf _
                 & "Imports DotSpatial.Controls.Header" & vbCrLf _
                 & "Imports System.Windows.Forms" & vbCrLf _
                 & "Imports Microsoft.VisualBasic" & vbCrLf _
-                & "Imports System" & vbCrLf & _
-                vbCrLf & _
-                vbCrLf & _
-                "Public Class MyPlugin" & vbCrLf & _
-                "    Inherits Extension" & vbCrLf & _
-                "" + vbCrLf & _
-                "    Dim host As AppManager" & vbCrLf & _
-                "    Dim btnSample As ToolStripButton" & vbCrLf & _
-                vbCrLf & _
-                "    Public Sub New()" & vbCrLf & _
-                "    End Sub" & vbCrLf & _
-                "" & vbCrLf & _
-                "   Public Overrides Sub Activate()" & vbCrLf & _
-                "" & vbCrLf & _
-                "       MyBase.Activate()" & vbCrLf & _
-                "       host = Me.App" & vbCrLf & _
-                "       Dim SamplePluginMenuKey as String = ""kSampleScriptPlugin""" + vbCrLf & _
-                "       Dim samplePlugin as String = ""Sample Script Plugin""" + vbCrLf & _
-                "" & vbCrLf & _
-                "       host.HeaderControl.Add(New RootItem(SamplePluginMenuKey, samplePlugin))" & vbCrLf & _
-                "       host.HeaderControl.Add(New SimpleActionItem(SamplePluginMenuKey, samplePlugin,  New EventHandler(AddressOf btnSample_Click))" & vbCrLf & _
-                "" & vbCrLf & _
-                "   End Sub" & vbCrLf & _
-                vbCrLf & _
-                "   Public Overrides Sub Deactivate()" & vbCrLf & _
-                "           host.HeaderControl.RemoveAll()" & vbCrLf & _
-                "           MyBase.Deactivate()" & vbCrLf & _
-                "   End Sub" & vbCrLf & _
-                vbCrLf & _
-                vbCrLf & _
-                "   Private Sub btnSample_Click(ByVal sender As Object, ByVal e As EventArgs)" & vbCrLf & _
-                "       MessageBox.Show(""Hello World"")" & vbCrLf & _
-                "   End Sub" & vbCrLf & _
+                & "Imports System" & vbCrLf &
+                vbCrLf &
+                vbCrLf &
+                "Public Class MyPlugin" & vbCrLf &
+                "    Inherits Extension" & vbCrLf &
+                "" + vbCrLf &
+                "    Dim host As AppManager" & vbCrLf &
+                "    Dim btnSample As ToolStripButton" & vbCrLf &
+                vbCrLf &
+                "    Public Sub New()" & vbCrLf &
+                "    End Sub" & vbCrLf &
+                "" & vbCrLf &
+                "   Public Overrides Sub Activate()" & vbCrLf &
+                "" & vbCrLf &
+                "       MyBase.Activate()" & vbCrLf &
+                "       host = Me.App" & vbCrLf &
+                "       Dim SamplePluginMenuKey as String = ""kSampleScriptPlugin""" + vbCrLf &
+                "       Dim samplePlugin as String = ""Sample Script Plugin""" + vbCrLf &
+                "" & vbCrLf &
+                "       host.HeaderControl.Add(New RootItem(SamplePluginMenuKey, samplePlugin))" & vbCrLf &
+                "       host.HeaderControl.Add(New SimpleActionItem(SamplePluginMenuKey, samplePlugin,  New EventHandler(AddressOf btnSample_Click))" & vbCrLf &
+                "" & vbCrLf &
+                "   End Sub" & vbCrLf &
+                vbCrLf &
+                "   Public Overrides Sub Deactivate()" & vbCrLf &
+                "           host.HeaderControl.RemoveAll()" & vbCrLf &
+                "           MyBase.Deactivate()" & vbCrLf &
+                "   End Sub" & vbCrLf &
+                vbCrLf &
+                vbCrLf &
+                "   Private Sub btnSample_Click(ByVal sender As Object, ByVal e As EventArgs)" & vbCrLf &
+                "       MessageBox.Show(""Hello World"")" & vbCrLf &
+                "   End Sub" & vbCrLf &
                 "End Class"
 
 
-    Private pFilter As String = "VB.net (*.vb)|*.vb|C#.net (*.cs)|*.cs|All files|*.*"
-    Private pFilterVB As String = "VB.net (*.vb)|*.vb|All files|*.*"
-    Private pFilterCS As String = "C#.net (*.cs)|*.cs|All files|*.*"
+    Private ReadOnly pFilter As String = "VB.net (*.vb)|*.vb|C#.net (*.cs)|*.cs|All files|*.*"
+    Private ReadOnly pFilterVB As String = "VB.net (*.vb)|*.vb|All files|*.*"
+    Private ReadOnly pFilterCS As String = "C#.net (*.cs)|*.cs|All files|*.*"
 
     Public pFileName As String = ""
 
     Private DataChanged As Boolean = False
     Private IgnoreDataChange As Boolean = False
 
-    Private pDefaultScript_CS As String = _
+    Private ReadOnly pDefaultScript_CS As String =
                 "using DotSpatial.Controls;" & vbCrLf _
                 & "using System.Windows.Forms;" & vbCrLf _
                 & "using Microsoft.VisualBasic;" & vbCrLf _
-                & "using System;" & vbCrLf & _
-                vbCrLf & _
-                "namespace MyNamespace" + vbCrLf & _
-                "{" + vbCrLf & _
-                "   // You must change the name of this class to something unique!" & vbCrLf & _
-                "   class MyExample" + vbCrLf & _
-                "   {" + vbCrLf & _
-                "       public static void ScriptMain(AppManager appMgr)" + vbCrLf & _
-                "       {    " + vbCrLf & _
-                "           MessageBox.Show(""This is a simple script to display the number of loaded layers in the map: "" + appMgr.Map.Layers.Count);" + vbCrLf & _
-                "       }" + vbCrLf & _
-                "   }" & vbCrLf & _
+                & "using System;" & vbCrLf &
+                vbCrLf &
+                "namespace MyNamespace" + vbCrLf &
+                "{" + vbCrLf &
+                "   // You must change the name of this class to something unique!" & vbCrLf &
+                "   class MyExample" + vbCrLf &
+                "   {" + vbCrLf &
+                "       public static void ScriptMain(AppManager appMgr)" + vbCrLf &
+                "       {    " + vbCrLf &
+                "           MessageBox.Show(""This is a simple script to display the number of loaded layers in the map: "" + appMgr.Map.Layers.Count);" + vbCrLf &
+                "       }" + vbCrLf &
+                "   }" & vbCrLf &
                 "}" & vbCrLf
-    Friend WithEvents ImageList1 As System.Windows.Forms.ImageList
-    Friend WithEvents tbbNew As System.Windows.Forms.ToolStripButton
-    Friend WithEvents tbbOpen As System.Windows.Forms.ToolStripButton
-    Friend WithEvents tbbSave As System.Windows.Forms.ToolStripButton
-    Friend WithEvents tbbsep As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents tbbRun As System.Windows.Forms.ToolStripButton
-    Friend WithEvents tbbCompile As System.Windows.Forms.ToolStripButton
-    Friend WithEvents tbbHelp As System.Windows.Forms.ToolStripButton
-    Friend WithEvents MenuStrip1 As System.Windows.Forms.MenuStrip
-    Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuNew As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuOpen As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuSave As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuClose As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem6 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuRun As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuCompile As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem2 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuViewRun As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuSubmit As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuHelp As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents BottomToolStripPanel As System.Windows.Forms.ToolStripPanel
-    Friend WithEvents TopToolStripPanel As System.Windows.Forms.ToolStripPanel
-    Friend WithEvents RightToolStripPanel As System.Windows.Forms.ToolStripPanel
-    Friend WithEvents LeftToolStripPanel As System.Windows.Forms.ToolStripPanel
-    Friend WithEvents ContentPanel As System.Windows.Forms.ToolStripContentPanel
-    Friend WithEvents ToolStripContainer1 As System.Windows.Forms.ToolStripContainer
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents rdScript As System.Windows.Forms.RadioButton
-    Friend WithEvents rdPlugin As System.Windows.Forms.RadioButton
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents rdVBNet As System.Windows.Forms.RadioButton
-    Friend WithEvents rdCS As System.Windows.Forms.RadioButton
-    Friend WithEvents mnuSep As System.Windows.Forms.ToolStripSeparator
-    <CLSCompliant(False)> _
-    Public WithEvents txtScript As CSharpEditor.MainForm
+    Friend WithEvents ImageList1 As ImageList
+    Friend WithEvents TbbNew As ToolStripButton
+    Friend WithEvents TbbOpen As ToolStripButton
+    Friend WithEvents TbbSave As ToolStripButton
+    Friend WithEvents Tbbsep As ToolStripSeparator
+    Friend WithEvents TbbRun As ToolStripButton
+    Friend WithEvents TbbCompile As ToolStripButton
+    Friend WithEvents TbbHelp As ToolStripButton
+    Friend WithEvents MenuStrip1 As MenuStrip
+    Friend WithEvents ToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents MnuNew As ToolStripMenuItem
+    Friend WithEvents MnuOpen As ToolStripMenuItem
+    Friend WithEvents MnuSave As ToolStripMenuItem
+    Friend WithEvents MnuClose As ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem6 As ToolStripMenuItem
+    Friend WithEvents MnuRun As ToolStripMenuItem
+    Friend WithEvents MnuCompile As ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem2 As ToolStripMenuItem
+    Friend WithEvents MnuViewRun As ToolStripMenuItem
+    Friend WithEvents MnuSubmit As ToolStripMenuItem
+    Friend WithEvents MnuHelp As ToolStripMenuItem
+    Friend WithEvents BottomToolStripPanel As ToolStripPanel
+    Friend WithEvents TopToolStripPanel As ToolStripPanel
+    Friend WithEvents RightToolStripPanel As ToolStripPanel
+    Friend WithEvents LeftToolStripPanel As ToolStripPanel
+    Friend WithEvents ContentPanel As ToolStripContentPanel
+    Friend WithEvents ToolStripContainer1 As ToolStripContainer
+    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents RdScript As RadioButton
+    Friend WithEvents RdPlugin As RadioButton
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents RdVBNet As RadioButton
+    Friend WithEvents RdCS As RadioButton
+    Friend WithEvents MnuSep As ToolStripSeparator
+    <CLSCompliant(False)>
+    Public WithEvents TxtScript As CSharpEditor.MainForm
 
-    Private pDefaultPlugin_CS As String = _
+    Private ReadOnly pDefaultPlugin_CS As String =
                 "using DotSpatial.Controls;" & vbCrLf _
                 & "using DotSpatial.Controls.Header;" & vbCrLf _
                 & "using System.Windows.Forms;" & vbCrLf _
                 & "using Microsoft.VisualBasic;" & vbCrLf _
-                & "using System;" & vbCrLf & _
-                "" & vbCrLf & _
-                "namespace MyNamespace" & vbCrLf & _
-                "{" + vbCrLf & _
-                "	public class MyExample : Extension" & vbCrLf & _
-                "	{" + vbCrLf & _
-                "       private AppManager _host;" + vbCrLf & _
-                "" + vbCrLf & _
-                "		// Change this to match the name of your class. This is the constructor." + vbCrLf & _
-                "		public MyExample()" + vbCrLf & _
-                "		{" + vbCrLf & _
-                "" + vbCrLf & _
-                "		}" + vbCrLf & _
-                "" + vbCrLf & _
-                vbCrLf & _
-                "       public override void Activate()" & vbCrLf & _
-                "       {" + vbCrLf & _
-                "" + vbCrLf & _
-                "           base.Activate();" + vbCrLf & _
-                "           _host = App;" + vbCrLf & _
-                "           string SamplePluginMenuKey = ""kSampleScriptPlugin"";" + vbCrLf & _
-                "           string samplePlugin = ""Sample Scripts Plugin"";" + vbCrLf & _
-                "            _host.HeaderControl.Add(new RootItem(SamplePluginMenuKey, samplePlugin));" & vbCrLf & _
-                "            _host.HeaderControl.Add(new SimpleActionItem(SamplePluginMenuKey, samplePlugin,  btnSample_Click));" & vbCrLf & _
-                "" & vbCrLf & _
-                "       }" + vbCrLf & _
-                vbCrLf & _
-                "       public override void Deactivate()" & vbCrLf & _
-                "       {" & vbCrLf & _
-                "           _host.HeaderControl.RemoveAll();" & vbCrLf & _
-                "           base.Deactivate();" & vbCrLf & _
-                "       }" & vbCrLf & _
-                vbCrLf & _
-                "       private void btnSample_Click(object sender, EventArgs e )" & vbCrLf & _
-                "       {" & vbCrLf & _
-                "           MessageBox.Show(""Hello World"");" & vbCrLf & _
-                "       }" & vbCrLf & _
-                "   }" & vbCrLf & _
+                & "using System;" & vbCrLf &
+                "" & vbCrLf &
+                "namespace MyNamespace" & vbCrLf &
+                "{" + vbCrLf &
+                "	public class MyExample : Extension" & vbCrLf &
+                "	{" + vbCrLf &
+                "       private AppManager _host;" + vbCrLf &
+                "" + vbCrLf &
+                "		// Change this to match the name of your class. This is the constructor." + vbCrLf &
+                "		public MyExample()" + vbCrLf &
+                "		{" + vbCrLf &
+                "" + vbCrLf &
+                "		}" + vbCrLf &
+                "" + vbCrLf &
+                vbCrLf &
+                "       public override void Activate()" & vbCrLf &
+                "       {" + vbCrLf &
+                "" + vbCrLf &
+                "           base.Activate();" + vbCrLf &
+                "           _host = App;" + vbCrLf &
+                "           string SamplePluginMenuKey = ""kSampleScriptPlugin"";" + vbCrLf &
+                "           string samplePlugin = ""Sample Scripts Plugin"";" + vbCrLf &
+                "            _host.HeaderControl.Add(new RootItem(SamplePluginMenuKey, samplePlugin));" & vbCrLf &
+                "            _host.HeaderControl.Add(new SimpleActionItem(SamplePluginMenuKey, samplePlugin,  btnSample_Click));" & vbCrLf &
+                "" & vbCrLf &
+                "       }" + vbCrLf &
+                vbCrLf &
+                "       public override void Deactivate()" & vbCrLf &
+                "       {" & vbCrLf &
+                "           _host.HeaderControl.RemoveAll();" & vbCrLf &
+                "           base.Deactivate();" & vbCrLf &
+                "       }" & vbCrLf &
+                vbCrLf &
+                "       private void btnSample_Click(object sender, EventArgs e )" & vbCrLf &
+                "       {" & vbCrLf &
+                "           MessageBox.Show(""Hello World"");" & vbCrLf &
+                "       }" & vbCrLf &
+                "   }" & vbCrLf &
                 "}"
 
 #Region " Windows Form Designer generated code "
 
-    Public Sub New(ByVal appManager As AppManager)
+    Public Sub New(appManager As AppManager)
         MyBase.New()
 
         'This call is required by the Windows Form Designer.
@@ -224,7 +223,7 @@ Public Class frmScript
     End Sub
 
     'Form overrides dispose to clean up the component list.
-    Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overloads Overrides Sub Dispose(disposing As Boolean)
         If disposing Then
             If Not (components Is Nothing) Then
                 components.Dispose()
@@ -239,326 +238,326 @@ Public Class frmScript
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    Friend WithEvents tools As System.Windows.Forms.ToolStrip
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmScript))
-        Me.ToolStripContainer1 = New System.Windows.Forms.ToolStripContainer()
-        Me.txtScript = New CSharpEditor.MainForm()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.rdScript = New System.Windows.Forms.RadioButton()
-        Me.rdPlugin = New System.Windows.Forms.RadioButton()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.rdVBNet = New System.Windows.Forms.RadioButton()
-        Me.rdCS = New System.Windows.Forms.RadioButton()
-        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
-        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuNew = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuOpen = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuSave = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuSep = New System.Windows.Forms.ToolStripSeparator()
-        Me.mnuClose = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripMenuItem6 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuRun = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuCompile = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuViewRun = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuSubmit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem()
-        Me.tools = New System.Windows.Forms.ToolStrip()
-        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
-        Me.tbbNew = New System.Windows.Forms.ToolStripButton()
-        Me.tbbOpen = New System.Windows.Forms.ToolStripButton()
-        Me.tbbSave = New System.Windows.Forms.ToolStripButton()
-        Me.tbbsep = New System.Windows.Forms.ToolStripSeparator()
-        Me.tbbRun = New System.Windows.Forms.ToolStripButton()
-        Me.tbbCompile = New System.Windows.Forms.ToolStripButton()
-        Me.tbbHelp = New System.Windows.Forms.ToolStripButton()
-        Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
-        Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
-        Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
-        Me.LeftToolStripPanel = New System.Windows.Forms.ToolStripPanel()
-        Me.ContentPanel = New System.Windows.Forms.ToolStripContentPanel()
-        Me.ToolStripContainer1.ContentPanel.SuspendLayout()
-        Me.ToolStripContainer1.TopToolStripPanel.SuspendLayout()
-        Me.ToolStripContainer1.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
-        Me.MenuStrip1.SuspendLayout()
-        Me.tools.SuspendLayout()
-        Me.SuspendLayout()
+    Friend WithEvents Tools As ToolStrip
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
+        components = New System.ComponentModel.Container()
+        Dim resources As New System.ComponentModel.ComponentResourceManager(GetType(FrmScript))
+        ToolStripContainer1 = New ToolStripContainer()
+        TxtScript = New CSharpEditor.MainForm()
+        GroupBox2 = New GroupBox()
+        RdScript = New RadioButton()
+        RdPlugin = New RadioButton()
+        GroupBox1 = New GroupBox()
+        RdVBNet = New RadioButton()
+        RdCS = New RadioButton()
+        MenuStrip1 = New MenuStrip()
+        ToolStripMenuItem1 = New ToolStripMenuItem()
+        MnuNew = New ToolStripMenuItem()
+        MnuOpen = New ToolStripMenuItem()
+        MnuSave = New ToolStripMenuItem()
+        MnuSep = New ToolStripSeparator()
+        MnuClose = New ToolStripMenuItem()
+        ToolStripMenuItem6 = New ToolStripMenuItem()
+        MnuRun = New ToolStripMenuItem()
+        MnuCompile = New ToolStripMenuItem()
+        ToolStripMenuItem2 = New ToolStripMenuItem()
+        MnuViewRun = New ToolStripMenuItem()
+        MnuSubmit = New ToolStripMenuItem()
+        MnuHelp = New ToolStripMenuItem()
+        Tools = New ToolStrip()
+        ImageList1 = New ImageList(components)
+        TbbNew = New ToolStripButton()
+        TbbOpen = New ToolStripButton()
+        TbbSave = New ToolStripButton()
+        Tbbsep = New ToolStripSeparator()
+        TbbRun = New ToolStripButton()
+        TbbCompile = New ToolStripButton()
+        TbbHelp = New ToolStripButton()
+        BottomToolStripPanel = New ToolStripPanel()
+        TopToolStripPanel = New ToolStripPanel()
+        RightToolStripPanel = New ToolStripPanel()
+        LeftToolStripPanel = New ToolStripPanel()
+        ContentPanel = New ToolStripContentPanel()
+        ToolStripContainer1.ContentPanel.SuspendLayout()
+        ToolStripContainer1.TopToolStripPanel.SuspendLayout()
+        ToolStripContainer1.SuspendLayout()
+        GroupBox2.SuspendLayout()
+        GroupBox1.SuspendLayout()
+        MenuStrip1.SuspendLayout()
+        Tools.SuspendLayout()
+        SuspendLayout()
         '
         'ToolStripContainer1
         '
-        Me.ToolStripContainer1.AllowDrop = True
+        ToolStripContainer1.AllowDrop = True
         '
         'ToolStripContainer1.ContentPanel
         '
-        Me.ToolStripContainer1.ContentPanel.Controls.Add(Me.txtScript)
-        Me.ToolStripContainer1.ContentPanel.Controls.Add(Me.GroupBox2)
-        Me.ToolStripContainer1.ContentPanel.Controls.Add(Me.GroupBox1)
-        resources.ApplyResources(Me.ToolStripContainer1.ContentPanel, "ToolStripContainer1.ContentPanel")
-        resources.ApplyResources(Me.ToolStripContainer1, "ToolStripContainer1")
-        Me.ToolStripContainer1.Name = "ToolStripContainer1"
+        ToolStripContainer1.ContentPanel.Controls.Add(TxtScript)
+        ToolStripContainer1.ContentPanel.Controls.Add(GroupBox2)
+        ToolStripContainer1.ContentPanel.Controls.Add(GroupBox1)
+        resources.ApplyResources(ToolStripContainer1.ContentPanel, "ToolStripContainer1.ContentPanel")
+        resources.ApplyResources(ToolStripContainer1, "ToolStripContainer1")
+        ToolStripContainer1.Name = "ToolStripContainer1"
         '
         'ToolStripContainer1.TopToolStripPanel
         '
-        Me.ToolStripContainer1.TopToolStripPanel.Controls.Add(Me.MenuStrip1)
-        Me.ToolStripContainer1.TopToolStripPanel.Controls.Add(Me.tools)
+        ToolStripContainer1.TopToolStripPanel.Controls.Add(MenuStrip1)
+        ToolStripContainer1.TopToolStripPanel.Controls.Add(Tools)
         '
         'txtScript
         '
-        resources.ApplyResources(Me.txtScript, "txtScript")
-        Me.txtScript.Name = "txtScript"
+        resources.ApplyResources(TxtScript, "txtScript")
+        TxtScript.Name = "txtScript"
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.rdScript)
-        Me.GroupBox2.Controls.Add(Me.rdPlugin)
-        resources.ApplyResources(Me.GroupBox2, "GroupBox2")
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.TabStop = False
+        GroupBox2.Controls.Add(RdScript)
+        GroupBox2.Controls.Add(RdPlugin)
+        resources.ApplyResources(GroupBox2, "GroupBox2")
+        GroupBox2.Name = "GroupBox2"
+        GroupBox2.TabStop = False
         '
         'rdScript
         '
-        Me.rdScript.Checked = True
-        resources.ApplyResources(Me.rdScript, "rdScript")
-        Me.rdScript.Name = "rdScript"
-        Me.rdScript.TabStop = True
+        RdScript.Checked = True
+        resources.ApplyResources(RdScript, "rdScript")
+        RdScript.Name = "rdScript"
+        RdScript.TabStop = True
         '
         'rdPlugin
         '
-        resources.ApplyResources(Me.rdPlugin, "rdPlugin")
-        Me.rdPlugin.Name = "rdPlugin"
+        resources.ApplyResources(RdPlugin, "rdPlugin")
+        RdPlugin.Name = "rdPlugin"
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.rdVBNet)
-        Me.GroupBox1.Controls.Add(Me.rdCS)
-        resources.ApplyResources(Me.GroupBox1, "GroupBox1")
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.TabStop = False
+        GroupBox1.Controls.Add(RdVBNet)
+        GroupBox1.Controls.Add(RdCS)
+        resources.ApplyResources(GroupBox1, "GroupBox1")
+        GroupBox1.Name = "GroupBox1"
+        GroupBox1.TabStop = False
         '
         'rdVBNet
         '
-        Me.rdVBNet.Checked = True
-        resources.ApplyResources(Me.rdVBNet, "rdVBNet")
-        Me.rdVBNet.Name = "rdVBNet"
-        Me.rdVBNet.TabStop = True
+        RdVBNet.Checked = True
+        resources.ApplyResources(RdVBNet, "rdVBNet")
+        RdVBNet.Name = "rdVBNet"
+        RdVBNet.TabStop = True
         '
         'rdCS
         '
-        resources.ApplyResources(Me.rdCS, "rdCS")
-        Me.rdCS.Name = "rdCS"
+        resources.ApplyResources(RdCS, "rdCS")
+        RdCS.Name = "rdCS"
         '
         'MenuStrip1
         '
-        resources.ApplyResources(Me.MenuStrip1, "MenuStrip1")
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.ToolStripMenuItem6, Me.ToolStripMenuItem2, Me.mnuHelp})
-        Me.MenuStrip1.Name = "MenuStrip1"
+        resources.ApplyResources(MenuStrip1, "MenuStrip1")
+        MenuStrip1.Items.AddRange(New ToolStripItem() {ToolStripMenuItem1, ToolStripMenuItem6, ToolStripMenuItem2, MnuHelp})
+        MenuStrip1.Name = "MenuStrip1"
         '
         'ToolStripMenuItem1
         '
-        Me.ToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNew, Me.mnuOpen, Me.mnuSave, Me.mnuSep, Me.mnuClose})
-        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        resources.ApplyResources(Me.ToolStripMenuItem1, "ToolStripMenuItem1")
+        ToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {MnuNew, MnuOpen, MnuSave, MnuSep, MnuClose})
+        ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        resources.ApplyResources(ToolStripMenuItem1, "ToolStripMenuItem1")
         '
         'mnuNew
         '
-        Me.mnuNew.Name = "mnuNew"
-        resources.ApplyResources(Me.mnuNew, "mnuNew")
+        MnuNew.Name = "mnuNew"
+        resources.ApplyResources(MnuNew, "mnuNew")
         '
         'mnuOpen
         '
-        Me.mnuOpen.Name = "mnuOpen"
-        resources.ApplyResources(Me.mnuOpen, "mnuOpen")
+        MnuOpen.Name = "mnuOpen"
+        resources.ApplyResources(MnuOpen, "mnuOpen")
         '
         'mnuSave
         '
-        Me.mnuSave.Name = "mnuSave"
-        resources.ApplyResources(Me.mnuSave, "mnuSave")
+        MnuSave.Name = "mnuSave"
+        resources.ApplyResources(MnuSave, "mnuSave")
         '
         'mnuSep
         '
-        Me.mnuSep.Name = "mnuSep"
-        resources.ApplyResources(Me.mnuSep, "mnuSep")
+        MnuSep.Name = "mnuSep"
+        resources.ApplyResources(MnuSep, "mnuSep")
         '
         'mnuClose
         '
-        Me.mnuClose.Name = "mnuClose"
-        resources.ApplyResources(Me.mnuClose, "mnuClose")
+        MnuClose.Name = "mnuClose"
+        resources.ApplyResources(MnuClose, "mnuClose")
         '
         'ToolStripMenuItem6
         '
-        Me.ToolStripMenuItem6.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuRun, Me.mnuCompile})
-        Me.ToolStripMenuItem6.Name = "ToolStripMenuItem6"
-        resources.ApplyResources(Me.ToolStripMenuItem6, "ToolStripMenuItem6")
+        ToolStripMenuItem6.DropDownItems.AddRange(New ToolStripItem() {MnuRun, MnuCompile})
+        ToolStripMenuItem6.Name = "ToolStripMenuItem6"
+        resources.ApplyResources(ToolStripMenuItem6, "ToolStripMenuItem6")
         '
         'mnuRun
         '
-        Me.mnuRun.Name = "mnuRun"
-        resources.ApplyResources(Me.mnuRun, "mnuRun")
+        MnuRun.Name = "mnuRun"
+        resources.ApplyResources(MnuRun, "mnuRun")
         '
         'mnuCompile
         '
-        Me.mnuCompile.Name = "mnuCompile"
-        resources.ApplyResources(Me.mnuCompile, "mnuCompile")
+        MnuCompile.Name = "mnuCompile"
+        resources.ApplyResources(MnuCompile, "mnuCompile")
         '
         'ToolStripMenuItem2
         '
-        Me.ToolStripMenuItem2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuViewRun, Me.mnuSubmit})
-        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        resources.ApplyResources(Me.ToolStripMenuItem2, "ToolStripMenuItem2")
+        ToolStripMenuItem2.DropDownItems.AddRange(New ToolStripItem() {MnuViewRun, MnuSubmit})
+        ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        resources.ApplyResources(ToolStripMenuItem2, "ToolStripMenuItem2")
         '
         'mnuViewRun
         '
-        Me.mnuViewRun.Name = "mnuViewRun"
-        resources.ApplyResources(Me.mnuViewRun, "mnuViewRun")
+        MnuViewRun.Name = "mnuViewRun"
+        resources.ApplyResources(MnuViewRun, "mnuViewRun")
         '
         'mnuSubmit
         '
-        Me.mnuSubmit.Name = "mnuSubmit"
-        resources.ApplyResources(Me.mnuSubmit, "mnuSubmit")
+        MnuSubmit.Name = "mnuSubmit"
+        resources.ApplyResources(MnuSubmit, "mnuSubmit")
         '
         'mnuHelp
         '
-        Me.mnuHelp.Name = "mnuHelp"
-        resources.ApplyResources(Me.mnuHelp, "mnuHelp")
+        MnuHelp.Name = "mnuHelp"
+        resources.ApplyResources(MnuHelp, "mnuHelp")
         '
         'tools
         '
-        resources.ApplyResources(Me.tools, "tools")
-        Me.tools.ImageList = Me.ImageList1
-        Me.tools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tbbNew, Me.tbbOpen, Me.tbbSave, Me.tbbsep, Me.tbbRun, Me.tbbCompile, Me.tbbHelp})
-        Me.tools.Name = "tools"
+        resources.ApplyResources(Tools, "tools")
+        Tools.ImageList = ImageList1
+        Tools.Items.AddRange(New ToolStripItem() {TbbNew, TbbOpen, TbbSave, Tbbsep, TbbRun, TbbCompile, TbbHelp})
+        Tools.Name = "tools"
         '
         'ImageList1
         '
-        Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
-        Me.ImageList1.Images.SetKeyName(0, "")
-        Me.ImageList1.Images.SetKeyName(1, "")
-        Me.ImageList1.Images.SetKeyName(2, "")
-        Me.ImageList1.Images.SetKeyName(3, "")
-        Me.ImageList1.Images.SetKeyName(4, "")
-        Me.ImageList1.Images.SetKeyName(5, "")
+        ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), ImageListStreamer)
+        ImageList1.TransparentColor = Color.Transparent
+        ImageList1.Images.SetKeyName(0, "")
+        ImageList1.Images.SetKeyName(1, "")
+        ImageList1.Images.SetKeyName(2, "")
+        ImageList1.Images.SetKeyName(3, "")
+        ImageList1.Images.SetKeyName(4, "")
+        ImageList1.Images.SetKeyName(5, "")
         '
         'tbbNew
         '
-        resources.ApplyResources(Me.tbbNew, "tbbNew")
-        Me.tbbNew.Name = "tbbNew"
+        resources.ApplyResources(TbbNew, "tbbNew")
+        TbbNew.Name = "tbbNew"
         '
         'tbbOpen
         '
-        resources.ApplyResources(Me.tbbOpen, "tbbOpen")
-        Me.tbbOpen.Name = "tbbOpen"
+        resources.ApplyResources(TbbOpen, "tbbOpen")
+        TbbOpen.Name = "tbbOpen"
         '
         'tbbSave
         '
-        resources.ApplyResources(Me.tbbSave, "tbbSave")
-        Me.tbbSave.Name = "tbbSave"
+        resources.ApplyResources(TbbSave, "tbbSave")
+        TbbSave.Name = "tbbSave"
         '
         'tbbsep
         '
-        Me.tbbsep.Name = "tbbsep"
-        resources.ApplyResources(Me.tbbsep, "tbbsep")
+        Tbbsep.Name = "tbbsep"
+        resources.ApplyResources(Tbbsep, "tbbsep")
         '
         'tbbRun
         '
-        resources.ApplyResources(Me.tbbRun, "tbbRun")
-        Me.tbbRun.Name = "tbbRun"
+        resources.ApplyResources(TbbRun, "tbbRun")
+        TbbRun.Name = "tbbRun"
         '
         'tbbCompile
         '
-        resources.ApplyResources(Me.tbbCompile, "tbbCompile")
-        Me.tbbCompile.Name = "tbbCompile"
+        resources.ApplyResources(TbbCompile, "tbbCompile")
+        TbbCompile.Name = "tbbCompile"
         '
         'tbbHelp
         '
-        resources.ApplyResources(Me.tbbHelp, "tbbHelp")
-        Me.tbbHelp.Name = "tbbHelp"
+        resources.ApplyResources(TbbHelp, "tbbHelp")
+        TbbHelp.Name = "tbbHelp"
         '
         'BottomToolStripPanel
         '
-        resources.ApplyResources(Me.BottomToolStripPanel, "BottomToolStripPanel")
-        Me.BottomToolStripPanel.Name = "BottomToolStripPanel"
-        Me.BottomToolStripPanel.Orientation = System.Windows.Forms.Orientation.Horizontal
-        Me.BottomToolStripPanel.RowMargin = New System.Windows.Forms.Padding(3, 0, 0, 0)
+        resources.ApplyResources(BottomToolStripPanel, "BottomToolStripPanel")
+        BottomToolStripPanel.Name = "BottomToolStripPanel"
+        BottomToolStripPanel.Orientation = Orientation.Horizontal
+        BottomToolStripPanel.RowMargin = New Padding(3, 0, 0, 0)
         '
         'TopToolStripPanel
         '
-        resources.ApplyResources(Me.TopToolStripPanel, "TopToolStripPanel")
-        Me.TopToolStripPanel.Name = "TopToolStripPanel"
-        Me.TopToolStripPanel.Orientation = System.Windows.Forms.Orientation.Horizontal
-        Me.TopToolStripPanel.RowMargin = New System.Windows.Forms.Padding(3, 0, 0, 0)
+        resources.ApplyResources(TopToolStripPanel, "TopToolStripPanel")
+        TopToolStripPanel.Name = "TopToolStripPanel"
+        TopToolStripPanel.Orientation = Orientation.Horizontal
+        TopToolStripPanel.RowMargin = New Padding(3, 0, 0, 0)
         '
         'RightToolStripPanel
         '
-        resources.ApplyResources(Me.RightToolStripPanel, "RightToolStripPanel")
-        Me.RightToolStripPanel.Name = "RightToolStripPanel"
-        Me.RightToolStripPanel.Orientation = System.Windows.Forms.Orientation.Horizontal
-        Me.RightToolStripPanel.RowMargin = New System.Windows.Forms.Padding(3, 0, 0, 0)
+        resources.ApplyResources(RightToolStripPanel, "RightToolStripPanel")
+        RightToolStripPanel.Name = "RightToolStripPanel"
+        RightToolStripPanel.Orientation = Orientation.Horizontal
+        RightToolStripPanel.RowMargin = New Padding(3, 0, 0, 0)
         '
         'LeftToolStripPanel
         '
-        resources.ApplyResources(Me.LeftToolStripPanel, "LeftToolStripPanel")
-        Me.LeftToolStripPanel.Name = "LeftToolStripPanel"
-        Me.LeftToolStripPanel.Orientation = System.Windows.Forms.Orientation.Horizontal
-        Me.LeftToolStripPanel.RowMargin = New System.Windows.Forms.Padding(3, 0, 0, 0)
+        resources.ApplyResources(LeftToolStripPanel, "LeftToolStripPanel")
+        LeftToolStripPanel.Name = "LeftToolStripPanel"
+        LeftToolStripPanel.Orientation = Orientation.Horizontal
+        LeftToolStripPanel.RowMargin = New Padding(3, 0, 0, 0)
         '
         'ContentPanel
         '
-        resources.ApplyResources(Me.ContentPanel, "ContentPanel")
+        resources.ApplyResources(ContentPanel, "ContentPanel")
         '
         'frmScript
         '
-        Me.AllowDrop = True
+        AllowDrop = True
         resources.ApplyResources(Me, "$this")
-        Me.Controls.Add(Me.ToolStripContainer1)
-        Me.Name = "frmScript"
-        Me.ToolStripContainer1.ContentPanel.ResumeLayout(False)
-        Me.ToolStripContainer1.TopToolStripPanel.ResumeLayout(False)
-        Me.ToolStripContainer1.TopToolStripPanel.PerformLayout()
-        Me.ToolStripContainer1.ResumeLayout(False)
-        Me.ToolStripContainer1.PerformLayout()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox1.ResumeLayout(False)
-        Me.MenuStrip1.ResumeLayout(False)
-        Me.MenuStrip1.PerformLayout()
-        Me.tools.ResumeLayout(False)
-        Me.tools.PerformLayout()
-        Me.ResumeLayout(False)
+        Controls.Add(ToolStripContainer1)
+        Name = "frmScript"
+        ToolStripContainer1.ContentPanel.ResumeLayout(False)
+        ToolStripContainer1.TopToolStripPanel.ResumeLayout(False)
+        ToolStripContainer1.TopToolStripPanel.PerformLayout()
+        ToolStripContainer1.ResumeLayout(False)
+        ToolStripContainer1.PerformLayout()
+        GroupBox2.ResumeLayout(False)
+        GroupBox1.ResumeLayout(False)
+        MenuStrip1.ResumeLayout(False)
+        MenuStrip1.PerformLayout()
+        Tools.ResumeLayout(False)
+        Tools.PerformLayout()
+        ResumeLayout(False)
 
     End Sub
 
 #End Region
 
-    Private Sub tools_ButtonClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles tools.ItemClicked
+    Private Sub Tools_ButtonClick(sender As Object, e As ToolStripItemClickedEventArgs) Handles Tools.ItemClicked
         PerformAction(CStr(e.ClickedItem.Name))
     End Sub
 
     Private Function Language() As String
-        If rdVBNet.Checked Then
+        If RdVBNet.Checked Then
             Return "vb"
-        ElseIf rdCS.Checked Then
+        ElseIf RdCS.Checked Then
             Return "cs"
         Else
             Return ""
         End If
     End Function
 
-    Private Sub PerformAction(ByVal action As String)
+    Private Sub PerformAction(action As String)
         action = action.ToLower().Replace("&", "")
         Select Case action
             Case "tbbnew", "new"
-                If rdVBNet.Checked Then
-                    txtScript.Text = pDefaultScript_VB
+                If RdVBNet.Checked Then
+                    TxtScript.Text = pDefaultScript_VB
                 Else
-                    txtScript.Text = pDefaultScript_CS
+                    TxtScript.Text = pDefaultScript_CS
                 End If
 
             Case "tbbopen", "open"
-                Dim cdOpen As New System.Windows.Forms.OpenFileDialog
+                Dim cdOpen As New OpenFileDialog
                 Try
                     cdOpen.InitialDirectory = GetSetting("MapWindow", "Defaults", "ScriptPath", cdOpen.InitialDirectory)
                 Catch
@@ -566,7 +565,7 @@ Public Class frmScript
                 cdOpen.Filter = pFilter
 
                 ' Paul Meems 3 aug 2009 Added:
-                If rdVBNet.Checked Then
+                If RdVBNet.Checked Then
                     cdOpen.FilterIndex = 1
                 Else
                     cdOpen.FilterIndex = 2
@@ -576,22 +575,22 @@ Public Class frmScript
                 If cdOpen.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                     pFileName = cdOpen.FileName
                     Try
-                        SaveSetting("MapWindow", "Defaults", "ScriptPath", System.IO.Path.GetDirectoryName(pFileName))
+                        SaveSetting("MapWindow", "Defaults", "ScriptPath", Path.GetDirectoryName(pFileName))
                     Catch
                     End Try
                     If (cdOpen.FileName.ToLower.EndsWith("cs")) Then
-                        rdCS.Checked = True
+                        RdCS.Checked = True
                     Else
-                        rdVBNet.Checked = True
+                        RdVBNet.Checked = True
                     End If
                     IgnoreDataChange = True
-                    txtScript.Text = MapWinUtility.Strings.WholeFileString(pFileName)
+                    TxtScript.Text = MapWinUtility.Strings.WholeFileString(pFileName)
                     IgnoreDataChange = False
                 End If
 
             Case "tbbsave", "save"
-                Dim cdSave As New System.Windows.Forms.SaveFileDialog
-                If rdVBNet.Checked Then
+                Dim cdSave As New SaveFileDialog
+                If RdVBNet.Checked Then
                     cdSave.Filter = pFilterVB
                 Else
                     cdSave.Filter = pFilterCS
@@ -604,10 +603,10 @@ Public Class frmScript
                 If cdSave.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                     pFileName = cdSave.FileName
                     Try
-                        SaveSetting("MapWindow", "Defaults", "ScriptPath", System.IO.Path.GetDirectoryName(pFileName))
+                        SaveSetting("MapWindow", "Defaults", "ScriptPath", Path.GetDirectoryName(pFileName))
                     Catch
                     End Try
-                    MapWinUtility.Strings.SaveFileString(pFileName, txtScript.Text)
+                    MapWinUtility.Strings.SaveFileString(pFileName, TxtScript.Text)
                 End If
 
                 IgnoreDataChange = True
@@ -625,7 +624,7 @@ Public Class frmScript
                 'hlp.ShowDialog()
 
             Case "tbbclose", "close"
-                Me.Close()
+                Close()
         End Select
     End Sub
 
@@ -639,15 +638,15 @@ Public Class frmScript
         sPluginFolder = dirInfo.FullName & "\Plugins\ScriptRunner"
 
         Dim assy As Assembly
-        assy = MapWinUtility.Scripting.PrepareScript(Language, Nothing, txtScript.Text, errors, sPluginFolder)
+        assy = MapWinUtility.Scripting.PrepareScript(Language, Nothing, TxtScript.Text, errors, sPluginFolder)
         If (assy Is Nothing) Then
             Return
         End If
 
-        If rdPlugin.Checked Then
+        If RdPlugin.Checked Then
             Dim types As Type() = assy.GetTypes()
             For Each tmpType As Type In types
-                If tmpType.IsSubclassOf(GetType(DotSpatial.Controls.Extension)) Then
+                If tmpType.IsSubclassOf(GetType(Extension)) Then
                     _appMgr.Catalog.Catalogs.Add(New AssemblyCatalog(assy))
                     Exit For
                 End If
@@ -659,7 +658,7 @@ Public Class frmScript
 
 
 
-        If Not errors Is Nothing AndAlso errors.Trim().Length > 0 Then
+        If errors IsNot Nothing AndAlso errors.Trim().Length > 0 Then
             'should the logger be used here?
             'MapWinUtility.Logger.Msg(errors, MsgBoxStyle.Exclamation, resources.GetString("msgScriptError.Text"))
         End If
@@ -667,10 +666,10 @@ Public Class frmScript
 
     Private Sub Compile()
 
-        Dim cdSave As New System.Windows.Forms.SaveFileDialog
+        Dim cdSave As New SaveFileDialog
         Dim errors As String = ""
         Dim outPath As String = ""
-        Dim assy As System.Reflection.Assembly
+        Dim assy As Assembly
         cdSave.Filter = "DLL files (*.dll)|*.dll"
         'cdSave.InitialDirectory = frmMain.Plugins.PluginFolder
         cdSave.OverwritePrompt = True
@@ -678,7 +677,7 @@ Public Class frmScript
 
         If cdSave.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             outPath = cdSave.FileName
-            If System.IO.File.Exists(outPath) Then
+            If File.Exists(outPath) Then
                 'Get the key, so we can turn it off and unload it:
                 'Dim info As New PluginInfo()
                 'info.Init(outPath, GetType(PluginInterfaces.IBasePlugin).GUID)
@@ -717,7 +716,7 @@ Public Class frmScript
                 '    Next z
                 'End If
             End If
-            assy = MapWinUtility.Scripting.Compile(Language, txtScript.Text,
+            assy = MapWinUtility.Scripting.Compile(Language, TxtScript.Text,
                                                    errors,
                                                    outPath)
             If errors.Length = 0 Then
@@ -729,14 +728,14 @@ Public Class frmScript
         End If
     End Sub
 
-    Private Sub frmScript_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles Me.DragDrop, ToolStripContainer1.DragDrop
+    Private Sub FrmScript_DragDrop(sender As Object, e As DragEventArgs) Handles Me.DragDrop, ToolStripContainer1.DragDrop
         Try
             If e.Data.GetDataPresent(DataFormats.FileDrop) Then
                 Dim a As Array = e.Data.GetData(DataFormats.FileDrop)
                 If a.Length > 0 Then
-                    If System.IO.File.Exists(a(0)) Then
+                    If File.Exists(a(0)) Then
                         IgnoreDataChange = True
-                        txtScript.Text = MapWinUtility.Strings.WholeFileString(a(0))
+                        TxtScript.Text = MapWinUtility.Strings.WholeFileString(a(0))
                         IgnoreDataChange = False
                         e.Data.SetData(Nothing)
                         Exit Sub
@@ -747,35 +746,35 @@ Public Class frmScript
         End Try
     End Sub
 
-    Private Sub frmScript_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles Me.DragEnter, ToolStripContainer1.DragEnter
+    Private Sub FrmScript_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter, ToolStripContainer1.DragEnter
         e.Effect = DragDropEffects.Copy
     End Sub
 
-    Private Sub frmScript_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        txtScript.Shutdown()
+    Private Sub FrmScript_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        TxtScript.Shutdown()
     End Sub
 
-    Private Sub frmScript_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        txtScript.AllowDrop = True
+    Private Sub FrmScript_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        TxtScript.AllowDrop = True
         If pFileName = "" Then
             'Load the default. Don't overwrite something already in the box
             '(a loaded saved script)
 
             IgnoreDataChange = True
-            If System.IO.File.Exists(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) & "\mw_LastScript.dat") Then
-                txtScript.Text = MapWinUtility.Strings.WholeFileString(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) & "\mw_LastScript.dat")
+            If File.Exists(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) & "\mw_LastScript.dat") Then
+                TxtScript.Text = MapWinUtility.Strings.WholeFileString(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) & "\mw_LastScript.dat")
             Else
-                txtScript.Text = pDefaultScript_CS
+                TxtScript.Text = pDefaultScript_CS
             End If
 
             DataChanged = False
             ' Paul Meems 3 aug 2009 Added:
-            If txtScript.Text.IndexOf("using ") < 0 Then
-                rdVBNet.Checked = True
-                txtScript.SetVB()
+            If TxtScript.Text.IndexOf("using ") < 0 Then
+                RdVBNet.Checked = True
+                TxtScript.SetVb()
             Else
-                rdCS.Checked = True
-                txtScript.SetCS()
+                RdCS.Checked = True
+                TxtScript.SetCs()
             End If
             'If GetSetting("MapWindow", "LastScript", "CS", "True") = "False" Then
             '    rdVBNet.Checked = True
@@ -786,15 +785,15 @@ Public Class frmScript
             'End If
             IgnoreDataChange = False
         End If
-        txtScript.Init()
+        TxtScript.Init()
 
         'Height adjust -- internationalization seems to randomly reset the txtscript size
-        txtScript.Width = Me.Width - 25
-        txtScript.Height = Me.Height - 144
+        TxtScript.Width = Width - 25
+        TxtScript.Height = Height - 144
 
     End Sub
 
-    Private Sub rdLangOrOutput_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rdVBNet.CheckedChanged, rdCS.CheckedChanged, rdPlugin.CheckedChanged, rdScript.CheckedChanged
+    Private Sub RdLangOrOutput_CheckedChanged(sender As Object, e As EventArgs) Handles RdVBNet.CheckedChanged, RdCS.CheckedChanged, RdPlugin.CheckedChanged, RdScript.CheckedChanged
         If IgnoreDataChange Then Exit Sub
 
         If DataChanged Then
@@ -802,67 +801,68 @@ Public Class frmScript
             'Dim b As MsgBoxResult = mapwinutility.logger.msg("Do you wish to save your current script first?", MsgBoxStyle.YesNo, "Save first?")
             Dim b As MsgBoxResult = MapWinUtility.Logger.Msg(resources.GetString("msgSaveCurrentScript.Text"), MsgBoxStyle.YesNo)
             If b = MsgBoxResult.Yes Then
-                Dim cdSave As New System.Windows.Forms.SaveFileDialog
-                cdSave.Filter = pFilter
-                cdSave.FileName = pFileName
+                Dim cdSave As New SaveFileDialog With {
+                    .Filter = pFilter,
+                    .FileName = pFileName
+                }
                 If cdSave.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                     pFileName = cdSave.FileName
-                    MapWinUtility.Strings.SaveFileString(pFileName, txtScript.Text)
+                    MapWinUtility.Strings.SaveFileString(pFileName, TxtScript.Text)
                 End If
             End If
         End If
 
-        Me.Cursor = Cursors.WaitCursor
+        Cursor = Cursors.WaitCursor
 
         IgnoreDataChange = True
 
         'Change the enabled menu buttons appropriately
         '(only allow run on scripts, only allow compile on plugins)
-        mnuCompile.Enabled = Not rdScript.Checked
-        mnuRun.Enabled = rdScript.Checked
-        For i As Integer = 0 To tools.Items.Count - 1
-            If CStr(tools.Items(i).Tag) = "Compile" Then
-                tools.Items(i).Enabled = Not rdScript.Checked
+        MnuCompile.Enabled = Not RdScript.Checked
+        MnuRun.Enabled = RdScript.Checked
+        For i As Integer = 0 To Tools.Items.Count - 1
+            If CStr(Tools.Items(i).Tag) = "Compile" Then
+                Tools.Items(i).Enabled = Not RdScript.Checked
             End If
-            If CStr(tools.Items(i).Tag) = "Run" Then
-                tools.Items(i).Enabled = rdScript.Checked
+            If CStr(Tools.Items(i).Tag) = "Run" Then
+                Tools.Items(i).Enabled = RdScript.Checked
             End If
         Next
 
-        If rdScript.Checked Then
-            If rdVBNet.Checked Then
-                txtScript.Text = pDefaultScript_VB
-                txtScript.SetVB()
+        If RdScript.Checked Then
+            If RdVBNet.Checked Then
+                TxtScript.Text = pDefaultScript_VB
+                TxtScript.SetVb()
             Else
-                txtScript.Text = pDefaultScript_CS
-                txtScript.SetCS()
+                TxtScript.Text = pDefaultScript_CS
+                TxtScript.SetCs()
             End If
         Else
-            If rdVBNet.Checked Then
-                txtScript.Text = pDefaultPlugin_VB
-                txtScript.SetVB()
+            If RdVBNet.Checked Then
+                TxtScript.Text = pDefaultPlugin_VB
+                TxtScript.SetVb()
             Else
-                txtScript.Text = pDefaultPlugin_CS
-                txtScript.SetCS()
+                TxtScript.Text = pDefaultPlugin_CS
+                TxtScript.SetCs()
             End If
         End If
 
         'If not visible, loading - don't save the state yet
-        If (Me.Visible) Then SaveSetting("MapWindow", "LastScript", "CS", rdCS.Checked.ToString())
+        If Visible Then SaveSetting("MapWindow", "LastScript", "CS", RdCS.Checked.ToString())
 
-        Me.Cursor = Cursors.Default
+        Cursor = Cursors.Default
 
         IgnoreDataChange = False
         DataChanged = False
     End Sub
 
-    Private Sub txtScript_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtScript.KeyDown
+    Private Sub TxtScript_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtScript.KeyDown
         If e.KeyCode = Keys.F5 Then
             PerformAction("Run")
         End If
     End Sub
 
-    Private Sub txtScript_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub TxtScript_TextChanged(sender As Object, e As EventArgs)
         If IgnoreDataChange Then Exit Sub
 
         DataChanged = True
@@ -870,7 +870,7 @@ Public Class frmScript
 
     Public Sub RunSavedScript()
         If pFileName = "" Then Exit Sub 'nothing to do
-        If Not System.IO.File.Exists(pFileName) Then
+        If Not File.Exists(pFileName) Then
             'PM
             'mapwinutility.logger.msg("Warning: Ignoring the script name provided on the command line because it doesn't exist." & vbCrLf & vbCrLf & pFileName, MsgBoxStyle.Exclamation, "Nonexistant Script Passed")
             Dim sMsg = String.Format(resources.GetString("msgIgnoreScript.Text"), pFileName)
@@ -878,11 +878,11 @@ Public Class frmScript
             Exit Sub
         End If
 
-        Me.Show()
-        Me.WindowState = FormWindowState.Minimized
+        Show()
+        WindowState = FormWindowState.Minimized
 
         IgnoreDataChange = True
-        txtScript.Text = MapWinUtility.Strings.WholeFileString(pFileName)
+        TxtScript.Text = MapWinUtility.Strings.WholeFileString(pFileName)
         IgnoreDataChange = False
 
         'Make it pretty
@@ -892,41 +892,41 @@ Public Class frmScript
         args(0) = Nothing
 
         Dim sPluginFolder As String = ""
-        Dim sLanguage = System.IO.Path.GetExtension(pFileName)
+        Dim sLanguage = Path.GetExtension(pFileName)
         Dim assy As Assembly
 
         'MapWinUtility.Scripting.Run(System.IO.Path.GetExtension(pFileName), Nothing, txtScript.Text, errors, rdPlugin.Checked, CObj(frmMain), args)
-        assy = MapWinUtility.Scripting.PrepareScript(sLanguage, Nothing, txtScript.Text, errors, sPluginFolder)
+        assy = MapWinUtility.Scripting.PrepareScript(sLanguage, Nothing, TxtScript.Text, errors, sPluginFolder)
         MapWinUtility.Scripting.Run(assy, errors, args)
 
-        If Not errors Is Nothing And Not errors.Trim() = "" Then
+        If String.IsNullOrWhiteSpace(errors) Then
             MapWinUtility.Logger.Msg(errors, MsgBoxStyle.Exclamation, "Script Error")
         End If
 
-        Me.Close()
+        Close()
     End Sub
 
-    Private Sub ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuHelp.Click, mnuSubmit.Click, mnuViewRun.Click, mnuRun.Click, mnuCompile.Click, mnuNew.Click, mnuSave.Click, mnuOpen.Click, mnuClose.Click, mnuCompile.Click
-        PerformAction((CType(sender, System.Windows.Forms.ToolStripMenuItem).Text.Replace("&", "")))
+    Private Sub ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MnuHelp.Click, MnuSubmit.Click, MnuViewRun.Click, MnuRun.Click, MnuCompile.Click, MnuNew.Click, MnuSave.Click, MnuOpen.Click, MnuClose.Click, MnuCompile.Click
+        PerformAction((CType(sender, ToolStripMenuItem).Text.Replace("&", "")))
     End Sub
 
-    Private Sub ToolStripMenuItem3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuViewRun.Click
+    Private Sub ToolStripMenuItem3_Click(sender As Object, e As EventArgs) Handles MnuViewRun.Click
         If Not MapWinUtility.MiscUtils.CheckInternetConnection("http://MapWindow.org/site_is_up_flag.txt", 5000) Then
             'PM
             'mapwinutility.logger.msg("There is no active internet connection, or there has been some other communications problem." + vbCrLf + vbCrLf + "Please check your connection and try again.", MsgBoxStyle.Exclamation, "No Connection")
             MapWinUtility.Logger.Msg(resources.GetString("msgNoConnection.Text"), MsgBoxStyle.Exclamation, "No Connection")
             Exit Sub
         Else
-            Me.Cursor = Cursors.WaitCursor
+            Cursor = Cursors.WaitCursor
 
             'Dim onlinescriptform As New frmOnlineScriptDirectory
             'onlinescriptform.Show()
 
-            Me.Cursor = Cursors.Default
+            Cursor = Cursors.Default
         End If
     End Sub
 
-    Private Sub ToolStripMenuItem4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSubmit.Click
+    Private Sub ToolStripMenuItem4_Click(sender As Object, e As EventArgs) Handles MnuSubmit.Click
         If Not MapWinUtility.MiscUtils.CheckInternetConnection("http://MapWindow.org/site_is_up_flag.txt", 5000) Then
             'PM
             'mapwinutility.logger.msg("There is no active internet connection, or there has been some other communications problem." + vbCrLf + vbCrLf + "Please check your connection and try again.", MsgBoxStyle.Exclamation, "No Connection")
@@ -938,18 +938,18 @@ Public Class frmScript
         End If
     End Sub
 
-    Private Sub frmScript_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
-        If Not txtScript.Text = "" Then
-            SaveSetting("MapWindow", "LastScript", "CS", rdCS.Checked.ToString())
-            If System.IO.File.Exists(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) & "\mw_LastScript.dat") Then
-                Kill(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) & "\mw_LastScript.dat")
+    Private Sub FrmScript_Closing(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
+        If Not TxtScript.Text = "" Then
+            SaveSetting("MapWindow", "LastScript", "CS", RdCS.Checked.ToString())
+            If File.Exists(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) & "\mw_LastScript.dat") Then
+                Kill(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) & "\mw_LastScript.dat")
             End If
 
-            MapWinUtility.Strings.SaveFileString(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) & "\mw_LastScript.dat", txtScript.Text)
+            MapWinUtility.Strings.SaveFileString(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) & "\mw_LastScript.dat", TxtScript.Text)
         End If
     End Sub
 
-    Private Sub frmScript_LocationChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LocationChanged
+    Private Sub FrmScript_LocationChanged(sender As Object, e As EventArgs) Handles Me.LocationChanged
 
     End Sub
 

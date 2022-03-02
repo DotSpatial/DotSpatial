@@ -4,12 +4,13 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
-using DotSpatial.Plugins.WebMap.Properties;
 using DotSpatial.Plugins.WebMap.Tiling;
 using DotSpatial.Projections;
 using DotSpatial.Symbology;
@@ -36,7 +37,7 @@ namespace DotSpatial.Plugins.WebMap
         private bool _busySet;
         private BackgroundWorker _bw;
         private ServiceProvider _emptyProvider;
-        private int _extendBufferCoeff = 3;
+        private readonly int _extendBufferCoeff = 3;
         private IMapFeatureLayer _featureSetLayer;
         private short _opacity = 100;
 
@@ -219,14 +220,13 @@ namespace DotSpatial.Plugins.WebMap
 
         private void BwDoWork(object sender, DoWorkEventArgs e)
         {
-            var worker = sender as BackgroundWorker;
             if (App.Map != null && !_busySet)
             {
                 _busySet = true;
                 App.Map.IsBusy = true;
             }
 
-            if (worker != null && _baseMapLayer != null)
+            if (sender is BackgroundWorker worker && _baseMapLayer != null)
             {
                 if (worker.CancellationPending)
                 {
@@ -325,7 +325,7 @@ namespace DotSpatial.Plugins.WebMap
                 // Need to first initialize and add the basemap layer synchronously (it will fail if done in another thread).
 
                 // First create a temporary imageData with an Envelope (otherwise adding to the map will fail)
-                var tempImageData = new InRamImageData(Resources.nodata, new Extent(1, 1, 2, 2));
+                var tempImageData = new InRamImageData(new Bitmap(new MemoryStream(Resources.nodata)), new Extent(1, 1, 2, 2));
 
                 _baseMapLayer = new MapImageLayer(tempImageData)
                                     {
@@ -396,8 +396,8 @@ namespace DotSpatial.Plugins.WebMap
             for (var i = 0; i < group.Layers.Count; i++)
             {
                 var layer = group.Layers[i];
-                var childGroup = layer as IMapGroup;
-                if (childGroup != null)
+
+                if (layer is IMapGroup childGroup)
                 {
                     var ins = InsertBaseMapLayer(childGroup);
                     if (ins) return true;
@@ -405,8 +405,7 @@ namespace DotSpatial.Plugins.WebMap
 
                 if (layer is IMapPointLayer || layer is IMapLineLayer)
                 {
-                    var grp = layer.GetParentItem() as IGroup;
-                    if (grp != null)
+                    if (layer.GetParentItem() is IGroup grp)
                     {
                         grp.Insert(i, _baseMapLayer);
                         return true;
@@ -432,10 +431,8 @@ namespace DotSpatial.Plugins.WebMap
             if (_baseMapLayer == null)
                 return;
 
-            short opacityInt;
-
             // Check to make sure the text in the box is an integer and we are in the range
-            if (!short.TryParse(e.SelectedItem as string, out opacityInt) || opacityInt > 100 || opacityInt < 0)
+            if (!short.TryParse(e.SelectedItem as string, out short opacityInt) || opacityInt > 100 || opacityInt < 0)
             {
                 opacityInt = 100;
                 _opacityDropDown.SelectedItem = opacityInt;
@@ -567,20 +564,21 @@ namespace DotSpatial.Plugins.WebMap
         /// <param name="e">The event args.</param>
         private void UpdateStichedBasemap(DoWorkEventArgs e)
         {
-            var map = App.Map as Map;
-            if (map == null) return;
+            if (App.Map is not Map map)
+            { return; 
+            }
 
-            var bwProgress = (Func<int, bool>)(p =>
+            bool bwProgress(int p)
+            {
+                _bw.ReportProgress(p);
+                if (_bw.CancellationPending)
                 {
-                    _bw.ReportProgress(p);
-                    if (_bw.CancellationPending)
-                    {
-                        e.Cancel = true;
-                        return false;
-                    }
+                    e.Cancel = true;
+                    return false;
+                }
 
-                    return true;
-                });
+                return true;
+            }
 
             var rectangle = map.Bounds;
             var webMercExtent = map.ViewExtents.Clone() as Extent;

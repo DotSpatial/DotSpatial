@@ -20,7 +20,7 @@ namespace DotSpatial.Symbology.Forms
     public class BreakSliderGraph : Control
     {
         #region Fields
-        private readonly ContextMenu _contextMenu;
+        private readonly ContextMenuStrip _contextMenu;
         private readonly BarGraph _graph;
         private readonly Statistics _statistics;
         private Color _breakColor;
@@ -54,9 +54,9 @@ namespace DotSpatial.Symbology.Forms
             _breakColor = Color.Blue;
             TitleFont = new Font("Arial", 20, FontStyle.Bold);
             BorderStyle = BorderStyle.Fixed3D;
-            _contextMenu = new ContextMenu();
-            _contextMenu.MenuItems.Add("Reset Zoom", ResetZoomClicked);
-            _contextMenu.MenuItems.Add("Zoom To Categories", CategoryZoomClicked);
+            _contextMenu = new ContextMenuStrip();
+            _contextMenu.Items.Add("Reset Zoom").Click += ResetZoomClicked;
+            _contextMenu.Items.Add("Zoom To Categories").Click += CategoryZoomClicked;
             _statistics = new Statistics();
         }
 
@@ -124,7 +124,11 @@ namespace DotSpatial.Symbology.Forms
             set
             {
                 _breakColor = value;
-                if (Breaks == null) return;
+                if (Breaks == null)
+                {
+                    return;
+                }
+
                 foreach (BreakSlider slider in Breaks)
                 {
                     slider.Color = value;
@@ -150,7 +154,11 @@ namespace DotSpatial.Symbology.Forms
             set
             {
                 _selectedBreakColor = value;
-                if (Breaks == null) return;
+                if (Breaks == null)
+                {
+                    return;
+                }
+
                 foreach (BreakSlider slider in Breaks)
                 {
                     slider.SelectColor = value;
@@ -186,13 +194,20 @@ namespace DotSpatial.Symbology.Forms
         {
             get
             {
-                if (_graph != null) return _graph.Font.Color;
+                if (_graph != null)
+                {
+                    return _graph.Font.Color;
+                }
+
                 return Color.Black;
             }
 
             set
             {
-                if (_graph != null) _graph.Font.Color = value;
+                if (_graph != null)
+                {
+                    _graph.Font.Color = value;
+                }
             }
         }
 
@@ -203,13 +218,21 @@ namespace DotSpatial.Symbology.Forms
         {
             get
             {
-                if (_scheme?.EditorSettings == null) return IntervalMethod.EqualInterval;
+                if (_scheme?.EditorSettings == null)
+                {
+                    return IntervalMethod.EqualInterval;
+                }
+
                 return _scheme.EditorSettings.IntervalMethod;
             }
 
             set
             {
-                if (_scheme?.EditorSettings == null) return;
+                if (_scheme?.EditorSettings == null)
+                {
+                    return;
+                }
+
                 _scheme.EditorSettings.IntervalMethod = value;
                 UpdateBreaks();
             }
@@ -257,7 +280,10 @@ namespace DotSpatial.Symbology.Forms
 
             set
             {
-                if (_graph != null) _graph.MinHeight = value;
+                if (_graph != null)
+                {
+                    _graph.MinHeight = value;
+                }
             }
         }
 
@@ -289,13 +315,21 @@ namespace DotSpatial.Symbology.Forms
         {
             get
             {
-                if (_graph == null) return 0;
+                if (_graph == null)
+                {
+                    return 0;
+                }
+
                 return _graph.NumColumns;
             }
 
             set
             {
-                if (_graph == null) return;
+                if (_graph == null)
+                {
+                    return;
+                }
+
                 _graph.NumColumns = value;
                 FillBins();
                 UpdateBreaks();
@@ -317,7 +351,11 @@ namespace DotSpatial.Symbology.Forms
             set
             {
                 _rasterLayer = value;
-                if (value == null) return;
+                if (value == null)
+                {
+                    return;
+                }
+
                 _isRaster = true;
                 _raster = _rasterLayer.DataSet;
                 _rasterSymbolizer = _rasterLayer.Symbolizer;
@@ -443,7 +481,10 @@ namespace DotSpatial.Symbology.Forms
 
             set
             {
-                if (_graph != null) _graph.Title = value;
+                if (_graph != null)
+                {
+                    _graph.Title = value;
+                }
             }
         }
 
@@ -461,7 +502,10 @@ namespace DotSpatial.Symbology.Forms
 
             set
             {
-                if (_graph != null) _graph.TitleFont.Color = value;
+                if (_graph != null)
+                {
+                    _graph.TitleFont.Color = value;
+                }
             }
         }
 
@@ -509,13 +553,27 @@ namespace DotSpatial.Symbology.Forms
 
             if (_isRaster)
             {
-                if (_graph.Minimum < _rasterSymbolizer.Scheme.Statistics.Minimum) _graph.Minimum = _rasterSymbolizer.Scheme.Statistics.Minimum;
-                if (_graph.Maximum > _rasterSymbolizer.Scheme.Statistics.Maximum) _graph.Maximum = _rasterSymbolizer.Scheme.Statistics.Maximum;
+                if (_graph.Minimum < _rasterSymbolizer.Scheme.Statistics.Minimum)
+                {
+                    _graph.Minimum = _rasterSymbolizer.Scheme.Statistics.Minimum;
+                }
+
+                if (_graph.Maximum > _rasterSymbolizer.Scheme.Statistics.Maximum)
+                {
+                    _graph.Maximum = _rasterSymbolizer.Scheme.Statistics.Maximum;
+                }
             }
             else
             {
-                if (_graph.Minimum < _scheme.Statistics.Minimum) _graph.Minimum = _scheme.Statistics.Minimum;
-                if (_graph.Maximum > _scheme.Statistics.Maximum) _graph.Maximum = _scheme.Statistics.Maximum;
+                if (_graph.Minimum < _scheme.Statistics.Minimum)
+                {
+                    _graph.Minimum = _scheme.Statistics.Minimum;
+                }
+
+                if (_graph.Maximum > _scheme.Statistics.Maximum)
+                {
+                    _graph.Maximum = _scheme.Statistics.Maximum;
+                }
             }
 
             FillBins();
@@ -532,10 +590,18 @@ namespace DotSpatial.Symbology.Forms
         /// <returns>The BreakSlider that covers the range that contains the location, or null.</returns>
         public BreakSlider GetBreakAt(Point location)
         {
-            if (location.X < 0) return null;
+            if (location.X < 0)
+            {
+                return null;
+            }
+
             foreach (BreakSlider slider in Breaks)
             {
-                if (slider.Position < location.X) continue;
+                if (slider.Position < location.X)
+                {
+                    continue;
+                }
+
                 return slider;
             }
 
@@ -549,15 +615,27 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="handler">The progress handler.</param>
         public void ResetBreaks(ICancelProgressHandler handler)
         {
-            if (_fieldName == null) return;
-            if (_scheme?.EditorSettings == null) return;
+            if (_fieldName == null)
+            {
+                return;
+            }
+
+            if (_scheme?.EditorSettings == null)
+            {
+                return;
+            }
+
             if (_source != null)
             {
                 _scheme.CreateCategories(_source, handler);
             }
             else
             {
-                if (_table == null) return;
+                if (_table == null)
+                {
+                    return;
+                }
+
                 _scheme.CreateCategories(_table);
             }
 
@@ -569,16 +647,28 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public void ResetExtents()
         {
-            if (_graph == null) return;
+            if (_graph == null)
+            {
+                return;
+            }
+
             Statistics stats;
             if (_isRaster)
             {
-                if (_raster == null) return;
+                if (_raster == null)
+                {
+                    return;
+                }
+
                 stats = _rasterSymbolizer.Scheme.Statistics;
             }
             else
             {
-                if (_scheme == null) return;
+                if (_scheme == null)
+                {
+                    return;
+                }
+
                 stats = _scheme.Statistics;
             }
 
@@ -594,7 +684,11 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="slider">The break slider.</param>
         public void SelectBreak(BreakSlider slider)
         {
-            if (_selectedSlider != null) _selectedSlider.Selected = false;
+            if (_selectedSlider != null)
+            {
+                _selectedSlider.Selected = false;
+            }
+
             _selectedSlider = slider;
 
             if (_selectedSlider != null)
@@ -616,9 +710,17 @@ namespace DotSpatial.Symbology.Forms
                 return;
             }
 
-            if (_scheme == null) return;
+            if (_scheme == null)
+            {
+                return;
+            }
+
             IFeatureCategory selectedCat = null;
-            if (_selectedSlider != null) selectedCat = _selectedSlider.Category as IFeatureCategory;
+            if (_selectedSlider != null)
+            {
+                selectedCat = _selectedSlider.Category as IFeatureCategory;
+            }
+
             Breaks.Clear();
             Statistics stats = _scheme.Statistics;
             Rectangle gb = _graph.GetGraphBounds();
@@ -658,11 +760,19 @@ namespace DotSpatial.Symbology.Forms
                 Breaks[i + 1].Category.Minimum = Breaks[i].Value;
             }
 
-            if (Breaks.Count == 0) return;
+            if (Breaks.Count == 0)
+            {
+                return;
+            }
+
             int breakIndex = 0;
             BreakSlider nextSlider = Breaks[breakIndex];
             int count = 0;
-            if (_graph?.Bins == null) return;
+            if (_graph?.Bins == null)
+            {
+                return;
+            }
+
             foreach (double value in _values)
             {
                 if (value < nextSlider.Value)
@@ -696,7 +806,11 @@ namespace DotSpatial.Symbology.Forms
             slider.Category.Maximum = slider.Value;
             slider.Category.ApplyMinMax(_scheme.EditorSettings);
             int index = Breaks.IndexOf(slider);
-            if (index < 0) return;
+            if (index < 0)
+            {
+                return;
+            }
+
             if (index < Breaks.Count - 1)
             {
                 Breaks[index + 1].Category.Minimum = slider.Value;
@@ -709,9 +823,17 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public void UpdateRasterBreaks()
         {
-            if (_rasterLayer == null) return;
+            if (_rasterLayer == null)
+            {
+                return;
+            }
+
             IColorCategory selectedBrk = null;
-            if (_selectedSlider != null) selectedBrk = _selectedSlider.Category as IColorCategory;
+            if (_selectedSlider != null)
+            {
+                selectedBrk = _selectedSlider.Category as IColorCategory;
+            }
+
             Breaks.Clear();
             Statistics stats = _rasterSymbolizer.Scheme.Statistics;
             Rectangle gb = _graph.GetGraphBounds();
@@ -751,11 +873,19 @@ namespace DotSpatial.Symbology.Forms
                 // _breaks[i + 1].Category.Minimum = _breaks[i].Value; REMOVED BY jany_ (2015-07-07) Don't set minimum, because that changes the minimum of the rasters category which causes the colors to change when saving in RasterColorControl without making changes or for example only applying opacity without wanting to use statistics.
             }
 
-            if (Breaks.Count == 0) return;
+            if (Breaks.Count == 0)
+            {
+                return;
+            }
+
             int breakIndex = 0;
             BreakSlider nextSlider = Breaks[breakIndex];
             int count = 0;
-            if (_graph?.Bins == null) return;
+            if (_graph?.Bins == null)
+            {
+                return;
+            }
+
             foreach (double value in _values)
             {
                 if (value < nextSlider.Value)
@@ -787,20 +917,32 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public void ZoomToCategoryRange()
         {
-            if (_graph == null) return;
+            if (_graph == null)
+            {
+                return;
+            }
+
             Statistics stats;
             double? min;
             double? max;
             if (_isRaster)
             {
-                if (_raster == null) return;
+                if (_raster == null)
+                {
+                    return;
+                }
+
                 stats = _rasterSymbolizer.Scheme.Statistics;
                 min = _rasterSymbolizer.Scheme.Categories[0].Minimum;
                 max = _rasterSymbolizer.Scheme.Categories[_rasterSymbolizer.Scheme.Categories.Count - 1].Maximum;
             }
             else
             {
-                if (_scheme == null) return;
+                if (_scheme == null)
+                {
+                    return;
+                }
+
                 stats = _scheme.Statistics;
                 var cats = _scheme.GetCategories().ToList();
                 min = cats.First().Minimum;
@@ -831,7 +973,10 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="clip">The clip rectangle.</param>
         protected virtual void OnDraw(Graphics g, Rectangle clip)
         {
-            if (Height <= 1 || Width <= 1) return;
+            if (Height <= 1 || Width <= 1)
+            {
+                return;
+            }
 
             // Draw text first because the text is used to auto-fit the remaining graph.
             _graph.Draw(g, clip);
@@ -849,13 +994,20 @@ namespace DotSpatial.Symbology.Forms
                 g.DrawRectangle(Pens.Black, 0, 0, Width - 1, Height - 1);
             }
 
-            if (Breaks == null) return;
+            if (Breaks == null)
+            {
+                return;
+            }
+
             Rectangle gb = _graph.GetGraphBounds();
             foreach (BreakSlider slider in Breaks)
             {
                 slider.Setup(gb, _graph.Minimum, _graph.Maximum);
 
-                if (slider.Bounds.IntersectsWith(clip)) slider.Draw(g);
+                if (slider.Bounds.IntersectsWith(clip))
+                {
+                    slider.Draw(g);
+                }
             }
         }
 
@@ -874,7 +1026,10 @@ namespace DotSpatial.Symbology.Forms
 
             foreach (BreakSlider slider in Breaks)
             {
-                if (!slider.Bounds.Contains(e.Location) && !slider.HandleBounds.Contains(e.Location)) continue;
+                if (!slider.Bounds.Contains(e.Location) && !slider.HandleBounds.Contains(e.Location))
+                {
+                    continue;
+                }
 
                 // not sure if this works right. Hopefully, just the little rectangles form a double region.
                 Region rg = new Region();
@@ -893,7 +1048,11 @@ namespace DotSpatial.Symbology.Forms
                 return;
             }
 
-            if (_selectedSlider != null) _selectedSlider.Selected = false;
+            if (_selectedSlider != null)
+            {
+                _selectedSlider.Selected = false;
+            }
+
             _selectedSlider = null;
             base.OnMouseDown(e);
         }
@@ -913,16 +1072,30 @@ namespace DotSpatial.Symbology.Forms
                     rg.Union(_selectedSlider.Bounds);
                     int x = e.X;
                     int index = Breaks.IndexOf(_selectedSlider);
-                    if (x > gb.Right) x = gb.Right;
-                    if (x < gb.Left) x = gb.Left;
+                    if (x > gb.Right)
+                    {
+                        x = gb.Right;
+                    }
+
+                    if (x < gb.Left)
+                    {
+                        x = gb.Left;
+                    }
+
                     if (index > 0)
                     {
-                        if (x < Breaks[index - 1].Position + 2) x = (int)Breaks[index - 1].Position + 2;
+                        if (x < Breaks[index - 1].Position + 2)
+                        {
+                            x = (int)Breaks[index - 1].Position + 2;
+                        }
                     }
 
                     if (index < Breaks.Count - 1)
                     {
-                        if (x > Breaks[index + 1].Position - 2) x = (int)Breaks[index + 1].Position - 2;
+                        if (x > Breaks[index + 1].Position - 2)
+                        {
+                            x = (int)Breaks[index + 1].Position - 2;
+                        }
                     }
 
                     _selectedSlider.Position = x;
@@ -1014,7 +1187,11 @@ namespace DotSpatial.Symbology.Forms
         protected override void OnPaint(PaintEventArgs e)
         {
             Rectangle clip = e.ClipRectangle;
-            if (clip.IsEmpty) clip = ClientRectangle;
+            if (clip.IsEmpty)
+            {
+                clip = ClientRectangle;
+            }
+
             Bitmap bmp = new Bitmap(clip.Width, clip.Height);
             Graphics g = Graphics.FromImage(bmp);
             g.TranslateTransform(-clip.X, -clip.Y);
@@ -1087,7 +1264,11 @@ namespace DotSpatial.Symbology.Forms
 
         private void FillBins()
         {
-            if (_values == null) return;
+            if (_values == null)
+            {
+                return;
+            }
+
             double min = _graph.Minimum;
             double max = _graph.Maximum;
             if (min == max)
@@ -1102,9 +1283,17 @@ namespace DotSpatial.Symbology.Forms
             int maxBinCount = 0;
             foreach (double val in _values)
             {
-                if (val < min || val > max) continue;
+                if (val < min || val > max)
+                {
+                    continue;
+                }
+
                 int index = (int)Math.Ceiling((val - min) / binSize);
-                if (index >= numBins) index = numBins - 1;
+                if (index >= numBins)
+                {
+                    index = numBins - 1;
+                }
+
                 bins[index]++;
                 if (bins[index] > maxBinCount)
                 {
@@ -1118,8 +1307,16 @@ namespace DotSpatial.Symbology.Forms
 
         private bool IsValidField(string fieldName)
         {
-            if (fieldName == null) return false;
-            if (_source != null) return _source.GetColumn(fieldName) != null;
+            if (fieldName == null)
+            {
+                return false;
+            }
+
+            if (_source != null)
+            {
+                return _source.GetColumn(fieldName) != null;
+            }
+
             return _table != null && _table.Columns.Contains(fieldName);
         }
 
@@ -1129,12 +1326,20 @@ namespace DotSpatial.Symbology.Forms
             {
                 _values = _raster.GetRandomValues(_rasterSymbolizer.EditorSettings.MaxSampleCount);
                 _statistics.Calculate(_values);
-                if (_values == null) return;
+                if (_values == null)
+                {
+                    return;
+                }
+
                 return;
             }
 
             _values = _scheme.Values;
-            if (_values == null) return;
+            if (_values == null)
+            {
+                return;
+            }
+
             _scheme.Statistics.Calculate(_values);
         }
 
@@ -1146,7 +1351,7 @@ namespace DotSpatial.Symbology.Forms
             Invalidate();
         }
 
-        private void ResetZoomClicked(object sender, EventArgs e)
+        private void ResetZoomClicked(object? sender, EventArgs e)
         {
             ResetZoom();
         }
@@ -1155,12 +1360,17 @@ namespace DotSpatial.Symbology.Forms
         {
             if (_isRaster)
             {
-                if (_raster == null) return;
+                if (_raster == null)
+                {
+                    return;
+                }
             }
             else
             {
-                if (_source == null && _table == null) return;
-                if (!IsValidField(_fieldName)) return;
+                if ((_source == null && _table == null) || !IsValidField(_fieldName))
+                {
+                    return;
+                }
             }
 
             ReadValues();

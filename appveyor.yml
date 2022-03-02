@@ -1,9 +1,9 @@
-version: 2.0.{build}
-image: Visual Studio 2019
+version: 3.0.{build}
+image: Visual Studio 2022
 configuration: Release
 
 environment:
-  packageVersion: 2.0
+  packageVersion: 3.0
 
 cache: 
 - source\packages -> **\packages.config
@@ -31,7 +31,6 @@ nuget:
 after_build:
  - ps: '[System.IO.File]::WriteAllText("$env:APPVEYOR_BUILD_FOLDER\source\bin\$env:CONFIGURATION\version.txt", $env:APPVEYOR_REPO_COMMIT)' 
  - ps: nuget pack Source\DotSpatial.Analysis\DotSpatial.Analysis.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\DotSpatial.Compatibility\DotSpatial.Compatibility.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
  - ps: nuget pack Source\DotSpatial.Controls\DotSpatial.Controls.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
  - ps: nuget pack Source\DotSpatial.Data\DotSpatial.Data.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
  - ps: nuget pack Source\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
@@ -48,7 +47,6 @@ after_build:
  - ps: nuget pack Source\DotSpatial.Symbology.Forms\DotSpatial.Symbology.Forms.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
  
  - ps: Push-AppveyorArtifact DotSpatial.Analysis.$env:nugetVersion.nupkg
- - ps: Push-AppveyorArtifact DotSpatial.Compatibility.$env:nugetVersion.nupkg
  - ps: Push-AppveyorArtifact DotSpatial.Controls.$env:nugetVersion.nupkg
  - ps: Push-AppveyorArtifact DotSpatial.Data.$env:nugetVersion.nupkg
  - ps: Push-AppveyorArtifact DotSpatial.Data.Forms.$env:nugetVersion.nupkg

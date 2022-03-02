@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using BruTile.Wms;
-using DotSpatial.Plugins.WebMap.Properties;
+using DotSpatial.Plugins.WebMap;
 using DotSpatial.Projections;
 using Exception = System.Exception;
 
@@ -116,7 +116,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
 
         private string PrepareUri(string uri)
         {
-            if (!uri.Contains("?"))
+            if (!uri.Contains('?'))
             {
                 uri += "?";
             }
@@ -200,18 +200,12 @@ namespace DotSpatial.Plugins.WebMap.WMS
                 }
 
                 var epsgCode = Convert.ToInt32(crs.Replace("EPSG:", string.Empty));
-                switch (epsgCode)
+                projectionInfo = epsgCode switch
                 {
-                    case 3857:
-                        projectionInfo = KnownCoordinateSystems.Projected.World.WebMercator;
-                        break;
-                    case 4326:
-                        projectionInfo = KnownCoordinateSystems.Geographic.World.WGS1984;
-                        break;
-                    default:
-                        projectionInfo = ProjectionInfo.FromEpsgCode(epsgCode);
-                        break;
-                }
+                    3857 => KnownCoordinateSystems.Projected.World.WebMercator,
+                    4326 => KnownCoordinateSystems.Geographic.World.WGS1984,
+                    _ => ProjectionInfo.FromEpsgCode(epsgCode),
+                };
             }
             catch (Exception)
             {

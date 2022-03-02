@@ -4,7 +4,6 @@
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
-using DotSpatial.Plugins.SimpleLegend.Properties;
 
 namespace DotSpatial.Plugins.SimpleLegend
 {

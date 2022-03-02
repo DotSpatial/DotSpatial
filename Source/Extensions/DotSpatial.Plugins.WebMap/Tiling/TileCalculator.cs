@@ -5,7 +5,6 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text;
-using DotSpatial.NTSExtension;
 using NetTopologySuite.Geometries;
 using NtsPoint = NetTopologySuite.Geometries.Point;
 

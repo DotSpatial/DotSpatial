@@ -669,15 +669,8 @@ namespace DotSpatial.Plugins.About
         private void PopulateAppInfo()
         {
             AppDomain d = AppDomain.CurrentDomain;
-            Populate(AppInfoListView, "Application Name", d.SetupInformation.ApplicationName);
             Populate(AppInfoListView, "Application Base", d.SetupInformation.ApplicationBase);
-            Populate(AppInfoListView, "Cache Path", d.SetupInformation.CachePath);
-            Populate(AppInfoListView, "Configuration File", d.SetupInformation.ConfigurationFile);
-            Populate(AppInfoListView, "Dynamic Base", d.SetupInformation.DynamicBase);
             Populate(AppInfoListView, "Friendly Name", d.FriendlyName);
-            Populate(AppInfoListView, "License File", d.SetupInformation.LicenseFile);
-            Populate(AppInfoListView, "private Bin Path", d.SetupInformation.PrivateBinPath);
-            Populate(AppInfoListView, "Shadow Copy Directories", d.SetupInformation.ShadowCopyDirectories);
             Populate(AppInfoListView, " ", " ");
             Populate(AppInfoListView, "Entry Assembly", _entryAssemblyName);
             Populate(AppInfoListView, "Executing Assembly", _executingAssemblyName);

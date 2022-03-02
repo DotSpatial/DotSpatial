@@ -168,8 +168,8 @@ namespace DotSpatial.Data.Tests
         [Test(Description = @"Checks that the resulting binary array doesn't have 4 unnecessary 0 bytes at the end. (https://github.com/DotSpatial/DotSpatial/issues/475)")]
         public void ToBinaryWithout4Zeros()
         {
-            List<Coordinate> coords = new List<Coordinate>
-                                      {
+            List<Coordinate> coords = new()
+            {
                                           new Coordinate(-84.6976494321476000, 41.7477691708729000),
                                           new Coordinate(-84.6402221482214000, 41.7477691708729000),
                                           new Coordinate(-84.6402221482214000, 41.6997514050474000),
@@ -181,7 +181,7 @@ namespace DotSpatial.Data.Tests
                                           new Coordinate(-84.6976494321476000, 41.7477691708729000),
                                       };
 
-            Polygon p = new Polygon(new LinearRing(coords.ToArray()));
+            Polygon p = new(new LinearRing(coords.ToArray()));
             var bin = p.ToBinary();
 
             Assert.AreEqual(157, bin.Length);

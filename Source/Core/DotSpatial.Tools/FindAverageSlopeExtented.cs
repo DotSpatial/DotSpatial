@@ -1,11 +1,12 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
-using System;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
 using NetTopologySuite.Geometries;
+using System;
+using NtsPoint = NetTopologySuite.Geometries.Point;
 
 namespace DotSpatial.Tools
 {
@@ -124,7 +125,7 @@ namespace DotSpatial.Tools
                 for (int j = 0; j < slopegrid.NumColumns; j++)
                 {
                     Coordinate coordin = slopegrid.CellToProj(i, j);
-                    Point pt = new Point(coordin);
+                    NtsPoint pt = new NtsPoint(coordin);
                     IFeature point = new Feature(pt);
                     if (!outerShpFile.Features[outerShpIndex].Geometry.Covers(point.Geometry))
                     {

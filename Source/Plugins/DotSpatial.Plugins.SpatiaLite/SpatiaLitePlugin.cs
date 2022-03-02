@@ -5,7 +5,6 @@ using System;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
-using DotSpatial.Plugins.SpatiaLite.Properties;
 
 namespace DotSpatial.Plugins.SpatiaLite
 {
@@ -62,10 +61,10 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        public void ButtonClick(object sender, EventArgs e)
+        public void ButtonClick(object? sender, EventArgs e)
         {
             // check if it's a valid SpatiaLite layer
-            using (OpenFileDialog fd = new OpenFileDialog
+            using (OpenFileDialog fd = new()
             {
                 Title = Resources.OpenSpatialiteDatabase,
                 Filter = Resources.SpatialiteDatabaseFilter
@@ -74,15 +73,15 @@ namespace DotSpatial.Plugins.SpatiaLite
                 if (fd.ShowDialog() == DialogResult.OK)
                 {
                     string cs = SqLiteHelper.GetSqLiteConnectionString(fd.FileName);
-                    string error;
-                    var slh = SpatiaLiteHelper.Open(cs, out error);
+                    var slh = SpatiaLiteHelper.Open(cs, out string error);
+
                     if (slh == null)
                     {
                         MessageBox.Show(string.Format(Resources.DatabaseNotValid, fd.FileName, error));
                         return;
                     }
 
-                    using (FrmAddLayer frm = new FrmAddLayer(slh, App.Map))
+                    using (FrmAddLayer frm = new(slh, App.Map))
                     {
                         frm.ShowDialog();
                     }
@@ -99,10 +98,10 @@ namespace DotSpatial.Plugins.SpatiaLite
             base.Deactivate();
         }
 
-        private void BQueryClick(object sender, EventArgs e)
+        private void BQueryClick(object? sender, EventArgs e)
         {
             // check if it's a valid SpatiaLite layer
-            using (OpenFileDialog fd = new OpenFileDialog
+            using (OpenFileDialog fd = new()
             {
                 Title = Resources.OpenSpatialiteDatabase,
                 Filter = Resources.SpatialiteDatabaseFilter
@@ -111,8 +110,8 @@ namespace DotSpatial.Plugins.SpatiaLite
                 if (fd.ShowDialog() == DialogResult.OK)
                 {
                     string cs = SqLiteHelper.GetSqLiteConnectionString(fd.FileName);
-                    string error;
-                    var slh = SpatiaLiteHelper.Open(cs, out error);
+                    var slh = SpatiaLiteHelper.Open(cs, out string error);
+
                     if (slh == null)
                     {
                         MessageBox.Show(string.Format(Resources.DatabaseNotValid, fd.FileName, error));
@@ -127,7 +126,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             }
         }
 
-        private void BSaveLayerClick(object sender, EventArgs e)
+        private void BSaveLayerClick(object? sender, EventArgs e)
         {
             MessageBox.Show(@"This operation is not implemented yet");
         }

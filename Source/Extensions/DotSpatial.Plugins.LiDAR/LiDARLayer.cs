@@ -200,7 +200,7 @@ namespace DotSpatial.Plugins.LiDAR
         /// where drawing will be taking place.</param>
         public void StartDrawing(bool preserve)
         {
-            Bitmap backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
+            Bitmap backBuffer = new(BufferRectangle.Width, BufferRectangle.Height);
             if (Buffer?.Width == backBuffer.Width && Buffer.Height == backBuffer.Height)
             {
                 if (preserve)
@@ -223,7 +223,7 @@ namespace DotSpatial.Plugins.LiDAR
         {
             if (BufferChanged != null)
             {
-                ClipArgs e = new ClipArgs(clipRectangles);
+                ClipArgs e = new(clipRectangles);
                 BufferChanged(this, e);
             }
         }
@@ -246,14 +246,14 @@ namespace DotSpatial.Plugins.LiDAR
         private static Bitmap CreateDefaultSymbol(Color color, int symbolSize)
         {
             double scaleSize = 1;
-            Size2D size = new Size2D(symbolSize, symbolSize);
-            Bitmap normalSymbol = new Bitmap((int)(size.Width * scaleSize) + 1, (int)(size.Height * scaleSize) + 1);
+            Size2D size = new(symbolSize, symbolSize);
+            Bitmap normalSymbol = new((int)(size.Width * scaleSize) + 1, (int)(size.Height * scaleSize) + 1);
             Graphics bg = Graphics.FromImage(normalSymbol);
 
-            Random rnd = new Random();
+            Random rnd = new();
             Color randomColor = Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
-            PointSymbolizer sym = new PointSymbolizer(randomColor, PointShape.Rectangle, 4);
-            PointCategory category = new PointCategory(sym);
+            PointSymbolizer sym = new(randomColor, PointShape.Rectangle, 4);
+            PointCategory category = new(sym);
             bg.SmoothingMode = category.Symbolizer.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
             Matrix trans = bg.Transform;
 
@@ -265,7 +265,7 @@ namespace DotSpatial.Plugins.LiDAR
 
         private static Color CreateRandomColor()
         {
-            Random rnd = new Random();
+            Random rnd = new();
             Color randomColor = Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
             return randomColor;
         }

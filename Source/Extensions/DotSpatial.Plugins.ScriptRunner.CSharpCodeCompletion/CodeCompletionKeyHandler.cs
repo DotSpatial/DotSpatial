@@ -65,7 +65,7 @@ namespace CSharpEditor
         /// <returns>The created CodeCompletionKeyHandler.</returns>
         public static CodeCompletionKeyHandler Attach(MainForm mainForm, TextEditorControl editor)
         {
-            CodeCompletionKeyHandler h = new CodeCompletionKeyHandler(mainForm, editor);
+            CodeCompletionKeyHandler h = new(mainForm, editor);
 
             editor.ActiveTextAreaControl.TextArea.KeyEventHandler += h.TextAreaKeyEventHandler;
 

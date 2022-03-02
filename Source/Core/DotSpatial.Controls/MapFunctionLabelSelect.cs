@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using DotSpatial.Symbology;
 using NetTopologySuite.Geometries;
 using Point = System.Drawing.Point;
+using Timer = System.Windows.Forms.Timer;
 
 namespace DotSpatial.Controls
 {
@@ -151,7 +152,7 @@ namespace DotSpatial.Controls
             base.OnMouseUp(e);
         }
 
-        private void SelectTimerTick(object sender, EventArgs e)
+        private void SelectTimerTick(object? sender, EventArgs e)
         {
             _selectTimer.Stop();
             Map.ResetBuffer();

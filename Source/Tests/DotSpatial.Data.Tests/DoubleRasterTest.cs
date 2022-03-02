@@ -28,7 +28,7 @@ namespace DotSpatial.Data.Tests
             const double Cellsize = 500;
             double x2 = Xllcorner + (Cellsize * Ncols);
             double y2 = Yllcorner + (Cellsize * Nrows);
-            Extent myExtent = new Extent(Xllcorner, Yllcorner, x2, y2);
+            Extent myExtent = new(Xllcorner, Yllcorner, x2, y2);
             var output = Raster.Create(path, string.Empty, Ncols, Nrows, 1, typeof(double), new[] { string.Empty });
             output.Bounds = new RasterBounds(Nrows, Ncols, myExtent);
             output.NoDataValue = -9999;

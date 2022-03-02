@@ -63,10 +63,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <param name="addedLayer">Layer, that should be added to DGV_Selection.</param>
         private void AddLayer(ILayer addedLayer)
         {
-            if (addedLayer == null) return;
-
-            var grp = addedLayer as IMapGroup;
-            if (grp != null)
+            if (addedLayer is IMapGroup grp)
             {
                 // handle layerAdded event separately for groups because map.layerAdded event doesn't fire for groups.
                 grp.LayerAdded += MapLayerAdded;
@@ -90,7 +87,10 @@ namespace DotSpatial.Plugins.SetSelectable
             App.Map.Layers.LayerMoved += LayersLayerMoved;
             App.Map.LayerAdded += MapLayerAdded;
             App.Map.MapFrame.LayerRemoved += MapLayerRemoved;
-            if (App.Legend != null) App.Legend.OrderChanged += LegendOrderChanged;
+            if (App.Legend != null)
+            {
+                App.Legend.OrderChanged += LegendOrderChanged;
+            }
 
             foreach (IMapLayer layer in App.Map.Layers)
             {
@@ -118,7 +118,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void LayersLayerMoved(object sender, LayerMovedEventArgs e)
+        private void LayersLayerMoved(object? sender, LayerMovedEventArgs e)
         {
             _dgvSelection.MoveLayer(e.Layer, e.NewPosition);
         }
@@ -128,7 +128,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void LegendOrderChanged(object sender, EventArgs e)
+        private void LegendOrderChanged(object? sender, EventArgs e)
         {
             _dgvSelection.MoveLayers(App.Map.Layers);
         }
@@ -138,7 +138,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void MapLayerAdded(object sender, LayerEventArgs e)
+        private void MapLayerAdded(object? sender, LayerEventArgs e)
         {
             _dgvSelection.AddLayer(e.Layer);
         }
@@ -148,7 +148,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void MapLayerRemoved(object sender, LayerEventArgs e)
+        private void MapLayerRemoved(object? sender, LayerEventArgs e)
         {
             _dgvSelection.RemoveLayer(e.Layer);
         }
@@ -158,7 +158,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void SerializationManagerDeserializing(object sender, SerializingEventArgs e)
+        private void SerializationManagerDeserializing(object? sender, SerializingEventArgs e)
         {
             DetachLayerAddedEvents();
             AttachLayerAddedEvents();

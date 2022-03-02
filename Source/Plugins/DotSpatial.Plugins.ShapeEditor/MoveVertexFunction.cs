@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.NTSExtension;
-using DotSpatial.Serialization;
+using DotSpatial.Projections;
 using DotSpatial.Symbology;
 using NetTopologySuite.Geometries;
 using Point = System.Drawing.Point;
@@ -145,7 +145,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <inheritdoc />
         protected override void OnDraw(MapDrawArgs e)
         {
-            Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
+            Rectangle mouseRect = new(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             if (_selectedFeature != null)
             {
                 foreach (Coordinate c in _selectedFeature.Geometry.Coordinates)
@@ -167,14 +167,14 @@ namespace DotSpatial.Plugins.ShapeEditor
             {
                 if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
                 {
-                    Rectangle r = new Rectangle(_mousePosition.X - (_imageRect.Width / 2), _mousePosition.Y - (_imageRect.Height / 2), _imageRect.Width, _imageRect.Height);
+                    Rectangle r = new(_mousePosition.X - (_imageRect.Width / 2), _mousePosition.Y - (_imageRect.Height / 2), _imageRect.Width, _imageRect.Height);
                     _selectedCategory.Symbolizer.Draw(e.Graphics, r);
                 }
                 else
                 {
                     e.Graphics.FillRectangle(Brushes.Red, _mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
                     Point b = _mousePosition;
-                    Pen p = new Pen(Color.Blue)
+                    Pen p = new(Color.Blue)
                     {
                         DashStyle = DashStyle.Dash
                     };
@@ -214,7 +214,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 {
                     if (_selectedFeature != null)
                     {
-                        Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
+                        Rectangle mouseRect = new(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
 
                         Envelope env = Map.PixelToProj(mouseRect).ToEnvelope();
 
@@ -241,7 +241,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                             _selectedFeature = _activeFeature;
                             _activeFeature = null;
 
-                            if (!(_selectedCategory is IPolygonCategory sc))
+                            if (_selectedCategory is not IPolygonCategory)
                             {
                                 _selectedCategory = new PolygonCategory(Color.FromArgb(55, 0, 255, 255), Color.Blue, 1)
                                 {
@@ -256,7 +256,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                             _selectedFeature = _activeFeature;
                             _activeFeature = null;
 
-                            if (!(_selectedCategory is ILineCategory sc))
+                            if (_selectedCategory is not ILineCategory)
                             {
                                 _selectedCategory = new LineCategory(Color.Cyan, 1)
                                 {
@@ -271,10 +271,10 @@ namespace DotSpatial.Plugins.ShapeEditor
                             _dragging = true;
                             Map.IsBusy = true;
                             _dragCoord = _activeFeature.Geometry.Coordinates[0];
-                            MapPointLayer mpl = _layer as MapPointLayer;
+                            MapPointLayer? mpl = _layer as MapPointLayer;
                             mpl?.SetVisible(_activeFeature, false);
 
-                            if (!(_selectedCategory is IPointCategory sc))
+                            if (_selectedCategory is not IPointCategory)
                             {
                                 if (_layer.GetCategory(_activeFeature).Symbolizer.Copy() is IPointSymbolizer ps)
                                 {
@@ -398,7 +398,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <returns>True, if the current mouse location is over a vertex.</returns>
         private bool CheckForVertexDrag(GeoMouseArgs e)
         {
-            Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
+            Rectangle mouseRect = new(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             Envelope env = Map.PixelToProj(mouseRect).ToEnvelope();
             if (e.Button == MouseButtons.Left)
             {
@@ -506,7 +506,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             if (e == null)
                 throw new ArgumentNullException(nameof(e), "e is null.");
 
-            Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
+            Rectangle mouseRect = new(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             Extent ext = Map.PixelToProj(mouseRect);
             Polygon env = ext.ToEnvelope().ToPolygon();
             bool requiresInvalidate = false;
@@ -556,7 +556,7 @@ namespace DotSpatial.Plugins.ShapeEditor
 
                         if (_featureSet.FeatureType == FeatureType.Polygon)
                         {
-                            if (!(_activeCategory is IPolygonCategory pc))
+                            if (_activeCategory is not IPolygonCategory pc)
                             {
                                 _activeCategory = new PolygonCategory(Color.FromArgb(55, 255, 0, 0), Color.Red, 1)
                                 {
@@ -567,7 +567,7 @@ namespace DotSpatial.Plugins.ShapeEditor
 
                         if (_featureSet.FeatureType == FeatureType.Line)
                         {
-                            if (!(_activeCategory is ILineCategory pc))
+                            if (_activeCategory is not ILineCategory pc)
                             {
                                 _activeCategory = new LineCategory(Color.Red, 3)
                                 {
@@ -599,7 +599,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 return false;
             }
 
-            Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
+            Rectangle mouseRect = new(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             Extent ext = Map.PixelToProj(mouseRect);
             Polygon env = ext.ToEnvelope().ToPolygon();
             bool requiresInvalidate = false;
@@ -618,7 +618,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     }
                 }
 
-                Rectangle rect = new Rectangle(e.Location.X - (w / 2), e.Location.Y - (h / 2), w * 2, h * 2);
+                Rectangle rect = new(e.Location.X - (w / 2), e.Location.Y - (h / 2), w * 2, h * 2);
                 if (!rect.Contains(Map.ProjToPixel(_activeFeature.Geometry.Coordinates[0])))
                 {
                     mpl.SetCategory(_activeFeature, _oldCategory);
@@ -656,7 +656,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         private void VertexHighlight()
         {
             // The feature is selected so color vertex that can be moved but don't highlight other shapes.
-            Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
+            Rectangle mouseRect = new(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             Extent ext = Map.PixelToProj(mouseRect);
             if (_activeVertex != null && !ext.Contains(_activeVertex))
             {

@@ -15,22 +15,25 @@ namespace DotSpatial.Plugins.StatusBarImprovements
     {
         #region Fields
 
-        private StatusPanel _panel;
+        private readonly StatusPanel _panel;
 
         #endregion
 
         #region Methods
+
+        public StatusShowSelectionCount()
+        {
+            _panel = new StatusPanel
+            {
+                Width = 180
+            };
+        }
 
         /// <inheritdoc />
         public override void Activate()
         {
             App.Map.SelectionChanged += MapSelectionChanged;
             App.Map.MapFrame.LayerSelected += MapFrameLayerSelected;
-
-            _panel = new StatusPanel
-            {
-                Width = 180
-            };
             App.ProgressHandler.Add(_panel);
 
             base.Activate();
@@ -41,19 +44,18 @@ namespace DotSpatial.Plugins.StatusBarImprovements
         {
             App.Map.SelectionChanged -= MapSelectionChanged;
             App.Map.MapFrame.LayerSelected -= MapFrameLayerSelected;
-
             App.ProgressHandler.Remove(_panel);
 
             App.HeaderControl.RemoveAll();
             base.Deactivate();
         }
 
-        private void MapSelectionChanged(object sender, EventArgs e)
+        private void MapSelectionChanged(object? sender, EventArgs e)
         {
             UpdateStatus();
         }
 
-        private void MapFrameLayerSelected(object sender, LayerSelectedEventArgs e)
+        private void MapFrameLayerSelected(object? sender, LayerSelectedEventArgs e)
         {
             UpdateStatus();
         }
@@ -66,8 +68,7 @@ namespace DotSpatial.Plugins.StatusBarImprovements
             }
             else
             {
-                var layer = App.Map.Layers.SelectedLayer as IMapFeatureLayer;
-                if (layer != null)
+                if (App.Map.Layers.SelectedLayer is IMapFeatureLayer layer)
                 {
                     _panel.Caption = string.Format("{0}: {1} feature{2} selected", layer.LegendText, layer.Selection.Count, layer.Selection.Count == 1 ? null : "s");
                 }

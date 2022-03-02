@@ -6,6 +6,7 @@ using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.NTSExtension;
 using NetTopologySuite.Geometries;
+using Point = NetTopologySuite.Geometries.Point;
 
 namespace DotSpatial.Analysis
 {
@@ -33,7 +34,7 @@ namespace DotSpatial.Analysis
             }
 
             fsOut.FeatureType = FeatureType.Point;
-            Random r = new Random();
+            Random r = new();
             int i = 0;
             while (i < numberOfPoints)
             {
@@ -49,7 +50,7 @@ namespace DotSpatial.Analysis
                 };
 
                 // check if the point falls within the polygon featureset
-                Point p = new Point(c);
+                Point p = new(c);
                 if (constrainingFeatures.Features.Any(f => f.Geometry.Intersects(p)))
                 {
                     fsOut.AddFeature(p);
@@ -80,8 +81,8 @@ namespace DotSpatial.Analysis
         public static FeatureSet RandomPoints(Feature constrainingFeature, int numberOfPoints)
         {
             // this function generates random points within the boundaries of one polygon feature
-            FeatureSet fsOut = new FeatureSet(FeatureType.Point);
-            Random r = new Random();
+            FeatureSet fsOut = new(FeatureType.Point);
+            Random r = new();
             int i = 0;
             while (i < numberOfPoints)
             {
@@ -97,7 +98,7 @@ namespace DotSpatial.Analysis
                 };
 
                 // check if the point falls within the polygon featureset
-                Point p = new Point(c);
+                Point p = new(c);
                 if (constrainingFeature.Geometry.Intersects(p))
                 {
                     fsOut.AddFeature(p);

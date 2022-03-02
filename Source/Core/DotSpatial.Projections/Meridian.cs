@@ -67,8 +67,7 @@ namespace DotSpatial.Projections
         /// <param name="standardMeridianName">The string name of the meridian to use</param>
         public Meridian(string standardMeridianName)
         {
-            Proj4Meridian meridian;
-            if (Enum.TryParse(standardMeridianName, true, out meridian))
+            if (Enum.TryParse(standardMeridianName, true, out Proj4Meridian meridian))
             {
                 AssignMeridian(meridian);
             }
@@ -275,8 +274,7 @@ namespace DotSpatial.Projections
             set
             {
                 // maybe we have a numeric value
-                double lon;
-                if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out lon))
+                if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out double lon))
                 {
                     _longitude = lon;
                     // Try to find a standard name that has a close longitude.
@@ -285,11 +283,10 @@ namespace DotSpatial.Projections
                 // otherwise try parse as city name
                 else
                 {
-                    Proj4Meridian meridian;
-                    if (Enum.TryParse(value, true, out meridian))
+                    if (Enum.TryParse(value, true, out Proj4Meridian meridian))
                     {
                         AssignMeridian(meridian);
-                    }    
+                    }
                 }
             }
         }

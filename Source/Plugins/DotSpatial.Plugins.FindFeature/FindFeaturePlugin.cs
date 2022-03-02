@@ -3,11 +3,12 @@
 
 using System;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
-using DotSpatial.Plugins.FindFeature.Properties;
 using DotSpatial.Symbology.Forms;
 
 namespace DotSpatial.Plugins.FindFeature
@@ -25,8 +26,8 @@ namespace DotSpatial.Plugins.FindFeature
             App.HeaderControl.Add(new SimpleActionItem(HeaderControl.HomeRootItemKey, "Find", FindToolClick)
             {
                 GroupCaption = "Map Tool",
-                SmallImage = Resources.page_white_find_16x16,
-                LargeImage = Resources.page_white_find,
+                SmallImage = Image.FromStream(new MemoryStream(Resources.page_white_find_16x16)),
+                LargeImage = Image.FromStream(new MemoryStream(Resources.page_white_find)),
             });
 
             base.Activate();
@@ -44,7 +45,7 @@ namespace DotSpatial.Plugins.FindFeature
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void FindToolClick(object sender, EventArgs e)
+        private void FindToolClick(object? sender, EventArgs e)
         {
             var fl = App.Map.GetFeatureLayers().FirstOrDefault(_ => _.IsSelected);
             if (fl == null)
@@ -53,16 +54,16 @@ namespace DotSpatial.Plugins.FindFeature
                 return;
             }
 
-            using (SqlExpressionDialog qd = new SqlExpressionDialog())
+            using (SqlExpressionDialog qd = new())
             {
                 if (fl.DataSet.AttributesPopulated)
-                    qd.Table = fl.DataSet.DataTable;
+                { qd.Table = fl.DataSet.DataTable; }
                 else
-                    qd.AttributeSource = fl.DataSet;
+                { qd.AttributeSource = fl.DataSet; }
 
                 // Note: User must click ok button to see anything.
                 if (qd.ShowDialog() == DialogResult.Cancel)
-                    return;
+                { return; }
 
                 if (!string.IsNullOrWhiteSpace(qd.Expression))
                 {

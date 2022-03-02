@@ -23,7 +23,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// <param name="xml">The Project XML.</param>
         public static void Save(string fileName, string xml)
         {
-            using (ZipFile zip = new ZipFile())
+            using (ZipFile zip = new())
             {
                 // Assume for now that all paths are appropriate, TODO: remap paths in dspx.
                 zip.AddEntry("theProject.dspx", xml);
@@ -48,8 +48,8 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// <returns>The related metadata files (e.g., includes shx and dbf when given a shp file).</returns>
         private static IEnumerable<string> GetRelatedFiles(IEnumerable<string> files)
         {
-            List<string> shapeExtentions = new List<string> { "dbf", "shx", "shpxml", "lbl" };
-            List<string> metadataExtentions = new List<string> { "prj", "xml", "mwsr", "mwleg", "bmp", "bpw", "jgw", "gfw", "aux", "rrd" };
+            List<string> shapeExtentions = new() { "dbf", "shx", "shpxml", "lbl" };
+            List<string> metadataExtentions = new() { "prj", "xml", "mwsr", "mwleg", "bmp", "bpw", "jgw", "gfw", "aux", "rrd" };
 
             foreach (string file in files)
             {

@@ -2,10 +2,11 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
+using System.Drawing;
 using System.Diagnostics;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
-using DotSpatial.Plugins.Help.Properties;
+using System.IO;
 
 namespace DotSpatial.Plugins.Help
 {
@@ -14,14 +15,14 @@ namespace DotSpatial.Plugins.Help
     /// </summary>
     public class HelpPlugin : Extension
     {
-        private const string Url = "http://dotspatial.codeplex.com/documentation";
+        private const string Url = "https://github.com/DotSpatial/DotSpatial";
         private const string HelpMenu = HeaderControl.HeaderHelpItemKey;
 
         /// <inheritdoc />
         public override void Activate()
         {
             App.HeaderControl.Add(new RootItem(HelpMenu, "Help"));
-            App.HeaderControl.Add(new SimpleActionItem(HelpMenu, "View Help", ButtonClick) { GroupCaption = HeaderControl.HeaderHelpItemKey, SmallImage = Resources.help_16x16, LargeImage = Resources.help });
+            App.HeaderControl.Add(new SimpleActionItem(HelpMenu, "View Help", ButtonClick) { GroupCaption = HeaderControl.HeaderHelpItemKey, SmallImage = Image.FromStream(new MemoryStream(Resources.help_16x16)), LargeImage = Resources.help });
             base.Activate();
         }
 
@@ -37,9 +38,13 @@ namespace DotSpatial.Plugins.Help
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        public void ButtonClick(object sender, EventArgs e)
+        public void ButtonClick(object? sender, EventArgs e)
         {
-            Process.Start(Url);
+            var ps = new ProcessStartInfo(Url)
+            {
+                UseShellExecute = true
+            };
+            Process.Start(ps);
         }
     }
 }

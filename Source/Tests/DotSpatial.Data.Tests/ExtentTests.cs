@@ -43,7 +43,7 @@ namespace DotSpatial.Data.Tests
         {
             double[] values = { 9, 3, 4, 5, 6, 7, 8 };
 
-            Extent e = new Extent(values, 3);
+            Extent e = new(values, 3);
 
             Assert.AreEqual(5, e.MinX, "5 = e.MinX");
             Assert.AreEqual(6, e.MinY, "6 = e.MinY");
@@ -67,9 +67,9 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether using the Envelope based Extent constructor assigns the correct values.")]
         public void ExtentEnvelopeCtorTest()
         {
-            Envelope env = new Envelope(0, 3, 5, 6);
+            Envelope env = new(0, 3, 5, 6);
 
-            Extent e = new Extent(env);
+            Extent e = new(env);
 
             Assert.AreEqual(0, e.MinX, "0 = e.MinX");
             Assert.AreEqual(5, e.MinY, "5 = e.MinY");
@@ -83,7 +83,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether the properties return the correct values.")]
         public void ExtentGetPropertiesTest()
         {
-            Extent e = new Extent(0, 3, 10, 15);
+            Extent e = new(0, 3, 10, 15);
             Coordinate center = e.Center;
 
             Assert.AreEqual(5, center.X, "5 != center.X");
@@ -104,7 +104,7 @@ namespace DotSpatial.Data.Tests
         public void ExtentSetPropertiesTest()
         {
             // ReSharper disable once UseObjectOrCollectionInitializer
-            Extent e = new Extent(0, 3, 10, 15);
+            Extent e = new(0, 3, 10, 15);
 
             e.X = 5;
             Assert.AreEqual(5, e.MinX, "5 != e.MinX");
@@ -121,7 +121,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether the extent clone is not the same object as the original extent but has the same values.")]
         public void ExtentCloneTest()
         {
-            Extent e = new Extent(3, 6, 8, 9);
+            Extent e = new(3, 6, 8, 9);
             Assert.AreEqual(e, e.Clone(), "e is not equal to e.Clone()");
             Assert.AreNotSame(e, e.Clone(), "e is the same as e.Clone()");
         }
@@ -132,8 +132,8 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether the copying from another extent results in both extents having the same values.")]
         public void ExtentCopyFromTest()
         {
-            Extent e = new Extent(3, 6, 8, 9);
-            Extent e2 = new Extent();
+            Extent e = new(3, 6, 8, 9);
+            Extent e2 = new();
             e2.CopyFrom(e);
 
             Assert.AreEqual(e, e2);
@@ -154,7 +154,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether equals and the equality operator return the expected results.")]
         public void ExtentEqualsTest()
         {
-            Extent e = new Extent(4, 6, 9, 10);
+            Extent e = new(4, 6, 9, 10);
 
             // ReSharper disable EqualExpressionComparison
             Assert.IsTrue(e.Equals(e), "e.Equals(e)");
@@ -166,11 +166,11 @@ namespace DotSpatial.Data.Tests
             object e2 = new Coordinate(10, 23);
             Assert.IsFalse(e.Equals(e2), "e.Equals(e2)");
 
-            Extent e3 = new Extent(4, 6, 9, 10);
+            Extent e3 = new(4, 6, 9, 10);
             Assert.IsTrue(e.Equals(e3), "e.Equals(e3)");
             Assert.IsTrue(e == e3, "e == e3");
 
-            Extent e4 = new Extent(4, 7, 9, 10);
+            Extent e4 = new(4, 7, 9, 10);
             Assert.IsFalse(e.Equals(e4), "e.Equals(e4)");
             Assert.IsFalse(e == e4, "e == e4");
 
@@ -185,7 +185,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether the inequality operator returns the expected results.")]
         public void ExtentInequalityTest()
         {
-            Extent e = new Extent(4, 6, 9, 10);
+            Extent e = new(4, 6, 9, 10);
 
             // ReSharper disable EqualExpressionComparison
 #pragma warning disable CS1718 // Comparison made to same variable
@@ -193,10 +193,10 @@ namespace DotSpatial.Data.Tests
 #pragma warning restore CS1718 // Comparison made to same variable
 
             // ReSharper restore EqualExpressionComparison
-            Extent e3 = new Extent(4, 6, 9, 10);
+            Extent e3 = new(4, 6, 9, 10);
             Assert.IsFalse(e != e3, "e != e3");
 
-            Extent e4 = new Extent(4, 7, 9, 10);
+            Extent e4 = new(4, 7, 9, 10);
             Assert.IsTrue(e != e4, "e != e4");
 
             Extent e5 = null;
@@ -261,7 +261,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether setting a null value as Center throws an ArgumentNullException.")]
         public void ExtentSetCenterNullCoordinateTest()
         {
-            Extent e = new Extent();
+            Extent e = new();
 
             Assert.Throws<ArgumentNullException>(() => { e.SetCenter(null); }, "ExtentSetCenter throws on null Coordinate");
             Assert.Throws<ArgumentNullException>(() => { e.SetCenter(null, 3, 4); }, "ExtentSetCenter with height and width throws on null Coordinate");
@@ -273,7 +273,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether setting the Center works as expected.")]
         public void ExtentSetCenterTest()
         {
-            Extent e = new Extent(34, 10, 38, 16);
+            Extent e = new(34, 10, 38, 16);
 
             e.SetCenter(new Coordinate(4, 5));
             Assert.AreEqual(new Extent(2, 2, 6, 8), e, "ExtentSetCenter Coordinate only");
@@ -291,7 +291,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether expanding the extent by one value results in the correct x,y coordinates.")]
         public void ExtentExpandByOneValueTest()
         {
-            Extent e = new Extent(4, 6, 9, 10);
+            Extent e = new(4, 6, 9, 10);
             e.ExpandBy(4);
 
             Assert.AreEqual(0, e.MinX, "0 != e.MinX");
@@ -306,7 +306,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether expanding the extent by two values results in the correct x,y coordinates.")]
         public void ExtentExpandByTwoValuesTest()
         {
-            Extent e = new Extent(4, 6, 9, 10);
+            Extent e = new(4, 6, 9, 10);
             e.ExpandBy(4, 5);
 
             Assert.AreEqual(0, e.MinX, "0 != e.MinX");
@@ -321,7 +321,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether expanding the extent by an extent works as expected.")]
         public void ExtentExpandToIncludeExtentTest()
         {
-            Extent e = new Extent();
+            Extent e = new();
 
             e.ExpandToInclude(new Extent(4, 5, 6, 7));
             Assert.AreEqual(4, e.MinX, "4 != e.MinX");
@@ -357,7 +357,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether expanding the extent by two values works as expected.")]
         public void ExtentExpandToIncludeTwoValuesTest()
         {
-            Extent e = new Extent();
+            Extent e = new();
 
             // make sure all x and y values are no longer NaN
             e.ExpandToInclude(5, 7);
@@ -387,7 +387,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether the extent has the expected hash code.")]
         public void ExtentGetHashCodeTest()
         {
-            Extent e = new Extent(3, 5, 7, 9);
+            Extent e = new(3, 5, 7, 9);
             Assert.AreEqual(2136750625, e.GetHashCode());
         }
 
@@ -399,8 +399,8 @@ namespace DotSpatial.Data.Tests
         [TestCaseSource(nameof(GetTestValues))]
         public void ExtentWithinExtentTest(ExtentTestData data)
         {
-            Extent container = new Extent(data.ContainerValues);
-            Extent contained = new Extent(data.ContainedValues);
+            Extent container = new(data.ContainerValues);
+            Extent contained = new(data.ContainedValues);
 
             Assert.AreEqual(data.ExpectedReturnValue, contained.Within(container), "ExtentWithinExtent");
 
@@ -418,7 +418,7 @@ namespace DotSpatial.Data.Tests
         public void ExtentWithinNullExtentTest()
         {
             Extent container = null;
-            Extent contained = new Extent(0, 0, 10, 20);
+            Extent contained = new(0, 0, 10, 20);
 
             // ReSharper disable once ExpressionIsAlwaysNull
             Assert.Throws<ArgumentNullException>(() => { contained.Within(container); });
@@ -433,8 +433,8 @@ namespace DotSpatial.Data.Tests
         public void ExtentWithinEnvelopeTest(ExtentTestData data)
         {
             var vals = data.ContainerValues;
-            Envelope container = new Envelope(vals[0], vals[2], vals[1], vals[3]);
-            Extent contained = new Extent(data.ContainedValues);
+            Envelope container = new(vals[0], vals[2], vals[1], vals[3]);
+            Extent contained = new(data.ContainedValues);
 
             Assert.AreEqual(data.ExpectedReturnValue, contained.Within(container), "ExtentWithinEnvelope");
 
@@ -452,7 +452,7 @@ namespace DotSpatial.Data.Tests
         public void ExtentWithinNullEnvelopeTest()
         {
             Envelope container = null;
-            Extent contained = new Extent(0, 0, 10, 20);
+            Extent contained = new(0, 0, 10, 20);
 
             // ReSharper disable once ExpressionIsAlwaysNull
             Assert.Throws<ArgumentNullException>(() => { contained.Within(container); });
@@ -466,9 +466,9 @@ namespace DotSpatial.Data.Tests
         [TestCaseSource(nameof(GetTestValues))]
         public void ExtentContainsEnvelopeTest(ExtentTestData data)
         {
-            Extent container = new Extent(data.ContainerValues);
+            Extent container = new(data.ContainerValues);
             var vals = data.ContainedValues;
-            Envelope contained = new Envelope(vals[0], vals[2], vals[1], vals[3]);
+            Envelope contained = new(vals[0], vals[2], vals[1], vals[3]);
 
             Assert.AreEqual(data.ExpectedReturnValue, container.Contains(contained), "ExtentContainsEnvelope");
 
@@ -485,7 +485,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether an ArgumentNullException is thrown if we try to check whether an Extent contains a null envelope.")]
         public void ExtentContainsNullEnvelopeTest()
         {
-            Extent container = new Extent(0, 0, 10, 20);
+            Extent container = new(0, 0, 10, 20);
             Envelope contained = null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
@@ -500,9 +500,9 @@ namespace DotSpatial.Data.Tests
         [TestCaseSource(nameof(GetTestValues))]
         public void ExtentContainsExtentTest(ExtentTestData data)
         {
-            Extent container = new Extent(data.ContainerValues);
+            Extent container = new(data.ContainerValues);
             var vals = data.ContainedValues;
-            Extent contained = new Extent(vals[0], vals[1], vals[2], vals[3]);
+            Extent contained = new(vals[0], vals[1], vals[2], vals[3]);
 
             Assert.AreEqual(data.ExpectedReturnValue, container.Contains(contained), "ExtentContainsExtent");
 
@@ -519,7 +519,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether an ArgumentNullException is thrown if we try to check whether an Extent contains a null extent.")]
         public void ExtentContainsNullExtentTest()
         {
-            Extent container = new Extent(0, 0, 10, 20);
+            Extent container = new(0, 0, 10, 20);
             Extent contained = null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
@@ -534,9 +534,9 @@ namespace DotSpatial.Data.Tests
         [TestCaseSource(nameof(GetPointIntersectTestValues))]
         public void ExtentContainsCoordinateTest(ExtentTestData data)
         {
-            Extent container = new Extent(data.ContainerValues);
+            Extent container = new(data.ContainerValues);
             var vals = data.ContainedValues;
-            Coordinate contained = new Coordinate(vals[0], vals[1]);
+            Coordinate contained = new(vals[0], vals[1]);
 
             Assert.AreEqual(data.ExpectedReturnValue, container.Contains(contained));
 
@@ -552,7 +552,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether an ArgumentNullException is thrown if we try to check whether an Extent contains a null coordinate.")]
         public void ExtentContainsNullCoordinateTest()
         {
-            Extent container = new Extent(0, 0, 10, 20);
+            Extent container = new(0, 0, 10, 20);
             Coordinate c = null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
@@ -567,9 +567,9 @@ namespace DotSpatial.Data.Tests
         [TestCaseSource(nameof(GetIntersectTestValues))]
         public void ExtentIntersectsExtentTest(ExtentTestData data)
         {
-            Extent container = new Extent(data.ContainerValues);
+            Extent container = new(data.ContainerValues);
             var vals = data.ContainedValues;
-            Extent contained = new Extent(vals[0], vals[1], vals[2], vals[3]);
+            Extent contained = new(vals[0], vals[1], vals[2], vals[3]);
 
             Assert.AreEqual(data.ExpectedReturnValue, container.Intersects(contained), "ExtentIntersectsExtent");
 
@@ -586,7 +586,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether an ArgumentNullException is thrown if we try to check whether an Extent intersects a null extent.")]
         public void ExtentIntersectsNullExtentTest()
         {
-            Extent container = new Extent(0, 0, 10, 20);
+            Extent container = new(0, 0, 10, 20);
             Extent contained = null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
@@ -601,9 +601,9 @@ namespace DotSpatial.Data.Tests
         [TestCaseSource(nameof(GetIntersectTestValues))]
         public void ExtentIntersectsEnvelopeTest(ExtentTestData data)
         {
-            Extent container = new Extent(data.ContainerValues);
+            Extent container = new(data.ContainerValues);
             var vals = data.ContainedValues;
-            Envelope contained = new Envelope(vals[0], vals[2], vals[1], vals[3]);
+            Envelope contained = new(vals[0], vals[2], vals[1], vals[3]);
 
             Assert.AreEqual(data.ExpectedReturnValue, container.Intersects(contained), "ExtentIntersectsEnvelope");
 
@@ -620,7 +620,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether an ArgumentNullException is thrown if we try to check whether an Extent intersects a null envelope.")]
         public void ExtentIntersectsNullEnvelopeTest()
         {
-            Extent container = new Extent(0, 0, 10, 20);
+            Extent container = new(0, 0, 10, 20);
             Envelope contained = null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
@@ -635,9 +635,9 @@ namespace DotSpatial.Data.Tests
         [TestCaseSource(nameof(GetPointIntersectTestValues))]
         public void ExtentIntersectsCoordinateTest(ExtentTestData data)
         {
-            Extent container = new Extent(data.ContainerValues);
+            Extent container = new(data.ContainerValues);
             var vals = data.ContainedValues;
-            Coordinate contained = new Coordinate(vals[0], vals[1]);
+            Coordinate contained = new(vals[0], vals[1]);
 
             Assert.AreEqual(data.ExpectedReturnValue, container.Intersects(contained), "ExtentIntersectsCoordinate");
 
@@ -654,7 +654,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether an ArgumentNullException is thrown if we try to check whether an Extent intersects a null coordinate.")]
         public void ExtentIntersectsNullCoordinateTest()
         {
-            Extent container = new Extent(0, 0, 10, 20);
+            Extent container = new(0, 0, 10, 20);
             Coordinate c = null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
@@ -669,7 +669,7 @@ namespace DotSpatial.Data.Tests
         [TestCaseSource(nameof(GetPointIntersectTestValues))]
         public void ExtentIntersectsPointValuesTest(ExtentTestData data)
         {
-            Extent container = new Extent(data.ContainerValues);
+            Extent container = new(data.ContainerValues);
             var vals = data.ContainedValues;
 
             Assert.AreEqual(data.ExpectedReturnValue, container.Intersects(vals[0], vals[1]), "ExtentIntersectsPointValues");
@@ -687,7 +687,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether intersecting an Extent with NaN values returns false.")]
         public void ExtentIntersectsNullPointValuesTest()
         {
-            Extent container = new Extent(0, 0, 10, 20);
+            Extent container = new(0, 0, 10, 20);
 
             Assert.IsFalse(container.Intersects(double.NaN, 0));
             Assert.IsFalse(container.Intersects(0, double.NaN));
@@ -701,9 +701,9 @@ namespace DotSpatial.Data.Tests
         [TestCaseSource(nameof(GetPointIntersectTestValues))]
         public void ExtentIntersectsVertexTest(ExtentTestData data)
         {
-            Extent container = new Extent(data.ContainerValues);
+            Extent container = new(data.ContainerValues);
             var vals = data.ContainedValues;
-            Vertex contained = new Vertex(vals[0], vals[1]);
+            Vertex contained = new(vals[0], vals[1]);
 
             Assert.AreEqual(data.ExpectedReturnValue, container.Intersects(contained), "ExtentIntersectsVertex");
 
@@ -757,9 +757,9 @@ namespace DotSpatial.Data.Tests
         [TestCase(0, 0, 10, 10, 15, 15, 25, 25, 15, 15, 10, 10, true)]
         public void ExtentIntersectionTest(double xmin1, double ymin1, double xmax1, double ymax1, double xmin2, double ymin2, double xmax2, double ymax2, double xmin3, double ymin3, double xmax3, double ymax3, bool empty)
         {
-            Extent e1 = new Extent(xmin1, ymin1, xmax1, ymax1);
-            Extent e2 = new Extent(xmin2, ymin2, xmax2, ymax2);
-            Extent res = new Extent(xmin3, ymin3, xmax3, ymax3);
+            Extent e1 = new(xmin1, ymin1, xmax1, ymax1);
+            Extent e2 = new(xmin2, ymin2, xmax2, ymax2);
+            Extent res = new(xmin3, ymin3, xmax3, ymax3);
 
             Extent intersection = e1.Intersection(e2);
 
@@ -773,7 +773,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether an ArgumentNullException is thrown if we try to get an Intersection from a null extent.")]
         public void ExtentIntersectionNullExtentTest()
         {
-            Extent e1 = new Extent(0, 0, 10, 10);
+            Extent e1 = new(0, 0, 10, 10);
             Assert.Throws<ArgumentNullException>(() => { e1.Intersection(null); });
         }
 
@@ -783,7 +783,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether converting an empty extent to an envelope results in an empty envelope.")]
         public void NullExtentToNullEnvelopeTest()
         {
-            Extent e = new Extent();
+            Extent e = new();
             Assert.IsTrue(e.ToEnvelope().IsNull);
         }
 
@@ -793,7 +793,7 @@ namespace DotSpatial.Data.Tests
         [Test(Description = "This checks whether converting an extent to string results in the correct string.")]
         public void ExtentToStringTest()
         {
-            Extent e = new Extent(0, 3, 12, 23);
+            Extent e = new(0, 3, 12, 23);
             Assert.AreEqual("X[0|12], Y[3|23]", e.ToString());
         }
 

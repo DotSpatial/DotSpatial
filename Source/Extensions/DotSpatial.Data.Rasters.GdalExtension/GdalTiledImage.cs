@@ -1,10 +1,10 @@
 // Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
+using OSGeo.GDAL;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using OSGeo.GDAL;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
 {

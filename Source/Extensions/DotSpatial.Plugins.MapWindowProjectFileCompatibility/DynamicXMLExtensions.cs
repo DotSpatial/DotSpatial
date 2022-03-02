@@ -25,17 +25,14 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         {
             if (xobj.Parent == null)
             {
-                XDocument doc = xobj as XDocument;
-                if (doc != null)
+                if (xobj is XDocument doc)
                     return ".";
-                XElement el = xobj as XElement;
-                if (el != null)
+                if (xobj is XElement el)
                     return "/" + NameWithPredicate(el);
 
                 // the XPath data model does not include white space text nodes
                 // that are children of a document, so this method returns null.
-                XText xt = xobj as XText;
-                if (xt != null)
+                if (xobj is XText xt)
                     return null;
                 XComment com = xobj as XComment;
                 if (com?.Document != null)
@@ -47,8 +44,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
             }
             else
             {
-                XElement el = xobj as XElement;
-                if (el != null)
+                if (xobj is XElement el)
                 {
                     return "/" + el.Ancestors().InDocumentOrder().Select(NameWithPredicate).StrCat("/") + NameWithPredicate(el);
                 }
@@ -118,8 +114,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
             foreach (XNode obj in doc.DescendantNodes())
             {
                 Console.WriteLine(obj.GetXPath());
-                XElement el = obj as XElement;
-                if (el != null)
+                if (obj is XElement el)
                 {
                     foreach (XAttribute at in el.Attributes())
                         Console.WriteLine(at.GetXPath());

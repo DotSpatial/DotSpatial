@@ -126,7 +126,7 @@ namespace DotSpatial.Plugins.SetSelectable
             // 
             resources.ApplyResources(this.TsbCheckAll, "TsbCheckAll");
             this.TsbCheckAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.TsbCheckAll.Image = global::DotSpatial.Plugins.SetSelectable.Properties.Resources.checkall;
+            this.TsbCheckAll.Image = global::DotSpatial.Plugins.SetSelectable.Resources.checkall;
             this.TsbCheckAll.Name = "TsbCheckAll";
             this.TsbCheckAll.Click += new System.EventHandler(this.TsbCheckAllClick);
             // 
@@ -134,7 +134,7 @@ namespace DotSpatial.Plugins.SetSelectable
             // 
             resources.ApplyResources(this.TsbCheckNone, "TsbCheckNone");
             this.TsbCheckNone.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.TsbCheckNone.Image = global::DotSpatial.Plugins.SetSelectable.Properties.Resources.uncheckall;
+            this.TsbCheckNone.Image = global::DotSpatial.Plugins.SetSelectable.Resources.uncheckall;
             this.TsbCheckNone.Name = "TsbCheckNone";
             this.TsbCheckNone.Click += new System.EventHandler(this.TsbCheckNoneClick);
             // 
@@ -142,7 +142,7 @@ namespace DotSpatial.Plugins.SetSelectable
             // 
             resources.ApplyResources(this.TsbSelectAll, "TsbSelectAll");
             this.TsbSelectAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.TsbSelectAll.Image = global::DotSpatial.Plugins.SetSelectable.Properties.Resources.select_all;
+            this.TsbSelectAll.Image = global::DotSpatial.Plugins.SetSelectable.Resources.select_all;
             this.TsbSelectAll.Name = "TsbSelectAll";
             this.TsbSelectAll.Click += new System.EventHandler(this.TsbSelectAllClick);
             // 
@@ -150,7 +150,7 @@ namespace DotSpatial.Plugins.SetSelectable
             // 
             resources.ApplyResources(this.TsbSelectNone, "TsbSelectNone");
             this.TsbSelectNone.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.TsbSelectNone.Image = global::DotSpatial.Plugins.SetSelectable.Properties.Resources.select_none;
+            this.TsbSelectNone.Image = global::DotSpatial.Plugins.SetSelectable.Resources.select_none;
             this.TsbSelectNone.Name = "TsbSelectNone";
             this.TsbSelectNone.Click += new System.EventHandler(this.TsbSelectNoneClick);
             // 
@@ -174,7 +174,7 @@ namespace DotSpatial.Plugins.SetSelectable
             // DgvcUnselect
             // 
             resources.ApplyResources(this.DgvcUnselect, "DgvcUnselect");
-            this.DgvcUnselect.Image = global::DotSpatial.Plugins.SetSelectable.Properties.Resources.select_none;
+            this.DgvcUnselect.Image = global::DotSpatial.Plugins.SetSelectable.Resources.select_none;
             this.DgvcUnselect.Name = "DgvcUnselect";
             this.DgvcUnselect.ReadOnly = true;
             this.DgvcUnselect.Resizable = System.Windows.Forms.DataGridViewTriState.True;

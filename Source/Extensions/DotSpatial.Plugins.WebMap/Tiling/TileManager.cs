@@ -5,8 +5,9 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Threading.Tasks;
-using DotSpatial.Plugins.WebMap.Properties;
+using DotSpatial.Plugins.WebMap;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Plugins.WebMap.Tiling
@@ -46,8 +47,8 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         /// <returns>The tiles needed for the envelope.</returns>
         public Tiles GetTiles(Envelope envelope, Rectangle bounds, BackgroundWorker bw)
         {
-            Coordinate mapTopLeft = new Coordinate(envelope.MinX, envelope.MaxY);
-            Coordinate mapBottomRight = new Coordinate(envelope.MaxX, envelope.MinY);
+            Coordinate mapTopLeft = new(envelope.MinX, envelope.MaxY);
+            Coordinate mapBottomRight = new(envelope.MaxX, envelope.MinY);
 
             // Clip the coordinates so they are in the range of the web mercator projection
             mapTopLeft.Y = TileCalculator.Clip(mapTopLeft.Y, TileCalculator.MinLatitude, TileCalculator.MaxLatitude);
@@ -63,9 +64,9 @@ namespace DotSpatial.Plugins.WebMap.Tiling
 
             var tileMatrix = new Bitmap[(int)(btmRightTileXy.X - topLeftTileXy.X) + 1, (int)(btmRightTileXy.Y - topLeftTileXy.Y) + 1];
             var po = new ParallelOptions
-                         {
-                             MaxDegreeOfParallelism = -1
-                         };
+            {
+                MaxDegreeOfParallelism = -1
+            };
             Parallel.For((int)topLeftTileXy.Y, (int)btmRightTileXy.Y + 1, po, (y, loopState) => Parallel.For((int)topLeftTileXy.X, (int)btmRightTileXy.X + 1, po, (x, loopState2) =>
                 {
                     if (bw.CancellationPending)
@@ -107,12 +108,12 @@ namespace DotSpatial.Plugins.WebMap.Tiling
             Bitmap bm;
             try
             {
-                bm = _serviceProvider.GetBitmap(x, y, envelope, zoom) ?? Resources.nodata;
+                bm = _serviceProvider.GetBitmap(x, y, envelope, zoom) ?? new Bitmap(new MemoryStream(Resources.nodata));
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                bm = Resources.nodata;
+                bm = new Bitmap(new MemoryStream(Resources.nodata));
             }
 
             return bm;

@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using DotSpatial.Data;
-using DotSpatial.Plugins.SpatiaLite.Properties;
 using DotSpatial.Projections;
 using NetTopologySuite.IO;
 
@@ -171,9 +170,8 @@ namespace DotSpatial.Plugins.SpatiaLite
                             SpatialIndexEnabled = false
                         };
 
-                        int geometryType;
 
-                        if (int.TryParse(r["geometry_type"].ToString(), out geometryType))
+                        if (int.TryParse(r["geometry_type"].ToString(), out int geometryType))
                         {
                             AssignGeometryTypeStringAndCoordDimension(geometryType, gci);
                         }
@@ -285,7 +283,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         public IFeatureSet ReadFeatureSet(GeometryColumnInfo featureSetInfo, string sql)
         {
             var fType = GetGeometryType(featureSetInfo.GeometryType);
-            SpatiaLiteFeatureSet fs = new SpatiaLiteFeatureSet(fType)
+            SpatiaLiteFeatureSet fs = new (fType)
             {
                 IndexMode = true, // setting the initial index mode..
                 Name = featureSetInfo.TableName,
@@ -334,7 +332,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// </summary>
         /// <param name="tableName">Name of the table whose content should be loaded.</param>
         /// <returns>Null if the table wasn't found otherwise the tables content.</returns>
-        public IFeatureSet ReadFeatureSet(string tableName)
+        public IFeatureSet? ReadFeatureSet(string tableName)
         {
             var geos = GetGeometryColumns();
             var geo = geos.FirstOrDefault(_ => _.TableName == tableName);
@@ -351,35 +349,19 @@ namespace DotSpatial.Plugins.SpatiaLite
         {
             var dimensionBase = geometryTypeInt / 1000;
 
-            geometryTypeInt = geometryTypeInt - (dimensionBase * 1000); // get only the last number
+            geometryTypeInt -= dimensionBase * 1000; // get only the last number
 
-            switch (geometryTypeInt)
+            gci.GeometryType = geometryTypeInt switch
             {
-                case 1:
-                    gci.GeometryType = "point";
-                    break;
-                case 2:
-                    gci.GeometryType = "linestring";
-                    break;
-                case 3:
-                    gci.GeometryType = "polygon";
-                    break;
-                case 4:
-                    gci.GeometryType = "multipoint";
-                    break;
-                case 5:
-                    gci.GeometryType = "multilinestring";
-                    break;
-                case 6:
-                    gci.GeometryType = "multipolygon";
-                    break;
-                case 7:
-                    gci.GeometryType = "geometrycollection";
-                    break;
-                default:
-                    gci.GeometryType = "geometry";
-                    break;
-            }
+                1 => "point",
+                2 => "linestring",
+                3 => "polygon",
+                4 => "multipoint",
+                5 => "multilinestring",
+                6 => "multipolygon",
+                7 => "geometrycollection",
+                _ => "geometry",
+            };
 
             if (dimensionBase >= 3)
             {
@@ -430,16 +412,13 @@ namespace DotSpatial.Plugins.SpatiaLite
 
         private static FeatureType GetGeometryType(string geometryTypeStr)
         {
-            switch (geometryTypeStr.ToLower())
+            return geometryTypeStr.ToLower() switch
             {
-                case "point":
-                case "multipoint": return FeatureType.Point;
-                case "linestring":
-                case "multilinestring": return FeatureType.Line;
-                case "polygon":
-                case "multipolygon": return FeatureType.Polygon;
-                default: return FeatureType.Unspecified;
-            }
+                "point" or "multipoint" => FeatureType.Point,
+                "linestring" or "multilinestring" => FeatureType.Line,
+                "polygon" or "multipolygon" => FeatureType.Polygon,
+                _ => FeatureType.Unspecified,
+            };
         }
 
         /// <summary>

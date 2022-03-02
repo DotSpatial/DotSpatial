@@ -30,13 +30,13 @@ namespace DotSpatial.Plugins.LiDAR
         {
             // here read the maxX, maxY from the las file header
             // and change the Extent property
-            LasReader reader = new LasReader(filename);
+            LasReader reader = new(filename);
             reader.initialize();
             ulong pointNum = reader.getNumPoints();
             int arrayLength = (int)pointNum;
 
             Schema schema = reader.getSchema();
-            PointBuffer data = new PointBuffer(schema, (uint)pointNum);
+            PointBuffer data = new(schema, (uint)pointNum);
 
             // get the dimensions (fields) of the point record for the X, Y, and Z values
             int offsetX = schema.getDimensionIndex(DimensionId.Id.X_i32);
@@ -201,7 +201,7 @@ namespace DotSpatial.Plugins.LiDAR
         /// <returns>array of the points in [x y x y ... order].</returns>
         public double[] GetPointArray(Extent boundingBox)
         {
-            LasReader reader = new LasReader("C:\\Tile_1.las");
+            LasReader reader = new("C:\\Tile_1.las");
             reader.initialize();
             ulong numPoints = reader.getNumPoints();
             int arrayLength = (int)numPoints;
@@ -211,7 +211,7 @@ namespace DotSpatial.Plugins.LiDAR
             // create the point buffer we'll read into
             // make it only hold 128 points a time, so we can show iterating
             Schema schema = reader.getSchema();
-            PointBuffer data = new PointBuffer(schema, (uint)numPoints);
+            PointBuffer data = new(schema, (uint)numPoints);
 
             // get the dimensions (fields) of the point record for the X, Y, and Z values
             int offsetX = schema.getDimensionIndex(DimensionId.Id.X_i32);
@@ -237,7 +237,7 @@ namespace DotSpatial.Plugins.LiDAR
                 dimensionZ.applyScaling_Int32(zraw);
 
                 pointArray[i] = x;
-                i = i + 1;
+                i++;
                 pointArray[i] = y;
             }
 
@@ -268,7 +268,7 @@ namespace DotSpatial.Plugins.LiDAR
             {
                 if (ofd.ShowDialog() != DialogResult.OK) return;
                 string filename = ofd.FileName;
-                LasReader reader = new LasReader(filename);
+                LasReader reader = new(filename);
                 reader.initialize();
                 ulong numPoints = reader.getNumPoints();
             }

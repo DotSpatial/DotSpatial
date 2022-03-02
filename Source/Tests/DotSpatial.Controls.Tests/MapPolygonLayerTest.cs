@@ -26,16 +26,16 @@ namespace DotSpatial.Controls.Tests
         [TestMethod]
         public void TestSetViewExtents()
         {
-            Map mainMap = new Map
+            Map mainMap = new()
             {
                 Projection = KnownCoordinateSystems.Projected.World.WebMercator
             };
 
-            Extent defaultMapExtent = new Extent(-130, 5, -70, 60);
+            Extent defaultMapExtent = new(-130, 5, -70, 60);
 
             string baseMapFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles");
 
-            MapGroup baseGroup = new MapGroup(mainMap.Layers, mainMap.MapFrame, mainMap.ProgressHandler)
+            MapGroup baseGroup = new(mainMap.Layers, mainMap.MapFrame, mainMap.ProgressHandler)
             {
                 LegendText = "Base Map Data",
                 ParentMapFrame = mainMap.MapFrame,
@@ -49,11 +49,11 @@ namespace DotSpatial.Controls.Tests
                 string fileName = Path.Combine(baseMapFolder, "50m_admin_0_countries.shp");
                 IFeatureSet fsCountries = FeatureSet.OpenFile(fileName);
                 fsCountries.Reproject(mainMap.Projection);
-                MapPolygonLayer layCountries = new MapPolygonLayer(fsCountries)
+                MapPolygonLayer layCountries = new(fsCountries)
                 {
                     LegendText = "Countries"
                 };
-                PolygonScheme schmCountries = new PolygonScheme
+                PolygonScheme schmCountries = new()
                 {
                     EditorSettings =
                         {
@@ -80,7 +80,7 @@ namespace DotSpatial.Controls.Tests
                 IFeatureSet fsStates = FeatureSet.OpenFile(fileName);
                 fsStates.Reproject(mainMap.Projection);
                 var layStates = new MapPolygonLayer(fsStates);
-                PolygonScheme schmStates = new PolygonScheme();
+                PolygonScheme schmStates = new();
                 layStates.IsVisible = true;
                 layStates.LegendText = "U.S. States";
                 schmStates.EditorSettings.StartColor = Color.LemonChiffon;
@@ -103,8 +103,8 @@ namespace DotSpatial.Controls.Tests
                 string fileName = Path.Combine(baseMapFolder, "50mil_canada_provinces.shp");
                 IFeatureSet fsProvince = FeatureSet.OpenFile(fileName);
                 fsProvince.Reproject(mainMap.Projection);
-                MapPolygonLayer layProvince = new MapPolygonLayer(fsProvince);
-                PolygonScheme schmProvince = new PolygonScheme();
+                MapPolygonLayer layProvince = new(fsProvince);
+                PolygonScheme schmProvince = new();
                 layProvince.IsVisible = true;
                 layProvince.LegendText = "Canada Provinces";
                 schmProvince.EditorSettings.StartColor = Color.Green;
@@ -125,7 +125,7 @@ namespace DotSpatial.Controls.Tests
             // create a new empty 'themes' data group
             try
             {
-                MapGroup themeGroup = new MapGroup(mainMap.Layers, mainMap.MapFrame, mainMap.ProgressHandler)
+                MapGroup themeGroup = new(mainMap.Layers, mainMap.MapFrame, mainMap.ProgressHandler)
                 {
                     ParentMapFrame = mainMap.MapFrame,
                     MapFrame = mainMap.MapFrame,
@@ -150,7 +150,7 @@ namespace DotSpatial.Controls.Tests
             xy[1] = 2000000000000000;
             xy[2] = 3000000000000000;
             xy[3] = 4000000000000000;
-            Extent ext = new Extent(xy);
+            Extent ext = new(xy);
             mainMap.ViewExtents = ext;
         }
 

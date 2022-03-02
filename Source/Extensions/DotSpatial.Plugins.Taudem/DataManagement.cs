@@ -90,7 +90,7 @@ namespace DotSpatial.Plugins.Taudem
                 {
                     File.Copy(oldName, newName, true);
                     var fl = new FileInfo(newName);
-                    fl.Attributes = fl.Attributes & (FileAttributes.Archive & FileAttributes.ReadOnly);
+                    fl.Attributes &= (FileAttributes.Archive & FileAttributes.ReadOnly);
                     return true;
                 }
             }

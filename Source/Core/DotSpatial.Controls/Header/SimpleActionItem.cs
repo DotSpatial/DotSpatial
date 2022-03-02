@@ -94,7 +94,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_largeImage == value) return;
                 _largeImage = value;
-                OnPropertyChanged("LargeImage");
+                OnPropertyChanged(nameof(LargeImage));
             }
         }
 
@@ -113,7 +113,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_menuContainerKey == value) return;
                 _menuContainerKey = value;
-                OnPropertyChanged("MenuContainerKey");
+                OnPropertyChanged(nameof(MenuContainerKey));
             }
         }
 
@@ -131,7 +131,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_showInQuickAccessToolbar == value) return;
                 _showInQuickAccessToolbar = value;
-                OnPropertyChanged("ShowInQuickAccessToolbar");
+                OnPropertyChanged(nameof(ShowInQuickAccessToolbar));
             }
         }
 
@@ -150,7 +150,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_smallImage == value) return;
                 _smallImage = value;
-                OnPropertyChanged("SmallImage");
+                OnPropertyChanged(nameof(SmallImage));
             }
         }
 
@@ -170,7 +170,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_sortOrder == value) return;
                 _sortOrder = value;
-                OnPropertyChanged("SortOrder");
+                OnPropertyChanged(nameof(SortOrder));
             }
         }
 
@@ -189,7 +189,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_toggleGroupKey == value) return;
                 _toggleGroupKey = value;
-                OnPropertyChanged("ToggleGroupKey");
+                OnPropertyChanged(nameof(ToggleGroupKey));
             }
         }
 
