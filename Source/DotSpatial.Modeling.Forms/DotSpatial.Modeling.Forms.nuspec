@@ -21,8 +21,7 @@
       <dependency id="DotSpatial.Projections.Forms" version="$PackageVersion$" />
       <dependency id="DotSpatial.Symbology" version="$PackageVersion$" />
       <dependency id="DotSpatial.Symbology.Forms" version="$PackageVersion$"/>
-      <dependency id="DotSpatial.NetTopologySuite" version="1.14.4" />
-      <dependency id="DotSpatial.GeoAPI" version="1.7.4.3" />
+      <dependency id="NetTopologySuite" version="2.4.0" />
     </dependencies>
   </metadata>
   <files>

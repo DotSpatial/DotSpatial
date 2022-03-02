@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-- Fixed naming of UTMNad1983 coordinate systems
+
 ### Added
 - JGD2011, EPSG from 6669 to 6687 (#1262)
 - Feature of determining the delta azimuth of three consecutive points (#1360)
@@ -19,6 +19,8 @@ All notable changes to this project will be documented in this file.
 - Bug in extent calculation in WebMap plugin (#1367)
 - Issues related to the Plate Carree projection (#1078)
 - Multiple Changes on handling of GsdNadTable (#1059) 
+- Naming of UTMNad1983 coordinate systems (#1423)
+- Failed to load spatialite layer (#1415) 
 
 ## V2.0.1
 
