@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- DotSpatial.Projections Additional netstandard2.0 Target
 
 ### Changed
 

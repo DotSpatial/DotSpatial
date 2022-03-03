@@ -8,6 +8,9 @@ environment:
 cache: 
 - source\packages -> **\packages.config
 
+before_build:
+ - ps: nuget restore source\DotSpatial.sln
+
 build:
   project: source\DotSpatial.sln  
   verbosity: normal
@@ -41,7 +44,7 @@ after_build:
  - ps: nuget pack Source\DotSpatial.Positioning\DotSpatial.Positioning.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
  - ps: nuget pack Source\DotSpatial.Positioning.Design\DotSpatial.Positioning.Design.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
  - ps: nuget pack Source\DotSpatial.Positioning.Forms\DotSpatial.Positioning.Forms.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\DotSpatial.Projections\DotSpatial.Projections.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
+ - ps: nuget pack Source\DotSpatial.Projections\DotSpatial.Projections.nuspec -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
  - ps: nuget pack Source\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
  - ps: nuget pack Source\DotSpatial.Serialization\DotSpatial.Serialization.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
  - ps: nuget pack Source\DotSpatial.Symbology\DotSpatial.Symbology.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
