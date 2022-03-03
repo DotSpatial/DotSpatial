@@ -5,9 +5,8 @@
     <version>$version$</version>
     <authors>$author$</authors>
     <owners />
-    <licenseUrl>https://github.com/DotSpatial/DotSpatial/blob/master/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <projectUrl>https://github.com/DotSpatial/DotSpatial/</projectUrl>
-    <iconUrl>http://www.mapwindow.org/downloads/documentation/dotspatial-package-icons/DotSpatial.Plugins.MapWindowProjectFileCompatibility.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <summary />
