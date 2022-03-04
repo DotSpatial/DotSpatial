@@ -1,9 +1,9 @@
-version: 2.0.{build}
+version: 3.0.{build}
 image: Visual Studio 2019
 configuration: Release
 
 environment:
-  packageVersion: 2.0
+  packageVersion: 3.0
 
 cache: 
 - source\packages -> **\packages.config
