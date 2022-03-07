@@ -225,11 +225,13 @@ namespace DotSpatial.Projections.Tests
         /// <param name="expected">exprected result in WSG84</param>
         /// <param name="tolerance">tolerance for conversion</param>
         [Test]
-        //http://epsg.io/transform#s_srs=31254&t_srs=4326&x=80560.6300000&y=236779.1900000 /*Rudolfsbrunnen Innnsbruck*/
+        //http://epsg.io/31287 ->http://epsg.io/transform#s_srs=31287&t_srs=4326&x=80560.6300000&y=236779.1900000 /*Rudolfsbrunnen Innnsbruck*/
+        [TestCase(31287 /*MGI / Austria Lambert*/, new double[] { 253617.12, 375762.55 }, new double[] { 11.39752, 47.264943 })]
+        //http://epsg.io/31254 ->http://epsg.io/transform#s_srs=31254&t_srs=4326&x=80560.6300000&y=236779.1900000 /*Rudolfsbrunnen Innnsbruck*/
         [TestCase(31254 /*MGI / Austria GK West*/, new double[] { 80560.63, 236779.19 }, new double[] { 11.39752, 47.264943 })]
-        //http://epsg.io/transform#s_srs=31255&t_srs=4326&x=33889.2600000&y=274593.5300000 /*Postamt Bad Aussee*/
+        //http://epsg.io/31255 ->http://epsg.io/transform#s_srs=31255&t_srs=4326&x=33889.2600000&y=274593.5300000 /*Postamt Bad Aussee*/
         [TestCase(31255 /*MGI / Austria GK Central*/, new double[] { 33889.26, 274593.53 }, new double[] { 13.7833163, 47.609193 })]
-        //http://epsg.io/transform#s_srs=31256&t_srs=4326&x=3588.2600000&y=339501.0200000 /*Belvedere Wien*/
+        //http://epsg.io/31256 ->http://epsg.io/transform#s_srs=31256&t_srs=4326&x=3588.2600000&y=339501.0200000 /*Belvedere Wien*/
         [TestCase(31256 /*MGI / Austria GK East*/, new double[] { 3588.26, 339501.02 }, new double[] { 16.3804, 48.1939133 })]
         public void Test_MGI_Austria_To_WSG84(int epsgCodeFrom, double[] xy, double[] expected)
         {
@@ -249,11 +251,13 @@ namespace DotSpatial.Projections.Tests
         /// <param name="expected">exprected result in Austrian projection</param>
         /// <param name="tolerance">tolerance for conversion</param>
         [Test]
-        //http://epsg.io/transform#s_srs=31254&t_srs=4326&x=80560.6300000&y=236779.1900000 /*Rudolfsbrunnen Innnsbruck*/
+        //http://epsg.io/31287 -> http://epsg.io/transform#s_srs=31287&t_srs=4326&x=80560.6300000&y=236779.1900000  /*Rudolfsbrunnen Innnsbruck*/
+        [TestCase(31287 /*MGI / Austria Lambert*/, new double[] { 11.39752, 47.264943 }, new double[] { 253617.12, 375762.55 })]
+        //http://epsg.io/31254 -> http://epsg.io/transform#s_srs=31254&t_srs=4326&x=80560.6300000&y=236779.1900000 /*Rudolfsbrunnen Innnsbruck*/
         [TestCase(31254 /*MGI / Austria GK West*/, new double[] { 11.39752, 47.264943 }, new double[] { 80560.63, 236779.19 })]
-        //http://epsg.io/transform#s_srs=31255&t_srs=4326&x=33889.2600000&y=274593.5300000 /*Postamt Bad Aussee*/
+        //http://epsg.io/31255 -> http://epsg.io/transform#s_srs=31255&t_srs=4326&x=33889.2600000&y=274593.5300000 /*Postamt Bad Aussee*/
         [TestCase(31255 /*MGI / Austria GK Central*/, new double[] { 13.7833163, 47.609193 }, new double[] { 33889.26, 274593.53 })]
-        //http://epsg.io/transform#s_srs=31256&t_srs=4326&x=3588.2600000&y=339501.0200000 /*Belvedere Wien*/
+        //http://epsg.io/31256 -> http://epsg.io/transform#s_srs=31256&t_srs=4326&x=3588.2600000&y=339501.0200000 /*Belvedere Wien*/
         [TestCase(31256 /*MGI / Austria GK East*/, new double[] { 16.3804, 48.1939133 }, new double[] { 3588.26, 339501.02 })]
         public void Test_WSG84_To_MGI_Austria(int epsgCodeTo, double[] xy, double[] expected)
         {
