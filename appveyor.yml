@@ -5,6 +5,9 @@ configuration: Release
 environment:
   packageVersion: 3.0
 
+before_build:
+  - nuget restore
+
 cache: 
 - source\packages -> **\packages.config
 
