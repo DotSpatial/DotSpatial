@@ -10,11 +10,31 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\DotSpatial.Controls\DotSpatial.Controls.csproj" />
-    <ProjectReference Include="..\..\Core\DotSpatial.Data\DotSpatial.Data.csproj" />
-    <ProjectReference Include="..\..\Core\DotSpatial.Extensions\DotSpatial.Extensions.csproj" />
-    <ProjectReference Include="..\..\Core\DotSpatial.Serialization\DotSpatial.Serialization.csproj" />
-    <ProjectReference Include="..\..\Core\DotSpatial.Symbology\DotSpatial.Symbology.csproj" />
+    <ProjectReference Include="..\..\Core\DotSpatial.Controls\DotSpatial.Controls.csproj"  >
+			<Private>False</Private>
+			<CopyLocal>False</CopyLocal>
+			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
+		</ProjectReference>
+    <ProjectReference Include="..\..\Core\DotSpatial.Data\DotSpatial.Data.csproj"  >
+			<Private>False</Private>
+			<CopyLocal>False</CopyLocal>
+			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
+		</ProjectReference>
+    <ProjectReference Include="..\..\Core\DotSpatial.Extensions\DotSpatial.Extensions.csproj"  >
+			<Private>False</Private>
+			<CopyLocal>False</CopyLocal>
+			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
+		</ProjectReference>
+    <ProjectReference Include="..\..\Core\DotSpatial.Serialization\DotSpatial.Serialization.csproj"  >
+			<Private>False</Private>
+			<CopyLocal>False</CopyLocal>
+			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
+		</ProjectReference>
+    <ProjectReference Include="..\..\Core\DotSpatial.Symbology\DotSpatial.Symbology.csproj"  >
+			<Private>False</Private>
+			<CopyLocal>False</CopyLocal>
+			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
+		</ProjectReference>
   </ItemGroup>
 
 </Project>
