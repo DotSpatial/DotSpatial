@@ -9,7 +9,7 @@ cache:
 - source\packages -> **\packages.config
 
 before_build:
-- appveyor-retry dotnet restore DemoMap\DemoMap.sln
+- appveyor-retry dotnet restore source\DotSpatial.sln
 
 build:
   project: source\DotSpatial.sln  
