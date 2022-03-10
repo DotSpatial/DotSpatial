@@ -75,15 +75,15 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         protected override void AppendGeometry(ShapefileHeader header, Geometry feature, int numFeatures)
         {
-            FileInfo fi = new FileInfo(Filename);
+            FileInfo fi = new(Filename);
             int offset = Convert.ToInt32(fi.Length / 2);
 
-            FileStream shpStream = new FileStream(Filename, FileMode.Append, FileAccess.Write, FileShare.None, 10000);
-            FileStream shxStream = new FileStream(header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 100);
+            FileStream shpStream = new(Filename, FileMode.Append, FileAccess.Write, FileShare.None, 10000);
+            FileStream shxStream = new(header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 100);
 
-            List<int> parts = new List<int>();
+            List<int> parts = new();
 
-            List<Coordinate> points = new List<Coordinate>();
+            List<Coordinate> points = new();
             int contentLength = 22;
             for (int iPart = 0; iPart < feature.NumGeometries; iPart++)
             {

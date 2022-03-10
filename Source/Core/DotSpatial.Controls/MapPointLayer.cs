@@ -289,7 +289,7 @@ namespace DotSpatial.Controls
             List<Rectangle> clipRects = args.ProjToPixel(regions);
             if (EditMode)
             {
-                List<IFeature> drawList = new List<IFeature>();
+                List<IFeature> drawList = new();
                 foreach (Extent region in regions)
                 {
                     if (region != null)
@@ -303,7 +303,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                List<int> drawList = new List<int>();
+                List<int> drawList = new();
                 double[] verts = DataSet.Vertex;
 
                 if (DataSet.FeatureType == FeatureType.Point)
@@ -357,7 +357,7 @@ namespace DotSpatial.Controls
         /// where drawing will be taking place.</param>
         public void StartDrawing(bool preserve)
         {
-            Bitmap backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
+            Bitmap backBuffer = new(BufferRectangle.Width, BufferRectangle.Height);
             if (Buffer?.Width == backBuffer.Width && Buffer.Height == backBuffer.Height && preserve)
             {
                 Graphics g = Graphics.FromImage(backBuffer);
@@ -377,7 +377,7 @@ namespace DotSpatial.Controls
         {
             if (BufferChanged != null)
             {
-                ClipArgs e = new ClipArgs(clipRectangles);
+                ClipArgs e = new(clipRectangles);
                 BufferChanged(this, e);
             }
         }
@@ -422,7 +422,7 @@ namespace DotSpatial.Controls
             if (!DrawnStatesNeeded)
             {
                 if (Symbology == null || Symbology.Categories.Count == 0) return;
-                FastDrawnState state = new FastDrawnState(false, Symbology.Categories[0]);
+                FastDrawnState state = new(false, Symbology.Categories[0]);
                 IPointSymbolizer ps = (state.Category as IPointCategory)?.Symbolizer;
                 if (ps == null) return;
                 double[] vertices = DataSet.Vertex;

@@ -37,7 +37,7 @@ namespace DotSpatial.Controls
             _mapControl = mapControl ?? throw new ArgumentNullException(nameof(mapControl));
             Name = "Map";
 
-            Envelope viewExtentEnvelope = new Envelope(_mapControl.ViewExtents.ToEnvelope());
+            Envelope viewExtentEnvelope = new(_mapControl.ViewExtents.ToEnvelope());
             if (_mapControl.ExtendBuffer)
             {
                 // if ExtendBuffer, Envelope must be three times smaller
@@ -186,7 +186,7 @@ namespace DotSpatial.Controls
         {
             double tenPerWidth = (Envelope.MaxX - Envelope.MinX) / 20;
             double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20; // todo jany_ why uses maxy tenperwidth instead of height?
-            Envelope envl = new Envelope(Envelope.MinX + tenPerWidth, Envelope.MaxX - tenPerWidth, Envelope.MinY + tenPerHeight, Envelope.MaxY - tenPerWidth); // TODO jany_ can we assign this direct or do we lose MinX etc?
+            Envelope envl = new(Envelope.MinX + tenPerWidth, Envelope.MaxX - tenPerWidth, Envelope.MinY + tenPerHeight, Envelope.MaxY - tenPerWidth); // TODO jany_ can we assign this direct or do we lose MinX etc?
             Envelope = envl;
         }
 
@@ -197,7 +197,7 @@ namespace DotSpatial.Controls
         {
             double tenPerWidth = (Envelope.MaxX - Envelope.MinX) / 20;
             double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20; // todo jany_ why uses maxy tenperwidth instead of height?
-            Envelope envl = new Envelope(Envelope.MinX - tenPerWidth, Envelope.MaxX + tenPerWidth, Envelope.MinY - tenPerHeight, Envelope.MaxY + tenPerWidth); // TODO jany_ can we assign this direct or do we lose MinX etc?
+            Envelope envl = new(Envelope.MinX - tenPerWidth, Envelope.MaxX + tenPerWidth, Envelope.MinY - tenPerHeight, Envelope.MaxY + tenPerWidth); // TODO jany_ can we assign this direct or do we lose MinX etc?
             Envelope = envl;
         }
 
@@ -214,7 +214,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void ZoomViewExtent()
         {
-            Envelope viewExtentEnvelope = new Envelope(_mapControl.ViewExtents.ToEnvelope());
+            Envelope viewExtentEnvelope = new(_mapControl.ViewExtents.ToEnvelope());
             if (_mapControl.ExtendBuffer)
             {
                 // if ExtendBuffer, Envelope must be three times smaller

@@ -47,7 +47,7 @@ namespace DotSpatial.Controls
         // Fires when the user clicks the new model tool
         private void BtnNewModelClick(object sender, EventArgs e)
         {
-            ModelerForm aModelerFormForm = new ModelerForm();
+            ModelerForm aModelerFormForm = new();
             aModelerFormForm.Modeler.ToolManager = ToolManager;
             aModelerFormForm.Modeler.CreateNewModel(false);
             aModelerFormForm.Show(this);

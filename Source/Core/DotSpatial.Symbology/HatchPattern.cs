@@ -133,7 +133,7 @@ namespace DotSpatial.Symbology
         /// <param name="gp">The GraphicsPath to fill.</param>
         public override void FillPath(Graphics g, GraphicsPath gp)
         {
-            using (HatchBrush hb = new HatchBrush(HatchStyle, _foreColor, _backColor))
+            using (HatchBrush hb = new(HatchStyle, _foreColor, _backColor))
             {
                 g.FillPath(hb, gp);
             }

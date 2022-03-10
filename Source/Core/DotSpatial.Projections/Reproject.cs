@@ -102,7 +102,7 @@ namespace DotSpatial.Projections
                         xy[i * 2 + 1] *= toMeter;
                     }
                 }
-                GeocentricGeodetic g = new GeocentricGeodetic(source.GeographicInfo.Datum.Spheroid);
+                GeocentricGeodetic g = new(source.GeographicInfo.Datum.Spheroid);
                 g.GeocentricToGeodetic(xy, z, startIndex, numPoints);
             }
 
@@ -150,7 +150,7 @@ namespace DotSpatial.Projections
                 {
                     throw new ProjectionException(45);
                 }
-                GeocentricGeodetic g = new GeocentricGeodetic(dest.GeographicInfo.Datum.Spheroid);
+                GeocentricGeodetic g = new(dest.GeographicInfo.Datum.Spheroid);
                 g.GeodeticToGeocentric(xy, z, startIndex, numPoints);
                 double frmMeter = 1 / dest.Unit.Meters;
                 if (frmMeter != 1)
@@ -234,7 +234,7 @@ namespace DotSpatial.Projections
 
         private static void DatumTransform(ProjectionInfo source, ProjectionInfo dest, double[] xy, double[] z, int startIndex, int numPoints)
         {
-            Spheroid wgs84 = new Spheroid(Proj4Ellipsoid.WGS_1984);
+            Spheroid wgs84 = new(Proj4Ellipsoid.WGS_1984);
             Datum sDatum = source.GeographicInfo.Datum;
             Datum dDatum = dest.GeographicInfo.Datum;
 
@@ -315,7 +315,7 @@ namespace DotSpatial.Projections
                 /*      Convert to geocentric coordinates.                              */
                 /* -------------------------------------------------------------------- */
 
-                GeocentricGeodetic gc = new GeocentricGeodetic(sDatum.Spheroid);
+                GeocentricGeodetic gc = new(sDatum.Spheroid);
                 gc.GeodeticToGeocentric(xy, z, startIndex, numPoints);
 
                 /* -------------------------------------------------------------------- */

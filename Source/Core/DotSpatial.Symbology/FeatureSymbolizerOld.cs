@@ -71,8 +71,7 @@ namespace DotSpatial.Symbology
             set
             {
                 _fillBrush = value;
-                var brush = value as SolidBrush;
-                if (brush != null)
+                if (value is SolidBrush brush)
                 {
                     _fillColor = brush.Color;
                 }
@@ -278,7 +277,7 @@ namespace DotSpatial.Symbology
         /// <param name="box">The box to draw to.</param>
         public override void LegendSymbolPainted(Graphics g, Rectangle box)
         {
-            SolidBrush b = new SolidBrush(FillColor);
+            SolidBrush b = new(FillColor);
             g.FillRectangle(b, box);
             g.DrawRectangle(Pens.Black, box);
             b.Dispose();

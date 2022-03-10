@@ -47,7 +47,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        public static readonly Segment Empty = new Segment(Position.Empty, Position.Empty);
+        public static readonly Segment Empty = new(Position.Empty, Position.Empty);
 
         #endregion Fields
 
@@ -148,7 +148,7 @@ namespace DotSpatial.Positioning
                 return position.DistanceTo(_start);
             if (ratio > 1)
                 return position.DistanceTo(_end);
-            Position destination = new Position(
+            Position destination = new(
                 new Latitude((1 - ratio) * _start.Latitude.DecimalDegrees + ratio * _end.Latitude.DecimalDegrees),
                 new Longitude((1 - ratio) * _start.Longitude.DecimalDegrees + ratio * _end.Longitude.DecimalDegrees));
             return position.DistanceTo(destination);

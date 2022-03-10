@@ -278,7 +278,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>Angle which has the same values.</returns>
         public Angle Copy()
         {
-            Angle newAngle = new Angle(_rad);
+            Angle newAngle = new(_rad);
             return newAngle;
         }
 

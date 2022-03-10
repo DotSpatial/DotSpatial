@@ -60,8 +60,7 @@ namespace DotSpatial.Serialization
         /// <returns>True if both are equal.</returns>
         public override bool Equals(object obj)
         {
-            var other = obj as SerializationMapEntry;
-            if (other == null) return false;
+            if (obj is not SerializationMapEntry other) return false;
 
             return other.Member == Member && other.Attribute == Attribute;
         }

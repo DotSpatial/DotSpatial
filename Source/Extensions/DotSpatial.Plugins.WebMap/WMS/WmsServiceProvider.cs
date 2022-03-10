@@ -38,20 +38,18 @@ namespace DotSpatial.Plugins.WebMap.WMS
         {
             Configure = () =>
                 {
-                    using (var wmsDialog = new WmsServerParameters(_data))
+                    using var wmsDialog = new WmsServerParameters(_data);
+                    if (wmsDialog.ShowDialog() != DialogResult.OK) return false;
+
+                    _data = wmsDialog.WmsInfo;
+                    if (_data != null)
                     {
-                        if (wmsDialog.ShowDialog() != DialogResult.OK) return false;
-
-                        _data = wmsDialog.WmsInfo;
-                        if (_data != null)
-                        {
-                            TileSource = WmsTileSource.Create(_data);
-                            TileCache = new MemoryCache<byte[]>();
-                            return true;
-                        }
-
-                        return false;
+                        TileSource = WmsTileSource.Create(_data);
+                        TileCache = new MemoryCache<byte[]>();
+                        return true;
                     }
+
+                    return false;
                 };
         }
 

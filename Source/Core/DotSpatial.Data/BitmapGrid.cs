@@ -154,7 +154,7 @@ namespace DotSpatial.Data
         {
             // Since we are starting with the image, we need to ensure that the values are up to date
             Bitmap newBmp = BitmapImage.Clone() as Bitmap;
-            BitmapGrid result = new BitmapGrid(newBmp);
+            BitmapGrid result = new(newBmp);
             return result;
         }
 
@@ -290,7 +290,7 @@ namespace DotSpatial.Data
         /// </summary>
         public void Randomize()
         {
-            Random rnd = new Random(DateTime.Now.Millisecond);
+            Random rnd = new(DateTime.Now.Millisecond);
             rnd.NextBytes(Values);
         }
 
@@ -312,7 +312,7 @@ namespace DotSpatial.Data
         private void BitmapToBytes()
         {
             // Lockbits gets fussy if we don't have a "saved" location for the bitmap
-            MemoryStream ms = new MemoryStream();
+            MemoryStream ms = new();
             _bmp.Save(ms, ImageFormat.Bmp);
 
             BitmapData bData = _bmp.LockBits(new Rectangle(0, 0, _bmp.Width, _bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
@@ -325,7 +325,7 @@ namespace DotSpatial.Data
 
         private void BytesToBitmap()
         {
-            Rectangle bnds = new Rectangle(0, 0, Width, Height);
+            Rectangle bnds = new(0, 0, Width, Height);
             BitmapData bData = _bmp.LockBits(bnds, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
             Marshal.Copy(Values, 0, bData.Scan0, Values.Length);
             _bmp.UnlockBits(bData);
@@ -342,7 +342,7 @@ namespace DotSpatial.Data
             int maxHeight = Math.Max(h1, h2);
             int minWidth = Math.Min(w1, w2);
             int maxWidth = Math.Max(w1, w2);
-            BitmapGrid result = new BitmapGrid(maxWidth, maxHeight);
+            BitmapGrid result = new(maxWidth, maxHeight);
             byte[] compareValues = compare.Values;
             byte[] resultValues = result.Values;
             int stride1 = Stride;

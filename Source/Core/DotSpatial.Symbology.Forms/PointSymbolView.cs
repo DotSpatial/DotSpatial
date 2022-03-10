@@ -77,7 +77,7 @@ namespace DotSpatial.Symbology.Forms
             int w = (int)size.Width;
             int h = (int)size.Height;
             if (w < 1 || h < 1) return;
-            Rectangle symbolBounds = new Rectangle((Width / 2) - (w / 2), (Height / 2) - (h / 2), w, h);
+            Rectangle symbolBounds = new((Width / 2) - (w / 2), (Height / 2) - (h / 2), w, h);
             if (!symbolBounds.IntersectsWith(clip)) return;
             _symbolizer.Draw(g, symbolBounds);
         }
@@ -90,16 +90,14 @@ namespace DotSpatial.Symbology.Forms
         {
             Rectangle clip = e.ClipRectangle;
             if (clip.IsEmpty) clip = ClientRectangle;
-            Bitmap bmp = new Bitmap(clip.Width, clip.Height);
-            using (Graphics g = Graphics.FromImage(bmp))
-            {
-                g.TranslateTransform(-clip.X, -clip.Y);
-                g.Clip = new Region(clip);
-                g.Clear(BackColor);
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-                OnDraw(g, clip);
-                e.Graphics.DrawImage(bmp, clip, new Rectangle(0, 0, clip.Width, clip.Height), GraphicsUnit.Pixel);
-            }
+            Bitmap bmp = new(clip.Width, clip.Height);
+            using Graphics g = Graphics.FromImage(bmp);
+            g.TranslateTransform(-clip.X, -clip.Y);
+            g.Clip = new Region(clip);
+            g.Clear(BackColor);
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            OnDraw(g, clip);
+            e.Graphics.DrawImage(bmp, clip, new Rectangle(0, 0, clip.Width, clip.Height), GraphicsUnit.Pixel);
         }
 
         /// <summary>

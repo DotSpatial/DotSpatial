@@ -85,8 +85,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         {
             if (_refreshCombo)
             {
-                DataSetArray dsa = _comboFeatures.SelectedItem as DataSetArray;
-                if (dsa != null)
+                if (_comboFeatures.SelectedItem is DataSetArray dsa)
                 {
                     Param.ModelName = dsa.Name;
                     Param.Value = dsa.DataSet;
@@ -121,8 +120,7 @@ namespace DotSpatial.Modeling.Forms.Elements
             {
                 foreach (DataSetArray dsa in _dataSets)
                 {
-                    IFeatureSet aFeatureSet = dsa.DataSet as IFeatureSet;
-                    if (aFeatureSet != null && !_comboFeatures.Items.Contains(dsa))
+                    if (dsa.DataSet is IFeatureSet aFeatureSet && !_comboFeatures.Items.Contains(dsa))
                     {
                         // If the featureset is the correct type and isn't already in the combo box we add it
                         _comboFeatures.Items.Add(dsa);

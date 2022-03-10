@@ -101,8 +101,7 @@ namespace DotSpatial.Symbology
         /// <returns>A Duplicate LabelScheme, but with new, duplicated categories and symbolizers.</returns>
         public virtual LabelScheme Copy()
         {
-            LabelScheme result = MemberwiseClone() as LabelScheme;
-            if (result == null) return null;
+            if (MemberwiseClone() is not LabelScheme result) return null;
 
             result.Categories = new BaseList<ILabelCategory>();
             foreach (ILabelCategory cat in Categories)

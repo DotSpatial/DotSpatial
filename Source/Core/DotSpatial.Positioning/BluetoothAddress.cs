@@ -259,7 +259,7 @@ namespace DotSpatial.Positioning
                 }
             }
 
-            StringBuilder result = new StringBuilder(18);
+            StringBuilder result = new(18);
 
             if (format == "8")
             {

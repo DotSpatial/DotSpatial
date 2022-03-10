@@ -100,21 +100,21 @@ namespace DotSpatial.Data
         public void CreateHeaders(int numRows, int numColumns, double[] affineCoefficients)
         {
             Header = new PyramidHeader();
-            List<PyramidImageHeader> headers = new List<PyramidImageHeader>();
+            List<PyramidImageHeader> headers = new();
             int scale = 0;
             long offset = 0;
             int nr = numRows;
             int nc = numColumns;
             while (nr > 2 && nc > 2)
             {
-                PyramidImageHeader ph = new PyramidImageHeader();
+                PyramidImageHeader ph = new();
                 ph.SetAffine(affineCoefficients, scale);
                 ph.SetNumRows(numRows, scale);
                 ph.SetNumColumns(numColumns, scale);
                 ph.Offset = offset;
                 offset += ph.NumRows * ph.NumColumns * 4;
-                nr = nr / 2;
-                nc = nc / 2;
+                nr /= 2;
+                nc /= 2;
                 scale++;
                 headers.Add(ph);
             }
@@ -133,7 +133,7 @@ namespace DotSpatial.Data
             int blockHeight = 32000000 / w;
             if (blockHeight > h) blockHeight = h;
             int numBlocks = (int)Math.Ceiling(h / (double)blockHeight);
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, "Generating Pyramids", Header.ImageHeaders.Length * numBlocks);
+            ProgressMeter pm = new(ProgressHandler, "Generating Pyramids", Header.ImageHeaders.Length * numBlocks);
             for (int block = 0; block < numBlocks; block++)
             {
                 // Normally block height except for the lowest block which is usually smaller
@@ -143,7 +143,7 @@ namespace DotSpatial.Data
                 // Read a block of bytes into a bitmap
                 byte[] vals = ReadWindow(block * blockHeight, 0, bh, w, 0);
 
-                Bitmap bmp = new Bitmap(w, bh);
+                Bitmap bmp = new(w, bh);
                 BitmapData bd = bmp.LockBits(new Rectangle(0, 0, w, bh), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
                 Marshal.Copy(vals, 0, bd.Scan0, vals.Length);
                 bmp.UnlockBits(bd);
@@ -154,15 +154,15 @@ namespace DotSpatial.Data
                 int sbh = blockHeight;
                 for (int scale = 1; scale < Header.ImageHeaders.Length - 1; scale++)
                 {
-                    sw = sw / 2;
-                    sh = sh / 2;
-                    sbh = sbh / 2;
+                    sw /= 2;
+                    sh /= 2;
+                    sbh /= 2;
                     if (sh == 0 || sw == 0)
                     {
                         break;
                     }
 
-                    Bitmap subSet = new Bitmap(sw, sh);
+                    Bitmap subSet = new(sw, sh);
                     Graphics g = Graphics.FromImage(subSet);
                     g.DrawImage(bmp, 0, 0, sw, sh);
                     bmp.Dispose(); // since we keep getting smaller, don't bother keeping the big image in memory any more.
@@ -190,7 +190,7 @@ namespace DotSpatial.Data
         public void CreatePyramids2()
         {
             double count = Header.ImageHeaders[0].NumRows;
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, "Generating Pyramids", count);
+            ProgressMeter pm = new(ProgressHandler, "Generating Pyramids", count);
             int prog = 0;
             for (int scale = 0; scale < Header.ImageHeaders.Length - 1; scale++)
             {
@@ -249,9 +249,9 @@ namespace DotSpatial.Data
         public override Bitmap GetBitmap()
         {
             PyramidImageHeader ph = Header.ImageHeaders[0];
-            Rectangle bnds = new Rectangle(0, 0, ph.NumColumns, ph.NumRows);
+            Rectangle bnds = new(0, 0, ph.NumColumns, ph.NumRows);
             byte[] data = ReadWindow(0, 0, ph.NumRows, ph.NumColumns, 0);
-            Bitmap bmp = new Bitmap(ph.NumColumns, ph.NumRows);
+            Bitmap bmp = new(ph.NumColumns, ph.NumRows);
             BitmapData bData = bmp.LockBits(bnds, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
             Marshal.Copy(data, 0, bData.Scan0, data.Length);
             bmp.UnlockBits(bData);
@@ -294,12 +294,12 @@ namespace DotSpatial.Data
                 he = ph;
             }
 
-            RasterBounds overviewBounds = new RasterBounds(he.NumRows, he.NumColumns, he.Affine);
+            RasterBounds overviewBounds = new(he.NumRows, he.NumColumns, he.Affine);
             Rectangle r = overviewBounds.CellsContainingExtent(envelope);
             if (r.Width == 0 || r.Height == 0) return null;
 
             byte[] vals = ReadWindow(r.Y, r.X, r.Height, r.Width, scale);
-            Bitmap bmp = new Bitmap(r.Width, r.Height);
+            Bitmap bmp = new(r.Width, r.Height);
             BitmapData bData = bmp.LockBits(new Rectangle(0, 0, r.Width, r.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
             Marshal.Copy(vals, 0, bData.Scan0, vals.Length);
             bmp.UnlockBits(bData);
@@ -315,7 +315,7 @@ namespace DotSpatial.Data
                 return null;
             }
 
-            Bitmap result = new Bitmap(window.Width, window.Height);
+            Bitmap result = new(window.Width, window.Height);
             Graphics g = Graphics.FromImage(result);
 
             // Gets the scaling factor for converting from geographic to pixel coordinates
@@ -365,7 +365,7 @@ namespace DotSpatial.Data
         public override Bitmap ReadBlock(int xOffset, int yOffset, int xSize, int ySize)
         {
             byte[] vals = ReadWindow(yOffset, xOffset, ySize, xSize, 0);
-            Bitmap bmp = new Bitmap(xSize, ySize);
+            Bitmap bmp = new(xSize, ySize);
             BitmapData bd = bmp.LockBits(new Rectangle(0, 0, xSize, ySize), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
             for (int row = 0; row < ySize; row++)
@@ -388,7 +388,7 @@ namespace DotSpatial.Data
             string header = Path.ChangeExtension(fileName, "mwh");
             if (header == null) return;
 
-            XmlSerializer s = new XmlSerializer(typeof(PyramidHeader));
+            XmlSerializer s = new(typeof(PyramidHeader));
             TextReader r = new StreamReader(header);
             Header = (PyramidHeader)s.Deserialize(r);
             PyramidImageHeader ph = Header.ImageHeaders[0];
@@ -428,7 +428,7 @@ namespace DotSpatial.Data
             if (startColumn == 0 && numColumns == ph.NumColumns)
             {
                 // write all in one pass.
-                FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Read);
+                FileStream fs = new(Filename, FileMode.Open, FileAccess.Read);
 
                 fs.Seek(ph.Offset, SeekOrigin.Begin);
                 fs.Seek((startRow * ph.NumColumns) * 4, SeekOrigin.Current);
@@ -438,7 +438,7 @@ namespace DotSpatial.Data
             else
             {
                 // write all in one pass.
-                FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Read);
+                FileStream fs = new(Filename, FileMode.Open, FileAccess.Read);
                 fs.Seek(ph.Offset, SeekOrigin.Begin);
                 fs.Seek((startRow * ph.NumColumns) * 4, SeekOrigin.Current);
                 int before = startColumn * 4;
@@ -501,7 +501,7 @@ namespace DotSpatial.Data
                 File.Delete(header);
             }
 
-            XmlSerializer s = new XmlSerializer(typeof(PyramidHeader));
+            XmlSerializer s = new(typeof(PyramidHeader));
             TextWriter w = new StreamWriter(header, false);
             s.Serialize(w, Header);
             w.Close();
@@ -522,7 +522,7 @@ namespace DotSpatial.Data
         /// <exception cref="PyramidOutOfBoundsException">Occurs if the range specified is outside the bounds for the specified image scale.</exception>
         public void WriteWindow(byte[] bytes, int startRow, int startColumn, int numRows, int numColumns, int scale)
         {
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, "Saving Pyramid Values", numRows);
+            ProgressMeter pm = new(ProgressHandler, "Saving Pyramid Values", numRows);
             WriteWindow(bytes, startRow, startColumn, numRows, numColumns, scale, pm);
             pm.Reset();
         }
@@ -557,7 +557,7 @@ namespace DotSpatial.Data
             if (startColumn == 0 && numColumns == ph.NumColumns)
             {
                 // write all in one pass.
-                FileStream fs = new FileStream(Filename, FileMode.OpenOrCreate, FileAccess.Write);
+                FileStream fs = new(Filename, FileMode.OpenOrCreate, FileAccess.Write);
 
                 fs.Seek(ph.Offset, SeekOrigin.Begin);
                 fs.Seek((startRow * ph.NumColumns) * 4, SeekOrigin.Current);
@@ -567,7 +567,7 @@ namespace DotSpatial.Data
             else
             {
                 // write one row at a time
-                FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Write);
+                FileStream fs = new(Filename, FileMode.Open, FileAccess.Write);
                 fs.Seek(ph.Offset, SeekOrigin.Begin);
                 fs.Seek((startRow * ph.NumColumns) * 4, SeekOrigin.Current);
                 int before = startColumn * 4;

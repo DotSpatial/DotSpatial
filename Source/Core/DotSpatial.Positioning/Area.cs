@@ -322,7 +322,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents an invalid or unspecified area.
         /// </summary>
-        public static readonly Area Invalid = new Area(double.NaN, AreaUnit.SquareMeters);
+        public static readonly Area Invalid = new(double.NaN, AreaUnit.SquareMeters);
 
         #endregion Fields
 
@@ -476,7 +476,7 @@ namespace DotSpatial.Positioning
                         || digit == culture.NumberFormat.NumberGroupSeparator
                         || digit == culture.NumberFormat.NumberDecimalSeparator)
                         // Allow continuation
-                        count = count + 1;
+                        count++;
                     else
                         // Non-numeric character!
                         break;

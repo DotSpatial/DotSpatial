@@ -54,7 +54,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the GlyphBounds. This should be overridden by the specific glyph so they don't overlap and appear where they should.
         /// </summary>
-        public virtual Rectangle GlyphBounds => new Rectangle(Map.Bounds.Right - 25, Map.Bounds.Bottom - 25, 25, 25);
+        public virtual Rectangle GlyphBounds => new(Map.Bounds.Right - 25, Map.Bounds.Bottom - 25, 25, 25);
 
         /// <summary>
         /// Gets or sets a value indicating whether or not this glyph currently holds the mouse.
@@ -83,7 +83,7 @@ namespace DotSpatial.Controls
         protected override void OnDraw(MapDrawArgs e)
         {
             Rectangle glyph = GlyphBounds;
-            Bitmap bmp = new Bitmap(glyph.Width, glyph.Height);
+            Bitmap bmp = new(glyph.Width, glyph.Height);
             Graphics g = Graphics.FromImage(bmp);
             if (e.ClipRectangle.IntersectsWith(glyph))
             {

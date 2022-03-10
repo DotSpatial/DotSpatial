@@ -34,66 +34,64 @@ namespace DotSpatial.Plugins.Contourer
             header.Add(contourerItem);
         }
 
-        private void MenuClick(object? sender, EventArgs e)
+        private void MenuClick(object sender, EventArgs e)
         {
-            using (FormContour frm = new())
+            using FormContour frm = new();
+            frm.Layers = App.Map.GetRasterLayers();
+            if (frm.Layers.GetLength(0) <= 0)
             {
-                frm.Layers = App.Map.GetRasterLayers();
-                if (frm.Layers.GetLength(0) <= 0)
-                {
-                    MessageBox.Show(Resources.NoRasterLayerFound);
-                    return;
-                }
+                MessageBox.Show(Resources.NoRasterLayerFound);
+                return;
+            }
 
-                if (frm.ShowDialog() != DialogResult.OK) return;
-                IMapFeatureLayer fl = App.Map.Layers.Add(frm.Contours);
-                fl.LegendText = frm.LayerName + " - Contours";
+            if (frm.ShowDialog() != DialogResult.OK) return;
+            IMapFeatureLayer fl = App.Map.Layers.Add(frm.Contours);
+            fl.LegendText = frm.LayerName + " - Contours";
 
-                int numlevs = frm.Lev.GetLength(0);
+            int numlevs = frm.Lev.GetLength(0);
 
-                switch (frm.Contourtype)
-                {
-                    case Contour.ContourType.Line:
+            switch (frm.Contourtype)
+            {
+                case Contour.ContourType.Line:
+                    {
+                        LineScheme ls = new();
+                        ls.Categories.Clear();
+
+                        for (int i = 0; i < frm.Color.GetLength(0); i++)
                         {
-                            LineScheme ls = new();
-                            ls.Categories.Clear();
-
-                            for (int i = 0; i < frm.Color.GetLength(0); i++)
+                            LineCategory lc = new(frm.Color[i], 2.0)
                             {
-                                LineCategory lc = new(frm.Color[i], 2.0)
-                                                      {
-                                                          FilterExpression = "[Value] = " + frm.Lev[i],
-                                                          LegendText = frm.Lev[i].ToString(CultureInfo.InvariantCulture)
-                                                      };
+                                FilterExpression = "[Value] = " + frm.Lev[i],
+                                LegendText = frm.Lev[i].ToString(CultureInfo.InvariantCulture)
+                            };
 
-                                ls.AddCategory(lc);
-                            }
-
-                            fl.Symbology = ls;
+                            ls.AddCategory(lc);
                         }
 
-                        break;
+                        fl.Symbology = ls;
+                    }
 
-                    case Contour.ContourType.Polygon:
+                    break;
+
+                case Contour.ContourType.Polygon:
+                    {
+                        PolygonScheme ps = new();
+                        ps.Categories.Clear();
+
+                        for (int i = 0; i < frm.Color.GetLength(0); i++)
                         {
-                            PolygonScheme ps = new();
-                            ps.Categories.Clear();
-
-                            for (int i = 0; i < frm.Color.GetLength(0); i++)
+                            PolygonCategory pc = new(frm.Color[i], Color.Transparent, 0)
                             {
-                                PolygonCategory pc = new(frm.Color[i], Color.Transparent, 0)
-                                                         {
-                                                             FilterExpression = "[Lev] = " + i,
-                                                             LegendText = frm.Lev[i] + " - " + frm.Lev[i + 1]
-                                                         };
-                                ps.AddCategory(pc);
-                            }
-
-                            fl.Symbology = ps;
+                                FilterExpression = "[Lev] = " + i,
+                                LegendText = frm.Lev[i] + " - " + frm.Lev[i + 1]
+                            };
+                            ps.AddCategory(pc);
                         }
 
-                        break;
-                }
+                        fl.Symbology = ps;
+                    }
+
+                    break;
             }
         }
 

@@ -20,7 +20,7 @@ namespace DotSpatial.Controls
     {
         #region Fields
 
-        private readonly Dictionary<StatusPanel, PanelGuiElements> _panels = new Dictionary<StatusPanel, PanelGuiElements>();
+        private readonly Dictionary<StatusPanel, PanelGuiElements> _panels = new();
 
         #endregion
 
@@ -66,8 +66,7 @@ namespace DotSpatial.Controls
             if (panel == null) throw new ArgumentNullException(nameof(panel));
 
             ToolStripProgressBar pb = null;
-            var psp = panel as ProgressStatusPanel;
-            if (psp != null)
+            if (panel is ProgressStatusPanel psp)
             {
                 pb = new ToolStripProgressBar
                 {
@@ -149,8 +148,7 @@ namespace DotSpatial.Controls
 
             if (ProgressBar == null)
             {
-                var pb = e.Item as ToolStripProgressBar;
-                if (pb != null)
+                if (e.Item is ToolStripProgressBar pb)
                 {
                     ProgressBar = pb;
                 }
@@ -158,8 +156,7 @@ namespace DotSpatial.Controls
 
             if (ProgressLabel == null)
             {
-                var sl = e.Item as ToolStripStatusLabel;
-                if (sl != null)
+                if (e.Item is ToolStripStatusLabel sl)
                 {
                     ProgressLabel = sl;
                 }

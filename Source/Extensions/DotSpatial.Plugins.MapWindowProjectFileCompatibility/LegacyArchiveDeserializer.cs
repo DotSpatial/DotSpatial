@@ -44,33 +44,31 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
             Contract.Requires(!string.IsNullOrEmpty(fileName), "fileName is null or empty.");
             Contract.Requires(_applicationManager != null, "_applicationManager is null.");
 
-            using (var dialog = new FolderBrowserDialog { Description = @"Select a location to unpack the archive." })
+            using var dialog = new FolderBrowserDialog { Description = @"Select a location to unpack the archive." };
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
-                if (dialog.ShowDialog() == DialogResult.OK)
+                string selectedPath = dialog.SelectedPath;
+                ZipFile zip = ZipFile.Read(fileName);
+
+                if (!CanSilentlyOverwrite(selectedPath, zip))
+                    return;
+
+                try
                 {
-                    string selectedPath = dialog.SelectedPath;
-                    ZipFile zip = ZipFile.Read(fileName);
+                    zip.ExtractAll(selectedPath, ExtractExistingFileAction.OverwriteSilently);
 
-                    if (!CanSilentlyOverwrite(selectedPath, zip))
-                        return;
-
-                    try
+                    foreach (var file in Directory.EnumerateFiles(selectedPath))
                     {
-                        zip.ExtractAll(selectedPath, ExtractExistingFileAction.OverwriteSilently);
-
-                        foreach (var file in Directory.EnumerateFiles(selectedPath))
+                        if (file.EndsWith("mwprj") || file.EndsWith("dspx"))
                         {
-                            if (file.EndsWith("mwprj") || file.EndsWith("dspx"))
-                            {
-                                _applicationManager.SerializationManager.OpenProject(file);
-                                break;
-                            }
+                            _applicationManager.SerializationManager.OpenProject(file);
+                            break;
                         }
                     }
-                    catch (ZipException ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+                }
+                catch (ZipException ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
         }

@@ -123,8 +123,8 @@ namespace DotSpatial.Data
                 _index++;
                 if (_index == 0)
                 {
-                    Vertex p1 = new Vertex(_verts[_start * 2], _verts[(_start * 2) + 1]);
-                    Vertex p2 = new Vertex(_verts[(_start * 2) + 2], _verts[(_start * 2) + 3]);
+                    Vertex p1 = new(_verts[_start * 2], _verts[(_start * 2) + 1]);
+                    Vertex p2 = new(_verts[(_start * 2) + 2], _verts[(_start * 2) + 3]);
                     Current = new Segment(p1, p2);
                     return true;
                 }
@@ -135,7 +135,7 @@ namespace DotSpatial.Data
                     if (_range.FeatureType != FeatureType.Polygon) return false;
 
                     Vertex p1 = Current.P2;
-                    Vertex p2 = new Vertex(_verts[_start * 2], _verts[(_start * 2) + 1]);
+                    Vertex p2 = new(_verts[_start * 2], _verts[(_start * 2) + 1]);
                     Current = new Segment(p1, p2);
                     return true;
                 }
@@ -143,7 +143,7 @@ namespace DotSpatial.Data
                 if (_index > 0 && _index < _numVertices - 1)
                 {
                     Vertex p1 = Current.P2;
-                    Vertex p2 = new Vertex(_verts[2 * (_start + _index + 1)], _verts[(2 * (_start + _index + 1)) + 1]);
+                    Vertex p2 = new(_verts[2 * (_start + _index + 1)], _verts[(2 * (_start + _index + 1)) + 1]);
                     Current = new Segment(p1, p2);
                     return true;
                 }

@@ -29,7 +29,7 @@ namespace DotSpatial.Projections
 
         #region Private Variables
 
-        private static readonly NadTables _shift = new NadTables();
+        private static readonly NadTables _shift = new();
 
         #endregion
 

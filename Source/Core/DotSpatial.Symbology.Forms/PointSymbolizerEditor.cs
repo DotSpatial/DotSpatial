@@ -37,7 +37,7 @@ namespace DotSpatial.Symbology.Forms
             if (_original == null) return value;
             _copy = _original.Copy();
             IWindowsFormsEditorService dialogProvider = (IWindowsFormsEditorService)provider?.GetService(typeof(IWindowsFormsEditorService));
-            DetailedPointSymbolDialog dialog = new DetailedPointSymbolDialog(_copy);
+            DetailedPointSymbolDialog dialog = new(_copy);
             dialog.ChangesApplied += DialogChangesApplied;
             if (dialogProvider?.ShowDialog(dialog) != DialogResult.OK) return value;
             _original.CopyProperties(_copy);

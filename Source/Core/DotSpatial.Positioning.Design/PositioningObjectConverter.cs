@@ -30,7 +30,7 @@ namespace DotSpatial.Positioning.Design
         /// <summary>
         /// Gets the hard coded assembly version of the library that this designer handles.
         /// </summary>
-        protected virtual Version HandledAssemblyVersion => new Version("1.0.0.*");
+        protected virtual Version HandledAssemblyVersion => new("1.0.0.*");
 
         /// <summary>
         /// Gets the name of the type handled by this type converter.

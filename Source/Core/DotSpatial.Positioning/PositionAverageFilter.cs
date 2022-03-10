@@ -176,7 +176,7 @@ namespace DotSpatial.Positioning
         /// property.</remarks>
         public void Initialize(IList<Position> positions)
         {
-            List<Position3D> samples = new List<Position3D>(positions.Count + 1);
+            List<Position3D> samples = new(positions.Count + 1);
 
             for (int i = 0; i < positions.Count; i++)
             {

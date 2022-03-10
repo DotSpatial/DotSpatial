@@ -116,7 +116,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        private readonly object _syncRoot = new object();
+        private readonly object _syncRoot = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -346,7 +346,7 @@ namespace DotSpatial.Positioning
                     return ((_maximum - _minimum) * (index /= zeroCount) * index + _minimum);
                 case InterpolationMethod.QuadraticEaseOut:
                     // Quadratic (Index^2) easing out - decelerating to zero velocity
-                    return (-(_maximum - _minimum) * (index = index / zeroCount) * (index - 2) + _minimum);
+                    return (-(_maximum - _minimum) * (index /= zeroCount) * (index - 2) + _minimum);
                 case InterpolationMethod.QuadraticEaseInAndOut:
                     // Quadratic easing in/out - acceleration until halfway, then deceleration
                     if ((index /= zeroCount * 0.5) < 1)

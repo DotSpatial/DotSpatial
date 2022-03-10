@@ -82,7 +82,7 @@ namespace DotSpatial.Symbology
 
         private static List<Color> RampColors(Color startColor, Color endColor, int numCategories)
         {
-            List<Color> result = new List<Color>();
+            List<Color> result = new();
             if (numCategories <= 0) return result;
 
             if (numCategories < 2)
@@ -116,17 +116,16 @@ namespace DotSpatial.Symbology
 
         private PointScheme ColorBox(IEnumerable<Color> colors)
         {
-            PointScheme ps = new PointScheme();
+            PointScheme ps = new();
             ps.Categories.Clear();
             foreach (Color color in colors)
             {
-                IColorable c = Template as IColorable;
-                if (c != null)
+                if (Template is IColorable c)
                 {
                     c.Color = color;
                 }
 
-                PointCategory pc = new PointCategory(Template);
+                PointCategory pc = new(Template);
                 ps.Categories.Add(pc);
             }
 

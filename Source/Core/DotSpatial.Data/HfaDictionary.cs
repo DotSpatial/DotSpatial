@@ -92,7 +92,7 @@ namespace DotSpatial.Data
             // Extract all the types
             while (!string.IsNullOrEmpty(substring))
             {
-                HfaType type = new HfaType();
+                HfaType type = new();
 
                 // A null return means the effort failed.
                 substring = type.Intialize(substring);
@@ -108,7 +108,7 @@ namespace DotSpatial.Data
             {
                 if (!ContainsKey(DefDefn[i]))
                 {
-                    HfaType type = new HfaType();
+                    HfaType type = new();
                     type.Intialize(DefDefn[i + 1]);
                     AddType(type);
                 }
@@ -177,7 +177,7 @@ namespace DotSpatial.Data
         /// <param name="fp">The stream to write to.</param>
         public void Dump(Stream fp)
         {
-            StreamWriter sw = new StreamWriter(fp);
+            StreamWriter sw = new(fp);
             sw.Write("\nHFADictionary:\n");
             foreach (KeyValuePair<string, HfaType> pair in this)
             {

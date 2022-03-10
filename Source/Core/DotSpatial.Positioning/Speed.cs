@@ -199,15 +199,15 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents a speed of zero.
         /// </summary>
-        public static readonly Speed Empty = new Speed(0, SpeedUnit.MetersPerSecond);
+        public static readonly Speed Empty = new(0, SpeedUnit.MetersPerSecond);
         /// <summary>
         /// Represents a speed of zero.
         /// </summary>
-        public static readonly Speed AtRest = new Speed(0, SpeedUnit.MetersPerSecond);
+        public static readonly Speed AtRest = new(0, SpeedUnit.MetersPerSecond);
         /// <summary>
         /// Returns the rate of travel of light in a vacuum.
         /// </summary>
-        public static readonly Speed SpeedOfLight = new Speed(299792458, SpeedUnit.MetersPerSecond);
+        public static readonly Speed SpeedOfLight = new(299792458, SpeedUnit.MetersPerSecond);
         /// <summary>
         /// Represents the largest possible speed.
         /// </summary>
@@ -220,15 +220,15 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns the rate of travel of sound waves at sea level.
         /// </summary>
-        public static readonly Speed SpeedOfSoundAtSeaLevel = new Speed(340.29, SpeedUnit.MetersPerSecond);
+        public static readonly Speed SpeedOfSoundAtSeaLevel = new(340.29, SpeedUnit.MetersPerSecond);
         /// <summary>
         /// Represents an infinite speed.
         /// </summary>
-        public static readonly Speed Infinity = new Speed(double.PositiveInfinity, SpeedUnit.MetersPerSecond);
+        public static readonly Speed Infinity = new(double.PositiveInfinity, SpeedUnit.MetersPerSecond);
         /// <summary>
         /// Represents an invalid or unspecified value.
         /// </summary>
-        public static readonly Speed Invalid = new Speed(double.NaN, SpeedUnit.KilometersPerSecond);
+        public static readonly Speed Invalid = new(double.NaN, SpeedUnit.KilometersPerSecond);
 
         #endregion Fields
 

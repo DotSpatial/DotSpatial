@@ -1042,12 +1042,10 @@ namespace DotSpatial.Controls
 
                 // Translate the buffer so that drawing occurs in client coordinates, regardless of whether
                 // there is a clip rectangle or not.
-                using (var m = new Matrix())
-                {
-                    m.Translate(-clip.X, -clip.Y);
-                    g.Transform = m;
-                    _geoMapFrame.Draw(new PaintEventArgs(g, clip));
-                }
+                using var m = new Matrix();
+                m.Translate(-clip.X, -clip.Y);
+                g.Transform = m;
+                _geoMapFrame.Draw(new PaintEventArgs(g, clip));
             }
 
             return stencil;
@@ -1368,31 +1366,29 @@ namespace DotSpatial.Controls
             // Added to fix http://dotspatial.codeplex.com/workitem/320
             if (clip.Width < 1 || clip.Height < 1) return;
 
-            using (var stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb))
-            using (var g = Graphics.FromImage(stencil))
+            using var stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb);
+            using var g = Graphics.FromImage(stencil);
+            using (var b = new SolidBrush(BackColor))
+                g.FillRectangle(b, new Rectangle(0, 0, stencil.Width, stencil.Height));
+
+            using (var m = new Matrix())
             {
-                using (var b = new SolidBrush(BackColor))
-                    g.FillRectangle(b, new Rectangle(0, 0, stencil.Width, stencil.Height));
+                m.Translate(-clip.X, -clip.Y);
+                g.Transform = m;
 
-                using (var m = new Matrix())
+                Draw(g, e);
+
+                var args = new MapDrawArgs(g, clip, _geoMapFrame);
+                foreach (var tool in MapFunctions.Where(_ => _.Enabled))
                 {
-                    m.Translate(-clip.X, -clip.Y);
-                    g.Transform = m;
-
-                    Draw(g, e);
-
-                    var args = new MapDrawArgs(g, clip, _geoMapFrame);
-                    foreach (var tool in MapFunctions.Where(_ => _.Enabled))
-                    {
-                        tool.Draw(args);
-                    }
-
-                    var pe = new PaintEventArgs(g, e.ClipRectangle);
-                    base.OnPaint(pe);
+                    tool.Draw(args);
                 }
 
-                e.Graphics.DrawImageUnscaled(stencil, clip.X, clip.Y);
+                var pe = new PaintEventArgs(g, e.ClipRectangle);
+                base.OnPaint(pe);
             }
+
+            e.Graphics.DrawImageUnscaled(stencil, clip.X, clip.Y);
         }
 
         /// <summary>

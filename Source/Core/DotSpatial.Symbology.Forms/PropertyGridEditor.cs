@@ -23,11 +23,10 @@ namespace DotSpatial.Symbology.Forms
         /// <returns>A new version of the object if the dialog was ok.</returns>
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            ICloneable parent = value as ICloneable;
-            object backup = parent != null ? parent.Clone() : value;
+            object backup = value is ICloneable parent ? parent.Clone() : value;
 
             IWindowsFormsEditorService dialogProvider = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-            PropertyDialog frm = new PropertyDialog();
+            PropertyDialog frm = new();
             frm.PropertyGrid.SelectedObject = value;
             return dialogProvider.ShowDialog(frm) == DialogResult.OK ? value : backup;
         }

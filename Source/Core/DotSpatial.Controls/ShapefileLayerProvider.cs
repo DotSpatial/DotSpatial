@@ -56,7 +56,7 @@ namespace DotSpatial.Controls
         /// <returns>An IRaster.</returns>
         public IFeatureLayer CreateNew(string fileName, FeatureType featureType, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler)
         {
-            ShapefileDataProvider dp = new ShapefileDataProvider();
+            ShapefileDataProvider dp = new();
             if (progressHandler == null) progressHandler = LayerManager.DefaultLayerManager.ProgressHandler;
             IFeatureSet fs = dp.CreateNew(fileName, featureType, inRam, progressHandler);
 
@@ -88,7 +88,7 @@ namespace DotSpatial.Controls
         /// <returns>An IFeatureLayer.</returns>
         public ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler)
         {
-            ShapefileDataProvider dp = new ShapefileDataProvider();
+            ShapefileDataProvider dp = new();
             IFeatureSet fs = dp.Open(fileName);
 
             if (fs != null)

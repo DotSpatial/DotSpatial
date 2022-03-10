@@ -80,16 +80,15 @@ namespace DotSpatial.Modeling.Forms.Elements
 
                 if (((IndexParam)base.Param).Fs.DataTable.Rows.Count < 1) return;
 
-                using (SqlExpressionDialog dlgExpression = new SqlExpressionDialog { Table = ((IndexParam)base.Param).Fs.DataTable })
-                {
-                    if (dlgExpression.ShowDialog() != DialogResult.OK) return;
+                using SqlExpressionDialog dlgExpression = new()
+                { Table = ((IndexParam)base.Param).Fs.DataTable };
+                if (dlgExpression.ShowDialog() != DialogResult.OK) return;
 
-                    _expression = dlgExpression.Expression;
-                    textBox1.Text = _expression;
-                    Status = ToolStatus.Ok;
-                    _click = true;
-                    LightTipText = ModelingMessageStrings.FeaturesSelected;
-                }
+                _expression = dlgExpression.Expression;
+                textBox1.Text = _expression;
+                Status = ToolStatus.Ok;
+                _click = true;
+                LightTipText = ModelingMessageStrings.FeaturesSelected;
             }
         }
 

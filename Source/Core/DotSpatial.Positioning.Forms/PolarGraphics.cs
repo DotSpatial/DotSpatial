@@ -50,7 +50,7 @@ namespace DotSpatial.Positioning.Forms
         private readonly double _horizontalScale;
         private readonly double _verticalScale;
 #if !PocketPC
-        private static readonly StringFormat _pStringFormat = new StringFormat();
+        private static readonly StringFormat _pStringFormat = new();
 #endif
 
 #if !PocketPC
@@ -131,7 +131,7 @@ namespace DotSpatial.Positioning.Forms
         /// <returns></returns>
         public PolarCoordinate ToPolarCoordinate(Point point)
         {
-            PointD pointD = new PointD(point.X, point.Y);
+            PointD pointD = new(point.X, point.Y);
             return ToPolarCoordinate(pointD);
         }
 
@@ -144,7 +144,7 @@ namespace DotSpatial.Positioning.Forms
         /// <returns></returns>
         public PolarCoordinate ToPolarCoordinate(PointF point)
         {
-            PointD pointD = new PointD(point.X, point.Y);
+            PointD pointD = new(point.X, point.Y);
             return ToPolarCoordinate(pointD);
         }
 
@@ -175,8 +175,8 @@ namespace DotSpatial.Positioning.Forms
             //				Value = TempY / pX;
             // Calculate the coordinate using the default: 0° = East
             // and counter-clockwise movement
-            Radian result = new Radian(Math.Atan2(-value.Y, value.X));
-            PolarCoordinate result2 = new PolarCoordinate((float)Math.Sqrt(value.X * value.X + value.Y * value.Y), result.ToAngle(), Azimuth.East, PolarCoordinateOrientation.Counterclockwise);
+            Radian result = new(Math.Atan2(-value.Y, value.X));
+            PolarCoordinate result2 = new((float)Math.Sqrt(value.X * value.X + value.Y * value.Y), result.ToAngle(), Azimuth.East, PolarCoordinateOrientation.Counterclockwise);
             // And re-orient it at North and Clockwise
             return result2.ToOrientation(Azimuth.North, PolarCoordinateOrientation.Clockwise);
         }
@@ -310,7 +310,7 @@ namespace DotSpatial.Positioning.Forms
         {
             PointD startPoint = ToPointD(point);
             SizeF stringSize = _g.MeasureString(s, font);
-            PointD newStart = new PointD(startPoint.X - stringSize.Width * 0.5, startPoint.Y - stringSize.Height * 0.5);
+            PointD newStart = new(startPoint.X - stringSize.Width * 0.5, startPoint.Y - stringSize.Height * 0.5);
             _g.DrawString(s, font, brush, ToPointF(newStart), format);
         }
 
@@ -327,7 +327,7 @@ namespace DotSpatial.Positioning.Forms
         {
             PointD startPoint = ToPointD(point);
             SizeF stringSize = _g.MeasureString(s, font);
-            PointD newStart = new PointD(startPoint.X - stringSize.Width * 0.5, startPoint.Y - stringSize.Height * 0.5);
+            PointD newStart = new(startPoint.X - stringSize.Width * 0.5, startPoint.Y - stringSize.Height * 0.5);
 #if PocketPC
             g.DrawString(s, font, brush, (float)NewStart.X, (float)NewStart.Y); //, StringSize.Width, StringSize.Height));
 #else
@@ -434,7 +434,7 @@ namespace DotSpatial.Positioning.Forms
         /// </summary>
         public GraphicsPath ToGraphicsPath(PolarCoordinate[] points)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
             path.AddLines(ToPointFArray(points));
             return path;
         }
@@ -535,7 +535,7 @@ namespace DotSpatial.Positioning.Forms
             // Calculate pixel coordinates
             PointF start = ToPointF(pt1);
             PointF end = ToPointF(pt2);
-            SizeF size = new SizeF(end.X - start.X, end.Y - start.Y);
+            SizeF size = new(end.X - start.X, end.Y - start.Y);
             // Now draw the arc
             _g.DrawArc(pen, new RectangleF(start, size), (float)pt1.Theta, (float)pt2.Theta);
         }

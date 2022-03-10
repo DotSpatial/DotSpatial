@@ -36,7 +36,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        private static readonly List<ManualResetEvent> _currentlyDetectingWaitHandles = new List<ManualResetEvent>(16);
+        private static readonly List<ManualResetEvent> _currentlyDetectingWaitHandles = new(16);
         /// <summary>
         ///
         /// </summary>
@@ -64,11 +64,11 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        private static readonly ManualResetEvent _deviceDetectedWaitHandle = new ManualResetEvent(false);
+        private static readonly ManualResetEvent _deviceDetectedWaitHandle = new(false);
         /// <summary>
         ///
         /// </summary>
-        private static readonly ManualResetEvent _detectionCompleteWaitHandle = new ManualResetEvent(false);
+        private static readonly ManualResetEvent _detectionCompleteWaitHandle = new(false);
         /// <summary>
         ///
         /// </summary>
@@ -1348,7 +1348,7 @@ namespace DotSpatial.Positioning
                             portName += ":";
 
                         // This is a new device.  Scan it
-                        SerialDevice exhaustivePort = new SerialDevice(portName);
+                        SerialDevice exhaustivePort = new(portName);
                         Debug.WriteLine("Checking " + portName + " for GPS device", DEBUG_CATEGORY);
                         exhaustivePort.BeginDetection();
                     }

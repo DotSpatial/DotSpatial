@@ -173,7 +173,7 @@ namespace DotSpatial.Symbology
         public override Pen ToPen(double width)
         {
             float w = (float)(width * Width);
-            Pen result = new Pen(Color, w)
+            Pen result = new(Color, w)
             {
                 DashStyle = _dashStyle,
                 LineJoin = LineJoin.Round,

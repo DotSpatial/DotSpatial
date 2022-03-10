@@ -72,7 +72,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Gets a rectangle representing the element, top left corner being the location of the parent form of the element.
         /// </summary>
-        public Rectangle Rectangle => new Rectangle(Location.X, Location.Y, Width, Height);
+        public Rectangle Rectangle => new(Location.X, Location.Y, Width, Height);
 
         /// <summary>
         /// Gets or sets the shape of the model component.
@@ -180,7 +180,7 @@ namespace DotSpatial.Modeling.Forms
                         }
                     }
 
-                    Polygon ellipsePoly = new Polygon(new LinearRing(ellipsePoints));
+                    Polygon ellipsePoly = new(new LinearRing(ellipsePoints));
                     return ellipsePoly.Intersects(rectanglePoly);
 
                 case ModelShape.Triangle:
@@ -189,7 +189,7 @@ namespace DotSpatial.Modeling.Forms
                     trianglePoints[1] = new Coordinate(Location.X, Location.Y + Height);
                     trianglePoints[2] = new Coordinate(Location.X + Width - 5, Location.Y + ((Height - 5) / 2));
                     trianglePoints[3] = new Coordinate(Location.X, Location.Y);
-                    Polygon trianglePoly = new Polygon(new LinearRing(trianglePoints));
+                    Polygon trianglePoly = new(new LinearRing(trianglePoints));
                     return trianglePoly.Intersects(rectanglePoly);
 
                 default:
@@ -251,13 +251,13 @@ namespace DotSpatial.Modeling.Forms
         public virtual void Paint(Graphics graph)
         {
             // Sets up the colors to use
-            Pen outlinePen = new Pen(SymbologyGlobal.ColorFromHsl(Color.GetHue(), Color.GetSaturation(), Color.GetBrightness() * 0.6 * Highlight), 1.75F);
+            Pen outlinePen = new(SymbologyGlobal.ColorFromHsl(Color.GetHue(), Color.GetSaturation(), Color.GetBrightness() * 0.6 * Highlight), 1.75F);
             Color gradientTop = SymbologyGlobal.ColorFromHsl(Color.GetHue(), Color.GetSaturation(), Color.GetBrightness() * 0.7 * Highlight);
             Color gradientBottom = SymbologyGlobal.ColorFromHsl(Color.GetHue(), Color.GetSaturation(), Color.GetBrightness() * 1.0 * Highlight);
 
             // The path used for drop shadows
-            GraphicsPath shadowPath = new GraphicsPath();
-            ColorBlend colorBlend = new ColorBlend(3)
+            GraphicsPath shadowPath = new();
+            ColorBlend colorBlend = new(3)
             {
                 Colors = new[] { Color.Transparent, Color.FromArgb(180, Color.DarkGray), Color.FromArgb(180, Color.DimGray) },
                 Positions = new[] { 0f, 0.125f, 1f }
@@ -268,7 +268,7 @@ namespace DotSpatial.Modeling.Forms
             {
                 // Draws the shadow
                 shadowPath.AddPath(GetRoundedRect(new Rectangle(5, 5, Width, Height), 10), true);
-                PathGradientBrush shadowBrush = new PathGradientBrush(shadowPath)
+                PathGradientBrush shadowBrush = new(shadowPath)
                 {
                     WrapMode = WrapMode.Clamp,
                     InterpolationColors = colorBlend
@@ -276,9 +276,9 @@ namespace DotSpatial.Modeling.Forms
                 graph.FillPath(shadowBrush, shadowPath);
 
                 // Draws the basic shape
-                Rectangle fillRectange = new Rectangle(0, 0, Width - 5, Height - 5);
+                Rectangle fillRectange = new(0, 0, Width - 5, Height - 5);
                 GraphicsPath fillArea = GetRoundedRect(fillRectange, 5);
-                LinearGradientBrush myBrush = new LinearGradientBrush(fillRectange, gradientBottom, gradientTop, LinearGradientMode.Vertical);
+                LinearGradientBrush myBrush = new(fillRectange, gradientBottom, gradientTop, LinearGradientMode.Vertical);
                 graph.FillPath(myBrush, fillArea);
                 graph.DrawPath(outlinePen, fillArea);
 
@@ -293,8 +293,8 @@ namespace DotSpatial.Modeling.Forms
                 else
                     textRect = new RectangleF(0, (Height - textSize.Height) / 2, Width, textSize.Height);
                 graph.DrawString(Name, Font, new SolidBrush(Color.FromArgb(50, Color.Black)), textRect);
-                textRect.X = textRect.X - 1;
-                textRect.Y = textRect.Y - 1;
+                textRect.X--;
+                textRect.Y--;
                 graph.DrawString(Name, Font, Brushes.Black, textRect);
 
                 // Garbage collection
@@ -307,7 +307,7 @@ namespace DotSpatial.Modeling.Forms
             {
                 // Draws the shadow
                 shadowPath.AddEllipse(0, 5, Width + 5, Height);
-                PathGradientBrush shadowBrush = new PathGradientBrush(shadowPath)
+                PathGradientBrush shadowBrush = new(shadowPath)
                 {
                     WrapMode = WrapMode.Clamp,
                     InterpolationColors = colorBlend
@@ -315,8 +315,8 @@ namespace DotSpatial.Modeling.Forms
                 graph.FillPath(shadowBrush, shadowPath);
 
                 // Draws the Ellipse
-                Rectangle fillArea = new Rectangle(0, 0, Width, Height);
-                LinearGradientBrush myBrush = new LinearGradientBrush(fillArea, gradientBottom, gradientTop, LinearGradientMode.Vertical);
+                Rectangle fillArea = new(0, 0, Width, Height);
+                LinearGradientBrush myBrush = new(fillArea, gradientBottom, gradientTop, LinearGradientMode.Vertical);
                 graph.FillEllipse(myBrush, 1, 1, Width - 5, Height - 5);
                 graph.DrawEllipse(outlinePen, 1, 1, Width - 5, Height - 5);
 
@@ -328,8 +328,8 @@ namespace DotSpatial.Modeling.Forms
                 else
                     textRect = new RectangleF(0, (Height - textSize.Height) / 2, Width, textSize.Height);
                 graph.DrawString(Name, Font, new SolidBrush(Color.FromArgb(50, Color.Black)), textRect);
-                textRect.X = textRect.X - 1;
-                textRect.Y = textRect.Y - 1;
+                textRect.X--;
+                textRect.Y--;
                 graph.DrawString(Name, Font, Brushes.Black, textRect);
 
                 // Garbage collection
@@ -346,7 +346,7 @@ namespace DotSpatial.Modeling.Forms
                 ptShadow[2] = new Point(5, Height + 2);
                 ptShadow[3] = new Point(5, 5);
                 shadowPath.AddLines(ptShadow);
-                PathGradientBrush shadowBrush = new PathGradientBrush(shadowPath)
+                PathGradientBrush shadowBrush = new(shadowPath)
                 {
                     WrapMode = WrapMode.Clamp,
                     InterpolationColors = colorBlend
@@ -359,10 +359,10 @@ namespace DotSpatial.Modeling.Forms
                 pt[1] = new Point(Width - 5, (Height - 5) / 2);
                 pt[2] = new Point(0, Height - 5);
                 pt[3] = new Point(0, 0);
-                GraphicsPath myPath = new GraphicsPath();
+                GraphicsPath myPath = new();
                 myPath.AddLines(pt);
-                Rectangle fillArea = new Rectangle(1, 1, Width - 5, Height - 5);
-                LinearGradientBrush myBrush = new LinearGradientBrush(fillArea, gradientBottom, gradientTop, LinearGradientMode.Vertical);
+                Rectangle fillArea = new(1, 1, Width - 5, Height - 5);
+                LinearGradientBrush myBrush = new(fillArea, gradientBottom, gradientTop, LinearGradientMode.Vertical);
                 graph.FillPath(myBrush, myPath);
                 graph.DrawPath(outlinePen, myPath);
 
@@ -391,7 +391,7 @@ namespace DotSpatial.Modeling.Forms
         /// <returns>True, if the point is within the shape that defines the element.</returns>
         public virtual bool PointInElement(Point point)
         {
-            Point pt = new Point(point.X - Location.X, point.Y - Location.Y);
+            Point pt = new(point.X - Location.X, point.Y - Location.Y);
 
             switch (Shape)
             {
@@ -466,16 +466,16 @@ namespace DotSpatial.Modeling.Forms
         {
             if ((radius <= 0.0F) || radius >= (Math.Min(baseRect.Width, baseRect.Height) / 2.0))
             {
-                GraphicsPath mPath = new GraphicsPath();
+                GraphicsPath mPath = new();
                 mPath.AddRectangle(baseRect);
                 mPath.CloseFigure();
                 return mPath;
             }
 
             float diameter = radius * 2.0F;
-            SizeF sizeF = new SizeF(diameter, diameter);
-            RectangleF arc = new RectangleF(baseRect.Location, sizeF);
-            GraphicsPath path = new GraphicsPath();
+            SizeF sizeF = new(diameter, diameter);
+            RectangleF arc = new(baseRect.Location, sizeF);
+            GraphicsPath path = new();
 
             // top left arc
             path.AddArc(arc, 180, 90);
@@ -498,7 +498,7 @@ namespace DotSpatial.Modeling.Forms
 
         private List<ModelElement> GetChildren(ModelElement parent)
         {
-            List<ModelElement> listChildren = new List<ModelElement>();
+            List<ModelElement> listChildren = new();
             foreach (ModelElement mEl in ModelElements)
             {
                 ArrowElement mAr = mEl as ArrowElement;
@@ -511,7 +511,7 @@ namespace DotSpatial.Modeling.Forms
 
         private List<ModelElement> GetParents(ModelElement child)
         {
-            List<ModelElement> listParents = new List<ModelElement>();
+            List<ModelElement> listParents = new();
             foreach (ModelElement mEl in ModelElements)
             {
                 ArrowElement mAr = mEl as ArrowElement;
@@ -526,8 +526,7 @@ namespace DotSpatial.Modeling.Forms
         {
             foreach (ModelElement mEl in ModelElements)
             {
-                ArrowElement mAr = mEl as ArrowElement;
-                if (mAr != null)
+                if (mEl is ArrowElement mAr)
                 {
                     if (mAr.StopElement == null) continue;
                     if (mAr.StopElement == child)

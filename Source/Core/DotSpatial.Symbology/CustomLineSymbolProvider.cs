@@ -82,13 +82,13 @@ namespace DotSpatial.Symbology
 
         private static List<CustomLineSymbolizer> GetLineSymbols()
         {
-            List<CustomLineSymbolizer> lst = new List<CustomLineSymbolizer>();
+            List<CustomLineSymbolizer> lst = new();
 
-            LineSymbolizer sym1 = new LineSymbolizer();
+            LineSymbolizer sym1 = new();
             sym1.Strokes.Clear();
-            SimpleStroke stroke11 = new SimpleStroke(Color.DarkGray);
+            SimpleStroke stroke11 = new(Color.DarkGray);
             sym1.Strokes.Add(stroke11);
-            CustomLineSymbolizer cust1 = new CustomLineSymbolizer
+            CustomLineSymbolizer cust1 = new()
             {
                 Symbolizer = sym1,
                 UniqueName = "line_0001",
@@ -97,13 +97,13 @@ namespace DotSpatial.Symbology
             };
             lst.Add(cust1);
 
-            LineSymbolizer sym2 = new LineSymbolizer();
+            LineSymbolizer sym2 = new();
             sym2.Strokes.Clear();
-            SimpleStroke stroke1 = new SimpleStroke(2.5, Color.Brown);
+            SimpleStroke stroke1 = new(2.5, Color.Brown);
             sym2.Strokes.Add(stroke1);
-            SimpleStroke stroke0 = new SimpleStroke(1.0, Color.Yellow);
+            SimpleStroke stroke0 = new(1.0, Color.Yellow);
             sym2.Strokes.Add(stroke0);
-            CustomLineSymbolizer cust2 = new CustomLineSymbolizer
+            CustomLineSymbolizer cust2 = new()
             {
                 Symbolizer = sym2,
                 UniqueName = "line_0002",
@@ -112,14 +112,14 @@ namespace DotSpatial.Symbology
             };
             lst.Add(cust2);
 
-            LineSymbolizer sym3 = new LineSymbolizer();
+            LineSymbolizer sym3 = new();
             sym3.Strokes.Clear();
-            CartographicStroke stroke3 = new CartographicStroke(Color.Brown)
+            CartographicStroke stroke3 = new(Color.Brown)
             {
                 DashStyle = DashStyle.Dash
             };
             sym3.Strokes.Add(stroke3);
-            CustomLineSymbolizer cust3 = new CustomLineSymbolizer
+            CustomLineSymbolizer cust3 = new()
             {
                 Symbolizer = sym3,
                 UniqueName = "line_0003",
@@ -128,15 +128,15 @@ namespace DotSpatial.Symbology
             };
             lst.Add(cust3);
 
-            LineSymbolizer sym4 = new LineSymbolizer();
+            LineSymbolizer sym4 = new();
             sym4.Strokes.Clear();
-            SimpleStroke stroke41 = new SimpleStroke(4.5, Color.Gray);
-            SimpleStroke stroke42 = new SimpleStroke(2.5, Color.Yellow);
-            SimpleStroke stroke43 = new SimpleStroke(0.5, Color.Gray);
+            SimpleStroke stroke41 = new(4.5, Color.Gray);
+            SimpleStroke stroke42 = new(2.5, Color.Yellow);
+            SimpleStroke stroke43 = new(0.5, Color.Gray);
             sym4.Strokes.Add(stroke41);
             sym4.Strokes.Add(stroke42);
             sym4.Strokes.Add(stroke43);
-            CustomLineSymbolizer cust4 = new CustomLineSymbolizer
+            CustomLineSymbolizer cust4 = new()
             {
                 Symbolizer = sym4,
                 UniqueName = "line_0004",
@@ -145,10 +145,10 @@ namespace DotSpatial.Symbology
             };
             lst.Add(cust4);
 
-            LineSymbolizer sym5 = new LineSymbolizer();
+            LineSymbolizer sym5 = new();
             sym5.Strokes.Clear();
-            CartographicStroke stroke51 = new CartographicStroke(Color.Gray);
-            CartographicStroke stroke52 = new CartographicStroke(Color.LightPink)
+            CartographicStroke stroke51 = new(Color.Gray);
+            CartographicStroke stroke52 = new(Color.LightPink)
             {
                 Width = 4.0,
                 Offset = 2.5f,
@@ -156,7 +156,7 @@ namespace DotSpatial.Symbology
             };
             sym5.Strokes.Add(stroke51);
             sym5.Strokes.Add(stroke52);
-            CustomLineSymbolizer cust5 = new CustomLineSymbolizer
+            CustomLineSymbolizer cust5 = new()
             {
                 Symbolizer = sym5,
                 UniqueName = "line_0005",
@@ -165,14 +165,14 @@ namespace DotSpatial.Symbology
             };
             lst.Add(cust5);
 
-            LineSymbolizer sym6 = new LineSymbolizer();
+            LineSymbolizer sym6 = new();
             sym6.Strokes.Clear();
-            SimpleStroke stroke53 = new SimpleStroke(Color.DarkBlue);
-            SimpleStroke stroke54 = new SimpleStroke(Color.LightBlue);
+            SimpleStroke stroke53 = new(Color.DarkBlue);
+            SimpleStroke stroke54 = new(Color.LightBlue);
             stroke53.Width = 3;
             sym6.Strokes.Add(stroke53);
             sym6.Strokes.Add(stroke54);
-            CustomLineSymbolizer cust6 = new CustomLineSymbolizer
+            CustomLineSymbolizer cust6 = new()
             {
                 Symbolizer = sym6,
                 UniqueName = "line_0006",

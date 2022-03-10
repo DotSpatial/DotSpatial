@@ -217,15 +217,13 @@ namespace DotSpatial.Projections.Forms
 
         private void BtnSelectClick(object sender, EventArgs e)
         {
-            using (var dialog = new ProjectionSelectDialog
+            using var dialog = new ProjectionSelectDialog
             {
                 SelectedCoordinateSystem = SelectedCoordinateSystem
-            })
-            {
-                if (dialog.ShowDialog(this) != DialogResult.OK) return;
+            };
+            if (dialog.ShowDialog(this) != DialogResult.OK) return;
 
-                SelectedCoordinateSystem = dialog.SelectedCoordinateSystem;
-            }
+            SelectedCoordinateSystem = dialog.SelectedCoordinateSystem;
         }
 
         #endregion

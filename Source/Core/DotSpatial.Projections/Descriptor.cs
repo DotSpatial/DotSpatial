@@ -113,8 +113,7 @@ namespace DotSpatial.Projections
                 object copyValue = copyProperty.GetValue(source, null);
                 if (copyProperty.GetCustomAttributes(typeof(ProjShallowCopy), true).Length == 0)
                 {
-                    ICloneable cloneable = copyValue as ICloneable;
-                    if (cloneable != null)
+                    if (copyValue is ICloneable cloneable)
                     {
                         originalProperty.SetValue(this, cloneable.Clone(), null);
                         continue;
@@ -140,8 +139,7 @@ namespace DotSpatial.Projections
                 object copyValue = copyField.GetValue(source);
                 if (copyField.GetCustomAttributes(typeof(ProjShallowCopy), true).Length == 0)
                 {
-                    ICloneable cloneable = copyValue as ICloneable;
-                    if (cloneable != null)
+                    if (copyValue is ICloneable cloneable)
                     {
                         originalField.SetValue(this, cloneable.Clone());
                         continue;
@@ -240,8 +238,7 @@ namespace DotSpatial.Projections
             foreach (PropertyInfo originalProperty in originalProperties)
             {
                 object prop = originalProperty.GetValue(this, null);
-                IProjRandomizable rnd = prop as IProjRandomizable;
-                if (rnd != null)
+                if (prop is IProjRandomizable rnd)
                 {
                     rnd.Randomize(generator);
                 }
@@ -254,10 +251,7 @@ namespace DotSpatial.Projections
 
         private static bool Match(object originalValue, object copyValue)
         {
-            // If a custom IMatchable description exists use it to determine if there is a match
-            IProjMatchable originalMatch = originalValue as IProjMatchable;
-            IProjMatchable copyMatch = copyValue as IProjMatchable;
-            if (originalMatch != null && copyMatch != null)
+            if (originalValue is IProjMatchable originalMatch && copyValue is IProjMatchable copyMatch)
             {
                 bool res = originalMatch.Matches(copyMatch);
                 return res;
@@ -265,21 +259,17 @@ namespace DotSpatial.Projections
 
             // Strings are enumerable, so test them first, since string.Equals should be faster than
             // cycling through each character.
-            string origString = originalValue as string;
-            if (origString != null)
+            if (originalValue is string origString)
             {
-                string mString = copyValue as string;
-                if (mString == null) return false;
+                if (copyValue is not string mString) return false;
                 return origString.Equals(mString);
             }
 
             // If the object is an enumeration, test the members of the enumeration.
             // If any members fail the match test, then the whole collection fails the match.
-            IEnumerable originalList = originalValue as IEnumerable;
-            if (originalList != null)
+            if (originalValue is IEnumerable originalList)
             {
-                IEnumerable copyList = copyValue as IEnumerable;
-                if (copyList != null)
+                if (copyValue is IEnumerable copyList)
                 {
                     IEnumerator e = copyList.GetEnumerator();
                     e.MoveNext();

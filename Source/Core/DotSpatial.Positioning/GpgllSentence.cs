@@ -77,7 +77,7 @@ namespace DotSpatial.Positioning
         public GpgllSentence(Position position, TimeSpan utcTime, FixStatus fixStatus)
         {
             // Build a sentence
-            StringBuilder builder = new StringBuilder(128);
+            StringBuilder builder = new(128);
 
             // Append the command word
             builder.Append("$GPGLL");

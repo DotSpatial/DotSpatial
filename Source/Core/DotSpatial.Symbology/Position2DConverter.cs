@@ -36,8 +36,7 @@ namespace DotSpatial.Symbology
         /// <returns>The resulting Position2D.</returns>
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            var s = value as string;
-            if (s != null)
+            if (value is string s)
             {
                 try
                 {

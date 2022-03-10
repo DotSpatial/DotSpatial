@@ -358,8 +358,8 @@ namespace DotSpatial.Symbology.Forms
                 int col = i % NumColumns;
 
                 CustomSymbolizer sym = SymbolizerList[i];
-                Point pointLocation = new Point(col * _cellSize.Width, row * _cellSize.Height);
-                Rectangle rect = new Rectangle(pointLocation, _cellSize);
+                Point pointLocation = new(col * _cellSize.Width, row * _cellSize.Height);
+                Rectangle rect = new(pointLocation, _cellSize);
                 DrawSymbolizer(e.Graphics, rect, sym);
             }
 
@@ -450,12 +450,12 @@ namespace DotSpatial.Symbology.Forms
             int innerCellWidth = _cellSize.Width - (2 * CellMargin);
             int innerCellHeight = _cellSize.Height - (2 * CellMargin) - textHeight;
 
-            Rectangle newRect = new Rectangle(rect.Left + CellMargin, rect.Top + CellMargin, innerCellWidth, innerCellHeight);
+            Rectangle newRect = new(rect.Left + CellMargin, rect.Top + CellMargin, innerCellWidth, innerCellHeight);
             sym.Symbolizer.Draw(g, newRect);
 
             if (ShowSymbolNames)
             {
-                StringFormat fmt = new StringFormat();
+                StringFormat fmt = new();
                 PointF textLocation = new Point(rect.Left, rect.Bottom - textHeight);
                 g.DrawString(sym.Name, TextFont, Brushes.Black, textLocation, fmt);
             }

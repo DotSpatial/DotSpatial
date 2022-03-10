@@ -21,15 +21,13 @@ namespace DotSpatial.Projections
             {
                 fileName = Path.Combine(Path.GetDirectoryName(currentAssemblyLocation), "datums.xml");
             }
-            using (var datumStream = File.Exists(fileName)
+            using var datumStream = File.Exists(fileName)
                 ? File.OpenRead(fileName)
-                : DeflateStreamReader.DecodeEmbeddedResource("DotSpatial.Projections.XML.datums.xml.ds"))
-            {
+                : DeflateStreamReader.DecodeEmbeddedResource("DotSpatial.Projections.XML.datums.xml.ds");
 
-                var xmlSerializer = new XmlSerializer(typeof(DatumEntries));
-                var entries = (DatumEntries)xmlSerializer.Deserialize(datumStream);
-                _entries = entries.Items.ToDictionary(_ => _.Name, _ => _);
-            }
+            var xmlSerializer = new XmlSerializer(typeof(DatumEntries));
+            var entries = (DatumEntries)xmlSerializer.Deserialize(datumStream);
+            _entries = entries.Items.ToDictionary(_ => _.Name, _ => _);
         }
 
         public DatumEntry this[string name]

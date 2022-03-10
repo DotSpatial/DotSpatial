@@ -2055,7 +2055,7 @@ namespace DotSpatial.Plugins.Taudem
             int dsNodeFieldNum = 3;
             int uSlink1FieldNum = 5;
             int uSlink2FieldNum = 6;
-            Stack currStack = new Stack();
+            Stack currStack = new();
             shapeIdxList.Clear();
 
             shapeIdxList.Add(sindx);

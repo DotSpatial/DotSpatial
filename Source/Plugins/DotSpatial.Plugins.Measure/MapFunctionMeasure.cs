@@ -404,7 +404,7 @@ namespace DotSpatial.Plugins.Measure
             Name = "MapFunctionMeasure";
         }
 
-        private void CoordinateDialogFormClosing(object? sender, FormClosingEventArgs e1)
+        private void CoordinateDialogFormClosing(object sender, FormClosingEventArgs e1)
         {
             // This signals that we are done with editing, and should therefore close up shop
             Enabled = false;
@@ -480,12 +480,12 @@ namespace DotSpatial.Plugins.Measure
             _measureDialog.MeasurementsCleared += MeasureDialogMeasurementsCleared;
         }
 
-        private void MapMouseLeave(object? sender, EventArgs e)
+        private void MapMouseLeave(object sender, EventArgs e)
         {
             Map.Invalidate();
         }
 
-        private void MeasureDialogMeasurementsCleared(object? sender, EventArgs e)
+        private void MeasureDialogMeasurementsCleared(object sender, EventArgs e)
         {
             _previousParts.Clear();
             _coordinates?.Clear();
@@ -499,7 +499,7 @@ namespace DotSpatial.Plugins.Measure
             _measureDialog.TotalArea = 0;
         }
 
-        private void MeasureDialogMeasureModeChanged(object? sender, EventArgs e)
+        private void MeasureDialogMeasureModeChanged(object sender, EventArgs e)
         {
             _previousParts.Clear();
 

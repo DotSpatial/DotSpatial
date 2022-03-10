@@ -100,11 +100,9 @@ namespace DotSpatial.Projections
             using (Stream str = GetStream())
             {
                 if (str == null) return;
-                using (BinaryReader br = new BinaryReader(str))
-                {
-                    str.Seek(DataOffset, SeekOrigin.Begin);
-                    br.Read(header, 0, 176);
-                }
+                using BinaryReader br = new(str);
+                str.Seek(DataOffset, SeekOrigin.Begin);
+                br.Read(header, 0, 176);
             }
 
             PhiLam ll;
@@ -137,32 +135,30 @@ namespace DotSpatial.Projections
             using (Stream str = GetStream())
             {
                 if (str == null) return;
-                using (BinaryReader br = new BinaryReader(str))
+                using BinaryReader br = new(str);
+                str.Seek(DataOffset, SeekOrigin.Begin);
+                str.Seek(176, SeekOrigin.Current);
+
+                int numPhis = NumPhis;
+                int numLambdas = NumLambdas;
+                PhiLam[][] cvs = new PhiLam[numPhis][];
+
+                // Skip past rest of header
+                for (int row = 0; row < numPhis; row++)
                 {
-                    str.Seek(DataOffset, SeekOrigin.Begin);
-                    str.Seek(176, SeekOrigin.Current);
-
-                    int numPhis = NumPhis;
-                    int numLambdas = NumLambdas;
-                    PhiLam[][] cvs = new PhiLam[numPhis][];
-
-                    // Skip past rest of header
-                    for (int row = 0; row < numPhis; row++)
+                    cvs[row] = new PhiLam[NumLambdas];
+                    // NTV order is flipped compared with a normal CVS table
+                    for (int col = numLambdas - 1; col >= 0; col--)
                     {
-                        cvs[row] = new PhiLam[NumLambdas];
-                        // NTV order is flipped compared with a normal CVS table
-                        for (int col = numLambdas - 1; col >= 0; col--)
-                        {
-                            // shift values are given in "arc-seconds" and need to be converted to radians.
-                            cvs[row][col].Phi = ReadFloat(br) * (Math.PI / 180) / 3600;
-                            cvs[row][col].Lambda = ReadFloat(br) * (Math.PI / 180) / 3600;
+                        // shift values are given in "arc-seconds" and need to be converted to radians.
+                        cvs[row][col].Phi = ReadFloat(br) * (Math.PI / 180) / 3600;
+                        cvs[row][col].Lambda = ReadFloat(br) * (Math.PI / 180) / 3600;
 
-                            str.Seek(8, SeekOrigin.Current);
-                        }
+                        str.Seek(8, SeekOrigin.Current);
                     }
-                    Cvs = cvs;
-                    Filled = true;
                 }
+                Cvs = cvs;
+                Filled = true;
             }
             Filled = true;
         }

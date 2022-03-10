@@ -129,7 +129,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         public Bitmap GetBitmap(int startRow, int startColumn, int numRows, int numColumns, int overview)
         {
             byte[] vals = ReadWindow(startRow, startColumn, numRows, numColumns, overview);
-            Bitmap bmp = new Bitmap(numRows, numColumns);
+            Bitmap bmp = new(numRows, numColumns);
 
             BitmapData bData = bmp.LockBits(new Rectangle(0, 0, numColumns, numRows), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 

@@ -460,7 +460,7 @@ namespace DotSpatial.Data
                 // This overly complex mess is concerned with preventing duplicate field names.
                 // This assumes that numbers were appended when duplicates occured, and will
                 // repeat the process here to establish one set of string names and values.
-                Dictionary<string, object> mappings = new Dictionary<string, object>();
+                Dictionary<string, object> mappings = new();
                 foreach (DataColumn dc in self.ParentFeatureSet.DataTable.Columns)
                 {
                     string name = dc.ColumnName;

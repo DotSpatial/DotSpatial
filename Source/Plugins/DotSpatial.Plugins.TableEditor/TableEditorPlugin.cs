@@ -92,7 +92,7 @@ namespace DotSpatial.Plugins.TableEditor
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void AttributeTableClick(object? sender, EventArgs e)
+        private void AttributeTableClick(object sender, EventArgs e)
         {
             IMapFrame mainMapFrame = App.Map.MapFrame;
             List<ILayer> layers = mainMapFrame.GetAllLayers();
@@ -117,7 +117,7 @@ namespace DotSpatial.Plugins.TableEditor
             }
         }
 
-        private void MapLayerAdded(object? sender, LayerEventArgs e)
+        private void MapLayerAdded(object sender, LayerEventArgs e)
         {
             if (e.Layer == null) return;
 
@@ -136,7 +136,7 @@ namespace DotSpatial.Plugins.TableEditor
             }
         }
 
-        private void SerializationManagerDeserializing(object? sender, SerializingEventArgs e)
+        private void SerializationManagerDeserializing(object sender, SerializingEventArgs e)
         {
             // context menu items are added to layers when opening a project
             // this call is necessary because the LayerAdded event doesn't fire when a project is opened.

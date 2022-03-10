@@ -66,7 +66,7 @@ namespace DotSpatial.Positioning
             Satellites = satellites;
 
             // Build a sentence
-            StringBuilder builder = new StringBuilder(128);
+            StringBuilder builder = new(128);
 
             // Append the command word
             builder.Append("$GPGSV");
@@ -219,7 +219,7 @@ namespace DotSpatial.Positioning
             for (int index = 1; index <= totalMessages; index++)
             {
                 // Make a collection with just the satellites we want
-                List<Satellite> messageSatellites = new List<Satellite>();
+                List<Satellite> messageSatellites = new();
                 for (int count = 0; count < 4; count++)
                 {
                     // Calculate the satellite to add

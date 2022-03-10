@@ -29,14 +29,14 @@ namespace DotSpatial.Symbology.Forms
                 Rectangle r = e.Bounds;
                 r.Inflate(-1, -1);
                 e.Graphics.FillRectangle(SymbologyGlobal.HighlightBrush(r, Color.FromArgb(215, 238, 252)), r);
-                Pen p = new Pen(Color.FromArgb(215, 238, 252));
+                Pen p = new(Color.FromArgb(215, 238, 252));
                 SymbologyGlobal.DrawRoundedRectangle(e.Graphics, p, e.Bounds);
                 p.Dispose();
             }
 
             string name = Items[e.Index].ToString();
-            FontFamily ff = new FontFamily(name);
-            Font fnt = new Font("Arial", 10, FontStyle.Regular);
+            FontFamily ff = new(name);
+            Font fnt = new("Arial", 10, FontStyle.Regular);
             if (ff.IsStyleAvailable(FontStyle.Regular))
             {
                 fnt = new Font(name, 10, FontStyle.Regular);

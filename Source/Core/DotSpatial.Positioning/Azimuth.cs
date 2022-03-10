@@ -331,7 +331,7 @@ namespace DotSpatial.Positioning
             try
             {
                 // Clean up the string
-                StringBuilder newValue = new StringBuilder(value);
+                StringBuilder newValue = new(value);
                 newValue.Replace("°", " ").Replace("'", " ").Replace("\"", " ").Replace("  ", " ");
                 // Now split the values into an array
                 string[] values = newValue.ToString().Trim().Split(' ');
@@ -444,18 +444,18 @@ namespace DotSpatial.Positioning
         ///   </example>
         ///
         /// <value>An Azimuth with a value of -359.999999°.</value>
-        public static readonly Azimuth Minimum = new Azimuth(-359.99999999);
+        public static readonly Azimuth Minimum = new(-359.99999999);
         /// <summary>
         /// Represents an angle with no value.
         /// </summary>
         /// <value>An Azimuth containing a value of zero (0°).</value>
         ///
         /// <seealso cref="IsEmpty">IsEmpty Property</seealso>
-        public static readonly Azimuth Empty = new Azimuth(0.0);
+        public static readonly Azimuth Empty = new(0.0);
         /// <summary>
         /// Represents an angle with infinite value.
         /// </summary>
-        public static readonly Azimuth Infinity = new Azimuth(double.PositiveInfinity);
+        public static readonly Azimuth Infinity = new(double.PositiveInfinity);
         /// <summary>
         /// Represents the maximum value of an angle in one turn of a circle.
         /// </summary>
@@ -468,7 +468,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.Maximum;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth Maximum = new Azimuth(359.99999999);
+        public static readonly Azimuth Maximum = new(359.99999999);
 
         /// <summary>
         /// Represents a direction of travel of 0°.
@@ -482,7 +482,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.North;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth North = new Azimuth(0.0);
+        public static readonly Azimuth North = new(0.0);
         /// <summary>
         /// Represents a direction of travel of 22.5°, between north and northeast.
         /// </summary>
@@ -494,7 +494,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.NorthNortheast;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth NorthNortheast = new Azimuth(22.5);
+        public static readonly Azimuth NorthNortheast = new(22.5);
         /// <summary>
         /// Represents a direction of travel of 45°.
         /// </summary>
@@ -506,7 +506,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.Northeast;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth Northeast = new Azimuth(45.0);
+        public static readonly Azimuth Northeast = new(45.0);
         /// <summary>
         /// Represents a direction of travel of 67.5°.
         /// </summary>
@@ -518,7 +518,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.EastNortheast;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth EastNortheast = new Azimuth(67.5);
+        public static readonly Azimuth EastNortheast = new(67.5);
         /// <summary>
         /// Represents a direction of travel of 90°.
         /// </summary>
@@ -530,7 +530,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.East;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth East = new Azimuth(90.0);
+        public static readonly Azimuth East = new(90.0);
         /// <summary>
         /// Represents a direction of travel of 112.5°, between east and southeast.
         /// </summary>
@@ -542,7 +542,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.EastSoutheast;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth EastSoutheast = new Azimuth(112.5);
+        public static readonly Azimuth EastSoutheast = new(112.5);
         /// <summary>
         /// Represents a direction of travel of 135°.
         /// </summary>
@@ -554,7 +554,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.Southeast;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth Southeast = new Azimuth(135.0);
+        public static readonly Azimuth Southeast = new(135.0);
         /// <summary>
         /// Represents a direction of travel of 157.5°, between south and southeast.
         /// </summary>
@@ -566,7 +566,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.SouthSoutheast;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth SouthSoutheast = new Azimuth(157.5);
+        public static readonly Azimuth SouthSoutheast = new(157.5);
         /// <summary>
         /// Represents a direction of travel of 180°.
         /// </summary>
@@ -578,7 +578,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.South;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth South = new Azimuth(180.0);
+        public static readonly Azimuth South = new(180.0);
         /// <summary>
         /// Represents a direction of travel of 202.5°, between south and southwest.
         /// </summary>
@@ -590,7 +590,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.SouthSouthwest;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth SouthSouthwest = new Azimuth(202.5);
+        public static readonly Azimuth SouthSouthwest = new(202.5);
         /// <summary>
         /// Represents a direction of travel of 225°.
         /// </summary>
@@ -602,7 +602,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.Southwest;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth Southwest = new Azimuth(225.0);
+        public static readonly Azimuth Southwest = new(225.0);
         /// <summary>
         /// Represents a direction of travel of 247.5°, between west and southwest.
         /// </summary>
@@ -614,7 +614,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.WestSouthwest;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth WestSouthwest = new Azimuth(247.5);
+        public static readonly Azimuth WestSouthwest = new(247.5);
         /// <summary>
         /// Represents a direction of travel of 270°.
         /// </summary>
@@ -626,7 +626,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.West;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth West = new Azimuth(270.0);
+        public static readonly Azimuth West = new(270.0);
         /// <summary>
         /// Represents a direction of travel of 292.5°, between west and northwest.
         /// </summary>
@@ -638,7 +638,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.WestNorthwest;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth WestNorthwest = new Azimuth(292.5);
+        public static readonly Azimuth WestNorthwest = new(292.5);
         /// <summary>
         /// Represents a direction of travel of 315°.
         /// </summary>
@@ -650,7 +650,7 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.Northwest;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth Northwest = new Azimuth(315.0);
+        public static readonly Azimuth Northwest = new(315.0);
         /// <summary>
         /// Represents a direction of travel of 337.5°, between north and northwest.
         /// </summary>
@@ -662,11 +662,11 @@ namespace DotSpatial.Positioning
         /// Azimuth MyAzimuth = Azimuth.NorthNorthwest;
         ///   </code>
         ///   </example>
-        public static readonly Azimuth NorthNorthwest = new Azimuth(337.5);
+        public static readonly Azimuth NorthNorthwest = new(337.5);
         /// <summary>
         /// Represents an invalid or unspecified value.
         /// </summary>
-        public static readonly Azimuth Invalid = new Azimuth(double.NaN);
+        public static readonly Azimuth Invalid = new(double.NaN);
 
         #endregion Fields
 

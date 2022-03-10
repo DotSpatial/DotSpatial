@@ -56,7 +56,7 @@ namespace DotSpatial.Data.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(OpenDataDialog));
+            ComponentResourceManager resources = new(typeof(OpenDataDialog));
             _directoryView1 = new DirectoryView();
             SuspendLayout();
 

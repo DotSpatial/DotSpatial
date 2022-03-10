@@ -91,7 +91,7 @@ namespace DotSpatial.Tools
 
             // create output raster
             output = Raster.CreateRaster(output.Filename, string.Empty, noOfCol, noOfRow, 1, dataType, new[] { string.Empty });
-            RasterBounds bound = new RasterBounds(noOfRow, noOfCol, envelope);
+            RasterBounds bound = new(noOfRow, noOfCol, envelope);
             output.Bounds = bound;
 
             output.NoDataValue = newValue;

@@ -80,23 +80,20 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         private void BtnAddDataClick(object sender, EventArgs e)
         {
-            using (OpenFileDialog dialog = new OpenFileDialog())
+            using OpenFileDialog dialog = new();
+            dialog.Title = ModelingMessageStrings.OpenFileElement_btnAddDataClick_SelectFileName;
+            if (Param == null) Param = new FileParam("open filename");
+            if (Param is FileParam p) dialog.Filter = p.DialogFilter;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
-                dialog.Title = ModelingMessageStrings.OpenFileElement_btnAddDataClick_SelectFileName;
-                if (Param == null) Param = new FileParam("open filename");
-                FileParam p = Param as FileParam;
-                if (p != null) dialog.Filter = p.DialogFilter;
+                TextFile tmpTextFile = new(dialog.FileName);
+                _addedTextFile = new DataSetArray(Path.GetFileNameWithoutExtension(dialog.FileName), tmpTextFile);
 
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    TextFile tmpTextFile = new TextFile(dialog.FileName);
-                    _addedTextFile = new DataSetArray(Path.GetFileNameWithoutExtension(dialog.FileName), tmpTextFile);
-
-                    Param.ModelName = _addedTextFile.Name;
-                    Param.Value = _addedTextFile.DataSet;
-                    Refresh();
-                    Status = ToolStatus.Ok;
-                }
+                Param.ModelName = _addedTextFile.Name;
+                Param.Value = _addedTextFile.DataSet;
+                Refresh();
+                Status = ToolStatus.Ok;
             }
         }
 
@@ -104,8 +101,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         {
             if (_refreshCombo)
             {
-                DataSetArray dsa = _comboFile.SelectedItem as DataSetArray;
-                if (dsa != null)
+                if (_comboFile.SelectedItem is DataSetArray dsa)
                 {
                     Param.ModelName = dsa.Name;
                     Param.Value = dsa.DataSet;
@@ -140,8 +136,7 @@ namespace DotSpatial.Modeling.Forms.Elements
             {
                 foreach (DataSetArray dsa in _dataSets)
                 {
-                    TextFile aTextFile = dsa.DataSet as TextFile;
-                    if (aTextFile != null && !_comboFile.Items.Contains(dsa))
+                    if (dsa.DataSet is TextFile aTextFile && !_comboFile.Items.Contains(dsa))
                     {
                         // If the featureset is the correct type and isn't already in the combo box we add it
                         _comboFile.Items.Add(dsa);

@@ -40,17 +40,13 @@ namespace DotSpatial.Extensions.SplashScreens
                 if (file == null)
                     continue;
 
-                using (AggregateCatalog splashCatalog = new AggregateCatalog())
-                {
-                    splashCatalog.Catalogs.Add(new AssemblyCatalog(file));
+                using AggregateCatalog splashCatalog = new();
+                splashCatalog.Catalogs.Add(new AssemblyCatalog(file));
 
-                    using (CompositionContainer splashBatch = new CompositionContainer(splashCatalog))
-                    {
-                        var splash = splashBatch.GetExportedValueOrDefault<ISplashScreenManager>();
-                        splash?.Activate();
-                        return splash;
-                    }
-                }
+                using CompositionContainer splashBatch = new(splashCatalog);
+                var splash = splashBatch.GetExportedValueOrDefault<ISplashScreenManager>();
+                splash?.Activate();
+                return splash;
             }
 
             return null;

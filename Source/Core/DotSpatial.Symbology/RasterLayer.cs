@@ -447,7 +447,7 @@ namespace DotSpatial.Symbology
         /// <returns>The created pyramid image.</returns>
         public IImageData CreatePyramidImage(string pyrFile, IProgressHandler progressHandler)
         {
-            PyramidImage py = new PyramidImage(pyrFile, DataSet.Bounds);
+            PyramidImage py = new(pyrFile, DataSet.Bounds);
             int width = DataSet.Bounds.NumColumns;
             int blockHeight = 32000000 / width;
             if (blockHeight > DataSet.Bounds.NumRows) blockHeight = DataSet.Bounds.NumRows;
@@ -455,11 +455,11 @@ namespace DotSpatial.Symbology
             int count = DataSet.NumRows;
             if (_symbolizer.ShadedRelief.IsUsed)
             {
-                count = count * 2;
+                count *= 2;
             }
 
-            ProgressMeter pm = new ProgressMeter(progressHandler, "Creating Pyramids", count);
-            PerformanceCounter pcRemaining = new PerformanceCounter("Memory", "Available Bytes");
+            ProgressMeter pm = new(progressHandler, "Creating Pyramids", count);
+            PerformanceCounter pcRemaining = new("Memory", "Available Bytes");
             Process proc = Process.GetCurrentProcess();
 
             for (int j = 0; j < numBlocks; j++)
@@ -531,12 +531,12 @@ namespace DotSpatial.Symbology
             }
 
             int blockRows = MaxRc / cols;
-            ProjectionHelper ph = new ProjectionHelper(DataSet.Extent, new Rectangle(0, 0, cols, rows));
+            ProjectionHelper ph = new(DataSet.Extent, new Rectangle(0, 0, cols, rows));
             for (int iblock = 0; iblock < numBlocks; iblock++)
             {
                 int rowCount = blockRows;
                 if (iblock == numBlocks - 1) rowCount = rows - (blockRows * iblock);
-                Rectangle r = new Rectangle(0, iblock * blockRows, cols, rowCount);
+                Rectangle r = new(0, iblock * blockRows, cols, rowCount);
                 Bitmap block = BitmapGetter.GetBitmap(ph.PixelToProj(r), r);
                 result.WriteBlock(block, 0, iblock * blockRows);
             }
@@ -598,7 +598,7 @@ namespace DotSpatial.Symbology
                 return;
             }
 
-            Bitmap bmp = new Bitmap(DataSet.NumColumns, DataSet.NumRows, PixelFormat.Format32bppArgb);
+            Bitmap bmp = new(DataSet.NumColumns, DataSet.NumRows, PixelFormat.Format32bppArgb);
 
             if (_symbolizer.DrapeVectorLayers == false)
             {
@@ -617,8 +617,8 @@ namespace DotSpatial.Symbology
                 g.SmoothingMode = SmoothingMode.AntiAlias;
 
                 Extent extents = DataSet.Extent;
-                Rectangle target = new Rectangle(0, 0, bmp.Width, bmp.Height);
-                ImageProjection ip = new ImageProjection(extents, target);
+                Rectangle target = new(0, 0, bmp.Width, bmp.Height);
+                ImageProjection ip = new(extents, target);
 
                 // Cycle through each layer, and as long as it is not this layer, draw the bmp
                 foreach (ILegendItem layer in GetParentItem().LegendItems)
@@ -635,7 +635,7 @@ namespace DotSpatial.Symbology
                 }
             }
 
-            InRamImage image = new InRamImage(bmp)
+            InRamImage image = new(bmp)
             {
                 Bounds = DataSet.Bounds.Copy()
             };

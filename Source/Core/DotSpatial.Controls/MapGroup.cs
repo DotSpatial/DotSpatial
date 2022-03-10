@@ -125,8 +125,7 @@ namespace DotSpatial.Controls
                 base.MapFrame = value;
                 if (_layers != null)
                 {
-                    IMapFrame newValue = value as IMapFrame;
-                    if (newValue != null && _layers.MapFrame == null)
+                    if (value is IMapFrame newValue && _layers.MapFrame == null)
                     {
                         _layers.MapFrame = newValue;
                     }
@@ -177,8 +176,7 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public override void Add(ILayer layer)
         {
-            IMapLayer ml = layer as IMapLayer;
-            if (ml != null)
+            if (layer is IMapLayer ml)
             {
                 _layers.Add(ml);
             }
@@ -193,8 +191,7 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public override bool Contains(ILayer item)
         {
-            IMapLayer ml = item as IMapLayer;
-            return ml != null && _layers.Contains(ml);
+            return item is IMapLayer ml && _layers.Contains(ml);
         }
 
         /// <inheritdoc />
@@ -247,8 +244,7 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public override int IndexOf(ILayer item)
         {
-            IMapLayer ml = item as IMapLayer;
-            if (ml != null)
+            if (item is IMapLayer ml)
             {
                 return _layers.IndexOf(ml);
             }
@@ -259,8 +255,7 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public override void Insert(int index, ILayer layer)
         {
-            IMapLayer ml = layer as IMapLayer;
-            if (ml != null)
+            if (layer is IMapLayer ml)
             {
                 _layers.Insert(index, ml);
             }
@@ -269,8 +264,7 @@ namespace DotSpatial.Controls
         /// <inheritdoc />
         public override bool Remove(ILayer layer)
         {
-            IMapLayer ml = layer as IMapLayer;
-            return ml != null && _layers.Remove(ml);
+            return layer is IMapLayer ml && _layers.Remove(ml);
         }
 
         /// <inheritdoc />

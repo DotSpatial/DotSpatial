@@ -84,8 +84,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         private void ComboRasterSelectedValueChanged(object sender, EventArgs e)
         {
             if (!_refreshCombo) return;
-            DataSetArray dsa = comboRaster.SelectedItem as DataSetArray;
-            if (dsa == null) return;
+            if (comboRaster.SelectedItem is not DataSetArray dsa) return;
             Param.ModelName = dsa.Name;
             Param.Value = dsa.DataSet;
         }
@@ -120,8 +119,7 @@ namespace DotSpatial.Modeling.Forms.Elements
             {
                 foreach (DataSetArray dsa in _dataSets)
                 {
-                    IRaster aRasterSet = dsa.DataSet as IRaster;
-                    if (aRasterSet != null)
+                    if (dsa.DataSet is IRaster aRasterSet)
                     {
                         // If the featureset is the correct type and isn't already in the combo box we add it
                         if (comboRaster.Items.Contains(dsa) == false)

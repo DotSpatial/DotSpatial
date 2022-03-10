@@ -36,8 +36,8 @@ namespace DotSpatial.Symbology.Forms
             _original = value as IPointScheme;
             _editCopy = _original.Copy();
             IWindowsFormsEditorService dialogProvider = (IWindowsFormsEditorService)provider?.GetService(typeof(IWindowsFormsEditorService));
-            NamedList<IPointCategory> cats = new NamedList<IPointCategory>(_editCopy.Categories, "Category");
-            CollectionPropertyGrid frm = new CollectionPropertyGrid(cats);
+            NamedList<IPointCategory> cats = new(_editCopy.Categories, "Category");
+            CollectionPropertyGrid frm = new(cats);
             frm.ChangesApplied += FrmChangesApplied;
             frm.AddItemClicked += FrmAddItemClicked;
             dialogProvider?.ShowDialog(frm);

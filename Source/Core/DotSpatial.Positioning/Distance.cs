@@ -230,11 +230,11 @@ namespace DotSpatial.Positioning
         /// Field</seealso>
         ///
         /// <seealso cref="EarthsAverageRadius">EarthsAverageRadius Field</seealso>
-        public static readonly Distance EarthsEquatorialRadiusWgs1984 = new Distance(6378137.0, DistanceUnit.Meters);
+        public static readonly Distance EarthsEquatorialRadiusWgs1984 = new(6378137.0, DistanceUnit.Meters);
         /// <summary>
         /// Represents an infinite distance.
         /// </summary>
-        public static readonly Distance Infinity = new Distance(double.PositiveInfinity, DistanceUnit.Meters);
+        public static readonly Distance Infinity = new(double.PositiveInfinity, DistanceUnit.Meters);
         /// <summary>
         /// Returns the distance from the center of the Earth to a pole according to the
         /// WGS1984 ellipsoid.
@@ -242,14 +242,14 @@ namespace DotSpatial.Positioning
         /// <seealso cref="EarthsEquatorialRadiusWgs1984">EarthsEquatorialRadiusWgs1984 Field</seealso>
         ///
         /// <seealso cref="EarthsAverageRadius">EarthsAverageRadius Field</seealso>
-        public static readonly Distance EarthsPolarRadiusWgs1984 = new Distance(6356752.314245, DistanceUnit.Meters);
+        public static readonly Distance EarthsPolarRadiusWgs1984 = new(6356752.314245, DistanceUnit.Meters);
         /// <summary>
         /// Returns the average radius of the Earth.
         /// </summary>
         /// <seealso cref="EarthsEquatorialRadiusWgs1984">EarthsEquatorialRadiusWgs1984 Field</seealso>
         ///
         /// <seealso cref="EarthsPolarRadiusWgs1984">EarthsPolarRadiusWgs1984 Field</seealso>
-        public static readonly Distance EarthsAverageRadius = new Distance(6378100, DistanceUnit.Meters);
+        public static readonly Distance EarthsAverageRadius = new(6378100, DistanceUnit.Meters);
         /// <summary>
         ///
         /// </summary>
@@ -269,7 +269,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents an invalid or unspecified value.
         /// </summary>
-        public static readonly Distance Invalid = new Distance(double.NaN, DistanceUnit.Kilometers);
+        public static readonly Distance Invalid = new(double.NaN, DistanceUnit.Kilometers);
 
         #endregion Fields
 

@@ -102,7 +102,7 @@ namespace DotSpatial.Controls
             {
                 if (Map?.MapControl == null)
                     return new List<int>();
-                List<int> layerInts = new List<int>();
+                List<int> layerInts = new();
                 for (int i = 0; i < Map.MapControl.Layers.Count; i++)
                     if (_layers.Contains(Map.MapControl.Layers[i])) layerInts.Add(i);
                 return layerInts;
@@ -261,7 +261,7 @@ namespace DotSpatial.Controls
             Matrix oldTrans = g.Transform;
 
             // Calculates the size of each item and the max number of columns and rows
-            SizeF itemSize = new SizeF(Size.Width / NumColumns, g.MeasureString("SampleText", _font).Height + 4);
+            SizeF itemSize = new(Size.Width / NumColumns, g.MeasureString("SampleText", _font).Height + 4);
             int maxCol = Convert.ToInt32(Size.Width / itemSize.Width);
             int maxRow = Convert.ToInt32(Math.Floor(Size.Height / itemSize.Height));
             int col = 0;

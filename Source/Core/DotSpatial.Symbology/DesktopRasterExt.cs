@@ -210,7 +210,7 @@ namespace DotSpatial.Symbology
 
             int numRows = raster.NumRows;
             int numCols = raster.NumColumns;
-            List<double> result = new List<double>();
+            List<double> result = new();
             double noData = raster.NoDataValue;
             if (numRows * numCols < sampleSize)
             {
@@ -226,13 +226,13 @@ namespace DotSpatial.Symbology
                 return result;
             }
 
-            Random rnd = new Random(DateTime.Now.Millisecond);
+            Random rnd = new(DateTime.Now.Millisecond);
             if (numRows * (long)numCols < (long)sampleSize * 5 && numRows * (long)numCols < int.MaxValue)
             {
                 // When the raster is only just barely larger than the sample size,
                 // we want to prevent lots of repeat guesses that fail (hit the same previously sampled values).
                 // We create a copy of all the values and sample from this reservoir while removing sampled values.
-                List<double> resi = new List<double>();
+                List<double> resi = new();
                 for (int row = 0; row < numRows; row++)
                 {
                     for (int col = 0; col < numCols; col++)
@@ -262,7 +262,7 @@ namespace DotSpatial.Symbology
             }
 
             // Use a HashSet here, because it has O(1) lookup for preventing duplicates
-            HashSet<long> exclusiveResults = new HashSet<long>();
+            HashSet<long> exclusiveResults = new();
             int remaining = sampleSize;
             while (remaining > 0)
             {
@@ -415,9 +415,9 @@ namespace DotSpatial.Symbology
                 for (int col = 0; col < numCols; col++)
                 {
                     // 3D position vectors of three points to create a triangle.
-                    FloatVector3 v1 = new FloatVector3(0f, 0f, 0f);
-                    FloatVector3 v2 = new FloatVector3(0f, 0f, 0f);
-                    FloatVector3 v3 = new FloatVector3(0f, 0f, 0f);
+                    FloatVector3 v1 = new(0f, 0f, 0f);
+                    FloatVector3 v2 = new(0f, 0f, 0f);
+                    FloatVector3 v3 = new(0f, 0f, 0f);
 
                     float val = Convert.ToSingle(getValue(row, col));
 

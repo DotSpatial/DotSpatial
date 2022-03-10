@@ -1104,25 +1104,23 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <returns>The list of featuresets contained in this file.</returns>
         private IDictionary<IFeatureSet, IList<string>> GetOtherLayers()
         {
-            using (var layer = _ogrDataSource.GetLayerByIndex(0)) // dxf files contain only one layer called entities, the layers seen in programs are defined by the Layer column
-            using (var ogrFeatureDefinition = layer.GetLayerDefn())
+            using var layer = _ogrDataSource.GetLayerByIndex(0); // dxf files contain only one layer called entities, the layers seen in programs are defined by the Layer column
+            using var ogrFeatureDefinition = layer.GetLayerDefn();
+            var schema = BuildSchemaTable(ogrFeatureDefinition);
+            var projInfo = GetProjectionInfo(layer);
+
+            var fs = new FeatureSet
             {
-                var schema = BuildSchemaTable(ogrFeatureDefinition);
-                var projInfo = GetProjectionInfo(layer);
+                Name = Path.GetFileNameWithoutExtension(_fileName),
+                Filename = _fileName
+            };
+            AddColumns(fs, schema);
+            if (projInfo != null) fs.Projection = projInfo;
 
-                var fs = new FeatureSet
-                {
-                    Name = Path.GetFileNameWithoutExtension(_fileName),
-                    Filename = _fileName
-                };
-                AddColumns(fs, schema);
-                if (projInfo != null) fs.Projection = projInfo;
+            var styles = new List<string>();
 
-                var styles = new List<string>();
-
-                AddFeatures(fs, styles, layer, ogrFeatureDefinition, schema);
-                return new Dictionary<IFeatureSet, IList<string>> { { fs, styles } };
-            }
+            AddFeatures(fs, styles, layer, ogrFeatureDefinition, schema);
+            return new Dictionary<IFeatureSet, IList<string>> { { fs, styles } };
         }
 
         #endregion
@@ -1136,12 +1134,12 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             #region Fields
 
-            public static readonly Parameter BoxColor = new Parameter("b:", System.Drawing.Color.Empty);
-            public static readonly Parameter BrushBackColor = new Parameter("bc:", System.Drawing.Color.White);
-            public static readonly Parameter BrushForeColor = new Parameter("fc:", System.Drawing.Color.Black);
-            public static readonly Parameter Color = new Parameter("c:", System.Drawing.Color.Black);
-            public static readonly Parameter HaloColor = new Parameter("o:", System.Drawing.Color.Empty);
-            public static readonly Parameter ShadowColor = new Parameter("h:", System.Drawing.Color.Empty);
+            public static readonly Parameter BoxColor = new("b:", System.Drawing.Color.Empty);
+            public static readonly Parameter BrushBackColor = new("bc:", System.Drawing.Color.White);
+            public static readonly Parameter BrushForeColor = new("fc:", System.Drawing.Color.Black);
+            public static readonly Parameter Color = new("c:", System.Drawing.Color.Black);
+            public static readonly Parameter HaloColor = new("o:", System.Drawing.Color.Empty);
+            public static readonly Parameter ShadowColor = new("h:", System.Drawing.Color.Empty);
 
             #endregion
         }

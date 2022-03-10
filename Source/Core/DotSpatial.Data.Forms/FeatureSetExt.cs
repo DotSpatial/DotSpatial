@@ -17,11 +17,9 @@ namespace DotSpatial.Data.Forms
         public static void Open(this FeatureSet self)
         {
             string filter = DataManager.DefaultDataManager.RasterReadFilter;
-            using (var ofd = new OpenFileDialog { Filter = filter })
-            {
-                if (ofd.ShowDialog() != DialogResult.OK) return;
-                FeatureSet.Open(ofd.FileName);
-            }
+            using var ofd = new OpenFileDialog { Filter = filter };
+            if (ofd.ShowDialog() != DialogResult.OK) return;
+            FeatureSet.Open(ofd.FileName);
         }
     }
 }

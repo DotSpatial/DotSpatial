@@ -283,18 +283,18 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="clipRectangle">The clip rectangle.</param>
         protected virtual void OnDraw(Graphics g, Rectangle clipRectangle)
         {
-            GraphicsPath gp = new GraphicsPath();
-            Rectangle innerRect = new Rectangle(LeftHandle.Width, 3, Width - 1 - RightHandle.Width - LeftHandle.Width, Height - 1 - 6);
+            GraphicsPath gp = new();
+            Rectangle innerRect = new(LeftHandle.Width, 3, Width - 1 - RightHandle.Width - LeftHandle.Width, Height - 1 - 6);
             gp.AddRoundedRectangle(innerRect, 2);
 
             if (Width == 0 || Height == 0) return;
 
             // Create a rounded gradient effect as the backdrop that other colors will be drawn to
-            LinearGradientBrush silver = new LinearGradientBrush(ClientRectangle, BackColor.Lighter(.2F), BackColor.Darker(.6F), LinearGradientMode.Vertical);
+            LinearGradientBrush silver = new(ClientRectangle, BackColor.Lighter(.2F), BackColor.Darker(.6F), LinearGradientMode.Vertical);
             g.FillPath(silver, gp);
             silver.Dispose();
 
-            LinearGradientBrush lgb = new LinearGradientBrush(innerRect, MinimumColor, MaximumColor, LinearGradientMode.Horizontal);
+            LinearGradientBrush lgb = new(innerRect, MinimumColor, MaximumColor, LinearGradientMode.Horizontal);
             g.FillPath(lgb, gp);
             lgb.Dispose();
 
@@ -408,7 +408,7 @@ namespace DotSpatial.Symbology.Forms
         {
             Rectangle clip = e.ClipRectangle;
             if (clip.IsEmpty) clip = ClientRectangle;
-            Bitmap bmp = new Bitmap(clip.Width, clip.Height);
+            Bitmap bmp = new(clip.Width, clip.Height);
             Graphics g = Graphics.FromImage(bmp);
             g.TranslateTransform(-clip.X, -clip.Y);
             g.Clip = new Region(clip);

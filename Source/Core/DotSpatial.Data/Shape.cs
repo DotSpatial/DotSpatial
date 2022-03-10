@@ -293,7 +293,7 @@ namespace DotSpatial.Data
         /// <returns>The shape range constructed from the given geometry.</returns>
         public static ShapeRange ShapeRangeFromGeometry(Geometry geometry, FeatureType featureType, double[] vertices, int offset)
         {
-            ShapeRange shx = new ShapeRange(featureType)
+            ShapeRange shx = new(featureType)
             {
                 Extent = new Extent(geometry.EnvelopeInternal)
             };
@@ -301,7 +301,7 @@ namespace DotSpatial.Data
             int shapeStart = vIndex;
             for (int part = 0; part < geometry.NumGeometries; part++)
             {
-                PartRange prtx = new PartRange(vertices, shapeStart, vIndex - shapeStart, featureType);
+                PartRange prtx = new(vertices, shapeStart, vIndex - shapeStart, featureType);
                 Polygon bp = geometry.GetGeometryN(part) as Polygon;
                 if (bp != null)
                 {
@@ -313,7 +313,7 @@ namespace DotSpatial.Data
                     // The part range should be adjusted to no longer include the holes
                     foreach (var hole in bp.Holes)
                     {
-                        PartRange holex = new PartRange(vertices, shapeStart, vIndex - shapeStart, featureType)
+                        PartRange holex = new(vertices, shapeStart, vIndex - shapeStart, featureType)
                         {
                             NumVertices = hole.NumPoints
                         };
@@ -348,9 +348,9 @@ namespace DotSpatial.Data
         {
             bool hasM = coordType == CoordinateType.M || coordType == CoordinateType.Z;
             bool hasZ = coordType == CoordinateType.Z;
-            List<double> vertices = new List<double>();
-            List<double> z = new List<double>();
-            List<double> m = new List<double>();
+            List<double> vertices = new();
+            List<double> z = new();
+            List<double> m = new();
             int numPoints = 0;
             int oldNumPoints = _vertices?.Length / 2 ?? 0;
             foreach (Coordinate coordinate in coordinates)
@@ -376,7 +376,7 @@ namespace DotSpatial.Data
             }
             else
             {
-                PartRange part = new PartRange(_vertices, Range.StartIndex, oldNumPoints, Range.FeatureType)
+                PartRange part = new(_vertices, Range.StartIndex, oldNumPoints, Range.FeatureType)
                 {
                     NumVertices = numPoints
                 };
@@ -550,8 +550,8 @@ namespace DotSpatial.Data
         protected Geometry FromPolygon(GeometryFactory factory)
         {
             if (factory == null) factory = Geometry.DefaultFactory;
-            List<LinearRing> shells = new List<LinearRing>();
-            List<LinearRing> holes = new List<LinearRing>();
+            List<LinearRing> shells = new();
+            List<LinearRing> holes = new();
             foreach (var part in Range.Parts)
             {
                 var coords = GetCoordinates(part);

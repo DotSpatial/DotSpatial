@@ -14,10 +14,8 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="category">The color category.</param>
         public void ShowEdit(IColorCategory category)
         {
-            using (var frm = new ColorPicker(category))
-            {
-                ShowDialog(frm);
-            }
+            using var frm = new ColorPicker(category);
+            ShowDialog(frm);
         }
     }
 }

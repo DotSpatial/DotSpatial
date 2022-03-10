@@ -90,7 +90,7 @@ namespace DotSpatial.Data
         /// <returns>A FeatureType clarifying what sort of features are stored on the data type.</returns>
         public virtual FeatureType GetFeatureType(string fileName)
         {
-            ShapefileHeader sh = new ShapefileHeader(fileName);
+            ShapefileHeader sh = new(fileName);
             if (sh.ShapeType == ShapeType.Polygon || sh.ShapeType == ShapeType.PolygonM || sh.ShapeType == ShapeType.PolygonZ)
             {
                 return FeatureType.Polygon;

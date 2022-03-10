@@ -117,18 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&gt;&gt;pnlContent.Name" xml:space="preserve">
-    <value>pnlContent</value>
-  </data>
-  <data name="&gt;&gt;pnlContent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnlContent.Parent" xml:space="preserve">
-    <value>tabSymbology</value>
-  </data>
-  <data name="&gt;&gt;pnlContent.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="tabSymbology.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
@@ -256,18 +244,6 @@
     <value>tabSymbology</value>
   </data>
   <data name="&gt;&gt;pnlContent.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;dialogButtons1.Name" xml:space="preserve">
-    <value>dialogButtons1</value>
-  </data>
-  <data name="&gt;&gt;dialogButtons1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
-  </data>
-  <data name="&gt;&gt;dialogButtons1.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;dialogButtons1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">

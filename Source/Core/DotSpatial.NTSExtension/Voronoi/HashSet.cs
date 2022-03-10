@@ -18,7 +18,7 @@ namespace DotSpatial.NTSExtension.Voronoi
     {
         #region Fields
 
-        private readonly Dictionary<T, T> _h = new Dictionary<T, T>();
+        private readonly Dictionary<T, T> _h = new();
 
         #endregion
 

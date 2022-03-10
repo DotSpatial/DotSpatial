@@ -67,7 +67,7 @@ namespace DotSpatial.NTSExtension.Voronoi
             if (l == null || r == null || l.DataPoint == r.DataPoint || l.DataPoint == n.DataPoint || n.DataPoint == r.DataPoint) return null;
             if (MathTools.Ccw(l.DataPoint.X, l.DataPoint.Y, n.DataPoint.X, n.DataPoint.Y, r.DataPoint.X, r.DataPoint.Y, false) <= 0) return null;
             Vector2 center = Fortune.CircumCircleCenter(l.DataPoint, n.DataPoint, r.DataPoint);
-            VCircleEvent vc = new VCircleEvent
+            VCircleEvent vc = new()
             {
                 NodeN = n,
                 NodeL = l,
@@ -85,8 +85,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         public static void CleanUpTree(VNode root)
         {
             if (root is VDataNode) return;
-            VEdgeNode ve = root as VEdgeNode;
-            if (ve != null)
+            if (root is VEdgeNode ve)
             {
                 while (ve.Edge.VVertexB == Fortune.VVUnkown)
                 {
@@ -131,7 +130,7 @@ namespace DotSpatial.NTSExtension.Voronoi
             circleCheckList = new[] { a, c };
 
             // 1. Create the new Vertex
-            Vector2 vNew = new Vector2(e.Center.X, e.Center.Y);
+            Vector2 vNew = new(e.Center.X, e.Center.Y);
 
             vg.Vertices.Add(vNew);
 
@@ -157,11 +156,11 @@ namespace DotSpatial.NTSExtension.Voronoi
             eo.Edge.AddVertex(vNew);
 
             // 2. Replace eo by new Edge
-            VoronoiEdge ve = new VoronoiEdge { LeftData = a.DataPoint, RightData = c.DataPoint };
+            VoronoiEdge ve = new() { LeftData = a.DataPoint, RightData = c.DataPoint };
             ve.AddVertex(vNew);
             vg.Edges.Add(ve);
 
-            VEdgeNode ven = new VEdgeNode(ve, false) { Left = eo.Left, Right = eo.Right };
+            VEdgeNode ven = new(ve, false) { Left = eo.Left, Right = eo.Right };
             if (eo.Parent == null) return ven;
             eo.Parent.Replace(eo, ven);
             return root;
@@ -189,7 +188,7 @@ namespace DotSpatial.NTSExtension.Voronoi
             VNode c = FindDataNode(root, ys, e.DataPoint.X);
 
             // 2. Create the subtree (ONE Edge, but two VEdgeNodes)
-            VoronoiEdge ve = new VoronoiEdge { LeftData = ((VDataNode)c).DataPoint, RightData = e.DataPoint, VVertexA = Fortune.VVUnkown, VVertexB = Fortune.VVUnkown };
+            VoronoiEdge ve = new() { LeftData = ((VDataNode)c).DataPoint, RightData = e.DataPoint, VVertexA = Fortune.VVUnkown, VVertexB = Fortune.VVUnkown };
             vg.Edges.Add(ve);
 
             VNode subRoot;
@@ -244,8 +243,7 @@ namespace DotSpatial.NTSExtension.Voronoi
             VNode c = root;
             do
             {
-                var node = c as VDataNode;
-                if (node != null) return node;
+                if (c is VDataNode node) return node;
                 c = ((VEdgeNode)c).Cut(ys, x) < 0 ? c.Left : c.Right;
             }
             while (true);

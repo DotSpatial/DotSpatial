@@ -522,7 +522,7 @@ namespace DotSpatial.Data
         /// <returns>A list of extensions.</returns>
         public virtual List<string> GetSupportedExtensions(string dialogFilter)
         {
-            List<string> extensions = new List<string>();
+            List<string> extensions = new();
             string[] formats = dialogFilter.Split('|');
             char[] wild = { '*' };
 

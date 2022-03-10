@@ -81,22 +81,19 @@ namespace DotSpatial.Controls
             if (layers is IGroup) layers = layers.Reverse();
             foreach (var lr in layers)
             {
-                var grp = lr as IGroup;
-                if (grp != null)
+                if (lr is IGroup grp)
                 {
                     Identify(grp, strict, tolerant);
                 }
                 else
                 {
-                    var gfl = lr as IMapFeatureLayer;
-                    if (gfl != null && gfl.IsVisible)
+                    if (lr is IMapFeatureLayer gfl && gfl.IsVisible)
                     {
                         _frmFeatureIdentifier.Add(gfl, gfl.DataSet.FeatureType == FeatureType.Polygon ? strict : tolerant);
                         continue;
                     }
 
-                    var rl = lr as IMapRasterLayer;
-                    if (rl != null)
+                    if (lr is IMapRasterLayer rl)
                     {
                         _frmFeatureIdentifier.Add(rl, strict);
                     }
@@ -114,9 +111,7 @@ namespace DotSpatial.Controls
 
             var selectedNode = _frmFeatureIdentifier.treFeatures.SelectedNode;
             if (selectedNode?.Parent == null) return;
-            var feature = selectedNode.Tag as IFeature;
-            var layer = selectedNode.Parent.Tag as IFeatureLayer;
-            if (feature != null && layer != null && layer.IsVisible)
+            if (selectedNode.Tag is IFeature feature && selectedNode.Parent.Tag is IFeatureLayer layer && layer.IsVisible)
             {
                 layer.Select(feature);
             }

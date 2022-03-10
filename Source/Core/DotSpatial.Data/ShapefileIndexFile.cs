@@ -68,7 +68,7 @@ namespace DotSpatial.Data
         public void Save()
         {
             WriteHeader(Header, Filename, Shapes.Count);
-            FileStream bw = new FileStream(Filename, FileMode.Append);
+            FileStream bw = new(Filename, FileMode.Append);
             try
             {
                 foreach (ShapeHeader shape in Shapes)
@@ -120,10 +120,10 @@ namespace DotSpatial.Data
             }
 
             // This will store the header elements that we read from the file.
-            List<ShapeHeader> result = new List<ShapeHeader>();
+            List<ShapeHeader> result = new();
 
             // Use a the length of the file to dimension the byte array
-            BufferedBinaryReader bbReader = new BufferedBinaryReader(shxFilename);
+            BufferedBinaryReader bbReader = new(shxFilename);
 
             if (bbReader.FileLength == 100)
             {
@@ -141,7 +141,7 @@ namespace DotSpatial.Data
             long numRecords = length / 8; // Each record consists of 2 Big-endian integers for a total of 8 bytes.
             for (long i = 0; i < numRecords; i++)
             {
-                ShapeHeader sh = new ShapeHeader
+                ShapeHeader sh = new()
                 {
                     Offset = bbReader.ReadInt32(false),
                     ContentLength = bbReader.ReadInt32(false)
@@ -170,7 +170,7 @@ namespace DotSpatial.Data
                 }
             }
 
-            FileStream bbWriter = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None, 100);
+            FileStream bbWriter = new(fileName, FileMode.Create, FileAccess.Write, FileShare.None, 100);
 
             bbWriter.WriteBe(header.FileCode);       // Byte 0          File Code       9994        Integer     Big
 

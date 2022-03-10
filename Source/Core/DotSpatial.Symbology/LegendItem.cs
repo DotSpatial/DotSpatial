@@ -373,7 +373,7 @@ namespace DotSpatial.Symbology
             }
 
             Brush b = new SolidBrush(fontColor);
-            StringFormat frmt = new StringFormat
+            StringFormat frmt = new()
             {
                 Alignment = StringAlignment.Near,
                 Trimming = StringTrimming.EllipsisCharacter

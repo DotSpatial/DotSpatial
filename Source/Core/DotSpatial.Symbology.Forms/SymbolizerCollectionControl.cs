@@ -231,7 +231,7 @@ namespace DotSpatial.Symbology.Forms
             if (sym != null)
             {
                 g.FillRectangle(Brushes.White, rect);
-                GraphicsPath gp = new GraphicsPath();
+                GraphicsPath gp = new();
                 gp.AddLine(10, rect.Height / 2, rect.Width - 20, rect.Height / 2);
                 foreach (IStroke stroke in sym.Strokes)
                 {
@@ -277,7 +277,7 @@ namespace DotSpatial.Symbology.Forms
             if (sym != null)
             {
                 g.Clear(Color.White);
-                Rectangle rect2 = new Rectangle(5, 5, rect.Width - 10, rect.Height - 10);
+                Rectangle rect2 = new(5, 5, rect.Width - 10, rect.Height - 10);
                 sym.Draw(g, rect2);
             }
         }
@@ -290,8 +290,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void BtnDownClick(object sender, EventArgs e)
         {
-            IFeatureSymbolizer sym = lbxItems.SelectedItem as IFeatureSymbolizer;
-            if (sym == null) return;
+            if (lbxItems.SelectedItem is not IFeatureSymbolizer sym) return;
             _symbolizers.DecreaseIndex(sym);
             RefreshList();
             lbxItems.SelectedItem = sym;
@@ -317,8 +316,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void BtnUpClick(object sender, EventArgs e)
         {
-            IFeatureSymbolizer sym = lbxItems.SelectedItem as IFeatureSymbolizer;
-            if (sym == null) return;
+            if (lbxItems.SelectedItem is not IFeatureSymbolizer sym) return;
             _symbolizers.IncreaseIndex(sym);
             RefreshList();
             lbxItems.SelectedItem = sym;
@@ -330,7 +328,7 @@ namespace DotSpatial.Symbology.Forms
             if (e.Index == -1) return;
 
             // prepare to draw the rectangle for symbol display and selection
-            Rectangle outer = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
+            Rectangle outer = new(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
                 e.Graphics.FillRectangle(SystemBrushes.Highlight, outer);
@@ -342,27 +340,24 @@ namespace DotSpatial.Symbology.Forms
                 b.Dispose();
             }
 
-            Rectangle inner = new Rectangle(e.Bounds.X + 5, e.Bounds.Y + 1, e.Bounds.Width - 10, e.Bounds.Height - 3);
+            Rectangle inner = new(e.Bounds.X + 5, e.Bounds.Y + 1, e.Bounds.Width - 10, e.Bounds.Height - 3);
             e.Graphics.FillRectangle(Brushes.White, inner);
             e.Graphics.DrawRectangle(Pens.Black, inner);
 
             // draw the symbolizer itself
-            PointSymbolizer pointSym = lbxItems.Items[e.Index] as PointSymbolizer;
-            if (pointSym != null)
+            if (lbxItems.Items[e.Index] is PointSymbolizer pointSym)
             {
                 DrawPointSymbolizer(pointSym, e.Graphics, inner);
                 return;
             }
 
-            LineSymbolizer lineSym = lbxItems.Items[e.Index] as LineSymbolizer;
-            if (lineSym != null)
+            if (lbxItems.Items[e.Index] is LineSymbolizer lineSym)
             {
                 DrawLineSymbolizer(lineSym, e.Graphics, inner);
                 return;
             }
 
-            PolygonSymbolizer polySym = lbxItems.Items[e.Index] as PolygonSymbolizer;
-            if (polySym != null)
+            if (lbxItems.Items[e.Index] is PolygonSymbolizer polySym)
             {
                 DrawPolygonSymbolizer(polySym, e.Graphics, inner);
             }

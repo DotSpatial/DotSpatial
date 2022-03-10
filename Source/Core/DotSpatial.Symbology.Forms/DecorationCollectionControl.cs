@@ -173,8 +173,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void BtnDownClick(object sender, EventArgs e)
         {
-            ILineDecoration lineDecoration = lbxItems.SelectedItem as ILineDecoration;
-            if (lineDecoration == null) return;
+            if (lbxItems.SelectedItem is not ILineDecoration lineDecoration) return;
             _decorations.DecreaseIndex(lineDecoration);
             RefreshList();
             lbxItems.SelectedItem = lineDecoration;
@@ -200,8 +199,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void BtnUpClick(object sender, EventArgs e)
         {
-            ILineDecoration lineDecoration = lbxItems.SelectedItem as ILineDecoration;
-            if (lineDecoration == null) return;
+            if (lbxItems.SelectedItem is not ILineDecoration lineDecoration) return;
             _decorations.IncreaseIndex(lineDecoration);
             RefreshList();
             lbxItems.SelectedItem = lineDecoration;
@@ -210,7 +208,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void LbxItemsDrawItem(object sender, DrawItemEventArgs e)
         {
-            Rectangle outer = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
+            Rectangle outer = new(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
                 e.Graphics.FillRectangle(SystemBrushes.Highlight, outer);
@@ -222,14 +220,13 @@ namespace DotSpatial.Symbology.Forms
                 b.Dispose();
             }
 
-            Rectangle inner = new Rectangle(e.Bounds.X + 5, e.Bounds.Y + 1, e.Bounds.Width - 10, e.Bounds.Height - 3);
+            Rectangle inner = new(e.Bounds.X + 5, e.Bounds.Y + 1, e.Bounds.Width - 10, e.Bounds.Height - 3);
             e.Graphics.FillRectangle(Brushes.White, inner);
             e.Graphics.DrawRectangle(Pens.Black, inner);
             int index = (e.Index < 0) ? 0 : e.Index;
             if (lbxItems.Items.Count == 0) return;
-            ILineDecoration lineDecoration = lbxItems.Items[index] as ILineDecoration;
-            if (lineDecoration == null) return;
-            GraphicsPath gp = new GraphicsPath();
+            if (lbxItems.Items[index] is not ILineDecoration lineDecoration) return;
+            GraphicsPath gp = new();
             gp.AddLine(new Point(e.Bounds.X + 10, e.Bounds.Y + (e.Bounds.Height / 2)), new Point(e.Bounds.Width - 10, e.Bounds.Y + (e.Bounds.Height / 2)));
             lineDecoration.Draw(e.Graphics, gp, 1);
             gp.Dispose();

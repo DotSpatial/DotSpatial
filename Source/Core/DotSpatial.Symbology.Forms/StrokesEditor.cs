@@ -36,7 +36,7 @@ namespace DotSpatial.Symbology.Forms
             _original = context?.Instance as ILineSymbolizer;
             IWindowsFormsEditorService dialogProvider = (IWindowsFormsEditorService)provider?.GetService(typeof(IWindowsFormsEditorService));
             _editCopy = _original.Copy();
-            DetailedLineSymbolDialog dialog = new DetailedLineSymbolDialog(_editCopy);
+            DetailedLineSymbolDialog dialog = new(_editCopy);
             dialog.ChangesApplied += DialogChangesApplied;
             if (_original != null && dialogProvider != null)
                 return dialogProvider.ShowDialog(dialog) != DialogResult.OK ? _original.Strokes : _editCopy.Strokes;

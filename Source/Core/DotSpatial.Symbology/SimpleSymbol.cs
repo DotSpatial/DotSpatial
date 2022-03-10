@@ -132,8 +132,8 @@ namespace DotSpatial.Symbology
         /// <param name="scaledSize">The size to fit the ellipse into (the ellipse will be centered at 0, 0).</param>
         public static void AddEllipse(GraphicsPath gp, SizeF scaledSize)
         {
-            PointF upperLeft = new PointF(-scaledSize.Width / 2, -scaledSize.Height / 2);
-            RectangleF destRect = new RectangleF(upperLeft, scaledSize);
+            PointF upperLeft = new(-scaledSize.Width / 2, -scaledSize.Height / 2);
+            RectangleF destRect = new(upperLeft, scaledSize);
             gp.AddEllipse(destRect);
         }
 
@@ -180,8 +180,8 @@ namespace DotSpatial.Symbology
         /// <param name="scaledSize">The size to fit the ellipse into (the ellipse will be centered at 0, 0).</param>
         public static void DrawEllipse(Graphics g, Pen scaledBorderPen, Brush fillBrush, SizeF scaledSize)
         {
-            PointF upperLeft = new PointF(-scaledSize.Width / 2, -scaledSize.Height / 2);
-            RectangleF destRect = new RectangleF(upperLeft, scaledSize);
+            PointF upperLeft = new(-scaledSize.Width / 2, -scaledSize.Height / 2);
+            RectangleF destRect = new(upperLeft, scaledSize);
             if (fillBrush != null)
             {
                 g.FillEllipse(fillBrush, destRect);
@@ -275,9 +275,9 @@ namespace DotSpatial.Symbology
             if (scaleSize == 0) return;
             if (Size.Width == 0 || Size.Height == 0) return;
 
-            SizeF size = new SizeF((float)(scaleSize * Size.Width), (float)(scaleSize * Size.Height));
+            SizeF size = new((float)(scaleSize * Size.Width), (float)(scaleSize * Size.Height));
             Brush fillBrush = new SolidBrush(Color);
-            GraphicsPath gp = new GraphicsPath();
+            GraphicsPath gp = new();
             switch (PointShape)
             {
                 case PointShape.Diamond:

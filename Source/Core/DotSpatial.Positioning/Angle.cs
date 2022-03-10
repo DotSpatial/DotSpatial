@@ -109,7 +109,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         ///
         /// <value>An Angle with a value of -359.999999°.</value>
-        public static readonly Angle Minimum = new Angle(-359.99999999);
+        public static readonly Angle Minimum = new(-359.99999999);
 
         /// <summary>
         /// Represents an angle with no value.
@@ -117,12 +117,12 @@ namespace DotSpatial.Positioning
         /// <value>An Angle containing a value of zero (0°).</value>
         ///
         /// <seealso cref="IsEmpty">IsEmpty Property</seealso>
-        public static readonly Angle Empty = new Angle(0.0);
+        public static readonly Angle Empty = new(0.0);
 
         /// <summary>
         /// Represents an angle with infinite value.
         /// </summary>
-        public static readonly Angle Infinity = new Angle(double.PositiveInfinity);
+        public static readonly Angle Infinity = new(double.PositiveInfinity);
 
         /// <summary>
         /// Represents the maximum value of an angle in one turn of a circle.
@@ -136,12 +136,12 @@ namespace DotSpatial.Positioning
         /// Angle MyAngle = Angle.Maximum;
         ///   </code>
         ///   </example>
-        public static readonly Angle Maximum = new Angle(359.99999999);
+        public static readonly Angle Maximum = new(359.99999999);
 
         /// <summary>
         /// Represents an invalid or unspecified value.
         /// </summary>
-        public static readonly Angle Invalid = new Angle(double.NaN);
+        public static readonly Angle Invalid = new(double.NaN);
 
         #endregion Fields
 
@@ -290,7 +290,7 @@ namespace DotSpatial.Positioning
             try
             {
                 // Clean up the string
-                StringBuilder newValue = new StringBuilder(value);
+                StringBuilder newValue = new(value);
                 newValue.Replace("°", " ").Replace("'", " ").Replace("\"", " ").Replace("  ", " ");
                 // Now split the values into an array
                 string[] values = newValue.ToString().Trim().Split(' ');

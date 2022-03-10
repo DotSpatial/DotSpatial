@@ -137,7 +137,7 @@ namespace DotSpatial.Tools
                 return;
             }
 
-            List<string> fields = new List<string>();
+            List<string> fields = new();
             IFeatureSet fs = _inputParam[0].Value as IFeatureSet;
             DataTable dt = fs?.DataTable;
             if (dt == null)

@@ -174,7 +174,7 @@ namespace DotSpatial.Projections.Transforms
                 {
                     sinphi = Math.Sin(_phi2);
                     _n = Math.Log(m1 / Proj.Msfn(sinphi, Math.Cos(_phi2), Es));
-                    _n = _n / Math.Log(ml1 / Proj.Tsfn(_phi2, sinphi, E));
+                    _n /= Math.Log(ml1 / Proj.Tsfn(_phi2, sinphi, E));
                 }
                 _rho0 = m1 * Math.Pow(ml1, -_n) / _n;
                 _c = _rho0;

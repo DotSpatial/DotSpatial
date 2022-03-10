@@ -106,7 +106,7 @@ namespace DotSpatial.Symbology
         /// <returns>The resulting list of double precision data coordinates.</returns>
         public List<Coordinate> DrawWindowToProj(PointF[] inPoints)
         {
-            List<Coordinate> result = new List<Coordinate>();
+            List<Coordinate> result = new();
 
             double minX = MinX;
             double minY = MinY;
@@ -131,7 +131,7 @@ namespace DotSpatial.Symbology
         /// <returns>The resulting double precision envelope.</returns>
         public Envelope DrawWindowToProj(RectangleF window)
         {
-            PointF lr = new PointF(window.Right, window.Bottom);
+            PointF lr = new(window.Right, window.Bottom);
             return new Envelope(DrawWindowToProj(window.Location), DrawWindowToProj(lr));
         }
 

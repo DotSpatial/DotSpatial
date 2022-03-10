@@ -83,7 +83,7 @@ namespace DotSpatial.Data
         /// <returns>A double value that is the shortest distance from the given Point to this line segment.</returns>
         public double DistanceTo(Coordinate point)
         {
-            Vertex p = new Vertex(point.X, point.Y);
+            Vertex p = new(point.X, point.Y);
             Vertex pt = ClosestPointTo(p);
             var dist = new Vector2D(new Coordinate(pt.X, pt.Y), point);
             return dist.Length();
@@ -119,7 +119,7 @@ namespace DotSpatial.Data
 
             // http://softsurfer.com/Archive/algorithm_0102/algorithm_0102.htm
             var v = ToVector2D(); // vector from p1 to p2 in the segment
-            Vector2D w = new Vector2D(new Coordinate(P1.X, P1.Y), new Coordinate(point.X, point.Y));
+            Vector2D w = new(new Coordinate(P1.X, P1.Y), new Coordinate(point.X, point.Y));
 
             double c1 = w.Dot(v); // the dot product represents the projection onto the line
 
@@ -144,7 +144,7 @@ namespace DotSpatial.Data
             endPointFlag = EndPointInteraction.OnLine;
             double b = c1 / c2;
             v *= b;
-            Vertex pb = new Vertex(P1.X + v.X, P1.Y + v.Y);
+            Vertex pb = new(P1.X + v.X, P1.Y + v.Y);
             return pb;
         }
 

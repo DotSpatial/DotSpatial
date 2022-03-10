@@ -686,19 +686,17 @@ namespace DotSpatial.Controls
             {
                 if (le is LayoutBitmap) continue;
 
-                using (var sfd = new SaveFileDialog
+                using var sfd = new SaveFileDialog
                 {
                     FileName = le.Name,
                     Filter = @"Portable Network Graphics (*.png)|*.png|Joint Photographic Experts Group (*.jpg)|*.jpg|Microsoft Bitmap (*.bmp)|*.bmp|Graphics Interchange Format (*.gif)|*.gif|Tagged Image File (*.tif)|*.tif",
                     FilterIndex = 1,
                     AddExtension = true
-                })
-                {
-                    if (sfd.ShowDialog(this) == DialogResult.Cancel)
-                        return;
+                };
+                if (sfd.ShowDialog(this) == DialogResult.Cancel)
+                    return;
 
-                    ConvertElementToBitmap(le, sfd.FileName);
-                }
+                ConvertElementToBitmap(le, sfd.FileName);
             }
         }
 
@@ -764,15 +762,13 @@ namespace DotSpatial.Controls
             //    Bitmap outputBitmap = new Bitmap(widthInch * PPI, heightInch * PPI);
             //     outputBitmap.SetResolution(PPI, PPI);
             //     outputBitmap.graphicsUnit = graphicsUnits.Display;
-            using (var outputBitmap = new Bitmap(PaperWidth, PaperHeight))
-            using (var g = Graphics.FromImage(outputBitmap))
-            {
-                var paperRect = new RectangleF(0F, 0F, PaperWidth, PaperHeight);
-                g.FillRectangle(Brushes.White, paperRect.X, paperRect.Y, paperRect.Width, paperRect.Height);
-                g.DrawRectangle(Pens.Black, paperRect.X, paperRect.Y, paperRect.Width - 1, paperRect.Height - 1);
-                DrawPage(g);
-                outputBitmap.Save(fileName);
-            }
+            using var outputBitmap = new Bitmap(PaperWidth, PaperHeight);
+            using var g = Graphics.FromImage(outputBitmap);
+            var paperRect = new RectangleF(0F, 0F, PaperWidth, PaperHeight);
+            g.FillRectangle(Brushes.White, paperRect.X, paperRect.Y, paperRect.Width, paperRect.Height);
+            g.DrawRectangle(Pens.Black, paperRect.X, paperRect.Y, paperRect.Width - 1, paperRect.Height - 1);
+            DrawPage(g);
+            outputBitmap.Save(fileName);
         }
 
         /// <summary>
@@ -811,12 +807,10 @@ namespace DotSpatial.Controls
                     bitmap.SetAttribute("Filename", lb.Filename);
                     if (lb.Bitmap != null)
                     {
-                        using (var mStr = new MemoryStream())
-                        {
-                            lb.Bitmap.Save(mStr, ImageFormat.Png);
-                            var bitmapData = Convert.ToBase64String(mStr.ToArray());
-                            bitmap.SetAttribute("BitmapData", bitmapData);
-                        }
+                        using var mStr = new MemoryStream();
+                        lb.Bitmap.Save(mStr, ImageFormat.Png);
+                        var bitmapData = Convert.ToBase64String(mStr.ToArray());
+                        bitmap.SetAttribute("BitmapData", bitmapData);
                     }
 
                     bitmap.SetAttribute("PreserveAspectRatio", lb.PreserveAspectRatio.ToString());
@@ -932,29 +926,27 @@ namespace DotSpatial.Controls
                     SaveLayout(true);
             }
 
-            using (var ofd = new OpenFileDialog
+            using var ofd = new OpenFileDialog
             {
                 Title = MessageStrings.LayoutLoadDialogTitle,
                 CheckFileExists = true,
                 Filter = @"DotSpatial Layout File (*.mwl)|*.mwl",
                 Multiselect = false
-            })
+            };
+            if (!string.IsNullOrWhiteSpace(InitialOpenFileDirectory) && Directory.Exists(InitialOpenFileDirectory))
             {
-                if (!string.IsNullOrWhiteSpace(InitialOpenFileDirectory) && Directory.Exists(InitialOpenFileDirectory))
-                {
-                    ofd.InitialDirectory = InitialOpenFileDirectory;
-                }
+                ofd.InitialDirectory = InitialOpenFileDirectory;
+            }
 
-                if (ofd.ShowDialog(this) == DialogResult.OK)
+            if (ofd.ShowDialog(this) == DialogResult.OK)
+            {
+                try
                 {
-                    try
-                    {
-                        LoadLayout(ofd.FileName, loadPaperSettings, promptPaperMismatch);
-                    }
-                    catch (Exception e)
-                    {
-                        MessageBox.Show(MessageStrings.LayoutErrorLoad + e.Message, MessageStrings.LayoutControl_DotSpatialPrintLayout, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    LoadLayout(ofd.FileName, loadPaperSettings, promptPaperMismatch);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(MessageStrings.LayoutErrorLoad + e.Message, MessageStrings.LayoutControl_DotSpatialPrintLayout, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -1426,12 +1418,10 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ShowChoosePrinterDialog()
         {
-            using (var pd = new PrintDialog())
-            {
-                pd.PrinterSettings = _printerSettings;
-                pd.ShowDialog();
-                Invalidate();
-            }
+            using var pd = new PrintDialog();
+            pd.PrinterSettings = _printerSettings;
+            pd.ShowDialog();
+            Invalidate();
         }
 
         /// <summary>
@@ -1441,11 +1431,9 @@ namespace DotSpatial.Controls
         {
             if (_printerSettings.IsValid)
             {
-                using (var setupFrom = new PageSetupForm(_printerSettings))
-                {
-                    setupFrom.ShowDialog(this);
-                    Invalidate();
-                }
+                using var setupFrom = new PageSetupForm(_printerSettings);
+                setupFrom.ShowDialog(this);
+                Invalidate();
             }
             else
             {

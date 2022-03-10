@@ -73,17 +73,15 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <param name="e">The event args.</param>
         private void CmdSelectClick(object sender, EventArgs e)
         {
-            using (ProjectionSelectDialog dlg = new ProjectionSelectDialog())
+            using ProjectionSelectDialog dlg = new();
+            if (dlg.ShowDialog() != DialogResult.OK) return;
+            if (Param == null)
             {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                if (Param == null)
-                {
-                    Param = new ProjectionParam("destination projection", dlg.SelectedCoordinateSystem);
-                }
-                else
-                {
-                    Param.Value = dlg.SelectedCoordinateSystem;
-                }
+                Param = new ProjectionParam("destination projection", dlg.SelectedCoordinateSystem);
+            }
+            else
+            {
+                Param.Value = dlg.SelectedCoordinateSystem;
             }
         }
 

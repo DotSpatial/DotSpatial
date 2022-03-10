@@ -81,8 +81,8 @@ namespace DotSpatial.Controls
                 }
 
                 IsDragging = true;
-                Point diff = new Point
-                             {
+                Point diff = new()
+                {
                                  X = _dragStart.X - e.X,
                                  Y = _dragStart.Y - e.Y
                              };

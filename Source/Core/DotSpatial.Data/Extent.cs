@@ -266,7 +266,7 @@ namespace DotSpatial.Data
             {
                 double zmin, zmax;
                 nameFailed = "Z";
-                ExtentMz mz = new ExtentMz();
+                ExtentMz mz = new();
                 if (!TryExtract(text, "Z", out zmin, out zmax)) return false;
                 mz.MinZ = zmin;
                 mz.MaxZ = zmax;
@@ -279,7 +279,7 @@ namespace DotSpatial.Data
             else if (text.Contains("M"))
             {
                 nameFailed = "M";
-                ExtentM me = new ExtentM();
+                ExtentM me = new();
                 if (!TryExtract(text, "M", out mmin, out mmax)) return false;
                 me.MinM = mmin;
                 me.MaxM = mmax;
@@ -373,8 +373,7 @@ namespace DotSpatial.Data
             // ReSharper disable once BaseObjectEqualsIsObjectEquals
             if (base.Equals(obj)) return true;
 
-            IExtent other = obj as IExtent;
-            if (other == null) return false;
+            if (obj is not IExtent other) return false;
 
             return MinX == other.MinX && MinY == other.MinY && MaxX == other.MaxX && MaxY == other.MaxY;
         }
@@ -453,7 +452,7 @@ namespace DotSpatial.Data
         {
             if (Equals(other, null)) throw new ArgumentNullException(nameof(other));
 
-            Extent result = new Extent
+            Extent result = new()
             {
                 MinX = MinX > other.MinX ? MinX : other.MinX,
                 MaxX = MaxX < other.MaxX ? MaxX : other.MaxX,

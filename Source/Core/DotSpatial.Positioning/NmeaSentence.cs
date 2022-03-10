@@ -297,7 +297,7 @@ namespace DotSpatial.Positioning
         /// <returns>Position.Invalid, if the Words array is to short or at least one of the fields is empty.</returns>
         protected Position ParsePosition(int latitudeValuePosition, int latitudeHemispherePosition, int longitudeValuePosition, int longitudeHemispherePosition)
         {
-            List<int> positions = new List<int> { latitudeValuePosition, latitudeHemispherePosition, longitudeValuePosition, longitudeHemispherePosition };
+            List<int> positions = new() { latitudeValuePosition, latitudeHemispherePosition, longitudeValuePosition, longitudeHemispherePosition };
 
             if (Words.Length <= positions.Max() || positions.Any(pos => Words[pos].Length < 1)) // not enough words or empty field result in invalid position
                 return Position.Invalid;

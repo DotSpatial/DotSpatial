@@ -99,7 +99,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        private Longitude _magneticVariation = new Longitude(1.0);
+        private Longitude _magneticVariation = new(1.0);
 
         // Random emulation variables
         /// <summary>

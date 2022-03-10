@@ -45,7 +45,7 @@ namespace DotSpatial.Data
             _fileStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read);
             _binaryReader = new BinaryReader(_fileStream);
 
-            FileInfo fi = new FileInfo(fileName);
+            FileInfo fi = new(fileName);
 
             FileLength = fi.Length;
             FileOffset = 0;

@@ -241,8 +241,8 @@ namespace DotSpatial.Symbology
             for (int i = 0; i < 4; i++)
             {
                 Position2D corner = corners[i];
-                Position2D rotated = new Position2D((corner.X * Math.Cos(radians)) - (corner.Y * Math.Sin(radians)), (corner.X * Math.Sin(radians)) + (corner.Y * Math.Cos(radians)));
-                Position2D shifted = new Position2D(rotated.X + _offset.X, rotated.Y + _offset.Y);
+                Position2D rotated = new((corner.X * Math.Cos(radians)) - (corner.Y * Math.Sin(radians)), (corner.X * Math.Sin(radians)) + (corner.Y * Math.Cos(radians)));
+                Position2D shifted = new(rotated.X + _offset.X, rotated.Y + _offset.Y);
 
                 if (Math.Abs(shifted.X) > x) x = Math.Abs(shifted.X);
                 if (Math.Abs(shifted.Y) > y) y = Math.Abs(shifted.Y);
@@ -333,10 +333,10 @@ namespace DotSpatial.Symbology
         /// <param name="value">The double precision value to scale by.</param>
         protected virtual void OnScale(double value)
         {
-            _size.Width = _size.Width * value;
-            _size.Height = _size.Height * value;
-            _offset.X = _offset.X * value;
-            _offset.Y = _offset.Y * value;
+            _size.Width *= value;
+            _size.Height *= value;
+            _offset.X *= value;
+            _offset.Y *= value;
         }
 
         private void SetInnerSymbol(SymbolType type)

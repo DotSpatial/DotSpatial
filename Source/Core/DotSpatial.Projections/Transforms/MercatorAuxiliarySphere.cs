@@ -185,7 +185,7 @@ namespace DotSpatial.Projections.Transforms
 
             if (projInfo.AuxiliarySphereType == AuxiliarySphereType.AuthalicWithConvertedLatitudes)
             {
-                Spheroid sph = new Spheroid(Proj4Ellipsoid.WGS_1984);
+                Spheroid sph = new(Proj4Ellipsoid.WGS_1984);
                 _ae = Math.Acos(sph.PolarRadius / sph.EquatorialRadius);
                 _geodeticToAuthalic = true;
             }

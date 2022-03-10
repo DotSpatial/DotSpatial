@@ -150,7 +150,7 @@ namespace DotSpatial.Symbology
                 throw new PolygonFeatureTypeException();
             }
 
-            PolygonScheme ps = new PolygonScheme();
+            PolygonScheme ps = new();
             ps.SetParentItem(this);
             Symbology = ps;
         }

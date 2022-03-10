@@ -98,27 +98,27 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents a longitude of 0°.
         /// </summary>
-        public static readonly Longitude PrimeMeridian = new Longitude(0.0);
+        public static readonly Longitude PrimeMeridian = new(0.0);
         /// <summary>
         /// Represents a longitude 180°.
         /// </summary>
-        public static readonly Longitude InternationalDateline = new Longitude(180.0);
+        public static readonly Longitude InternationalDateline = new(180.0);
         /// <summary>
         /// Represents a longitude of 0°.
         /// </summary>
-        public static readonly Longitude Empty = new Longitude(0.0);
+        public static readonly Longitude Empty = new(0.0);
         /// <summary>
         /// Represents the minimum possible longitude of -180°.
         /// </summary>
-        public static readonly Longitude Minimum = new Longitude(-180.0);
+        public static readonly Longitude Minimum = new(-180.0);
         /// <summary>
         /// Represents the maximum possible longitude of 180°.
         /// </summary>
-        public static readonly Longitude Maximum = new Longitude(180.0);
+        public static readonly Longitude Maximum = new(180.0);
         /// <summary>
         /// Represents an invalid or unspecified value.
         /// </summary>
-        public static readonly Longitude Invalid = new Longitude(double.NaN);
+        public static readonly Longitude Invalid = new(double.NaN);
 
         #endregion Fields
 
@@ -419,7 +419,7 @@ namespace DotSpatial.Positioning
                 culture = CultureInfo.CurrentCulture;
 
             // We'll be replacing and trimming a lot, so use a Stringbuilder
-            StringBuilder newValue = new StringBuilder(value);
+            StringBuilder newValue = new(value);
 
             // Try to extract the hemisphere
             LongitudeHemisphere hemisphere = LongitudeHemisphere.None;

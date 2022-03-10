@@ -65,33 +65,28 @@ namespace DotSpatial.Symbology.Forms
             if (symbolizer == null) return;
 
             _symbolizer = symbolizer;
-            using (Graphics g = CreateGraphics())
+            using Graphics g = CreateGraphics();
+            Rectangle rect = new(0, 0, Width, Height);
+
+            if (symbolizer is PointSymbolizer pointSymbolizer)
             {
-                Rectangle rect = new Rectangle(0, 0, Width, Height);
+                DrawPointSymbolizer(pointSymbolizer, g, rect);
+                return;
+            }
 
-                var pointSymbolizer = symbolizer as PointSymbolizer;
-                if (pointSymbolizer != null)
-                {
-                    DrawPointSymbolizer(pointSymbolizer, g, rect);
-                    return;
-                }
+            if (symbolizer is LineSymbolizer lineSymbolizer)
+            {
+                DrawLineSymbolizer(lineSymbolizer, g, rect);
+                return;
+            }
 
-                var lineSymbolizer = symbolizer as LineSymbolizer;
-                if (lineSymbolizer != null)
-                {
-                    DrawLineSymbolizer(lineSymbolizer, g, rect);
-                    return;
-                }
-
-                var polygonSymbolizer = symbolizer as PolygonSymbolizer;
-                if (polygonSymbolizer != null)
-                {
-                    DrawPolygonSymbolizer(polygonSymbolizer, g, rect);
-                }
-                else
-                {
-                    symbolizer.Draw(g, rect);
-                }
+            if (symbolizer is PolygonSymbolizer polygonSymbolizer)
+            {
+                DrawPolygonSymbolizer(polygonSymbolizer, g, rect);
+            }
+            else
+            {
+                symbolizer.Draw(g, rect);
             }
         }
 
@@ -117,7 +112,7 @@ namespace DotSpatial.Symbology.Forms
             if (sym != null)
             {
                 g.FillRectangle(Brushes.White, rect);
-                GraphicsPath gp = new GraphicsPath();
+                GraphicsPath gp = new();
                 gp.AddLine(10, rect.Height / 2, rect.Width - 20, rect.Height / 2);
                 foreach (IStroke stroke in sym.Strokes)
                 {
@@ -151,7 +146,7 @@ namespace DotSpatial.Symbology.Forms
             if (sym != null)
             {
                 g.Clear(Color.White);
-                Rectangle rect2 = new Rectangle(5, 5, rect.Width - 10, rect.Height - 10);
+                Rectangle rect2 = new(5, 5, rect.Width - 10, rect.Height - 10);
                 sym.Draw(g, rect2);
             }
         }

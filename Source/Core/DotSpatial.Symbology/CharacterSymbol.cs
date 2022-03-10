@@ -298,30 +298,30 @@ namespace DotSpatial.Symbology
         /// <returns>A list of supported character subsets.</returns>
         public IList<CharacterSubset> GetSupportedSubsets()
         {
-            List<CharacterSubset> result = new List<CharacterSubset>();
+            List<CharacterSubset> result = new();
 
-            PointF topLeft = new PointF(0F, 0F);
-            Font arialFont = new Font("Arial", 10F, FontStyle.Regular, GraphicsUnit.Pixel);
-            Font testFont = new Font(_fontFamilyName, 10F, FontStyle.Regular, GraphicsUnit.Pixel); // ensure it will fit on bitmap
+            PointF topLeft = new(0F, 0F);
+            Font arialFont = new("Arial", 10F, FontStyle.Regular, GraphicsUnit.Pixel);
+            Font testFont = new(_fontFamilyName, 10F, FontStyle.Regular, GraphicsUnit.Pixel); // ensure it will fit on bitmap
 
-            Bitmap empty = new Bitmap(20, 20);
+            Bitmap empty = new(20, 20);
             Graphics g = Graphics.FromImage(empty);
             g.DrawString(((char)1024).ToString(), arialFont, Brushes.Black, topLeft);
             g.Dispose();
-            BitmapGrid emptyGrid = new BitmapGrid(empty);
+            BitmapGrid emptyGrid = new(empty);
 
             Array subsets = Enum.GetValues(typeof(CharacterSubset));
 
             foreach (CharacterSubset code in subsets)
             {
                 char c = (char)code; // first character of each subset
-                Bitmap firstChar = new Bitmap(20, 20);
+                Bitmap firstChar = new(20, 20);
                 Graphics tg = Graphics.FromImage(firstChar);
                 tg.DrawString(c.ToString(), testFont, Brushes.Black, topLeft);
                 tg.Dispose();
 
                 // Bitmap grids allow a byte by byte comparison between values
-                BitmapGrid firstCharGrid = new BitmapGrid(firstChar);
+                BitmapGrid firstCharGrid = new(firstChar);
                 if (emptyGrid.Matches(firstCharGrid) == false)
                 {
                     // Since this symbol is different from the default unsuported symbol
@@ -371,9 +371,9 @@ namespace DotSpatial.Symbology
         {
             // base.OnDraw(g, scaleSize); // handle rotation etc.
             Brush b = new SolidBrush(_color);
-            string txt = new string(new[] { _character });
+            string txt = new(new[] { _character });
             float fontPointSize = (float)(Size.Height * scaleSize);
-            Font fnt = new Font(_fontFamilyName, fontPointSize, _style, GraphicsUnit.Pixel);
+            Font fnt = new(_fontFamilyName, fontPointSize, _style, GraphicsUnit.Pixel);
             SizeF fSize = g.MeasureString(txt, fnt);
             float x = -fSize.Width / 2;
             float y = -fSize.Height / 2;

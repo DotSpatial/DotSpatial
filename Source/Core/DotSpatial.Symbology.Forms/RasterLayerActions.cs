@@ -19,12 +19,10 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="raster">The raster that contains the data that gets exported.</param>
         public void ExportData(IRaster raster)
         {
-            using (var sfd = new SaveFileDialog { Filter = DataManager.DefaultDataManager.RasterWriteFilter })
+            using var sfd = new SaveFileDialog { Filter = DataManager.DefaultDataManager.RasterWriteFilter };
+            if (ShowDialog(sfd) == DialogResult.OK)
             {
-                if (ShowDialog(sfd) == DialogResult.OK)
-                {
-                    raster.SaveAs(sfd.FileName);
-                }
+                raster.SaveAs(sfd.FileName);
             }
         }
 
@@ -34,10 +32,8 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="layer">The raster layer.</param>
         public void ShowProperties(IRasterLayer layer)
         {
-            using (var dlg = new LayerDialog(layer, new RasterCategoryControl()))
-            {
-                ShowDialog(dlg);
-            }
+            using var dlg = new LayerDialog(layer, new RasterCategoryControl());
+            ShowDialog(dlg);
         }
 
         #endregion

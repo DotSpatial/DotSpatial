@@ -195,7 +195,7 @@ namespace DotSpatial.Data
             // Byte 92         Bounding Box    Mmax        Double      Little
 
             // This may throw an IOException if the file is already in use.
-            BufferedBinaryReader bbReader = new BufferedBinaryReader(Filename);
+            BufferedBinaryReader bbReader = new(Filename);
 
             bbReader.FillBuffer(100); // we only need to read 100 bytes from the header.
 
@@ -230,7 +230,7 @@ namespace DotSpatial.Data
 
             bbReader.Dispose();
 
-            FileInfo fi = new FileInfo(ShxFilename);
+            FileInfo fi = new(ShxFilename);
             if (fi.Exists)
             {
                 ShxLength = Convert.ToInt32(fi.Length / 2); // length is in 16 bit words.
@@ -327,7 +327,7 @@ namespace DotSpatial.Data
                 return new ExtentM(Xmin, Ymin, Mmin, Xmax, Ymax, Mmax);
             }
 
-            Extent ext = new Extent(Xmin, Ymin, Xmax, Ymax);
+            Extent ext = new(Xmin, Ymin, Xmax, Ymax);
 
             return ext;
         }
@@ -343,11 +343,9 @@ namespace DotSpatial.Data
             var dir = Path.GetDirectoryName(Filename);
             if (dir != null && !Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-            using (var fs = new FileStream(destFilename, FileMode.Append, FileAccess.Write, FileShare.None))
-            {
-                WriteToStream(destFileLength, fs);
-                fs.Close();
-            }
+            using var fs = new FileStream(destFilename, FileMode.Append, FileAccess.Write, FileShare.None);
+            WriteToStream(destFileLength, fs);
+            fs.Close();
         }
 
         /// <summary>

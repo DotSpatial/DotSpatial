@@ -81,18 +81,18 @@ namespace DotSpatial.Positioning.Forms
 		private Pen pSecondsPen = new Pen(Color.Red);
 #else
         // Controls the pen used for small tick marks around the edge
-        private readonly Pen _pMinorTickPen = new Pen(Color.Black, 1.0f);
+        private readonly Pen _pMinorTickPen = new(Color.Black, 1.0f);
         // Controls the pen used for larger tick marks around the edge
-        private readonly Pen _pMajorTickPen = new Pen(Color.Black, 2.0f);
+        private readonly Pen _pMajorTickPen = new(Color.Black, 2.0f);
         // Controls the pen used for the hours hand
-        private readonly Pen _pHoursPen = new Pen(Color.Black, 1.0f);
+        private readonly Pen _pHoursPen = new(Color.Black, 1.0f);
         // Controls the pen used for the minutes hand
-        private readonly Pen _pMinutesPen = new Pen(Color.Black, 1.0f);
+        private readonly Pen _pMinutesPen = new(Color.Black, 1.0f);
         // Controls the pen used for the seconds hand
-        private readonly Pen _pSecondsPen = new Pen(Color.Red, 1.0f);
+        private readonly Pen _pSecondsPen = new(Color.Red, 1.0f);
 #endif
         // Controls the brush used for labeling numbers
-        private readonly SolidBrush _pValueLabelBrush = new SolidBrush(Color.Black);
+        private readonly SolidBrush _pValueLabelBrush = new(Color.Black);
         // Controls the time drawn by the control
         private DateTime _pValue = DateTime.Now;
         // Controls whether time is updated automatically
@@ -102,7 +102,7 @@ namespace DotSpatial.Positioning.Forms
         private Font pHoursFont = new Font("Tahoma", 8.0f, FontStyle.Regular);
 #else
         // Controls the font for the clock
-        private Font _pHoursFont = new Font("Tahoma", 9.0f, FontStyle.Regular);
+        private Font _pHoursFont = new("Tahoma", 9.0f, FontStyle.Regular);
 #endif
         // Updates the clock to the current time
         private Thread _clockThread;
@@ -199,11 +199,11 @@ namespace DotSpatial.Positioning.Forms
             for (double value = 0; value < 60; value += 1)
             {
                 // There are 120 tick marks in 360°
-                Angle angle = new Angle(value * (360 / 60));
+                Angle angle = new(value * (360 / 60));
 
                 // Get the coordinate of the line's start and end
-                PolarCoordinate start = new PolarCoordinate(96, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
-                PolarCoordinate end = new PolarCoordinate(100, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
+                PolarCoordinate start = new(96, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
+                PolarCoordinate end = new(100, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
 
                 // And draw a line
                 f.DrawLine(_pMinorTickPen, start, end);
@@ -213,11 +213,11 @@ namespace DotSpatial.Positioning.Forms
             for (double value = 1; value <= 12; value += 1)
             {
                 // Convert the value to an angle
-                Angle angle = new Angle(value * (360 / 12));
+                Angle angle = new(value * (360 / 12));
 
                 // Get the coordinate of the line's start
-                PolarCoordinate start = new PolarCoordinate(93, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
-                PolarCoordinate end = new PolarCoordinate(100, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
+                PolarCoordinate start = new(93, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
+                PolarCoordinate end = new(100, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
 
                 // And draw the tick mark
                 f.DrawLine(_pMajorTickPen, start, end);
@@ -244,13 +244,13 @@ namespace DotSpatial.Positioning.Forms
 				*/
 
             // Calculate the time elapsed since midnight
-            DateTime midnight = new DateTime(_pValue.Year, _pValue.Month, _pValue.Day);
+            DateTime midnight = new(_pValue.Year, _pValue.Month, _pValue.Day);
             TimeSpan timeSinceMidnight = _pValue.Subtract(midnight);
 
             #region Drawing of Hours
 
             // There are twelve hours in 360° of a circle
-            Angle hourAngle = new Angle(timeSinceMidnight.TotalHours * (360 / 12));
+            Angle hourAngle = new(timeSinceMidnight.TotalHours * (360 / 12));
 
             // Draw the hour "needle"
             f.DrawLine(_pHoursPen, PolarCoordinate.Center,
@@ -261,7 +261,7 @@ namespace DotSpatial.Positioning.Forms
             #region Drawing of Minutes
 
             // There are sixty minutes in 360° of a circle
-            Angle minuteAngle = new Angle(timeSinceMidnight.TotalMinutes * (360 / 60));
+            Angle minuteAngle = new(timeSinceMidnight.TotalMinutes * (360 / 60));
 
             // Draw the Minute "needle"
             f.DrawLine(_pMinutesPen, PolarCoordinate.Center,
@@ -272,7 +272,7 @@ namespace DotSpatial.Positioning.Forms
             #region Drawing of Seconds
 
             // There are sixty seconds in 360° of a circle
-            Angle secondAngle = new Angle(timeSinceMidnight.TotalSeconds * (360 / 60));
+            Angle secondAngle = new(timeSinceMidnight.TotalSeconds * (360 / 60));
 
             // Draw the Seconds "needle"
             f.DrawLine(_pSecondsPen, PolarCoordinate.Center,

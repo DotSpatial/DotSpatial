@@ -34,27 +34,23 @@ namespace DotSpatial.Symbology.Forms
             _context = context;
 
             IWindowsFormsEditorService dialogProvider = (IWindowsFormsEditorService)provider?.GetService(typeof(IWindowsFormsEditorService));
-            SqlExpressionDialog dlgExpression = new SqlExpressionDialog();
+            SqlExpressionDialog dlgExpression = new();
             string original = (string)value;
             dlgExpression.Expression = (string)value;
 
             // Try to find the Table
-            IFeatureCategory category = context?.Instance as IFeatureCategory;
-            if (category != null)
+            if (context?.Instance is IFeatureCategory category)
             {
-                IFeatureScheme scheme = category.GetParentItem() as IFeatureScheme;
-                if (scheme != null)
+                if (category.GetParentItem() is IFeatureScheme scheme)
                 {
-                    IFeatureLayer layer = scheme.GetParentItem() as IFeatureLayer;
-                    if (layer != null)
+                    if (scheme.GetParentItem() is IFeatureLayer layer)
                     {
                         dlgExpression.Table = layer.DataSet.DataTable;
                     }
                 }
                 else
                 {
-                    IFeatureLayer layer = category.GetParentItem() as IFeatureLayer;
-                    if (layer != null)
+                    if (category.GetParentItem() is IFeatureLayer layer)
                     {
                         dlgExpression.Table = layer.DataSet.DataTable;
                     }
@@ -79,8 +75,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void DlgExpressionChangesApplied(object sender, EventArgs e)
         {
-            SqlExpressionDialog dlg = sender as SqlExpressionDialog;
-            if (dlg != null)
+            if (sender is SqlExpressionDialog dlg)
             {
                 string exp = dlg.Expression;
                 _context.PropertyDescriptor?.SetValue(_context.Instance, exp);

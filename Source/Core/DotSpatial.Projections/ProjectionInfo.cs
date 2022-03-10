@@ -476,7 +476,7 @@ namespace DotSpatial.Projections
         /// </returns>
         public string ToEsriString()
         {
-            Spheroid tempSpheroid = new Spheroid(Proj4Ellipsoid.WGS_1984);
+            Spheroid tempSpheroid = new(Proj4Ellipsoid.WGS_1984);
 
             // changed by JK to fix the web mercator auxiliary sphere Esri string
             if (Name == "WGS_1984_Web_Mercator_Auxiliary_Sphere")
@@ -791,10 +791,8 @@ namespace DotSpatial.Projections
                 File.Delete(prjFilename);
             }
 
-            using (StreamWriter sw = File.CreateText(prjFilename))
-            {
-                sw.WriteLine(ToEsriString());
-            }
+            using StreamWriter sw = File.CreateText(prjFilename);
+            sw.WriteLine(ToEsriString());
         }
 
         /// <summary>

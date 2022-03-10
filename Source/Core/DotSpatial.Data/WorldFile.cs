@@ -238,16 +238,14 @@ namespace DotSpatial.Data
         {
             if (File.Exists(Filename))
             {
-                using (var sr = new StreamReader(Filename))
-                {
-                    Affine = new double[6];
-                    Affine[1] = NextValue(sr); // Dx
-                    Affine[2] = NextValue(sr); // Skew X
-                    Affine[4] = NextValue(sr); // Skew Y
-                    Affine[5] = NextValue(sr); // Dy
-                    Affine[0] = NextValue(sr); // Top Left X
-                    Affine[3] = NextValue(sr); // Top Left Y
-                }
+                using var sr = new StreamReader(Filename);
+                Affine = new double[6];
+                Affine[1] = NextValue(sr); // Dx
+                Affine[2] = NextValue(sr); // Skew X
+                Affine[4] = NextValue(sr); // Skew Y
+                Affine[5] = NextValue(sr); // Dy
+                Affine[0] = NextValue(sr); // Top Left X
+                Affine[3] = NextValue(sr); // Top Left Y
             }
         }
 
@@ -267,7 +265,7 @@ namespace DotSpatial.Data
         public void Save()
         {
             if (File.Exists(Filename)) File.Delete(Filename);
-            StreamWriter sw = new StreamWriter(Filename);
+            StreamWriter sw = new(Filename);
             sw.WriteLine(Affine[1].ToString(CultureInfo.InvariantCulture)); // Dx
             sw.WriteLine(Affine[2].ToString(CultureInfo.InvariantCulture)); // Skew X
             sw.WriteLine(Affine[4].ToString(CultureInfo.InvariantCulture)); // Skew Y

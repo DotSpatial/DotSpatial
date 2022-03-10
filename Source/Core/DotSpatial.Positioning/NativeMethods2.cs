@@ -46,7 +46,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        public static readonly IntPtr InvalidHandle = new IntPtr(-1);
+        public static readonly IntPtr InvalidHandle = new(-1);
 
         // http://msdn.microsoft.com/en-us/library/ms724211%28VS.85%29.aspx
         /// <summary>
@@ -571,8 +571,8 @@ namespace DotSpatial.Positioning
             /// <returns>The SystemTime equivalent to the specified value.</returns>
             public static SystemTime FromDateTime(DateTime value)
             {
-                SystemTime result = new SystemTime
-                                        {
+                SystemTime result = new()
+                {
                                             Year = (short)value.Year,
                                             Month = (short)value.Month,
                                             DayOfWeek = (short)value.DayOfWeek,

@@ -48,10 +48,8 @@ namespace DotSpatial.Projections
             {
                 if (str == null) return;
                 // Read important header content
-                using (BinaryReader br = new BinaryReader(str))
-                {
-                    br.Read(header, 0, 176);
-                }
+                using BinaryReader br = new(str);
+                br.Read(header, 0, 176);
             }
 
             PhiLam ll;
@@ -61,7 +59,7 @@ namespace DotSpatial.Projections
             double urPhi = GetDouble(header, 40);
             double urLam = -GetDouble(header, 56);
 
-            PhiLam cs = new PhiLam();
+            PhiLam cs = new();
             cs.Phi = GetDouble(header, 88);
             cs.Lambda = GetDouble(header, 104);
 
@@ -79,33 +77,29 @@ namespace DotSpatial.Projections
         /// <inheritdoc></inheritdoc>
         public override void FillData()
         {
-            using (Stream str = GetStream())
+            using Stream str = GetStream();
+            if (str == null) return;
+            using var br = new BinaryReader(str);
+            int numPhis = NumPhis;
+            int numLambdas = NumLambdas;
+
+            PhiLam[][] cvs = new PhiLam[numPhis][];
+
+            // Skip past rest of header
+            str.Seek(176, SeekOrigin.Begin);
+            for (int row = 0; row < numPhis; row++)
             {
-                if (str == null) return;
-                using (var br = new BinaryReader(str))
+                cvs[row] = new PhiLam[numLambdas];
+                // NTV order is flipped compared with a normal CVS table
+                for (int col = numLambdas - 1; col >= 0; col--)
                 {
-                    int numPhis = NumPhis;
-                    int numLambdas = NumLambdas;
-
-                    PhiLam[][] cvs = new PhiLam[numPhis][];
-
-                    // Skip past rest of header
-                    str.Seek(176, SeekOrigin.Begin);
-                    for (int row = 0; row < numPhis; row++)
-                    {
-                        cvs[row] = new PhiLam[numLambdas];
-                        // NTV order is flipped compared with a normal CVS table
-                        for (int col = numLambdas - 1; col >= 0; col--)
-                        {
-                            // shift values are given in "arc-seconds" and need to be converted to radians.
-                            cvs[row][col].Phi = ReadDouble(br) * (Math.PI / 180) / 3600;
-                            cvs[row][col].Lambda = ReadDouble(br) * (Math.PI / 180) / 3600;
-                        }
-                    }
-                    Cvs = cvs;
-                    Filled = true;
+                    // shift values are given in "arc-seconds" and need to be converted to radians.
+                    cvs[row][col].Phi = ReadDouble(br) * (Math.PI / 180) / 3600;
+                    cvs[row][col].Lambda = ReadDouble(br) * (Math.PI / 180) / 3600;
                 }
             }
+            Cvs = cvs;
+            Filled = true;
         }
     }
 }

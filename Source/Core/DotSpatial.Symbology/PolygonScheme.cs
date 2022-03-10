@@ -99,8 +99,7 @@ namespace DotSpatial.Symbology
         /// <param name="category">The category to add.</param>
         public override void AddCategory(ICategory category)
         {
-            IPolygonCategory pc = category as IPolygonCategory;
-            if (pc != null) _categories.Add(pc);
+            if (category is IPolygonCategory pc) _categories.Add(pc);
         }
 
         /// <summary>
@@ -119,7 +118,7 @@ namespace DotSpatial.Symbology
         /// <returns>A new polygon category.</returns>
         public override ICategory CreateNewCategory(Color fillColor, double size)
         {
-            PolygonCategory result = new PolygonCategory();
+            PolygonCategory result = new();
             if (EditorSettings.UseGradient)
             {
                 result.Symbolizer = new PolygonSymbolizer(fillColor.Lighter(.2f), fillColor.Darker(.2f), EditorSettings.GradientAngle, GradientType.Linear, fillColor.Darker(.5f), 1);
@@ -147,7 +146,7 @@ namespace DotSpatial.Symbology
         /// <returns>A new IFeatureCategory.</returns>
         public override IFeatureCategory CreateRandomCategory(string filterExpression)
         {
-            PolygonCategory result = new PolygonCategory();
+            PolygonCategory result = new();
             Color fillColor = CreateRandomColor();
             if (EditorSettings.UseGradient)
             {
@@ -171,8 +170,7 @@ namespace DotSpatial.Symbology
         /// <returns>True, if index was decreased.</returns>
         public override bool DecreaseCategoryIndex(ICategory category)
         {
-            IPolygonCategory pc = category as IPolygonCategory;
-            return pc != null && Categories.DecreaseIndex(pc);
+            return category is IPolygonCategory pc && Categories.DecreaseIndex(pc);
         }
 
         /// <summary>
@@ -215,8 +213,7 @@ namespace DotSpatial.Symbology
         /// <returns>True, if the index was increased.</returns>
         public override bool IncreaseCategoryIndex(ICategory category)
         {
-            IPolygonCategory pc = category as IPolygonCategory;
-            return pc != null && Categories.IncreaseIndex(pc);
+            return category is IPolygonCategory pc && Categories.IncreaseIndex(pc);
         }
 
         /// <summary>
@@ -226,8 +223,7 @@ namespace DotSpatial.Symbology
         /// <param name="category">The category to insert.</param>
         public override void InsertCategory(int index, ICategory category)
         {
-            IPolygonCategory pc = category as IPolygonCategory;
-            if (pc != null) _categories.Insert(index, pc);
+            if (category is IPolygonCategory pc) _categories.Insert(index, pc);
         }
 
         /// <summary>
@@ -236,8 +232,7 @@ namespace DotSpatial.Symbology
         /// <param name="category">The category to remove.</param>
         public override void RemoveCategory(ICategory category)
         {
-            IPolygonCategory pc = category as IPolygonCategory;
-            if (pc != null) _categories.Remove(pc);
+            if (category is IPolygonCategory pc) _categories.Remove(pc);
         }
 
         /// <summary>
@@ -264,10 +259,9 @@ namespace DotSpatial.Symbology
         /// <returns>The List of colors.</returns>
         protected override List<Color> GetDefaultColors(int count)
         {
-            IPolygonSymbolizer ps = EditorSettings?.TemplateSymbolizer as IPolygonSymbolizer;
-            if (ps != null)
+            if (EditorSettings?.TemplateSymbolizer is IPolygonSymbolizer ps)
             {
-                List<Color> result = new List<Color>();
+                List<Color> result = new();
                 Color c = ps.GetFillColor();
                 for (int i = 0; i < count; i++)
                 {
@@ -317,7 +311,7 @@ namespace DotSpatial.Symbology
         {
             _categories = new PolygonCategoryCollection();
             OnIncludeCategories(_categories);
-            PolygonCategory def = new PolygonCategory();
+            PolygonCategory def = new();
             _categories.Add(def);
         }
 

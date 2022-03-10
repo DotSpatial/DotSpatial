@@ -63,7 +63,7 @@ namespace DotSpatial.Data
             long offset = shx.Shapes[shp].ByteOffset;
             fs.Seek(offset, SeekOrigin.Begin);
 
-            ShapeRange shape = new ShapeRange(FeatureType.Polygon) // Position     Value               Type        Number      Byte Order
+            ShapeRange shape = new(FeatureType.Polygon) // Position     Value               Type        Number      Byte Order
             {
                 RecordNumber = fs.ReadInt32(Endian.BigEndian),     // Byte 0       Record Number       Integer     1           Big
                 ContentLength = fs.ReadInt32(Endian.BigEndian),    // Byte 4       Content Length      Integer     1           Big
@@ -76,7 +76,7 @@ namespace DotSpatial.Data
                 return null;
             }
 
-            Shape myShape = new Shape
+            Shape myShape = new()
             {
                 Range = shape
             };
@@ -154,7 +154,7 @@ namespace DotSpatial.Data
                     pointCount = partIndices[part + 1] - partOff;
                 }
 
-                PartRange partR = new PartRange(myShape.Vertices, 0, partOff, FeatureType.Polygon)
+                PartRange partR = new(myShape.Vertices, 0, partOff, FeatureType.Polygon)
                 {
                     NumVertices = pointCount
                 };

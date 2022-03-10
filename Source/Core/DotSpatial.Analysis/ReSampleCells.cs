@@ -66,13 +66,13 @@ namespace DotSpatial.Analysis
             int noOfRow = Convert.ToInt32(Math.Abs(envelope.Height / cellHeight));
 
             IRaster output = Raster.CreateRaster(outputFileName, string.Empty, noOfCol, noOfRow, 1, input1.DataType, new[] { string.Empty });
-            RasterBounds bound = new RasterBounds(noOfRow, noOfCol, envelope);
+            RasterBounds bound = new(noOfRow, noOfCol, envelope);
             output.Bounds = bound;
 
             output.NoDataValue = input1.NoDataValue;
 
             int max = output.Bounds.NumRows;
-            ProgressMeter pm = new ProgressMeter(progressHandler, "ReSize Cells", max);
+            ProgressMeter pm = new(progressHandler, "ReSize Cells", max);
 
             // Loop through every cell for new value
             for (int i = 0; i < max; i++)

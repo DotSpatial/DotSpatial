@@ -62,9 +62,9 @@ namespace DotSpatial.Data
             // might still exist in the .shp file.
             long offset = shx.Shapes[shp].ByteOffset;
             fs.Seek(offset, SeekOrigin.Begin);
-            Shape myShape = new Shape();
+            Shape myShape = new();
 
-            ShapeRange shape = new ShapeRange(FeatureType.Point) // Position     Value               Type        Number      Byte Order
+            ShapeRange shape = new(FeatureType.Point) // Position     Value               Type        Number      Byte Order
             {
                 RecordNumber = fs.ReadInt32(Endian.BigEndian),  // Byte 0       Record Number       Integer     1           Big
                 ContentLength = fs.ReadInt32(Endian.BigEndian), // Byte 4       Content Length      Integer     1           Big
@@ -109,7 +109,7 @@ namespace DotSpatial.Data
                 shape.Extent = new ExtentMz(shape.Extent.MinX, shape.Extent.MinY, myShape.MinM, myShape.MinZ, shape.Extent.MaxX, shape.Extent.MaxY, myShape.MaxM, myShape.MaxZ);
             }
 
-            PartRange partR = new PartRange(myShape.Vertices, 0, 0, FeatureType.Point)
+            PartRange partR = new(myShape.Vertices, 0, 0, FeatureType.Point)
             {
                 NumVertices = 1
             };

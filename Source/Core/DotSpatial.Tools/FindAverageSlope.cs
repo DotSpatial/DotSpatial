@@ -149,11 +149,11 @@ namespace DotSpatial.Tools
                     for (int shpindx = 0; shpindx < output.Features.Count; shpindx++)
                     {
                         IFeature tempFeat = output.Features[shpindx];
-                        NtsPoint pt1 = new NtsPoint(xCent, yCent);
-                        NtsPoint pt2 = new NtsPoint(xCent - dxHalf, yCent - dyHalf);
-                        NtsPoint pt3 = new NtsPoint(xCent + dxHalf, yCent - dyHalf);
-                        NtsPoint pt4 = new NtsPoint(xCent + dxHalf, yCent + dyHalf);
-                        NtsPoint pt5 = new NtsPoint(xCent - dxHalf, yCent + dyHalf);
+                        NtsPoint pt1 = new(xCent, yCent);
+                        NtsPoint pt2 = new(xCent - dxHalf, yCent - dyHalf);
+                        NtsPoint pt3 = new(xCent + dxHalf, yCent - dyHalf);
+                        NtsPoint pt4 = new(xCent + dxHalf, yCent + dyHalf);
+                        NtsPoint pt5 = new(xCent - dxHalf, yCent + dyHalf);
                         if ((((!tempFeat.Geometry.Covers(pt1) && !tempFeat.Geometry.Covers(pt2)) && !tempFeat.Geometry.Covers(pt3)) && !tempFeat.Geometry.Covers(pt4)) && !tempFeat.Geometry.Covers(pt5))
                         {
                             continue;

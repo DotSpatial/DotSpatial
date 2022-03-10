@@ -36,7 +36,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents a synchronization object used to prevent changes to GPS data when reading multiple GPS values.
         /// </summary>
-        public object DataChangeSyncRoot = new object();
+        public object DataChangeSyncRoot = new();
 
         #region Constructors
 
@@ -66,8 +66,7 @@ namespace DotSpatial.Positioning
         /// <param name="sentence">The sentence.</param>
         protected void OnSentenceReceived(NmeaSentence sentence)
         {
-            if (SentenceReceived != null)
-                SentenceReceived(this, new NmeaSentenceEventArgs(sentence));
+            SentenceReceived?.Invoke(this, new NmeaSentenceEventArgs(sentence));
         }
 
 #endif
@@ -83,8 +82,7 @@ namespace DotSpatial.Positioning
         /// <param name="sentence">The sentence.</param>
         protected void OnSentenceRecorded(NmeaSentence sentence)
         {
-            if (SentenceRecorded != null)
-                SentenceRecorded(this, new NmeaSentenceEventArgs(sentence));
+            SentenceRecorded?.Invoke(this, new NmeaSentenceEventArgs(sentence));
         }
 
         #endregion Events
@@ -104,13 +102,11 @@ namespace DotSpatial.Positioning
              */
 
             // Is this a fix method message?
-            IFixMethodSentence fixMethodSentence = sentence as IFixMethodSentence;
-            if (fixMethodSentence != null)
+            if (sentence is IFixMethodSentence fixMethodSentence)
                 SetFixMethod(fixMethodSentence.FixMethod);
 
             // Is this a fix quality message?
-            IFixQualitySentence fixQualitySentence = sentence as IFixQualitySentence;
-            if (fixQualitySentence != null)
+            if (sentence is IFixQualitySentence fixQualitySentence)
                 SetFixQuality(fixQualitySentence.FixQuality);
 
             #region Process common GPS information
@@ -119,33 +115,28 @@ namespace DotSpatial.Positioning
             if (!IsFixRequired || (IsFixRequired && IsFixed))
             {
                 // Does this sentence support the UTC date and time?
-                IUtcDateTimeSentence dateTimeSentence = sentence as IUtcDateTimeSentence;
-                if (dateTimeSentence != null)
+                if (sentence is IUtcDateTimeSentence dateTimeSentence)
                     SetDateTimes(dateTimeSentence.UtcDateTime);
 
                 /* Some NMEA sentences provide UTC time information, but no date!  To make this work,
                  * we must combine the time report with the current UTC date.
                  */
-                IUtcTimeSentence timeSentence = sentence as IUtcTimeSentence;
-                if (timeSentence != null && !timeSentence.UtcTime.Equals(TimeSpan.MinValue) && !timeSentence.UtcTime.Equals(TimeSpan.Zero))
+                if (sentence is IUtcTimeSentence timeSentence && !timeSentence.UtcTime.Equals(TimeSpan.MinValue) && !timeSentence.UtcTime.Equals(TimeSpan.Zero))
                     SetDateTimes(new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day,
                                         timeSentence.UtcTime.Hours, timeSentence.UtcTime.Minutes, timeSentence.UtcTime.Seconds, timeSentence.UtcTime.Milliseconds,
                                         DateTimeKind.Utc));
             }
 
             // Does this sentence support horizontal DOP?
-            IHorizontalDilutionOfPrecisionSentence hdopSentence = sentence as IHorizontalDilutionOfPrecisionSentence;
-            if (hdopSentence != null)
+            if (sentence is IHorizontalDilutionOfPrecisionSentence hdopSentence)
                 SetHorizontalDilutionOfPrecision(hdopSentence.HorizontalDilutionOfPrecision);
 
             // Does the sentence support vertical DOP?
-            IVerticalDilutionOfPrecisionSentence vdopSentence = sentence as IVerticalDilutionOfPrecisionSentence;
-            if (vdopSentence != null)
+            if (sentence is IVerticalDilutionOfPrecisionSentence vdopSentence)
                 SetVerticalDilutionOfPrecision(vdopSentence.VerticalDilutionOfPrecision);
 
             // Does the sentence support mean DOP?
-            IPositionDilutionOfPrecisionSentence mdopSentence = sentence as IPositionDilutionOfPrecisionSentence;
-            if (mdopSentence != null)
+            if (sentence is IPositionDilutionOfPrecisionSentence mdopSentence)
                 SetMeanDilutionOfPrecision(mdopSentence.PositionDilutionOfPrecision);
 
             #endregion Process common GPS information
@@ -157,25 +148,21 @@ namespace DotSpatial.Positioning
                 if (HorizontalDilutionOfPrecision.Value <= MaximumHorizontalDilutionOfPrecision.Value)
                 {
                     #region Process real-time positional data
-
+                    
                     // Does this sentence support lat/long info?
-                    IPositionSentence positionSentence = sentence as IPositionSentence;
-                    if (positionSentence != null)
+                    if (sentence is IPositionSentence positionSentence)
                         SetPosition(positionSentence.Position);
 
                     // Does this sentence support bearing?
-                    IBearingSentence bearingSentence = sentence as IBearingSentence;
-                    if (bearingSentence != null)
+                    if (sentence is IBearingSentence bearingSentence)
                         SetBearing(bearingSentence.Bearing);
-                    
+
                     // Does this sentence support heading?
-                    IHeadingSentence headingSentence = sentence as IHeadingSentence;
-                    if (headingSentence != null)
+                    if (sentence is IHeadingSentence headingSentence)
                         SetHeading(headingSentence.Heading);
 
                     // Does this sentence support speed?
-                    ISpeedSentence speedSentence = sentence as ISpeedSentence;
-                    if (speedSentence != null)
+                    if (sentence is ISpeedSentence speedSentence)
                         SetSpeed(speedSentence.Speed);
 
                     #endregion Process real-time positional data
@@ -185,20 +172,17 @@ namespace DotSpatial.Positioning
                 if (VerticalDilutionOfPrecision.Value <= MaximumVerticalDilutionOfPrecision.Value)
                 {
                     #region Process altitude data
-
+                    
                     // Does this sentence support altitude?
-                    IAltitudeSentence altitudeSentence = sentence as IAltitudeSentence;
-                    if (altitudeSentence != null)
+                    if (sentence is IAltitudeSentence altitudeSentence)
                         SetAltitude(altitudeSentence.Altitude);
 
                     // Does this sentence support altitude?
-                    IAltitudeAboveEllipsoidSentence altitudeAboveEllipsoidSentence = sentence as IAltitudeAboveEllipsoidSentence;
-                    if (altitudeAboveEllipsoidSentence != null)
+                    if (sentence is IAltitudeAboveEllipsoidSentence altitudeAboveEllipsoidSentence)
                         SetAltitude(altitudeAboveEllipsoidSentence.AltitudeAboveEllipsoid);
 
                     // Does this sentence support geoidal separation?
-                    IGeoidalSeparationSentence geoidSeparationSentence = sentence as IGeoidalSeparationSentence;
-                    if (geoidSeparationSentence != null)
+                    if (sentence is IGeoidalSeparationSentence geoidSeparationSentence)
                         SetGeoidalSeparation(geoidSeparationSentence.GeoidalSeparation);
 
                     #endregion Process altitude data
@@ -208,23 +192,19 @@ namespace DotSpatial.Positioning
             #region Lower-priority information
 
             // Is this a fix mode sentence?
-            IFixModeSentence fixModeSentence = sentence as IFixModeSentence;
-            if (fixModeSentence != null)
+            if (sentence is IFixModeSentence fixModeSentence)
                 SetFixMode(fixModeSentence.FixMode);
 
             // Does this sentence have fix status?
-            IFixStatusSentence fixedSentence = sentence as IFixStatusSentence;
-            if (fixedSentence != null)
+            if (sentence is IFixStatusSentence fixedSentence)
                 SetFixStatus(fixedSentence.FixStatus);
 
             // Does this sentence support magnetic variation?
-            IMagneticVariationSentence magVarSentence = sentence as IMagneticVariationSentence;
-            if (magVarSentence != null)
+            if (sentence is IMagneticVariationSentence magVarSentence)
                 SetMagneticVariation(magVarSentence.MagneticVariation);
 
             // Process satellite data
-            ISatelliteCollectionSentence satelliteSentence = sentence as ISatelliteCollectionSentence;
-            if (satelliteSentence != null)
+            if (sentence is ISatelliteCollectionSentence satelliteSentence)
             {
                 /* GPS.NET 2.0 performed thorough comparison of satellites in order to update
                  * an *existing* instance of Satellite objects.  I think now that this was overkill.
@@ -234,13 +214,11 @@ namespace DotSpatial.Positioning
             }
 
             // Fixed satellite count
-            IFixedSatelliteCountSentence fixedCountSentence = sentence as IFixedSatelliteCountSentence;
-            if (fixedCountSentence != null)
+            if (sentence is IFixedSatelliteCountSentence fixedCountSentence)
                 SetFixedSatelliteCount(fixedCountSentence.FixedSatelliteCount);
 
             // Process fixed satellites
-            IFixedSatellitesSentence fixedSatellitesSentence = sentence as IFixedSatellitesSentence;
-            if (fixedSatellitesSentence != null)
+            if (sentence is IFixedSatellitesSentence fixedSatellitesSentence)
             {
                 SetFixedSatellites(fixedSatellitesSentence.FixedSatellites);
             }

@@ -23,7 +23,7 @@ namespace DotSpatial.Controls.Header
         /// The default group name.
         /// </summary>
         internal const string DefaultGroupName = "Default Group";
-        private readonly List<ToolstripPosition> _stripPosList = new List<ToolstripPosition>(); // List to remember ToolstripPositions for saving on exit.
+        private readonly List<ToolstripPosition> _stripPosList = new(); // List to remember ToolstripPositions for saving on exit.
         private MenuStrip _menuStrip;
         private List<ToolStrip> _strips;
         private bool _toolstripsLoaded; // indicates whether toolstrips were loaded after programstart
@@ -55,8 +55,7 @@ namespace DotSpatial.Controls.Header
                 Name = item.Key
             };
 
-            var root = _menuStrip.Items[item.RootKey] as ToolStripDropDownButton;
-            if (root != null)
+            if (_menuStrip.Items[item.RootKey] is ToolStripDropDownButton root)
             {
                 root.DropDownItems.Add(menu);
                 root.Visible = true;
@@ -152,8 +151,7 @@ namespace DotSpatial.Controls.Header
             menu.Click += (sender, e) => item.OnClick(e);
 
             EnsureNonNullRoot(item);
-            var root = _menuStrip.Items[item.RootKey] as ToolStripDropDownButton;
-            if (root == null)
+            if (_menuStrip.Items[item.RootKey] is not ToolStripDropDownButton root)
             {
                 // Temporarily create the root.
                 root = CreateToolStripDropDownButton(new RootItem(item.RootKey, "AddRootItemWithKey " + item.RootKey));
@@ -548,12 +546,10 @@ namespace DotSpatial.Controls.Header
             if (IgnoreToolstripPositionSaving) return;
             var path = GetMenuBarHeaderControlConfigPath();
             if (!File.Exists(path)) return;
-            using (var stream = File.Open(path, FileMode.Open))
-            {
-                var bin = new BinaryFormatter();
-                _stripPosList.Clear();
-                _stripPosList.AddRange((List<ToolstripPosition>)bin.Deserialize(stream));
-            }
+            using var stream = File.Open(path, FileMode.Open);
+            var bin = new BinaryFormatter();
+            _stripPosList.Clear();
+            _stripPosList.AddRange((List<ToolstripPosition>)bin.Deserialize(stream));
         }
 
         private void MenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -626,11 +622,9 @@ namespace DotSpatial.Controls.Header
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
-            using (var stream = File.Open(path, FileMode.Create))
-            {
-                var bin = new BinaryFormatter();
-                bin.Serialize(stream, _stripPosList);
-            }
+            using var stream = File.Open(path, FileMode.Create);
+            var bin = new BinaryFormatter();
+            bin.Serialize(stream, _stripPosList);
         }
 
         private void SimpleActionItemPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -697,8 +691,7 @@ namespace DotSpatial.Controls.Header
             {
                 foreach (ToolStripItem item in strip.Items)
                 {
-                    var buttonItem = item as ToolStripButton;
-                    if (buttonItem != null)
+                    if (item is ToolStripButton buttonItem)
                     {
                         if (buttonItem.Name != checkedButton.Name && buttonItem.Checked)
                         {

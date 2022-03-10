@@ -27,7 +27,7 @@ namespace DotSpatial.Symbology.Forms
             IWindowsFormsEditorService dialogProvider = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
 
             IRasterLayer parent = rs.ParentLayer;
-            LayerDialog frm = new LayerDialog(parent, new RasterCategoryControl());
+            LayerDialog frm = new(parent, new RasterCategoryControl());
             dialogProvider.ShowDialog(frm);
             return parent.Symbolizer;
         }

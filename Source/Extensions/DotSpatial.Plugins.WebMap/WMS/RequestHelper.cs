@@ -27,18 +27,14 @@ namespace DotSpatial.Plugins.WebMap.WMS
             var webRequest = (HttpWebRequest)WebRequest.Create(uri);
             webRequest.Credentials = credentials;
 
-            using (var webResponse = webRequest.GetSyncResponse(10000))
+            using var webResponse = webRequest.GetSyncResponse(10000);
+            if (webResponse == null)
             {
-                if (webResponse == null)
-                {
-                    throw new WebException("An error occurred while fetching tile", null);
-                }
-
-                using (Stream responseStream = webResponse.GetResponseStream())
-                {
-                    return Utilities.ReadFully(responseStream);
-                }
+                throw new WebException("An error occurred while fetching tile", null);
             }
+
+            using Stream responseStream = webResponse.GetResponseStream();
+            return Utilities.ReadFully(responseStream);
         }
 
         #endregion

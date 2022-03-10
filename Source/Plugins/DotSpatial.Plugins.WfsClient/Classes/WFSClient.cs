@@ -197,7 +197,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             if (server != string.Empty)
                 Server = server;
 
-            Uri u = new Uri(Server);
+            Uri u = new(Server);
 
             Stream stream;
             if (u.IsAbsoluteUri && u.IsFile)
@@ -234,7 +234,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             if (!string.IsNullOrWhiteSpace(server))
                 Server = server;
 
-            Uri u = new Uri(Server);
+            Uri u = new(Server);
 
             Stream stream;
             if (u.IsAbsoluteUri && u.IsFile)
@@ -272,7 +272,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             if (server != string.Empty)
                 Server = server;
 
-            Uri u = new Uri(Server);
+            Uri u = new(Server);
             Stream stream;
             if (u.IsAbsoluteUri && u.IsFile)
             {
@@ -292,7 +292,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
         private static Coordinate[] ExtractCoordinates(DirectPositionListType rings)
         {
             string[] listpoints = rings.Text.Split(' ');
-            List<Coordinate> lstCoor = new List<Coordinate>();
+            List<Coordinate> lstCoor = new();
 
             for (int i = 0; i < listpoints.Length; i += 2)
             {
@@ -344,7 +344,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
 
             WebResponse myResponse = myRequest.GetResponse();
 
-            StreamReader streamReader = new StreamReader(myResponse.GetResponseStream(), true);
+            StreamReader streamReader = new(myResponse.GetResponseStream(), true);
             try
             {
                 var target = streamReader.ReadToEnd();
@@ -746,7 +746,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
 
         private void ParseGetCapabilities(Stream stream)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(WfsCapabilitiesType));
+            XmlSerializer serializer = new(typeof(WfsCapabilitiesType));
             Wfs = (WfsCapabilitiesType)serializer.Deserialize(stream);
         }
 

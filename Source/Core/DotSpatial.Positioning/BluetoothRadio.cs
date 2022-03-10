@@ -69,7 +69,7 @@ namespace DotSpatial.Positioning
             try
             {
                 // Make generic parameters for the search
-                NativeMethods2.BluetoothFindRadioParams radio = new NativeMethods2.BluetoothFindRadioParams();
+                NativeMethods2.BluetoothFindRadioParams radio = new();
 
                 // Make a handle for the radio itself
                 IntPtr phRadio = IntPtr.Zero;
@@ -116,7 +116,7 @@ namespace DotSpatial.Positioning
         {
             _handle = handle;
 
-            NativeMethods2.BluetoothRadioInfo info = new NativeMethods2.BluetoothRadioInfo { ByteSize = 520 };
+            NativeMethods2.BluetoothRadioInfo info = new() { ByteSize = 520 };
 
             // Get information for this radio
             int errorCode = NativeMethods2.BluetoothGetRadioInfo(_handle, ref info);

@@ -313,10 +313,8 @@ namespace DotSpatial.Data
         /// <param name="length">The integer length of the file in 16-bit words.</param>
         public static void WriteFileLength(string fileName, int length)
         {
-            using (var fs = new FileStream(fileName, FileMode.Open))
-            {
-                WriteFileLength(fs, length);
-            }
+            using var fs = new FileStream(fileName, FileMode.Open);
+            WriteFileLength(fs, length);
         }
 
         /// <summary>
@@ -388,7 +386,7 @@ namespace DotSpatial.Data
         {
             UpdateHeader();
 
-            ShapefilePackage package = new ShapefilePackage { DbfFile = ExportDbfToStream(), ShpFile = Header.ExportShpHeaderToStream(), ShxFile = Header.ExportShxHeaderToStream() };
+            ShapefilePackage package = new() { DbfFile = ExportDbfToStream(), ShpFile = Header.ExportShpHeaderToStream(), ShxFile = Header.ExportShxHeaderToStream() };
 
             StreamLengthPair streamLengthPair = PopulateShpAndShxStreams(package.ShpFile, package.ShxFile, IndexMode);
 
@@ -402,7 +400,7 @@ namespace DotSpatial.Data
             if (Projection != null)
             {
                 package.PrjFile = new MemoryStream();
-                StreamWriter projWriter = new StreamWriter(package.PrjFile);
+                StreamWriter projWriter = new(package.PrjFile);
                 projWriter.WriteLine(Projection.ToEsriString());
                 projWriter.Flush();
                 package.PrjFile.Seek(0, SeekOrigin.Begin);
@@ -439,7 +437,7 @@ namespace DotSpatial.Data
         public override DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
         {
             if (AttributesPopulated) return base.GetAttributes(startIndex, numRows, fieldNames);
-            DataTable result = new DataTable();
+            DataTable result = new();
             DataColumn[] columns = GetColumns();
 
             // Always add FID in this paging scenario.
@@ -520,17 +518,17 @@ namespace DotSpatial.Data
 
             if (!requiresRun) return counts;
 
-            AttributePager ap = new AttributePager(this, 5000);
-            ProgressMeter pm = new ProgressMeter(progressHandler, "Calculating Counts", ap.NumPages());
+            AttributePager ap = new(this, 5000);
+            ProgressMeter pm = new(progressHandler, "Calculating Counts", ap.NumPages());
 
             // Don't bother to use a sampling approach if the number of rows is on the same order of magnitude as the number of samples.
             if (maxSampleSize > 0 && maxSampleSize < NumRows() / 2)
             {
-                DataTable sample = new DataTable();
+                DataTable sample = new();
                 sample.Columns.AddRange(GetColumns());
-                Dictionary<int, int> usedRows = new Dictionary<int, int>();
+                Dictionary<int, int> usedRows = new();
                 int samplesPerPage = maxSampleSize / ap.NumPages();
-                Random rnd = new Random(DateTime.Now.Millisecond);
+                Random rnd = new(DateTime.Now.Millisecond);
                 for (int page = 0; page < ap.NumPages(); page++)
                 {
                     for (int i = 0; i < samplesPerPage; i++)
@@ -627,25 +625,23 @@ namespace DotSpatial.Data
             }
 
             // Use a the length of the file to dimension the byte array
-            using (var fs = new FileStream(shxFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 65536))
+            using var fs = new FileStream(shxFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 65536);
+            // Skip the header and begin reading from the first record
+            fs.Seek(100, SeekOrigin.Begin);
+
+            Header.ShxLength = (int)(fileLen / 2);
+            var length = (int)(fileLen - 100);
+            var numRecords = length / 8;
+
+            // Each record consists of 2 Big-endian integers for a total of 8 bytes.
+            // This will store the header elements that we read from the file.
+            var result = new List<ShapeHeader>(numRecords);
+            for (var i = 0; i < numRecords; i++)
             {
-                // Skip the header and begin reading from the first record
-                fs.Seek(100, SeekOrigin.Begin);
-
-                Header.ShxLength = (int)(fileLen / 2);
-                var length = (int)(fileLen - 100);
-                var numRecords = length / 8;
-
-                // Each record consists of 2 Big-endian integers for a total of 8 bytes.
-                // This will store the header elements that we read from the file.
-                var result = new List<ShapeHeader>(numRecords);
-                for (var i = 0; i < numRecords; i++)
-                {
-                    result.Add(new ShapeHeader { Offset = fs.ReadInt32(Endian.BigEndian), ContentLength = fs.ReadInt32(Endian.BigEndian) });
-                }
-
-                return result;
+                result.Add(new ShapeHeader { Offset = fs.ReadInt32(Endian.BigEndian), ContentLength = fs.ReadInt32(Endian.BigEndian) });
             }
+
+            return result;
         }
 
         /// <summary>
@@ -888,7 +884,7 @@ namespace DotSpatial.Data
             if (Attributes == null || Attributes.Table?.Columns.Count > 0) return;
 
             // Only add an FID field if there are no attributes at all.
-            DataTable newTable = new DataTable();
+            DataTable newTable = new();
             newTable.Columns.Add("FID");
 
             // Added by JamesP@esdm.co.uk - Index mode has no attributes and no features - so Features.count is Null and so was not adding any rows and failing

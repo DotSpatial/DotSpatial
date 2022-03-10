@@ -69,11 +69,11 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents a GeographicRectangle having no size.
         /// </summary>
-        public static readonly GeographicRectangle Empty = new GeographicRectangle(Latitude.Empty, Longitude.Empty, Latitude.Empty, Longitude.Empty);
+        public static readonly GeographicRectangle Empty = new(Latitude.Empty, Longitude.Empty, Latitude.Empty, Longitude.Empty);
         /// <summary>
         /// Represents a rectangle that encompasses all of Earth's surface.
         /// </summary>
-        public static readonly GeographicRectangle Maximum = new GeographicRectangle(Latitude.Maximum, Longitude.Minimum, Latitude.Minimum, Longitude.Maximum);
+        public static readonly GeographicRectangle Maximum = new(Latitude.Maximum, Longitude.Minimum, Latitude.Minimum, Longitude.Maximum);
 
         #endregion Fields
 
@@ -1564,7 +1564,7 @@ namespace DotSpatial.Positioning
                     reader.ReadStartElement();
 
                     // Make a recursive call into here to read <gml:envelope>
-                    GeographicRectangle value = new GeographicRectangle(reader);
+                    GeographicRectangle value = new(reader);
 
                     // Copy the values
                     _left = value.Left;
@@ -1587,8 +1587,8 @@ namespace DotSpatial.Positioning
                     reader.ReadStartElement();
 
                     // Read the coordinates
-                    Position corner1 = new Position(reader);
-                    Position corner2 = new Position(reader);
+                    Position corner1 = new(reader);
+                    Position corner2 = new(reader);
 
                     // Set the values
                     if (corner1.Latitude < corner2.Latitude)

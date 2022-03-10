@@ -199,7 +199,7 @@ namespace DotSpatial.Symbology
         /// <param name="target">The target rectangle to draw symbology content to.</param>
         public override void Draw(Graphics g, Rectangle target)
         {
-            GraphicsPath gp = new GraphicsPath();
+            GraphicsPath gp = new();
             gp.AddRectangle(target);
             foreach (IPattern pattern in Patterns)
             {
@@ -257,8 +257,7 @@ namespace DotSpatial.Symbology
             if (Patterns == null) return;
             if (Patterns.Count == 0) return;
 
-            ISimplePattern sp = Patterns[Patterns.Count - 1] as ISimplePattern;
-            if (sp == null)
+            if (Patterns[Patterns.Count - 1] is not ISimplePattern sp)
             {
                 sp = new SimplePattern();
                 Patterns[Patterns.Count - 1] = sp;
@@ -307,8 +306,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnHandlePatternEvents()
         {
-            IChangeEventList<IPattern> patterns = Patterns as IChangeEventList<IPattern>;
-            if (patterns != null)
+            if (Patterns is IChangeEventList<IPattern> patterns)
             {
                 patterns.ItemChanged += PatternsItemChanged;
             }
@@ -320,8 +318,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnIgnorePatternEvents()
         {
-            IChangeEventList<IPattern> patterns = Patterns as IChangeEventList<IPattern>;
-            if (patterns != null)
+            if (Patterns is IChangeEventList<IPattern> patterns)
             {
                 patterns.ItemChanged -= PatternsItemChanged;
             }

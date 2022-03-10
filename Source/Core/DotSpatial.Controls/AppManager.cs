@@ -128,7 +128,7 @@ namespace DotSpatial.Controls
                 else
                 {
                     // by placing data in the AppData location, ClickOnce appications won't be subject to limits on size.
-                    Assembly? asm = Assembly.GetEntryAssembly();
+                    Assembly asm = Assembly.GetEntryAssembly();
 
                     if (asm == null)
                         return "";
@@ -340,7 +340,7 @@ namespace DotSpatial.Controls
         /// <returns>
         /// Null if the extension is not present.
         /// </returns>
-        public IExtension? GetExtension(string assemblyTitle)
+        public IExtension GetExtension(string assemblyTitle)
         {
             return Extensions.FirstOrDefault(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ","));
         }
@@ -353,7 +353,7 @@ namespace DotSpatial.Controls
         /// <returns>
         /// Null if the extension is not present.
         /// </returns>
-        public IExtension? GetExtension(string assemblyTitle, string version)
+        public IExtension GetExtension(string assemblyTitle, string version)
         {
             return Extensions.FirstOrDefault(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ",") && t.Version == version);
         }
@@ -502,7 +502,7 @@ namespace DotSpatial.Controls
                 return text;
             }
 
-            return "..." + text.Substring(Math.Max(2, text.Length - length - 3));
+            return "..." + text[Math.Max(2, text.Length - length - 3)..];
         }
 
         private static void TryLoadingCatalog(AggregateCatalog catalog, ComposablePartCatalog cat)
@@ -581,7 +581,7 @@ namespace DotSpatial.Controls
         /// <param name="sender">Sender that fired the event.</param>
         /// <param name="args">The event data.</param>
         /// <returns>The first assembly that was found.</returns>
-        private Assembly CurrentDomainAssemblyResolve(object? sender, ResolveEventArgs args)
+        private Assembly CurrentDomainAssemblyResolve(object sender, ResolveEventArgs args)
         {
             var knownExtensions = new[] { "dll", "exe" };
             string assemblyName = new AssemblyName(args.Name).Name;
@@ -621,7 +621,7 @@ namespace DotSpatial.Controls
             var catalog = new AggregateCatalog();
 
             // Add main exe
-            Assembly? mainExe = Assembly.GetEntryAssembly();
+            Assembly mainExe = Assembly.GetEntryAssembly();
           
             if (mainExe != null)
             {

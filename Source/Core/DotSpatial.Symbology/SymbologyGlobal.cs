@@ -17,7 +17,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// An instance of Random that is created when needed and sits around so we don't keep creating new ones.
         /// </summary>
-        private static readonly Random DefaultRandom = new Random();
+        private static readonly Random DefaultRandom = new();
 
         #endregion
 

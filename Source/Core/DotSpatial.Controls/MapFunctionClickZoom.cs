@@ -116,7 +116,7 @@ namespace DotSpatial.Controls
                 {
                     if (_geoStartPoint != null && _startPoint != e.Location)
                     {
-                        Envelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X, _geoStartPoint.Y, e.GeographicLocation.Y);
+                        Envelope env = new(_geoStartPoint.X, e.GeographicLocation.X, _geoStartPoint.Y, e.GeographicLocation.Y);
                         if (Math.Abs(e.X - _startPoint.X) > 1 && Math.Abs(e.Y - _startPoint.Y) > 1)
                         {
                             e.Map.ViewExtents = env.ToExtent();

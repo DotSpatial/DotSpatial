@@ -35,18 +35,16 @@ namespace DotSpatial.Data.Tests
         public void EachHoleExistsOnlyOnce()
         {
             string filePath = Common.AbsolutePath(@"Data\Shapefiles\Multipolygon\PolygonInHole.shp"); // Replace with path to file
-            using (var file = new PolygonShapefile(filePath))
+            using var file = new PolygonShapefile(filePath);
+            Assert.AreEqual(1, file.Features.Count, "Expected the shapefile to have only 1 feature.");
+
+            IFeature feature = file.GetFeature(0);
+            Assert.AreEqual(2, feature.Geometry.NumGeometries, "Expect the feature to consist out of 2 geometries.");
+
+            for (int i = 0; i < feature.Geometry.NumGeometries; i++)
             {
-                Assert.AreEqual(1, file.Features.Count, "Expected the shapefile to have only 1 feature.");
-
-                IFeature feature = file.GetFeature(0);
-                Assert.AreEqual(2, feature.Geometry.NumGeometries, "Expect the feature to consist out of 2 geometries.");
-
-                for (int i = 0; i < feature.Geometry.NumGeometries; i++)
-                {
-                    var polygon = (Polygon)feature.Geometry.GetGeometryN(i);
-                    Assert.AreEqual(1, polygon.NumInteriorRings, "Expect each polygon part to have 1 hole.");
-                }
+                var polygon = (Polygon)feature.Geometry.GetGeometryN(i);
+                Assert.AreEqual(1, polygon.NumInteriorRings, "Expect each polygon part to have 1 hole.");
             }
         }
 

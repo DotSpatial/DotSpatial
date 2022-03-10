@@ -169,7 +169,7 @@ namespace DotSpatial.Controls
             treFeatures.ResumeLayout();
         }
 
-        private void MnuAssignIdFieldClick(object? sender, EventArgs e)
+        private void MnuAssignIdFieldClick(object sender, EventArgs e)
         {
             if (treFeatures.SelectedNode.Tag is IFeatureLayer fl)
             {
@@ -213,7 +213,7 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void SelectMenuClick(object? sender, EventArgs e)
+        private void SelectMenuClick(object sender, EventArgs e)
         {
             var layer = treFeatures.SelectedNode.Parent.Tag as IFeatureLayer;
             if (treFeatures.SelectedNode.Tag is IFeature feature)
@@ -222,7 +222,7 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void TreFeaturesAfterSelect(object? sender, TreeViewEventArgs e)
+        private void TreFeaturesAfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node?.Tag is not IFeature f)
             {
@@ -251,7 +251,7 @@ namespace DotSpatial.Controls
             dgvAttributes.DataSource = dt;
         }
 
-        private void TreFeaturesMouseUp(object? sender, MouseEventArgs e)
+        private void TreFeaturesMouseUp(object sender, MouseEventArgs e)
         {
             // Create a customized context menu on right click in the tree.
             if (e.Button == MouseButtons.Right)

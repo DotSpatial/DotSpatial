@@ -24,7 +24,7 @@ namespace DotSpatial.Controls
     {
         #region Fields
 
-        private static readonly ResourceManager Resources = new ResourceManager("DotSpatial.Controls.MessageStrings", Assembly.GetExecutingAssembly());
+        private static readonly ResourceManager Resources = new("DotSpatial.Controls.MessageStrings", Assembly.GetExecutingAssembly());
 
         private readonly AppManager _applicationManager;
 
@@ -389,8 +389,7 @@ namespace DotSpatial.Controls
             // the parent groups are NULL.
             foreach (ILayer child in parentGroup.GetLayers())
             {
-                var childGroup = child as IGroup;
-                if (childGroup != null)
+                if (child is IGroup childGroup)
                 {
                     AssignParentGroups(childGroup, parentMapFrame);
                 }
@@ -416,7 +415,7 @@ namespace DotSpatial.Controls
         private void OpenProjectFile(string fileName)
         {
             var graph = CreateObjectGraph(_applicationManager, null);
-            XmlDeserializer d = new XmlDeserializer();
+            XmlDeserializer d = new();
 
             // why does deserialize take an object and then insist on creating new objects?
             // it decides to create new objects for anything nest more than one level deep.

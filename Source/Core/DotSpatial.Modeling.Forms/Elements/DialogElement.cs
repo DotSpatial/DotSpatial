@@ -13,7 +13,7 @@ namespace DotSpatial.Modeling.Forms.Elements
     {
         #region Fields
         // Status stuff
-        private readonly ToolTip _lightTip = new ToolTip();
+        private readonly ToolTip _lightTip = new();
         #endregion
 
         #region  Constructors

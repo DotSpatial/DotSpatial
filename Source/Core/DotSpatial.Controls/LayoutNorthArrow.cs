@@ -109,13 +109,13 @@ namespace DotSpatial.Controls
         /// <param name="printing">boolean, true if printing to the actual paper/document, false if drawing as a control.</param>
         public override void Draw(Graphics g, bool printing)
         {
-            GraphicsPath gp = new GraphicsPath();
+            GraphicsPath gp = new();
             Point[] pts;
-            Matrix m = new Matrix(Size.Width / 100F, 0F, 0F, Size.Height / 100F, Location.X, Location.Y);
+            Matrix m = new(Size.Width / 100F, 0F, 0F, Size.Height / 100F, Location.X, Location.Y);
             m.RotateAt(_rotation, new PointF(50F, 50F), MatrixOrder.Prepend);
 
-            Pen mypen = new Pen(_color, 2F);
-            SolidBrush fillBrush = new SolidBrush(_color);
+            Pen mypen = new(_color, 2F);
+            SolidBrush fillBrush = new(_color);
             mypen.LineJoin = LineJoin.Round;
             mypen.StartCap = LineCap.Round;
             mypen.EndCap = LineCap.Round;

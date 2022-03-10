@@ -125,7 +125,7 @@ namespace DotSpatial.Tools
                 for (int j = 0; j < slopegrid.NumColumns; j++)
                 {
                     Coordinate coordin = slopegrid.CellToProj(i, j);
-                    NtsPoint pt = new NtsPoint(coordin);
+                    NtsPoint pt = new(coordin);
                     IFeature point = new Feature(pt);
                     if (!outerShpFile.Features[outerShpIndex].Geometry.Covers(point.Geometry))
                     {

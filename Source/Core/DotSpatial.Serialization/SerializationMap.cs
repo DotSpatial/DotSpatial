@@ -15,7 +15,7 @@ namespace DotSpatial.Serialization
     {
         #region Fields
 
-        private static readonly Dictionary<Type, SerializationMap> TypeToSerializationMap = new Dictionary<Type, SerializationMap>();
+        private static readonly Dictionary<Type, SerializationMap> TypeToSerializationMap = new();
 
         #endregion
 
@@ -98,7 +98,7 @@ namespace DotSpatial.Serialization
         /// <returns>The Serialization Map Entry created by the serialize method.</returns>
         protected SerializationMapEntry Serialize(MemberInfo memberInfo, string name)
         {
-            SerializationMapEntry result = new SerializationMapEntry(memberInfo, new SerializeAttribute(name));
+            SerializationMapEntry result = new(memberInfo, new SerializeAttribute(name));
             Members.Add(result);
             return result;
         }
@@ -139,7 +139,7 @@ namespace DotSpatial.Serialization
         {
             Type baseType = type.BaseType;
 
-            Stack<Type> typesToSerialize = new Stack<Type>();
+            Stack<Type> typesToSerialize = new();
             typesToSerialize.Push(type);
 
             while (baseType != null && !baseType.Equals(typeof(object)))

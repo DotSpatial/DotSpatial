@@ -182,7 +182,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 hasOverviews = red.GetOverviewCount() > 0;
             }
 
-            GdalImage result = new GdalImage(fileName);
+            GdalImage result = new(fileName);
 
             // Firstly, if there are pyramids inside of the GDAL file itself, we can just work with this directly,
             // without creating our own pyramid image.
@@ -202,13 +202,13 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     File.Delete(pyrFile);
                 }
 
-                GdalImageSource gs = new GdalImageSource(fileName);
-                PyramidImage py = new PyramidImage(pyrFile, gs.Bounds);
+                GdalImageSource gs = new(fileName);
+                PyramidImage py = new(pyrFile, gs.Bounds);
                 int width = gs.Bounds.NumColumns;
                 int blockHeight = 64000000 / width;
                 if (blockHeight > gs.Bounds.NumRows) blockHeight = gs.Bounds.NumRows;
                 int numBlocks = (int)Math.Ceiling(gs.Bounds.NumRows / (double)blockHeight);
-                ProgressMeter pm = new ProgressMeter(ProgressHandler, "Copying Data To Pyramids", numBlocks * 2);
+                ProgressMeter pm = new(ProgressHandler, "Copying Data To Pyramids", numBlocks * 2);
 
                 Application.DoEvents();
                 for (int j = 0; j < numBlocks; j++)

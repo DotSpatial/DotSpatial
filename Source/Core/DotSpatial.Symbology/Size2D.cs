@@ -89,8 +89,7 @@ namespace DotSpatial.Symbology
         /// <returns>True, if both are equal.</returns>
         public override bool Equals(object obj)
         {
-            var other = obj as Size2D;
-            if ((object)other == null) return false;
+            if (obj is not Size2D other) return false;
 
             return Equals(other);
         }

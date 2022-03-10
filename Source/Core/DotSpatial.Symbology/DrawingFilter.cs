@@ -125,17 +125,15 @@ namespace DotSpatial.Symbology
             {
                 if (_countIsValid) return _count;
 
-                using (IEnumerator<IFeature> en = GetEnumerator())
+                using IEnumerator<IFeature> en = GetEnumerator();
+                _count = 0;
+                while (en.MoveNext())
                 {
-                    _count = 0;
-                    while (en.MoveNext())
-                    {
-                        _count++;
-                    }
-
-                    _countIsValid = true;
-                    return _count;
+                    _count++;
                 }
+
+                _countIsValid = true;
+                return _count;
             }
         }
 

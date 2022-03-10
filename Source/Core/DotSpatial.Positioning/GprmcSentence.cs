@@ -62,7 +62,7 @@ namespace DotSpatial.Positioning
         public GprmcSentence(DateTime utcDateTime, bool isFixAcquired, Position position, Speed speed, Azimuth bearing, Longitude magneticVariation)
         {
             // Use a string builder to create the sentence text
-            StringBuilder builder = new StringBuilder(128);
+            StringBuilder builder = new(128);
 
             /* GPRMC sentences have the following format:
              *

@@ -13,7 +13,7 @@ namespace DotSpatial.Plugins.Measure
     /// </summary>
     public class MeasurePlugin : Extension
     {
-        private MapFunctionMeasure? _painter;
+        private MapFunctionMeasure _painter;
 
         /// <inheritdoc />
         public override void Activate()
@@ -29,7 +29,7 @@ namespace DotSpatial.Plugins.Measure
             base.Deactivate();
         }
 
-        private void MeasureToolClick(object? sender, EventArgs e)
+        private void MeasureToolClick(object sender, EventArgs e)
         {
             if (_painter == null)
             {

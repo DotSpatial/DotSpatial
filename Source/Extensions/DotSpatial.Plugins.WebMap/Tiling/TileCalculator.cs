@@ -252,24 +252,22 @@ namespace DotSpatial.Plugins.WebMap.Tiling
                 // set background color
                 g.Clear(Color.Transparent);
 
-                using (var iaPic = new ImageAttributes())
+                using var iaPic = new ImageAttributes();
+                var cmxPic = new ColorMatrix
                 {
-                    var cmxPic = new ColorMatrix
-                                     {
-                                         Matrix33 = opacity / 100f
-                                     };
-                    iaPic.SetColorMatrix(cmxPic, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                    Matrix33 = opacity / 100f
+                };
+                iaPic.SetColorMatrix(cmxPic, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-                    // go through each image and "draw" it on the final image
-                    for (var y = 0; y < tiles.GetLength(1); y++)
+                // go through each image and "draw" it on the final image
+                for (var y = 0; y < tiles.GetLength(1); y++)
+                {
+                    for (var x = 0; x < tiles.GetLength(0); x++)
                     {
-                        for (var x = 0; x < tiles.GetLength(0); x++)
+                        if (tiles[x, y] != null)
                         {
-                            if (tiles[x, y] != null)
-                            {
-                                var tile = tiles[x, y];
-                                g.DrawImage(tile, new Rectangle(x * 256, y * 256, tile.Width, tile.Height), 0, 0, tile.Width, tile.Height, GraphicsUnit.Pixel, iaPic);
-                            }
+                            var tile = tiles[x, y];
+                            g.DrawImage(tile, new Rectangle(x * 256, y * 256, tile.Width, tile.Height), 0, 0, tile.Width, tile.Height, GraphicsUnit.Pixel, iaPic);
                         }
                     }
                 }

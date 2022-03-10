@@ -300,7 +300,7 @@ namespace DotSpatial.Data.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(InputBox));
+            ComponentResourceManager resources = new(typeof(InputBox));
             _lblMessageText = new Label();
             _txtInput = new TextBox();
             _cmdOk = new Button();

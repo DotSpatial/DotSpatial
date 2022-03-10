@@ -345,45 +345,41 @@ namespace DotSpatial.Controls
             {
                 // Unsubscribe events from old map
                 args.OldValue.Layers.LayerSelected -= LayersLayerSelected;
-                var map = args.OldValue as Map;
-                if (map != null)
+                if (args.OldValue is Map map)
                     map.ViewExtentsChanged -= MapFrameViewExtentsChanged;
             }
 
             if (args.NewValue != null)
             {
                 args.NewValue.Layers.LayerSelected += LayersLayerSelected;
-                var map = args.NewValue as Map;
-                if (map != null)
+                if (args.NewValue is Map map)
                     map.ViewExtentsChanged += MapFrameViewExtentsChanged;
             }
         }
 
         private void OpenProjectClick(object sender, EventArgs e)
         {
-            using (var dlg = new OpenFileDialog())
+            using var dlg = new OpenFileDialog();
+            dlg.Filter = App.SerializationManager.OpenDialogFilterText;
+            if (dlg.ShowDialog() != DialogResult.OK)
+                return;
+            try
             {
-                dlg.Filter = App.SerializationManager.OpenDialogFilterText;
-                if (dlg.ShowDialog() != DialogResult.OK)
-                    return;
-                try
-                {
-                    // use the AppManager.SerializationManager to open the project
-                    App.SerializationManager.OpenProject(dlg.FileName);
-                    App.Map.Invalidate();
-                }
-                catch (IOException)
-                {
-                    MessageBox.Show(string.Format(Msg.CouldNotOpenTheSpecifiedMapFile, dlg.FileName), Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                catch (XmlException)
-                {
-                    MessageBox.Show(string.Format(Msg.FailedToReadTheSpecifiedMapFile, dlg.FileName), Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                catch (ArgumentException)
-                {
-                    MessageBox.Show(string.Format(Msg.FailedToReadAPortionOfTheSpecifiedMapFile, dlg.FileName), Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                // use the AppManager.SerializationManager to open the project
+                App.SerializationManager.OpenProject(dlg.FileName);
+                App.Map.Invalidate();
+            }
+            catch (IOException)
+            {
+                MessageBox.Show(string.Format(Msg.CouldNotOpenTheSpecifiedMapFile, dlg.FileName), Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (XmlException)
+            {
+                MessageBox.Show(string.Format(Msg.FailedToReadTheSpecifiedMapFile, dlg.FileName), Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show(string.Format(Msg.FailedToReadAPortionOfTheSpecifiedMapFile, dlg.FileName), Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -394,10 +390,8 @@ namespace DotSpatial.Controls
         /// <param name="e">The event args.</param>
         private void OptionsClick(object sender, EventArgs e)
         {
-            using (var form = new OptionsForm(App.Map))
-            {
-                form.ShowDialog();
-            }
+            using var form = new OptionsForm(App.Map);
+            form.ShowDialog();
         }
 
         /// <summary>
@@ -427,11 +421,9 @@ namespace DotSpatial.Controls
                 }
             }
 
-            using (var layout = new LayoutForm())
-            {
-                layout.MapControl = App.Map as Map;
-                layout.ShowDialog();
-            }
+            using var layout = new LayoutForm();
+            layout.MapControl = App.Map as Map;
+            layout.ShowDialog();
         }
 
         /// <summary>
@@ -491,16 +483,14 @@ namespace DotSpatial.Controls
 
         private void SaveProjectAs()
         {
-            using (var dlg = new SaveFileDialog
+            using var dlg = new SaveFileDialog
             {
                 Filter = App.SerializationManager.SaveDialogFilterText,
                 SupportMultiDottedExtensions = true
-            })
+            };
+            if (dlg.ShowDialog() == DialogResult.OK)
             {
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    SaveProject(dlg.FileName);
-                }
+                SaveProject(dlg.FileName);
             }
         }
 
@@ -561,8 +551,8 @@ namespace DotSpatial.Controls
 
         private void ZoomToCoordinates()
         {
-            using (var coordinateDialog = new ZoomToCoordinatesDialog(App.Map))
-                coordinateDialog.ShowDialog();
+            using var coordinateDialog = new ZoomToCoordinatesDialog(App.Map);
+            coordinateDialog.ShowDialog();
         }
 
         private void ZoomToLayer(IMapLayer layerToZoom)

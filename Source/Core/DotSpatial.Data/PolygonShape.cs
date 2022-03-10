@@ -83,7 +83,7 @@ namespace DotSpatial.Data
             // If the other polygon completely contains this polygon every other test has returned false,
             // but this will test for that case with only a single point.
             Vertex v = polygonShape.First();
-            ShapeRange onlyFirstPoint = new ShapeRange(v);
+            ShapeRange onlyFirstPoint = new(v);
             return ContainsVertex(otherShape, onlyFirstPoint);
         }
 
@@ -106,7 +106,7 @@ namespace DotSpatial.Data
 
                 // Imagine a ray on the horizontal starting from point.X -> infinity. (In practice this can be ext.XMax)
                 // Count the intersections of segments with that line. If the resulting count is odd, the point is inside.
-                Segment ray = new Segment(point.X, point.Y, ext.MaxX, point.Y);
+                Segment ray = new(point.X, point.Y, ext.MaxX, point.Y);
                 int[] numCrosses = new int[polygonShape.NumParts]; // A cross is a complete cross. Coincident doesn't count because it is either 0 or 2 crosses.
                 int totalCrosses = 0;
                 int iPart = 0;

@@ -70,7 +70,7 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Gets a rectangle in control coordinates showing the size of this control.
         /// </summary>
-        public Rectangle ClientRectangle => new Rectangle(0, 0, Width, Height);
+        public Rectangle ClientRectangle => new(0, 0, Width, Height);
 
         /// <summary>
         /// Gets or sets the custom icon that is used if the ItemType is set to custom.
@@ -237,7 +237,7 @@ namespace DotSpatial.Data.Forms
         public virtual void Draw(PaintEventArgs e)
         {
             Matrix oldMatrix = e.Graphics.Transform;
-            Matrix mat = new Matrix();
+            Matrix mat = new();
             mat.Translate(Bounds.Left, Bounds.Top);
             e.Graphics.Transform = mat;
             OnDraw(e);
@@ -255,7 +255,7 @@ namespace DotSpatial.Data.Forms
             Pen border = Pens.White;
             Pen innerBorder = Pens.White;
             Brush fill = Brushes.White;
-            Pen dots = new Pen(Color.Black);
+            Pen dots = new(Color.Black);
             bool specialDrawing = false;
             dots.DashStyle = DashStyle.Dot;
             if (_isHighlighted && !IsSelected)

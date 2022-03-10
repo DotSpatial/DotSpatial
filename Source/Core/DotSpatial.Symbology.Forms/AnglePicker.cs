@@ -273,7 +273,7 @@ namespace DotSpatial.Symbology.Forms
                 if (dx == 0 && dy == 0) return;
                 double angle = Math.Atan(dy / dx);
                 if (dx < 0) angle += Math.PI;
-                if (angle > Math.PI) angle = angle - (Math.PI * 2);
+                if (angle > Math.PI) angle -= (Math.PI * 2);
                 _angle = Convert.ToInt32(angle * 180 / Math.PI);
 
                 if (Snap > 0)
@@ -317,12 +317,12 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            Rectangle r = new Rectangle(0, 0, Width, Height);
+            Rectangle r = new(0, 0, Width, Height);
             r.Inflate(1, 1);
 
-            Rectangle circle = new Rectangle(_knobRadius, _knobRadius, Width - (2 * _knobRadius), Height - (2 * _knobRadius));
+            Rectangle circle = new(_knobRadius, _knobRadius, Width - (2 * _knobRadius), Height - (2 * _knobRadius));
 
-            Bitmap bmp = new Bitmap(Width, Height);
+            Bitmap bmp = new(Width, Height);
             Graphics g = Graphics.FromImage(bmp);
 
             DrawBorder(g, r);
@@ -335,9 +335,9 @@ namespace DotSpatial.Symbology.Forms
             b.Dispose();
 
             Pen p = Pens.Black;
-            Point center = new Point(circle.X + (circle.Width / 2), circle.Y + (circle.Height / 2));
+            Point center = new(circle.X + (circle.Width / 2), circle.Y + (circle.Height / 2));
             double a = _angle * Math.PI / 180;
-            Point knob = new Point
+            Point knob = new()
             {
                 X = Convert.ToInt32(center.X + ((double)circle.Width / 2 * Math.Cos(a))),
                 Y = Convert.ToInt32(center.Y - ((double)circle.Height / 2 * Math.Sin(a)))
@@ -351,7 +351,7 @@ namespace DotSpatial.Symbology.Forms
                 double dy = -(knob.Y - center.Y);
                 double angle = Math.Atan(dy / dx);
                 if (dx < 0) angle += Math.PI;
-                if (angle > Math.PI) angle = angle - (Math.PI * 2);
+                if (angle > Math.PI) angle -= (Math.PI * 2);
                 int fillAngle = Convert.ToInt32(angle * 180 / Math.PI);
 
                 b = new SolidBrush(_pieFillColor);
@@ -415,10 +415,10 @@ namespace DotSpatial.Symbology.Forms
                 g.DrawRectangle(Pens.Black, new Rectangle(0, 0, r.Width - 1, r.Height - 1));
             }
 
-            Point tl = new Point(0, 0);
-            Point tr = new Point(r.Width - 1, 0);
-            Point bl = new Point(0, r.Height - 1);
-            Point br = new Point(r.Width - 1, r.Height - 1);
+            Point tl = new(0, 0);
+            Point tr = new(r.Width - 1, 0);
+            Point bl = new(0, r.Height - 1);
+            Point br = new(r.Width - 1, r.Height - 1);
             if (BorderStyle == BorderStyle.Fixed3D)
             {
                 g.DrawLine(Pens.White, bl, br);
@@ -451,7 +451,7 @@ namespace DotSpatial.Symbology.Forms
             if (_knobVisible == false) return;
             Color light = Lighten(_knobColor, 50);
             Color dark = Darken(_knobColor, 50);
-            Rectangle r = new Rectangle(location.X - _knobRadius, location.Y - _knobRadius, _knobRadius * 2, _knobRadius * 2);
+            Rectangle r = new(location.X - _knobRadius, location.Y - _knobRadius, _knobRadius * 2, _knobRadius * 2);
             Brush b = new LinearGradientBrush(r, light, dark, 315f);
             g.FillEllipse(b, r);
             b.Dispose();

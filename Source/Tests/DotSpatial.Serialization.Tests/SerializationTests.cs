@@ -42,7 +42,7 @@ namespace DotSpatial.Serialization.Tests
     {
         #region Fields
 
-        private readonly List<string> _filesToRemove = new List<string>();
+        private readonly List<string> _filesToRemove = new();
         private readonly string _folder = Common.AbsolutePath("Data");
 
         #endregion
@@ -80,10 +80,10 @@ namespace DotSpatial.Serialization.Tests
                 { 2, "Hello <insert name here>!" }
             };
 
-            XmlSerializer s = new XmlSerializer();
+            XmlSerializer s = new();
             string result = s.Serialize(dictionary);
 
-            XmlDeserializer d = new XmlDeserializer();
+            XmlDeserializer d = new();
             Dictionary<int, object> newDictionary = d.Deserialize<Dictionary<int, object>>(result);
 
             foreach (var key in dictionary.Keys)
@@ -98,16 +98,16 @@ namespace DotSpatial.Serialization.Tests
         [Test]
         public void TestFormatter()
         {
-            ObjectWithIntMember obj = new ObjectWithIntMember(0xBEEF);
-            XmlSerializer s = new XmlSerializer();
+            ObjectWithIntMember obj = new(0xBEEF);
+            XmlSerializer s = new();
             string xml = s.Serialize(obj);
 
-            XmlDeserializer d = new XmlDeserializer();
+            XmlDeserializer d = new();
             ObjectWithIntMember result1 = d.Deserialize<ObjectWithIntMember>(xml);
             Assert.IsNotNull(result1);
             Assert.AreEqual(0xBEEF, result1.Number);
 
-            ObjectWithIntMember result2 = new ObjectWithIntMember(0);
+            ObjectWithIntMember result2 = new(0);
             d.Deserialize(result2, xml);
             Assert.IsNotNull(result2);
             Assert.AreEqual(0xBEEF, result2.Number);
@@ -119,21 +119,21 @@ namespace DotSpatial.Serialization.Tests
         [Test]
         public void TestGraphWithEnumNode()
         {
-            Node rootNode = new Node(1);
-            Node intNode = new Node(42);
-            Node enumNode = new Node(TestEnum.Two);
+            Node rootNode = new(1);
+            Node intNode = new(42);
+            Node enumNode = new(TestEnum.Two);
 
             rootNode.Nodes.Add(intNode);
             rootNode.Nodes.Add(enumNode);
 
             intNode.Nodes.Add(rootNode);
 
-            Graph g = new Graph(rootNode);
+            Graph g = new(rootNode);
 
-            XmlSerializer s = new XmlSerializer();
+            XmlSerializer s = new();
             string result = s.Serialize(g);
 
-            XmlDeserializer d = new XmlDeserializer();
+            XmlDeserializer d = new();
             Graph newGraph = d.Deserialize<Graph>(result);
 
             Assert.IsNotNull(newGraph);
@@ -150,21 +150,21 @@ namespace DotSpatial.Serialization.Tests
         [Test]
         public void TestGraphWithStringNode()
         {
-            Node rootNode = new Node(1);
-            Node intNode = new Node(42);
-            Node stringNode = new Node("test string with <invalid> characters!");
+            Node rootNode = new(1);
+            Node intNode = new(42);
+            Node stringNode = new("test string with <invalid> characters!");
 
             rootNode.Nodes.Add(intNode);
             rootNode.Nodes.Add(stringNode);
 
             intNode.Nodes.Add(rootNode);
 
-            Graph g = new Graph(rootNode);
+            Graph g = new(rootNode);
 
-            XmlSerializer s = new XmlSerializer();
+            XmlSerializer s = new();
             string result = s.Serialize(g);
 
-            XmlDeserializer d = new XmlDeserializer();
+            XmlDeserializer d = new();
             Graph newGraph = d.Deserialize<Graph>(result);
 
             Assert.IsNotNull(newGraph);
@@ -185,12 +185,12 @@ namespace DotSpatial.Serialization.Tests
             string projectFileName = FileTools.GetTempFileName(".dspx");
             _filesToRemove.Add(projectFileName);
 
-            AppManager manager = new AppManager();
-            Map map = new Map();
+            AppManager manager = new();
+            Map map = new();
             manager.Map = map;
 
             IFeatureSet fs = FeatureSet.Open(filename);
-            MapPointLayer l = new MapPointLayer(fs);
+            MapPointLayer l = new(fs);
             map.Layers.Add(l);
             Assert.Greater(map.Layers.Count, 0);
 
@@ -216,16 +216,16 @@ namespace DotSpatial.Serialization.Tests
             string projectFileName = FileTools.GetTempFileName(".dspx");
             _filesToRemove.Add(projectFileName);
 
-            AppManager manager = new AppManager();
-            Map map = new Map();
+            AppManager manager = new();
+            Map map = new();
             manager.Map = map;
 
             // new map group added to map
-            MapGroup grp = new MapGroup(map, "group1");
+            MapGroup grp = new(map, "group1");
 
             // new map layer added to group
             IFeatureSet fs = FeatureSet.Open(filename);
-            MapPointLayer l = new MapPointLayer(fs);
+            MapPointLayer l = new(fs);
 
             // add layer to group
             grp.Layers.Add(l);
@@ -255,11 +255,11 @@ namespace DotSpatial.Serialization.Tests
             string filename = Path.Combine(_folder, "test-RandomPts.shp");
 
             IFeatureSet fs = FeatureSet.Open(filename);
-            MapPointLayer l = new MapPointLayer(fs);
-            XmlSerializer s = new XmlSerializer();
+            MapPointLayer l = new(fs);
+            XmlSerializer s = new();
             string result = s.Serialize(l);
 
-            XmlDeserializer d = new XmlDeserializer();
+            XmlDeserializer d = new();
             MapPointLayer newPointLayer = d.Deserialize<MapPointLayer>(result);
 
             Assert.IsNotNull(newPointLayer);
@@ -289,10 +289,10 @@ namespace DotSpatial.Serialization.Tests
         public void TestRectangleSerialization()
         {
             var rectangle = new Rectangle(1, 1, 2, 2);
-            XmlSerializer s = new XmlSerializer();
+            XmlSerializer s = new();
             string xml = s.Serialize(rectangle);
 
-            XmlDeserializer d = new XmlDeserializer();
+            XmlDeserializer d = new();
             Rectangle result = d.Deserialize<Rectangle>(xml);
 
             Assert.AreEqual(1, result.X);
@@ -307,18 +307,18 @@ namespace DotSpatial.Serialization.Tests
         [Test]
         public void TestSimpleGraph()
         {
-            Node rootNode = new Node(1);
-            Node intNode = new Node(42);
+            Node rootNode = new(1);
+            Node intNode = new(42);
 
             rootNode.Nodes.Add(intNode);
             intNode.Nodes.Add(rootNode);
 
-            Graph g = new Graph(rootNode);
+            Graph g = new(rootNode);
 
-            XmlSerializer s = new XmlSerializer();
+            XmlSerializer s = new();
             string result = s.Serialize(g);
 
-            XmlDeserializer d = new XmlDeserializer();
+            XmlDeserializer d = new();
             Graph newGraph = d.Deserialize<Graph>(result);
 
             Assert.IsNotNull(newGraph);

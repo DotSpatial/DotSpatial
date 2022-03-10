@@ -25,7 +25,7 @@ namespace DotSpatial.Serialization
     {
         #region Fields
 
-        private readonly object _lockObject = new object();
+        private readonly object _lockObject = new();
 
         private int _nextTypeId;
         private Dictionary<Type, int> _typeCache;
@@ -68,13 +68,11 @@ namespace DotSpatial.Serialization
 
         private string ConvertDocumentToString(XDocument document)
         {
-            using (var sw = new StringWriter(CultureInfo.InvariantCulture))
-            {
-                document.Save(sw);
-                sw.Flush();
+            using var sw = new StringWriter(CultureInfo.InvariantCulture);
+            document.Save(sw);
+            sw.Flush();
 
-                return sw.ToString();
-            }
+            return sw.ToString();
         }
 
         private XElement CreateElement(string elementName, object value, SerializeAttribute attribute, params object[] content)
@@ -258,7 +256,7 @@ namespace DotSpatial.Serialization
         {
             #region Fields
 
-            private readonly List<KeyValuePair<object, XElement>> _objectReferences = new List<KeyValuePair<object, XElement>>();
+            private readonly List<KeyValuePair<object, XElement>> _objectReferences = new();
             private int _nextId;
 
             #endregion

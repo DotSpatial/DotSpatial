@@ -110,7 +110,7 @@ namespace DotSpatial.Tools
             // we add all the old features to output
             for (int j = 0; j < input.Features.Count; j++)
             {
-                Feature newFeature = new Feature(input.Features[j].Geometry, output);
+                Feature newFeature = new(input.Features[j].Geometry, output);
                 foreach (DataColumn colSource in input.DataTable.Columns)
                 {
                     newFeature.DataRow[colSource.ColumnName] = input.Features[j].DataRow[colSource.ColumnName];

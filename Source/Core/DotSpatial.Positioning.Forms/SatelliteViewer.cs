@@ -75,27 +75,27 @@ namespace DotSpatial.Positioning.Forms
 		private Pen _MajorTickPen = new Pen(Color.Black);
 #endif
 #else
-        private Angle _minorTickInterval = new Angle(2);
-        private Pen _majorTickPen = new Pen(Color.Black, 2.0f);
+        private Angle _minorTickInterval = new(2);
+        private Pen _majorTickPen = new(Color.Black, 2.0f);
 #endif
-        private Angle _majorTickInterval = new Angle(15);
-        private Pen _minorTickPen = new Pen(Color.Black);
-        private Angle _directionLabelInterval = new Angle(45);
+        private Angle _majorTickInterval = new(15);
+        private Pen _minorTickPen = new(Color.Black);
+        private Angle _directionLabelInterval = new(45);
         private string _directionLabelFormat = "c";
-        private SolidBrush _directionLabelBrush = new SolidBrush(Color.Black);
-        private Pen _halfwayUpPen = new Pen(Color.Gray);
+        private SolidBrush _directionLabelBrush = new(Color.Black);
+        private Pen _halfwayUpPen = new(Color.Gray);
 #if PocketPC
         private Font _DirectionLabelFont = new Font("Tahoma", 7.0f, FontStyle.Regular);
         private Font _PseudorandomNumberFont = new Font("Tahoma", 7.0f, FontStyle.Bold);
         private SolidBrush _SatelliteFixBrush = new SolidBrush(Color.LimeGreen);
 #else
-        private Font _directionLabelFont = new Font("Tahoma", 12.0f, FontStyle.Bold);
-        private Font _pseudorandomNumberFont = new Font("Tahoma", 9.0f, FontStyle.Regular);
+        private Font _directionLabelFont = new("Tahoma", 12.0f, FontStyle.Bold);
+        private Font _pseudorandomNumberFont = new("Tahoma", 9.0f, FontStyle.Regular);
 #endif
-        private SolidBrush _pseudorandomNumberBrush = new SolidBrush(Color.Black);
+        private SolidBrush _pseudorandomNumberBrush = new(Color.Black);
         private bool _isUsingRealTimeData = true;
 #if !PocketPC
-        private SolidBrush _satelliteShadowBrush = new SolidBrush(Color.FromArgb(32, 0, 0, 0));
+        private SolidBrush _satelliteShadowBrush = new(Color.FromArgb(32, 0, 0, 0));
         private Color _satelliteFixColor = Color.LightGreen;
 #endif
 
@@ -111,16 +111,16 @@ namespace DotSpatial.Positioning.Forms
         private Color _satelliteGoodSignalOutlineColor = Color.Black;
         private Color _satelliteExcellentSignalOutlineColor = Color.Black;
 
-        private readonly ColorInterpolator _fillNone = new ColorInterpolator(Color.Transparent, Color.Red, 10);
-        private readonly ColorInterpolator _fillPoor = new ColorInterpolator(Color.Red, Color.Orange, 10);
-        private readonly ColorInterpolator _pFillModerate = new ColorInterpolator(Color.Orange, Color.Green, 10);
-        private readonly ColorInterpolator _pFillGood = new ColorInterpolator(Color.Green, Color.LightGreen, 10);
-        private readonly ColorInterpolator _pFillExcellent = new ColorInterpolator(Color.LightGreen, Color.White, 10);
-        private readonly ColorInterpolator _pOutlineNone = new ColorInterpolator(Color.Transparent, Color.Gray, 10);
-        private readonly ColorInterpolator _pOutlinePoor = new ColorInterpolator(Color.Gray, Color.Gray, 10);
-        private readonly ColorInterpolator _pOutlineModerate = new ColorInterpolator(Color.Gray, Color.Gray, 10);
-        private readonly ColorInterpolator _pOutlineGood = new ColorInterpolator(Color.Gray, Color.Gray, 10);
-        private readonly ColorInterpolator _pOutlineExcellent = new ColorInterpolator(Color.Gray, Color.LightGreen, 10);
+        private readonly ColorInterpolator _fillNone = new(Color.Transparent, Color.Red, 10);
+        private readonly ColorInterpolator _fillPoor = new(Color.Red, Color.Orange, 10);
+        private readonly ColorInterpolator _pFillModerate = new(Color.Orange, Color.Green, 10);
+        private readonly ColorInterpolator _pFillGood = new(Color.Green, Color.LightGreen, 10);
+        private readonly ColorInterpolator _pFillExcellent = new(Color.LightGreen, Color.White, 10);
+        private readonly ColorInterpolator _pOutlineNone = new(Color.Transparent, Color.Gray, 10);
+        private readonly ColorInterpolator _pOutlinePoor = new(Color.Gray, Color.Gray, 10);
+        private readonly ColorInterpolator _pOutlineModerate = new(Color.Gray, Color.Gray, 10);
+        private readonly ColorInterpolator _pOutlineGood = new(Color.Gray, Color.Gray, 10);
+        private readonly ColorInterpolator _pOutlineExcellent = new(Color.Gray, Color.LightGreen, 10);
 
         private List<Satellite> _satellites;
         private RotationOrientation _rotationOrientation = RotationOrientation.TrackUp;
@@ -171,7 +171,7 @@ namespace DotSpatial.Positioning.Forms
 				new PointD(3, 0),
 				new PointD(0, 0)
 			};
-        private static PointD _iconCenter = new PointD(13, 5);
+        private static PointD _iconCenter = new(13, 5);
 
         /// <summary>
         /// Creates a new instance.
@@ -1182,7 +1182,7 @@ namespace DotSpatial.Positioning.Forms
                 for (double angle = 0; angle < 360; angle += directionInterval)
                 {
                     // Get the coordinate of the line's start
-                    PolarCoordinate start = new PolarCoordinate(70, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
+                    PolarCoordinate start = new(70, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
 #if PocketPC
 					f.DrawCenteredString(((Azimuth)angle).ToString(_DirectionLabelFormat, CultureInfo.CurrentCulture), _DirectionLabelFont, _DirectionLabelBrush, start);
 #else
@@ -1215,7 +1215,7 @@ namespace DotSpatial.Positioning.Forms
                         continue;
 
                     // Get the coordinate for this satellite
-                    PolarCoordinate center = new PolarCoordinate(Convert.ToSingle(90.0f - satellite.Elevation.DecimalDegrees),
+                    PolarCoordinate center = new(Convert.ToSingle(90.0f - satellite.Elevation.DecimalDegrees),
                         satellite.Azimuth.DecimalDegrees, Azimuth.North, PolarCoordinateOrientation.Clockwise);
                     PointD centerPoint = f.ToPointD(center);
 
@@ -1231,7 +1231,7 @@ namespace DotSpatial.Positioning.Forms
                         satelliteIcon[iconIndex] = new PointF((float)_icon[iconIndex].X, (float)_icon[iconIndex].Y);
                     }
 
-                    using (Matrix y = new Matrix())
+                    using (Matrix y = new())
                     {
                         y.RotateAt(Convert.ToSingle(satellite.Azimuth.DecimalDegrees - f.Rotation.DecimalDegrees + Origin.DecimalDegrees),
                             new PointF((float)_iconCenter.X, (float)_iconCenter.Y), MatrixOrder.Append);
@@ -1268,16 +1268,14 @@ namespace DotSpatial.Positioning.Forms
                     }
 
                     // Get the coordinate for this satellite
-                    PolarCoordinate center = new PolarCoordinate(Convert.ToSingle(90.0 - satellite.Elevation.DecimalDegrees),
+                    PolarCoordinate center = new(Convert.ToSingle(90.0 - satellite.Elevation.DecimalDegrees),
                         satellite.Azimuth.DecimalDegrees, Azimuth.North, PolarCoordinateOrientation.Clockwise);
 
 #if PocketPC
 						f.FillEllipse(_SatelliteFixBrush, Center, 16);
 #else
-                    using (SolidBrush fixBrush = new SolidBrush(Color.FromArgb(Math.Min(255, fixedSatellites.Count * 20), _satelliteFixColor)))
-                    {
-                        f.FillEllipse(fixBrush, center, 16);
-                    }
+                    using SolidBrush fixBrush = new(Color.FromArgb(Math.Min(255, fixedSatellites.Count * 20), _satelliteFixColor));
+                    f.FillEllipse(fixBrush, center, 16);
 #endif
                 }
 
@@ -1299,7 +1297,7 @@ namespace DotSpatial.Positioning.Forms
                     }
 
                     // Get the coordinate for this satellite
-                    PolarCoordinate center = new PolarCoordinate(Convert.ToSingle(90.0 - satellite.Elevation.DecimalDegrees),
+                    PolarCoordinate center = new(Convert.ToSingle(90.0 - satellite.Elevation.DecimalDegrees),
                         satellite.Azimuth.DecimalDegrees, Azimuth.North, PolarCoordinateOrientation.Clockwise);
                     PointD centerPoint = f.ToPointD(center);
 
@@ -1333,17 +1331,17 @@ namespace DotSpatial.Positioning.Forms
                         satelliteIcon[iconIndex] = new PointF((float)_icon[iconIndex].X, (float)_icon[iconIndex].Y);
                     }
 
-                    Matrix y = new Matrix();
+                    Matrix y = new();
                     y.RotateAt(Convert.ToSingle(satellite.Azimuth.DecimalDegrees - f.Rotation.DecimalDegrees + Origin.DecimalDegrees),
                         new PointF((float)_iconCenter.X, (float)_iconCenter.Y), MatrixOrder.Append);
                     y.TransformPoints(satelliteIcon);
                     y.Dispose();
 
-                    SolidBrush fillBrush = new SolidBrush(GetFillColor(satellite.SignalToNoiseRatio));
+                    SolidBrush fillBrush = new(GetFillColor(satellite.SignalToNoiseRatio));
                     f.Graphics.FillPolygon(fillBrush, satelliteIcon);
                     fillBrush.Dispose();
 
-                    Pen fillPen = new Pen(GetOutlineColor(satellite.SignalToNoiseRatio), 1.0f);
+                    Pen fillPen = new(GetOutlineColor(satellite.SignalToNoiseRatio), 1.0f);
                     f.Graphics.DrawPolygon(fillPen, satelliteIcon);
                     fillPen.Dispose();
 

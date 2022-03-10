@@ -184,7 +184,7 @@ namespace DotSpatial.Symbology.Forms
             }
 
             if (_numColumns == 0) _numColumns = 1;
-            Font smallFont = new Font(Font.FontFamily, CellSize.Width * .8F, GraphicsUnit.Pixel);
+            Font smallFont = new(Font.FontFamily, CellSize.Width * .8F, GraphicsUnit.Pixel);
             for (int i = 0; i < 256; i++)
             {
                 int row = i / _numColumns;
@@ -218,7 +218,7 @@ namespace DotSpatial.Symbology.Forms
                 e.Graphics.FillRectangle(Brushes.Gray, new Rectangle(pRect.X + 2, pRect.Y + 2, pRect.Width, pRect.Height));
                 e.Graphics.FillRectangle(backBrush, pRect);
                 e.Graphics.DrawRectangle(Pens.Black, pRect);
-                Font bigFont = new Font(Font.FontFamily, CellSize.Width * 2.7F, GraphicsUnit.Pixel);
+                Font bigFont = new(Font.FontFamily, CellSize.Width * 2.7F, GraphicsUnit.Pixel);
                 e.Graphics.DrawString(SelectedString, bigFont, foreBrush, new PointF(pRect.X, pRect.Y));
             }
 

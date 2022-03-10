@@ -50,12 +50,12 @@ namespace DotSpatial.Plugins.StatusBarImprovements
             base.Deactivate();
         }
 
-        private void MapSelectionChanged(object? sender, EventArgs e)
+        private void MapSelectionChanged(object sender, EventArgs e)
         {
             UpdateStatus();
         }
 
-        private void MapFrameLayerSelected(object? sender, LayerSelectedEventArgs e)
+        private void MapFrameLayerSelected(object sender, LayerSelectedEventArgs e)
         {
             UpdateStatus();
         }

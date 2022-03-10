@@ -44,12 +44,12 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents a velocity with no speed or direction.
         /// </summary>
-        public static readonly Velocity Empty = new Velocity(Speed.Empty, Azimuth.Empty);
+        public static readonly Velocity Empty = new(Speed.Empty, Azimuth.Empty);
 
         /// <summary>
         /// Represents a velocity with an invalid or unspecified speed and direction.
         /// </summary>
-        public static readonly Velocity Invalid = new Velocity(Speed.Invalid, Azimuth.Invalid);
+        public static readonly Velocity Invalid = new(Speed.Invalid, Azimuth.Invalid);
 
         #endregion Fields
 

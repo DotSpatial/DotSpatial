@@ -81,7 +81,7 @@ namespace DotSpatial.Symbology.Forms
             if (lineWidth > 128) lineWidth = 128;
             if (lineWidth < 1) lineWidth = 1;
 
-            GraphicsPath gp = new GraphicsPath();
+            GraphicsPath gp = new();
             gp.AddLines(new[] { new Point(lineWidth, (h * 2) / 3), new Point(w / 3, h / 3), new Point((w * 2) / 3, (h * 2) / 3), new Point(w - lineWidth, h / 3) });
             _symbolizer.DrawPath(g, gp, 1);
         }
@@ -94,7 +94,7 @@ namespace DotSpatial.Symbology.Forms
         {
             Rectangle clip = e.ClipRectangle;
             if (clip.IsEmpty) clip = ClientRectangle;
-            Bitmap bmp = new Bitmap(clip.Width, clip.Height);
+            Bitmap bmp = new(clip.Width, clip.Height);
             Graphics g = Graphics.FromImage(bmp);
             g.TranslateTransform(-clip.X, -clip.Y);
             g.Clip = new Region(clip);

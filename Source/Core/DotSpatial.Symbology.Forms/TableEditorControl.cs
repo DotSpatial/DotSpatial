@@ -343,7 +343,7 @@ namespace DotSpatial.Symbology.Forms
         {
             // Prevent infinite recursion by checking to ensure that the update did not originate from here.
             if (IgnoreSelectionChanged) return;
-            List<int> rows = new List<int>();
+            List<int> rows = new();
             foreach (IFeature f in features)
             {
                 rows.Add(f.Fid);
@@ -369,11 +369,9 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         public void ZoomToEditedRow()
         {
-            DataRowView drv = dataGridView1.CurrentRow?.DataBoundItem as DataRowView;
-            if (drv == null) return;
+            if (dataGridView1.CurrentRow?.DataBoundItem is not DataRowView drv) return;
             IFeature currentFeature = _featureLayer.DataSet.FeatureFromRow(drv.Row);
-            LayerFrame frame = _featureLayer.ParentMapFrame() as LayerFrame;
-            if (frame == null) return;
+            if (_featureLayer.ParentMapFrame() is not LayerFrame frame) return;
             var env = currentFeature.Geometry.EnvelopeInternal.Copy();
 
             if (env.Width == 0 || env.Height == 0)
@@ -470,8 +468,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void AttributeCalNewFieldAdded(object sender, EventArgs e)
         {
-            AttributeCalculator attributeCal = sender as AttributeCalculator;
-            if (attributeCal != null) _featureLayer.DataSet = attributeCal.FeatureSet;
+            if (sender is AttributeCalculator attributeCal) _featureLayer.DataSet = attributeCal.FeatureSet;
         }
 
         /// <summary>
@@ -481,7 +478,7 @@ namespace DotSpatial.Symbology.Forms
         /// <returns>The resulting expression.</returns>
         private string BuildFindExpression(string findString)
         {
-            List<string> conditions = new List<string>();
+            List<string> conditions = new();
 
             // for each column in the data grid view
             foreach (var col in _featureLayer.DataSet.GetColumns())
@@ -491,7 +488,7 @@ namespace DotSpatial.Symbology.Forms
                 conditions.Add(condition);
             }
 
-            StringBuilder stb = new StringBuilder();
+            StringBuilder stb = new();
             for (int i = 0; i < conditions.Count; i++)
             {
                 stb.Append(conditions[i]);
@@ -570,7 +567,7 @@ namespace DotSpatial.Symbology.Forms
                 return;
             }
 
-            List<string> field = new List<string>();
+            List<string> field = new();
 
             bool isNew = false;
 
@@ -580,7 +577,7 @@ namespace DotSpatial.Symbology.Forms
                 field.Add(dc.ToString());
             }
 
-            SelectField frmSeFie = new SelectField(field);
+            SelectField frmSeFie = new(field);
             if (frmSeFie.ShowDialog() == DialogResult.OK)
             {
                 string fieldName = frmSeFie.FieldName;
@@ -662,8 +659,7 @@ namespace DotSpatial.Symbology.Forms
             try
             {
                 // manage selection using the Selection property
-                IndexSelection sel = _featureLayer.Selection as IndexSelection;
-                if (sel != null)
+                if (_featureLayer.Selection is IndexSelection sel)
                 {
                     sel.SuspendChanges();
 
@@ -685,7 +681,7 @@ namespace DotSpatial.Symbology.Forms
                 }
                 else
                 {
-                    List<int> adds = new List<int>();
+                    List<int> adds = new();
                     List<int> removes = _selectedRows.ToList();
                     foreach (DataGridViewRow row in dataGridView1.SelectedRows)
                     {
@@ -716,7 +712,7 @@ namespace DotSpatial.Symbology.Forms
         // Export selected features
         private void ExportSelectedFeaturesToolStripMenuItemClick(object sender, EventArgs e)
         {
-            SaveFileDialog sdlg = new SaveFileDialog
+            SaveFileDialog sdlg = new()
             {
                 Filter = SymbologyFormsMessageStrings.TableEditorControl_exportSelectedFeaturesToolStripMenuItem_Click_Shapefiles____shp_____SHP
             };
@@ -728,10 +724,10 @@ namespace DotSpatial.Symbology.Forms
 
         private void FieldCalculationExecute()
         {
-            AttributeCalculator attributeCal = new AttributeCalculator();
+            AttributeCalculator attributeCal = new();
             attributeCal.Show();
             attributeCal.FeatureSet = _featureLayer.DataSet;
-            List<string> fieldList = new List<string>();
+            List<string> fieldList = new();
             foreach (DataColumn dataCol in _featureLayer.DataSet.DataTable.Columns)
                 fieldList.Add(dataCol.ToString());
 
@@ -761,7 +757,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void FindToolStripMenuItemClick(object sender, EventArgs e)
         {
-            InputBox inbox = new InputBox(SymbologyFormsMessageStrings.TableEditorControl_EnterFindString, SymbologyFormsMessageStrings.TableEditorControl_Find);
+            InputBox inbox = new(SymbologyFormsMessageStrings.TableEditorControl_EnterFindString, SymbologyFormsMessageStrings.TableEditorControl_Find);
             if (inbox.ShowDialog() != DialogResult.OK) return;
 
             string exp = inbox.Result;
@@ -785,7 +781,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void ImportFieldsFromDbf()
         {
-            OpenFileDialog dlg = new OpenFileDialog
+            OpenFileDialog dlg = new()
             {
                 Filter = SymbologyFormsMessageStrings.TableEditorControl_ImportFieldsFromDbf_DBase_Files____dbf____DBF
             };
@@ -799,7 +795,7 @@ namespace DotSpatial.Symbology.Forms
             string shapeFilePath2 = dlg.FileName;
             int count = shapeFilePath2.Length;
             shapeFilePath2 = shapeFilePath2.Remove(count - 4, 4); // remove the extension of the file
-            shapeFilePath2 = shapeFilePath2 + ".shp"; // add
+            shapeFilePath2 += ".shp"; // add
             IFeatureSet fs = FeatureSet.Open(shapeFilePath2);
 
             int noOfCol = fs.DataTable.Columns.Count;
@@ -807,7 +803,7 @@ namespace DotSpatial.Symbology.Forms
             // Add all column header
             for (int i = 0; i < noOfCol; i++)
             {
-                DataColumn dtcol = new DataColumn(fs.DataTable.Columns[i].ColumnName, fs.DataTable.Columns[i].DataType);
+                DataColumn dtcol = new(fs.DataTable.Columns[i].ColumnName, fs.DataTable.Columns[i].DataType);
                 if (fsTemp.DataTable.Columns.Contains(fs.DataTable.Columns[i].ColumnName) == false)
                     fsTemp.DataTable.Columns.Add(dtcol);
             }
@@ -830,8 +826,8 @@ namespace DotSpatial.Symbology.Forms
                     if (string.IsNullOrEmpty(_fidField) || !_featureLayer.DataSet.DataTable.Columns.Contains(_fidField)) return;
 
                     _ignoreTableSelectionChanged = true;
-                    List<int> adds = new List<int>();
-                    List<int> removes = new List<int>();
+                    List<int> adds = new();
+                    List<int> removes = new();
                     foreach (DataGridViewRow row in dataGridView1.Rows)
                     {
                         bool sel = !row.Selected;
@@ -929,8 +925,8 @@ namespace DotSpatial.Symbology.Forms
         {
             if (_featureLayer.DataSet.AttributesPopulated)
             {
-                List<string> field = new List<string>();
-                List<string> selectedField = new List<string>();
+                List<string> field = new();
+                List<string> selectedField = new();
 
                 // collect the field
                 foreach (DataColumn dc in _featureLayer.DataSet.DataTable.Columns)
@@ -938,7 +934,7 @@ namespace DotSpatial.Symbology.Forms
                     field.Add(dc.ToString());
                 }
 
-                DeleteFieldsDialog del = new DeleteFieldsDialog(field);
+                DeleteFieldsDialog del = new(field);
                 if (del.ShowDialog() == DialogResult.OK)
                 {
                     if (MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_RemoveFields, SymbologyFormsMessageStrings.TableEditorControl_Confirm, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -989,13 +985,13 @@ namespace DotSpatial.Symbology.Forms
             }
 
             // collect the field
-            List<string> field = new List<string>();
+            List<string> field = new();
             DataTable dt = _featureLayer.DataSet.DataTable;
             if (dt == null) return;
             foreach (DataColumn dc in dt.Columns)
                 field.Add(dc.ToString());
 
-            RenameFieldDialog renameFieldDialog = new RenameFieldDialog(field);
+            RenameFieldDialog renameFieldDialog = new(field);
             if (renameFieldDialog.ShowDialog() != DialogResult.OK) return;
             int index = dt.Columns.IndexOf(renameFieldDialog.ResultCombination[0]);
             dt.Columns[index].ColumnName = renameFieldDialog.ResultCombination[1]; // rename column
@@ -1091,13 +1087,11 @@ namespace DotSpatial.Symbology.Forms
 
         private void ReplaceToolStripMenuItemClick(object sender, EventArgs e)
         {
-            using (var frmSeachAndReplaceDialog = new SearchAndReplaceDialog())
+            using var frmSeachAndReplaceDialog = new SearchAndReplaceDialog();
+            if (frmSeachAndReplaceDialog.ShowDialog(this) != DialogResult.OK) return;
+            if (!ReplaceString(frmSeachAndReplaceDialog.FindString, frmSeachAndReplaceDialog.ReplaceString))
             {
-                if (frmSeachAndReplaceDialog.ShowDialog(this) != DialogResult.OK) return;
-                if (!ReplaceString(frmSeachAndReplaceDialog.FindString, frmSeachAndReplaceDialog.ReplaceString))
-                {
-                    MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_CouldNotFindReplace);
-                }
+                MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_CouldNotFindReplace);
             }
         }
 
@@ -1151,7 +1145,7 @@ namespace DotSpatial.Symbology.Forms
                     {
                         IgnoreSelectionChanged = true;
                         _ignoreTableSelectionChanged = true;
-                        List<int> fids = new List<int>();
+                        List<int> fids = new();
                         foreach (DataGridViewRow row in dataGridView1.Rows)
                         {
                             row.Selected = true;
@@ -1331,8 +1325,7 @@ namespace DotSpatial.Symbology.Forms
                 }
                 else
                 {
-                    IFeatureSelection fs = _featureLayer.Selection as IFeatureSelection;
-                    if (fs == null) return;
+                    if (_featureLayer.Selection is not IFeatureSelection fs) return;
                     if (_featureLayer.DataSet.AttributesPopulated)
                     {
                         foreach (DataGridViewRow row in dataGridView1.Rows)

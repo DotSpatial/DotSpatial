@@ -61,31 +61,28 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        public void ButtonClick(object? sender, EventArgs e)
+        public void ButtonClick(object sender, EventArgs e)
         {
             // check if it's a valid SpatiaLite layer
-            using (OpenFileDialog fd = new()
+            using OpenFileDialog fd = new()
             {
                 Title = Resources.OpenSpatialiteDatabase,
                 Filter = Resources.SpatialiteDatabaseFilter
-            })
+            };
+
+            if (fd.ShowDialog() == DialogResult.OK)
             {
-                if (fd.ShowDialog() == DialogResult.OK)
+                string cs = SqLiteHelper.GetSqLiteConnectionString(fd.FileName);
+                var slh = SpatiaLiteHelper.Open(cs, out string error);
+
+                if (slh == null)
                 {
-                    string cs = SqLiteHelper.GetSqLiteConnectionString(fd.FileName);
-                    var slh = SpatiaLiteHelper.Open(cs, out string error);
-
-                    if (slh == null)
-                    {
-                        MessageBox.Show(string.Format(Resources.DatabaseNotValid, fd.FileName, error));
-                        return;
-                    }
-
-                    using (FrmAddLayer frm = new(slh, App.Map))
-                    {
-                        frm.ShowDialog();
-                    }
+                    MessageBox.Show(string.Format(Resources.DatabaseNotValid, fd.FileName, error));
+                    return;
                 }
+
+                using FrmAddLayer frm = new(slh, App.Map);
+                frm.ShowDialog();
             }
         }
 
@@ -98,35 +95,31 @@ namespace DotSpatial.Plugins.SpatiaLite
             base.Deactivate();
         }
 
-        private void BQueryClick(object? sender, EventArgs e)
+        private void BQueryClick(object sender, EventArgs e)
         {
             // check if it's a valid SpatiaLite layer
-            using (OpenFileDialog fd = new()
+            using OpenFileDialog fd = new()
             {
                 Title = Resources.OpenSpatialiteDatabase,
                 Filter = Resources.SpatialiteDatabaseFilter
-            })
+            };
+            if (fd.ShowDialog() == DialogResult.OK)
             {
-                if (fd.ShowDialog() == DialogResult.OK)
+                string cs = SqLiteHelper.GetSqLiteConnectionString(fd.FileName);
+                var slh = SpatiaLiteHelper.Open(cs, out string error);
+
+                if (slh == null)
                 {
-                    string cs = SqLiteHelper.GetSqLiteConnectionString(fd.FileName);
-                    var slh = SpatiaLiteHelper.Open(cs, out string error);
-
-                    if (slh == null)
-                    {
-                        MessageBox.Show(string.Format(Resources.DatabaseNotValid, fd.FileName, error));
-                        return;
-                    }
-
-                    using (var frm = new FrmQuery(slh, App.Map))
-                    {
-                        frm.ShowDialog();
-                    }
+                    MessageBox.Show(string.Format(Resources.DatabaseNotValid, fd.FileName, error));
+                    return;
                 }
+
+                using var frm = new FrmQuery(slh, App.Map);
+                frm.ShowDialog();
             }
         }
 
-        private void BSaveLayerClick(object? sender, EventArgs e)
+        private void BSaveLayerClick(object sender, EventArgs e)
         {
             MessageBox.Show(@"This operation is not implemented yet");
         }

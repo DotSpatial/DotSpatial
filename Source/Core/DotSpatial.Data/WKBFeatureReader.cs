@@ -50,7 +50,7 @@ namespace DotSpatial.Data
         /// <returns>The feature sets gotten from the data.</returns>
         public static FeatureSetPack GetFeatureSets(byte[] data)
         {
-            MemoryStream ms = new MemoryStream(data);
+            MemoryStream ms = new(data);
             return GetFeatureSets(ms);
         }
 
@@ -61,7 +61,7 @@ namespace DotSpatial.Data
         /// <returns>The feature sets gotten from the data.</returns>
         public static FeatureSetPack GetFeatureSets(Stream data)
         {
-            FeatureSetPack result = new FeatureSetPack();
+            FeatureSetPack result = new();
 
             while (data.Position < data.Length)
             {
@@ -160,11 +160,11 @@ namespace DotSpatial.Data
         /// <returns>The read point as shape.</returns>
         public static Shape ReadPoint(Stream data)
         {
-            Shape result = new Shape
+            Shape result = new()
             {
                 Range = new ShapeRange(FeatureType.Point)
             };
-            PartRange prt = new PartRange(FeatureType.Point)
+            PartRange prt = new(FeatureType.Point)
             {
                 NumVertices = 1
             };
@@ -327,10 +327,10 @@ namespace DotSpatial.Data
 
         private static Shape ReadLineString(Stream data)
         {
-            Shape result = new Shape(FeatureType.Line);
+            Shape result = new(FeatureType.Line);
             int count = ReadInt32(data);
             double[] coords = ReadDouble(data, 2 * count);
-            PartRange lPrt = new PartRange(FeatureType.Line)
+            PartRange lPrt = new(FeatureType.Line)
             {
                 NumVertices = count
             };
@@ -343,8 +343,8 @@ namespace DotSpatial.Data
         {
             int count = ReadInt32(data);
             double[] coords = ReadDouble(data, 2 * count);
-            ShapeRange lShp = new ShapeRange(FeatureType.Line);
-            PartRange lPrt = new PartRange(FeatureType.Line)
+            ShapeRange lShp = new(FeatureType.Line);
+            PartRange lPrt = new(FeatureType.Line)
             {
                 NumVertices = count
             };
@@ -354,9 +354,9 @@ namespace DotSpatial.Data
 
         private static Shape ReadMultiLineString(Stream data)
         {
-            Shape result = new Shape(FeatureType.Line);
+            Shape result = new(FeatureType.Line);
             int numLineStrings = ReadInt32(data);
-            List<double[]> strings = new List<double[]>();
+            List<double[]> strings = new();
             int partOffset = 0;
             for (int iString = 0; iString < numLineStrings; iString++)
             {
@@ -364,7 +364,7 @@ namespace DotSpatial.Data
                 data.Seek(5, SeekOrigin.Current); // ignore header
                 int numPoints = ReadInt32(data);
                 double[] coords = ReadDouble(data, 2 * numPoints);
-                PartRange lPrt = new PartRange(FeatureType.Line)
+                PartRange lPrt = new(FeatureType.Line)
                 {
                     PartOffset = partOffset,
                     NumVertices = numPoints
@@ -389,8 +389,8 @@ namespace DotSpatial.Data
         private static void ReadMultiLineString(Stream data, FeatureSetPack results)
         {
             int numLineStrings = ReadInt32(data);
-            ShapeRange shp = new ShapeRange(FeatureType.Line);
-            List<double[]> strings = new List<double[]>();
+            ShapeRange shp = new(FeatureType.Line);
+            List<double[]> strings = new();
             int partOffset = 0;
             for (int iString = 0; iString < numLineStrings; iString++)
             {
@@ -398,7 +398,7 @@ namespace DotSpatial.Data
                 data.Seek(5, SeekOrigin.Current); // ignore header
                 int numPoints = ReadInt32(data);
                 double[] coords = ReadDouble(data, 2 * numPoints);
-                PartRange lPrt = new PartRange(FeatureType.Line)
+                PartRange lPrt = new(FeatureType.Line)
                 {
                     PartOffset = partOffset,
                     NumVertices = numPoints
@@ -427,9 +427,9 @@ namespace DotSpatial.Data
         /// <returns>The multipoint that was read as shape.</returns>
         private static Shape ReadMultiPoint(Stream data)
         {
-            Shape result = new Shape(FeatureType.MultiPoint);
+            Shape result = new(FeatureType.MultiPoint);
             int count = ReadInt32(data);
-            PartRange prt = new PartRange(FeatureType.MultiPoint)
+            PartRange prt = new(FeatureType.MultiPoint)
             {
                 NumVertices = count
             };
@@ -450,8 +450,8 @@ namespace DotSpatial.Data
         private static void ReadMultiPoint(Stream data, FeatureSetPack results)
         {
             int count = ReadInt32(data);
-            ShapeRange sr = new ShapeRange(FeatureType.MultiPoint);
-            PartRange prt = new PartRange(FeatureType.MultiPoint)
+            ShapeRange sr = new(FeatureType.MultiPoint);
+            PartRange prt = new(FeatureType.MultiPoint)
             {
                 NumVertices = count
             };
@@ -470,9 +470,9 @@ namespace DotSpatial.Data
 
         private static Shape ReadMultiPolygon(Stream data)
         {
-            Shape result = new Shape(FeatureType.Polygon);
+            Shape result = new(FeatureType.Polygon);
             int numPolygons = ReadInt32(data);
-            List<double[]> rings = new List<double[]>();
+            List<double[]> rings = new();
             int partOffset = 0;
             for (int iPoly = 0; iPoly < numPolygons; iPoly++)
             {
@@ -493,7 +493,7 @@ namespace DotSpatial.Data
                         if (!IsCounterClockwise(coords)) coords = ReverseCoords(coords);
                     }
 
-                    PartRange lPrt = new PartRange(FeatureType.Polygon)
+                    PartRange lPrt = new(FeatureType.Polygon)
                     {
                         PartOffset = partOffset,
                         NumVertices = numPoints
@@ -519,8 +519,8 @@ namespace DotSpatial.Data
         private static void ReadMultiPolygon(Stream data, FeatureSetPack results)
         {
             int numPolygons = ReadInt32(data);
-            ShapeRange lShp = new ShapeRange(FeatureType.Polygon);
-            List<double[]> rings = new List<double[]>();
+            ShapeRange lShp = new(FeatureType.Polygon);
+            List<double[]> rings = new();
             int partOffset = 0;
             for (int iPoly = 0; iPoly < numPolygons; iPoly++)
             {
@@ -541,7 +541,7 @@ namespace DotSpatial.Data
                         if (!IsCounterClockwise(coords)) coords = ReverseCoords(coords);
                     }
 
-                    PartRange lPrt = new PartRange(FeatureType.Polygon)
+                    PartRange lPrt = new(FeatureType.Polygon)
                     {
                         PartOffset = partOffset,
                         NumVertices = numPoints
@@ -570,8 +570,8 @@ namespace DotSpatial.Data
         /// <param name="results">The featureSetPack the read point gets added to.</param>
         private static void ReadPoint(Stream data, FeatureSetPack results)
         {
-            ShapeRange sr = new ShapeRange(FeatureType.MultiPoint);
-            PartRange prt = new PartRange(FeatureType.MultiPoint)
+            ShapeRange sr = new(FeatureType.MultiPoint);
+            PartRange prt = new(FeatureType.MultiPoint)
             {
                 NumVertices = 1
             };
@@ -582,9 +582,9 @@ namespace DotSpatial.Data
 
         private static Shape ReadPolygon(Stream data)
         {
-            Shape result = new Shape(FeatureType.Polygon);
+            Shape result = new(FeatureType.Polygon);
             int numRings = ReadInt32(data);
-            List<double[]> rings = new List<double[]>();
+            List<double[]> rings = new();
             int partOffset = 0;
             for (int iRing = 0; iRing < numRings; iRing++)
             {
@@ -601,7 +601,7 @@ namespace DotSpatial.Data
                     if (!IsCounterClockwise(coords)) coords = ReverseCoords(coords);
                 }
 
-                PartRange lPrt = new PartRange(FeatureType.Polygon)
+                PartRange lPrt = new(FeatureType.Polygon)
                 {
                     PartOffset = partOffset,
                     NumVertices = numPoints
@@ -626,8 +626,8 @@ namespace DotSpatial.Data
         private static void ReadPolygon(Stream data, FeatureSetPack results)
         {
             int numRings = ReadInt32(data);
-            ShapeRange lShp = new ShapeRange(FeatureType.Polygon);
-            List<double[]> rings = new List<double[]>();
+            ShapeRange lShp = new(FeatureType.Polygon);
+            List<double[]> rings = new();
             int partOffset = 0;
             for (int iRing = 0; iRing < numRings; iRing++)
             {
@@ -644,7 +644,7 @@ namespace DotSpatial.Data
                     if (!IsCounterClockwise(coords)) coords = ReverseCoords(coords);
                 }
 
-                PartRange lPrt = new PartRange(FeatureType.Polygon)
+                PartRange lPrt = new(FeatureType.Polygon)
                 {
                     PartOffset = partOffset,
                     NumVertices = numPoints

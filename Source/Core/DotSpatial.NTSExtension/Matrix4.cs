@@ -27,7 +27,7 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Gets the Identity matrix.
         /// </summary>
-        public static Matrix4 Identity => new Matrix4();
+        public static Matrix4 Identity => new();
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A 4x4 rotation matrix.</returns>
         public static Matrix4 RotationX(double degrees)
         {
-            Matrix4 result = new Matrix4();
+            Matrix4 result = new();
             double rad = degrees * Math.PI / 180;
             double[,] vals = result.Values;
             vals[1, 1] = Math.Cos(rad);
@@ -57,7 +57,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A 4x4 rotation matrix.</returns>
         public static Matrix4 RotationY(double degrees)
         {
-            Matrix4 result = new Matrix4();
+            Matrix4 result = new();
             double rad = degrees * Math.PI / 180;
             double[,] vals = result.Values;
             vals[0, 0] = Math.Cos(rad);
@@ -74,7 +74,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A 4x4 rotation matrix.</returns>
         public static Matrix4 RotationZ(double degrees)
         {
-            Matrix4 result = new Matrix4();
+            Matrix4 result = new();
             double rad = degrees * Math.PI / 180;
             double[,] vals = result.Values;
             vals[0, 0] = Math.Cos(rad);
@@ -96,7 +96,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>The translation matrix.</returns>
         public static Matrix4 Translation(double x, double y, double z)
         {
-            Matrix4 result = new Matrix4();
+            Matrix4 result = new();
             double[,] vals = result.Values;
             vals[3, 0] = x;
             vals[3, 1] = y;

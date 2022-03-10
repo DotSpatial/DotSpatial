@@ -141,7 +141,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        private List<Satellite> _satellites = new List<Satellite>(16);
+        private List<Satellite> _satellites = new(16);
 
         // Filtering
         /// <summary>
@@ -177,7 +177,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        private ManualResetEvent _pausedWaitHandle = new ManualResetEvent(true);
+        private ManualResetEvent _pausedWaitHandle = new(true);
         /// <summary>
         ///
         /// </summary>
@@ -239,11 +239,11 @@ namespace DotSpatial.Positioning
         /// Represents a synchronization object which is locked during state changes.
         /// </summary>
         /// <value>An <strong>Object</strong>.</value>
-        protected readonly object SyncRoot = new object();
+        protected readonly object SyncRoot = new();
         /// <summary>
         /// Represents a synchronization object which is locked during state changes to recording.
         /// </summary>
-        protected readonly object RecordingSyncRoot = new object();
+        protected readonly object RecordingSyncRoot = new();
 
         #region Events
 
@@ -1593,7 +1593,7 @@ namespace DotSpatial.Positioning
             // Set the new status
             _fixStatus = value;
 
-            DeviceEventArgs e = new DeviceEventArgs(_device);
+            DeviceEventArgs e = new(_device);
 
             // Is a fix acquired or lost?
             if (_fixStatus == FixStatus.Fix)

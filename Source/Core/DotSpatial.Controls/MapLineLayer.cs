@@ -279,7 +279,7 @@ namespace DotSpatial.Controls
             List<Rectangle> clipRects = args.ProjToPixel(regions);
             if (EditMode)
             {
-                List<IFeature> drawList = new List<IFeature>();
+                List<IFeature> drawList = new();
                 foreach (Extent region in regions)
                 {
                     if (region != null)
@@ -293,7 +293,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                List<int> drawList = new List<int>();
+                List<int> drawList = new();
                 List<ShapeRange> shapes = DataSet.ShapeIndices;
                 for (int shp = 0; shp < shapes.Count; shp++)
                 {
@@ -378,7 +378,7 @@ namespace DotSpatial.Controls
         {
             if (BufferChanged != null)
             {
-                ClipArgs e = new ClipArgs(clipRectangles);
+                ClipArgs e = new(clipRectangles);
                 BufferChanged(this, e);
             }
         }
@@ -461,7 +461,7 @@ namespace DotSpatial.Controls
         /// <returns>List of the indices of the features that get drawn.</returns>
         private static List<int> GetFeatures(IList<int> indices, FastDrawnState[] states, ILineCategory category, bool selected)
         {
-            List<int> drawnFeatures = new List<int>();
+            List<int> drawnFeatures = new();
 
             foreach (int index in indices)
             {
@@ -555,15 +555,13 @@ namespace DotSpatial.Controls
             Rectangle clipRect = ComputeClippingRectangle(e, ls);
 
             // Determine the subset of the specified features that are visible and match the category
-            using (GraphicsPath graphPath = new GraphicsPath())
-            {
-                action(graphPath, clipRect, list);
+            using GraphicsPath graphPath = new();
+            action(graphPath, clipRect, list);
 
-                double scale = ls.GetScale(e);
-                foreach (IStroke stroke in ls.Strokes)
-                {
-                    stroke.DrawPath(g, graphPath, scale);
-                }
+            double scale = ls.GetScale(e);
+            foreach (IStroke stroke in ls.Strokes)
+            {
+                stroke.DrawPath(g, graphPath, scale);
             }
         }
 

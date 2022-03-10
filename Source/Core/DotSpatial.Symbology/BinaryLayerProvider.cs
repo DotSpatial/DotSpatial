@@ -71,7 +71,7 @@ namespace DotSpatial.Symbology
         public ILayer OpenLayer(string fileName, bool inRam, ICollection<ILayer> container, IProgressHandler progressHandler)
         {
             IRaster raster = Raster.OpenFile(fileName, inRam, progressHandler);
-            RasterLayer rl = new RasterLayer(raster, progressHandler);
+            RasterLayer rl = new(raster, progressHandler);
             container.Add(rl);
             return rl;
         }

@@ -78,7 +78,7 @@ namespace DotSpatial.Tools
         /// <returns>True if the method worked.</returns>
         public bool Execute(IRaster source, double baseValue, double binSize, IRaster result, ICancelProgressHandler cancelProgressHandler)
         {
-            RasterBin rasterBin = new RasterBin
+            RasterBin rasterBin = new()
             {
                 BaseValue = baseValue,
                 BinSize = binSize

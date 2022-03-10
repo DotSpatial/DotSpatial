@@ -15,11 +15,11 @@ namespace DotSpatial.Symbology
     {
         #region Fields
 
-        private readonly List<Field> _fields = new List<Field>();
-        private readonly List<Operation> _operations = new List<Operation>();
-        private readonly List<ExpressionPart> _parts = new List<ExpressionPart>();
-        private readonly List<string> _strings = new List<string>();
-        private readonly List<Element> _variables = new List<Element>();
+        private readonly List<Field> _fields = new();
+        private readonly List<Operation> _operations = new();
+        private readonly List<ExpressionPart> _parts = new();
+        private readonly List<string> _strings = new();
+        private readonly List<Element> _variables = new();
         private bool _expChanged; // indicates whether expression was changed after last calculation
         private string _expressionString; // Expression string that is used to calculate the expression for the DataRows
         private string _floatingFormat = "g";
@@ -258,7 +258,7 @@ namespace DotSpatial.Symbology
                 }
             }
 
-            Regex r = new Regex(@"\[(\d+|\w+)\]"); // all fields in [] that contain only word characters and numbers
+            Regex r = new(@"\[(\d+|\w+)\]"); // all fields in [] that contain only word characters and numbers
             var matches = r.Matches(s);
             for (int i = matches.Count - 1; i >= 0; i--)
             {
@@ -860,7 +860,7 @@ namespace DotSpatial.Symbology
             // caching operations
             if (_saveOperations)
             {
-                Operation op = new Operation
+                Operation op = new()
                 {
                     Left = operation.Left,
                     Right = operation.Right,
@@ -913,7 +913,7 @@ namespace DotSpatial.Symbology
             bool readVal = true; // true - reading values and unary operations; false - reading binary operations
 
             // adding a part
-            ExpressionPart part = new ExpressionPart
+            ExpressionPart part = new()
             {
                 Expression = s
             };
@@ -924,7 +924,7 @@ namespace DotSpatial.Symbology
                 if (i >= s.Length) break;
 
                 // reading element
-                Element element = new Element(ref _floatingFormat);
+                Element element = new(ref _floatingFormat);
                 if (readVal)
                 {
                     if (!ReadValue(s, ref i, element)) return false;
@@ -1330,7 +1330,7 @@ namespace DotSpatial.Symbology
 
             string s = _expressionString;
 
-            Regex r = new Regex(@"\[(\d+|\w+)\]"); // all fields in [] that contain only word characters or numbers
+            Regex r = new(@"\[(\d+|\w+)\]"); // all fields in [] that contain only word characters or numbers
             var matches = r.Matches(s);
 
             for (int i = matches.Count - 1; i >= 0; i--)

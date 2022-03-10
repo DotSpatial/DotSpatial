@@ -29,7 +29,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        private static readonly KalmanFilter _defaultFilter = new KalmanFilter();
+        private static readonly KalmanFilter _defaultFilter = new();
 
         /// <summary>
         /// The default Kalman filter

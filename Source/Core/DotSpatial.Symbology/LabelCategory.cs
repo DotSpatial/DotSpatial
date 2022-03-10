@@ -171,8 +171,7 @@ namespace DotSpatial.Symbology
         /// <returns>A shallow copy of this object.</returns>
         public virtual LabelCategory Copy()
         {
-            var result = MemberwiseClone() as LabelCategory;
-            if (result == null) return null;
+            if (MemberwiseClone() is not LabelCategory result) return null;
 
             result.Symbolizer = Symbolizer.Copy();
             result.SelectionSymbolizer = SelectionSymbolizer.Copy();

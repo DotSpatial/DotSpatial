@@ -63,11 +63,11 @@ namespace DotSpatial.Plugins.WFSClient
             uxAttributesGrid.DataSource = table;
         }
 
-        private void UxAttributesGridCellContentClick(object? sender, DataGridViewCellEventArgs e)
+        private void UxAttributesGridCellContentClick(object sender, DataGridViewCellEventArgs e)
         {
         }
 
-        private void UxAttributesGridRowHeaderMouseClick(object? sender, DataGridViewCellMouseEventArgs e)
+        private void UxAttributesGridRowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (uxAttributesGrid.SelectedRows.Count >= 1)
             {
@@ -86,7 +86,7 @@ namespace DotSpatial.Plugins.WFSClient
             }
         }
 
-        private void UxGetCapabilitiesClick(object? sender, EventArgs e)
+        private void UxGetCapabilitiesClick(object sender, EventArgs e)
         {
             uxGroupWPS.Enabled = true;
             uxOpen.Enabled = false;
@@ -129,11 +129,11 @@ namespace DotSpatial.Plugins.WFSClient
             uxRequest.Text = _wfsClient.Uri.AbsoluteUri;
         }
 
-        private void UxLayersListCellContentClick(object? sender, DataGridViewCellEventArgs e)
+        private void UxLayersListCellContentClick(object sender, DataGridViewCellEventArgs e)
         {
         }
 
-        private void UxLayersListRowHeaderMouseClick(object? sender, DataGridViewCellMouseEventArgs e)
+        private void UxLayersListRowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (uxLayersList.SelectedRows.Count >= 1)
             {
@@ -147,13 +147,13 @@ namespace DotSpatial.Plugins.WFSClient
             }
         }
 
-        private void UxListServerSelectedIndexChanged(object? sender, EventArgs e)
+        private void UxListServerSelectedIndexChanged(object sender, EventArgs e)
         {
             uxServer.Text = uxListServer.Text;
             uxGroupWPS.Enabled = false;
         }
 
-        private void UxOpenClick(object? sender, EventArgs e)
+        private void UxOpenClick(object sender, EventArgs e)
         {
             // var serverUrl = "http://ogi.state.ok.us/geoserver/wfs";
             // wfsClient.TypeName = "quad100_centroids";
@@ -170,7 +170,7 @@ namespace DotSpatial.Plugins.WFSClient
             }
         }
 
-        private void WfsServerParametersLoad(object? sender, EventArgs e)
+        private void WfsServerParametersLoad(object sender, EventArgs e)
         {
             uxTabWfs.SelectedIndex = 1;
             uxListServer.SelectedIndex = 0;

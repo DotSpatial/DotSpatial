@@ -42,7 +42,7 @@ namespace DotSpatial.Symbology.Forms
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             _dialogProvider = provider?.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
-            ListBox cmb = new ListBox();
+            ListBox cmb = new();
             FontFamily[] fams = FontFamily.Families;
             cmb.SuspendLayout();
             foreach (FontFamily fam in fams)

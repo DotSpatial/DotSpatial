@@ -53,20 +53,18 @@ namespace DotSpatial.Modeling.Forms.Elements
         private void BtnAddDataClick(object sender, EventArgs e)
         {
             // Replace with something that uses the default data provider
-            using (var sfd = new SaveFileDialog { OverwritePrompt = true, Filter = @"Shape Files|*.shp" })
-            {
-                if (sfd.ShowDialog() != DialogResult.OK) return;
+            using var sfd = new SaveFileDialog { OverwritePrompt = true, Filter = @"Shape Files|*.shp" };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
 
-                IFeatureSet addedFeatureSet = new FeatureSet();
-                addedFeatureSet.Filename = sfd.FileName;
+            IFeatureSet addedFeatureSet = new FeatureSet();
+            addedFeatureSet.Filename = sfd.FileName;
 
-                // If the feature type is good save it
-                // This inserts the new featureset into the list
-                textBox1.Text = Path.GetFileNameWithoutExtension(addedFeatureSet.Filename);
-                Param.Value = addedFeatureSet;
-                Status = ToolStatus.Ok;
-                LightTipText = ModelingMessageStrings.FeaturesetValid;
-            }
+            // If the feature type is good save it
+            // This inserts the new featureset into the list
+            textBox1.Text = Path.GetFileNameWithoutExtension(addedFeatureSet.Filename);
+            Param.Value = addedFeatureSet;
+            Status = ToolStatus.Ok;
+            LightTipText = ModelingMessageStrings.FeaturesetValid;
         }
 
         #endregion

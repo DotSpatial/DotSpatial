@@ -327,7 +327,7 @@ namespace DotSpatial.Plugins.About
             TabPanelDetails.Visible = false;
             if (!MoreRichTextBox.Visible)
             {
-                Height = Height - MoreRichTextBox.Height;
+                Height -= MoreRichTextBox.Height;
             }
         }
 
@@ -368,8 +368,8 @@ namespace DotSpatial.Plugins.About
         /// <returns>A string name / string value pair of all attributes.</returns>
         private NameValueCollection AssemblyAttribs(Assembly a)
         {
-            NameValueCollection nvc = new NameValueCollection();
-            Regex r = new Regex(@"(\.Assembly|\.)(?<Name>[^.]*)Attribute$", RegexOptions.IgnoreCase);
+            NameValueCollection nvc = new();
+            Regex r = new(@"(\.Assembly|\.)(?<Name>[^.]*)Attribute$", RegexOptions.IgnoreCase);
 
             foreach (object attrib in a.GetCustomAttributes(false))
             {
@@ -658,7 +658,7 @@ namespace DotSpatial.Plugins.About
         {
             if (value == string.Empty)
                 return;
-            ListViewItem lvi = new ListViewItem { Text = key };
+            ListViewItem lvi = new() { Text = key };
             lvi.SubItems.Add(value);
             lvw.Items.Add(lvi);
         }
@@ -720,7 +720,7 @@ namespace DotSpatial.Plugins.About
 
             string strAssemblyName = a.GetName().Name;
 
-            ListViewItem lvi = new ListViewItem
+            ListViewItem lvi = new()
             {
                 Text = strAssemblyName,
                 Tag = strAssemblyName

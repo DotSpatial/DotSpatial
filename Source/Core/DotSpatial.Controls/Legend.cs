@@ -498,57 +498,41 @@ namespace DotSpatial.Controls
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
             _wasDoubleClick = true;
-            Point loc = new Point(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
+            Point loc = new(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
             foreach (LegendBox lb in _legendBoxes)
             {
                 if (!lb.Bounds.Contains(loc) || lb.CheckBox.Contains(loc)) continue;
-                ILineCategory lc = lb.Item as ILineCategory;
-                if (lc != null)
+                if (lb.Item is ILineCategory lc)
                 {
-                    using (var lsDialog = new DetailedLineSymbolDialog(lc.Symbolizer))
-                    {
-                        lsDialog.ShowDialog();
-                    }
+                    using var lsDialog = new DetailedLineSymbolDialog(lc.Symbolizer);
+                    lsDialog.ShowDialog();
                 }
 
-                IPointCategory pc = lb.Item as IPointCategory;
-                if (pc != null)
+                if (lb.Item is IPointCategory pc)
                 {
-                    using (var dlg = new DetailedPointSymbolDialog(pc.Symbolizer))
-                    {
-                        dlg.ShowDialog();
-                    }
+                    using var dlg = new DetailedPointSymbolDialog(pc.Symbolizer);
+                    dlg.ShowDialog();
                 }
 
-                IPolygonCategory polyCat = lb.Item as IPolygonCategory;
-                if (polyCat != null)
+                if (lb.Item is IPolygonCategory polyCat)
                 {
-                    using (var dlg = new DetailedPolygonSymbolDialog(polyCat.Symbolizer))
-                    {
-                        dlg.ShowDialog();
-                    }
+                    using var dlg = new DetailedPolygonSymbolDialog(polyCat.Symbolizer);
+                    dlg.ShowDialog();
                 }
 
-                IFeatureLayer fl = lb.Item as IFeatureLayer;
-                if (fl != null)
+                if (lb.Item is IFeatureLayer fl)
                 {
-                    using (var layDialog = new LayerDialog(fl, new FeatureCategoryControl()))
-                    {
-                        layDialog.ShowDialog();
-                    }
+                    using var layDialog = new LayerDialog(fl, new FeatureCategoryControl());
+                    layDialog.ShowDialog();
                 }
 
-                IRasterLayer rl = lb.Item as IRasterLayer;
-                if (rl != null)
+                if (lb.Item is IRasterLayer rl)
                 {
-                    using (var dlg = new LayerDialog(rl, new RasterCategoryControl()))
-                    {
-                        dlg.ShowDialog();
-                    }
+                    using var dlg = new LayerDialog(rl, new RasterCategoryControl());
+                    dlg.ShowDialog();
                 }
 
-                IColorCategory cb = lb.Item as IColorCategory;
-                if (cb != null)
+                if (lb.Item is IColorCategory cb)
                 {
                     _tabColorDialog = new TabColorDialog();
                     _tabColorDialog.ChangesApplied += TabColorDialogChangesApplied;
@@ -570,12 +554,12 @@ namespace DotSpatial.Controls
         {
             HideEditBox(true);
             if (_legendBoxes == null || _legendBoxes.Count == 0) return;
-            Point loc = new Point(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
+            Point loc = new(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
             foreach (LegendBox box in _legendBoxes)
             {
                 if (box.Bounds.Contains(loc))
                 {
-                    ItemMouseEventArgs args = new ItemMouseEventArgs(e, box);
+                    ItemMouseEventArgs args = new(e, box);
                     DoItemMouseDown(args);
                 }
             }
@@ -593,13 +577,13 @@ namespace DotSpatial.Controls
             if (_legendBoxes == null) return;
             bool cursorHandled = false;
             LegendBox currentBox = null;
-            Point loc = new Point(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
+            Point loc = new(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
             foreach (LegendBox box in _legendBoxes)
             {
                 if (box.Bounds.Contains(loc))
                 {
                     currentBox = box;
-                    ItemMouseEventArgs args = new ItemMouseEventArgs(e, box);
+                    ItemMouseEventArgs args = new(e, box);
                     DoItemMouseMove(args);
                 }
             }
@@ -704,7 +688,7 @@ namespace DotSpatial.Controls
         /// <param name="e">The event args.</param>
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            Point loc = new Point(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
+            Point loc = new(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
 
             // if it was neither dragged nor double clicked, the item will be renamed
             if (!_wasDoubleClick && !_isDragging)
@@ -712,7 +696,7 @@ namespace DotSpatial.Controls
                 foreach (LegendBox box in _legendBoxes)
                 {
                     if (!box.Bounds.Contains(loc)) continue;
-                    ItemMouseEventArgs args = new ItemMouseEventArgs(e, box);
+                    ItemMouseEventArgs args = new(e, box);
                     DoItemMouseUp(args);
                 }
             }
@@ -736,11 +720,7 @@ namespace DotSpatial.Controls
                         {
                             potentialParent = container.Item.GetParentItem();
                         }
-
-                        // The target must be a group, and the item must be a layer.
-                        ILayer lyr = _dragItem.Item as ILayer;
-                        IGroup grp = potentialParent as IGroup;
-                        if (lyr != null && grp != null)
+                        if (_dragItem.Item is ILayer lyr && potentialParent is IGroup grp)
                         {
                             // when original location is inside group, remove layer from the group.
                             IGroup grp1 = _dragItem.Item.GetParentItem() as IGroup;
@@ -809,7 +789,7 @@ namespace DotSpatial.Controls
         /// <param name="mi">The menu item.</param>
         private static void AddMenuItem(ToolStripItemCollection parent, SymbologyMenuItem mi)
         {
-            ToolStripMenuItem m = new ToolStripMenuItem(mi.Name, mi.Image, mi.ClickHandler);
+            ToolStripMenuItem m = new(mi.Name, mi.Image, mi.ClickHandler);
             parent.Add(m);
             foreach (SymbologyMenuItem child in mi.MenuItems)
             {
@@ -828,16 +808,13 @@ namespace DotSpatial.Controls
                 mapLayer.SelectionEnabled = true;
                 mapLayer.IsSelected = false; // the selection comes from higher up, so the layers gets deselected, so the user doesn't assume that only the selected items in the group are used for selection
 
-                var gr = mapLayer as IMapGroup;
-                if (gr != null)
+                if (mapLayer is IMapGroup gr)
                 {
                     SetSelectionEnabledForChildren(gr.Layers);
                 }
                 else
                 {
-                    IFeatureLayer fl = mapLayer as IFeatureLayer;
-
-                    if (fl != null)
+                    if (mapLayer is IFeatureLayer fl)
                     {
                         // all categories get selection enabled
                         foreach (var cat in fl.Symbology.GetCategories())
@@ -860,8 +837,7 @@ namespace DotSpatial.Controls
             {
                 mapLayer.SelectionEnabled = mapLayer.IsSelected; // enable selection if the current item is selected
 
-                var gr = mapLayer as IMapGroup;
-                if (gr != null)
+                if (mapLayer is IMapGroup gr)
                 {
                     // this is a group
                     if (gr.IsSelected)
@@ -875,9 +851,7 @@ namespace DotSpatial.Controls
                 }
                 else
                 {
-                    IFeatureLayer fl = mapLayer as IFeatureLayer;
-
-                    if (fl != null)
+                    if (mapLayer is IFeatureLayer fl)
                     {
                         var cats = fl.Symbology.GetCategories().ToList();
 
@@ -918,7 +892,7 @@ namespace DotSpatial.Controls
 
         private void DoItemMouseDown(ItemMouseEventArgs e)
         {
-            Point loc = new Point(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
+            Point loc = new(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
 
             // Toggle expansion
             if (e.ItemBox.ExpandBox.Contains(loc))
@@ -957,8 +931,7 @@ namespace DotSpatial.Controls
 
                     _isMouseDown = true;
                     ILegendItem li = box.Item;
-                    ILayer lyr = li as ILayer;
-                    if (lyr == null)
+                    if (li is not ILayer lyr)
                     {
                         // this is a category, it may be renamed but not moved
                     }
@@ -1001,13 +974,12 @@ namespace DotSpatial.Controls
 
         private void DoItemMouseUp(ItemMouseEventArgs e)
         {
-            Point loc = new Point(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
+            Point loc = new(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
             if (e.Button == MouseButtons.Left)
             {
                 if (e.ItemBox.Item.LegendSymbolMode == SymbolMode.Checkbox && e.ItemBox.CheckBox.Contains(loc))
                 {
-                    IRenderableLegendItem rendItem = e.ItemBox.Item as IRenderableLegendItem;
-                    if (rendItem != null)
+                    if (e.ItemBox.Item is IRenderableLegendItem rendItem)
                     {
                         // force a re-draw in the case where we are talking about layers.
                         rendItem.IsVisible = !rendItem.IsVisible;
@@ -1075,7 +1047,7 @@ namespace DotSpatial.Controls
                 int top = (int)topLeft.Y + ((ItemHeight - _icoChecked.Height) / 2);
                 int left = (int)topLeft.X + 6;
                 g.DrawIcon(_icoChecked, left, top);
-                Rectangle box = new Rectangle(left, top, _icoChecked.Width, _icoChecked.Height);
+                Rectangle box = new(left, top, _icoChecked.Width, _icoChecked.Height);
                 itemBox.CheckBox = box;
             }
             else
@@ -1083,7 +1055,7 @@ namespace DotSpatial.Controls
                 int top = (int)topLeft.Y + ((ItemHeight - _icoUnchecked.Height) / 2);
                 int left = (int)topLeft.X + 6;
                 g.DrawIcon(_icoUnchecked, left, top);
-                Rectangle box = new Rectangle(left, top, _icoChecked.Width, _icoChecked.Height);
+                Rectangle box = new(left, top, _icoChecked.Width, _icoChecked.Height);
                 itemBox.CheckBox = box;
             }
 
@@ -1101,12 +1073,12 @@ namespace DotSpatial.Controls
             ILegendItem item = itemBox.Item;
             if (item == null) return;
             if (item.LegendSymbolMode == SymbolMode.Symbol) return; // don't allow symbols to expand
-            Point tl = new Point((int)topLeft.X, (int)topLeft.Y);
+            Point tl = new((int)topLeft.X, (int)topLeft.Y);
             tl.Y += (ItemHeight - 8) / 2;
             tl.X += 3;
-            Rectangle box = new Rectangle(tl.X, tl.Y, 8, 8);
+            Rectangle box = new(tl.X, tl.Y, 8, 8);
             itemBox.ExpandBox = box;
-            Point center = new Point(tl.X + 4, (int)topLeft.Y + (ItemHeight / 2));
+            Point center = new(tl.X + 4, (int)topLeft.Y + (ItemHeight / 2));
             g.FillRectangle(Brushes.White, box);
             g.DrawRectangle(Pens.Gray, box);
             if (item.IsExpanded)
@@ -1146,7 +1118,7 @@ namespace DotSpatial.Controls
             int x = (int)topLeft.X + tH - w;
             int y = (int)topLeft.Y;
             if (tH > h) y += (tH - h) / 2;
-            Rectangle box = new Rectangle(x, y, w, h);
+            Rectangle box = new(x, y, w, h);
             itemBox.SymbolBox = box;
             item.LegendSymbolPainted(g, box);
             topLeft.X += tH + 6;
@@ -1283,32 +1255,27 @@ namespace DotSpatial.Controls
         {
             var manager = SharedEventHandlers;
 
-            var layer = mapLayer as Layer;
-            if (layer != null)
+            if (mapLayer is Layer layer)
             {
                 layer.LayerActions = manager?.LayerActions;
             }
 
-            var cc = mapLayer as ColorCategory;
-            if (cc != null)
+            if (mapLayer is ColorCategory cc)
             {
                 cc.ColorCategoryActions = manager?.ColorCategoryActions;
             }
 
-            var fl = mapLayer as FeatureLayer;
-            if (fl != null)
+            if (mapLayer is FeatureLayer fl)
             {
                 fl.FeatureLayerActions = manager?.FeatureLayerActions;
             }
 
-            var il = mapLayer as ImageLayer;
-            if (il != null)
+            if (mapLayer is ImageLayer il)
             {
                 il.ImageLayerActions = manager?.ImageLayerActions;
             }
 
-            var rl = mapLayer as RasterLayer;
-            if (rl != null)
+            if (mapLayer is RasterLayer rl)
             {
                 rl.RasterLayerActions = manager?.RasterLayerActions;
             }

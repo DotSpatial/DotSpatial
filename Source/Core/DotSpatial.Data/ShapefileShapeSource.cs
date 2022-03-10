@@ -112,7 +112,7 @@ namespace DotSpatial.Data
         /// <inheritdoc />
         public Dictionary<int, Shape> GetShapes(ref int startIndex, int count, Envelope envelope)
         {
-            Dictionary<int, Shape> result = new Dictionary<int, Shape>();
+            Dictionary<int, Shape> result = new();
             ShapefileIndexFile shx = CacheShapeIndexFile();
 
             // Check to ensure the fileName is not null
@@ -127,8 +127,8 @@ namespace DotSpatial.Data
             }
 
             // Get the basic header information.
-            ShapefileHeader header = new ShapefileHeader(Filename);
-            Extent ext = new Extent(new[] { header.Xmin, header.Ymin, header.Xmax, header.Ymax });
+            ShapefileHeader header = new(Filename);
+            Extent ext = new(new[] { header.Xmin, header.Ymin, header.Xmax, header.Ymax });
             if (envelope != null)
             {
                 if (!ext.Intersects(envelope)) return result;
@@ -140,7 +140,7 @@ namespace DotSpatial.Data
                 throw new ArgumentException("Wrong feature type.");
             }
 
-            FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Read, FileShare.Read);
+            FileStream fs = new(Filename, FileMode.Open, FileAccess.Read, FileShare.Read);
             if (fs.Length == 100)
             {
                 // The shapefile is empty so we can simply return here
@@ -216,7 +216,7 @@ namespace DotSpatial.Data
             }
 
             // Get the basic header information.
-            ShapefileHeader header = new ShapefileHeader(Filename);
+            ShapefileHeader header = new(Filename);
 
             // Check to ensure that the fileName is the correct shape type
             if (header.ShapeType != ShapeType && header.ShapeType != ShapeTypeM && header.ShapeType != ShapeTypeZ)
@@ -224,7 +224,7 @@ namespace DotSpatial.Data
                 throw new ArgumentException("Wrong feature type.");
             }
 
-            FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Read, FileShare.Read);
+            FileStream fs = new(Filename, FileMode.Open, FileAccess.Read, FileShare.Read);
             try
             {
                 if (fs.Length == 100)

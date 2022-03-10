@@ -91,7 +91,7 @@ namespace DotSpatial.Data
         /// <exception cref="FeatureTypeMismatchException">Thrown if the new geometry does not match the currently specified feature type. </exception>
         public static void Add(this IFeatureList self, Geometry geometry)
         {
-            Feature f = new Feature(geometry);
+            Feature f = new(geometry);
             if (f.FeatureType != self.Parent.FeatureType && self.Parent.FeatureType != FeatureType.Unspecified)
             {
                 throw new FeatureTypeMismatchException();

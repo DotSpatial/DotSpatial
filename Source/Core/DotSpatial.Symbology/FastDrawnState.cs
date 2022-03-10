@@ -61,8 +61,7 @@ namespace DotSpatial.Symbology
         /// <returns>True, if both items are equal.</returns>
         public override bool Equals(object obj)
         {
-            FastDrawnState item = obj as FastDrawnState;
-            if (item == null) return false;
+            if (obj is not FastDrawnState item) return false;
 
             return item.Selected == Selected && item.Category == Category && Visible == item.Visible;
         }

@@ -167,34 +167,34 @@ namespace DotSpatial.Symbology.Forms
         {
             if (Width == 0 || Height == 0) return;
 
-            LinearGradientBrush lgb = new LinearGradientBrush(ClientRectangle, BackColor.Lighter(.2F), BackColor.Darker(.2F), LinearGradientMode.Vertical);
+            LinearGradientBrush lgb = new(ClientRectangle, BackColor.Lighter(.2F), BackColor.Darker(.2F), LinearGradientMode.Vertical);
             g.FillRectangle(lgb, ClientRectangle);
             lgb.Dispose();
 
             int l = Convert.ToInt32((Width * (LeftHandle.Position - _min)) / (_max - _min));
             int r = Convert.ToInt32((Width * (RightHandle.Position - _min)) / (_max - _min));
 
-            Rectangle a = new Rectangle(0, 5, l, Height - 10);
-            Rectangle b = new Rectangle(l, 5, r - l, Height - 10);
-            Rectangle c = new Rectangle(r, 5, Right - r, Height - 10);
+            Rectangle a = new(0, 5, l, Height - 10);
+            Rectangle b = new(l, 5, r - l, Height - 10);
+            Rectangle c = new(r, 5, Right - r, Height - 10);
 
             if (a.Width > 0)
             {
-                SolidBrush sb = new SolidBrush(_minColor);
+                SolidBrush sb = new(_minColor);
                 g.FillRectangle(sb, a);
                 sb.Dispose();
             }
 
             if (b.Width > 0)
             {
-                LinearGradientBrush center = new LinearGradientBrush(new Point(b.X, 0), new Point(b.Right, 0), _minColor, _maxColor);
+                LinearGradientBrush center = new(new Point(b.X, 0), new Point(b.Right, 0), _minColor, _maxColor);
                 g.FillRectangle(center, b);
                 center.Dispose();
             }
 
             if (c.Width > 0)
             {
-                SolidBrush sb = new SolidBrush(_maxColor);
+                SolidBrush sb = new(_maxColor);
                 g.FillRectangle(sb, c);
                 sb.Dispose();
             }
@@ -304,7 +304,7 @@ namespace DotSpatial.Symbology.Forms
         {
             Rectangle clip = e.ClipRectangle;
             if (clip.IsEmpty) clip = ClientRectangle;
-            Bitmap bmp = new Bitmap(clip.Width, clip.Height);
+            Bitmap bmp = new(clip.Width, clip.Height);
             Graphics g = Graphics.FromImage(bmp);
             g.TranslateTransform(-clip.X, -clip.Y);
             g.Clip = new Region(clip);

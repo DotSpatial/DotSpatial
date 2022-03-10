@@ -117,9 +117,9 @@ namespace DotSpatial.Symbology
                 // The developer can bypass the default behavior simply by caching something here.
                 if (_dialogReadFilter != null) return _dialogReadFilter;
 
-                List<string> rasterExtensions = new List<string>();
-                List<string> vectorExtensions = new List<string>();
-                List<string> imageExtensions = new List<string>();
+                List<string> rasterExtensions = new();
+                List<string> vectorExtensions = new();
+                List<string> imageExtensions = new();
 
                 List<string> extensions = _preferredProviders.Select(item => item.Key).ToList();
 
@@ -225,10 +225,10 @@ namespace DotSpatial.Symbology
                 // Setting this to something overrides the default
                 if (_dialogWriteFilter != null) return _dialogWriteFilter;
 
-                List<string> extensions = new List<string>();
-                List<string> rasterExtensions = new List<string>();
-                List<string> vectorExtensions = new List<string>();
-                List<string> imageExtensions = new List<string>();
+                List<string> extensions = new();
+                List<string> rasterExtensions = new();
+                List<string> vectorExtensions = new();
+                List<string> imageExtensions = new();
 
                 foreach (KeyValuePair<string, ILayerProvider> item in _preferredProviders)
                 {
@@ -548,8 +548,7 @@ namespace DotSpatial.Symbology
                 IRasterLayer result;
                 if (_preferredProviders.ContainsKey(ext))
                 {
-                    IRasterLayerProvider rp = _preferredProviders[ext] as IRasterLayerProvider;
-                    if (rp != null)
+                    if (_preferredProviders[ext] is IRasterLayerProvider rp)
                     {
                         result = rp.Create(name, driverCode, xSize, ySize, numBands, dataType, options);
                         if (result != null)
@@ -566,8 +565,7 @@ namespace DotSpatial.Symbology
                 {
                     if (GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
                     {
-                        IRasterLayerProvider rp = dp as IRasterLayerProvider;
-                        if (rp != null)
+                        if (dp is IRasterLayerProvider rp)
                         {
                             // attempt to open with the fileName.
                             result = rp.Create(name, driverCode, xSize, ySize, numBands, dataType, options);
@@ -590,7 +588,7 @@ namespace DotSpatial.Symbology
         /// <returns>A list of extensions.</returns>
         public virtual List<string> GetSupportedExtensions(string dialogFilter)
         {
-            List<string> extensions = new List<string>();
+            List<string> extensions = new();
             string[] formats = dialogFilter.Split('|');
             char[] wild = { '*' };
 
@@ -620,7 +618,7 @@ namespace DotSpatial.Symbology
         /// <returns>A list that contains only the providers that were just loaded. This may be a list of count 0, but shouldn't return null.</returns>
         public virtual List<ILayerProvider> LoadProvidersFromAssembly(string fileName)
         {
-            List<ILayerProvider> result = new List<ILayerProvider>();
+            List<ILayerProvider> result = new();
             if (Path.GetExtension(fileName) != ".dll") return result;
             if (fileName.Contains("Interop")) return result;
 
@@ -639,8 +637,7 @@ namespace DotSpatial.Symbology
                         try
                         {
                             object obj = asm.CreateInstance(coClass.FullName);
-                            ILayerProvider dp = obj as ILayerProvider;
-                            if (dp != null)
+                            if (obj is ILayerProvider dp)
                             {
                                 _layerProviders.Add(dp);
                                 result.Add(dp);
@@ -675,7 +672,7 @@ namespace DotSpatial.Symbology
         /// <returns>A list of just the newly added LayerProviders from this method.</returns>
         public virtual List<ILayerProvider> LoadProvidersFromDirectories()
         {
-            List<ILayerProvider> result = new List<ILayerProvider>();
+            List<ILayerProvider> result = new();
             foreach (string directory in _layerProviderDirectories)
             {
                 foreach (string file in Directory.GetFiles(directory, "*.dll", SearchOption.AllDirectories))
@@ -697,8 +694,7 @@ namespace DotSpatial.Symbology
                                     try
                                     {
                                         object obj = asm.CreateInstance(coClass.FullName);
-                                        ILayerProvider dp = obj as ILayerProvider;
-                                        if (dp != null)
+                                        if (obj is ILayerProvider dp)
                                         {
                                             _layerProviders.Add(dp);
                                             result.Add(dp);
@@ -894,7 +890,7 @@ namespace DotSpatial.Symbology
 
         private string GetReadFilter<T>(string description)
         {
-            List<string> extensions = new List<string>();
+            List<string> extensions = new();
 
             foreach (KeyValuePair<string, ILayerProvider> item in _preferredProviders)
             {
@@ -973,7 +969,7 @@ namespace DotSpatial.Symbology
         private string GetWriteFilter<T>(string description)
         {
             string result = null;
-            List<string> extensions = new List<string>();
+            List<string> extensions = new();
 
             foreach (KeyValuePair<string, ILayerProvider> item in _preferredProviders)
             {

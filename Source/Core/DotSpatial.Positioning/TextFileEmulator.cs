@@ -78,7 +78,7 @@ namespace DotSpatial.Positioning
             if (_reader == null || _reader.EndOfStream)
             {
                 // Yes.  Re-open it from the beginning
-                FileStream stream = new FileStream(_filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                FileStream stream = new(_filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
                 _reader = new StreamReader(stream);
             }
 

@@ -43,8 +43,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <param name="layer">Layer, that should be added.</param>
         public void AddLayer(ILayer layer)
         {
-            IFeatureLayer mLayer = layer as IFeatureLayer;
-            if (mLayer != null)
+            if (layer is IFeatureLayer mLayer)
             {
                 mLayer.SelectionChanged += SelectionChanged;
                 LayerSelection layerSelection = _layers.FirstOrDefault(f => ReferenceEquals(f.Layer, mLayer));
@@ -72,8 +71,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <param name="newPosition">Position  the layer gets moved to.</param>
         public void MoveLayer(ILayer layer, int newPosition)
         {
-            IFeatureLayer mLayer = layer as IFeatureLayer;
-            if (mLayer == null) return;
+            if (layer is not IFeatureLayer mLayer) return;
 
             int index = _layers.FindIndex(f => ReferenceEquals(f.Layer, mLayer));
             if (index < 0 || index == newPosition) return;
@@ -99,8 +97,7 @@ namespace DotSpatial.Plugins.SetSelectable
             bool moved = false;
             for (int i = collection.Count - 1; i >= 0; i--)
             {
-                IFeatureLayer mLayer = collection[i] as IFeatureLayer;
-                if (mLayer != null && _layers.Count > 0)
+                if (collection[i] is IFeatureLayer mLayer && _layers.Count > 0)
                 {
                     int index = _layers.FindIndex(f => ReferenceEquals(f.Layer, mLayer));
                     if (index != reverseI)
@@ -124,8 +121,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <param name="layer">Layer, that should be removed.</param>
         public void RemoveLayer(ILayer layer)
         {
-            IFeatureLayer mLayer = layer as IFeatureLayer;
-            if (mLayer != null)
+            if (layer is IFeatureLayer mLayer)
             {
                 int index = _layers.FindIndex(f => ReferenceEquals(f.Layer, mLayer));
                 if (index > -1)

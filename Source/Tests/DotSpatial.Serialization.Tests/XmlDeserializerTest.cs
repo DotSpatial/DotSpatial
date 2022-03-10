@@ -34,8 +34,8 @@ namespace DotSpatial.Serialization.Tests
             // Sets the UI culture to French (France)
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-FR");
 
-            XmlDeserializer target = new XmlDeserializer();
-            Map map = new Map();
+            XmlDeserializer target = new();
+            Map map = new();
             string path = Path.Combine(_folder, "DeserializeTest.map.xml");
             target.Deserialize(map, File.ReadAllText(path));
         }
@@ -46,8 +46,8 @@ namespace DotSpatial.Serialization.Tests
         [TestMethod]
         public void DeserializeTest()
         {
-            XmlDeserializer target = new XmlDeserializer();
-            Map map = new Map();
+            XmlDeserializer target = new();
+            Map map = new();
             string path = Path.Combine(_folder, "DeserializeTest.map.xml");
             target.Deserialize(map, File.ReadAllText(path));
         }

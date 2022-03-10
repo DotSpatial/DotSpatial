@@ -114,8 +114,7 @@ namespace DotSpatial.Data
         /// <returns>A deep copy of this raster object.</returns>
         public new Raster<T> Copy()
         {
-            Raster<T> copy = MemberwiseClone() as Raster<T>;
-            if (copy == null) return null;
+            if (MemberwiseClone() is not Raster<T> copy) return null;
 
             copy.Bounds = Bounds.Copy();
             copy.Data = new T[NumRows][];
@@ -170,7 +169,7 @@ namespace DotSpatial.Data
                 }
             };
 
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, numRows);
+            ProgressMeter pm = new(ProgressHandler, DataStrings.CopyingValues, numRows);
 
             // copy values directly using both data structures
             for (int row = 0; row < numRows; row++)
@@ -194,7 +193,7 @@ namespace DotSpatial.Data
         /// </summary>
         public override void GetStatistics()
         {
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CalculatingStatistics, NumRows);
+            ProgressMeter pm = new(ProgressHandler, DataStrings.CalculatingStatistics, NumRows);
 
             T min = Global.MaximumValue<T>();
             T max = Global.MinimumValue<T>();
@@ -308,7 +307,7 @@ namespace DotSpatial.Data
 
             int numCols = endColumn - startColumn + 1;
             int numRows = endRow - startRow + 1;
-            Raster<T> result = new Raster<T>(numRows, numCols)
+            Raster<T> result = new(numRows, numCols)
             {
                 Filename = Filename,
                 Projection = Projection,
@@ -332,7 +331,7 @@ namespace DotSpatial.Data
             // Reposition the new "raster" so that it matches the specified window, not the whole raster
 
             // Now we can copy any values currently in memory.
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, endRow)
+            ProgressMeter pm = new(ProgressHandler, DataStrings.CopyingValues, endRow)
             {
                 StartValue = startRow
             };
@@ -362,7 +361,7 @@ namespace DotSpatial.Data
         {
             if (IsInRam == false) throw new ArgumentException(DataStrings.RasterRequiresCast);
 
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, "Calculating Statistics.", NumRows);
+            ProgressMeter pm = new(ProgressHandler, "Calculating Statistics.", NumRows);
 
             double total = 0;
             double sqrTotal = 0;
@@ -412,7 +411,7 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public override IRaster ReadBlock(int xOff, int yOff, int sizeX, int sizeY)
         {
-            Raster<T> result = new Raster<T>(sizeY, sizeX)
+            Raster<T> result = new(sizeY, sizeX)
             {
                 Data = ReadRaster(xOff, yOff, sizeX, sizeY)
             };
@@ -477,8 +476,7 @@ namespace DotSpatial.Data
         /// <param name="original">The original the data is gotten from.</param>
         public override void SetData(IRaster original)
         {
-            Raster<T> temp = original as Raster<T>;
-            if (temp == null) return;
+            if (original is not Raster<T> temp) return;
 
             Data = temp.Data;
             Value = temp.Value;
@@ -487,8 +485,7 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public override void WriteBlock(IRaster blockValues, int xOff, int yOff, int xSize, int ySize)
         {
-            Raster<T> source = blockValues as Raster<T>;
-            if (source != null)
+            if (blockValues is Raster<T> source)
             {
                 if (ySize == source.NumColumns && xSize == source.NumColumns)
                 {

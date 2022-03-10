@@ -23,22 +23,20 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// <param name="xml">The Project XML.</param>
         public static void Save(string fileName, string xml)
         {
-            using (ZipFile zip = new())
+            using ZipFile zip = new();
+            // Assume for now that all paths are appropriate, TODO: remap paths in dspx.
+            zip.AddEntry("theProject.dspx", xml);
+
+            XDocument xmlDoc = XDocument.Parse(xml);
+            var files = from f in xmlDoc.Descendants("member") where f.Attribute("name").Value == "FilePath" select f.Attribute("value").Value;
+
+            var filesToInclude = GetRelatedFiles(files);
+            foreach (string file in filesToInclude)
             {
-                // Assume for now that all paths are appropriate, TODO: remap paths in dspx.
-                zip.AddEntry("theProject.dspx", xml);
-
-                XDocument xmlDoc = XDocument.Parse(xml);
-                var files = from f in xmlDoc.Descendants("member") where f.Attribute("name").Value == "FilePath" select f.Attribute("value").Value;
-
-                var filesToInclude = GetRelatedFiles(files);
-                foreach (string file in filesToInclude)
-                {
-                    zip.AddFile(file);
-                }
-
-                zip.Save(fileName);
+                zip.AddFile(file);
             }
+
+            zip.Save(fileName);
         }
 
         /// <summary>

@@ -92,7 +92,7 @@ namespace DotSpatial.Data
                 return EditRow;
             }
 
-            Dictionary<string, object> element = new Dictionary<string, object>();
+            Dictionary<string, object> element = new();
             if (IfPageCachedThenSetElement(rowIndex, ref element))
             {
                 return element;
@@ -247,8 +247,8 @@ namespace DotSpatial.Data
         /// </summary>
         private void LoadFirstTwoPages()
         {
-            DataPage p1 = new DataPage(_dataSupply.GetAttributes(DataPage.MapToLowerBoundary(0), rowsPerPage), 0);
-            DataPage p2 = new DataPage(_dataSupply.GetAttributes(DataPage.MapToLowerBoundary(rowsPerPage), rowsPerPage), rowsPerPage);
+            DataPage p1 = new(_dataSupply.GetAttributes(DataPage.MapToLowerBoundary(0), rowsPerPage), 0);
+            DataPage p2 = new(_dataSupply.GetAttributes(DataPage.MapToLowerBoundary(rowsPerPage), rowsPerPage), rowsPerPage);
             Pages = new[] { p1, p2 };
         }
 

@@ -93,7 +93,7 @@ namespace DotSpatial.Symbology.Forms
                 fill = new LinearGradientBrush(Bounds, Color.FromArgb(232, 246, 253), Color.FromArgb(196, 232, 250), LinearGradientMode.Vertical);
             }
 
-            using (GraphicsPath gp = new GraphicsPath())
+            using (GraphicsPath gp = new())
             {
                 gp.AddRoundedRectangle(Bounds, 2);
                 if (fill != null) g.FillPath(fill, gp);

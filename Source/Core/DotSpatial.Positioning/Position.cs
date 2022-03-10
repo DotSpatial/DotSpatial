@@ -64,27 +64,27 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents the location at 0°, 0°.
         /// </summary>
-        public static readonly Position Empty = new Position(Latitude.Empty, Longitude.Empty);
+        public static readonly Position Empty = new(Latitude.Empty, Longitude.Empty);
         /// <summary>
         /// Represents the smallest possible location of 90°S, 180°W.
         /// </summary>
-        public static readonly Position Minimum = new Position(Latitude.Minimum, Longitude.Minimum);
+        public static readonly Position Minimum = new(Latitude.Minimum, Longitude.Minimum);
         /// <summary>
         /// Represents the largest possible location of 90°N, 180°E.
         /// </summary>
-        public static readonly Position Maximum = new Position(Latitude.Maximum, Longitude.Maximum);
+        public static readonly Position Maximum = new(Latitude.Maximum, Longitude.Maximum);
         /// <summary>
         /// Represents the single point at the top of Earth: 90°N, 0°E.
         /// </summary>
-        public static readonly Position NorthPole = new Position(Latitude.Maximum, Longitude.Empty);
+        public static readonly Position NorthPole = new(Latitude.Maximum, Longitude.Empty);
         /// <summary>
         /// Represents the single point at the bottom of Earth: 90°S, 0°E.
         /// </summary>
-        public static readonly Position SouthPole = new Position(Latitude.Minimum, Longitude.Empty);
+        public static readonly Position SouthPole = new(Latitude.Minimum, Longitude.Empty);
         /// <summary>
         /// Represents an invalid or unspecified value.
         /// </summary>
-        public static readonly Position Invalid = new Position(Latitude.Invalid, Longitude.Invalid);
+        public static readonly Position Invalid = new(Latitude.Invalid, Longitude.Invalid);
 
         #endregion Fields
 
@@ -679,11 +679,11 @@ namespace DotSpatial.Positioning
 
             // lon1 = mod(lon1, 2*pi);
 
-            lon1 = lon1 % (2 * Math.PI);
+            lon1 %= (2 * Math.PI);
 
             // lon2 = mod(lon2, 2*pi);
 
-            lon2 = lon2 % (2 * Math.PI);
+            lon2 %= (2 * Math.PI);
 
             // L = abs(lon2-lon1);
 
@@ -940,7 +940,7 @@ namespace DotSpatial.Positioning
             //    a12(kidx)=a12(kidx)+2*pi;
 
             if (kidx)
-                a12 = a12 + 2 * Math.PI;
+                a12 += 2 * Math.PI;
 
             //    % from poles:
             //    a12(lat1tr <= -90) = 0;
@@ -1576,11 +1576,11 @@ return
 
             // lon1 = mod(lon1, 2*pi);
 
-            lon1 = lon1 % (2 * Math.PI);
+            lon1 %= (2 * Math.PI);
 
             // lon2 = mod(lon2, 2*pi);
 
-            lon2 = lon2 % (2 * Math.PI);
+            lon2 %= (2 * Math.PI);
 
             // L = abs(lon2-lon1);
 
@@ -2040,8 +2040,8 @@ return
             double lonrad3 = lonrad1 + Math.Asin(Math.Sin(crs13) * Math.Sin(dst13) / Math.Cos(latrad3));
             lonrad3 = ((lonrad3 + Math.PI) % (2 * Math.PI)) - Math.PI;
 
-            Latitude newLatitude = new Latitude(latrad3 * 180 / Math.PI);
-            Longitude newLongitude = new Longitude(lonrad3 * 180 / Math.PI);
+            Latitude newLatitude = new(latrad3 * 180 / Math.PI);
+            Longitude newLongitude = new(lonrad3 * 180 / Math.PI);
             // Return the new position
             return new Position(newLatitude, newLongitude);
 
@@ -2334,7 +2334,7 @@ return
             double long2 = long1 + x - (1.0 - c) * d * f;
 
             // long2 = castToAngleRange(long2);
-            long2 = long2 - (2 * Math.PI) * Math.Floor(long2 / (2 * Math.PI) + 0.5);
+            long2 -= (2 * Math.PI) * Math.Floor(long2 / (2 * Math.PI) + 0.5);
 
             // destinationValid = true;
 

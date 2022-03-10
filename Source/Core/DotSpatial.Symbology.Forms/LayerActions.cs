@@ -17,19 +17,17 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="mapFrame">The map frame.</param>
         public void DynamicVisibility(IDynamicVisibility e, IFrame mapFrame)
         {
-            using (var dvg = new DynamicVisibilityModeDialog())
+            using var dvg = new DynamicVisibilityModeDialog();
+            switch (ShowDialog(dvg))
             {
-                switch (ShowDialog(dvg))
-                {
-                    case DialogResult.OK:
-                        e.DynamicVisibilityMode = dvg.DynamicVisibilityMode;
-                        e.UseDynamicVisibility = true;
-                        e.DynamicVisibilityWidth = mapFrame.ViewExtents.Width;
-                        break;
-                    case DialogResult.No:
-                        e.UseDynamicVisibility = false;
-                        break;
-                }
+                case DialogResult.OK:
+                    e.DynamicVisibilityMode = dvg.DynamicVisibilityMode;
+                    e.UseDynamicVisibility = true;
+                    e.DynamicVisibilityWidth = mapFrame.ViewExtents.Width;
+                    break;
+                case DialogResult.No:
+                    e.UseDynamicVisibility = false;
+                    break;
             }
         }
     }

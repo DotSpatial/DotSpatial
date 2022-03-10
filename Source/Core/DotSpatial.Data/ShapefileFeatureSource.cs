@@ -593,27 +593,25 @@ namespace DotSpatial.Data
                 Directory.CreateDirectory(dir);
             }
 
-            using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Write, FileShare.None, 100))
-            {
-                fs.WriteBe(header.FileCode); ////  Byte 0          File Code       9994        Integer     Big
+            using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Write, FileShare.None, 100);
+            fs.WriteBe(header.FileCode); ////  Byte 0          File Code       9994        Integer     Big
 
-                var bt = new byte[20];
-                fs.Write(bt, 0, 20); ////  Bytes 4 - 20 are unused
+            var bt = new byte[20];
+            fs.Write(bt, 0, 20); ////  Bytes 4 - 20 are unused
 
-                // This is overwritten later
-                fs.WriteBe(0); //  Byte 24         File Length     File Length Integer     Big
-                fs.WriteLe(header.Version); //  Byte 28         Version         1000        Integer     Little
-                fs.WriteLe((int)header.ShapeType); //  Byte 32         Shape Type      Shape Type  Integer     Little
-                fs.WriteLe(header.Xmin); //  Byte 36         Bounding Box    Xmin        Double      Little
-                fs.WriteLe(header.Ymin); //  Byte 44         Bounding Box    Ymin        Double      Little
-                fs.WriteLe(header.Xmax); //  Byte 52         Bounding Box    Xmax        Double      Little
-                fs.WriteLe(header.Ymax); //  Byte 60         Bounding Box    Ymax        Double      Little
-                fs.WriteLe(header.Zmin); //  Byte 68         Bounding Box    Zmin        Double      Little
-                fs.WriteLe(header.Zmax); //  Byte 76         Bounding Box    Zmax        Double      Little
-                fs.WriteLe(header.Mmin); //  Byte 84         Bounding Box    Mmin        Double      Little
-                fs.WriteLe(header.Mmax); //  Byte 92         Bounding Box    Mmax        Double      Little
-                fs.Close();
-            }
+            // This is overwritten later
+            fs.WriteBe(0); //  Byte 24         File Length     File Length Integer     Big
+            fs.WriteLe(header.Version); //  Byte 28         Version         1000        Integer     Little
+            fs.WriteLe((int)header.ShapeType); //  Byte 32         Shape Type      Shape Type  Integer     Little
+            fs.WriteLe(header.Xmin); //  Byte 36         Bounding Box    Xmin        Double      Little
+            fs.WriteLe(header.Ymin); //  Byte 44         Bounding Box    Ymin        Double      Little
+            fs.WriteLe(header.Xmax); //  Byte 52         Bounding Box    Xmax        Double      Little
+            fs.WriteLe(header.Ymax); //  Byte 60         Bounding Box    Ymax        Double      Little
+            fs.WriteLe(header.Zmin); //  Byte 68         Bounding Box    Zmin        Double      Little
+            fs.WriteLe(header.Zmax); //  Byte 76         Bounding Box    Zmax        Double      Little
+            fs.WriteLe(header.Mmin); //  Byte 84         Bounding Box    Mmin        Double      Little
+            fs.WriteLe(header.Mmax); //  Byte 92         Bounding Box    Mmax        Double      Little
+            fs.Close();
         }
 
         private AttributeTable GetAttributeTable(string fileName)

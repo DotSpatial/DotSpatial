@@ -14,7 +14,7 @@ namespace DotSpatial.Plugins.StatusBarImprovements
     {
         #region Fields
 
-        private Map? _map;
+        private Map _map;
         private readonly StatusPanel _xPanel;
         private readonly StatusPanel _yPanel;
 
@@ -62,7 +62,7 @@ namespace DotSpatial.Plugins.StatusBarImprovements
             base.Deactivate();
         }
 
-        private void MapGeoMouseMove(object? sender, GeoMouseArgs e)
+        private void MapGeoMouseMove(object sender, GeoMouseArgs e)
         {
             _xPanel.Caption = string.Format("X: {0:.#####}", e.GeographicLocation.X);
             _yPanel.Caption = string.Format("Y: {0:.#####}", e.GeographicLocation.Y);

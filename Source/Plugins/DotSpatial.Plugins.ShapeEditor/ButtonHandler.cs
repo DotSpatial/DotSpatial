@@ -168,7 +168,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             });
         }
 
-        private void AddShapeButtonClick(object? sender, EventArgs e)
+        private void AddShapeButtonClick(object sender, EventArgs e)
         {
             if (_geoMap == null)
             {
@@ -204,12 +204,12 @@ namespace DotSpatial.Plugins.ShapeEditor
             _addShapeFunction.Activate();
         }
 
-        private void LayersLayerSelected(object? sender, LayerSelectedEventArgs e)
+        private void LayersLayerSelected(object sender, LayerSelectedEventArgs e)
         {
             SetActiveLayer(e.Layer);
         }
 
-        private void MapFrameLayerSelected(object? sender, LayerSelectedEventArgs e)
+        private void MapFrameLayerSelected(object sender, LayerSelectedEventArgs e)
         {
             if (!e.IsSelected && e.Layer == _activeLayer)
             {
@@ -231,7 +231,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 UpdateAddShapeFunctionLayer();
         }
 
-        private void MapFrameOnLayerRemoved(object? sender, LayerEventArgs e)
+        private void MapFrameOnLayerRemoved(object sender, LayerEventArgs e)
         {
             if (e.Layer == _activeLayer)
             {
@@ -239,7 +239,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
         }
 
-        private void MoveVertexButtonClick(object? sender, EventArgs e)
+        private void MoveVertexButtonClick(object sender, EventArgs e)
         {
             if (_geoMap == null)
             {
@@ -271,7 +271,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             _moveVertexFunction.Activate();
         }
 
-        private void NewButtonClick(object? sender, EventArgs e)
+        private void NewButtonClick(object sender, EventArgs e)
         {
             FeatureTypeDialog dlg = new();
             if (dlg.ShowDialog() != DialogResult.OK)
@@ -351,32 +351,30 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
         }
 
-        private void SnappingButtonClick(object? sender, EventArgs e)
+        private void SnappingButtonClick(object sender, EventArgs e)
         {
-            using (SnapSettingsDialog dlg = new(_geoMap)
+            using SnapSettingsDialog dlg = new(_geoMap)
             {
                 DoSnapping = _doSnapping
-            })
+            };
+            if (dlg.ShowDialog() == DialogResult.OK)
             {
-                if (dlg.ShowDialog() == DialogResult.OK)
+                _doSnapping = dlg.DoSnapping;
+                if (_moveVertexFunction != null)
                 {
-                    _doSnapping = dlg.DoSnapping;
-                    if (_moveVertexFunction != null)
+                    _moveVertexFunction.DoSnapping = _doSnapping; // changed by jany_ (2016-02-24) update the snap settings of the functions without having to stop editing
+                    if (_doSnapping)
                     {
-                        _moveVertexFunction.DoSnapping = _doSnapping; // changed by jany_ (2016-02-24) update the snap settings of the functions without having to stop editing
-                        if (_doSnapping)
-                        {
-                            SetSnapLayers(_moveVertexFunction);
-                        }
+                        SetSnapLayers(_moveVertexFunction);
                     }
+                }
 
-                    if (_addShapeFunction != null)
+                if (_addShapeFunction != null)
+                {
+                    _addShapeFunction.DoSnapping = _doSnapping;
+                    if (_doSnapping)
                     {
-                        _addShapeFunction.DoSnapping = _doSnapping;
-                        if (_doSnapping)
-                        {
-                            SetSnapLayers(_addShapeFunction);
-                        }
+                        SetSnapLayers(_addShapeFunction);
                     }
                 }
             }

@@ -49,19 +49,19 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents a size with no value.
         /// </summary>
-        public static readonly GeographicSize Empty = new GeographicSize(Distance.Empty, Distance.Empty);
+        public static readonly GeographicSize Empty = new(Distance.Empty, Distance.Empty);
         /// <summary>
         /// Represents a size with no value.
         /// </summary>
-        public static readonly GeographicSize Minimum = new GeographicSize(Distance.Minimum, Distance.Minimum);
+        public static readonly GeographicSize Minimum = new(Distance.Minimum, Distance.Minimum);
         /// <summary>
         /// Represents the largest possible size on Earth's surface.
         /// </summary>
-        public static readonly GeographicSize Maximum = new GeographicSize(Distance.Maximum, Distance.Maximum);
+        public static readonly GeographicSize Maximum = new(Distance.Maximum, Distance.Maximum);
         /// <summary>
         /// Represents an invalid geographic size.
         /// </summary>
-        public static readonly GeographicSize Invalid = new GeographicSize(Distance.Invalid, Distance.Invalid);
+        public static readonly GeographicSize Invalid = new(Distance.Invalid, Distance.Invalid);
 
         #endregion Fields
 

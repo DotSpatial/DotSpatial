@@ -293,7 +293,7 @@ namespace DotSpatial.Symbology
         /// <returns>The legend symbol size.</returns>
         public Size GetLegendSymbolSize()
         {
-            Size size = new Size(16, 16);
+            Size size = new(16, 16);
             foreach (ILineDecoration decoration in Decorations)
             {
                 Size s = decoration.GetLegendSymbolSize();
@@ -394,7 +394,7 @@ namespace DotSpatial.Symbology
             if (len > 0)
             {
                 _decorations.Clear();
-                LineDecoration ld = new LineDecoration();
+                LineDecoration ld = new();
                 ld.Randomize(generator);
                 _decorations.Add(ld);
             }

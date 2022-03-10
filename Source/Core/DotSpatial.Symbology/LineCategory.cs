@@ -79,8 +79,7 @@ namespace DotSpatial.Symbology
             SelectionSymbolizer = select;
             if (select.Strokes != null && select.Strokes.Count > 0)
             {
-                ISimpleStroke ss = select.Strokes[select.Strokes.Count - 1] as ISimpleStroke;
-                if (ss != null) ss.Color = Color.Cyan;
+                if (select.Strokes[select.Strokes.Count - 1] is ISimpleStroke ss) ss.Color = Color.Cyan;
             }
         }
 
