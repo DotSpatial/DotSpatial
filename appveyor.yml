@@ -1,12 +1,15 @@
-version: 3.0.{build}
+version: 4.0.{build}
 image: Visual Studio 2022
 configuration: Release
 
 environment:
-  packageVersion: 3.0
+  packageVersion: 4.0
 
 cache: 
 - source\packages -> **\packages.config
+
+before_build:
+- appveyor-retry dotnet restore DemoMap\DemoMap.sln
 
 build:
   project: source\DotSpatial.sln  
@@ -23,6 +26,12 @@ assembly_info:
   assembly_version: '$(buildVersion)'
   assembly_file_version: '$(buildVersion)'
   assembly_informational_version: '$(nugetVersion)'
+
+dotnet_csproj:
+  patch: true 
+  file: 'Directory.Build.props'
+  assembly_version: '{version}'
+  file_version: '{version}'
   
 nuget:
   account_feed: false
