@@ -4,7 +4,7 @@
 	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 	
 	<PropertyGroup>
-		<OutputPath>$(SolutionDir)\bin\$(Configuration)\</OutputPath>
+		<OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
 	</PropertyGroup>
 
 <Target Name="CopyNtsDlls" AfterTargets="Build">
