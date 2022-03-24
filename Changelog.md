@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Label Setup dialog can now accept any font size (#1434)
 
 ### Changed
 
