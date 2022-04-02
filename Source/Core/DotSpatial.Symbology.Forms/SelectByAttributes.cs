@@ -121,8 +121,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void CmbLayersSelectedIndexChanged(object sender, EventArgs e)
         {
-            DataRowView drv = cmbLayers.SelectedValue as DataRowView;
-            if (drv != null)
+            if (cmbLayers.SelectedValue is DataRowView drv)
             {
                 _activeLayer = drv.Row["Value"] as IFeatureLayer;
             }
@@ -149,7 +148,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void Configure()
         {
-            DataTable dt = new DataTable();
+            DataTable dt = new();
             dt.Columns.Add("Name", typeof(string));
             dt.Columns.Add("Value", typeof(IFeatureLayer));
 

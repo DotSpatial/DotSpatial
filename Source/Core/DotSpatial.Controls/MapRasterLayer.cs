@@ -35,7 +35,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                Bitmap bmp = new Bitmap(DataSet.NumColumns, DataSet.NumRows);
+                Bitmap bmp = new(DataSet.NumColumns, DataSet.NumRows);
                 symbolizer.Raster = DataSet;
 
                 DataSet.DrawToBitmap(symbolizer, bmp);
@@ -89,7 +89,7 @@ namespace DotSpatial.Controls
             else
             {
                 // Ensure smaller images match the scheme.
-                Bitmap bmp = new Bitmap(raster.NumColumns, raster.NumRows);
+                Bitmap bmp = new(raster.NumColumns, raster.NumRows);
                 raster.PaintColorSchemeToBitmap(Symbolizer, bmp, raster.ProgressHandler);
 
                 var id = new InRamImage(bmp) { Bounds = { AffineCoefficients = raster.Bounds.AffineCoefficients } };
@@ -213,7 +213,7 @@ namespace DotSpatial.Controls
         /// where drawing will be taking place.</param>
         public void StartDrawing(bool preserve)
         {
-            Bitmap backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
+            Bitmap backBuffer = new(BufferRectangle.Width, BufferRectangle.Height);
             if (Buffer?.Width == backBuffer.Width && Buffer.Height == backBuffer.Height)
             {
                 if (preserve)
@@ -261,7 +261,7 @@ namespace DotSpatial.Controls
         {
             if (BufferChanged != null)
             {
-                ClipArgs e = new ClipArgs(clipRectangles);
+                ClipArgs e = new(clipRectangles);
                 BufferChanged(this, e);
             }
         }
@@ -305,10 +305,8 @@ namespace DotSpatial.Controls
 
             for (int i = 0; i < numBounds; i++)
             {
-                using (Bitmap bmp = BitmapGetter.GetBitmap(regions[i], clipRectangles[i]))
-                {
-                    if (bmp != null) g.DrawImage(bmp, new Rectangle(0, 0, clipRectangles[i].Width, clipRectangles[i].Height));
-                }
+                using Bitmap bmp = BitmapGetter.GetBitmap(regions[i], clipRectangles[i]);
+                if (bmp != null) g.DrawImage(bmp, new Rectangle(0, 0, clipRectangles[i].Width, clipRectangles[i].Height));
             }
 
             if (args.Device == null) g.Dispose();

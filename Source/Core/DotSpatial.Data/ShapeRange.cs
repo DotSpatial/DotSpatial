@@ -68,7 +68,7 @@ namespace DotSpatial.Data
             double[] coords = new double[2];
             coords[0] = v.X;
             coords[1] = v.Y;
-            PartRange prt = new PartRange(coords, 0, 0, FeatureType.Point)
+            PartRange prt = new(coords, 0, 0, FeatureType.Point)
             {
                 NumVertices = 1
             };
@@ -119,7 +119,7 @@ namespace DotSpatial.Data
 
             FeatureType = FeatureType.Polygon;
             ShapeType = ShapeType.Polygon;
-            PartRange pr = new PartRange(coords, 0, 0, FeatureType.Polygon)
+            PartRange pr = new(coords, 0, 0, FeatureType.Polygon)
             {
                 NumVertices = 4
             };
@@ -264,7 +264,7 @@ namespace DotSpatial.Data
         /// <returns>The calculated extent.</returns>
         public Extent CalculateExtents()
         {
-            Extent ext = new Extent();
+            Extent ext = new();
             foreach (PartRange part in Parts)
             {
                 ext.ExpandToInclude(part.CalculateExtent());
@@ -307,7 +307,7 @@ namespace DotSpatial.Data
         public Vertex First()
         {
             double[] verts = Parts[0].Vertices;
-            Vertex result = new Vertex(verts[StartIndex], verts[StartIndex + 1]);
+            Vertex result = new(verts[StartIndex], verts[StartIndex + 1]);
             return result;
         }
 
@@ -424,8 +424,7 @@ namespace DotSpatial.Data
         {
             if (_shapeType == ShapeType.MultiPointZ || _shapeType == ShapeType.PointZ || _shapeType == ShapeType.PolygonZ || _shapeType == ShapeType.PolyLineZ)
             {
-                IExtentZ zTest = Extent as IExtentZ;
-                if (zTest == null)
+                if (Extent is not IExtentZ zTest)
                 {
                     Extent ext = new ExtentMz();
                     if (_extent != null) ext.CopyFrom(_extent);
@@ -436,8 +435,7 @@ namespace DotSpatial.Data
             }
             else if (_shapeType == ShapeType.MultiPointM || _shapeType == ShapeType.PointM || _shapeType == ShapeType.PolygonM || _shapeType == ShapeType.PolyLineM)
             {
-                IExtentM mTest = Extent as IExtentM;
-                if (mTest == null)
+                if (Extent is not IExtentM mTest)
                 {
                     Extent ext = new ExtentMz();
                     if (_extent != null) ext.CopyFrom(_extent);

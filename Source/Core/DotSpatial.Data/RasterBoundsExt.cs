@@ -93,7 +93,7 @@ namespace DotSpatial.Data
             bounds.WorldFile = fileName;
             double[] affine = new double[6];
 
-            StreamReader sr = new StreamReader(fileName);
+            StreamReader sr = new(fileName);
             string line = sr.ReadLine();
             if (line != null)
             {
@@ -141,16 +141,14 @@ namespace DotSpatial.Data
         /// <param name="bounds">The bounds that get saved to file.</param>
         public static void SaveWorldFile(this IRasterBounds bounds)
         {
-            using (var sw = new StreamWriter(bounds.WorldFile))
-            {
-                double[] affine = bounds.AffineCoefficients;
-                sw.WriteLine(affine[1]); // Dx
-                sw.WriteLine(affine[2]); // rotation X
-                sw.WriteLine(affine[4]); // rotation Y
-                sw.WriteLine(affine[5]); // Dy
-                sw.WriteLine(affine[0]); // Top Left X
-                sw.WriteLine(affine[3]); // Top Left Y
-            }
+            using var sw = new StreamWriter(bounds.WorldFile);
+            double[] affine = bounds.AffineCoefficients;
+            sw.WriteLine(affine[1]); // Dx
+            sw.WriteLine(affine[2]); // rotation X
+            sw.WriteLine(affine[4]); // rotation Y
+            sw.WriteLine(affine[5]); // Dy
+            sw.WriteLine(affine[0]); // Top Left X
+            sw.WriteLine(affine[3]); // Top Left Y
         }
 
         /// <summary>

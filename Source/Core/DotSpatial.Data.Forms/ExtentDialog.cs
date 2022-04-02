@@ -37,7 +37,7 @@ namespace DotSpatial.Data.Forms
                 Extent result;
                 if (chkZ.Checked)
                 {
-                    ExtentMz mz = new ExtentMz();
+                    ExtentMz mz = new();
                     if (dbxMinimumZ.IsValid)
                     {
                         mz.MinZ = dbxMinimumZ.Value;
@@ -62,7 +62,7 @@ namespace DotSpatial.Data.Forms
                 }
                 else if (chkM.Checked)
                 {
-                    ExtentM m = new ExtentM();
+                    ExtentM m = new();
                     if (dbxMinimumM.IsValid)
                     {
                         m.MinM = dbxMinimumM.Value;
@@ -176,7 +176,7 @@ namespace DotSpatial.Data.Forms
                 return;
             }
 
-            List<string> names = new List<string>();
+            List<string> names = new();
             if (chkZ.Checked)
             {
                 if (!dbxMinimumZ.IsValid)

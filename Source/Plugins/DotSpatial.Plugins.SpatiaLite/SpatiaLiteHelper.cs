@@ -75,8 +75,7 @@ namespace DotSpatial.Plugins.SpatiaLite
                 return null;
             }
 
-            bool version4Plus;
-            if (!GetSpatialVersion(connectionString, out version4Plus))
+            if (!GetSpatialVersion(connectionString, out bool version4Plus))
             {
                 error = Resources.CouldNotFindTheSpatiaLiteVersion;
                 return null;
@@ -247,17 +246,15 @@ namespace DotSpatial.Plugins.SpatiaLite
             using (var cnn = new SQLiteConnection(ConnectionString))
             {
                 var qry = "SELECT name FROM sqlite_master WHERE type = 'table'";
-                using (var cmd = new SQLiteCommand(qry, cnn))
+                using var cmd = new SQLiteCommand(qry, cnn);
+                cmd.Connection.Open();
+                var r = cmd.ExecuteReader();
+                while (r.Read())
                 {
-                    cmd.Connection.Open();
-                    var r = cmd.ExecuteReader();
-                    while (r.Read())
-                    {
-                        tableNameList.Add(r[0].ToString());
-                    }
-
-                    cmd.Connection.Close();
+                    tableNameList.Add(r[0].ToString());
                 }
+
+                cmd.Connection.Close();
             }
 
             return tableNameList;
@@ -291,40 +288,38 @@ namespace DotSpatial.Plugins.SpatiaLite
                 LayerName = featureSetInfo.TableName
             };
 
-            using (var cmd = CreateCommand(ConnectionString, sql))
+            using var cmd = CreateCommand(ConnectionString, sql);
+            cmd.Connection.Open();
+
+            var wkbr = new GaiaGeoReader();
+
+            var rdr = cmd.ExecuteReader();
+
+            var columnNames = PopulateTableSchema(fs, featureSetInfo.GeometryColumnName, rdr);
+            while (rdr.Read())
             {
-                cmd.Connection.Open();
+                var wkb = rdr[featureSetInfo.GeometryColumnName] as byte[];
+                var geom = wkbr.Read(wkb);
 
-                var wkbr = new GaiaGeoReader();
+                var newFeature = fs.AddFeature(geom);
 
-                var rdr = cmd.ExecuteReader();
-
-                var columnNames = PopulateTableSchema(fs, featureSetInfo.GeometryColumnName, rdr);
-                while (rdr.Read())
+                // populate the attributes
+                foreach (var colName in columnNames)
                 {
-                    var wkb = rdr[featureSetInfo.GeometryColumnName] as byte[];
-                    var geom = wkbr.Read(wkb);
-
-                    var newFeature = fs.AddFeature(geom);
-
-                    // populate the attributes
-                    foreach (var colName in columnNames)
-                    {
-                        newFeature.DataRow[colName] = rdr[colName];
-                    }
+                    newFeature.DataRow[colName] = rdr[colName];
                 }
-
-                cmd.Connection.Close();
-
-                // assign projection
-                if (featureSetInfo.Srid > 0)
-                {
-                    var proj = ProjectionInfo.FromEpsgCode(featureSetInfo.Srid);
-                    fs.Projection = proj;
-                }
-
-                return fs;
             }
+
+            cmd.Connection.Close();
+
+            // assign projection
+            if (featureSetInfo.Srid > 0)
+            {
+                var proj = ProjectionInfo.FromEpsgCode(featureSetInfo.Srid);
+                fs.Projection = proj;
+            }
+
+            return fs;
         }
 
         /// <summary>
@@ -332,7 +327,7 @@ namespace DotSpatial.Plugins.SpatiaLite
         /// </summary>
         /// <param name="tableName">Name of the table whose content should be loaded.</param>
         /// <returns>Null if the table wasn't found otherwise the tables content.</returns>
-        public IFeatureSet? ReadFeatureSet(string tableName)
+        public IFeatureSet ReadFeatureSet(string tableName)
         {
             var geos = GetGeometryColumns();
             var geo = geos.FirstOrDefault(_ => _.TableName == tableName);
@@ -386,16 +381,14 @@ namespace DotSpatial.Plugins.SpatiaLite
         {
             var qry = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'geometry_columns'";
 
-            using (var cmd = CreateCommand(connString, qry))
-            {
-                var result = false;
-                cmd.Connection.Open();
-                var obj = cmd.ExecuteScalar();
-                if (obj != null) result = true;
-                cmd.Connection.Close();
+            using var cmd = CreateCommand(connString, qry);
+            var result = false;
+            cmd.Connection.Open();
+            var obj = cmd.ExecuteScalar();
+            if (obj != null) result = true;
+            cmd.Connection.Close();
 
-                return result;
-            }
+            return result;
         }
 
         /// <summary>

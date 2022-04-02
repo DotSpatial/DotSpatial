@@ -179,7 +179,7 @@ namespace DotSpatial.Symbology.Forms
             Graphics g = e.Graphics;
             if (grdSlider == null || lblPreview == null) return;
 
-            LinearGradientBrush br = new LinearGradientBrush(lblPreview.ClientRectangle, grdSlider.MinimumColor, grdSlider.MaximumColor, LinearGradientMode.Horizontal);
+            LinearGradientBrush br = new(lblPreview.ClientRectangle, grdSlider.MinimumColor, grdSlider.MaximumColor, LinearGradientMode.Horizontal);
             g.FillRectangle(br, e.ClipRectangle);
             br.Dispose();
         }

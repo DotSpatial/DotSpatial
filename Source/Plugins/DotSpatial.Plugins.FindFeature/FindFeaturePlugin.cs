@@ -45,7 +45,7 @@ namespace DotSpatial.Plugins.FindFeature
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void FindToolClick(object? sender, EventArgs e)
+        private void FindToolClick(object sender, EventArgs e)
         {
             var fl = App.Map.GetFeatureLayers().FirstOrDefault(_ => _.IsSelected);
             if (fl == null)
@@ -54,27 +54,25 @@ namespace DotSpatial.Plugins.FindFeature
                 return;
             }
 
-            using (SqlExpressionDialog qd = new())
+            using SqlExpressionDialog qd = new();
+            if (fl.DataSet.AttributesPopulated)
+            { qd.Table = fl.DataSet.DataTable; }
+            else
+            { qd.AttributeSource = fl.DataSet; }
+
+            // Note: User must click ok button to see anything.
+            if (qd.ShowDialog() == DialogResult.Cancel)
+            { return; }
+
+            if (!string.IsNullOrWhiteSpace(qd.Expression))
             {
-                if (fl.DataSet.AttributesPopulated)
-                { qd.Table = fl.DataSet.DataTable; }
-                else
-                { qd.AttributeSource = fl.DataSet; }
-
-                // Note: User must click ok button to see anything.
-                if (qd.ShowDialog() == DialogResult.Cancel)
-                { return; }
-
-                if (!string.IsNullOrWhiteSpace(qd.Expression))
+                try
                 {
-                    try
-                    {
-                        fl.SelectByAttribute(qd.Expression);
-                    }
-                    catch (SyntaxErrorException ex)
-                    {
-                        MessageBox.Show(string.Format(Resources.IncorrectSyntax, ex.Message));
-                    }
+                    fl.SelectByAttribute(qd.Expression);
+                }
+                catch (SyntaxErrorException ex)
+                {
+                    MessageBox.Show(string.Format(Resources.IncorrectSyntax, ex.Message));
                 }
             }
         }

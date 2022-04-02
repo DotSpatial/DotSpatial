@@ -92,7 +92,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         /// <param name="sender">The sender of the DeleteShape event.</param>
         /// <param name="e">An empty EventArgument.</param>
-        public void DeleteShape(object? sender, EventArgs e)
+        public void DeleteShape(object sender, EventArgs e)
         {
             _coordinates = new List<Coordinate>();
             _parts = new List<List<Coordinate>>();
@@ -116,7 +116,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         /// <param name="sender">The object sender.</param>
         /// <param name="e">An empty EventArgs class.</param>
-        public void FinishPart(object? sender, EventArgs e)
+        public void FinishPart(object sender, EventArgs e)
         {
             if (_featureSet.FeatureType == FeatureType.Polygon && !_coordinates[0].Equals2D(_coordinates[^1])) _coordinates.Add(_coordinates[0]); // close polygons because they must be closed
 
@@ -499,7 +499,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             _parts = new List<List<Coordinate>>();
         }
 
-        private void CoordinateDialogFormClosing(object? sender, FormClosingEventArgs e)
+        private void CoordinateDialogFormClosing(object sender, FormClosingEventArgs e)
         {
             // This signals that we are done with editing, and should therefore close up shop
             Enabled = false;

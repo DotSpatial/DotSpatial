@@ -37,7 +37,7 @@ namespace DotSpatial.Controls.Header
         /// </summary>
         protected const string ExtensionsRootKey = "kExtensions";
 
-        private readonly Dictionary<string, HeaderItemDesc> _items = new Dictionary<string, HeaderItemDesc>();
+        private readonly Dictionary<string, HeaderItemDesc> _items = new();
 
         #endregion
 

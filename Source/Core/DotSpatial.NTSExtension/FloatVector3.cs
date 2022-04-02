@@ -258,7 +258,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A FloatVector3 containing the cross product of lhs and V.</returns>
         public static FloatVector3 CrossProduct(FloatVector3 lhs, FloatVector3 rhs)
         {
-            FloatVector3 result = new FloatVector3
+            FloatVector3 result = new()
             {
                 X = (lhs.Y * rhs.Z) - (lhs.Z * rhs.Y),
                 Y = (lhs.Z * rhs.X) - (lhs.X * rhs.Z),
@@ -349,9 +349,9 @@ namespace DotSpatial.NTSExtension
         public void Normalize()
         {
             float length = Length;
-            X = X / length;
-            Y = Y / length;
-            Z = Z / length;
+            X /= length;
+            Y /= length;
+            Z /= length;
         }
 
         /// <summary>

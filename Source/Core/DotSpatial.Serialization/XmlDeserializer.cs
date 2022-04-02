@@ -63,8 +63,8 @@ namespace DotSpatial.Serialization
 
         private static string GetFullPath(XElement element)
         {
-            StringBuilder sb = new StringBuilder();
-            Stack<string> pathStack = new Stack<string>();
+            StringBuilder sb = new();
+            Stack<string> pathStack = new();
 
             do
             {
@@ -120,7 +120,7 @@ namespace DotSpatial.Serialization
                     if (t == null)
                     {
                         // check whether the needed object was moved to another assembly
-                        MovedTypes mt = new MovedTypes();
+                        MovedTypes mt = new();
                         foreach (TypeMoveDefintion tc in mt.Types)
                         {
                             if (tc.IsApplicable(valueAttrib.Value))
@@ -184,21 +184,19 @@ namespace DotSpatial.Serialization
             _references = new Dictionary<string, object>();
             try
             {
-                using (var stringReader = new StringReader(xml))
+                using var stringReader = new StringReader(xml);
+                XDocument document = XDocument.Load(stringReader);
+                XElement rootNode = document.Root;
+                if (rootNode == null) throw new XmlException("Could not find a root XML element.");
+
+                _typeCache = ReadTypeCache(rootNode);
+                if (fill)
                 {
-                    XDocument document = XDocument.Load(stringReader);
-                    XElement rootNode = document.Root;
-                    if (rootNode == null) throw new XmlException("Could not find a root XML element.");
-
-                    _typeCache = ReadTypeCache(rootNode);
-                    if (fill)
-                    {
-                        FillObject(rootNode, existingObject, true);
-                        return existingObject;
-                    }
-
-                    return (T)ReadObject(rootNode, null);
+                    FillObject(rootNode, existingObject, true);
+                    return existingObject;
                 }
+
+                return (T)ReadObject(rootNode, null);
             }
             finally
             {
@@ -270,7 +268,7 @@ namespace DotSpatial.Serialization
         {
             constructorMethod = string.Empty;
 
-            List<object> constructorArgs = new List<object>();
+            List<object> constructorArgs = new();
             int constructorArgSanityCheck = 0;
 
             var staticMethodIndicators = (from m in element.Elements(XmlConstants.Member) where m.Attribute(XmlConstants.StaticMethodIndicator) != null select m).ToList();

@@ -97,7 +97,7 @@ namespace DotSpatial.Data
         /// <returns>Returns a copy of this object.</returns>
         public override object Clone()
         {
-            ExtentMz copy = new ExtentMz(MinX, MinY, MinM, MinZ, MaxX, MaxY, MaxM, MinZ);
+            ExtentMz copy = new(MinX, MinY, MinM, MinZ, MaxX, MaxY, MaxM, MinZ);
             return copy;
         }
 
@@ -259,7 +259,7 @@ namespace DotSpatial.Data
 
             if (HasZ && other is IExtentZ zOther && other.HasZ)
             {
-                ExtentMz zResult = new ExtentMz
+                ExtentMz zResult = new()
                 {
                     MinZ = MinZ > zOther.MinZ ? MinZ : zOther.MinZ,
                     MaxZ = MaxZ < zOther.MaxZ ? MaxZ : zOther.MaxZ

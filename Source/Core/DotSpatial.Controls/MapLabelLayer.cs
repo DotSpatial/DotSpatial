@@ -24,12 +24,12 @@ namespace DotSpatial.Controls
     {
         #region Fields
 
-        private static readonly Caches CacheList = new Caches();
+        private static readonly Caches CacheList = new();
 
         /// <summary>
         /// The existing labels, accessed for all map label layers, not just this instance.
         /// </summary>
-        private static readonly List<RectangleF> ExistingLabels = new List<RectangleF>(); // for collision prevention, tracks existing labels.
+        private static readonly List<RectangleF> ExistingLabels = new(); // for collision prevention, tracks existing labels.
 
         #endregion
 
@@ -415,7 +415,7 @@ namespace DotSpatial.Controls
             if (FeatureSet.IndexMode)
             {
                 // First determine the number of features we are talking about based on region.
-                List<int> drawIndices = new List<int>();
+                List<int> drawIndices = new();
                 foreach (Extent region in regions)
                 {
                     if (region != null)
@@ -435,7 +435,7 @@ namespace DotSpatial.Controls
             else
             {
                 // First determine the number of features we are talking about based on region.
-                List<IFeature> drawList = new List<IFeature>();
+                List<IFeature> drawList = new();
                 foreach (Extent region in regions)
                 {
                     if (region != null)
@@ -480,7 +480,7 @@ namespace DotSpatial.Controls
         /// where drawing will be taking place.</param>
         public void StartDrawing(bool preserve)
         {
-            Bitmap backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
+            Bitmap backBuffer = new(BufferRectangle.Width, BufferRectangle.Height);
             if (Buffer != null && preserve && Buffer.Width == backBuffer.Width && Buffer.Height == backBuffer.Height)
             {
                 Graphics g = Graphics.FromImage(backBuffer);
@@ -586,13 +586,11 @@ namespace DotSpatial.Controls
                 var backBrush = CacheList.GetSolidBrush(symb.BackColor);
                 if (symb.FontColor == Color.Transparent)
                 {
-                    using (var backgroundGp = new GraphicsPath())
-                    {
-                        backgroundGp.AddRectangle(labelBounds);
-                        backgroundGp.FillMode = FillMode.Alternate;
-                        backgroundGp.AddPath(gp, true);
-                        g.FillPath(backBrush, backgroundGp);
-                    }
+                    using var backgroundGp = new GraphicsPath();
+                    backgroundGp.AddRectangle(labelBounds);
+                    backgroundGp.FillMode = FillMode.Alternate;
+                    backgroundGp.AddPath(gp, true);
+                    g.FillPath(backBrush, backgroundGp);
                 }
                 else
                 {
@@ -624,12 +622,12 @@ namespace DotSpatial.Controls
             // Draws the text halo
             if (symb.HaloEnabled && symb.HaloColor != Color.Transparent)
             {
-                using (var haloPen = new Pen(symb.HaloColor)
+                using var haloPen = new Pen(symb.HaloColor)
                 {
                     Width = 2,
                     Alignment = PenAlignment.Outset
-                })
-                    g.DrawPath(haloPen, gp);
+                };
+                g.DrawPath(haloPen, gp);
             }
 
             // Draws the text if its not transparent
@@ -703,7 +701,7 @@ namespace DotSpatial.Controls
                     LineSegment temp = null;
                     for (int i = 0; i < coords.Length - 1; i++)
                     {
-                        LineSegment l = new LineSegment(coords[i], coords[i + 1]);
+                        LineSegment l = new(coords[i], coords[i + 1]);
                         if (l.Length > length)
                         {
                             length = l.Length;
@@ -1013,7 +1011,7 @@ namespace DotSpatial.Controls
             {
                 category.UpdateExpressionColumns(FeatureSet.DataTable.Columns);
                 var cat = category; // prevent access to unmodified closure problems
-                List<IFeature> catFeatures = new List<IFeature>();
+                List<IFeature> catFeatures = new();
                 foreach (IFeature f in featureList)
                 {
                     if (drawStates.ContainsKey(f) && drawStates[f].Category == cat)
@@ -1066,9 +1064,9 @@ namespace DotSpatial.Controls
         {
             #region Fields
 
-            private readonly Dictionary<Color, Pen> _pens = new Dictionary<Color, Pen>();
-            private readonly Dictionary<Color, Brush> _solidBrushes = new Dictionary<Color, Brush>();
-            private readonly Dictionary<string, Font> _symbFonts = new Dictionary<string, Font>();
+            private readonly Dictionary<Color, Pen> _pens = new();
+            private readonly Dictionary<Color, Brush> _solidBrushes = new();
+            private readonly Dictionary<string, Font> _symbFonts = new();
 
             #endregion
 

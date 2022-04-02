@@ -53,11 +53,9 @@ namespace DotSpatial.Projections
             using (Stream str = GetStream())
             {
                 if (str == null) return;
-                using (StreamReader sr = new StreamReader(str))
-                {
-                    Name = sr.ReadLine();
-                    numText = sr.ReadToEnd();
-                }
+                using StreamReader sr = new(str);
+                Name = sr.ReadLine();
+                numText = sr.ReadToEnd();
             }
             char[] separators = new[] { ' ', ',', ':', (char)10 };
             string[] values = numText.Split(separators, StringSplitOptions.RemoveEmptyEntries);
@@ -81,11 +79,9 @@ namespace DotSpatial.Projections
             using (Stream str = GetStream())
             {
                 if (str == null) return;
-                using (StreamReader sr = new StreamReader(str))
-                {
-                    sr.ReadLine();
-                    numText = sr.ReadToEnd();
-                }
+                using StreamReader sr = new(str);
+                sr.ReadLine();
+                numText = sr.ReadToEnd();
             }
             char[] separators = new[] { ' ', ',', ':', (char)10 };
             string[] values = numText.Split(separators, StringSplitOptions.RemoveEmptyEntries);

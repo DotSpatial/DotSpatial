@@ -153,9 +153,9 @@ namespace DotSpatial.Plugins.WebMap.WMS
             {
                 var myRequest = WebRequest.Create(serverUrl);
                 myRequest.Credentials = GetUserCredentials();
-                using (var myResponse = myRequest.GetResponse())
-                using (var stream = myResponse.GetResponseStream())
-                    capabilities = new WmsCapabilities(stream);
+                using var myResponse = myRequest.GetResponse();
+                using var stream = myResponse.GetResponseStream();
+                capabilities = new WmsCapabilities(stream);
             }
             catch (Exception ex)
             {

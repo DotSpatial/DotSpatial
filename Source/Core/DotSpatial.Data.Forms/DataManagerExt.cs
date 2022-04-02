@@ -90,20 +90,18 @@ namespace DotSpatial.Data.Forms
         /// <returns>An enumerable of all the files that were opened.</returns>
         public static IEnumerable<IDataSet> OpenFiles(this IDataManager self)
         {
-            using (var ofd = new OpenFileDialog { Multiselect = true, Filter = self.DialogReadFilter })
+            using var ofd = new OpenFileDialog { Multiselect = true, Filter = self.DialogReadFilter };
+            if (ofd.ShowDialog() != DialogResult.OK) yield break;
+
+            var filterparts = ofd.Filter.Split('|');
+            var pos = (ofd.FilterIndex - 1) * 2;
+            int index = filterparts[pos].IndexOf(" - ", StringComparison.Ordinal);
+            var filterName = index > 0 ? filterparts[pos].Remove(index) : string.Empty; // provider entries contain a -, entries without - aren't specific providers but lists that contain endings more than one provider can open
+
+            foreach (var name in ofd.FileNames)
             {
-                if (ofd.ShowDialog() != DialogResult.OK) yield break;
-
-                var filterparts = ofd.Filter.Split('|');
-                var pos = (ofd.FilterIndex - 1) * 2;
-                int index = filterparts[pos].IndexOf(" - ", StringComparison.Ordinal);
-                var filterName = index > 0 ? filterparts[pos].Remove(index) : string.Empty; // provider entries contain a -, entries without - aren't specific providers but lists that contain endings more than one provider can open
-
-                foreach (var name in ofd.FileNames)
-                {
-                    var ds = self.OpenFile(name, self.LoadInRam, self.ProgressHandler, filterName);
-                    if (ds != null) yield return ds;
-                }
+                var ds = self.OpenFile(name, self.LoadInRam, self.ProgressHandler, filterName);
+                if (ds != null) yield return ds;
             }
         }
 

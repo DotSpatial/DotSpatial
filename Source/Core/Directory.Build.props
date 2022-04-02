@@ -1,15 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <Project>
 	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 	
 	<PropertyGroup>
-		<OutputPath>$(ProjectDir)..\bin\$(Configuration)\</OutputPath>
+		<OutputPath>$(ProjectDir)..\..\bin\$(Configuration)\</OutputPath>
 	</PropertyGroup>
 
 <Target Name="CopyNtsDlls" AfterTargets="Build">
 		<PropertyGroup>
-			<MyFolder>$(ProjectDir)..\packages\nettopologysuite\2.4.0\lib\netstandard2.0\</MyFolder>
+			<MyFolder>$(ProjectDir)..\..\packages\nettopologysuite\2.4.0\lib\netstandard2.0\</MyFolder>
 		</PropertyGroup>
 		
 		<Copy SourceFiles="$(MyFolder)NetTopologySuite.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />

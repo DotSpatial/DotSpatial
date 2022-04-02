@@ -67,7 +67,7 @@ namespace DotSpatial.Positioning
         public GpgsaSentence(FixMode fixMode, FixMethod fixMethod, IEnumerable<Satellite> satellites, DilutionOfPrecision positionDilutionOfPrecision, DilutionOfPrecision horizontalDilutionOfPrecision, DilutionOfPrecision verticalDilutionOfPrecision)
         {
             // Use a string builder to create the sentence text
-            StringBuilder builder = new StringBuilder(128);
+            StringBuilder builder = new(128);
 
             // Append the command word
             builder.Append("$GPGSA");

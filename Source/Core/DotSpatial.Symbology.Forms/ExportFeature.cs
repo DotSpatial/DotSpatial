@@ -91,11 +91,10 @@ namespace DotSpatial.Symbology.Forms
 
         private void BtnBrowseClick(object sender, EventArgs e)
         {
-            using (SaveFileDialog ofd = new SaveFileDialog { Filter = DataManager.DefaultDataManager.VectorWriteFilter })
-            {
-                if (ofd.ShowDialog() != DialogResult.OK) return;
-                txtOutput.Text = ofd.FileName;
-            }
+            using SaveFileDialog ofd = new()
+            { Filter = DataManager.DefaultDataManager.VectorWriteFilter };
+            if (ofd.ShowDialog() != DialogResult.OK) return;
+            txtOutput.Text = ofd.FileName;
         }
 
         private void BtnCancelClick(object sender, EventArgs e)

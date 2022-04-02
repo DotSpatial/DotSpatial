@@ -624,19 +624,17 @@ namespace DotSpatial.Controls
                 SaveModel();
 
             // Prompts user to pick file
-            using (OpenFileDialog ofd = new()
+            using OpenFileDialog ofd = new()
             {
                 Filter = $@"Model *.{DefaultFileExtension}|*.{DefaultFileExtension}",
                 DefaultExt = DefaultFileExtension,
                 AddExtension = true,
                 CheckPathExists = true
-            })
-            {
-                if (ofd.ShowDialog(this) == DialogResult.Cancel)
-                    return;
+            };
+            if (ofd.ShowDialog(this) == DialogResult.Cancel)
+                return;
 
-                LoadModel(ofd.FileName);
-            }
+            LoadModel(ofd.FileName);
         }
 
         /// <summary>
@@ -778,7 +776,7 @@ namespace DotSpatial.Controls
             string fileName = ModelFilename;
             if (promptSaveAs)
             {
-                using (var sfd = new SaveFileDialog
+                using var sfd = new SaveFileDialog
                 {
                     OverwritePrompt = promptOverwrite,
                     Filter = $@"Model *.{DefaultFileExtension}|*.{DefaultFileExtension}",
@@ -786,12 +784,10 @@ namespace DotSpatial.Controls
                     AddExtension = true,
                     CheckPathExists = true,
                     FileName = ModelFilename
-                })
-                {
-                    if (sfd.ShowDialog(this) == DialogResult.Cancel)
-                        return;
-                    fileName = sfd.FileName;
-                }
+                };
+                if (sfd.ShowDialog(this) == DialogResult.Cancel)
+                    return;
+                fileName = sfd.FileName;
             }
 
             if (SaveModel(fileName))
@@ -1699,7 +1695,7 @@ namespace DotSpatial.Controls
             return te;
         }
 
-        private void BwToolThreader(object? sender, DoWorkEventArgs e)
+        private void BwToolThreader(object sender, DoWorkEventArgs e)
         {
             if (e.Argument is not object[] threadParamerter) return;
             ToolProgress progForm = threadParamerter[0] as ToolProgress;
@@ -1806,7 +1802,7 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void HorScrollValueChanged(object? sender, EventArgs e)
+        private void HorScrollValueChanged(object sender, EventArgs e)
         {
             _virtualOffset.X -= _horScroll.Value - _horLastValue;
             _horLastValue = _horScroll.Value;
@@ -1877,7 +1873,7 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void ScrollTimerHorizontalTick(object? sender, EventArgs e)
+        private void ScrollTimerHorizontalTick(object sender, EventArgs e)
         {
             _scrollLock = false;
             _horScroll.Minimum -= 50;
@@ -1885,7 +1881,7 @@ namespace DotSpatial.Controls
             _scrollTimerHorizontal.Stop();
         }
 
-        private void ScrollTimerVerticalTick(object? sender, EventArgs e)
+        private void ScrollTimerVerticalTick(object sender, EventArgs e)
         {
             _scrollLock = false;
             _verScroll.Minimum -= 50;
@@ -1922,7 +1918,7 @@ namespace DotSpatial.Controls
             IsInitialized = true;
         }
 
-        private void VerScrollValueChanged(object? sender, EventArgs e)
+        private void VerScrollValueChanged(object sender, EventArgs e)
         {
             _virtualOffset.Y -= _verScroll.Value - _verLastValue;
             _verLastValue = _verScroll.Value;

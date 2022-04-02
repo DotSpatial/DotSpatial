@@ -836,7 +836,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        public static new readonly ProgressEventArgs Empty = new ProgressEventArgs(0, 0);
+        public static new readonly ProgressEventArgs Empty = new(0, 0);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProgressEventArgs"/> class.

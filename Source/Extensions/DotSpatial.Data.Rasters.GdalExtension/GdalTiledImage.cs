@@ -106,9 +106,9 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 {
                     int width = TileCollection.GetTileWidth(col);
                     int height = TileCollection.GetTileHeight(row);
-                    InRamImageData id = new InRamImageData(width, height);
+                    InRamImageData id = new(width, height);
 
-                    Bitmap image = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+                    Bitmap image = new(width, height, PixelFormat.Format32bppArgb);
 
                     byte[] red = new byte[width * height];
                     byte[] g = new byte[width * height];
@@ -156,10 +156,10 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 {
                     int width = TileCollection.GetTileWidth(col);
                     int height = TileCollection.GetTileHeight(row);
-                    InRamImageData id = new InRamImageData(width, height);
+                    InRamImageData id = new(width, height);
                     byte[] red = new byte[width * height];
                     _red.ReadRaster(col * tw, row * th, width, height, red, width, height, 0, 0);
-                    Bitmap image = new Bitmap(width, height);
+                    Bitmap image = new(width, height);
                     BitmapData bData = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
                     Stride = bData.Stride;
                     image.UnlockBits(bData);
@@ -228,10 +228,10 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     // takes into account that right and bottom tiles might be smaller.
                     int width = TileCollection.GetTileWidth(col);
                     int height = TileCollection.GetTileHeight(row);
-                    ImageData id = new ImageData();
+                    ImageData id = new();
                     byte[] red = new byte[width * height];
                     _red.ReadRaster(col * tw, row * th, width, height, red, width, height, 0, 0);
-                    Bitmap image = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+                    Bitmap image = new(width, height, PixelFormat.Format32bppArgb);
                     BitmapData bData = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
                     Stride = bData.Stride;
                     image.UnlockBits(bData);
@@ -277,16 +277,16 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             int th = TileCollection.TileHeight;
             int ntt = TileCollection.NumTilesTall();
             int ntw = TileCollection.NumTilesWide();
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, "Reading Tiles ", ntt * ntw);
+            ProgressMeter pm = new(ProgressHandler, "Reading Tiles ", ntt * ntw);
             for (int row = 0; row < ntt; row++)
             {
                 for (int col = 0; col < ntw; col++)
                 {
                     int width = TileCollection.GetTileWidth(col);
                     int height = TileCollection.GetTileHeight(row);
-                    InRamImageData id = new InRamImageData(width, height);
+                    InRamImageData id = new(width, height);
 
-                    Bitmap image = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+                    Bitmap image = new(width, height, PixelFormat.Format32bppArgb);
 
                     byte[] red = new byte[width * height];
                     byte[] g = new byte[width * height];

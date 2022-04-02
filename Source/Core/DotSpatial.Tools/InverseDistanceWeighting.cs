@@ -137,14 +137,14 @@ namespace DotSpatial.Tools
 
             // Populates the KD tree
             var kd = new KdTreeEx<IFeature>();
-            List<int> randomList = new List<int>();
+            List<int> randomList = new();
             for (int i = 0; i < input.Features.Count; i++)
             {
                 randomList.Add(i);
             }
 
-            Random rnd = new Random();
-            List<int> completed = new List<int>();
+            Random rnd = new();
+            List<int> completed = new();
             while (randomList.Count > 0)
             {
                 int index = rnd.Next(0, randomList.Count - 1);

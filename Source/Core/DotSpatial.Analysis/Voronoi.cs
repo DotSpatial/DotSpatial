@@ -29,12 +29,12 @@ namespace DotSpatial.Analysis
         {
             double[] vertices = points.Vertex;
             VoronoiGraph gp = Fortune.ComputeVoronoiGraph(vertices);
-            FeatureSet result = new FeatureSet();
+            FeatureSet result = new();
             foreach (VoronoiEdge edge in gp.Edges)
             {
                 Coordinate c1 = edge.RightData.ToCoordinate();
                 Coordinate c2 = edge.LeftData.ToCoordinate();
-                LineString ls = new LineString(new[] { c1, c2 });
+                LineString ls = new(new[] { c1, c2 });
                 result.AddFeature(ls);
             }
 
@@ -53,12 +53,12 @@ namespace DotSpatial.Analysis
 
             HandleBoundaries(gp, points.Extent.ToEnvelope());
 
-            FeatureSet result = new FeatureSet();
+            FeatureSet result = new();
             foreach (VoronoiEdge edge in gp.Edges)
             {
                 Coordinate c1 = edge.VVertexA.ToCoordinate();
                 Coordinate c2 = edge.VVertexB.ToCoordinate();
-                LineString ls = new LineString(new[] { c1, c2 });
+                LineString ls = new(new[] { c1, c2 });
                 result.AddFeature(ls);
             }
 
@@ -102,8 +102,8 @@ namespace DotSpatial.Analysis
             HandleBoundaries(gp, env);
             for (int i = 0; i < vertices.Length / 2; i++)
             {
-                List<VoronoiEdge> myEdges = new List<VoronoiEdge>();
-                Vector2 v = new Vector2(vertices, i * 2);
+                List<VoronoiEdge> myEdges = new();
+                Vector2 v = new(vertices, i * 2);
                 foreach (VoronoiEdge edge in gp.Edges)
                 {
                     if (!v.Equals(edge.RightData) && !v.Equals(edge.LeftData))
@@ -114,7 +114,7 @@ namespace DotSpatial.Analysis
                     myEdges.Add(edge);
                 }
 
-                List<Coordinate> coords = new List<Coordinate>();
+                List<Coordinate> coords = new();
                 VoronoiEdge firstEdge = myEdges[0];
                 coords.Add(firstEdge.VVertexA.ToCoordinate());
                 coords.Add(firstEdge.VVertexB.ToCoordinate());
@@ -198,7 +198,7 @@ namespace DotSpatial.Analysis
                     continue;
                 }
 
-                Polygon pg = new Polygon(new LinearRing(coords.ToArray()));
+                Polygon pg = new(new LinearRing(coords.ToArray()));
 
                 if (cropToExtent)
                 {
@@ -208,19 +208,19 @@ namespace DotSpatial.Analysis
                         Polygon p = g as Polygon;
                         if (p != null)
                         {
-                            Feature f = new Feature(p, result);
+                            Feature f = new(p, result);
                             f.CopyAttributes(points.Features[i]);
                         }
                     }
                     catch (Exception)
                     {
-                        Feature f = new Feature(pg, result);
+                        Feature f = new(pg, result);
                         f.CopyAttributes(points.Features[i]);
                     }
                 }
                 else
                 {
-                    Feature f = new Feature(pg, result);
+                    Feature f = new(pg, result);
                     f.CopyAttributes(points.Features[i]);
                 }
             }
@@ -236,8 +236,8 @@ namespace DotSpatial.Analysis
         /// <param name="bounds">The polygon bounding the datapoints.</param>
         private static void HandleBoundaries(VoronoiGraph graph, Envelope bounds)
         {
-            List<LineString> boundSegments = new List<LineString>();
-            List<VoronoiEdge> unboundEdges = new List<VoronoiEdge>();
+            List<LineString> boundSegments = new();
+            List<VoronoiEdge> unboundEdges = new();
 
             // Identify bound edges for intersection testing
             foreach (VoronoiEdge edge in graph.Edges)
@@ -279,8 +279,8 @@ namespace DotSpatial.Analysis
                     sy = -dx / l;
                 }
 
-                Coordinate end1 = new Coordinate(start.X + (len * sx), start.Y + (len * sy));
-                Coordinate end2 = new Coordinate(start.X - (sx * len), start.Y - (sy * len));
+                Coordinate end1 = new(start.X + (len * sx), start.Y + (len * sy));
+                Coordinate end2 = new(start.X - (sx * len), start.Y - (sy * len));
                 Coordinate end = (end1.Distance(center) < end2.Distance(center)) ? end2 : end1;
                 if (bounds.Contains(end))
                 {

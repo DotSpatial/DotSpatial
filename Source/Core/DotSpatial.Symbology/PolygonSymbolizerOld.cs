@@ -98,24 +98,22 @@ namespace DotSpatial.Symbology
         /// <param name="target">The rectangle that gets drawn.</param>
         public override void Draw(Graphics g, Rectangle target)
         {
-            using (GraphicsPath gp = new GraphicsPath())
+            using GraphicsPath gp = new();
+            gp.AddRectangle(target);
+            g.FillPath(FillBrush, gp);
+
+            if (_borderIsVisible)
             {
-                gp.AddRectangle(target);
-                g.FillPath(FillBrush, gp);
-
-                if (_borderIsVisible)
+                g.SmoothingMode = _borderSymbolizer.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
+                const double Width = 1;
+                if (_borderSymbolizer.ScaleMode == ScaleMode.Geographic)
                 {
-                    g.SmoothingMode = _borderSymbolizer.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                    const double Width = 1;
-                    if (_borderSymbolizer.ScaleMode == ScaleMode.Geographic)
-                    {
-                        // TO DO: Geographic Scaling
-                    }
+                    // TO DO: Geographic Scaling
+                }
 
-                    foreach (IStroke stroke in _borderSymbolizer.Strokes)
-                    {
-                        stroke.DrawPath(g, gp, Width);
-                    }
+                foreach (IStroke stroke in _borderSymbolizer.Strokes)
+                {
+                    stroke.DrawPath(g, gp, Width);
                 }
             }
         }

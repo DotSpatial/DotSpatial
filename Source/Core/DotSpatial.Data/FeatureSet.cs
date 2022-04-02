@@ -103,11 +103,11 @@ namespace DotSpatial.Data
             if (IndexMode)
             {
                 // Assume this DataTable has WKB in column[0] and the rest of the columns are attributes.
-                FeatureSetPack result = new FeatureSetPack();
+                FeatureSetPack result = new();
                 foreach (DataRow row in wkbTable.Rows)
                 {
                     byte[] data = (byte[])row[0];
-                    MemoryStream ms = new MemoryStream(data);
+                    MemoryStream ms = new(data);
                     WkbFeatureReader.ReadFeature(ms, result);
                 }
 
@@ -689,8 +689,8 @@ namespace DotSpatial.Data
             {
                 if (dc != null)
                 {
-                    DataColumn outCol = new DataColumn(dc.ColumnName, dc.DataType, dc.Expression, dc.ColumnMapping);
-                    Field fld = new Field(outCol);
+                    DataColumn outCol = new(dc.ColumnName, dc.DataType, dc.Expression, dc.ColumnMapping);
+                    Field fld = new(outCol);
                     DataTable.Columns.Add(fld);
                 }
             }
@@ -704,8 +704,8 @@ namespace DotSpatial.Data
             {
                 if (dc != null)
                 {
-                    DataColumn outCol = new DataColumn(dc.ColumnName, dc.DataType, dc.Expression, dc.ColumnMapping);
-                    Field fld = new Field(outCol);
+                    DataColumn outCol = new(dc.ColumnName, dc.DataType, dc.Expression, dc.ColumnMapping);
+                    Field fld = new(outCol);
                     DataTable.Columns.Add(fld);
                 }
             }
@@ -881,12 +881,12 @@ namespace DotSpatial.Data
             if (!IndexMode)
             {
                 IFeature f = Features[index];
-                Shape shp = new Shape(f.Geometry, f.FeatureType);
+                Shape shp = new(f.Geometry, f.FeatureType);
                 if (getAttributes) shp.Attributes = f.DataRow.ItemArray;
                 return shp;
             }
 
-            Shape result = new Shape(FeatureType);
+            Shape result = new(FeatureType);
 
             // This will also deep copy the parts, attributes and vertices
             ShapeRange range = ShapeIndices[index];
@@ -1167,7 +1167,7 @@ namespace DotSpatial.Data
                 return;
             }
 
-            List<int> remaining = new List<int>();
+            List<int> remaining = new();
             for (int i = 0; i < _shapeIndices.Count; i++)
             {
                 if (remove.Count > 0 && remove[0] == i)
@@ -1179,9 +1179,9 @@ namespace DotSpatial.Data
                 remaining.Add(i);
             }
 
-            List<double> vertex = new List<double>();
-            List<double> z = new List<double>();
-            List<double> m = new List<double>();
+            List<double> vertex = new();
+            List<double> z = new();
+            List<double> m = new();
             int pointTotal = 0;
             ProgressMeter = new ProgressMeter(ProgressHandler, "Removing Vertices", remaining.Count);
             foreach (int index in remaining)
@@ -1235,7 +1235,7 @@ namespace DotSpatial.Data
             remove.Sort();
 
             ProgressMeter = new ProgressMeter(ProgressHandler, "Removing indices", remove.Count);
-            List<ShapeRange> result = new List<ShapeRange>();
+            List<ShapeRange> result = new();
             int myIndex = 0;
             foreach (ShapeRange range in _shapeIndices)
             {
@@ -1470,7 +1470,7 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public virtual List<int> SelectIndices(Extent region)
         {
-            List<int> result = new List<int>();
+            List<int> result = new();
             List<ShapeRange> shapes = ShapeIndices; // get from internal dataset if necessary
             if (shapes != null)
             {
@@ -1496,7 +1496,7 @@ namespace DotSpatial.Data
                 _dataTable = new DataTable();
             }
 
-            List<string> names = new List<string>();
+            List<string> names = new();
             foreach (DataColumn c in pageValues.Columns)
             {
                 _dataTable.Columns.Add(new DataColumn(c.ColumnName, c.DataType));
@@ -1650,11 +1650,11 @@ namespace DotSpatial.Data
         protected IFeature GetLine(int index)
         {
             ShapeRange shape = ShapeIndices[index];
-            List<LineString> lines = new List<LineString>();
+            List<LineString> lines = new();
             foreach (PartRange part in shape.Parts)
             {
                 int i = part.StartIndex;
-                List<Coordinate> coords = new List<Coordinate>();
+                List<Coordinate> coords = new();
                 foreach (Vertex d in part)
                 {
                     var m = M?.Length > 0 ? M[i] : double.NaN;
@@ -1705,7 +1705,7 @@ namespace DotSpatial.Data
         protected IFeature GetMultiPoint(int index)
         {
             ShapeRange shape = ShapeIndices[index];
-            List<Coordinate> coords = new List<Coordinate>();
+            List<Coordinate> coords = new();
             foreach (PartRange part in shape.Parts)
             {
                 int i = part.StartIndex;
@@ -1786,11 +1786,11 @@ namespace DotSpatial.Data
             if (FeatureGeometryFactory == null) FeatureGeometryFactory = GeometryFactory.Default;
 
             ShapeRange shape = ShapeIndices[index];
-            List<LinearRing> shells = new List<LinearRing>();
-            List<LinearRing> holes = new List<LinearRing>();
+            List<LinearRing> shells = new();
+            List<LinearRing> holes = new();
             foreach (PartRange part in shape.Parts)
             {
-                List<Coordinate> coords = new List<Coordinate>();
+                List<Coordinate> coords = new();
                 int i = part.StartIndex;
                 foreach (Vertex d in part)
                 {
@@ -1861,7 +1861,7 @@ namespace DotSpatial.Data
                 polygons[i] = FeatureGeometryFactory.CreatePolygon(shells[i], holesForShells[i].ToArray());
             }
 
-            Feature feature = new Feature(polygons.Length == 1 ? polygons[0] : FeatureGeometryFactory.CreateMultiPolygon(polygons) as Geometry)
+            Feature feature = new(polygons.Length == 1 ? polygons[0] : FeatureGeometryFactory.CreateMultiPolygon(polygons) as Geometry)
             {
                 ParentFeatureSet = this,
                 ShapeIndex = shape
@@ -1957,7 +1957,7 @@ namespace DotSpatial.Data
             int vIndex = 0;
             foreach (IFeature f in _features)
             {
-                ShapeRange shx = new ShapeRange(FeatureType)
+                ShapeRange shx = new(FeatureType)
                 {
                     Extent = new Extent(f.Geometry.EnvelopeInternal),
                     StartIndex = vIndex
@@ -1970,7 +1970,7 @@ namespace DotSpatial.Data
                 int shapeStart = vIndex;
                 for (int part = 0; part < f.Geometry.NumGeometries; part++)
                 {
-                    PartRange prtx = new PartRange(_vertices, shapeStart, vIndex - shapeStart, FeatureType);
+                    PartRange prtx = new(_vertices, shapeStart, vIndex - shapeStart, FeatureType);
                     Polygon bp = f.Geometry.GetGeometryN(part) as Polygon;
                     if (bp != null)
                     {
@@ -1981,7 +1981,7 @@ namespace DotSpatial.Data
                         // The part range should be adjusted to no longer include the holes
                         foreach (var hole in bp.Holes)
                         {
-                            PartRange holex = new PartRange(_vertices, shapeStart, vIndex - shapeStart, FeatureType)
+                            PartRange holex = new(_vertices, shapeStart, vIndex - shapeStart, FeatureType)
                             {
                                 NumVertices = hole.NumPoints
                             };
@@ -2038,7 +2038,7 @@ namespace DotSpatial.Data
             if (shape.Attributes != null)
             {
                 DataColumn[] columns = GetColumns();
-                Dictionary<string, object> rowContent = new Dictionary<string, object>();
+                Dictionary<string, object> rowContent = new();
                 object[] fixedContent = new object[columns.Length];
 
                 if (shape.Attributes.Length != columns.Length)
@@ -2085,7 +2085,7 @@ namespace DotSpatial.Data
         /// <returns>A FeatureSet with the new items.</returns>
         private FeatureSet CopySubset(List<int> indices, bool withAttributes)
         {
-            List<IFeature> f = new List<IFeature>();
+            List<IFeature> f = new();
             foreach (int row in indices)
             {
                 if (withAttributes)
@@ -2099,7 +2099,7 @@ namespace DotSpatial.Data
                 }
             }
 
-            FeatureSet copy = new FeatureSet(f)
+            FeatureSet copy = new(f)
             {
                 Projection = CloneableEm.Copy(Projection)
             };

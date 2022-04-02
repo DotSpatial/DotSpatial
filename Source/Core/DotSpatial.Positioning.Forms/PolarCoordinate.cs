@@ -45,9 +45,9 @@ namespace DotSpatial.Positioning.Forms
         private Angle _theta;
 
         /// <summary>Represents a polar coordinate with no value.</summary>
-        public static readonly PolarCoordinate Empty = new PolarCoordinate(0, Angle.Empty);
+        public static readonly PolarCoordinate Empty = new(0, Angle.Empty);
         /// <summary>Represents a polar coordinate at the center of a circle.</summary>
-        public static readonly PolarCoordinate Center = new PolarCoordinate(0, Angle.Empty);
+        public static readonly PolarCoordinate Center = new(0, Angle.Empty);
 
         #region Constructors
 

@@ -41,7 +41,7 @@ namespace DotSpatial.Symbology.Forms
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             _dialogProvider = provider?.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
-            AngleControl ac = new AngleControl
+            AngleControl ac = new()
             {
                 Angle = Convert.ToInt32(value)
             };

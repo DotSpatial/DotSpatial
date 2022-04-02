@@ -271,7 +271,7 @@ namespace DotSpatial.Data.Forms
             Application.DoEvents(); // Allow the form to update a status bar if necessary.
         }
 
-        private void TimerTick(object? sender, EventArgs e)
+        private void TimerTick(object sender, EventArgs e)
         {
             CurrentPercent++;
         }

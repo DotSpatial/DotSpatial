@@ -132,7 +132,7 @@ namespace DotSpatial.Data
                     }
                     else
                     {
-                        c = c >> 1;
+                        c >>= 1;
                     }
                 }
 

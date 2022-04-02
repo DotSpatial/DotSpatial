@@ -96,7 +96,7 @@ namespace DotSpatial.Data
         /// <returns>A featureset where the geometries of features with the same attribute in the specified field have been combined.</returns>
         public static IFeatureSet Dissolve(this IFeatureSet self, string fieldName)
         {
-            Dictionary<object, IFeature> resultFeatures = new Dictionary<object, IFeature>();
+            Dictionary<object, IFeature> resultFeatures = new();
             IFeatureSet result = new FeatureSet(self.FeatureType);
             result.Projection = self.Projection;
             result.DataTable.Columns.Add(fieldName, self.DataTable.Columns[fieldName].DataType);
@@ -139,7 +139,7 @@ namespace DotSpatial.Data
         public static IFeatureSet Intersection(this IFeatureSet self, IFeatureSet other, FieldJoinType joinType, IProgressHandler progHandler)
         {
             IFeatureSet result = null;
-            ProgressMeter pm = new ProgressMeter(progHandler, "Calculating Intersection", self.Features.Count);
+            ProgressMeter pm = new(progHandler, "Calculating Intersection", self.Features.Count);
             if (joinType == FieldJoinType.All)
             {
                 result = CombinedFields(self, other);
@@ -283,7 +283,7 @@ namespace DotSpatial.Data
 
         private static IFeatureSet UnionAll(IFeatureSet fs)
         {
-            FeatureSet fsunion = new FeatureSet();
+            FeatureSet fsunion = new();
             fsunion.CopyTableSchema(fs);
             fsunion.Projection = fs.Projection;
             IFeature f = fs.Features[0];

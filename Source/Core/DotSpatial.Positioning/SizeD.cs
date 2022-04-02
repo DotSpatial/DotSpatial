@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using DotSpatial.Positioning.Properties;
+using DotSpatial.Positioning;
 #if !PocketPC || DesignTime
 
 using System.ComponentModel;
@@ -56,19 +56,19 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents a size with no value.
         /// </summary>
-        public static readonly SizeD Empty = new SizeD(0.0, 0.0);
+        public static readonly SizeD Empty = new(0.0, 0.0);
         /// <summary>
         /// Represents an infinite size.
         /// </summary>
-        public static readonly SizeD Infinity = new SizeD(Double.PositiveInfinity, Double.PositiveInfinity);
+        public static readonly SizeD Infinity = new(Double.PositiveInfinity, Double.PositiveInfinity);
         /// <summary>
         /// Represents the smallest possible size.
         /// </summary>
-        public static readonly SizeD Minimum = new SizeD(Double.MinValue, Double.MinValue);
+        public static readonly SizeD Minimum = new(Double.MinValue, Double.MinValue);
         /// <summary>
         /// Represents the largest possible size.
         /// </summary>
-        public static readonly SizeD Maximum = new SizeD(Double.MaxValue, Double.MaxValue);
+        public static readonly SizeD Maximum = new(Double.MaxValue, Double.MaxValue);
 
         #endregion Fields
 

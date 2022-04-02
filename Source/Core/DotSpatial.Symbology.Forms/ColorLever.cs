@@ -163,7 +163,7 @@ namespace DotSpatial.Symbology.Forms
         protected Point ClientToStandard(Point location)
         {
             Point result = location;
-            Matrix flipRot = new Matrix();
+            Matrix flipRot = new();
             Transform(flipRot);
             flipRot.Invert();
             Point[] transformed = { result };
@@ -238,7 +238,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 // turn the mouse coordinates into a standardized orientation where the control looks like the letter D
                 Point loc = ClientToStandard(e.Location);
-                Point center = new Point(KnobRadius, Height / 2);
+                Point center = new(KnobRadius, Height / 2);
                 double dx = loc.X - center.X;
                 double dy = loc.Y - center.Y;
                 if (dx == 0 && dy == 0) return;
@@ -265,7 +265,7 @@ namespace DotSpatial.Symbology.Forms
                     double len = Math.Sqrt((dx * dx) + (dy * dy));
                     double rx = dx / len;
                     double ry = dy / len;
-                    Point c = new Point(Convert.ToInt32(center.X + rx), Convert.ToInt32(center.Y + ry));
+                    Point c = new(Convert.ToInt32(center.X + rx), Convert.ToInt32(center.Y + ry));
                     Point client = StandardToClient(c);
                     Point screen = PointToScreen(client);
                     Cursor.Position = screen;
@@ -291,7 +291,7 @@ namespace DotSpatial.Symbology.Forms
                 {
                     _isDragging = false;
                     Rectangle knob = GetKnobBounds();
-                    Point center = new Point(knob.X + (knob.Width / 2), knob.Y + (knob.Height / 2));
+                    Point center = new(knob.X + (knob.Width / 2), knob.Y + (knob.Height / 2));
                     Point client = StandardToClient(center);
                     Point screen = PointToScreen(client);
                     Cursor.Position = screen;
@@ -301,7 +301,7 @@ namespace DotSpatial.Symbology.Forms
                 }
                 else
                 {
-                    ColorDialog cdlg = new ColorDialog();
+                    ColorDialog cdlg = new();
                     if (cdlg.ShowDialog() == DialogResult.OK)
                     {
                         _color = cdlg.Color;
@@ -332,7 +332,7 @@ namespace DotSpatial.Symbology.Forms
         {
             Rectangle clip = e.ClipRectangle;
             if (clip.IsEmpty) clip = ClientRectangle;
-            Bitmap bmp = new Bitmap(clip.Width, clip.Height);
+            Bitmap bmp = new(clip.Width, clip.Height);
             Graphics g = Graphics.FromImage(bmp);
             g.TranslateTransform(-clip.X, -clip.Y);
             g.Clip = new Region(clip);
@@ -360,7 +360,7 @@ namespace DotSpatial.Symbology.Forms
         protected Point StandardToClient(Point location)
         {
             Point result = location;
-            Matrix flipRot = new Matrix();
+            Matrix flipRot = new();
             Transform(flipRot);
             Point[] transformed = { result };
             flipRot.TransformPoints(transformed);
@@ -372,11 +372,11 @@ namespace DotSpatial.Symbology.Forms
             Rectangle bounds = GetSemicircleBounds();
             if (bounds.Width <= 0 || bounds.Height <= 0) return;
 
-            GraphicsPath gp = new GraphicsPath();
+            GraphicsPath gp = new();
 
             gp.AddPie(new Rectangle(-bounds.Width, bounds.Y, bounds.Width * 2, bounds.Height), -90, 180);
-            Rectangle roundBounds = new Rectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height);
-            LinearGradientBrush lgb = new LinearGradientBrush(roundBounds, BackColor.Lighter(.5F), BackColor.Darker(.5F), LinearGradientMode.ForwardDiagonal);
+            Rectangle roundBounds = new(bounds.X, bounds.Y, bounds.Width, bounds.Height);
+            LinearGradientBrush lgb = new(roundBounds, BackColor.Lighter(.5F), BackColor.Darker(.5F), LinearGradientMode.ForwardDiagonal);
             g.FillPath(lgb, gp);
             lgb.Dispose();
             gp.Dispose();
@@ -387,16 +387,16 @@ namespace DotSpatial.Symbology.Forms
             if (innerRound.Width <= 0 || innerRound.Height <= 0) return;
 
             gp.AddPie(new Rectangle(innerRound.X - innerRound.Width, innerRound.Y, innerRound.Width * 2, innerRound.Height), -90, 180);
-            PointF center = new PointF(innerRound.X + (innerRound.Width / 2), innerRound.Y + (innerRound.Height / 2));
+            PointF center = new(innerRound.X + (innerRound.Width / 2), innerRound.Y + (innerRound.Height / 2));
             float x = center.X - innerRound.Width;
             float y = center.Y - innerRound.Height;
             float w = innerRound.Width * 2;
             float h = innerRound.Height * 2;
-            RectangleF circum = new RectangleF(x, y, w, h);
+            RectangleF circum = new(x, y, w, h);
 
-            GraphicsPath coloring = new GraphicsPath();
+            GraphicsPath coloring = new();
             coloring.AddEllipse(circum);
-            PathGradientBrush pgb = new PathGradientBrush(coloring)
+            PathGradientBrush pgb = new(coloring)
             {
                 CenterColor = _color.Lighter(.2F),
                 SurroundColors = new[] { _color.Darker(.2F) },
@@ -419,29 +419,29 @@ namespace DotSpatial.Symbology.Forms
         private void DrawKnob(Graphics g)
         {
             Rectangle bounds = GetKnobBounds();
-            LinearGradientBrush lgb = new LinearGradientBrush(bounds, _knobColor.Lighter(.3F), _knobColor.Darker(.3F), LinearGradientMode.ForwardDiagonal);
+            LinearGradientBrush lgb = new(bounds, _knobColor.Lighter(.3F), _knobColor.Darker(.3F), LinearGradientMode.ForwardDiagonal);
             g.FillEllipse(lgb, bounds);
             lgb.Dispose();
         }
 
         private void DrawLever(Graphics g, Rectangle clipRectangle)
         {
-            Point start = new Point(KnobRadius, Height / 2);
+            Point start = new(KnobRadius, Height / 2);
             Rectangle knob = GetKnobBounds();
-            PointF center = new PointF(knob.X + KnobRadius, knob.Y + KnobRadius);
+            PointF center = new(knob.X + KnobRadius, knob.Y + KnobRadius);
             double dx = center.X - start.X;
             double dy = center.Y - start.Y;
             double len = Math.Sqrt((dx * dx) + (dy * dy));
             double sx = dx / len;
             double sy = dy / len;
-            PointF kJoint = new PointF((float)(center.X - (sx * KnobRadius)), (float)(center.Y - (sy * KnobRadius)));
-            PointF sJoint = new PointF((float)(center.X - (sx * (KnobRadius + BarLength))), (float)(center.Y - (sy * (BarLength + KnobRadius))));
-            Pen back = new Pen(BackColor.Darker(.2F), BarWidth)
+            PointF kJoint = new((float)(center.X - (sx * KnobRadius)), (float)(center.Y - (sy * KnobRadius)));
+            PointF sJoint = new((float)(center.X - (sx * (KnobRadius + BarLength))), (float)(center.Y - (sy * (BarLength + KnobRadius))));
+            Pen back = new(BackColor.Darker(.2F), BarWidth)
             {
                 EndCap = LineCap.Round,
                 StartCap = LineCap.Round
             };
-            Pen front = new Pen(BackColor, (float)BarWidth / 2)
+            Pen front = new(BackColor, (float)BarWidth / 2)
             {
                 EndCap = LineCap.Round,
                 StartCap = LineCap.Round
@@ -470,7 +470,7 @@ namespace DotSpatial.Symbology.Forms
 
         private Rectangle GetKnobBounds()
         {
-            Rectangle result = new Rectangle
+            Rectangle result = new()
             {
                 Width = KnobRadius * 2,
                 Height = KnobRadius * 2
@@ -487,7 +487,7 @@ namespace DotSpatial.Symbology.Forms
         private Rectangle GetSemicircleBounds()
         {
             int l = BarLength + (KnobRadius * 2);
-            Rectangle result = new Rectangle(0, l, Width - l, Height - (2 * l));
+            Rectangle result = new(0, l, Width - l, Height - (2 * l));
             return result;
         }
 

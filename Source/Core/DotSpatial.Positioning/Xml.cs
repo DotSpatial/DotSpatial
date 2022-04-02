@@ -56,13 +56,11 @@ namespace DotSpatial.Positioning
         internal static string Serialize<T>(T obj)
     where T : IXmlSerializable
         {
-            using (StringWriter writer = new StringWriter())
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(T));
-                serializer.Serialize(writer, obj);
+            using StringWriter writer = new();
+            XmlSerializer serializer = new(typeof(T));
+            serializer.Serialize(writer, obj);
 
-                return writer.ToString();
-            }
+            return writer.ToString();
         }
 
         /// <summary>
@@ -74,11 +72,9 @@ namespace DotSpatial.Positioning
         internal static T Deserialize<T>(string xml)
     where T : IXmlSerializable, new()
         {
-            using (StringReader reader = new StringReader(xml))
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(T));
-                return (T)serializer.Deserialize(reader);
-            }
+            using StringReader reader = new(xml);
+            XmlSerializer serializer = new(typeof(T));
+            return (T)serializer.Deserialize(reader);
         }
 
 #endif

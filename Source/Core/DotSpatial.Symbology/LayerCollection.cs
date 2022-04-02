@@ -123,8 +123,7 @@ namespace DotSpatial.Symbology
         /// <returns>-1 if the item is no ILayer or not found, otherwise the index.</returns>
         public int IndexOf(ILegendItem item)
         {
-            ILayer layer = item as ILayer;
-            if (layer == null) return -1;
+            if (item is not ILayer layer) return -1;
             return base.IndexOf(layer);
         }
 
@@ -135,8 +134,7 @@ namespace DotSpatial.Symbology
         /// <param name="item">Item that should be added.</param>
         public void Insert(int index, ILegendItem item)
         {
-            ILayer layer = item as ILayer;
-            if (layer == null) return;
+            if (item is not ILayer layer) return;
             base.Insert(index, layer);
         }
 

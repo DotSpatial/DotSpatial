@@ -42,7 +42,7 @@ namespace DotSpatial.Data
             ShapeIndex = shape.Range;
             if (shape.Range.FeatureType == FeatureType.Point)
             {
-                Coordinate c = new Coordinate(shape.Vertices[0], shape.Vertices[1]);
+                Coordinate c = new(shape.Vertices[0], shape.Vertices[1]);
                 if (shape.Z != null) c.Z = shape.Z[0];
                 if (shape.M != null) c.M = shape.M[0];
                 _geometry = new Point(c);
@@ -51,12 +51,12 @@ namespace DotSpatial.Data
 
             if (shape.Range.FeatureType == FeatureType.MultiPoint)
             {
-                List<Coordinate> coords = new List<Coordinate>();
+                List<Coordinate> coords = new();
                 foreach (PartRange part in shape.Range.Parts)
                 {
                     for (int i = part.StartIndex; i <= part.EndIndex; i++)
                     {
-                        Coordinate c = new Coordinate(shape.Vertices[i * 2], shape.Vertices[(i * 2) + 1]);
+                        Coordinate c = new(shape.Vertices[i * 2], shape.Vertices[(i * 2) + 1]);
                         if (shape.Z != null) c.Z = shape.Z[i];
                         if (shape.M != null) c.M = shape.M[i];
                         coords.Add(c);
@@ -69,13 +69,13 @@ namespace DotSpatial.Data
 
             if (shape.Range.FeatureType == FeatureType.Line)
             {
-                List<LineString> strings = new List<LineString>();
+                List<LineString> strings = new();
                 foreach (PartRange part in shape.Range.Parts)
                 {
-                    List<Coordinate> coords = new List<Coordinate>();
+                    List<Coordinate> coords = new();
                     for (int i = part.StartIndex; i <= part.EndIndex; i++)
                     {
-                        Coordinate c = new Coordinate(shape.Vertices[i * 2], shape.Vertices[(i * 2) + 1]);
+                        Coordinate c = new(shape.Vertices[i * 2], shape.Vertices[(i * 2) + 1]);
                         if (shape.Z != null) c.Z = shape.Z[i];
                         if (shape.M != null) c.M = shape.M[i];
                         coords.Add(c);
@@ -491,22 +491,22 @@ namespace DotSpatial.Data
 
         private void ReadPolygonShape(Shape shape)
         {
-            List<LinearRing> shells = new List<LinearRing>();
-            List<LinearRing> holes = new List<LinearRing>();
+            List<LinearRing> shells = new();
+            List<LinearRing> holes = new();
             foreach (PartRange part in shape.Range.Parts)
             {
-                List<Coordinate> coords = new List<Coordinate>();
+                List<Coordinate> coords = new();
                 int i = part.StartIndex;
                 foreach (Vertex d in part)
                 {
-                    Coordinate c = new Coordinate(d.X, d.Y);
+                    Coordinate c = new(d.X, d.Y);
                     if (shape.M != null && shape.M.Length > 0) c.M = shape.M[i];
                     if (shape.Z != null && shape.Z.Length > 0) c.Z = shape.Z[i];
                     i++;
                     coords.Add(c);
                 }
 
-                LinearRing ring = new LinearRing(coords.ToArray());
+                LinearRing ring = new(coords.ToArray());
                 if (shape.Range.Parts.Count == 1)
                 {
                     shells.Add(ring);

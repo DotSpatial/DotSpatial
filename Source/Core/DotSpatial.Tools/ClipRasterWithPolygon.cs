@@ -59,12 +59,8 @@ namespace DotSpatial.Tools
         /// <returns>True if executed successfully.</returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
-            IRaster raster = _inputParam[0].Value as IRaster;
-            IFeatureSet polygon = _inputParam[1].Value as IFeatureSet;
-            IRaster output = _outputParam[0].Value as IRaster;
-
             // Validates the input and output data
-            if (raster == null || polygon == null || output == null) return false;
+            if (_inputParam[0].Value is not IRaster raster || _inputParam[1].Value is not IFeatureSet polygon || _outputParam[0].Value is not IRaster output) return false;
 
             ClipRaster.ClipRasterWithPolygon(polygon.Features[0], raster, output.Filename, cancelProgressHandler);
             return true;

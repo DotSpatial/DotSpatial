@@ -48,7 +48,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Gets a bounding rectangle in coordinates relative to the parent.
         /// </summary>
-        public Rectangle Bounds => new Rectangle((int)Position - 5, _graphBounds.Top + 5, 10, _graphBounds.Height - 5);
+        public Rectangle Bounds => new((int)Position - 5, _graphBounds.Top + 5, 10, _graphBounds.Height - 5);
 
         /// <summary>
         /// Gets or sets the category that has a maximum value equal to this break.
@@ -80,7 +80,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Gets the bounds of the handle that extends above the graph.
         /// </summary>
-        public Rectangle HandleBounds => new Rectangle((int)Position - 4, _graphBounds.Y - 8, 8, 8);
+        public Rectangle HandleBounds => new((int)Position - 4, _graphBounds.Y - 8, 8, 8);
 
         /// <summary>
         /// Gets or sets the next category, which should have a minimum corresponding to this break.
@@ -181,31 +181,27 @@ namespace DotSpatial.Symbology.Forms
         {
             if (Value < _min || Value > _max) return;
             float pos = Position;
-            RectangleF rectF = new RectangleF(pos - 1, _graphBounds.Y, 3, _graphBounds.Height);
-            RectangleF topF = new RectangleF(pos - 4, _graphBounds.Y - 8, 8, 8);
+            RectangleF rectF = new(pos - 1, _graphBounds.Y, 3, _graphBounds.Height);
+            RectangleF topF = new(pos - 4, _graphBounds.Y - 8, 8, 8);
             if (Selected)
             {
-                using (LinearGradientBrush top = new LinearGradientBrush(topF, _selectColor.Lighter(.2F), _selectColor.Darker(.2F), LinearGradientMode.ForwardDiagonal))
+                using (LinearGradientBrush top = new(topF, _selectColor.Lighter(.2F), _selectColor.Darker(.2F), LinearGradientMode.ForwardDiagonal))
                 {
                     g.FillEllipse(top, topF);
                 }
 
-                using (LinearGradientBrush lgb = new LinearGradientBrush(rectF, _selectColor.Lighter(.2f), _selectColor.Darker(.2f), LinearGradientMode.Horizontal))
-                {
-                    g.FillRectangle(lgb, rectF);
-                }
+                using LinearGradientBrush lgb = new(rectF, _selectColor.Lighter(.2f), _selectColor.Darker(.2f), LinearGradientMode.Horizontal);
+                g.FillRectangle(lgb, rectF);
             }
             else
             {
-                using (LinearGradientBrush top = new LinearGradientBrush(topF, _color.Lighter(.2F), _color.Darker(.2F), LinearGradientMode.ForwardDiagonal))
+                using (LinearGradientBrush top = new(topF, _color.Lighter(.2F), _color.Darker(.2F), LinearGradientMode.ForwardDiagonal))
                 {
                     g.FillEllipse(top, topF);
                 }
 
-                using (LinearGradientBrush lgb = new LinearGradientBrush(rectF, _color.Lighter(.2f), _color.Darker(.2f), LinearGradientMode.Horizontal))
-                {
-                    g.FillRectangle(lgb, rectF);
-                }
+                using LinearGradientBrush lgb = new(rectF, _color.Lighter(.2f), _color.Darker(.2f), LinearGradientMode.Horizontal);
+                g.FillRectangle(lgb, rectF);
             }
         }
 

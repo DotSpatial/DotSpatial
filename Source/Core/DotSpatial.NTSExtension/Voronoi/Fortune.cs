@@ -24,13 +24,13 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// Represents an infinite vector location.
         /// </summary>
         // ReSharper disable once InconsistentNaming
-        public static readonly Vector2 VVInfinite = new Vector2(double.PositiveInfinity, double.PositiveInfinity);
+        public static readonly Vector2 VVInfinite = new(double.PositiveInfinity, double.PositiveInfinity);
 
         /// <summary>
         /// The default definition of a coordinate that uses double.NaN to clarify that no value has yet been assigned to this vector.
         /// </summary>
         // ReSharper disable once InconsistentNaming
-        public static readonly Vector2 VVUnkown = new Vector2(double.NaN, double.NaN);
+        public static readonly Vector2 VVUnkown = new(double.NaN, double.NaN);
 
         /// <summary>
         /// Gets or sets a value indicating whether the cleanup method should be called. This is unnecessary, for
@@ -67,14 +67,14 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <returns>A VoronoiGraph structure containing the output geometries.</returns>
         public static VoronoiGraph ComputeVoronoiGraph(double[] vertices)
         {
-            SortedDictionary<VEvent, VEvent> pq = new SortedDictionary<VEvent, VEvent>();
+            SortedDictionary<VEvent, VEvent> pq = new();
 
-            Dictionary<VDataNode, VCircleEvent> currentCircles = new Dictionary<VDataNode, VCircleEvent>();
-            VoronoiGraph vg = new VoronoiGraph();
+            Dictionary<VDataNode, VCircleEvent> currentCircles = new();
+            VoronoiGraph vg = new();
             VNode rootNode = null;
             for (int i = 0; i < vertices.Length / 2; i++)
             {
-                VDataEvent e = new VDataEvent(new Vector2(vertices, i * 2));
+                VDataEvent e = new(new Vector2(vertices, i * 2));
                 if (pq.ContainsKey(e)) continue;
                 pq.Add(e, e);
             }
@@ -143,7 +143,7 @@ namespace DotSpatial.NTSExtension.Voronoi
                 }
             }
 
-            ArrayList minuteEdges = new ArrayList();
+            ArrayList minuteEdges = new();
             foreach (VoronoiEdge ve in vg.Edges)
             {
                 if (ve.IsPartlyInfinite || !ve.VVertexA.Equals(ve.VVertexB)) continue;
@@ -174,7 +174,7 @@ namespace DotSpatial.NTSExtension.Voronoi
         /// <returns>The Voronoi Graph after it has been filtered.</returns>
         public static VoronoiGraph FilterVg(VoronoiGraph vg, double minLeftRightDist)
         {
-            VoronoiGraph vgErg = new VoronoiGraph();
+            VoronoiGraph vgErg = new();
             foreach (VoronoiEdge ve in vg.Edges)
             {
                 if (ve.LeftData.Distance(ve.RightData) >= minLeftRightDist) vgErg.Edges.Add(ve);

@@ -42,7 +42,7 @@ namespace DotSpatial.Symbology.Forms
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             _dialogProvider = provider?.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
-            RampSlider rs = new RampSlider
+            RampSlider rs = new()
             {
                 Maximum = 90,
                 Minimum = 0,

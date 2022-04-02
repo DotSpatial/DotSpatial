@@ -106,7 +106,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void CmdShowDialogClick(object sender, EventArgs e)
         {
-            ColorDialog cdlg = new ColorDialog();
+            ColorDialog cdlg = new();
             if (cdlg.ShowDialog(ParentForm) != DialogResult.OK) return;
             foreach (object item in cddColor.Items)
             {

@@ -198,17 +198,13 @@ namespace DotSpatial.Controls
         /// <returns>The IMapLayer to add.</returns>
         public virtual IMapLayer Add(IDataSet dataSet)
         {
-            var ss = dataSet as ISelfLoadSet;
-            if (ss != null) return Add(ss);
+            if (dataSet is ISelfLoadSet ss) return Add(ss);
 
-            var fs = dataSet as IFeatureSet;
-            if (fs != null) return Add(fs);
+            if (dataSet is IFeatureSet fs) return Add(fs);
 
-            var r = dataSet as IRaster;
-            if (r != null) return Add(r);
+            if (dataSet is IRaster r) return Add(r);
 
-            var id = dataSet as IImageData;
-            return id != null ? Add(id) : null;
+            return dataSet is IImageData id ? Add(id) : null;
         }
 
         /// <summary>
@@ -440,8 +436,7 @@ namespace DotSpatial.Controls
             {
                 while (_internalEnumerator.MoveNext())
                 {
-                    var result = _internalEnumerator.Current as IMapLayer;
-                    if (result != null) return true;
+                    if (_internalEnumerator.Current is IMapLayer result) return true;
                 }
 
                 return false;

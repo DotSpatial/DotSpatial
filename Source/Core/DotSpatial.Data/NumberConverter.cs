@@ -26,7 +26,7 @@ namespace DotSpatial.Data
         /// </summary>
         public static readonly IFormatProvider NumberConversionFormatProvider = CultureInfo.GetCultureInfo("en-US");
 
-        private static readonly Random Rnd = new Random();
+        private static readonly Random Rnd = new();
         private int _decimalCount; // when the number is treated like a string, this is the number of recorded values after the decimal, plus one digit in front of the decimal.
 
         #endregion
@@ -198,7 +198,7 @@ namespace DotSpatial.Data
         /// <returns>The created random decimal.</returns>
         public decimal RandomDecimal()
         {
-            string test = new string(RandomChars(16));
+            string test = new(RandomChars(16));
             return decimal.Parse(test);
         }
 
@@ -208,7 +208,7 @@ namespace DotSpatial.Data
         /// <returns>The created random double.</returns>
         public double RandomDouble()
         {
-            string test = new string(RandomChars(14));
+            string test = new(RandomChars(14));
             return double.Parse(test);
         }
 
@@ -218,7 +218,7 @@ namespace DotSpatial.Data
         /// <returns>A new float. Floats can only store about 8 digits of precision, so specifying a high. </returns>
         public float RandomFloat()
         {
-            string test = new string(RandomChars(6));
+            string test = new(RandomChars(6));
             return float.Parse(test);
         }
 
@@ -290,8 +290,8 @@ namespace DotSpatial.Data
             string format = "{0:";
             for (int i = 0; i < _decimalCount; i++)
             {
-                if (i == 0) format = format + "0.";
-                format = format + "0";
+                if (i == 0) format += "0.";
+                format += "0";
             }
 
             DecimalFormatString = format + "}";

@@ -25,7 +25,7 @@ namespace DotSpatial.Data.Forms
         private void InitializeComponent()
         {
             _components = new Container();
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(OpenFileElement));
+            ComponentResourceManager resources = new(typeof(OpenFileElement));
             _imlImages = new ImageList(_components);
             SuspendLayout();
 

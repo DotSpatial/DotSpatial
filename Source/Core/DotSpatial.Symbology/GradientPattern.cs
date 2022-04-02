@@ -114,38 +114,34 @@ namespace DotSpatial.Symbology
 
             if (GradientType == GradientType.Linear)
             {
-                using (LinearGradientBrush b = new LinearGradientBrush(bounds, Colors[0], Colors[Colors.Length - 1], (float)-Angle))
+                using LinearGradientBrush b = new(bounds, Colors[0], Colors[Colors.Length - 1], (float)-Angle);
+                ColorBlend cb = new()
                 {
-                    ColorBlend cb = new ColorBlend
-                    {
-                        Positions = Positions,
-                        Colors = Colors
-                    };
-                    b.InterpolationColors = cb;
-                    g.FillPath(b, gp);
-                }
+                    Positions = Positions,
+                    Colors = Colors
+                };
+                b.InterpolationColors = cb;
+                g.FillPath(b, gp);
             }
             else if (GradientType == GradientType.Circular)
             {
-                PointF center = new PointF(bounds.X + (bounds.Width / 2), bounds.Y + (bounds.Height / 2));
+                PointF center = new(bounds.X + (bounds.Width / 2), bounds.Y + (bounds.Height / 2));
                 float x = (float)(center.X - (Math.Sqrt(2) * bounds.Width / 2));
                 float y = (float)(center.Y - (Math.Sqrt(2) * bounds.Height / 2));
                 float w = (float)(bounds.Width * Math.Sqrt(2));
                 float h = (float)(bounds.Height * Math.Sqrt(2));
-                RectangleF circum = new RectangleF(x, y, w, h);
+                RectangleF circum = new(x, y, w, h);
 
-                GraphicsPath round = new GraphicsPath();
+                GraphicsPath round = new();
                 round.AddEllipse(circum);
-                using (PathGradientBrush pgb = new PathGradientBrush(round))
+                using PathGradientBrush pgb = new(round);
+                ColorBlend cb = new()
                 {
-                    ColorBlend cb = new ColorBlend
-                    {
-                        Colors = Colors,
-                        Positions = Positions
-                    };
-                    pgb.InterpolationColors = cb;
-                    g.FillPath(pgb, gp);
-                }
+                    Colors = Colors,
+                    Positions = Positions
+                };
+                pgb.InterpolationColors = cb;
+                g.FillPath(pgb, gp);
             }
             else if (GradientType == GradientType.Rectangular)
             {
@@ -153,12 +149,12 @@ namespace DotSpatial.Symbology
                 double b = bounds.Height / 2;
                 double angle = Angle;
                 if (angle < 0) angle = 360 + angle;
-                angle = angle % 90;
+                angle %= 90;
                 angle = 2 * (Math.PI * angle / 180);
                 double x = a * Math.Cos(angle);
                 double y = -b - (a * Math.Sin(angle));
 
-                PointF center = new PointF(bounds.X + (bounds.Width / 2), bounds.Y + (bounds.Height / 2));
+                PointF center = new(bounds.X + (bounds.Width / 2), bounds.Y + (bounds.Height / 2));
                 PointF[] points = new PointF[5];
                 points[0] = new PointF((float)x + center.X, (float)y + center.Y);
                 x = a + (b * Math.Sin(angle));
@@ -172,19 +168,17 @@ namespace DotSpatial.Symbology
                 points[3] = new PointF((float)x + center.X, (float)y + center.Y);
                 points[4] = points[0];
 
-                GraphicsPath rect = new GraphicsPath();
+                GraphicsPath rect = new();
                 rect.AddPolygon(points);
 
-                using (PathGradientBrush pgb = new PathGradientBrush(rect))
+                using PathGradientBrush pgb = new(rect);
+                ColorBlend cb = new()
                 {
-                    ColorBlend cb = new ColorBlend
-                    {
-                        Colors = Colors,
-                        Positions = Positions
-                    };
-                    pgb.InterpolationColors = cb;
-                    g.FillPath(pgb, gp);
-                }
+                    Colors = Colors,
+                    Positions = Positions
+                };
+                pgb.InterpolationColors = cb;
+                g.FillPath(pgb, gp);
             }
         }
 

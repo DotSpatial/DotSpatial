@@ -129,8 +129,7 @@ namespace DotSpatial.Symbology
         /// <param name="category">Category that gets added.</param>
         public override void AddCategory(ICategory category)
         {
-            IColorCategory cc = category as IColorCategory;
-            if (cc != null) _categories.Add(cc);
+            if (category is IColorCategory cc) _categories.Add(cc);
         }
 
         /// <summary>
@@ -298,7 +297,7 @@ namespace DotSpatial.Symbology
         /// <returns>A new IFeatureCategory.</returns>
         public override ICategory CreateRandomCategory()
         {
-            Random rnd = new Random(DateTime.Now.Millisecond);
+            Random rnd = new(DateTime.Now.Millisecond);
             return CreateNewCategory(CreateRandomColor(rnd), 20);
         }
 
@@ -310,8 +309,7 @@ namespace DotSpatial.Symbology
         /// <returns>True, if the move was successfull.</returns>
         public override bool DecreaseCategoryIndex(ICategory category)
         {
-            IColorCategory cc = category as IColorCategory;
-            return cc != null && _categories.DecreaseIndex(cc);
+            return category is IColorCategory cc && _categories.DecreaseIndex(cc);
         }
 
         /// <summary>
@@ -347,8 +345,7 @@ namespace DotSpatial.Symbology
         /// <returns>Boolean, true if the item's position was increased.</returns>
         public override bool IncreaseCategoryIndex(ICategory category)
         {
-            IColorCategory cc = category as IColorCategory;
-            return cc != null && _categories.IncreaseIndex(cc);
+            return category is IColorCategory cc && _categories.IncreaseIndex(cc);
         }
 
         /// <summary>
@@ -358,8 +355,7 @@ namespace DotSpatial.Symbology
         /// <param name="category">Category that gets inserted.</param>
         public override void InsertCategory(int index, ICategory category)
         {
-            IColorCategory cc = category as IColorCategory;
-            if (cc != null) _categories.Insert(index, cc);
+            if (category is IColorCategory cc) _categories.Insert(index, cc);
         }
 
         /// <summary>
@@ -368,8 +364,7 @@ namespace DotSpatial.Symbology
         /// <param name="category">Category that gets removed.</param>
         public override void RemoveCategory(ICategory category)
         {
-            IColorCategory cc = category as IColorCategory;
-            if (cc != null) _categories.Remove(cc);
+            if (category is IColorCategory cc) _categories.Remove(cc);
         }
 
         /// <summary>

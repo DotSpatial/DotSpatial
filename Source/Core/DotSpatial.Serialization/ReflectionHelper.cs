@@ -33,7 +33,7 @@ namespace DotSpatial.Serialization
         /// <returns>A list of all types found in the search.</returns>
         public static IEnumerable<Type> FindDerivedClasses(Type baseType)
         {
-            List<Type> result = new List<Type>();
+            List<Type> result = new();
 
             var dlls = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll", SearchOption.AllDirectories);
 

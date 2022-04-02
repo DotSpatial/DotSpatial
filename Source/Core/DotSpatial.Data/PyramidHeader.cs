@@ -31,8 +31,8 @@ namespace DotSpatial.Data
         /// <returns>The header size.</returns>
         public long HeaderSize()
         {
-            MemoryStream ms = new MemoryStream();
-            XmlSerializer s = new XmlSerializer(typeof(PyramidHeader));
+            MemoryStream ms = new();
+            XmlSerializer s = new(typeof(PyramidHeader));
             s.Serialize(ms, this);
             return ms.Length;
         }

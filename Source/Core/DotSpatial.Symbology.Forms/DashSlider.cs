@@ -35,7 +35,7 @@ namespace DotSpatial.Symbology.Forms
         /// Gets the bounds of this slider.
         /// </summary>
         [Browsable(false)]
-        public virtual RectangleF Bounds => new RectangleF(Position, Size);
+        public virtual RectangleF Bounds => new(Position, Size);
 
         /// <summary>
         /// Gets or sets the color for this control if it is not using a custom image.

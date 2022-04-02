@@ -20,7 +20,7 @@ namespace DotSpatial.Symbology
         /// <returns>The calculated size.</returns>
         public static Size2D GetBoundingSize(this IList<ISymbol> self)
         {
-            Size2D size = new Size2D();
+            Size2D size = new();
 
             foreach (ISymbol symbol in self)
             {

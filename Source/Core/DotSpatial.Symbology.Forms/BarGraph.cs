@@ -196,32 +196,28 @@ namespace DotSpatial.Symbology.Forms
             g.DrawRectangle(Pens.Black, gb);
             if (ShowMean)
             {
-                using (Pen p = new Pen(Color.Blue) { DashStyle = DashStyle.Dash })
-                {
-                    float x = GetPosition(Mean);
-                    if (x > -32000 && x < 32000) g.DrawLine(p, x, gb.Top, x, gb.Bottom);
-                }
+                using Pen p = new(Color.Blue) { DashStyle = DashStyle.Dash };
+                float x = GetPosition(Mean);
+                if (x > -32000 && x < 32000) g.DrawLine(p, x, gb.Top, x, gb.Bottom);
             }
 
             if (ShowStandardDeviation)
             {
-                using (Pen p = new Pen(Color.Red) { DashStyle = DashStyle.Dash })
+                using Pen p = new(Color.Red) { DashStyle = DashStyle.Dash };
+                for (int i = 1; i < 6; i++)
                 {
-                    for (int i = 1; i < 6; i++)
+                    double h = Mean + (StandardDeviation * i);
+                    double l = Mean - (StandardDeviation * i);
+                    if (h < Maximum && h > Minimum)
                     {
-                        double h = Mean + (StandardDeviation * i);
-                        double l = Mean - (StandardDeviation * i);
-                        if (h < Maximum && h > Minimum)
-                        {
-                            float x = GetPosition(h);
-                            if (x > -32000 && x < 32000) g.DrawLine(p, x, gb.Top, x, gb.Bottom);
-                        }
+                        float x = GetPosition(h);
+                        if (x > -32000 && x < 32000) g.DrawLine(p, x, gb.Top, x, gb.Bottom);
+                    }
 
-                        if (l < Maximum && l > Minimum)
-                        {
-                            float x = GetPosition(l);
-                            if (x > -32000 && x < 32000) g.DrawLine(p, x, gb.Top, x, gb.Bottom);
-                        }
+                    if (l < Maximum && l > Minimum)
+                    {
+                        float x = GetPosition(l);
+                        if (x > -32000 && x < 32000) g.DrawLine(p, x, gb.Top, x, gb.Bottom);
                     }
                 }
             }
@@ -249,7 +245,7 @@ namespace DotSpatial.Symbology.Forms
             SizeF oneSize = g.MeasureString(One, fnt);
             string count = Format(MaxBinCount);
             SizeF countSize = g.MeasureString(count, fnt);
-            SizeF halfSize = new SizeF(0, 0);
+            SizeF halfSize = new(0, 0);
             string halfCount = string.Empty;
             if (MaxBinCount > 1)
             {
@@ -349,7 +345,7 @@ namespace DotSpatial.Symbology.Forms
                 float h = dY * Bins[i];
                 if (LogY) h = (float)(dY * Math.Log(Bins[i]));
                 if (h < MinHeight) h = MinHeight;
-                RectangleF rect = new RectangleF((dX * i) + gb.X, gb.Height - h + gb.Y, dX, h);
+                RectangleF rect = new((dX * i) + gb.X, gb.Height - h + gb.Y, dX, h);
                 if (!clip.IntersectsWith(rect)) continue;
                 Color light = Color.LightGray;
                 Color dark = Color.DarkGray;
@@ -367,7 +363,7 @@ namespace DotSpatial.Symbology.Forms
                     }
                 }
 
-                LinearGradientBrush lgb = new LinearGradientBrush(rect, light, dark, LinearGradientMode.Horizontal);
+                LinearGradientBrush lgb = new(rect, light, dark, LinearGradientMode.Horizontal);
                 g.FillRectangle(lgb, rect.X, rect.Y, rect.Width, rect.Height);
                 lgb.Dispose();
             }
@@ -395,13 +391,13 @@ namespace DotSpatial.Symbology.Forms
                 if (rangeRight < right) right = rangeRight;
             }
 
-            Rectangle selectionRect = new Rectangle((int)left, gb.Top, (int)(right - left), gb.Height);
+            Rectangle selectionRect = new((int)left, gb.Top, (int)(right - left), gb.Height);
             if (!clip.IntersectsWith(selectionRect)) return;
-            GraphicsPath gp = new GraphicsPath();
+            GraphicsPath gp = new();
             gp.AddRoundedRectangle(selectionRect, 2);
             if (selectionRect.Width != 0 && selectionRect.Height != 0)
             {
-                LinearGradientBrush lgb = new LinearGradientBrush(selectionRect, Color.FromArgb(241, 248, 253), Color.FromArgb(213, 239, 252), LinearGradientMode.ForwardDiagonal);
+                LinearGradientBrush lgb = new(selectionRect, Color.FromArgb(241, 248, 253), Color.FromArgb(213, 239, 252), LinearGradientMode.ForwardDiagonal);
                 g.FillPath(lgb, gp);
                 lgb.Dispose();
             }

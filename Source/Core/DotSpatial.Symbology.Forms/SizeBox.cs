@@ -98,8 +98,8 @@ namespace DotSpatial.Symbology.Forms
                 bottomRight = _backColor.Darker(.3F);
             }
 
-            LinearGradientBrush b = new LinearGradientBrush(Bounds, topLeft, bottomRight, LinearGradientMode.ForwardDiagonal);
-            GraphicsPath gp = new GraphicsPath();
+            LinearGradientBrush b = new(Bounds, topLeft, bottomRight, LinearGradientMode.ForwardDiagonal);
+            GraphicsPath gp = new();
             gp.AddRoundedRectangle(Bounds, RoundingRadius);
             g.FillPath(b, gp);
             gp.Dispose();

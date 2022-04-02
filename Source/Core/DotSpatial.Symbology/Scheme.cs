@@ -398,7 +398,7 @@ namespace DotSpatial.Symbology
             theBreakValues.RemoveAt(0);
             foreach (double oneBreakValue in theBreakValues)
             {
-                Break b = new Break();
+                Break b = new();
                 b.Maximum = oneBreakValue;
                 theOutput.Add(b);
             }

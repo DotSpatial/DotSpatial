@@ -542,13 +542,13 @@ namespace DotSpatial.Symbology.Forms
 
             if (delta > 0)
             {
-                _graph.Minimum = _graph.Minimum + ((val - _graph.Minimum) / 2);
-                _graph.Maximum = _graph.Maximum - ((_graph.Maximum - val) / 2);
+                _graph.Minimum += ((val - _graph.Minimum) / 2);
+                _graph.Maximum -= ((_graph.Maximum - val) / 2);
             }
             else
             {
-                _graph.Minimum = _graph.Minimum - (val - _graph.Minimum);
-                _graph.Maximum = _graph.Maximum + (_graph.Maximum - val);
+                _graph.Minimum -= (val - _graph.Minimum);
+                _graph.Maximum += (_graph.Maximum - val);
             }
 
             if (_isRaster)
@@ -727,9 +727,9 @@ namespace DotSpatial.Symbology.Forms
             _graph.ColorRanges.Clear();
             foreach (IFeatureCategory category in _scheme.GetCategories())
             {
-                ColorRange cr = new ColorRange(category.GetColor(), category.Range);
+                ColorRange cr = new(category.GetColor(), category.Range);
                 _graph.ColorRanges.Add(cr);
-                BreakSlider bs = new BreakSlider(gb, _graph.Minimum, _graph.Maximum, cr)
+                BreakSlider bs = new(gb, _graph.Minimum, _graph.Maximum, cr)
                 {
                     Color = _breakColor,
                     SelectColor = _selectedBreakColor
@@ -840,9 +840,9 @@ namespace DotSpatial.Symbology.Forms
             _graph.ColorRanges.Clear();
             foreach (IColorCategory category in _rasterSymbolizer.Scheme.Categories)
             {
-                ColorRange cr = new ColorRange(category.LowColor, category.Range);
+                ColorRange cr = new(category.LowColor, category.Range);
                 _graph.ColorRanges.Add(cr);
-                BreakSlider bs = new BreakSlider(gb, _graph.Minimum, _graph.Maximum, cr)
+                BreakSlider bs = new(gb, _graph.Minimum, _graph.Maximum, cr)
                 {
                     Color = _breakColor,
                     SelectColor = _selectedBreakColor
@@ -1032,7 +1032,7 @@ namespace DotSpatial.Symbology.Forms
                 }
 
                 // not sure if this works right. Hopefully, just the little rectangles form a double region.
-                Region rg = new Region();
+                Region rg = new();
                 if (_selectedSlider != null)
                 {
                     rg.Union(_selectedSlider.Bounds);
@@ -1065,7 +1065,7 @@ namespace DotSpatial.Symbology.Forms
         {
             if (_isDragging)
             {
-                Region rg = new Region();
+                Region rg = new();
                 Rectangle gb = _graph.GetGraphBounds();
                 if (_selectedSlider != null)
                 {
@@ -1192,7 +1192,7 @@ namespace DotSpatial.Symbology.Forms
                 clip = ClientRectangle;
             }
 
-            Bitmap bmp = new Bitmap(clip.Width, clip.Height);
+            Bitmap bmp = new(clip.Width, clip.Height);
             Graphics g = Graphics.FromImage(bmp);
             g.TranslateTransform(-clip.X, -clip.Y);
             g.Clip = new Region(clip);
@@ -1273,8 +1273,8 @@ namespace DotSpatial.Symbology.Forms
             double max = _graph.Maximum;
             if (min == max)
             {
-                min = min - 10;
-                max = max + 10;
+                min -= 10;
+                max += 10;
             }
 
             double binSize = (max - min) / _graph.NumColumns;
@@ -1351,7 +1351,7 @@ namespace DotSpatial.Symbology.Forms
             Invalidate();
         }
 
-        private void ResetZoomClicked(object? sender, EventArgs e)
+        private void ResetZoomClicked(object sender, EventArgs e)
         {
             ResetZoom();
         }

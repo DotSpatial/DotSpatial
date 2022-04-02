@@ -66,23 +66,21 @@ namespace DotSpatial.Controls
         /// <param name="e">The event args.</param>
         private void BtnBitmapClick(object sender, EventArgs e)
         {
-            using (var ofd = new OpenFileDialog
+            using var ofd = new OpenFileDialog
             {
                 Filter = @"Images (*.png, *.jpg, *.bmp, *.gif, *.tif)|*.png;*.jpg;*.bmp;*.gif;*.tif",
                 FilterIndex = 1,
                 CheckFileExists = true
-            })
+            };
+            if (ofd.ShowDialog(Parent) == DialogResult.OK)
             {
-                if (ofd.ShowDialog(Parent) == DialogResult.OK)
+                var newBitmap = new LayoutBitmap
                 {
-                    var newBitmap = new LayoutBitmap
-                    {
-                        Size = new SizeF(100, 100),
-                        Filename = ofd.FileName
-                    };
-                    LayoutControl.AddElementWithMouse(newBitmap);
-                    SetChecked(_btnBitmap);
-                }
+                    Size = new SizeF(100, 100),
+                    Filename = ofd.FileName
+                };
+                LayoutControl.AddElementWithMouse(newBitmap);
+                SetChecked(_btnBitmap);
             }
         }
 

@@ -91,10 +91,8 @@ namespace DotSpatial.Symbology
         /// <param name="gp">The GraphicsPath to fill using this pattern.</param>
         public override void FillPath(Graphics g, GraphicsPath gp)
         {
-            using (Brush b = new SolidBrush(_fillColor))
-            {
-                g.FillPath(b, gp);
-            }
+            using Brush b = new SolidBrush(_fillColor);
+            g.FillPath(b, gp);
         }
 
         /// <summary>
@@ -119,8 +117,7 @@ namespace DotSpatial.Symbology
         {
             if (Outline?.Strokes.Count > 0)
             {
-                ISimpleStroke ss = Outline.Strokes[0] as ISimpleStroke;
-                if (ss != null) fillColor = ss.Color.Lighter(.5F);
+                if (Outline.Strokes[0] is ISimpleStroke ss) fillColor = ss.Color.Lighter(.5F);
             }
 
             _fillColor = fillColor;

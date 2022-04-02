@@ -101,8 +101,7 @@ namespace DotSpatial.Symbology
         /// <returns>True, if this and obj are equal.</returns>
         public override bool Equals(object obj)
         {
-            IDrawnState ds = obj as IDrawnState;
-            if (ds == null) return false;
+            if (obj is not IDrawnState ds) return false;
 
             return this == ds;
         }

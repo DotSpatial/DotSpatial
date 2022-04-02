@@ -22,8 +22,8 @@ namespace DotSpatial.Data
         /// <returns>The compressed values.</returns>
         public static byte[] Compress(byte[] values)
         {
-            MemoryStream msOut = new MemoryStream(values.Length);
-            DeflateStream deflator = new DeflateStream(msOut, CompressionMode.Compress);
+            MemoryStream msOut = new(values.Length);
+            DeflateStream deflator = new(msOut, CompressionMode.Compress);
             deflator.Write(values, 0, values.Length);
 
             byte[] deflateArray = msOut.ToArray();
@@ -48,8 +48,8 @@ namespace DotSpatial.Data
             // chop off header and tail
             byte[] raw = new byte[values.Length - 6];
             Array.Copy(values, 2, raw, 0, values.Length - 6);
-            MemoryStream msOut = new MemoryStream(values.Length);
-            DeflateStream deflator = new DeflateStream(msOut, CompressionMode.Decompress);
+            MemoryStream msOut = new(values.Length);
+            DeflateStream deflator = new(msOut, CompressionMode.Decompress);
             deflator.Write(raw, 0, values.Length);
             return msOut.ToArray();
         }

@@ -37,7 +37,7 @@ namespace DotSpatial.Symbology.Forms
             if (_original == null) return value;
             _copy = _original.Copy();
             IWindowsFormsEditorService dialogProvider = (IWindowsFormsEditorService)provider?.GetService(typeof(IWindowsFormsEditorService));
-            DetailedPolygonSymbolDialog dialog = new DetailedPolygonSymbolDialog(_copy);
+            DetailedPolygonSymbolDialog dialog = new(_copy);
             dialog.ChangesApplied += DialogChangesApplied;
             if (dialogProvider?.ShowDialog(dialog) != DialogResult.OK) return _original;
             _original.CopyProperties(_copy);

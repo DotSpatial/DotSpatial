@@ -21,7 +21,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using DotSpatial.Positioning.Properties;
+using DotSpatial.Positioning;
 #if !PocketPC || DesignTime
 
 using System.ComponentModel;
@@ -109,22 +109,22 @@ namespace DotSpatial.Positioning
         ///   </example>
         ///
         /// <value>An Elevation with a value of -359.999999°.</value>
-        public static readonly Elevation Minimum = new Elevation(-90);
+        public static readonly Elevation Minimum = new(-90);
         /// <summary>
         /// Represents an angle with no value.
         /// </summary>
         /// <value>An Elevation containing a value of zero (0°).</value>
         ///
         /// <seealso cref="IsEmpty">IsEmpty Property</seealso>
-        public static readonly Elevation Empty = new Elevation(0.0);
+        public static readonly Elevation Empty = new(0.0);
         /// <summary>
         /// Represents an angle with infinite value.
         /// </summary>
-        public static readonly Elevation Infinity = new Elevation(double.PositiveInfinity);
+        public static readonly Elevation Infinity = new(double.PositiveInfinity);
         /// <summary>
         /// Represents an invalid or unspecified value.
         /// </summary>
-        public static readonly Elevation Invalid = new Elevation(double.NaN);
+        public static readonly Elevation Invalid = new(double.NaN);
         /// <summary>
         /// Represents the maximum value of an angle in one turn of a circle.
         /// </summary>
@@ -137,32 +137,32 @@ namespace DotSpatial.Positioning
         /// Elevation MyElevation = Elevation.Maximum;
         ///   </code>
         ///   </example>
-        public static readonly Elevation Maximum = new Elevation(90.0);
+        public static readonly Elevation Maximum = new(90.0);
         /// <summary>
         /// Represents the point directly overhead.
         /// </summary>
         /// <value>An <strong>Elevation</strong> object.</value>
-        public static readonly Elevation Zenith = new Elevation(90.0);
+        public static readonly Elevation Zenith = new(90.0);
         /// <summary>
         /// Represents a vertical direction halfway up from the horizon.
         /// </summary>
         /// <value>An <strong>Elevation</strong> object.</value>
-        public static readonly Elevation HalfwayAboveHorizon = new Elevation(45.0);
+        public static readonly Elevation HalfwayAboveHorizon = new(45.0);
         /// <summary>
         /// Represents a vertical direction halfway below the horizon.
         /// </summary>
         /// <value>An <strong>Elevation</strong> object.</value>
-        public static readonly Elevation HalfwayBelowHorizon = new Elevation(-45.0);
+        public static readonly Elevation HalfwayBelowHorizon = new(-45.0);
         /// <summary>
         ///
         /// </summary>
         /// <value>An <strong>Elevation</strong> object.</value>
-        public static readonly Elevation Horizon = new Elevation(0.0);
+        public static readonly Elevation Horizon = new(0.0);
         /// <summary>
         /// Represents the point directly below one's feet.
         /// </summary>
         /// <value>An <strong>Elevation</strong> object.</value>
-        public static readonly Elevation Nadir = new Elevation(-90.0);
+        public static readonly Elevation Nadir = new(-90.0);
 
         #endregion Fields
 
@@ -311,7 +311,7 @@ namespace DotSpatial.Positioning
             try
             {
                 // Clean up the string
-                StringBuilder newValue = new StringBuilder(value);
+                StringBuilder newValue = new(value);
                 newValue.Replace("°", " ").Replace("'", " ").Replace("\"", " ").Replace("  ", " ");
                 // Now split the values into an array
                 string[] values = newValue.ToString().Trim().Split(' ');

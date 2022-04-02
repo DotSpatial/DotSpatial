@@ -81,8 +81,7 @@ namespace DotSpatial.Symbology.Forms
 
             if (ProgressBar != null)
             {
-                ToolStripProgressBar pb = e.Item as ToolStripProgressBar;
-                if (pb != null)
+                if (e.Item is ToolStripProgressBar pb)
                 {
                     ProgressBar = pb;
                 }
@@ -90,8 +89,7 @@ namespace DotSpatial.Symbology.Forms
 
             if (ProgressLabel == null)
             {
-                ToolStripStatusLabel sl = e.Item as ToolStripStatusLabel;
-                if (sl != null)
+                if (e.Item is ToolStripStatusLabel sl)
                 {
                     ProgressLabel = sl;
                 }

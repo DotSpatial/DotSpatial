@@ -1159,7 +1159,7 @@ namespace DotSpatial.Data
         {
             if (BeforeAllMatchingRemoved == null) return false;
 
-            CollectiveCancel<T> e = new CollectiveCancel<T>(collection);
+            CollectiveCancel<T> e = new(collection);
             BeforeAllMatchingRemoved(this, e);
             return e.Cancel;
         }
@@ -1173,7 +1173,7 @@ namespace DotSpatial.Data
         {
             if (BeforeItemAdded == null) return false;
 
-            IndividualCancelEventArgs<T> e = new IndividualCancelEventArgs<T>(item);
+            IndividualCancelEventArgs<T> e = new(item);
             BeforeItemAdded(this, e);
             return e.Cancel;
         }
@@ -1188,7 +1188,7 @@ namespace DotSpatial.Data
         {
             if (BeforeItemInserted == null) return false;
 
-            IndividualIndexCancel<T> e = new IndividualIndexCancel<T>(item, index);
+            IndividualIndexCancel<T> e = new(item, index);
             BeforeItemInserted(this, e);
             return e.Cancel;
         }
@@ -1203,7 +1203,7 @@ namespace DotSpatial.Data
         {
             if (BeforeItemRemoved == null) return false;
 
-            IndividualIndexCancel<T> e = new IndividualIndexCancel<T>(item, index);
+            IndividualIndexCancel<T> e = new(item, index);
             BeforeItemRemoved(this, e);
             return e.Cancel;
         }
@@ -1216,7 +1216,7 @@ namespace DotSpatial.Data
         {
             if (BeforeListCleared == null) return false;
 
-            CancelEventArgs e = new CancelEventArgs();
+            CancelEventArgs e = new();
             BeforeListCleared(this, e);
             return e.Cancel;
         }
@@ -1229,7 +1229,7 @@ namespace DotSpatial.Data
         {
             if (BeforeListReversed == null) return false;
 
-            CancelEventArgs e = new CancelEventArgs();
+            CancelEventArgs e = new();
             BeforeListReversed(this, e);
             return e.Cancel;
         }
@@ -1243,7 +1243,7 @@ namespace DotSpatial.Data
         {
             if (BeforeListSorted == null) return false;
 
-            CompareCancel<T> e = new CompareCancel<T>(comparer);
+            CompareCancel<T> e = new(comparer);
             BeforeListSorted(this, e);
             return e.Cancel;
         }
@@ -1257,7 +1257,7 @@ namespace DotSpatial.Data
         {
             if (BeforeRangeAdded == null) return false;
 
-            CollectiveCancel<T> e = new CollectiveCancel<T>(collection);
+            CollectiveCancel<T> e = new(collection);
             BeforeRangeAdded(this, e);
             return e.Cancel;
         }
@@ -1272,7 +1272,7 @@ namespace DotSpatial.Data
         {
             if (BeforeRangeInserted == null) return false;
 
-            CollectiveIndexCancelEventArgs<T> e = new CollectiveIndexCancelEventArgs<T>(collection, index);
+            CollectiveIndexCancelEventArgs<T> e = new(collection, index);
             BeforeRangeInserted(this, e);
             return e.Cancel;
         }
@@ -1287,7 +1287,7 @@ namespace DotSpatial.Data
         {
             if (BeforeRangeRemoved == null) return false;
 
-            CollectiveIndexCancelEventArgs<T> e = new CollectiveIndexCancelEventArgs<T>(collection, index);
+            CollectiveIndexCancelEventArgs<T> e = new(collection, index);
             BeforeRangeRemoved(this, e);
             return e.Cancel;
         }
@@ -1302,7 +1302,7 @@ namespace DotSpatial.Data
         {
             if (BeforeRangeReversed == null) return false;
 
-            CollectiveIndexCancelEventArgs<T> e = new CollectiveIndexCancelEventArgs<T>(range, index);
+            CollectiveIndexCancelEventArgs<T> e = new(range, index);
             BeforeRangeReversed(this, e);
             return e.Cancel;
         }
@@ -1318,7 +1318,7 @@ namespace DotSpatial.Data
         {
             if (BeforeRangeSorted == null) return false;
 
-            CollectiveIndexCompareCancel<T> e = new CollectiveIndexCompareCancel<T>(collection, comparer, index);
+            CollectiveIndexCompareCancel<T> e = new(collection, comparer, index);
             BeforeRangeSorted(this, e);
             return e.Cancel;
         }
@@ -1331,7 +1331,7 @@ namespace DotSpatial.Data
         {
             if (BeforeReversed == null) return false;
 
-            CancelEventArgs e = new CancelEventArgs();
+            CancelEventArgs e = new();
             BeforeReversed(this, e);
             return e.Cancel;
         }
@@ -1344,7 +1344,7 @@ namespace DotSpatial.Data
         {
             if (BeforeSort == null) return false;
 
-            CancelEventArgs e = new CancelEventArgs();
+            CancelEventArgs e = new();
             BeforeSort(this, e);
             return e.Cancel;
         }
@@ -1358,7 +1358,7 @@ namespace DotSpatial.Data
         {
             if (BeforeSortByComparison == null) return false;
 
-            ComparisonCancelEventArgs<T> e = new ComparisonCancelEventArgs<T>(comparison);
+            ComparisonCancelEventArgs<T> e = new(comparison);
             BeforeSortByComparison(this, e);
             return e.Cancel;
         }

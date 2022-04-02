@@ -19,7 +19,7 @@ namespace DotSpatial.Data.Forms
             if (self.Filename == null)
             {
                 string filter = DataManager.DefaultDataManager.RasterReadFilter;
-                OpenFileDialog ofd = new OpenFileDialog { Filter = filter };
+                OpenFileDialog ofd = new() { Filter = filter };
                 if (ofd.ShowDialog() != DialogResult.OK) return;
                 self.Filename = ofd.FileName;
             }

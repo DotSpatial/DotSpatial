@@ -17,10 +17,8 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="layer">The image layer.</param>
         public void ShowProperties(IImageLayer layer)
         {
-            using (var dlg = new LayerDialog(layer, new ImageCategoryControl()))
-            {
-                ShowDialog(dlg);
-            }
+            using var dlg = new LayerDialog(layer, new ImageCategoryControl());
+            ShowDialog(dlg);
         }
 
         /// <summary>
@@ -29,15 +27,13 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="data">The image data.</param>
         public void ExportData(IImageData data)
         {
-            using (var sfd = new SaveFileDialog
+            using var sfd = new SaveFileDialog
             {
                 Filter = DataManager.DefaultDataManager.RasterWriteFilter
-            })
+            };
+            if (ShowDialog(sfd) == DialogResult.OK)
             {
-                if (ShowDialog(sfd) == DialogResult.OK)
-                {
-                    data.SaveAs(sfd.FileName);
-                }
+                data.SaveAs(sfd.FileName);
             }
         }
     }

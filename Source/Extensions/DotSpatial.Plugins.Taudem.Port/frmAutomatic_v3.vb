@@ -1080,13 +1080,13 @@ Public Class frmAutomatic_v3
         ttip.SetToolTip(cmbxSelDem, "Select a projected Digital Elevation Model grid to delineate from.")
         ttip.SetToolTip(cmbxElevUnits, "Select the elevation units of the projected grid for correct calculations.")
         ttip.SetToolTip(lblElevUnits, "Select the elevation units of the projected grid for correct calculations.")
-        ttip.SetToolTip(chkbxUseOutlet, "Use this option to limit output to only basins" + vbNewLine + "connected to outlet points and exclude basins" + vbNewLine + "connected to inlet points in a point shapefile")
-        ttip.SetToolTip(cmbxOutlets, "Use this option to limit output to only basins" + vbNewLine + "connected to outlet points and exclude basins" + vbNewLine + "connected to inlet points in a point shapefile")
-        ttip.SetToolTip(chkbxBurnStream, "Use this option to burn in a stream network to" + vbNewLine + "shape portions of the taudem created streams" + vbNewLine + "using a canyon burn-in that lowers elevation" + vbNewLine + "under the stream polyline.")
-        ttip.SetToolTip(cmbxStream, "Use this option to burn in a stream network to" + vbNewLine + "shape portions of the taudem created streams" + vbNewLine + "using a canyon burn-in that lowers elevation" + vbNewLine + "under the stream polyline.")
-        ttip.SetToolTip(chkbxMask, "Use this option to limit the areas to be delineated to" + vbNewLine + "the current zoom extents, selected polygons" + vbNewLine + "from a shapefile, or the non-nodata values of" + vbNewLine + "a masking grid.")
+        ttip.SetToolTip(chkbxUseOutlet, "Use this option to limit output to only basins" + vbCrLf + "connected to outlet points and exclude basins" + vbCrLf + "connected to inlet points in a point shapefile")
+        ttip.SetToolTip(cmbxOutlets, "Use this option to limit output to only basins" + vbCrLf + "connected to outlet points and exclude basins" + vbCrLf + "connected to inlet points in a point shapefile")
+        ttip.SetToolTip(chkbxBurnStream, "Use this option to burn in a stream network to" + vbCrLf + "shape portions of the taudem created streams" + vbCrLf + "using a canyon burn-in that lowers elevation" + vbCrLf + "under the stream polyline.")
+        ttip.SetToolTip(cmbxStream, "Use this option to burn in a stream network to" + vbCrLf + "shape portions of the taudem created streams" + vbCrLf + "using a canyon burn-in that lowers elevation" + vbCrLf + "under the stream polyline.")
+        ttip.SetToolTip(chkbxMask, "Use this option to limit the areas to be delineated to" + vbCrLf + "the current zoom extents, selected polygons" + vbCrLf + "from a shapefile, or the non-nodata values of" + vbCrLf + "a masking grid.")
         ttip.SetToolTip(btnSetExtents, "Click this to zoom and set extents to use for the focusing mask.")
-        ttip.SetToolTip(btnLoadPre, "Click this to load pre-existing intermediate pre-processing" + vbNewLine + "files generated from a previous run of the AWD on the base" + vbNewLine + "grid. This allows the skipping of the time-consuming" + vbNewLine + "pre-processing steps.")
+        ttip.SetToolTip(btnLoadPre, "Click this to load pre-existing intermediate pre-processing" + vbCrLf + "files generated from a previous run of the AWD on the base" + vbCrLf + "grid. This allows the skipping of the time-consuming" + vbCrLf + "pre-processing steps.")
 
         RunFormCleanup()
     End Sub
@@ -1471,8 +1471,8 @@ Public Class frmAutomatic_v3
             defaultVal = CInt(maxVal * 0.02)
 
             ttip.SetToolTip(txtbxThreshold, "Min: " + minVal.ToString() + " cells  Max: " + maxVal.ToString() + " cells")
-            ttip.SetToolTip(txtNumCells, "This value is the threshold of grid cells feeding into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString() + "  Max: " + maxVal.ToString())
-            ttip.SetToolTip(grpbxThresh, "This value is the threshold of grid cells feeding into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString() + "  Max: " + maxVal.ToString())
+            ttip.SetToolTip(txtNumCells, "This value is the threshold of grid cells feeding into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString() + "  Max: " + maxVal.ToString())
+            ttip.SetToolTip(grpbxThresh, "This value is the threshold of grid cells feeding into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString() + "  Max: " + maxVal.ToString())
 
             If txtbxThreshold.Text <> "" Then
                 Try
@@ -1582,37 +1582,37 @@ Public Class frmAutomatic_v3
                     minVal = maxVal * 0.001
                     defaultVal = maxVal * 0.02
                     ttip.SetToolTip(txtbxThreshConv, "Min: " + minVal.ToString("F4") + " sq. mi  Max: " + maxVal.ToString("F4") + " sq. m")
-                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square miles flowing into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
+                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square miles flowing into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
                 ElseIf cmbxThreshConvUnits.SelectedIndex = 1 Then 'sq km
                     maxVal = (convVal / 2) / 4046.8564224
                     minVal = maxVal * 0.001
                     defaultVal = maxVal * 0.02
                     ttip.SetToolTip(txtbxThreshConv, "Min: " + minVal.ToString("F4") + " acres  Max: " + maxVal.ToString("F4") + " acres")
-                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in acres flowing into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
+                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in acres flowing into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
                 ElseIf cmbxThreshConvUnits.SelectedIndex = 2 Then 'hectare
                     maxVal = (convVal / 2) / 10000
                     minVal = maxVal * 0.001
                     defaultVal = maxVal * 0.02
                     ttip.SetToolTip(txtbxThreshConv, "Min: " + minVal.ToString("F4") + " hectares  Max: " + maxVal.ToString("F4") + " hectares")
-                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in hectares flowing into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
+                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in hectares flowing into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
                 ElseIf cmbxThreshConvUnits.SelectedIndex = 3 Then 'sq m
                     maxVal = (convVal / 2) / 1000000
                     minVal = maxVal * 0.001
                     defaultVal = maxVal * 0.02
                     ttip.SetToolTip(txtbxThreshConv, "Min: " + minVal.ToString("F4") + " sq. km  Max: " + maxVal.ToString("F4") + " sq. km")
-                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square kilometers flowing into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
+                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square kilometers flowing into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
                 ElseIf cmbxThreshConvUnits.SelectedIndex = 4 Then 'sq ft
                     maxVal = convVal / 2
                     minVal = maxVal * 0.001
                     defaultVal = maxVal * 0.02
                     ttip.SetToolTip(txtbxThreshConv, "Min: " + minVal.ToString("F4") + " sq. m  Max: " + maxVal.ToString("F4") + " sq. m")
-                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square meters flowing into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
+                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square meters flowing into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
                 ElseIf cmbxThreshConvUnits.SelectedIndex = 5 Then 'sq mi
                     maxVal = (convVal / 2) * 10.763910417
                     minVal = maxVal * 0.001
                     defaultVal = maxVal * 0.02
                     ttip.SetToolTip(txtbxThreshConv, "Min: " + minVal.ToString("F4") + " sq. ft  Max: " + maxVal.ToString("F4") + " sq. m")
-                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square feet flowing into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
+                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square feet flowing into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
                 End If
             ElseIf r.Projection.Unit.Name = "Foot" Then
                 If cmbxThreshConvUnits.SelectedIndex = 0 Then 'acres
@@ -1620,37 +1620,37 @@ Public Class frmAutomatic_v3
                     minVal = maxVal * 0.001
                     defaultVal = maxVal * 0.02
                     ttip.SetToolTip(txtbxThreshConv, "Min: " + minVal.ToString("F4") + " sq. mi  Max: " + maxVal.ToString("F4") + " sq. m")
-                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square miles flowing into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
+                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square miles flowing into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
                 ElseIf cmbxThreshConvUnits.SelectedIndex = 1 Then 'sq km
                     maxVal = (convVal / 2) / 43560
                     minVal = maxVal * 0.001
                     defaultVal = maxVal * 0.02
                     ttip.SetToolTip(txtbxThreshConv, "Min: " + minVal.ToString("F4") + " acres  Max: " + maxVal.ToString("F4") + " acres")
-                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in acres flowing into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
+                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in acres flowing into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
                 ElseIf cmbxThreshConvUnits.SelectedIndex = 2 Then 'hectare
                     maxVal = (convVal / 2) / 107639.1041670972
                     minVal = maxVal * 0.001
                     defaultVal = maxVal * 0.02
                     ttip.SetToolTip(txtbxThreshConv, "Min: " + minVal.ToString("F4") + " hectares  Max: " + maxVal.ToString("F4") + " hectares")
-                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in hectares flowing into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
+                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in hectares flowing into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
                 ElseIf cmbxThreshConvUnits.SelectedIndex = 3 Then 'sq m
                     maxVal = (convVal / 2) / 10763910.416709721
                     minVal = maxVal * 0.001
                     defaultVal = maxVal * 0.02
                     ttip.SetToolTip(txtbxThreshConv, "Min: " + minVal.ToString("F4") + " sq. km  Max: " + maxVal.ToString("F4") + " sq. km")
-                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square kilometers flowing into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
+                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square kilometers flowing into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
                 ElseIf cmbxThreshConvUnits.SelectedIndex = 4 Then 'sq ft
                     maxVal = (convVal / 2) * 0.09290304
                     minVal = maxVal * 0.001
                     defaultVal = maxVal * 0.02
                     ttip.SetToolTip(txtbxThreshConv, "Min: " + minVal.ToString("F4") + " sq. m  Max: " + maxVal.ToString("F4") + " sq. m")
-                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square meters flowing into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
+                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square meters flowing into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
                 ElseIf cmbxThreshConvUnits.SelectedIndex = 5 Then 'sq ft
                     maxVal = convVal / 2
                     minVal = maxVal * 0.001
                     defaultVal = maxVal * 0.02
                     ttip.SetToolTip(txtbxThreshConv, "Min: " + minVal.ToString("F4") + " sq. ft  Max: " + maxVal.ToString("F4") + " sq. m")
-                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square feet flowing into a" + vbNewLine + "given point before being designated as a stream." + vbNewLine + "The lower the number, the more streams and " + vbNewLine + "sub-basins will be developed." + vbNewLine + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
+                    ttip.SetToolTip(cmbxThreshConvUnits, "This value is the threshold in square feet flowing into a" + vbCrLf + "given point before being designated as a stream." + vbCrLf + "The lower the number, the more streams and " + vbCrLf + "sub-basins will be developed." + vbCrLf + "Min: " + minVal.ToString("F4") + "  Max: " + maxVal.ToString("F4"))
                 End If
             End If
 

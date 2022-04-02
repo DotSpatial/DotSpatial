@@ -314,30 +314,27 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <param name="copyValues">Indicates whether the values should be copied.</param>
         public override void Copy(string fileName, bool copyValues)
         {
-            using (Driver d = _dataset.GetDriver())
+            using Driver d = _dataset.GetDriver();
+            DataType myType = OSGeo.GDAL.DataType.GDT_Int32;
+            if (_band != null)
             {
-                DataType myType = OSGeo.GDAL.DataType.GDT_Int32;
-                if (_band != null)
+                myType = _band.DataType;
+            }
+            else
+            {
+                if (Bands[0] is GdalRaster<T> r)
                 {
-                    myType = _band.DataType;
+                    myType = r.GdalDataType;
                 }
-                else
-                {
-                    GdalRaster<T> r = Bands[0] as GdalRaster<T>;
-                    if (r != null)
-                    {
-                        myType = r.GdalDataType;
-                    }
-                }
+            }
 
-                if (copyValues)
-                {
-                    d.CreateCopy(fileName, _dataset, 1, Options, GdalProgressFunc, "Copy Progress");
-                }
-                else
-                {
-                    d.Create(fileName, NumColumnsInFile, NumRowsInFile, NumBands, myType, Options);
-                }
+            if (copyValues)
+            {
+                d.CreateCopy(fileName, _dataset, 1, Options, GdalProgressFunc, "Copy Progress");
+            }
+            else
+            {
+                d.Create(fileName, NumColumnsInFile, NumRowsInFile, NumBands, myType, Options);
             }
         }
 
@@ -412,7 +409,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             var sw = new Stopwatch();
             sw.Start();
 #endif
-            List<T> result = new List<T>();
+            List<T> result = new();
             foreach (long index in indices)
             {
                 int row = (int)(index / NumColumnsInFile);
@@ -460,8 +457,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
             if (_band == null)
             {
-                Raster<T> ri = Bands[CurrentBand] as Raster<T>;
-                if (ri != null)
+                if (Bands[CurrentBand] is Raster<T> ri)
                 {
                     return ri.ReadRaster(xOff, yOff, sizeX, sizeY);
                 }
@@ -506,8 +502,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             if (_band == null)
             {
-                Raster<T> ri = Bands[CurrentBand] as Raster<T>;
-                if (ri != null)
+                if (Bands[CurrentBand] is Raster<T> ri)
                 {
                     ri.NoDataValue = NoDataValue;
 

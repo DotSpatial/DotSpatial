@@ -121,7 +121,7 @@ namespace DotSpatial.Symbology.Forms
             }
             else
             {
-                if (_angle > 360 || _angle < -360) _angle = _angle % 360;
+                if (_angle > 360 || _angle < -360) _angle %= 360;
                 if (_angle < _minAngle || _angle > _maxAngle)
                 {
                     ErrorMessage = "The value entered into the " + MessageName + " was outside the valid range from " + _minAngle + " to " + _maxAngle;

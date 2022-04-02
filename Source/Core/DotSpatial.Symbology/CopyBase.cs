@@ -49,8 +49,8 @@ namespace DotSpatial.Symbology
         /// <returns>An Array of PropertyInfo members.</returns>
         protected static PropertyInfo[] DistinctNames(IEnumerable<PropertyInfo> allProperties)
         {
-            List<string> names = new List<string>();
-            List<PropertyInfo> result = new List<PropertyInfo>();
+            List<string> names = new();
+            List<PropertyInfo> result = new();
             foreach (PropertyInfo property in allProperties)
             {
                 if (names.Contains(property.Name)) continue;
@@ -85,8 +85,7 @@ namespace DotSpatial.Symbology
                     continue;
                 }
 
-                ICloneable cloneable = myValue as ICloneable;
-                if (cloneable == null) continue;
+                if (myValue is not ICloneable cloneable) continue;
                 p.SetValue(copy, cloneable.Clone(), null);
             }
 
@@ -104,8 +103,7 @@ namespace DotSpatial.Symbology
                     continue;
                 }
 
-                ICloneable cloneable = myValue as ICloneable;
-                if (cloneable == null) continue;
+                if (myValue is not ICloneable cloneable) continue;
                 f.SetValue(copy, cloneable.Clone());
             }
         }

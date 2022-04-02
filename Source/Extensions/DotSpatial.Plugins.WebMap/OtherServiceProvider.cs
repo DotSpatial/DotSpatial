@@ -82,16 +82,14 @@ namespace DotSpatial.Plugins.WebMap
                     url = url.Replace("{y}", y.ToString(CultureInfo.InvariantCulture));
                 }
 
-                using (var client = new WebClient())
+                using var client = new WebClient();
+                var stream = client.OpenRead(url);
+                if (stream != null)
                 {
-                    var stream = client.OpenRead(url);
-                    if (stream != null)
-                    {
-                        var bitmap = new Bitmap(stream);
-                        stream.Flush();
-                        stream.Close();
-                        return bitmap;
-                    }
+                    var bitmap = new Bitmap(stream);
+                    stream.Flush();
+                    stream.Close();
+                    return bitmap;
                 }
             }
             catch (Exception ex)

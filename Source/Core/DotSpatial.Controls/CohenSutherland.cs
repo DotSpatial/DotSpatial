@@ -166,8 +166,8 @@ namespace DotSpatial.Controls
         /// <returns> List of clipped linestrings.</returns>
         public static List<List<double[]>> ClipLinestring(List<double[]> linestring, double xmin, double ymin, double xmax, double ymax)
         {
-            List<List<double[]>> returnLinestrings = new List<List<double[]>>();
-            List<double[]> returnLinestring = new List<double[]>();
+            List<List<double[]>> returnLinestrings = new();
+            List<double[]> returnLinestring = new();
             int numLines = linestring.Count - 1;
             LineClipStatus prevClipStatus = LineClipStatus.Outside;
 

@@ -60,7 +60,7 @@ namespace DotSpatial.Positioning.Forms
         ///     This quality setting is recommended for "draft" quality, where a more responsive
         ///     map is preferable to quality.</para>
         /// </remarks>
-        public static readonly GraphicsSettings Balanced = new GraphicsSettings(CompositingQuality.AssumeLinear,
+        public static readonly GraphicsSettings Balanced = new(CompositingQuality.AssumeLinear,
                                                                                 InterpolationMode.Low, PixelOffsetMode.HighSpeed,
                                                                                 SmoothingMode.HighQuality, TextRenderingHint.AntiAlias, 4);
         /// <summary>
@@ -74,7 +74,7 @@ namespace DotSpatial.Positioning.Forms
         /// are readable. This setting is recommended for production use, as well as
         /// printing.
         /// </remarks>
-        public static readonly GraphicsSettings HighQuality = new GraphicsSettings(CompositingQuality.HighSpeed,
+        public static readonly GraphicsSettings HighQuality = new(CompositingQuality.HighSpeed,
                                                                                 InterpolationMode.HighQualityBicubic, PixelOffsetMode.HighQuality,
                                                                                 SmoothingMode.HighQuality, TextRenderingHint.AntiAliasGridFit, 4);
         /// <summary>
@@ -87,7 +87,7 @@ namespace DotSpatial.Positioning.Forms
         /// suitable for production use. This setting is best suited for situations where panning
         /// and zooming performance must have all possible speed.
         /// </remarks>
-        public static readonly GraphicsSettings HighPerformance = new GraphicsSettings(CompositingQuality.HighSpeed,
+        public static readonly GraphicsSettings HighPerformance = new(CompositingQuality.HighSpeed,
                                                                                 InterpolationMode.Low, PixelOffsetMode.None,
                                                                                 SmoothingMode.None, TextRenderingHint.SingleBitPerPixel, 4);
 

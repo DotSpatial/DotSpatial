@@ -105,7 +105,7 @@ namespace DotSpatial.Positioning
         {
             FixedSatelliteCount = -1;
             // Use a string builder to create the sentence text
-            StringBuilder builder = new StringBuilder(128);
+            StringBuilder builder = new(128);
 
             // Append the command word
             builder.Append("$GPGGA");

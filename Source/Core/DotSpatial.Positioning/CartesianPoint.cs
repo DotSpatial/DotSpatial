@@ -82,15 +82,15 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns a cartesian coordinate with empty values.
         /// </summary>
-        public static readonly CartesianPoint Empty = new CartesianPoint(Distance.Empty, Distance.Empty, Distance.Empty);
+        public static readonly CartesianPoint Empty = new(Distance.Empty, Distance.Empty, Distance.Empty);
         /// <summary>
         /// Returns a cartesian point with infinite values.
         /// </summary>
-        public static readonly CartesianPoint Infinity = new CartesianPoint(Distance.Infinity, Distance.Infinity, Distance.Infinity);
+        public static readonly CartesianPoint Infinity = new(Distance.Infinity, Distance.Infinity, Distance.Infinity);
         /// <summary>
         /// Represents an invalid or unspecified value.
         /// </summary>
-        public static readonly CartesianPoint Invalid = new CartesianPoint(Distance.Invalid, Distance.Invalid, Distance.Invalid);
+        public static readonly CartesianPoint Invalid = new(Distance.Invalid, Distance.Invalid, Distance.Invalid);
 
         #endregion Fields
 
@@ -283,7 +283,7 @@ return
             //% return lon in range [0, 2*pi)
             // lon = mod(lon, 2*pi);
 
-            lon = lon % (2 * Math.PI);
+            lon %= (2 * Math.PI);
 
             //% correct for numerical instability in altitude near exact poles:
             //% (after this correction, error is about 2 millimeters, which is about

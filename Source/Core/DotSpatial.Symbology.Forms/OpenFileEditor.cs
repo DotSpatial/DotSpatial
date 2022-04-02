@@ -22,11 +22,9 @@ namespace DotSpatial.Symbology.Forms
         /// <returns>Returns the selected file name.</returns>
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog())
-            {
-                if (ofd.ShowDialog() != DialogResult.OK) return null;
-                return ofd.FileName;
-            }
+            using OpenFileDialog ofd = new();
+            if (ofd.ShowDialog() != DialogResult.OK) return null;
+            return ofd.FileName;
         }
 
         /// <summary>

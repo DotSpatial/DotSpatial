@@ -139,8 +139,7 @@ namespace DotSpatial.Symbology
         public override void ApplyMinMax(EditorSettings settings)
         {
             base.ApplyMinMax(settings);
-            FeatureEditorSettings fs = settings as FeatureEditorSettings;
-            if (fs == null) return;
+            if (settings is not FeatureEditorSettings fs) return;
             string field = "[" + fs.FieldName.ToUpper() + "]";
             if (!string.IsNullOrEmpty(fs.NormField)) field += "/[" + fs.NormField.ToUpper() + "]";
             IntervalSnapMethod method = settings.IntervalSnapMethod;

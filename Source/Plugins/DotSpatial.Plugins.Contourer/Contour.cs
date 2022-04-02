@@ -172,7 +172,7 @@ namespace DotSpatial.Plugins.Contourer
                     fs.DataTable.Columns.Add("Lev", typeof(int));
                     fs.DataTable.Columns.Add("Label", typeof(string));
 
-                    Collection<Geometry> contours = new Collection<Geometry>();
+                    Collection<Geometry> contours = new();
                     if (levels != null)
                     {
                         for (int z = 0; z < levels.Length; z++)
@@ -195,16 +195,16 @@ namespace DotSpatial.Plugins.Contourer
 
                         contours.Add(new LineString(boundary));
 
-                        Collection<Geometry> nodedContours = new Collection<Geometry>();
-                        PrecisionModel pm = new PrecisionModel(1000d);
-                        GeometryNoder geomNoder = new GeometryNoder(pm);
+                        Collection<Geometry> nodedContours = new();
+                        PrecisionModel pm = new(1000d);
+                        GeometryNoder geomNoder = new(pm);
 
                         foreach (var c in geomNoder.Node(contours))
                         {
                             nodedContours.Add(c);
                         }
 
-                        Polygonizer polygonizer = new Polygonizer();
+                        Polygonizer polygonizer = new();
                         polygonizer.Add(nodedContours);
 
                         foreach (Polygon p in polygonizer.GetPolygons().OfType<Polygon>())
@@ -245,7 +245,7 @@ namespace DotSpatial.Plugins.Contourer
         /// <returns>The contours that were found.</returns>
         public static IList<Geometry> GetContours(ref Raster rst, double[] x, double[] y, double zlev)
         {
-            List<LineString> lsList = new List<LineString>();
+            List<LineString> lsList = new();
 
             double[] xx = new double[3];
             double[] yy = new double[3];
@@ -338,7 +338,7 @@ namespace DotSpatial.Plugins.Contourer
                 }
             }
 
-            LineMerger lm = new LineMerger();
+            LineMerger lm = new();
 
             lm.Add(lsList);
 
@@ -403,7 +403,7 @@ namespace DotSpatial.Plugins.Contourer
 
         private static Coordinate[] Intersect(double[] xx, double[] yy, double[] zz, double zlevel)
         {
-            List<Coordinate> coordinates = new List<Coordinate>();
+            List<Coordinate> coordinates = new();
 
             double zmin = Math.Min(zz[0], Math.Min(zz[1], zz[2]));
             double zmax = Math.Max(zz[0], Math.Max(zz[1], zz[2]));
@@ -432,7 +432,7 @@ namespace DotSpatial.Plugins.Contourer
                             double dx = xx[i1] - xx[i];
                             double dy = yy[i1] - yy[i];
 
-                            Coordinate c = new Coordinate
+                            Coordinate c = new()
                             {
                                 X = xx[i] + (frac * dx),
                                 Y = yy[i] + (frac * dy),

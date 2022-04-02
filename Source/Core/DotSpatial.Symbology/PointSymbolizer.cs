@@ -93,7 +93,7 @@ namespace DotSpatial.Symbology
         public PointSymbolizer(char character, string fontFamily, Color color, double size)
         {
             Symbols = new CopyList<ISymbol>();
-            CharacterSymbol cs = new CharacterSymbol(character, fontFamily, color, size);
+            CharacterSymbol cs = new(character, fontFamily, color, size);
             Symbols.Add(cs);
         }
 
@@ -106,8 +106,7 @@ namespace DotSpatial.Symbology
             Configure();
             if (!selected) return;
 
-            ISimpleSymbol ss = Symbols[0] as ISimpleSymbol;
-            if (ss != null)
+            if (Symbols[0] is ISimpleSymbol ss)
             {
                 ss.Color = Color.Cyan;
             }
@@ -130,8 +129,7 @@ namespace DotSpatial.Symbology
 
             s.Size.Width = extents.Width / 100;
             s.Size.Height = extents.Width / 100;
-            ISimpleSymbol ss = Symbols[0] as ISimpleSymbol;
-            if (ss != null && selected) ss.Color = Color.Cyan;
+            if (Symbols[0] is ISimpleSymbol ss && selected) ss.Color = Color.Cyan;
         }
 
         #endregion
@@ -267,8 +265,7 @@ namespace DotSpatial.Symbology
 
             foreach (ISymbol symbol in Symbols)
             {
-                IOutlinedSymbol oSymbol = symbol as IOutlinedSymbol;
-                if (oSymbol == null) continue;
+                if (symbol is not IOutlinedSymbol oSymbol) continue;
 
                 oSymbol.OutlineColor = outlineColor;
                 oSymbol.OutlineWidth = width;

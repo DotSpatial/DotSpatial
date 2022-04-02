@@ -53,10 +53,10 @@ namespace DotSpatial.Symbology
 
         private static List<CustomSymbolizer> GetBasicLineSymbols()
         {
-            List<CustomSymbolizer> lst = new List<CustomSymbolizer>();
+            List<CustomSymbolizer> lst = new();
 
-            LineSymbolizer sym1 = new LineSymbolizer();
-            CustomLineSymbolizer cust1 = new CustomLineSymbolizer
+            LineSymbolizer sym1 = new();
+            CustomLineSymbolizer cust1 = new()
             {
                 Symbolizer = sym1,
                 UniqueName = "line_0001",
@@ -64,13 +64,13 @@ namespace DotSpatial.Symbology
             };
             lst.Add(cust1);
 
-            LineSymbolizer sym2 = new LineSymbolizer();
+            LineSymbolizer sym2 = new();
             sym2.Strokes.Clear();
-            SimpleStroke stroke1 = new SimpleStroke(2.5, Color.Brown);
+            SimpleStroke stroke1 = new(2.5, Color.Brown);
             sym2.Strokes.Add(stroke1);
-            SimpleStroke stroke0 = new SimpleStroke(1.0, Color.Yellow);
+            SimpleStroke stroke0 = new(1.0, Color.Yellow);
             sym2.Strokes.Add(stroke0);
-            CustomLineSymbolizer cust2 = new CustomLineSymbolizer
+            CustomLineSymbolizer cust2 = new()
             {
                 Symbolizer = sym2,
                 UniqueName = "line_0002",
@@ -78,14 +78,14 @@ namespace DotSpatial.Symbology
             };
             lst.Add(cust2);
 
-            LineSymbolizer sym3 = new LineSymbolizer();
+            LineSymbolizer sym3 = new();
             sym3.Strokes.Clear();
-            CartographicStroke stroke3 = new CartographicStroke(Color.Brown)
+            CartographicStroke stroke3 = new(Color.Brown)
             {
                 DashStyle = DashStyle.Dash
             };
             sym3.Strokes.Add(stroke3);
-            CustomLineSymbolizer cust3 = new CustomLineSymbolizer
+            CustomLineSymbolizer cust3 = new()
             {
                 Symbolizer = sym3,
                 UniqueName = "line_0003",
@@ -98,14 +98,14 @@ namespace DotSpatial.Symbology
 
         private static List<CustomSymbolizer> GetBasicPointSymbols()
         {
-            List<CustomSymbolizer> lst = new List<CustomSymbolizer>();
+            List<CustomSymbolizer> lst = new();
 
-            PointSymbolizer s1 = new PointSymbolizer();
+            PointSymbolizer s1 = new();
             const char Ch = '\u21e6';
             s1.Symbols.Add(new CharacterSymbol(Ch, "arial", Color.Blue, 10.0));
             lst.Add(new CustomSymbolizer(s1, "symbol01", "arrow1", "arrows"));
 
-            PointSymbolizer s2 = new PointSymbolizer(Color.Beige, PointShape.Ellipse, 7.0);
+            PointSymbolizer s2 = new(Color.Beige, PointShape.Ellipse, 7.0);
             lst.Add(new CustomSymbolizer(s2, "symbol02", "circle1", "default"));
 
             return lst;
@@ -113,13 +113,13 @@ namespace DotSpatial.Symbology
 
         private static List<CustomSymbolizer> GetBasicPolygonSymbols()
         {
-            List<CustomSymbolizer> lst = new List<CustomSymbolizer>();
+            List<CustomSymbolizer> lst = new();
 
-            PolygonSymbolizer s1 = new PolygonSymbolizer();
+            PolygonSymbolizer s1 = new();
             s1.SetFillColor(Color.Beige);
             lst.Add(new CustomSymbolizer(s1, "poly01", "polygon 1", "default"));
 
-            PolygonSymbolizer s2 = new PolygonSymbolizer();
+            PolygonSymbolizer s2 = new();
             s2.SetFillColor(Color.LightGreen);
             s2.SetOutlineWidth(2.0);
             s2.OutlineSymbolizer.SetFillColor(Color.Red);

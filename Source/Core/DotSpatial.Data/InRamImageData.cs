@@ -280,8 +280,8 @@ namespace DotSpatial.Data
                 _myImage = new Bitmap(temp.Width, temp.Height, PixelFormat.Format32bppArgb);
                 Width = temp.Width;
                 Height = temp.Height;
-                using (var g = Graphics.FromImage(_myImage))
-                    g.DrawImage(temp, 0, 0, temp.Width, temp.Height); // don't draw unscaled because then nothing is shown
+                using var g = Graphics.FromImage(_myImage);
+                g.DrawImage(temp, 0, 0, temp.Width, temp.Height); // don't draw unscaled because then nothing is shown
             }
 
             WorldFile = new WorldFile(Filename);
@@ -345,10 +345,8 @@ namespace DotSpatial.Data
         public override void WriteBlock(Bitmap value, int xOffset, int yOffset)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
-            using (var g = Graphics.FromImage(_myImage))
-            {
-                g.DrawImage(value, new Rectangle(xOffset, yOffset, value.Width, value.Height), new Rectangle(0, 0, value.Width, value.Height), GraphicsUnit.Pixel);
-            }
+            using var g = Graphics.FromImage(_myImage);
+            g.DrawImage(value, new Rectangle(xOffset, yOffset, value.Width, value.Height), new Rectangle(0, 0, value.Width, value.Height), GraphicsUnit.Pixel);
         }
 
         /// <summary>
@@ -379,7 +377,7 @@ namespace DotSpatial.Data
 
         private BitmapData GetLockedBits()
         {
-            Rectangle bnds = new Rectangle(0, 0, Width, Height);
+            Rectangle bnds = new(0, 0, Width, Height);
             PixelFormat pixelFormat;
             switch (NumBands)
             {

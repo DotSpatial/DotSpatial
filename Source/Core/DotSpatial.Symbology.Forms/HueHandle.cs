@@ -128,28 +128,20 @@ namespace DotSpatial.Symbology.Forms
             if (!Visible || Width == 0) return;
 
             Rectangle bounds = GetBounds();
-            using (GraphicsPath gp = new GraphicsPath())
-            {
-                gp.AddRoundedRectangle(bounds, RoundingRadius);
-                using (LinearGradientBrush lgb = new LinearGradientBrush(bounds, Color.Lighter(.3F), Color.Darker(.3F), LinearGradientMode.ForwardDiagonal))
-                {
-                    g.FillPath(lgb, gp);
+            using GraphicsPath gp = new();
+            gp.AddRoundedRectangle(bounds, RoundingRadius);
+            using LinearGradientBrush lgb = new(bounds, Color.Lighter(.3F), Color.Darker(.3F), LinearGradientMode.ForwardDiagonal);
+            g.FillPath(lgb, gp);
 
-                    if (Left)
-                    {
-                        using (Pen l = new Pen(Color.Darker(.2f), 2))
-                        {
-                            g.DrawLine(l, bounds.Right - 1, bounds.Top, bounds.Right - 1, bounds.Height);
-                        }
-                    }
-                    else
-                    {
-                        using (Pen r = new Pen(Color.Lighter(.2f), 2))
-                        {
-                            g.DrawLine(r, bounds.Left + 1, bounds.Top, bounds.Left + 1, bounds.Right);
-                        }
-                    }
-                }
+            if (Left)
+            {
+                using Pen l = new(Color.Darker(.2f), 2);
+                g.DrawLine(l, bounds.Right - 1, bounds.Top, bounds.Right - 1, bounds.Height);
+            }
+            else
+            {
+                using Pen r = new(Color.Lighter(.2f), 2);
+                g.DrawLine(r, bounds.Left + 1, bounds.Top, bounds.Left + 1, bounds.Right);
             }
         }
 
@@ -161,7 +153,7 @@ namespace DotSpatial.Symbology.Forms
         {
             float sx = (_position - Parent.Minimum) / (Parent.Maximum - Parent.Minimum);
             int x = Convert.ToInt32(sx * (Parent.Width - Width));
-            Rectangle bounds = new Rectangle(x, 0, Width, Parent.Height);
+            Rectangle bounds = new(x, 0, Width, Parent.Height);
             return bounds;
         }
 

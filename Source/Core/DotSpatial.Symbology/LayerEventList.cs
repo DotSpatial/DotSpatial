@@ -88,7 +88,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                Extent env = new Extent();
+                Extent env = new();
                 if (Count == 0) return env;
 
                 foreach (T lyr in this)

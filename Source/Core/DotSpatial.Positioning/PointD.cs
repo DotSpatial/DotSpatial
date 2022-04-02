@@ -57,11 +57,11 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns a point with no value.
         /// </summary>
-        public static readonly PointD Empty = new PointD(0, 0);
+        public static readonly PointD Empty = new(0, 0);
         /// <summary>
         /// Represents an invalid coordinate.
         /// </summary>
-        public static readonly PointD Invalid = new PointD(double.NaN, double.NaN);
+        public static readonly PointD Invalid = new(double.NaN, double.NaN);
 
         #endregion Fields
 

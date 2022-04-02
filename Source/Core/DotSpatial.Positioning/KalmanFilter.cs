@@ -554,7 +554,7 @@ namespace DotSpatial.Positioning
             // Get the vector of the translation and the last observation
             // CartesianPoint w = (subX - this.z);
             CartesianPoint w =
-                new CartesianPoint(
+                new(
                     Distance.FromMeters(subX.X.Value - _z.X.Value),   // Values are in meters
                     Distance.FromMeters(subX.Y.Value - _z.Y.Value),   // Values are in meters
                     Distance.FromMeters(subX.Z.Value - _z.Z.Value));  // Values are in meters
@@ -600,7 +600,7 @@ namespace DotSpatial.Positioning
             // s.x = s.x + K*(s.z-s.H*s.x);
             // this.x = this.x + K * (this.z - this.H * this.x);
             CartesianPoint hx = _h.TransformVector(_x);
-            CartesianPoint zHx = new CartesianPoint(
+            CartesianPoint zHx = new(
                 Distance.FromMeters(_z.X.Value - hx.X.Value),
                 Distance.FromMeters(_z.Y.Value - hx.Y.Value),
                 Distance.FromMeters(_z.Z.Value - hx.Z.Value));
@@ -612,7 +612,7 @@ namespace DotSpatial.Positioning
                     Distance.FromMeters(_x.Z.Value + kzHx.Z.Value));
 
             // s.P = s.P - K*s.H*s.P;
-            _p = _p - k * _h * _p;
+            _p -= k * _h * _p;
 
             #endregion Observational correction
 

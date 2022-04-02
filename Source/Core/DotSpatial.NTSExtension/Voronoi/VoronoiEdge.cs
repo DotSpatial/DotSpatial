@@ -32,9 +32,9 @@ namespace DotSpatial.NTSExtension.Voronoi
                     return new Vector2(1, 0);
                 }
 
-                Vector2 erg = new Vector2(-(RightData.Y - LeftData.Y) / (RightData.X - LeftData.X), 1);
-                if (RightData.X < LeftData.X) erg = erg * -1;
-                erg = erg * (1.0 / Math.Sqrt(erg.SquaredLength));
+                Vector2 erg = new(-(RightData.Y - LeftData.Y) / (RightData.X - LeftData.X), 1);
+                if (RightData.X < LeftData.X) erg *= -1;
+                erg *= (1.0 / Math.Sqrt(erg.SquaredLength));
                 return erg;
             }
         }

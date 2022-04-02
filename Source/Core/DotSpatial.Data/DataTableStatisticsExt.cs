@@ -21,14 +21,14 @@ namespace DotSpatial.Data
         public static BoxStatistics GetBoxStatistics(this DataTable self, string fieldName)
         {
             DataColumn dc = self.Columns[fieldName];
-            ArrayList lst = new ArrayList();
+            ArrayList lst = new();
             foreach (DataRow row in self.Rows)
             {
                 lst.Add(row[fieldName]);
             }
 
             lst.Sort();
-            BoxStatistics result = new BoxStatistics();
+            BoxStatistics result = new();
             if (lst.Count % 2 == 0)
             {
                 if (dc.DataType == typeof(string))

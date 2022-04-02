@@ -273,13 +273,13 @@ namespace DotSpatial.Controls
             List<Rectangle> clipRects = args.ProjToPixel(regions);
             if (EditMode)
             {
-                List<IFeature> drawList = new List<IFeature>();
+                List<IFeature> drawList = new();
                 drawList = regions.Where(region => region != null).Aggregate(drawList, (current, region) => current.Union(DataSet.Select(region)).ToList());
                 DrawFeatures(args, drawList, clipRects, true, selected);
             }
             else
             {
-                List<int> drawList = new List<int>();
+                List<int> drawList = new();
                 List<ShapeRange> shapes = DataSet.ShapeIndices;
                 for (int shp = 0; shp < shapes.Count; shp++)
                 {
@@ -313,7 +313,7 @@ namespace DotSpatial.Controls
         /// where drawing will be taking place.</param>
         public void StartDrawing(bool preserve)
         {
-            Bitmap backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
+            Bitmap backBuffer = new(BufferRectangle.Width, BufferRectangle.Height);
             if (Buffer?.Width == backBuffer.Width && Buffer.Height == backBuffer.Height && preserve)
             {
                 Graphics g = Graphics.FromImage(backBuffer);
@@ -420,10 +420,10 @@ namespace DotSpatial.Controls
                 ProgressMeter = new ProgressMeter(ProgressHandler, "Building Paths", indiceList.Count);
             }
 
-            FastDrawnState state = new FastDrawnState(selected, Symbology.Categories[0]);
+            FastDrawnState state = new(selected, Symbology.Categories[0]);
             Extent drawExtents = e.GeographicExtents;
             Rectangle clipRect = e.ProjToPixel(e.GeographicExtents);
-            SoutherlandHodgman shClip = new SoutherlandHodgman(clipRect);
+            SoutherlandHodgman shClip = new(clipRect);
 
             List<ShapeRange> shapes = DataSet.ShapeIndices;
             double[] vertices = DataSet.Vertex;
@@ -461,7 +461,7 @@ namespace DotSpatial.Controls
 
             Rectangle clipRect = ComputeClippingRectangle(e);
             Extent drawExtents = e.PixelToProj(clipRect);
-            SoutherlandHodgman shClip = new SoutherlandHodgman(clipRect);
+            SoutherlandHodgman shClip = new(clipRect);
 
             var featureList = features as IList<IFeature> ?? features.ToList();
             foreach (var category in Symbology.Categories)
@@ -485,7 +485,7 @@ namespace DotSpatial.Controls
 
                 if (drawnFeatures.Count > 0)
                 {
-                    GraphicsPath borderPath = new GraphicsPath();
+                    GraphicsPath borderPath = new();
                     foreach (IFeature f in drawnFeatures)
                     {
                         BuildPolygon(DataSet.Vertex, f.ShapeIndex, borderPath, e, drawExtents.Contains(f.Geometry.EnvelopeInternal) ? null : shClip);

@@ -19,7 +19,7 @@ namespace DotSpatial.Controls
     {
         #region Fields
 
-        private readonly Dictionary<string, TabPage> _allTabs = new Dictionary<string, TabPage>();
+        private readonly Dictionary<string, TabPage> _allTabs = new();
 
         #endregion
 

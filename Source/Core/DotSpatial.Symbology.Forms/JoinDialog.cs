@@ -53,28 +53,27 @@ namespace DotSpatial.Symbology.Forms
 
         private static List<string> GetColumnNamesFromExcel(string xlsFilePath)
         {
-            OleDbConnection con = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + xlsFilePath + "; Extended Properties=Excel 8.0");
+            OleDbConnection con = new(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + xlsFilePath + "; Extended Properties=Excel 8.0");
 
             // GIS Group of Maryland Environmental Service recommended this query string.
-            OleDbDataAdapter da = new OleDbDataAdapter("select * from [Data$]", con);
-            DataTable dt = new DataTable();
+            OleDbDataAdapter da = new("select * from [Data$]", con);
+            DataTable dt = new();
             da.Fill(dt);
             return (from DataColumn column in dt.Columns select column.ColumnName).ToList();
         }
 
         private void CmdBrowseClick(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog { Filter = @"Excel Files|*.xls" })
-            {
-                if (ofd.ShowDialog(this) != DialogResult.OK) return;
+            using OpenFileDialog ofd = new()
+            { Filter = @"Excel Files|*.xls" };
+            if (ofd.ShowDialog(this) != DialogResult.OK) return;
 
-                tbPath.Text = ofd.FileName;
-                List<string> cols = GetColumnNamesFromExcel(ofd.FileName);
-                cbForeignField.Items.Clear();
-                foreach (var col in cols)
-                {
-                    cbForeignField.Items.Add(col);
-                }
+            tbPath.Text = ofd.FileName;
+            List<string> cols = GetColumnNamesFromExcel(ofd.FileName);
+            cbForeignField.Items.Clear();
+            foreach (var col in cols)
+            {
+                cbForeignField.Items.Add(col);
             }
         }
 
@@ -112,11 +111,10 @@ namespace DotSpatial.Symbology.Forms
 
         private void CmdSaveClick(object sender, EventArgs e)
         {
-            using (SaveFileDialog ofd = new SaveFileDialog { Filter = DataManager.DefaultDataManager.VectorWriteFilter })
-            {
-                if (ofd.ShowDialog(this) != DialogResult.OK) return;
-                tbSave.Text = ofd.FileName;
-            }
+            using SaveFileDialog ofd = new()
+            { Filter = DataManager.DefaultDataManager.VectorWriteFilter };
+            if (ofd.ShowDialog(this) != DialogResult.OK) return;
+            tbSave.Text = ofd.FileName;
         }
 
         #endregion

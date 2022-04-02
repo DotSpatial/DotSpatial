@@ -17,7 +17,7 @@ namespace DotSpatial.Modeling.Forms
     {
         #region Fields
 
-        private GraphicsPath _arrowPath = new GraphicsPath();
+        private GraphicsPath _arrowPath = new();
 
         #endregion
 
@@ -112,7 +112,7 @@ namespace DotSpatial.Modeling.Forms
                     arrowPoints[i] = new Coordinate(_arrowPath.PathPoints[i].X + Location.X, _arrowPath.PathPoints[i].Y + Location.Y);
                 }
 
-                LineString arrowLine = new LineString(arrowPoints);
+                LineString arrowLine = new(arrowPoints);
                 return arrowLine.Intersects(rectanglePoly);
             }
 
@@ -162,7 +162,7 @@ namespace DotSpatial.Modeling.Forms
         /// <returns>True, if the point is within the shape that defines the element.</returns>
         public override bool PointInElement(Point point)
         {
-            Rectangle temp = new Rectangle(point, new Size(1, 1));
+            Rectangle temp = new(point, new Size(1, 1));
             temp.Inflate(2, 2);
             return ElementInRectangle(temp);
         }

@@ -30,7 +30,7 @@ namespace DotSpatial.Controls
     {
         #region Fields
 
-        private readonly LimitedStack<Extent> _previousExtents = new LimitedStack<Extent>();
+        private readonly LimitedStack<Extent> _previousExtents = new();
 
         private Image _backBuffer;
         private Rectangle _backView;
@@ -45,7 +45,7 @@ namespace DotSpatial.Controls
         private bool _isZoomingNextOrPrevious;
         private Extent _lastExtent;
         private IMapLayerCollection _layers;
-        private LimitedStack<Extent> _nextExtents = new LimitedStack<Extent>();
+        private LimitedStack<Extent> _nextExtents = new();
         private Rectangle _originalView;
         private Control _parent;
         private ActionMode _projectionModeDefine;
@@ -155,7 +155,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the client rectangle.
         /// </summary>
-        public Rectangle ClientRectangle => new Rectangle(0, 0, _width, _height);
+        public Rectangle ClientRectangle => new(0, 0, _width, _height);
 
         /// <summary>
         /// Gets or sets the first clipRegion. If more than one region needs to be set,
@@ -556,8 +556,8 @@ namespace DotSpatial.Controls
                 rect = rect.ExpandBy(rect.Width, rect.Height);
             }
 
-            Point tl = new Point(rect.X, rect.Y);
-            Point br = new Point(rect.Right, rect.Bottom);
+            Point tl = new(rect.X, rect.Y);
+            Point br = new(rect.Right, rect.Bottom);
 
             Coordinate topLeft = BufferToProj(tl);
             Coordinate bottomRight = BufferToProj(br);
@@ -693,8 +693,8 @@ namespace DotSpatial.Controls
             }
 
             Graphics bufferDevice = Graphics.FromImage(_backBuffer);
-            MapArgs args = new MapArgs(ClientRectangle, ViewExtents, bufferDevice);
-            GraphicsPath gp = new GraphicsPath();
+            MapArgs args = new(ClientRectangle, ViewExtents, bufferDevice);
+            GraphicsPath gp = new();
             foreach (Extent region in regions)
             {
                 if (region == null) continue;
@@ -866,7 +866,7 @@ namespace DotSpatial.Controls
         /// <returns>The resulting rectangle.</returns>
         public Rectangle ParentToView(Rectangle clip)
         {
-            Rectangle result = new Rectangle
+            Rectangle result = new()
             {
                 X = View.X + ((clip.X * View.Width) / _parent.ClientRectangle.Width),
                 Y = View.Y + ((clip.Y * View.Height) / _parent.ClientRectangle.Height),
@@ -900,7 +900,7 @@ namespace DotSpatial.Controls
         /// <param name="targetEnvelope">the extents to draw to the target rectangle.</param>
         public virtual void Print(Graphics device, Rectangle targetRectangle, Extent targetEnvelope)
         {
-            MapArgs args = new MapArgs(targetRectangle, targetEnvelope, device);
+            MapArgs args = new(targetRectangle, targetEnvelope, device);
             Matrix oldMatrix = device.Transform;
             try
             {
@@ -944,8 +944,8 @@ namespace DotSpatial.Controls
         /// <returns>A Rectangle.</returns>
         public Rectangle ProjToBuffer(Extent env)
         {
-            Coordinate tl = new Coordinate(env.MinX, env.MaxY);
-            Coordinate br = new Coordinate(env.MaxX, env.MinY);
+            Coordinate tl = new(env.MinX, env.MaxY);
+            Coordinate br = new(env.MaxX, env.MinY);
             Point topLeft = ProjToBuffer(tl);
             Point bottomRight = ProjToBuffer(br);
             return new Rectangle(topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y);
@@ -1413,10 +1413,8 @@ namespace DotSpatial.Controls
         private void ProjectionClick(object sender, EventArgs e)
         {
             // Launches a MapFrameProjectionDialog
-            using (var dialog = new MapFrameProjectionDialog(this))
-            {
-                dialog.ShowDialog(Parent);
-            }
+            using var dialog = new MapFrameProjectionDialog(this);
+            dialog.ShowDialog(Parent);
         }
 
         private void ReprojectOnTheFly(IMapLayer layer)

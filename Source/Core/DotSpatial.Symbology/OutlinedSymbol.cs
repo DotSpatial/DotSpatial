@@ -120,11 +120,9 @@ namespace DotSpatial.Symbology
             base.OnDraw(g, scaleSize);
             float dx = (float)(Size.Width * scaleSize / 2);
             float dy = (float)(Size.Height * scaleSize / 2);
-            using (GraphicsPath gp = new GraphicsPath())
-            {
-                gp.AddRectangle(new RectangleF(-dx, -dy, 2F * dx, 2f * dy));
-                OnDrawOutline(g, scaleSize, gp);
-            }
+            using GraphicsPath gp = new();
+            gp.AddRectangle(new RectangleF(-dx, -dy, 2F * dx, 2f * dy));
+            OnDrawOutline(g, scaleSize, gp);
         }
 
         /// <summary>
@@ -138,14 +136,12 @@ namespace DotSpatial.Symbology
         {
             if (!UseOutline || OutlineWidth == 0) return;
 
-            using (Pen p = new Pen(OutlineColor)
+            using Pen p = new(OutlineColor)
             {
                 Width = (float)(scaleSize * OutlineWidth),
                 Alignment = PenAlignment.Outset
-            })
-            {
-                g.DrawPath(p, gp);
-            }
+            };
+            g.DrawPath(p, gp);
         }
 
         /// <summary>

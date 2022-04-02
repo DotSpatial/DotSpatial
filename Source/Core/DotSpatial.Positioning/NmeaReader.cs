@@ -96,7 +96,7 @@ namespace DotSpatial.Positioning
         public static bool IsNmea(Stream stream)
         {
             // Wrap it in an NMEA Stream.  NMEA is always ASCII
-            StreamReader reader = new StreamReader(stream, Encoding.ASCII, false, IDEAL_NMEA_BUFFER_SIZE);
+            StreamReader reader = new(stream, Encoding.ASCII, false, IDEAL_NMEA_BUFFER_SIZE);
             string testLine;
 
             // We have ASCII.  Try up to 10 times to get a full sentences
@@ -268,7 +268,7 @@ namespace DotSpatial.Positioning
             // Raise an event to try and parse this
             if (ResolveSentence != null)
             {
-                NmeaSentenceResolverEventArgs e = new NmeaSentenceResolverEventArgs(sentence);
+                NmeaSentenceResolverEventArgs e = new(sentence);
                 ResolveSentence(this, e);
 
                 // Was anything returned?

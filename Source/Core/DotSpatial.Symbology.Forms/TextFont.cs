@@ -357,7 +357,7 @@ namespace DotSpatial.Symbology.Forms
             _style = FontStyle.Regular;
 
             // format
-            StringFormat temp = new StringFormat();
+            StringFormat temp = new();
             _alignment = temp.Alignment;
             _flags = temp.FormatFlags;
             _lineAlignment = temp.LineAlignment;

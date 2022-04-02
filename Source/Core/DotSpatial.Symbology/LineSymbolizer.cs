@@ -181,7 +181,7 @@ namespace DotSpatial.Symbology
         {
             foreach (var stroke in _strokes)
             {
-                using (var p = stroke.ToPen(1)) g.DrawLine(p, new Point(target.X, target.Y + (target.Height / 2)), new Point(target.Right, target.Y + (target.Height / 2)));
+                using var p = stroke.ToPen(1); g.DrawLine(p, new Point(target.X, target.Y + (target.Height / 2)), new Point(target.Right, target.Y + (target.Height / 2)));
             }
         }
 
@@ -194,7 +194,7 @@ namespace DotSpatial.Symbology
         {
             foreach (IStroke stroke in _strokes)
             {
-                GraphicsPath p = new GraphicsPath();
+                GraphicsPath p = new();
                 p.AddLine(new Point(target.X, target.Y + (target.Height / 2)), new Point(target.Right, target.Y + (target.Height / 2)));
 
                 if (stroke is ICartographicStroke cs)
@@ -218,7 +218,7 @@ namespace DotSpatial.Symbology
         {
             foreach (var stroke in _strokes)
             {
-                using (var p = stroke.ToPen(scaleWidth)) g.DrawPath(p, gp);
+                using var p = stroke.ToPen(scaleWidth); g.DrawPath(p, gp);
             }
         }
 
@@ -241,7 +241,7 @@ namespace DotSpatial.Symbology
         /// <returns>The legend symbol size.</returns>
         public override Size GetLegendSymbolSize()
         {
-            Size size = new Size(16, 16); // default size for smaller lines
+            Size size = new(16, 16); // default size for smaller lines
             if (_strokes == null) return size;
 
             foreach (var stroke in _strokes.OfType<ISimpleStroke>())

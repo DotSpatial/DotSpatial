@@ -98,7 +98,7 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="e">The PaintEventArgs for this paint action.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            Bitmap bmp = new Bitmap(Width, Height);
+            Bitmap bmp = new(Width, Height);
             using (Graphics g = Graphics.FromImage(bmp))
             {
                 g.SetClip(e.ClipRectangle);
@@ -107,10 +107,10 @@ namespace DotSpatial.Symbology.Forms
                     g.FillRectangle(b, ClientRectangle);
                 }
 
-                RectangleF r = new RectangleF(0f, 0f, Width - 1, Height - 1);
-                using (GraphicsPath gp = new GraphicsPath())
+                RectangleF r = new(0f, 0f, Width - 1, Height - 1);
+                using (GraphicsPath gp = new())
                 {
-                    using (LinearGradientBrush lgb = new LinearGradientBrush(r, Color.LightGreen, Color.Green, LinearGradientMode.Vertical))
+                    using (LinearGradientBrush lgb = new(r, Color.LightGreen, Color.Green, LinearGradientMode.Vertical))
                     {
                         gp.AddRoundedRectangle(new Rectangle(0, 0, Width - 1, Height - 1), 4);
                         int w = Value * (Width - 1) / 100;
@@ -125,16 +125,14 @@ namespace DotSpatial.Symbology.Forms
 
                 if (!ShowMessage) return;
 
-                StringFormat fmt = new StringFormat
+                StringFormat fmt = new()
                 {
                     Alignment = StringAlignment.Center,
                     LineAlignment = StringAlignment.Center
                 };
 
-                using (Brush fontBrush = new SolidBrush(FontColor))
-                {
-                    g.DrawString(_message, Font, fontBrush, r, fmt);
-                }
+                using Brush fontBrush = new SolidBrush(FontColor);
+                g.DrawString(_message, Font, fontBrush, r, fmt);
             }
 
             e.Graphics.DrawImageUnscaled(bmp, 0, 0);

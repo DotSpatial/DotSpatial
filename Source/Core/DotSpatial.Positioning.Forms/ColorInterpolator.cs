@@ -82,11 +82,11 @@ namespace DotSpatial.Positioning.Forms
     public sealed class ColorInterpolator
     {
 #if !PocketPC
-        private readonly Interpolator _a = new Interpolator();
+        private readonly Interpolator _a = new();
 #endif
-        private readonly Interpolator _r = new Interpolator();
-        private readonly Interpolator _g = new Interpolator();
-        private readonly Interpolator _b = new Interpolator();
+        private readonly Interpolator _r = new();
+        private readonly Interpolator _g = new();
+        private readonly Interpolator _b = new();
 
         /// <summary>Creates a new instance.</summary>
         /// <param name="startColor">A <strong>Color</strong> at the start of the sequence.</param>

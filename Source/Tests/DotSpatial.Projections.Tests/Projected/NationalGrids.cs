@@ -496,8 +496,8 @@ namespace DotSpatial.Projections.Tests.Projected
             xy[1] = 401477.6657818287500000;
             double[] z = new double[1];
             z[0] = 4716473.1891765557000000;
-            Spheroid s = new Spheroid(Proj4Ellipsoid.WGS_1984);
-            GeocentricGeodetic gc = new GeocentricGeodetic(s);
+            Spheroid s = new(Proj4Ellipsoid.WGS_1984);
+            GeocentricGeodetic gc = new(s);
             gc.GeocentricToGeodetic(xy, z, 0, 1);
             
         }

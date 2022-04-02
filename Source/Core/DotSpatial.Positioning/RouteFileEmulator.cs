@@ -123,43 +123,39 @@ namespace DotSpatial.Positioning
         /// <see cref="Position"/> in the file will be the starting point of the route.</param>
         private void ReadRoute(string filePath, bool reverse)
         {
-            using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using FileStream stream = new(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            using StreamReader reader = new(stream);
+            // Split the file into an array of lines
+            string[] lines = reader.ReadToEnd().Split(Environment.NewLine.ToCharArray());
+
+            // Determine the order to read the lines
+            int start = reverse ? lines.Length - 1 : 0;
+            int end = reverse ? 0 : lines.Length - 1;
+
+            for (int i = start; i != end;)
             {
-                using (StreamReader reader = new StreamReader(stream))
+                string line = lines[i];
+
+                // Ignore blank lines
+                if (!String.IsNullOrEmpty(line))
                 {
-                    // Split the file into an array of lines
-                    string[] lines = reader.ReadToEnd().Split(Environment.NewLine.ToCharArray());
+                    // Convert the line to a Position struct
+                    Position position = new(line);
 
-                    // Determine the order to read the lines
-                    int start = reverse ? lines.Length - 1 : 0;
-                    int end = reverse ? 0 : lines.Length - 1;
-
-                    for (int i = start; i != end; )
+                    if (i == start)
                     {
-                        string line = lines[i];
-
-                        // Ignore blank lines
-                        if (!String.IsNullOrEmpty(line))
-                        {
-                            // Convert the line to a Position struct
-                            Position position = new Position(line);
-
-                            if (i == start)
-                            {
-                                // Set the CurrentPosition and CurrentDestination properties
-                                // Notice: This must be done *before* populating the Route property, or an exception will occur
-                                CurrentPosition = position;
-                                CurrentDestination = position;
-                            }
-
-                            // Add this point to the route
-                            Route.Add(position);
-                        }
-
-                        // Move to the next (or previous) line
-                        i += reverse ? -1 : 1;
+                        // Set the CurrentPosition and CurrentDestination properties
+                        // Notice: This must be done *before* populating the Route property, or an exception will occur
+                        CurrentPosition = position;
+                        CurrentDestination = position;
                     }
+
+                    // Add this point to the route
+                    Route.Add(position);
                 }
+
+                // Move to the next (or previous) line
+                i += reverse ? -1 : 1;
             }
         }
 

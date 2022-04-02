@@ -111,21 +111,21 @@ namespace DotSpatial.Analysis
                 h = 8000;
             }
 
-            Bitmap bmp = new Bitmap(w, h);
+            Bitmap bmp = new(w, h);
             Graphics g = Graphics.FromImage(bmp);
             g.Clear(Color.Transparent);
             g.SmoothingMode = SmoothingMode.None;
             g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
             g.InterpolationMode = InterpolationMode.NearestNeighbor;
             Hashtable colorTable;
-            MapArgs args = new MapArgs(new Rectangle(0, 0, w, h), env, g);
+            MapArgs args = new(new Rectangle(0, 0, w, h), env, g);
 
             switch (fs.FeatureType)
             {
                 case FeatureType.Polygon:
                     {
-                        MapPolygonLayer mpl = new MapPolygonLayer(fs);
-                        PolygonScheme ps = new PolygonScheme();
+                        MapPolygonLayer mpl = new(fs);
+                        PolygonScheme ps = new();
                         colorTable = ps.GenerateUniqueColors(fs, fieldName);
                         mpl.Symbology = ps;
 
@@ -137,8 +137,8 @@ namespace DotSpatial.Analysis
                     break;
                 case FeatureType.Line:
                     {
-                        MapLineLayer mpl = new MapLineLayer(fs);
-                        LineScheme ps = new LineScheme();
+                        MapLineLayer mpl = new(fs);
+                        LineScheme ps = new();
                         colorTable = ps.GenerateUniqueColors(fs, fieldName);
                         mpl.Symbology = ps;
 
@@ -150,8 +150,8 @@ namespace DotSpatial.Analysis
                     break;
                 default:
                     {
-                        MapPointLayer mpl = new MapPointLayer(fs);
-                        PointScheme ps = new PointScheme();
+                        MapPointLayer mpl = new(fs);
+                        PointScheme ps = new();
                         colorTable = ps.GenerateUniqueColors(fs, fieldName);
                         mpl.Symbology = ps;
 
@@ -171,8 +171,8 @@ namespace DotSpatial.Analysis
                 tp = typeof(double);
             }
 
-            InRamImageData image = new InRamImageData(bmp, env);
-            ProgressMeter pm = new ProgressMeter(progressHandler, "Converting To Raster Cells", h);
+            InRamImageData image = new(bmp, env);
+            ProgressMeter pm = new(progressHandler, "Converting To Raster Cells", h);
 
             var output = Raster.Create(outputFileName, driverCode, w, h, 1, tp, options);
             output.Bounds = new RasterBounds(h, w, env);
@@ -198,8 +198,8 @@ namespace DotSpatial.Analysis
                 }
             }
 
-            List<RcIndex> locations = new List<RcIndex>();
-            List<string> failureList = new List<string>();
+            List<RcIndex> locations = new();
+            List<string> failureList = new();
             for (int row = 0; row < h; row++)
             {
                 for (int col = 0; col < w; col++)
@@ -238,7 +238,7 @@ namespace DotSpatial.Analysis
             int iteration = 0;
             while (locations.Count > 0)
             {
-                List<RcIndex> newLocations = new List<RcIndex>();
+                List<RcIndex> newLocations = new();
                 foreach (RcIndex location in locations)
                 {
                     object val = GetCellValue(w, h, location.Row, location.Column, image, image.GetColor(location.Row, location.Column), colorTable, newLocations);

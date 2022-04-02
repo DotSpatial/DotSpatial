@@ -77,8 +77,7 @@ namespace DotSpatial.Symbology.Forms
             IFeatureSymbolizer copy = Symbolizer.Copy();
 
             // preserve aspect ratio, larger dimension specified
-            IPointSymbolizer ps = copy as IPointSymbolizer;
-            if (ps != null)
+            if (copy is IPointSymbolizer ps)
             {
                 Size2D s = ps.GetSize();
                 double ratio = size / Math.Max(s.Width, s.Height);
@@ -88,8 +87,7 @@ namespace DotSpatial.Symbology.Forms
                 ps.SetFillColor(color);
             }
 
-            ILineSymbolizer ls = copy as ILineSymbolizer;
-            if (ls != null)
+            if (copy is ILineSymbolizer ls)
             {
                 ls.SetWidth(size);
                 ls.SetFillColor(color);

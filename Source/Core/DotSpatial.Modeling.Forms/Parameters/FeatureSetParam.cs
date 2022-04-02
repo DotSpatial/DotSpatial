@@ -57,8 +57,8 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <param name="path">Path of the generated featureset.</param>
         public override void GenerateDefaultOutput(string path)
         {
-            FeatureSet addedFeatureSet = new FeatureSet
-                                             {
+            FeatureSet addedFeatureSet = new()
+            {
                                                  Filename = Path.GetDirectoryName(path) + Path.DirectorySeparatorChar + ModelName + ".shp"
                                              };
             Value = addedFeatureSet;

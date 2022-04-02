@@ -152,7 +152,7 @@ namespace DotSpatial.Controls
             base.OnMouseUp(e);
         }
 
-        private void SelectTimerTick(object? sender, EventArgs e)
+        private void SelectTimerTick(object sender, EventArgs e)
         {
             _selectTimer.Stop();
             Map.ResetBuffer();

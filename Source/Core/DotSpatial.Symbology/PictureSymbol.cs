@@ -236,16 +236,16 @@ namespace DotSpatial.Symbology
         /// <inheritdoc />
         public override void SetColor(Color color)
         {
-            Bitmap bm = new Bitmap(_image.Width, _image.Height);
+            Bitmap bm = new(_image.Width, _image.Height);
             Graphics g = Graphics.FromImage(bm);
 
             float r = (color.R / 255f) / 2;
             float gr = (color.G / 255f) / 2;
             float b = (color.B / 255f) / 2;
 
-            ColorMatrix cm = new ColorMatrix(new[] { new[] { r, gr, b, 0, 0 }, new[] { r, gr, b, 0, 0 }, new[] { r, gr, b, 0, 0 }, new float[] { 0, 0, 0, 1, 0, 0 }, new float[] { 0, 0, 0, 0, 1, 0 }, new float[] { 0, 0, 0, 0, 0, 1 } });
+            ColorMatrix cm = new(new[] { new[] { r, gr, b, 0, 0 }, new[] { r, gr, b, 0, 0 }, new[] { r, gr, b, 0, 0 }, new float[] { 0, 0, 0, 1, 0, 0 }, new float[] { 0, 0, 0, 0, 1, 0 }, new float[] { 0, 0, 0, 0, 0, 1 } });
 
-            ImageAttributes ia = new ImageAttributes();
+            ImageAttributes ia = new();
             ia.SetColorMatrix(cm);
             g.DrawImage(_image, new Rectangle(0, 0, _image.Width, _image.Height), 0, 0, _image.Width, _image.Height, GraphicsUnit.Pixel, ia);
             g.Dispose();
@@ -294,7 +294,7 @@ namespace DotSpatial.Symbology
         {
             float dx = (float)(scaleSize * Size.Width / 2);
             float dy = (float)(scaleSize * Size.Height / 2);
-            GraphicsPath gp = new GraphicsPath();
+            GraphicsPath gp = new();
             gp.AddRectangle(new RectangleF(-dx, -dy, dx * 2, dy * 2));
             if (_image != null)
             {
@@ -320,7 +320,7 @@ namespace DotSpatial.Symbology
             if (image == null) return null;
             if (opacity == 1F) return image.Clone() as Image;
 
-            Bitmap bmp = new Bitmap(image.Width, image.Height);
+            Bitmap bmp = new(image.Width, image.Height);
             Graphics g = Graphics.FromImage(bmp);
             float[][] ptsArray =
             {
@@ -330,8 +330,8 @@ namespace DotSpatial.Symbology
                 new[] { 0, 0, 0, opacity, 0 }, // A
                 new float[] { 0, 0, 0, 0, 1 }
             };
-            ColorMatrix clrMatrix = new ColorMatrix(ptsArray);
-            ImageAttributes att = new ImageAttributes();
+            ColorMatrix clrMatrix = new(ptsArray);
+            ImageAttributes att = new();
             att.SetColorMatrix(clrMatrix);
             g.DrawImage(image, new Rectangle(0, 0, image.Width, image.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, att);
             g.Dispose();
@@ -342,7 +342,7 @@ namespace DotSpatial.Symbology
         {
             // Convert Base64 String to byte[]
             byte[] imageBytes = Convert.FromBase64String(base64String);
-            MemoryStream ms = new MemoryStream(imageBytes, 0, imageBytes.Length);
+            MemoryStream ms = new(imageBytes, 0, imageBytes.Length);
 
             // Convert byte[] to Image
             ms.Write(imageBytes, 0, imageBytes.Length);
@@ -354,16 +354,14 @@ namespace DotSpatial.Symbology
         {
             if (image == null) return string.Empty;
 
-            using (MemoryStream ms = new MemoryStream())
-            {
-                // Convert Image to byte[]
-                image.Save(ms, ImageFormat.Png);
-                byte[] imageBytes = ms.ToArray();
+            using MemoryStream ms = new();
+            // Convert Image to byte[]
+            image.Save(ms, ImageFormat.Png);
+            byte[] imageBytes = ms.ToArray();
 
-                // Convert byte[] to Base64 String
-                string base64String = Convert.ToBase64String(imageBytes);
-                return base64String;
-            }
+            // Convert byte[] to Base64 String
+            string base64String = Convert.ToBase64String(imageBytes);
+            return base64String;
         }
 
         #endregion

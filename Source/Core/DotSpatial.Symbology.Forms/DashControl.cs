@@ -205,7 +205,7 @@ namespace DotSpatial.Symbology.Forms
         public float[] GetCompoundArray()
         {
             bool pressed = false;
-            List<float> pattern = new List<float>();
+            List<float> pattern = new();
             int i = 0;
             foreach (SquareButton button in _verticalButtons)
             {
@@ -236,7 +236,7 @@ namespace DotSpatial.Symbology.Forms
         public float[] GetDashPattern()
         {
             bool pressed = true;
-            List<float> pattern = new List<float>();
+            List<float> pattern = new();
             float previousPosition = 0F;
             int i = 0;
             foreach (SquareButton button in _horizontalButtons)
@@ -485,7 +485,7 @@ namespace DotSpatial.Symbology.Forms
         {
             Rectangle clip = default(Rectangle);
             if (clip.IsEmpty) clip = ClientRectangle;
-            Bitmap bmp = new Bitmap(clip.Width, clip.Height);
+            Bitmap bmp = new(clip.Width, clip.Height);
             Graphics g = Graphics.FromImage(bmp);
             g.TranslateTransform(clip.X, clip.Y);
             g.Clear(BackColor);
@@ -530,7 +530,7 @@ namespace DotSpatial.Symbology.Forms
             _horizontalButtons = new List<SquareButton>();
             for (int i = 0; i < buttonPattern.Length; i++)
             {
-                SquareButton sq = new SquareButton
+                SquareButton sq = new()
                 {
                     Bounds = new RectangleF((i + 1) * _blockSize.Width, 0, _blockSize.Width, _blockSize.Height),
                     ColorDownDark = ButtonDownDarkColor,
@@ -553,7 +553,7 @@ namespace DotSpatial.Symbology.Forms
             _verticalButtons = new List<SquareButton>();
             for (int i = 0; i < buttonPattern.Length; i++)
             {
-                SquareButton sq = new SquareButton
+                SquareButton sq = new()
                 {
                     Bounds = new RectangleF(0, (i + 1) * _blockSize.Width, _blockSize.Width, _blockSize.Height),
                     ColorDownDark = ButtonDownDarkColor,
@@ -574,7 +574,7 @@ namespace DotSpatial.Symbology.Forms
             int hCount = (int)Math.Ceiling(loc.X / _blockSize.Width);
             loc.X = hCount * _blockSize.Width;
             HorizontalSlider.Position = loc;
-            List<SquareButton> newButtonsH = new List<SquareButton>();
+            List<SquareButton> newButtonsH = new();
             int start = 1;
             if (_horizontalButtons != null)
             {
@@ -589,7 +589,7 @@ namespace DotSpatial.Symbology.Forms
 
             for (int j = start; j < hCount; j++)
             {
-                SquareButton sq = new SquareButton
+                SquareButton sq = new()
                 {
                     Bounds = new RectangleF(j * _blockSize.Width, 0, _blockSize.Width, _blockSize.Height),
                     ColorDownDark = ButtonDownDarkColor,
@@ -609,7 +609,7 @@ namespace DotSpatial.Symbology.Forms
             int vCount = (int)Math.Ceiling(loc.Y / _blockSize.Height);
             loc.Y = vCount * _blockSize.Height;
             VerticalSlider.Position = loc;
-            List<SquareButton> buttons = new List<SquareButton>();
+            List<SquareButton> buttons = new();
             start = 1;
             if (_verticalButtons != null)
             {
@@ -624,7 +624,7 @@ namespace DotSpatial.Symbology.Forms
 
             for (int j = start; j < vCount; j++)
             {
-                SquareButton sq = new SquareButton
+                SquareButton sq = new()
                 {
                     Bounds = new RectangleF(0, j * _blockSize.Height, _blockSize.Width, _blockSize.Height),
                     ColorDownDark = ButtonDownDarkColor,

@@ -101,7 +101,7 @@ namespace DotSpatial.Analysis
         private bool BinRaster<T>(Raster<T> source, Raster<T> result, ICancelProgressHandler progressHandler)
             where T : IEquatable<T>, IComparable<T>
         {
-            ProgressMeter pm = new ProgressMeter(progressHandler, "Calculating values", source.NumRows);
+            ProgressMeter pm = new(progressHandler, "Calculating values", source.NumRows);
             for (int row = 0; row < source.NumRows; row++)
             {
                 for (int col = 0; col < source.NumColumns; col++)
@@ -123,7 +123,7 @@ namespace DotSpatial.Analysis
 
         private bool BinRasterSlow(IRaster source, IRaster result, ICancelProgressHandler progressHandler)
         {
-            ProgressMeter pm = new ProgressMeter(progressHandler, "Calculating values", source.NumRows);
+            ProgressMeter pm = new(progressHandler, "Calculating values", source.NumRows);
             for (int row = 0; row < source.NumRows; row++)
             {
                 for (int col = 0; col < source.NumColumns; col++)

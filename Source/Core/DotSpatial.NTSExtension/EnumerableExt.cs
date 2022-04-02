@@ -36,7 +36,7 @@ namespace DotSpatial.NTSExtension
         public static List<T> CloneList<T>(this IEnumerable<T> original)
             where T : ICloneable
         {
-            List<T> result = new List<T>();
+            List<T> result = new();
             foreach (T item in original)
             {
                 result.Add(SafeCastTo<T>(item.Clone()));

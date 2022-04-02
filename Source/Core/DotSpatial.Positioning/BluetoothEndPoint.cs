@@ -350,8 +350,7 @@ namespace DotSpatial.Positioning
                 return false;
 
             // Try to cast as this object type
-            BluetoothEndPoint endPoint = obj as BluetoothEndPoint;
-            if (endPoint != null)
+            if (obj is BluetoothEndPoint endPoint)
                 return Equals(endPoint);
 
             // Not our kind of object

@@ -108,16 +108,14 @@ namespace DotSpatial.Symbology.Forms
         {
             if (LaunchDialogOnClick)
             {
-                using (ColorDialog cd = new ColorDialog
+                using ColorDialog cd = new()
                 {
                     AnyColor = true,
                     CustomColors = new[] { ToDialogColor(_color) },
                     Color = _color
-                })
-                {
-                    if (cd.ShowDialog() != DialogResult.OK) return;
-                    Color = cd.Color;
-                }
+                };
+                if (cd.ShowDialog() != DialogResult.OK) return;
+                Color = cd.Color;
             }
 
             base.OnClick(e);
@@ -138,7 +136,7 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="clipRectangle">The clip rectangle.</param>
         protected virtual void OnDraw(Graphics g, Rectangle clipRectangle)
         {
-            Rectangle bounds = new Rectangle(0, 0, Width - 1, Height - 1);
+            Rectangle bounds = new(0, 0, Width - 1, Height - 1);
 
             // Even when fully transparent, I would like to see a "glass like" reflective appearance
             Color first = _isDown ? Color.FromArgb(80, Color.DarkCyan).Darker(.3F) : Color.FromArgb(80, Color.LightCyan.Lighter(.3F));
@@ -148,7 +146,7 @@ namespace DotSpatial.Symbology.Forms
 
             int rad = Math.Min(Math.Min(RoundingRadius, Width / 2), Height / 2);
 
-            using (GraphicsPath gp = new GraphicsPath())
+            using (GraphicsPath gp = new())
             {
                 gp.AddRoundedRectangle(bounds, rad);
 
@@ -157,38 +155,32 @@ namespace DotSpatial.Symbology.Forms
                     g.FillPath(crystalBrush, gp);
                 }
 
-                using (var lgb = new LinearGradientBrush(new Point(0, 0), new Point(bounds.Width, bounds.Height), first2, second2))
-                {
-                    g.FillPath(lgb, gp);
-                }
+                using var lgb = new LinearGradientBrush(new Point(0, 0), new Point(bounds.Width, bounds.Height), first2, second2);
+                g.FillPath(lgb, gp);
             }
 
             var bevel2 = BevelRadius * 2;
             if (Width >= bevel2 && Height >= bevel2)
             {
-                Rectangle inner = new Rectangle(bounds.Left + BevelRadius, bounds.Top + BevelRadius, bounds.Width - bevel2, bounds.Height - bevel2);
-                using (var gp = new GraphicsPath())
+                Rectangle inner = new(bounds.Left + BevelRadius, bounds.Top + BevelRadius, bounds.Width - bevel2, bounds.Height - bevel2);
+                using var gp = new GraphicsPath();
+                int rRad = RoundingRadius - BevelRadius;
+                if (rRad < 0) rRad = 0;
+                gp.AddRoundedRectangle(inner, rRad);
+
+                Color cPlain = Color.FromArgb(20, Color.Cyan);
+                using (SolidBrush back = new(BackColor))
                 {
-                    int rRad = RoundingRadius - BevelRadius;
-                    if (rRad < 0) rRad = 0;
-                    gp.AddRoundedRectangle(inner, rRad);
-
-                    Color cPlain = Color.FromArgb(20, Color.Cyan);
-                    using (SolidBrush back = new SolidBrush(BackColor))
-                    {
-                        g.FillPath(back, gp);
-                    }
-
-                    using (SolidBrush crystalFlat = new SolidBrush(cPlain))
-                    {
-                        g.FillPath(crystalFlat, gp);
-                    }
-
-                    using (Brush b = new SolidBrush(_color))
-                    {
-                        g.FillPath(b, gp);
-                    }
+                    g.FillPath(back, gp);
                 }
+
+                using (SolidBrush crystalFlat = new(cPlain))
+                {
+                    g.FillPath(crystalFlat, gp);
+                }
+
+                using Brush b = new SolidBrush(_color);
+                g.FillPath(b, gp);
             }
         }
 
@@ -234,7 +226,7 @@ namespace DotSpatial.Symbology.Forms
                 clip = ClientRectangle;
             }
 
-            Bitmap bmp = new Bitmap(clip.Width, clip.Height);
+            Bitmap bmp = new(clip.Width, clip.Height);
             Graphics g = Graphics.FromImage(bmp);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;

@@ -99,19 +99,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Tests.Common", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Controls.Tests", "Tests\DotSpatial.Controls.Tests\DotSpatial.Controls.Tests.csproj", "{7411AE6C-7947-46E0-B435-863DEE6D85D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Data.Tests", "Tests\DotSpatial.Data.Tests\DotSpatial.Data.Tests.csproj", "{76F967CE-8C55-43C4-83E3-81044A7B8774}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Data.Tests", "Tests\DotSpatial.Data.Tests\DotSpatial.Data.Tests.csproj", "{76F967CE-8C55-43C4-83E3-81044A7B8774}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests", "Tests\DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests\DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests.csproj", "{6FBAE064-66DA-458C-9400-BBA1452E76FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests", "Tests\DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests\DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests.csproj", "{6FBAE064-66DA-458C-9400-BBA1452E76FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning.Tests", "Tests\DotSpatial.Positioning.Tests\DotSpatial.Positioning.Tests.csproj", "{8D60DAB5-4511-4B47-9FA9-26220297AC0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Positioning.Tests", "Tests\DotSpatial.Positioning.Tests\DotSpatial.Positioning.Tests.csproj", "{8D60DAB5-4511-4B47-9FA9-26220297AC0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Projections.Tests", "Tests\DotSpatial.Projections.Tests\DotSpatial.Projections.Tests.csproj", "{9AF7A14B-5143-4AEF-96BC-763F2A14BE14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Projections.Tests", "Tests\DotSpatial.Projections.Tests\DotSpatial.Projections.Tests.csproj", "{9AF7A14B-5143-4AEF-96BC-763F2A14BE14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Serialization.Tests", "Tests\DotSpatial.Serialization.Tests\DotSpatial.Serialization.Tests.csproj", "{62A05D33-8030-45CA-A5E8-B85FB7EB8E57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Serialization.Tests", "Tests\DotSpatial.Serialization.Tests\DotSpatial.Serialization.Tests.csproj", "{62A05D33-8030-45CA-A5E8-B85FB7EB8E57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Symbology.Tests", "Tests\DotSpatial.Symbology.Tests\DotSpatial.Symbology.Tests.csproj", "{072BD3AE-A459-4233-B359-D9954F0A0621}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Symbology.Tests", "Tests\DotSpatial.Symbology.Tests\DotSpatial.Symbology.Tests.csproj", "{072BD3AE-A459-4233-B359-D9954F0A0621}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Tools.Tests", "Tests\DotSpatial.Tools.Tests\DotSpatial.Tools.Tests.csproj", "{B2BECF44-6311-4909-8E90-DEC93710D282}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Tools.Tests", "Tests\DotSpatial.Tools.Tests\DotSpatial.Tools.Tests.csproj", "{B2BECF44-6311-4909-8E90-DEC93710D282}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

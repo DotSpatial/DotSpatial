@@ -86,10 +86,10 @@ namespace DotSpatial.Projections.Transforms
                     double al = .5 * Math.Abs(Math.PI / lp[lam] - lp[lam] / Math.PI);
                     double al2 = al * al;
                     double g = Math.Sqrt(1 - p2 * p2);
-                    g = g / (p2 + g - 1);
+                    g /= (p2 + g - 1);
                     double g2 = g * g;
                     p2 = g * (2 / p2 - 1);
-                    p2 = p2 * p2;
+                    p2 *= p2;
                     xy[x] = g - p2;
                     g = p2 + al2;
                     xy[x] = Math.PI * (al * xy[x] + Math.Sqrt(al2 * xy[x] * xy[x] - g * (g2 - p2))) / g;

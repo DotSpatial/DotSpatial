@@ -56,7 +56,7 @@ namespace DotSpatial.Controls
             // Convert Degrees, Minutes, Seconds to x, y coordinates for both lat and long.
             var coor = values[2] / 100;
             coor += values[1];
-            coor = coor / 100;
+            coor /= 100;
             coor += Math.Abs(values[0]);
 
             // Change signs to get to the right quadrant.

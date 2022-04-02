@@ -33,7 +33,7 @@ namespace DotSpatial.Symbology.Forms
         {
             _layer = context?.Instance as ILayer;
             IWindowsFormsEditorService dialogProvider = provider?.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
-            DynamicVisibilityControl dvc = new DynamicVisibilityControl(dialogProvider, _layer);
+            DynamicVisibilityControl dvc = new(dialogProvider, _layer);
             dialogProvider?.DropDownControl(dvc);
             _layer?.Invalidate();
             return dvc.UseDynamicVisibility;

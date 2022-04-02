@@ -25,7 +25,7 @@ namespace DotSpatial.NTSExtension
             double dist = double.MaxValue;
             for (int i = 0; i < self.NumPoints - 1; i++)
             {
-                LineSegment s = new LineSegment(self.GetCoordinateN(i), self.GetCoordinateN(i + 1));
+                LineSegment s = new(self.GetCoordinateN(i), self.GetCoordinateN(i + 1));
                 Coordinate temp = s.ClosestPoint(testPoint);
                 double tempDist = testPoint.Distance(temp);
                 if (tempDist < dist)

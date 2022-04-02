@@ -59,8 +59,7 @@ namespace DotSpatial.Controls
 
             mapFrame.Projection = newProjection;
 
-            var parent = mapFrame.Parent as IMap;
-            if (parent != null)
+            if (mapFrame.Parent is IMap parent)
             {
                 // this is needed to fire the Map.ProjectionChanged event
                 parent.Projection = newProjection;

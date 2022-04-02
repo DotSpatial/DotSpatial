@@ -76,7 +76,7 @@ namespace DotSpatial.Tools
         /// <returns>Boolean, true if the method was successful.</returns>
         public bool Execute(IRaster input1, IRaster input2, IRaster output, ICancelProgressHandler cancelProgressHandler)
         {
-            RasterMagic magic = new RasterMagic(Operation);
+            RasterMagic magic = new(Operation);
             return magic.RasterMath(input1, input2, output, cancelProgressHandler);
         }
 

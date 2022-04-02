@@ -271,7 +271,7 @@ namespace DotSpatial.Controls
         {
             if (Background != null)
             {
-                GraphicsPath gp = new GraphicsPath();
+                GraphicsPath gp = new();
                 gp.AddRectangle(Rectangle);
                 foreach (IPattern myPattern in Background.Patterns)
                 {
@@ -313,14 +313,12 @@ namespace DotSpatial.Controls
                 if (!outlineSymbol.UseOutline)
                     continue;
 
-                using (GraphicsPath gp = new GraphicsPath())
-                {
-                    gp.AddLine(tempRect.X, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y);
-                    gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height);
-                    gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y + tempRect.Height);
-                    gp.AddLine(tempRect.X, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y);
-                    outlineSymbol.Outline.DrawPath(g, gp, 1D);
-                }
+                using GraphicsPath gp = new();
+                gp.AddLine(tempRect.X, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y);
+                gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height);
+                gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y + tempRect.Height);
+                gp.AddLine(tempRect.X, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y);
+                outlineSymbol.Outline.DrawPath(g, gp, 1D);
             }
         }
 
@@ -393,7 +391,7 @@ namespace DotSpatial.Controls
         protected virtual void UpdateThumbnail()
         {
             if (Resizing || Size.Width == 0 || Size.Height == 0) return;
-            Bitmap tempThumbNail = new Bitmap(32, 32, PixelFormat.Format32bppArgb);
+            Bitmap tempThumbNail = new(32, 32, PixelFormat.Format32bppArgb);
             Graphics graph = Graphics.FromImage(tempThumbNail);
             graph.SmoothingMode = SmoothingMode.AntiAlias;
             graph.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;

@@ -66,9 +66,8 @@ namespace DotSpatial.Tools
         {
             // Get the needed input and output parameters
             IFeatureSet inputFeatures = _inputParam[0].Value as IFeatureSet;
-            DoubleParam dp = _inputParam[1] as DoubleParam;
             double bufferDistance = 1;
-            if (dp != null)
+            if (_inputParam[1] is DoubleParam dp)
             {
                 bufferDistance = dp.Value;
             }

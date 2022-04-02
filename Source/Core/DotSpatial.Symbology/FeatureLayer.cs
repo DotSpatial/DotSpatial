@@ -667,7 +667,7 @@ namespace DotSpatial.Symbology
             else
             {
                 // we're clearing only the categories that are selection enabled
-                Envelope area = new Envelope();
+                Envelope area = new();
 
                 foreach (var cat in cats.Where(_ => _.SelectionEnabled))
                 {
@@ -841,13 +841,12 @@ namespace DotSpatial.Symbology
             if (fs.IndexMode)
             {
                 // Use Index selection to remove by index
-                IndexSelection indexSel = Selection as IndexSelection;
 
                 // In case we have an invalid cast for some reason.
-                if (indexSel == null) return;
+                if (Selection is not IndexSelection indexSel) return;
 
                 // Create a list of index values to remove.
-                List<int> orderedIndex = new List<int>(indexSel);
+                List<int> orderedIndex = new(indexSel);
 
                 // Clear the selection so the removed features are no longer contained when IFeatureSet.FeatureRemoved is raised
                 Selection.Clear();
@@ -1025,19 +1024,17 @@ namespace DotSpatial.Symbology
 
             if (modifyMode == ModifySelectionMode.SelectFrom)
             {
-                List<int> cond = new List<int>();
+                List<int> cond = new();
                 if (_editMode)
                 {
-                    IFeatureSelection fs = Selection as IFeatureSelection;
-                    if (fs != null)
+                    if (Selection is IFeatureSelection fs)
                     {
                         cond.AddRange(fs.Select(feature => DataSet.Features.IndexOf(feature)));
                     }
                 }
                 else
                 {
-                    IIndexSelection sel = Selection as IIndexSelection;
-                    if (sel != null)
+                    if (Selection is IIndexSelection sel)
                     {
                         cond = sel.ToList();
                     }
@@ -1125,8 +1122,7 @@ namespace DotSpatial.Symbology
                 return;
             }
 
-            IFeatureCategory cat = Symbology.CreateNewCategory(Color.Blue, 1) as IFeatureCategory;
-            if (cat != null)
+            if (Symbology.CreateNewCategory(Color.Blue, 1) is IFeatureCategory cat)
             {
                 cat.Symbolizer = symbolizer;
                 Symbology.AddCategory(cat);
@@ -1211,10 +1207,10 @@ namespace DotSpatial.Symbology
         public Bitmap SnapShot(Extent geographicExtent, int width)
         {
             int height = Convert.ToInt32((geographicExtent.Height / geographicExtent.Width) * width);
-            Bitmap bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            Bitmap bmp = new(width, height, PixelFormat.Format32bppArgb);
             using (Graphics g = Graphics.FromImage(bmp))
             {
-                ImageProjection p = new ImageProjection(geographicExtent, new Rectangle(0, 0, width, height));
+                ImageProjection p = new(geographicExtent, new Rectangle(0, 0, width, height));
                 DrawSnapShot(g, p);
             }
 
@@ -1362,7 +1358,7 @@ namespace DotSpatial.Symbology
         /// <returns>The extent calculated for the category.</returns>
         protected virtual Extent CalculateCategoryExtent(IFeatureCategory category)
         {
-            Extent ext = new Extent(new[] { double.MaxValue, double.MaxValue, double.MinValue, double.MinValue });
+            Extent ext = new(new[] { double.MaxValue, double.MaxValue, double.MinValue, double.MinValue });
             if (_editMode)
             {
                 IDictionary<IFeature, IDrawnState> features = DrawingFilter.DrawnStates;
@@ -1472,8 +1468,7 @@ namespace DotSpatial.Symbology
         protected override void OnCopy(Descriptor copy)
         {
             // Remove event handlers from the copy (since Memberwise clone also clones handlers.)
-            FeatureLayer flCopy = copy as FeatureLayer;
-            if (flCopy == null)
+            if (copy is not FeatureLayer flCopy)
             {
                 return;
             }
@@ -1677,14 +1672,14 @@ namespace DotSpatial.Symbology
         private static IEnumerable<string> DistinctFieldsInExpression(string expression)
         {
             // Fields should be indicated by [ ] characters.
-            List<string> allNames = new List<string>();
+            List<string> allNames = new();
             if (expression == null)
             {
                 return allNames;
             }
 
             bool isField = false; // I don't think nesting is possible
-            List<char> currentName = new List<char>();
+            List<char> currentName = new();
             foreach (char current in expression)
             {
                 if (isField)
@@ -1824,7 +1819,7 @@ namespace DotSpatial.Symbology
                 }
 
                 Selection.ProgressHandler = ProgressHandler;
-                Envelope area = new Envelope();
+                Envelope area = new();
 
                 foreach (IFeatureCategory cat in cats.Where(_ => _.SelectionEnabled))
                 {
@@ -1892,9 +1887,9 @@ namespace DotSpatial.Symbology
         /// <param name="indexValues">The list or array of index values to remove.</param>
         private void RemoveDrawnStates(IEnumerable<int> indexValues)
         {
-            Dictionary<int, FastDrawnState> set = new Dictionary<int, FastDrawnState>();
+            Dictionary<int, FastDrawnState> set = new();
             int ind = 0;
-            List<int> remaining = new List<int>();
+            List<int> remaining = new();
             foreach (FastDrawnState state in _drawnStates)
             {
                 set.Add(ind, state);
@@ -1954,8 +1949,7 @@ namespace DotSpatial.Symbology
             IFeatureLayer newLayer;
             if (CreateLayerFromSelectedFeatures(out newLayer))
             {
-                IGroup grp = GetParentItem() as IGroup;
-                if (grp != null)
+                if (GetParentItem() is IGroup grp)
                 {
                     int index = grp.IndexOf(this);
                     grp.Insert(index + 1, newLayer);

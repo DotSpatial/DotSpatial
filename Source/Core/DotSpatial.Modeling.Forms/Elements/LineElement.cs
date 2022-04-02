@@ -95,8 +95,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         {
             if (_refreshCombo)
             {
-                DataSetArray dsa = comboFeatures.SelectedItem as DataSetArray;
-                if (dsa != null)
+                if (comboFeatures.SelectedItem is DataSetArray dsa)
                 {
                     Param.ModelName = dsa.Name;
                     Param.Value = dsa.DataSet;

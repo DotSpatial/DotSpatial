@@ -50,8 +50,8 @@ namespace DotSpatial.Positioning.Forms
 #if !PocketPC
         private readonly Thread _interpolationThread;
         private bool _isInterpolationActive;
-        private ManualResetEvent _animationWaitHandle = new ManualResetEvent(false);
-        private readonly Interpolator _valueInterpolator = new Interpolator(15, InterpolationMethod.CubicEaseOut);
+        private ManualResetEvent _animationWaitHandle = new(false);
+        private readonly Interpolator _valueInterpolator = new(15, InterpolationMethod.CubicEaseOut);
         private int _interpolationIndex;
 #endif
 #if PocketPC
@@ -67,21 +67,21 @@ namespace DotSpatial.Positioning.Forms
 #endif
 
 #else
-        private Font _directionLabelFont = new Font("Tahoma", 12.0f, FontStyle.Bold);
-        private Angle _directionLabelInterval = new Angle(45);
-        private Angle _angleLabelInterval = new Angle(30);
-        private Font _angleLabelFont = new Font("Tahoma", 8.0f, FontStyle.Regular);
-        private Angle _minorTickInterval = new Angle(2);
-        private Pen _directionTickPen = new Pen(Color.Black, 3.0f);
+        private Font _directionLabelFont = new("Tahoma", 12.0f, FontStyle.Bold);
+        private Angle _directionLabelInterval = new(45);
+        private Angle _angleLabelInterval = new(30);
+        private Font _angleLabelFont = new("Tahoma", 8.0f, FontStyle.Regular);
+        private Angle _minorTickInterval = new(2);
+        private Pen _directionTickPen = new(Color.Black, 3.0f);
 #endif
 
         private Azimuth _bearing = Azimuth.North;
-        private Angle _majorTickInterval = new Angle(15);
-        private Pen _centerPen = new Pen(Color.Gray);
-        private Pen _minorTickPen = new Pen(Color.Black);
-        private Pen _majorTickPen = new Pen(Color.Black);
-        private SolidBrush _directionLabelBrush = new SolidBrush(Color.Black);
-        private SolidBrush _angleLabelBrush = new SolidBrush(Color.Black);
+        private Angle _majorTickInterval = new(15);
+        private Pen _centerPen = new(Color.Gray);
+        private Pen _minorTickPen = new(Color.Black);
+        private Pen _majorTickPen = new(Color.Black);
+        private SolidBrush _directionLabelBrush = new(Color.Black);
+        private SolidBrush _angleLabelBrush = new(Color.Black);
         private string _angleLabelFormat = "h°";
 
         private static readonly PolarCoordinate[] _needlePointsNorth = new[]
@@ -166,14 +166,14 @@ namespace DotSpatial.Positioning.Forms
                 new PolarCoordinate(8, new Angle(85), Azimuth.North, PolarCoordinateOrientation.Clockwise),
                 new PolarCoordinate(8, new Angle(90), Azimuth.North, PolarCoordinateOrientation.Clockwise)
             };
-        private SolidBrush _pNorthNeedleBrush = new SolidBrush(Color.Red);
-        private Pen _pNorthNeedlePen = new Pen(Color.Black);
-        private SolidBrush _pSouthNeedleBrush = new SolidBrush(Color.White);
-        private Pen _pSouthNeedlePen = new Pen(Color.Black);
+        private SolidBrush _pNorthNeedleBrush = new(Color.Red);
+        private Pen _pNorthNeedlePen = new(Color.Black);
+        private SolidBrush _pSouthNeedleBrush = new(Color.White);
+        private Pen _pSouthNeedlePen = new(Color.Black);
         private bool _pIsUsingRealTimeData;
 #if !PocketPC
-        private SolidBrush _pNeedleShadowBrush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
-        private Size _pNeedleShadowSize = new Size(5, 5);
+        private SolidBrush _pNeedleShadowBrush = new(Color.FromArgb(128, 0, 0, 0));
+        private Size _pNeedleShadowSize = new(5, 5);
 #endif
 #if (PocketPC && Framework20)
         private const int MaximumGracefulShutdownTime = 2000;
@@ -1075,7 +1075,7 @@ namespace DotSpatial.Positioning.Forms
 #if PocketPC
             Azimuth BearingToRender = _Bearing;
 #else
-            Azimuth bearingToRender = new Azimuth(_valueInterpolator[_interpolationIndex]);
+            Azimuth bearingToRender = new(_valueInterpolator[_interpolationIndex]);
 #endif
 
             // Cache drawing options in order to prevent race conditions during
@@ -1116,7 +1116,7 @@ namespace DotSpatial.Positioning.Forms
                 for (double angle = 0; angle < 360; angle += angleInterval)
                 {
                     // Get the coordinate of the line's start
-                    PolarCoordinate start = new PolarCoordinate(60, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
+                    PolarCoordinate start = new(60, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
 #if PocketPC
                     f.DrawCenteredString(((Angle)angle).ToString(_AngleLabelFormat, CultureInfo.CurrentCulture), _AngleLabelFont, _AngleLabelBrush, start);
 #else
@@ -1129,7 +1129,7 @@ namespace DotSpatial.Positioning.Forms
                 for (double angle = 0; angle < 360; angle += directionInterval)
                 {
                     // Get the coordinate of the line's start
-                    PolarCoordinate start = new PolarCoordinate(80, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
+                    PolarCoordinate start = new(80, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
 #if PocketPC
                     f.DrawCenteredString(((Azimuth)angle).ToString("c", CultureInfo.CurrentCulture), _DirectionLabelFont, _DirectionLabelBrush, start);
 #else

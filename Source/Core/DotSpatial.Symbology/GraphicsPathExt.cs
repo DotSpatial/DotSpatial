@@ -35,10 +35,10 @@ namespace DotSpatial.Symbology
             }
 
             int w = radius * 2;
-            Rectangle br = new Rectangle(bounds.Right - w, bounds.Bottom - w, w, w);
-            Rectangle bl = new Rectangle(bounds.Left, bounds.Bottom - w, w, w);
-            Rectangle tl = new Rectangle(bounds.Left, bounds.Top, w, w);
-            Rectangle tr = new Rectangle(bounds.Right - w, bounds.Top, w, w);
+            Rectangle br = new(bounds.Right - w, bounds.Bottom - w, w, w);
+            Rectangle bl = new(bounds.Left, bounds.Bottom - w, w, w);
+            Rectangle tl = new(bounds.Left, bounds.Top, w, w);
+            Rectangle tr = new(bounds.Right - w, bounds.Top, w, w);
             self.AddArc(br, 0, 90F);
             self.AddLine(new Point(bounds.Right - radius, bounds.Bottom), new Point(bounds.Left + radius, bounds.Bottom));
             self.AddArc(bl, 90F, 90F);
@@ -64,7 +64,7 @@ namespace DotSpatial.Symbology
             }
 
             int w = radius * 2;
-            Rectangle br = new Rectangle(bounds.Right - w, bounds.Bottom - w, w, w);
+            Rectangle br = new(bounds.Right - w, bounds.Bottom - w, w, w);
             self.AddLine(new Point(bounds.Right, bounds.Top + radius), new Point(bounds.Right, bounds.Bottom - radius));
             self.AddArc(br, 0, 90F);
             self.AddLine(new Point(bounds.Right - radius, bounds.Bottom), new Point(bounds.Left + radius, bounds.Bottom));
@@ -85,7 +85,7 @@ namespace DotSpatial.Symbology
             }
 
             int w = radius * 2;
-            Rectangle tl = new Rectangle(bounds.Left, bounds.Top, w, w);
+            Rectangle tl = new(bounds.Left, bounds.Top, w, w);
             self.AddLine(new Point(bounds.Left, bounds.Bottom - radius), new Point(bounds.Left, bounds.Top + radius));
             self.AddArc(tl, 180F, 90F);
             self.AddLine(new Point(bounds.Left + radius, bounds.Top), new Point(bounds.Right - radius, bounds.Top));

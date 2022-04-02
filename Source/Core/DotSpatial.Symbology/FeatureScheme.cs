@@ -297,15 +297,15 @@ namespace DotSpatial.Symbology
             }
             else
             {
-                Dictionary<int, double> randomValues = new Dictionary<int, double>();
+                Dictionary<int, double> randomValues = new();
                 pageSize = 10000;
                 int count = EditorSettings.MaxSampleCount;
 
                 // Specified seed is required for consistently recreating the break values
-                Random rnd = new Random(9999);
-                AttributePager ap = new AttributePager(source, pageSize);
+                Random rnd = new(9999);
+                AttributePager ap = new(source, pageSize);
                 int countPerPage = count / ap.NumPages();
-                ProgressMeter pm = new ProgressMeter(progressHandler, "Sampling " + count + " random values", count);
+                ProgressMeter pm = new(progressHandler, "Sampling " + count + " random values", count);
                 for (int iPage = 0; iPage < ap.NumPages(); iPage++)
                 {
                     for (int i = 0; i < countPerPage; i++)
@@ -383,12 +383,12 @@ namespace DotSpatial.Symbology
                     }
                     else
                     {
-                        Dictionary<int, double> randomValues = new Dictionary<int, double>();
+                        Dictionary<int, double> randomValues = new();
                         int count = EditorSettings.MaxSampleCount;
                         int max = rows.Length;
 
                         // Specified seed is required for consistently recreating the break values
-                        Random rnd = new Random(9999);
+                        Random rnd = new(9999);
 
                         for (int i = 0; i < count; i++)
                         {
@@ -449,12 +449,12 @@ namespace DotSpatial.Symbology
             else
             {
                 // Grab random samples
-                Dictionary<int, double> randomValues = new Dictionary<int, double>();
+                Dictionary<int, double> randomValues = new();
                 int count = EditorSettings.MaxSampleCount;
                 int max = table.Rows.Count;
 
                 // Specified seed is required for consistently recreating the break values
-                Random rnd = new Random(9999);
+                Random rnd = new(9999);
                 for (int i = 0; i < count; i++)
                 {
                     double val;
@@ -529,7 +529,7 @@ namespace DotSpatial.Symbology
         /// <returns>A Randomly created color that is within the bounds of this scheme.</returns>
         protected Color CreateRandomColor()
         {
-            Random rnd = new Random(DateTime.Now.Millisecond);
+            Random rnd = new(DateTime.Now.Millisecond);
             return CreateRandomColor(rnd);
         }
 
@@ -608,7 +608,7 @@ namespace DotSpatial.Symbology
         /// <returns>A list of double valued sizes.</returns>
         protected override List<double> GetSizeSet(int count)
         {
-            List<double> result = new List<double>();
+            List<double> result = new();
             if (EditorSettings.UseSizeRange)
             {
                 double start = EditorSettings.StartSize;
@@ -616,7 +616,7 @@ namespace DotSpatial.Symbology
                 double dx = dr / count;
                 if (!EditorSettings.RampColors)
                 {
-                    Random rnd = new Random(DateTime.Now.Millisecond);
+                    Random rnd = new(DateTime.Now.Millisecond);
                     for (int i = 0; i < count; i++)
                     {
                         result.Add(start + (rnd.NextDouble() * dr));
@@ -632,9 +632,8 @@ namespace DotSpatial.Symbology
             }
             else
             {
-                Size2D sizes = new Size2D(2, 2);
-                IPointSymbolizer ps = EditorSettings.TemplateSymbolizer as IPointSymbolizer;
-                if (ps != null) sizes = ps.GetSize();
+                Size2D sizes = new(2, 2);
+                if (EditorSettings.TemplateSymbolizer is IPointSymbolizer ps) sizes = ps.GetSize();
                 double size = Math.Max(sizes.Width, sizes.Height);
                 for (int i = 0; i < count; i++)
                 {
@@ -757,7 +756,7 @@ namespace DotSpatial.Symbology
         /// <returns>A list of the unique values of the attribute field.</returns>
         private static List<Break> GetUniqueValues(string fieldName, DataTable table)
         {
-            HashSet<object> lst = new HashSet<object>();
+            HashSet<object> lst = new();
             bool containsNull = false;
             foreach (DataRow dr in table.Rows)
             {
@@ -772,7 +771,7 @@ namespace DotSpatial.Symbology
                 }
             }
 
-            List<Break> result = new List<Break>();
+            List<Break> result = new();
             if (containsNull) result.Add(new Break("[NULL]"));
             foreach (object item in lst.OrderBy(o => o))
             {
@@ -791,8 +790,8 @@ namespace DotSpatial.Symbology
         /// <returns>True, if more than num values exist.</returns>
         private static bool SufficientValues(string fieldName, IAttributeSource source, int numValues)
         {
-            ArrayList lst = new ArrayList();
-            AttributeCache ac = new AttributeCache(source, numValues);
+            ArrayList lst = new();
+            AttributeCache ac = new(source, numValues);
 
             foreach (Dictionary<string, object> dr in ac)
             {
@@ -816,7 +815,7 @@ namespace DotSpatial.Symbology
 
             bool isStringField = CheckFieldType(fieldName, source);
 
-            ProgressMeter pm = new ProgressMeter(progressHandler, "Building Feature Categories", Breaks.Count);
+            ProgressMeter pm = new(progressHandler, "Building Feature Categories", Breaks.Count);
 
             List<double> sizeRamp = GetSizeSet(Breaks.Count);
             List<Color> colorRamp = GetColorSet(Breaks.Count);
@@ -827,8 +826,7 @@ namespace DotSpatial.Symbology
                 // get the color for the category
                 Color randomColor = colorRamp[colorIndex];
                 double size = sizeRamp[colorIndex];
-                IFeatureCategory cat = CreateNewCategory(randomColor, size) as IFeatureCategory;
-                if (cat != null)
+                if (CreateNewCategory(randomColor, size) is IFeatureCategory cat)
                 {
                     cat.LegendText = brk.Name;
                     if (isStringField) cat.FilterExpression = fieldExpression + "= '" + brk.Name.Replace("'", "''") + "'";
@@ -861,9 +859,8 @@ namespace DotSpatial.Symbology
                 // get the color for the category
                 Color randomColor = colorRamp[colorIndex];
                 double size = sizeRamp[colorIndex];
-                IFeatureCategory cat = CreateNewCategory(randomColor, size) as IFeatureCategory;
 
-                if (cat != null)
+                if (CreateNewCategory(randomColor, size) is IFeatureCategory cat)
                 {
                     cat.LegendText = brk.Name;
 
@@ -906,8 +903,8 @@ namespace DotSpatial.Symbology
             else
             {
                 lst = new ArrayList();
-                AttributePager ap = new AttributePager(source, 5000);
-                ProgressMeter pm = new ProgressMeter(progressHandler, "Discovering Unique Values", source.NumRows());
+                AttributePager ap = new(source, 5000);
+                ProgressMeter pm = new(progressHandler, "Discovering Unique Values", source.NumRows());
                 for (int row = 0; row < source.NumRows(); row++)
                 {
                     object val = ap.Row(row)[fieldName] ?? "[NULL]";
@@ -917,7 +914,7 @@ namespace DotSpatial.Symbology
                     lst.Add(val);
                     if (lst.Count > 1000 && !hugeCountOk)
                     {
-                        CancelEventArgs args = new CancelEventArgs(true);
+                        CancelEventArgs args = new(true);
                         TooManyCategories?.Invoke(this, args);
                         if (args.Cancel) break;
 
@@ -935,7 +932,7 @@ namespace DotSpatial.Symbology
                 }
             }
 
-            List<Break> result = new List<Break>();
+            List<Break> result = new();
 
             if (lst != null)
             {

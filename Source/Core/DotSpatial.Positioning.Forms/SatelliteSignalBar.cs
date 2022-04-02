@@ -50,13 +50,13 @@ namespace DotSpatial.Positioning.Forms
     //[CLSCompliant(false)]
     public sealed class SatelliteSignalBar : DoubleBufferedControl
     {
-        private List<Satellite> _satellites = new List<Satellite>();
-        private List<Satellite> _fixedSatellites = new List<Satellite>();
+        private List<Satellite> _satellites = new();
+        private List<Satellite> _fixedSatellites = new();
         private int _gapWidth = 4;
-        private Font _signalStrengthLabelFont = new Font("Tahoma", 6.0f, FontStyle.Regular);
-        private SolidBrush _signalStrengthLabelBrush = new SolidBrush(Color.Black);
-        private Font _pseudorandomNumberFont = new Font("Tahoma", 8.0f, FontStyle.Regular);
-        private SolidBrush _pseudorandomNumberBrush = new SolidBrush(Color.Black);
+        private Font _signalStrengthLabelFont = new("Tahoma", 6.0f, FontStyle.Regular);
+        private SolidBrush _signalStrengthLabelBrush = new(Color.Black);
+        private Font _pseudorandomNumberFont = new("Tahoma", 8.0f, FontStyle.Regular);
+        private SolidBrush _pseudorandomNumberBrush = new(Color.Black);
         private bool _isUsingRealTimeData = true;
 #if PocketPC
 		private SolidBrush pSatelliteFixBrush = new SolidBrush(Color.LimeGreen);
@@ -75,16 +75,16 @@ namespace DotSpatial.Positioning.Forms
         private Color _satelliteGoodSignalOutlineColor = Color.Black;
         private Color _satelliteExcellentSignalOutlineColor = Color.Black;
 
-        private readonly ColorInterpolator _fillNone = new ColorInterpolator(Color.Transparent, Color.Red, 10);
-        private readonly ColorInterpolator _fillPoor = new ColorInterpolator(Color.Red, Color.Orange, 10);
-        private readonly ColorInterpolator _fillModerate = new ColorInterpolator(Color.Orange, Color.Green, 10);
-        private readonly ColorInterpolator _fillGood = new ColorInterpolator(Color.Green, Color.LightGreen, 10);
-        private readonly ColorInterpolator _fillExcellent = new ColorInterpolator(Color.LightGreen, Color.White, 10);
-        private readonly ColorInterpolator _outlineNone = new ColorInterpolator(Color.Transparent, Color.Gray, 10);
-        private readonly ColorInterpolator _outlinePoor = new ColorInterpolator(Color.Gray, Color.Gray, 10);
-        private readonly ColorInterpolator _outlineModerate = new ColorInterpolator(Color.Gray, Color.Gray, 10);
-        private readonly ColorInterpolator _outlineGood = new ColorInterpolator(Color.Gray, Color.Gray, 10);
-        private readonly ColorInterpolator _outlineExcellent = new ColorInterpolator(Color.Gray, Color.LightGreen, 10);
+        private readonly ColorInterpolator _fillNone = new(Color.Transparent, Color.Red, 10);
+        private readonly ColorInterpolator _fillPoor = new(Color.Red, Color.Orange, 10);
+        private readonly ColorInterpolator _fillModerate = new(Color.Orange, Color.Green, 10);
+        private readonly ColorInterpolator _fillGood = new(Color.Green, Color.LightGreen, 10);
+        private readonly ColorInterpolator _fillExcellent = new(Color.LightGreen, Color.White, 10);
+        private readonly ColorInterpolator _outlineNone = new(Color.Transparent, Color.Gray, 10);
+        private readonly ColorInterpolator _outlinePoor = new(Color.Gray, Color.Gray, 10);
+        private readonly ColorInterpolator _outlineModerate = new(Color.Gray, Color.Gray, 10);
+        private readonly ColorInterpolator _outlineGood = new(Color.Gray, Color.Gray, 10);
+        private readonly ColorInterpolator _outlineExcellent = new(Color.Gray, Color.LightGreen, 10);
 
         //// Defines a 5-pointed star shape
         // private PolarCoordinate[] StarShape = new PolarCoordinate[] {
@@ -445,10 +445,8 @@ namespace DotSpatial.Positioning.Forms
 #if PocketPC
                         e.Graphics.FillEllipse(pSatelliteFixBrush, (int)(StartX + (BarWidth * 0.5) - (PrnSize.Width * 0.5) - 4.0), (int)(StartY - 4), (int)(PrnSize.Width + 8), (int)(PrnSize.Height + 8));
 #else
-                        using (SolidBrush fixBrush = new SolidBrush(Color.FromArgb(Math.Min(255, _fixedSatellites.Count * 20), _satelliteFixColor)))
-                        {
-                            e.Graphics.FillEllipse(fixBrush, (float)(startX + (barWidth * 0.5) - (prnSize.Width * 0.5) - 4.0), startY - 4, prnSize.Width + 8, prnSize.Height + 8);
-                        }
+                        using SolidBrush fixBrush = new(Color.FromArgb(Math.Min(255, _fixedSatellites.Count * 20), _satelliteFixColor));
+                        e.Graphics.FillEllipse(fixBrush, (float)(startX + (barWidth * 0.5) - (prnSize.Width * 0.5) - 4.0), startY - 4, prnSize.Width + 8, prnSize.Height + 8);
 #endif
                     }
 
@@ -488,19 +486,19 @@ namespace DotSpatial.Positioning.Forms
                     Color bottomBottomColor = ColorFromAhsb(255, barHue, 0.6f, 0.4042f);
 
                     // Draw a rectangle for each satellite
-                    RectangleF topRect = new RectangleF(startX, satelliteY, barWidth, Convert.ToSingle((startY - satelliteY) * 0.5));
+                    RectangleF topRect = new(startX, satelliteY, barWidth, Convert.ToSingle((startY - satelliteY) * 0.5));
                     using (Brush topFillBrush = new LinearGradientBrush(topRect, topTopColor, topBottomColor, LinearGradientMode.Vertical))
                     {
                         e.Graphics.FillRectangle(topFillBrush, topRect);
                     }
                     // Draw a rectangle for each satellite
-                    RectangleF bottomRect = new RectangleF(startX, satelliteY + topRect.Height, barWidth, topRect.Height);
+                    RectangleF bottomRect = new(startX, satelliteY + topRect.Height, barWidth, topRect.Height);
                     using (Brush bottomFillBrush = new LinearGradientBrush(bottomRect, bottomTopColor, bottomBottomColor, LinearGradientMode.Vertical))
                     {
                         e.Graphics.FillRectangle(bottomFillBrush, bottomRect);
                     }
 
-                    using (Pen fillPen = new Pen(GetOutlineColor(satellite.SignalToNoiseRatio), 1.0f))
+                    using (Pen fillPen = new(GetOutlineColor(satellite.SignalToNoiseRatio), 1.0f))
                     {
                         e.Graphics.DrawRectangle(fillPen, startX, satelliteY, barWidth, startY - satelliteY);
                     }

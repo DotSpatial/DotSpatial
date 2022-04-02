@@ -99,11 +99,11 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        private static readonly List<Ellipsoid> _ellipsoids = new List<Ellipsoid>(32);
+        private static readonly List<Ellipsoid> _ellipsoids = new(32);
         /// <summary>
         ///
         /// </summary>
-        private static readonly List<Ellipsoid> _epsgEllipsoids = new List<Ellipsoid>(32);
+        private static readonly List<Ellipsoid> _epsgEllipsoids = new(32);
 
         #region Fields
 
@@ -112,176 +112,176 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents the Airy ellipsoid of 1830.
         /// </summary>
-        public static readonly Ellipsoid Airy1830 = new Ellipsoid(7001, 6377563.396, 299.3249646, 0, "Airy 1830");
+        public static readonly Ellipsoid Airy1830 = new(7001, 6377563.396, 299.3249646, 0, "Airy 1830");
         /// <summary>
         /// Represents the Modified Airy ellipsoid.
         /// </summary>
-        public static readonly Ellipsoid AiryModified1949 = new Ellipsoid(7002, 6377340.189, 299.3249646, 0, "Airy Modified 1849");
+        public static readonly Ellipsoid AiryModified1949 = new(7002, 6377340.189, 299.3249646, 0, "Airy Modified 1849");
         /// <summary>
         /// Represents the Australian National ellipsoid of 1965.
         /// </summary>
-        public static readonly Ellipsoid AustralianNational1965 = new Ellipsoid(7003, 6378160, 298.25, 0, "Australian National Spheroid");
+        public static readonly Ellipsoid AustralianNational1965 = new(7003, 6378160, 298.25, 0, "Australian National Spheroid");
         /// <summary>
         /// Represents the Bessel ellipsoid of 1841.
         /// </summary>
-        public static readonly Ellipsoid Bessel1841 = new Ellipsoid(7004, 6377397.155, 299.1528128, 0, "Bessel 1841");
+        public static readonly Ellipsoid Bessel1841 = new(7004, 6377397.155, 299.1528128, 0, "Bessel 1841");
         /// <summary>
         /// Represents the Bessel Modified ellipsoid of 1841.
         /// </summary>
-        public static readonly Ellipsoid Bessel1841Mod = new Ellipsoid(7005, 6377492.018, 299.1528128, 0, "Bessel Modified");
+        public static readonly Ellipsoid Bessel1841Mod = new(7005, 6377492.018, 299.1528128, 0, "Bessel Modified");
         /// <summary>
         /// Represents the Bessel (Namibia) ellipsoid of 1841.
         /// </summary>
-        public static readonly Ellipsoid Bessel1841Namibia = new Ellipsoid(7006, 6377483.865, 299.1528128, 0, "Bessel Namibia");
+        public static readonly Ellipsoid Bessel1841Namibia = new(7006, 6377483.865, 299.1528128, 0, "Bessel Namibia");
         /// <summary>
         /// Represents the Clarke ellipsoid of 1858.
         /// </summary>
-        public static readonly Ellipsoid Clarke1858 = new Ellipsoid(7007, 20926348 * 0.3047972651151, 0, 20855233 * 0.3047972651151, "Clarke 1858");
+        public static readonly Ellipsoid Clarke1858 = new(7007, 20926348 * 0.3047972651151, 0, 20855233 * 0.3047972651151, "Clarke 1858");
         /// <summary>
         /// Represents the Clarke ellipsoid of 1866.
         /// </summary>
-        public static readonly Ellipsoid Clarke1866 = new Ellipsoid(7008, 6378206.4, 0, 6356583.8, "Clarke 1866");
+        public static readonly Ellipsoid Clarke1866 = new(7008, 6378206.4, 0, 6356583.8, "Clarke 1866");
         /// <summary>
         /// Represents the Clarke (Michigan) ellipsoid of 1866.
         /// </summary>
-        public static readonly Ellipsoid Clarke1866Michigan = new Ellipsoid(7009, 20926631.53 * 0.3048006096012, 0, 20855688.67 * 0.3048006096012, "Clarke 1866 Michigan");
+        public static readonly Ellipsoid Clarke1866Michigan = new(7009, 20926631.53 * 0.3048006096012, 0, 20855688.67 * 0.3048006096012, "Clarke 1866 Michigan");
         /// <summary>
         /// Represents the Clarke (Benoit) ellipsoid of 1880.
         /// </summary>
-        public static readonly Ellipsoid Clarke1880Benoit = new Ellipsoid(7010, 6378300.789, 0, 6356566.435, "Clarke 1880 (Benoit)");
+        public static readonly Ellipsoid Clarke1880Benoit = new(7010, 6378300.789, 0, 6356566.435, "Clarke 1880 (Benoit)");
         /// <summary>
         /// Represents the Clarke (IGN) ellipsoid of 1880.
         /// </summary>
-        public static readonly Ellipsoid Clarke1880IGN = new Ellipsoid(7011, 6378249.2, 0, 6356515, "Clarke 1880 (IGN)");
+        public static readonly Ellipsoid Clarke1880IGN = new(7011, 6378249.2, 0, 6356515, "Clarke 1880 (IGN)");
         /// <summary>
         /// Represents the Clarke (RGS) ellipsoid of 1880.
         /// </summary>
-        public static readonly Ellipsoid Clarke1880RGS = new Ellipsoid(7012, 6378249.145, 293.465, 0, "Clarke 1880 (RGS)");
+        public static readonly Ellipsoid Clarke1880RGS = new(7012, 6378249.145, 293.465, 0, "Clarke 1880 (RGS)");
         /// <summary>
         /// Represents the Clarke (Arc) ellipsoid of 1880.
         /// </summary>
-        public static readonly Ellipsoid Clarke1880Arc = new Ellipsoid(7013, 6378249.145, 293.4663077, 0, "Clarke 1880 (Arc)");
+        public static readonly Ellipsoid Clarke1880Arc = new(7013, 6378249.145, 293.4663077, 0, "Clarke 1880 (Arc)");
         /// <summary>
         /// Represents the Clarke (SGA 1822) ellipsoid of 1880.
         /// </summary>
-        public static readonly Ellipsoid Clarke1880SGA = new Ellipsoid(7014, 6378249.2, 293.46598, 0, "Clarke 1880 (SGA 1922)");
+        public static readonly Ellipsoid Clarke1880SGA = new(7014, 6378249.2, 293.46598, 0, "Clarke 1880 (SGA 1922)");
         /// <summary>
         /// Represents the Everest (1937 Adjustment) ellipsoid of 1830.
         /// </summary>
-        public static readonly Ellipsoid Everest1937 = new Ellipsoid(7015, 6377276.345, 300.8017, 0, "Everest 1830 (1937 Adjustment)");
+        public static readonly Ellipsoid Everest1937 = new(7015, 6377276.345, 300.8017, 0, "Everest 1830 (1937 Adjustment)");
         /// <summary>
         /// Represents the Everest (1967 Definition) ellipsoid of 1830.
         /// </summary>
-        public static readonly Ellipsoid Everest1967 = new Ellipsoid(7016, 6377298.556, 300.8017, 0, "Everest 1830 (1967 Definition)");
+        public static readonly Ellipsoid Everest1967 = new(7016, 6377298.556, 300.8017, 0, "Everest 1830 (1967 Definition)");
         // No 7017 in EPSG
         /// <summary>
         /// Represents the Everest (Modified 1948) ellipsoid of 1880.
         /// </summary>
-        public static readonly Ellipsoid Everest1830Modified = new Ellipsoid(7018, 6377304.063, 300.8017, 0, "Everest 1830 Modified");
+        public static readonly Ellipsoid Everest1830Modified = new(7018, 6377304.063, 300.8017, 0, "Everest 1830 Modified");
         /// <summary>
         /// Represents the Geodetic Reference System ellipsoid of 1980.
         /// </summary>
-        public static readonly Ellipsoid Grs80 = new Ellipsoid(7019, 6378137, 298.2572221, 0, "GRS 1980");
+        public static readonly Ellipsoid Grs80 = new(7019, 6378137, 298.2572221, 0, "GRS 1980");
         /// <summary>
         /// Represents the Helmert ellipsoid of 1906.
         /// </summary>
-        public static readonly Ellipsoid Helmert1906 = new Ellipsoid(7020, 6378200, 298.3, 0, "Helmert 1906");
+        public static readonly Ellipsoid Helmert1906 = new(7020, 6378200, 298.3, 0, "Helmert 1906");
         /// <summary>
         /// Represents the Indonesian ellipsoid of 1974.
         /// </summary>
-        public static readonly Ellipsoid Indonesian1974 = new Ellipsoid(7021, 6378160, 298.247, 0, "Indonesian National Spheroid");
+        public static readonly Ellipsoid Indonesian1974 = new(7021, 6378160, 298.247, 0, "Indonesian National Spheroid");
         /// <summary>
         /// Represents the International ellipsoid of 1909 (1924 alias).
         /// </summary>
-        public static readonly Ellipsoid International1909 = new Ellipsoid(7022, 6378388, 297, 0, "International 1924");
+        public static readonly Ellipsoid International1909 = new(7022, 6378388, 297, 0, "International 1924");
         /// <summary>
         /// Represents the International ellipsoid of 1924.
         /// </summary>
-        public static readonly Ellipsoid International1924 = new Ellipsoid(7022, 6378388, 297, 0, "International 1924");
+        public static readonly Ellipsoid International1924 = new(7022, 6378388, 297, 0, "International 1924");
         // No 7023 in EPSG
         /// <summary>
         /// Represents the Krassovsky ellipsoid of 1940.
         /// </summary>
-        public static readonly Ellipsoid Krassovsky1940 = new Ellipsoid(7024, 6378245, 298.3, 0, "Krassowsky 1940");
+        public static readonly Ellipsoid Krassovsky1940 = new(7024, 6378245, 298.3, 0, "Krassowsky 1940");
         /// <summary>
         /// Represents the Naval Weapons Lab ellipsoid of 1965.
         /// </summary>
-        public static readonly Ellipsoid Nwl9D = new Ellipsoid(7025, 6378145, 298.25, 0, "NWL 9D");
+        public static readonly Ellipsoid Nwl9D = new(7025, 6378145, 298.25, 0, "NWL 9D");
         // No 7026 in EPSG
         /// <summary>
         /// Represents the Plessis ellipsoid of 1817.
         /// </summary>
-        public static readonly Ellipsoid Plessis1817 = new Ellipsoid(7027, 6376523, 308.64, 0, "Plessis 1817");
+        public static readonly Ellipsoid Plessis1817 = new(7027, 6376523, 308.64, 0, "Plessis 1817");
         /// <summary>
         /// Represents the Struve ellipsoid of 1860.
         /// </summary>
-        public static readonly Ellipsoid Struve1860 = new Ellipsoid(7028, 6378298.3, 294.73, 0, "Struve 1860");
+        public static readonly Ellipsoid Struve1860 = new(7028, 6378298.3, 294.73, 0, "Struve 1860");
         /// <summary>
         /// Represents the War Office ellipsoid.
         /// </summary>
-        public static readonly Ellipsoid WarOffice = new Ellipsoid(7029, 6378300, 296, 0, "War Office");
+        public static readonly Ellipsoid WarOffice = new(7029, 6378300, 296, 0, "War Office");
         /// <summary>
         /// Represents the World Geodetic System ellipsoid of 1984.
         /// </summary>
-        public static readonly Ellipsoid Wgs1984 = new Ellipsoid(7030, 6378137, 298.2572236, 0, "WGS 84");
+        public static readonly Ellipsoid Wgs1984 = new(7030, 6378137, 298.2572236, 0, "WGS 84");
         /// <summary>
         /// Represents the GEM 10C Gravity Potential Model ellipsoid.
         /// </summary>
-        public static readonly Ellipsoid Gem10C = new Ellipsoid(7031, 6378137, 298.2572236, 0, "GEM 10C");
+        public static readonly Ellipsoid Gem10C = new(7031, 6378137, 298.2572236, 0, "GEM 10C");
         /// <summary>
         /// Represents the OSU86 gravity potential (geoidal) model ellipsoid.
         /// </summary>
-        public static readonly Ellipsoid Osu86F = new Ellipsoid(7032, 6378136.2, 298.2572236, 0, "OSU86F");
+        public static readonly Ellipsoid Osu86F = new(7032, 6378136.2, 298.2572236, 0, "OSU86F");
         /// <summary>
         /// Represents the OSU91 gravity potential (geoidal) model ellipsoid.
         /// </summary>
-        public static readonly Ellipsoid Osu91A = new Ellipsoid(7033, 6378136.3, 298.2572236, 0, "OSU91A");
+        public static readonly Ellipsoid Osu91A = new(7033, 6378136.3, 298.2572236, 0, "OSU91A");
         /// <summary>
         /// Represents the Clarke ellipsoid of 1880.
         /// </summary>
-        public static readonly Ellipsoid Clarke1880 = new Ellipsoid(7034, 20926202 * 0.3047972651151, 293.465, 20854895 * 0.3047972651151, "Clarke 1880");
+        public static readonly Ellipsoid Clarke1880 = new(7034, 20926202 * 0.3047972651151, 293.465, 20854895 * 0.3047972651151, "Clarke 1880");
         /// <summary>
         /// Represents the Authalic Sphere (r=6371000).
         /// </summary>
-        public static readonly Ellipsoid AuthalicSphere = new Ellipsoid(7035, 6371000, 0, 6371000, "Authalic Sphere");
+        public static readonly Ellipsoid AuthalicSphere = new(7035, 6371000, 0, 6371000, "Authalic Sphere");
         /// <summary>
         /// Represents the Geodetic Reference System ellipsoid of 1967.
         /// </summary>
-        public static readonly Ellipsoid Grs67 = new Ellipsoid(7036, 6378160, 298.2471674, 0, "GRS 1967");
+        public static readonly Ellipsoid Grs67 = new(7036, 6378160, 298.2471674, 0, "GRS 1967");
         // No 7037 - 7040 in EPSG
         /// <summary>
         /// Represents the Average Terrestrial System ellipsoid of 1977.
         /// </summary>
-        public static readonly Ellipsoid Ats1977 = new Ellipsoid(7041, 6378135, 298.257, 0, "Average Terrestrial System 1977");
+        public static readonly Ellipsoid Ats1977 = new(7041, 6378135, 298.257, 0, "Average Terrestrial System 1977");
         /// <summary>
         /// Represents the Everest (1830 Definition) ellipsoid.
         /// </summary>
-        public static readonly Ellipsoid Everest1830 = new Ellipsoid(7042, 20922931.8 * 0.3047995102481, 300.8017, 20853374.58 * 0.3047995102481, "Everest (1830 Definition)");
+        public static readonly Ellipsoid Everest1830 = new(7042, 20922931.8 * 0.3047995102481, 300.8017, 20853374.58 * 0.3047995102481, "Everest (1830 Definition)");
         /// <summary>
         /// Represents the World Geodetic System ellipsoid of 1972.
         /// </summary>
-        public static readonly Ellipsoid Wgs1972 = new Ellipsoid(7043, 6378135, 298.26, 0, "WGS 72");
+        public static readonly Ellipsoid Wgs1972 = new(7043, 6378135, 298.26, 0, "WGS 72");
         /// <summary>
         /// Represents the Everest (1962 Definition) ellipsoid of 1830.
         /// </summary>
-        public static readonly Ellipsoid Everest1962 = new Ellipsoid(7044, 6377301.243, 300.8017255, 0, "Everest 1830 (1962 Definition)");
+        public static readonly Ellipsoid Everest1962 = new(7044, 6377301.243, 300.8017255, 0, "Everest 1830 (1962 Definition)");
         /// <summary>
         /// Represents the Everest (1975 Definition) ellipsoid of 1830.
         /// </summary>
-        public static readonly Ellipsoid Everest1975 = new Ellipsoid(7045, 6377299.151, 300.8017255, 0, "Everest 1830 (1975 Definition)");
+        public static readonly Ellipsoid Everest1975 = new(7045, 6377299.151, 300.8017255, 0, "Everest 1830 (1975 Definition)");
         /// <summary>
         /// Represents the Bessel (Japan) ellipsoid of 1841.
         /// </summary>
-        public static readonly Ellipsoid Bessel1841Japan = new Ellipsoid(7046, 6377397.155, 299.1528128, 0, "Bessel Namibia (GLM)");
+        public static readonly Ellipsoid Bessel1841Japan = new(7046, 6377397.155, 299.1528128, 0, "Bessel Namibia (GLM)");
         // 7047 depricated in EPSG
         /// <summary>
         /// Represents the GRS 1980 Authalic Sphere (r=6371007).
         /// </summary>
-        public static readonly Ellipsoid Grs1980AuthalicSphere = new Ellipsoid(7048, 6371007, 0, 6371007, "GRS 1980 Authalic Sphere");
+        public static readonly Ellipsoid Grs1980AuthalicSphere = new(7048, 6371007, 0, 6371007, "GRS 1980 Authalic Sphere");
         /// <summary>
         /// Represents the Xian ellipsoid of 1980.
         /// </summary>
-        public static readonly Ellipsoid Xian1980 = new Ellipsoid(7049, 6378140, 298.257, 0, "Xian 1980");
+        public static readonly Ellipsoid Xian1980 = new(7049, 6378140, 298.257, 0, "Xian 1980");
         /// <summary>
         /// Represents the IAU ellipsoid of 1976.
         /// </summary>
@@ -289,11 +289,11 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents the Geodetic Reference System (SAD69) ellipsoid of 1967.
         /// </summary>
-        public static readonly Ellipsoid Grs67Sad69 = new Ellipsoid(7050, 6378160, 298.25, 0, "GRS 1967 (SAD69)");
+        public static readonly Ellipsoid Grs67Sad69 = new(7050, 6378160, 298.25, 0, "GRS 1967 (SAD69)");
         /// <summary>
         /// Represents the Danish ellipsoid of 1876.
         /// </summary>
-        public static readonly Ellipsoid Danish1876 = new Ellipsoid(7051, 6377019.27, 300, 0, "Danish 1876");
+        public static readonly Ellipsoid Danish1876 = new(7051, 6377019.27, 300, 0, "Danish 1876");
         /// <summary>
         /// Represents the Andrae (Danish 1876 alternate) ellipsoid of 1876.
         /// </summary>
@@ -301,7 +301,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents the Common Sphere (Clarke 1866 Authalic Sphere alias).
         /// </summary>
-        public static readonly Ellipsoid NormalSphere = new Ellipsoid(7052, 6370997, 0, 6370997, "Clarke 1866 Authalic Sphere");
+        public static readonly Ellipsoid NormalSphere = new(7052, 6370997, 0, 6370997, "Clarke 1866 Authalic Sphere");
         /// <summary>
         /// Represents the Clarke 1866 Authalic Sphere (r=6370997).
         /// </summary>
@@ -309,27 +309,27 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents the Hough ellipsoid of 1960.
         /// </summary>
-        public static readonly Ellipsoid Hough1960 = new Ellipsoid(7053, 6378270, 297, 0, "Hough 1960");
+        public static readonly Ellipsoid Hough1960 = new(7053, 6378270, 297, 0, "Hough 1960");
         /// <summary>
         /// Represents the PZ90 ellipsoid.
         /// </summary>
-        public static readonly Ellipsoid Pz1990 = new Ellipsoid(7054, 6378136, 298.2578393, 0, "PZ-90");
+        public static readonly Ellipsoid Pz1990 = new(7054, 6378136, 298.2578393, 0, "PZ-90");
         /// <summary>
         /// Represents the Clarke (international foot) ellipsoid of 1880.
         /// </summary>
-        public static readonly Ellipsoid Clarke1880InternationalFoot = new Ellipsoid(7055, 20926202 * 0.3048, 0, 20854895 * 0.3048, "Clarke 1880 (international foot)");
+        public static readonly Ellipsoid Clarke1880InternationalFoot = new(7055, 20926202 * 0.3048, 0, 20854895 * 0.3048, "Clarke 1880 (international foot)");
         /// <summary>
         /// Represents the Everest (RSO 1969) ellipsoid of 1880.
         /// </summary>
-        public static readonly Ellipsoid Everest1880Rso = new Ellipsoid(7056, 6377295.664, 300.8017, 0, "Everest 1830 (RSO 1969)");
+        public static readonly Ellipsoid Everest1880Rso = new(7056, 6377295.664, 300.8017, 0, "Everest 1830 (RSO 1969)");
         /// <summary>
         /// Represents the International 1924 Authalic Sphere.
         /// </summary>
-        public static readonly Ellipsoid International1924AuthalicSphere = new Ellipsoid(7057, 6371228, 0, 6371228, "International 1924 Authalic Sphere");
+        public static readonly Ellipsoid International1924AuthalicSphere = new(7057, 6371228, 0, 6371228, "International 1924 Authalic Sphere");
         /// <summary>
         /// Represents the Hughes ellipsoid of 1980.
         /// </summary>
-        public static readonly Ellipsoid Hughes1980 = new Ellipsoid(7058, 6378273, 0, 6356889.449, "Hughes 1980");
+        public static readonly Ellipsoid Hughes1980 = new(7058, 6378273, 0, 6356889.449, "Hughes 1980");
 
         #endregion EPSG Ellipsoids
 
@@ -338,75 +338,75 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents the Applied Physics ellipsoid of 1965.
         /// </summary>
-        public static readonly Ellipsoid Apl49 = new Ellipsoid("Appl. Physics. 1965", new Distance(6378137.0, DistanceUnit.Meters), 298.25);
+        public static readonly Ellipsoid Apl49 = new("Appl. Physics. 1965", new Distance(6378137.0, DistanceUnit.Meters), 298.25);
         /// <summary>
         /// Represents the Comm. des Poids et Mesures ellipsoid of 1799.
         /// </summary>
-        public static readonly Ellipsoid Cpm = new Ellipsoid("Comm. des Poids et Mesures 1799", new Distance(6375738.7, DistanceUnit.Meters), 334.29);
+        public static readonly Ellipsoid Cpm = new("Comm. des Poids et Mesures 1799", new Distance(6375738.7, DistanceUnit.Meters), 334.29);
         /// <summary>
         /// Represents the Delambre (Belgium) ellipsoid of 1810.
         /// </summary>
-        public static readonly Ellipsoid Delmabre = new Ellipsoid("Delambre 1810 (Belgium)", new Distance(6376428, DistanceUnit.Meters), 311.5);
+        public static readonly Ellipsoid Delmabre = new("Delambre 1810 (Belgium)", new Distance(6376428, DistanceUnit.Meters), 311.5);
         /// <summary>
         /// Represents the Engelis ellipsoid of 1985.
         /// </summary>
-        public static readonly Ellipsoid Engelis = new Ellipsoid("Engelis 1985", new Distance(6376428, DistanceUnit.Meters), 311.5);
+        public static readonly Ellipsoid Engelis = new("Engelis 1985", new Distance(6376428, DistanceUnit.Meters), 311.5);
         /// <summary>
         /// Represents the Fisher ellipsoid of 1960.
         /// </summary>
-        public static readonly Ellipsoid Fischer1960 = new Ellipsoid("Fisher (Mercury Datum) 1960", new Distance(6378166.0, DistanceUnit.Meters), new Distance(6356784.283666, DistanceUnit.Meters));
+        public static readonly Ellipsoid Fischer1960 = new("Fisher (Mercury Datum) 1960", new Distance(6378166.0, DistanceUnit.Meters), new Distance(6356784.283666, DistanceUnit.Meters));
         /// <summary>
         /// Represents the Modified Fisher ellipsoid of 1960.
         /// </summary>
-        public static readonly Ellipsoid ModifiedFischer1960 = new Ellipsoid("Modified Fisher 1960", new Distance(6378155.0, DistanceUnit.Meters), new Distance(6356773.3205, DistanceUnit.Meters));
+        public static readonly Ellipsoid ModifiedFischer1960 = new("Modified Fisher 1960", new Distance(6378155.0, DistanceUnit.Meters), new Distance(6356773.3205, DistanceUnit.Meters));
         /// <summary>
         /// Represents the Fisher ellipsoid of 1968.
         /// </summary>
-        public static readonly Ellipsoid Fischer1968 = new Ellipsoid("Fisher 1968", new Distance(6378150.0, DistanceUnit.Meters), new Distance(6356768.337303, DistanceUnit.Meters));
+        public static readonly Ellipsoid Fischer1968 = new("Fisher 1968", new Distance(6378150.0, DistanceUnit.Meters), new Distance(6356768.337303, DistanceUnit.Meters));
         /// <summary>
         /// Represents the New International ellipsoid of 1967.
         /// </summary>
-        public static readonly Ellipsoid NewInternational1967 = new Ellipsoid("New International 1967", new Distance(6378157.5, DistanceUnit.Meters), new Distance(6356772.2, DistanceUnit.Meters));
+        public static readonly Ellipsoid NewInternational1967 = new("New International 1967", new Distance(6378157.5, DistanceUnit.Meters), new Distance(6356772.2, DistanceUnit.Meters));
         /// <summary>
         /// Represents the Kaula ellipsoid of 1961.
         /// </summary>
-        public static readonly Ellipsoid Kaula = new Ellipsoid("Kaula 1961", new Distance(6378163.0, DistanceUnit.Meters), 298.24);
+        public static readonly Ellipsoid Kaula = new("Kaula 1961", new Distance(6378163.0, DistanceUnit.Meters), 298.24);
         /// <summary>
         /// Represents the Lerch ellipsoid of 1979.
         /// </summary>
-        public static readonly Ellipsoid Lerch = new Ellipsoid("Lerch 1979", new Distance(6378139.0, DistanceUnit.Meters), 298.257);
+        public static readonly Ellipsoid Lerch = new("Lerch 1979", new Distance(6378139.0, DistanceUnit.Meters), 298.257);
         /// <summary>
         /// Represents the MERIT ellipsoid of 1983.
         /// </summary>
-        public static readonly Ellipsoid Merit = new Ellipsoid("Merit 1983", new Distance(6378137.0, DistanceUnit.Meters), 298.257);
+        public static readonly Ellipsoid Merit = new("Merit 1983", new Distance(6378137.0, DistanceUnit.Meters), 298.257);
         /// <summary>
         /// Represents the Maupertius ellipsoid of 1738.
         /// </summary>
-        public static readonly Ellipsoid Maupertius = new Ellipsoid("Maupertius 1738", new Distance(639730.0, DistanceUnit.Meters), 191);
+        public static readonly Ellipsoid Maupertius = new("Maupertius 1738", new Distance(639730.0, DistanceUnit.Meters), 191);
         /// <summary>
         /// Represents the Southeast Asia (Modified Fisher ellipsoid of 1960) ellipsoid.
         /// </summary>
-        public static readonly Ellipsoid SoutheastAsia = new Ellipsoid("Southeast Asia", new Distance(6378155.0, DistanceUnit.Meters), new Distance(6356773.3205, DistanceUnit.Meters));
+        public static readonly Ellipsoid SoutheastAsia = new("Southeast Asia", new Distance(6378155.0, DistanceUnit.Meters), new Distance(6356773.3205, DistanceUnit.Meters));
         /// <summary>
         /// Represents the SGS ellipsoid of 1985.
         /// </summary>
-        public static readonly Ellipsoid Sgs1985 = new Ellipsoid("SGS 85", new Distance(6378136.0, DistanceUnit.Meters), new Distance(6356751.301569, DistanceUnit.Meters));
+        public static readonly Ellipsoid Sgs1985 = new("SGS 85", new Distance(6378136.0, DistanceUnit.Meters), new Distance(6356751.301569, DistanceUnit.Meters));
         /// <summary>
         /// Represents the South American ellipsoid of 1969.
         /// </summary>
-        public static readonly Ellipsoid SouthAmerican1969 = new Ellipsoid("South American 1969", new Distance(6378160.0, DistanceUnit.Meters), new Distance(6356774.719, DistanceUnit.Meters));
+        public static readonly Ellipsoid SouthAmerican1969 = new("South American 1969", new Distance(6378160.0, DistanceUnit.Meters), new Distance(6356774.719, DistanceUnit.Meters));
         /// <summary>
         /// Represents the Walbeck ellipsoid.
         /// </summary>
-        public static readonly Ellipsoid Walbeck = new Ellipsoid("Walbeck", new Distance(6376896.0, DistanceUnit.Meters), new Distance(6355834.8467, DistanceUnit.Meters));
+        public static readonly Ellipsoid Walbeck = new("Walbeck", new Distance(6376896.0, DistanceUnit.Meters), new Distance(6355834.8467, DistanceUnit.Meters));
         /// <summary>
         /// Represents the World Geodetic System ellipsoid of 1960.
         /// </summary>
-        public static readonly Ellipsoid Wgs1960 = new Ellipsoid("WGS 60", new Distance(6378165.0, DistanceUnit.Meters), new Distance(6356783.286959, DistanceUnit.Meters));
+        public static readonly Ellipsoid Wgs1960 = new("WGS 60", new Distance(6378165.0, DistanceUnit.Meters), new Distance(6356783.286959, DistanceUnit.Meters));
         /// <summary>
         /// Represents the World Geodetic System ellipsoid of 1966.
         /// </summary>
-        public static readonly Ellipsoid Wgs1966 = new Ellipsoid("WGS 1966", new Distance(6378145.0, DistanceUnit.Meters), new Distance(6356759.769356, DistanceUnit.Meters));
+        public static readonly Ellipsoid Wgs1966 = new("WGS 1966", new Distance(6378145.0, DistanceUnit.Meters), new Distance(6356759.769356, DistanceUnit.Meters));
 
         #endregion Non-EPSG Ellipsoids
 

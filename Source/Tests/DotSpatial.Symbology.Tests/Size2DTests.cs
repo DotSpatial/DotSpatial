@@ -119,7 +119,7 @@ namespace DotSpatial.Symbology.Tests
         [Test(Description = "Checks whether creating an empty Size2D results in Height and Widht being 0.")]
         public void CreateEmptySize2D()
         {
-            Size2D size = new Size2D();
+            Size2D size = new();
             Assert.AreEqual(0, size.Height);
             Assert.AreEqual(0, size.Width);
         }
@@ -130,7 +130,7 @@ namespace DotSpatial.Symbology.Tests
         [Test(Description = "Checks whether creating a Size2D results in Height and Width being the given numbers.")]
         public void CreateSize2D()
         {
-            Size2D size = new Size2D(4d, 5d);
+            Size2D size = new(4d, 5d);
             Assert.AreEqual(4, size.Width);
             Assert.AreEqual(5, size.Height);
         }
@@ -144,7 +144,7 @@ namespace DotSpatial.Symbology.Tests
         [TestCase(false)]
         public void SettingPropertyWorks(bool height)
         {
-            Size2D s = new Size2D();
+            Size2D s = new();
             if (height)
             {
                 s.Height = 5;
@@ -163,7 +163,7 @@ namespace DotSpatial.Symbology.Tests
         [Test(Description = "Checks whether Size2D.ToString returns the expected result.")]
         public void ToStringWorks()
         {
-            Size2D size = new Size2D(4, 5);
+            Size2D size = new(4, 5);
             Assert.AreEqual("4, 5", size.ToString());
         }
 

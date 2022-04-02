@@ -94,18 +94,18 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        private ManualResetEvent _detectionStartedWaitHandle = new ManualResetEvent(false);
+        private ManualResetEvent _detectionStartedWaitHandle = new(false);
         /// <summary>
         ///
         /// </summary>
-        private ManualResetEvent _detectionCompleteWaitHandle = new ManualResetEvent(false);
+        private ManualResetEvent _detectionCompleteWaitHandle = new(false);
 #if PocketPC
         private bool _IsDetectionThreadAlive;
 #endif
         /// <summary>
         ///
         /// </summary>
-        private readonly object _syncRoot = new object();
+        private readonly object _syncRoot = new();
 
         /// <summary>
         ///
@@ -760,13 +760,13 @@ namespace DotSpatial.Positioning
             bool isPrecisionSupported = false;
             bool isSpeedSupported = false;
             bool isSatellitesSupported = false;
-            List<string> sentences = new List<string>();
+            List<string> sentences = new();
 
             // Open the device
             Open();
 
             // Write a header
-            StringBuilder log = new StringBuilder();
+            StringBuilder log = new();
             log.Append("------------------------------------------------------------------------------------------------------------------------------\r\n");
             log.Append("GPS.NET 3.0 Diagnostics    Copyright © 2009  DotSpatial.Positioning\r\n");
             log.Append("                                   http://dotspatial.codeplex.com\r\n");
@@ -776,7 +776,7 @@ namespace DotSpatial.Positioning
             log.Append("\r\n\r\n");
 
             // Wrap the device's raw data stream in an NmeaReader
-            NmeaReader stream = new NmeaReader(BaseStream);
+            NmeaReader stream = new(BaseStream);
 
             try
             {
@@ -795,28 +795,22 @@ namespace DotSpatial.Positioning
                         sentences.Add(sentence.CommandWord);
 
                     // What features are supported?
-                    IPositionSentence positionSentence = sentence as IPositionSentence;
-                    if (positionSentence != null)
+                    if (sentence is IPositionSentence positionSentence)
                         isPositionSupported = true;
 
-                    IAltitudeSentence altitudeSentence = sentence as IAltitudeSentence;
-                    if (altitudeSentence != null)
+                    if (sentence is IAltitudeSentence altitudeSentence)
                         isAltitudeSupported = true;
 
-                    IBearingSentence bearingSentence = sentence as IBearingSentence;
-                    if (bearingSentence != null)
+                    if (sentence is IBearingSentence bearingSentence)
                         isBearingSupported = true;
 
-                    IHorizontalDilutionOfPrecisionSentence hdopSentence = sentence as IHorizontalDilutionOfPrecisionSentence;
-                    if (hdopSentence != null)
+                    if (sentence is IHorizontalDilutionOfPrecisionSentence hdopSentence)
                         isPrecisionSupported = true;
 
-                    ISpeedSentence speedSentence = sentence as ISpeedSentence;
-                    if (speedSentence != null)
+                    if (sentence is ISpeedSentence speedSentence)
                         isSpeedSupported = true;
 
-                    ISatelliteCollectionSentence satellitesSentence = sentence as ISatelliteCollectionSentence;
-                    if (satellitesSentence != null)
+                    if (sentence is ISatelliteCollectionSentence satellitesSentence)
                         isSatellitesSupported = true;
 
                     // Is everything supported?  If so, we have a healthy GPS device.  It's okay to exit
@@ -1383,7 +1377,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// A default instance
         /// </summary>
-        public static new readonly DeviceEventArgs Empty = new DeviceEventArgs(null);
+        public static new readonly DeviceEventArgs Empty = new(null);
 
         /// <summary>
         /// Creates a new instance of the event args
@@ -1577,13 +1571,6 @@ namespace DotSpatial.Positioning
             request.UserAgent = "GPS Diagnostics";
             request.Method = "POST";
 
-            // Yes.  Include some information about the device
-#if PocketPC
-            GpsIntermediateDriver gpsid = _Device as GpsIntermediateDriver;
-#endif
-            SerialDevice serialDevice = _device as SerialDevice;
-            BluetoothDevice bluetoothDevice = _device as BluetoothDevice;
-
             string data = "Device=" + _device.Name;
             data += "&IsGps=" + _device.IsGpsDevice;
             data += "&Reliability=" + _device.Reliability.ToString().Replace("%", string.Empty);
@@ -1605,13 +1592,13 @@ namespace DotSpatial.Positioning
             }
             else
 #endif
-            if (serialDevice != null)
+            if (_device is SerialDevice serialDevice)
             {
                 data += "&Type=Serial";
                 data += "&Port=" + serialDevice.Port;
                 data += "&BaudRate=" + serialDevice.BaudRate;
             }
-            else if (bluetoothDevice != null)
+            else if (_device is BluetoothDevice bluetoothDevice)
             {
                 data += "&Type=Bluetooth";
                 data += "&Address=" + bluetoothDevice.Address;

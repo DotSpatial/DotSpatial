@@ -160,7 +160,7 @@ namespace DotSpatial.Positioning
         {
             get
             {
-                StringBuilder numericPortion = new StringBuilder(4);
+                StringBuilder numericPortion = new(4);
 
                 // Extract numeric digits from the name
                 foreach (char character in _port.PortName)
@@ -250,7 +250,7 @@ namespace DotSpatial.Positioning
 
 #if !PocketPC
             // Clone the port
-            SerialPort clone = new SerialPort(_port.PortName, _port.BaudRate, _port.Parity, _port.DataBits, _port.StopBits)
+            SerialPort clone = new(_port.PortName, _port.BaudRate, _port.Parity, _port.DataBits, _port.StopBits)
                                    {
                                        ReadTimeout = _port.ReadTimeout,
                                        WriteTimeout = _port.WriteTimeout,
@@ -427,7 +427,7 @@ namespace DotSpatial.Positioning
              * speed.
              */
 
-            List<int> baudRatesToTest = new List<int>(_detectionBaudRates);
+            List<int> baudRatesToTest = new(_detectionBaudRates);
 
             // Do we have the last known rate?
             if (_lastSuccessfulBaudRate != 0)
@@ -797,7 +797,7 @@ namespace DotSpatial.Positioning
         [SecurityCritical]
         public static IList<SerialDevice> GetCache()
         {
-            List<SerialDevice> devices = new List<SerialDevice>();
+            List<SerialDevice> devices = new();
 
             // Pass 1: Look for devices recorded in the registry
             LoadCachedDevices(devices);
@@ -852,7 +852,7 @@ namespace DotSpatial.Positioning
                 foreach (string portName in deviceKeys)
                 {
                     // Finally, create a device from this information
-                    SerialDevice device = new SerialDevice(portName);
+                    SerialDevice device = new(portName);
 
                     // And add it
                     devices.Add(device);
@@ -930,10 +930,10 @@ namespace DotSpatial.Positioning
                             .Replace("?", string.Empty);
 
                     // Lastly, append a colon
-                    portName = portName + ":";
+                    portName += ":";
 
                     // Make a device with the port name
-                    SerialDevice device = new SerialDevice(portName);
+                    SerialDevice device = new(portName);
 
                     // Add it to the results
                     if (!devices.Contains(device))

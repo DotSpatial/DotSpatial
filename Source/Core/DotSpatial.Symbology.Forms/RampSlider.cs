@@ -484,7 +484,7 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="clipRectangle">The clip rectangle.</param>
         protected virtual void OnDrawRamp(Graphics g, Rectangle clipRectangle)
         {
-            RectangleF bounds = new RectangleF(_rampRectangle.X, _rampRectangle.Y, _rampRectangle.Width, _rampRectangle.Height);
+            RectangleF bounds = new(_rampRectangle.X, _rampRectangle.Y, _rampRectangle.Width, _rampRectangle.Height);
             if (_orientation == Orientation.Horizontal)
             {
                 DrawRampHorizontal(g, bounds);
@@ -504,7 +504,7 @@ namespace DotSpatial.Symbology.Forms
         {
             if (_orientation == Orientation.Horizontal)
             {
-                RectangleF bounds = new RectangleF(_rampRectangle.X, _rampRectangle.Y, _rampRectangle.Width, _rampRectangle.Height);
+                RectangleF bounds = new(_rampRectangle.X, _rampRectangle.Y, _rampRectangle.Width, _rampRectangle.Height);
                 DrawRampTextHorizontal(g, bounds);
             }
             else
@@ -575,20 +575,20 @@ namespace DotSpatial.Symbology.Forms
             if (y > _rampRectangle.Height) y = _rampRectangle.Height;
             if (y < 0) y = 0;
 
-            Point tl = new Point(x, y);
-            Point br = new Point(x + w, y + h);
+            Point tl = new(x, y);
+            Point br = new(x + w, y + h);
 
             try
             {
-                LinearGradientBrush lgb = new LinearGradientBrush(tl, br, light, dark);
-                Rectangle bounds = new Rectangle(x, y, w, h);
+                LinearGradientBrush lgb = new(tl, br, light, dark);
+                Rectangle bounds = new(x, y, w, h);
                 _sliderRectangle = bounds;
-                GraphicsPath gp = new GraphicsPath();
+                GraphicsPath gp = new();
                 gp.AddRoundedRectangle(bounds, (int)Math.Round(SliderRadius));
                 g.FillPath(lgb, gp);
                 g.DrawPath(Pens.Gray, gp);
                 gp.Dispose();
-                GraphicsPath bottomRight = new GraphicsPath();
+                GraphicsPath bottomRight = new();
                 bottomRight.AddRoundedRectangleBottomRight(bounds, (int)Math.Round(SliderRadius));
                 g.DrawPath(Pens.DarkGray, bottomRight);
                 bottomRight.Dispose();
@@ -612,7 +612,7 @@ namespace DotSpatial.Symbology.Forms
             SizeF minSize = g.MeasureString(Minimum.ToString(), Font);
             SizeF maxSize = g.MeasureString(Maximum.ToString(), Font);
             Brush fontBrush = new SolidBrush(ForeColor);
-            PointF centerTl = new PointF((Width - labelSize.Width) / 2, (Height - labelSize.Height) / 2);
+            PointF centerTl = new((Width - labelSize.Width) / 2, (Height - labelSize.Height) / 2);
             if (_orientation == Orientation.Vertical)
             {
                 // if (Height < labelSize.Height) return;
@@ -708,7 +708,7 @@ namespace DotSpatial.Symbology.Forms
                 invert = !FlipText;
             }
 
-            Pen p = new Pen(_tickColor);
+            Pen p = new(_tickColor);
 
             if (_orientation == Orientation.Horizontal)
             {
@@ -843,7 +843,7 @@ namespace DotSpatial.Symbology.Forms
         {
             Rectangle clip = e.ClipRectangle;
             if (clip.IsEmpty) clip = ClientRectangle;
-            Bitmap bmp = new Bitmap(clip.Width, clip.Height);
+            Bitmap bmp = new(clip.Width, clip.Height);
             Graphics g = Graphics.FromImage(bmp);
             g.TranslateTransform(-clip.X, -clip.Y);
             g.Clip = new Region(clip);
@@ -901,7 +901,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void DrawRampHorizontal(Graphics g, RectangleF bounds)
         {
-            GraphicsPath gp = new GraphicsPath();
+            GraphicsPath gp = new();
             float radius = RampRadius;
             if (radius > bounds.Height / 2) radius = bounds.Height / 2F;
             if (radius > bounds.Width / 2) radius = bounds.Width / 2F;
@@ -923,9 +923,9 @@ namespace DotSpatial.Symbology.Forms
                 g.Transform = invert;
             }
 
-            PointF ptMin = new PointF(bounds.Left, bounds.Bottom - 1);
-            PointF ptMax = new PointF(bounds.Right, bounds.Bottom - 1);
-            PointF peak = new PointF(bounds.Right - 1, bounds.Top);
+            PointF ptMin = new(bounds.Left, bounds.Bottom - 1);
+            PointF ptMax = new(bounds.Right, bounds.Bottom - 1);
+            PointF peak = new(bounds.Right - 1, bounds.Top);
 
             double a = Math.Atan((Height - w) / (Width - w));
             if (_orientation == Orientation.Vertical)
@@ -938,20 +938,20 @@ namespace DotSpatial.Symbology.Forms
             float af = (float)(a * 180 / Math.PI);
 
             gp.AddLine(new PointF(ptMin.X + radius, ptMin.Y), new PointF(ptMax.X - radius, ptMax.Y));
-            RectangleF lr = new RectangleF(ptMax.X - w, ptMax.Y - w, w, w);
+            RectangleF lr = new(ptMax.X - w, ptMax.Y - w, w, w);
             gp.AddArc(lr, 90, -90F);
 
             gp.AddLine(new PointF(ptMax.X, ptMax.Y - radius), new PointF(peak.X, peak.Y + radius));
-            RectangleF tr = new RectangleF(peak.X - w, peak.Y, w, w);
+            RectangleF tr = new(peak.X - w, peak.Y, w, w);
             gp.AddArc(tr, 0F, -(90 + af));
 
             gp.AddLine(new PointF(peak.X - (radius + ax), peak.Y + radius - ay), new PointF(ptMin.X + radius - ax, ptMin.Y - radius - ay));
-            RectangleF bl = new RectangleF(ptMin.X, ptMin.Y - w, w, w);
+            RectangleF bl = new(ptMin.X, ptMin.Y - w, w, w);
             gp.AddArc(bl, 270F - af, -(180F - af));
 
             gp.CloseFigure();
 
-            LinearGradientBrush br = new LinearGradientBrush(ptMin, ptMax, _minColor, _maxColor);
+            LinearGradientBrush br = new(ptMin, ptMax, _minColor, _maxColor);
             g.FillPath(br, gp);
             g.DrawPath(Pens.Gray, gp);
             g.Transform = old;
@@ -962,7 +962,7 @@ namespace DotSpatial.Symbology.Forms
             Brush b = new SolidBrush(RampTextColor);
             SizeF labelSize = g.MeasureString(RampText, RampTextFont);
 
-            PointF position = new PointF(_rampRectangle.X, _rampRectangle.Y);
+            PointF position = new(_rampRectangle.X, _rampRectangle.Y);
 
             switch (RampTextAlignment)
             {
@@ -1025,7 +1025,7 @@ namespace DotSpatial.Symbology.Forms
             }
 
             g.Transform = rot;
-            RectangleF bounds = new RectangleF(_rampRectangle.X, _rampRectangle.Y, _rampRectangle.Height, _rampRectangle.Width);
+            RectangleF bounds = new(_rampRectangle.X, _rampRectangle.Y, _rampRectangle.Height, _rampRectangle.Width);
             DrawRampTextHorizontal(g, bounds);
             g.Transform = old;
         }
@@ -1037,7 +1037,7 @@ namespace DotSpatial.Symbology.Forms
             rot.RotateAt(-90F, new PointF(_rampRectangle.X, _rampRectangle.Y));
             rot.Translate(-_rampRectangle.Height, 0);
             g.Transform = rot;
-            RectangleF bounds = new RectangleF(_rampRectangle.X, _rampRectangle.Y, _rampRectangle.Height, _rampRectangle.Width);
+            RectangleF bounds = new(_rampRectangle.X, _rampRectangle.Y, _rampRectangle.Height, _rampRectangle.Width);
             DrawRampHorizontal(g, bounds);
             g.Transform = old;
         }

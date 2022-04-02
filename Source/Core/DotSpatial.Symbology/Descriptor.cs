@@ -92,8 +92,7 @@ namespace DotSpatial.Symbology
                 object copyValue = copyProperty.GetValue(source, null);
                 if (copyProperty.GetCustomAttributes(typeof(ShallowCopy), true).Length == 0)
                 {
-                    ICloneable cloneable = copyValue as ICloneable;
-                    if (cloneable != null)
+                    if (copyValue is ICloneable cloneable)
                     {
                         originalProperty.SetValue(this, cloneable.Clone(), null);
                         continue;
@@ -120,8 +119,7 @@ namespace DotSpatial.Symbology
                 object copyValue = copyField.GetValue(source);
                 if (copyField.GetCustomAttributes(typeof(ShallowCopy), true).Length == 0)
                 {
-                    ICloneable cloneable = copyValue as ICloneable;
-                    if (cloneable != null)
+                    if (copyValue is ICloneable cloneable)
                     {
                         originalField.SetValue(this, cloneable.Clone());
                         continue;
@@ -225,10 +223,7 @@ namespace DotSpatial.Symbology
 
         private static bool Match(object originalValue, object copyValue)
         {
-            // If a custom IMatchable description exists use it to determine if there is a match
-            IMatchable originalMatch = originalValue as IMatchable;
-            IMatchable copyMatch = copyValue as IMatchable;
-            if (originalMatch != null && copyMatch != null)
+            if (originalValue is IMatchable originalMatch && copyValue is IMatchable copyMatch)
             {
                 bool res = originalMatch.Matches(copyMatch);
                 return res;
@@ -236,22 +231,18 @@ namespace DotSpatial.Symbology
 
             // Strings are enumerable, so test them first, since string.Equals should be faster than
             // cycling through each character.
-            string origString = originalValue as string;
-            if (origString != null)
+            if (originalValue is string origString)
             {
-                string mString = copyValue as string;
-                if (mString == null) return false;
+                if (copyValue is not string mString) return false;
 
                 return origString.Equals(mString);
             }
 
             // If the object is an enumeration, test the members of the enumeration.
             // If any members fail the match test, then the whole collection fails the match.
-            IEnumerable originalList = originalValue as IEnumerable;
-            if (originalList != null)
+            if (originalValue is IEnumerable originalList)
             {
-                IEnumerable copyList = copyValue as IEnumerable;
-                if (copyList != null)
+                if (copyValue is IEnumerable copyList)
                 {
                     IEnumerator e = copyList.GetEnumerator();
                     e.MoveNext();

@@ -133,11 +133,11 @@ namespace DotSpatial.Positioning.Forms
 #endif
     public abstract class DoubleBufferedControl : Control
     {
-        private Bitmap _offScreenBitmap = new Bitmap(1, 1);
+        private Bitmap _offScreenBitmap = new(1, 1);
         internal Graphics OffScreenGraphics;
-        private Bitmap _onScreenBitmap = new Bitmap(1, 1);
-        private readonly object _offScreenSyncRoot = new object();
-        private readonly object _onScreenSyncRoot = new object();
+        private Bitmap _onScreenBitmap = new(1, 1);
+        private readonly object _offScreenSyncRoot = new();
+        private readonly object _onScreenSyncRoot = new();
         private bool _isExceptionTextAllowed = true;
         // Default to the highest quality
         private GraphicsSettings _graphicsSettings = GraphicsSettings.Balanced; //.HighPerformance; //.HighQuality;
@@ -147,8 +147,8 @@ namespace DotSpatial.Positioning.Forms
         internal int MyHeight;
         private bool _isDisposed;
         private bool _isPaintingOnSeparateThread;
-        private readonly AutoResetEvent _renderRequestWaitHandle = new AutoResetEvent(false);
-        private readonly ManualResetEvent _pausedWaitHandle = new ManualResetEvent(true);
+        private readonly AutoResetEvent _renderRequestWaitHandle = new(false);
+        private readonly ManualResetEvent _pausedWaitHandle = new(true);
         private Thread _paintingThread;
         private bool _needNewBitmaps = true;
         private readonly string _threadName;
@@ -856,7 +856,7 @@ namespace DotSpatial.Positioning.Forms
                     }
 
                     // Make paint event arguments
-                    PaintEventArgs f = new PaintEventArgs(OffScreenGraphics, ClientRectangle);
+                    PaintEventArgs f = new(OffScreenGraphics, ClientRectangle);
 
                     // No.  Render the background
                     OnPaintOffScreenBackground(f);

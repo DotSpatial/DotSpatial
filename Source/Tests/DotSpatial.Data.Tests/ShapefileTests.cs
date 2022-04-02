@@ -121,11 +121,9 @@ namespace DotSpatial.Data.Tests
         /// <param name="content">Stream with the content that should be saved to the file.</param>
         private static void SaveStream(string path, Stream content)
         {
-            using (var fs = new FileStream(path, FileMode.Create))
-            {
-                content.CopyTo(fs);
-                fs.Flush();
-            }
+            using var fs = new FileStream(path, FileMode.Create);
+            content.CopyTo(fs);
+            fs.Flush();
         }
 
         #endregion

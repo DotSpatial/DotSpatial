@@ -5,6 +5,8 @@ using System;
 using System.Globalization;
 using System.Windows.Forms;
 using DotSpatial.Controls;
+
+
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
@@ -20,7 +22,7 @@ namespace DotSpatial.Plugins.ScaleBar
         #region Fields
 
         private const string StrKeyScaleBarDropDown = "kScaleBarDropDown";
-        private ToolStripComboBox? _combo;
+        private ToolStripComboBox _combo;
         private bool _ignore;
 
         private DropDownActionItem _scaleDropDown;
@@ -159,7 +161,7 @@ namespace DotSpatial.Plugins.ScaleBar
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void ComboKeyPress(object? sender, KeyPressEventArgs e)
+        private void ComboKeyPress(object sender, KeyPressEventArgs e)
         {
             if (_ignore)
             {
@@ -254,7 +256,7 @@ namespace DotSpatial.Plugins.ScaleBar
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void LayerAdded(object? sender, LayerEventArgs e)
+        private void LayerAdded(object sender, LayerEventArgs e)
         {
             ComputeMapScale();
         }
@@ -264,7 +266,7 @@ namespace DotSpatial.Plugins.ScaleBar
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void MapFrameExtentsChanged(object? sender, ExtentArgs e)
+        private void MapFrameExtentsChanged(object sender, ExtentArgs e)
         {
             ComputeMapScale();
         }
@@ -310,7 +312,7 @@ namespace DotSpatial.Plugins.ScaleBar
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void ScaleToSelected(object? sender, SelectedValueChangedEventArgs e)
+        private void ScaleToSelected(object sender, SelectedValueChangedEventArgs e)
         {
             if (_ignore)
             {
@@ -331,7 +333,7 @@ namespace DotSpatial.Plugins.ScaleBar
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
-        private void SerializationManagerDeserializing(object? sender, SerializingEventArgs e)
+        private void SerializationManagerDeserializing(object sender, SerializingEventArgs e)
         {
             AddHandler();
             ComputeMapScale();

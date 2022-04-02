@@ -120,11 +120,10 @@ namespace DotSpatial.Symbology.Forms
         {
             // Here a dialog is displayed. The user can enter the custom symbol name and category
             // in the dialog.
-            AddCustomSymbolDialog dlg = new AddCustomSymbolDialog(_categories, e.Symbolizer);
+            AddCustomSymbolDialog dlg = new(_categories, e.Symbolizer);
             dlg.ShowDialog();
 
-            CustomLineSymbolizer newSym = dlg.CustomSymbolizer as CustomLineSymbolizer;
-            if (newSym != null)
+            if (dlg.CustomSymbolizer is CustomLineSymbolizer newSym)
             {
                 // check if user added a new category
                 if (!_categories.Contains(newSym.Category))
@@ -154,7 +153,7 @@ namespace DotSpatial.Symbology.Forms
         // as well as the available categories
         private void LoadDefaultSymbols()
         {
-            CustomLineSymbolProvider prov = new CustomLineSymbolProvider();
+            CustomLineSymbolProvider prov = new();
 
             _categories = prov.GetAvailableCategories();
             UpdateCategories();
@@ -183,7 +182,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void ShowDetailsDialog()
         {
-            DetailedLineSymbolDialog detailsDialog = new DetailedLineSymbolDialog(_original);
+            DetailedLineSymbolDialog detailsDialog = new(_original);
             detailsDialog.ChangesApplied += DetailsDialogChangesApplied;
             detailsDialog.ShowDialog();
         }

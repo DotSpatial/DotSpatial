@@ -19,7 +19,7 @@ namespace DotSpatial.Projections.Tests {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,38 +61,22 @@ namespace DotSpatial.Projections.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PROJCS[&quot;WGS_1984_Web_Mercator_Auxiliary_Sphere&quot;,
-        ///	GEOGCS[&quot;GCS_WGS_1984&quot;,
-        ///		DATUM[&quot;D_WGS_1984&quot;,
-        ///			SPHEROID[&quot;WGS_1984&quot;, 6378137, 298.257223562997]
-        ///		],
-        ///		PRIMEM[&quot;Greenwich&quot;, 0],
-        ///		UNIT[&quot;Degree&quot;, 0.0174532925199433]
-        ///	],
-        ///	PROJECTION[&quot;Mercator_Auxiliary_Sphere&quot;],
-        ///	PARAMETER[&quot;False_Easting&quot;, 0],
-        ///	PARAMETER[&quot;False_Northing&quot;, 0],
-        ///	PARAMETER[&quot;Central_Meridian&quot;, 0],
-        ///	PARAMETER[&quot;Standard_Parallel_1&quot;, 0],
-        ///	PARAMETER[&quot;Scale_Factor&quot;, 1],
-        ///	PARAMETER[&quot;Auxiliary_Sphere_Type&quot;, 0.0],
-        ///	UNIT[&quot;Meter&quot;, 1]
-        ///]
-        ///.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string FormattedProjectionFile {
+        internal static byte[] FormattedProjectionFile {
             get {
-                return ResourceManager.GetString("FormattedProjectionFile", resourceCulture);
+                object obj = ResourceManager.GetObject("FormattedProjectionFile", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PROJCS[&quot;WGS_1984_Web_Mercator_Auxiliary_Sphere&quot;,GEOGCS[&quot;GCS_WGS_1984&quot;,DATUM[&quot;D_WGS_1984&quot;,SPHEROID[&quot;WGS_1984&quot;,6378137,298.257223562997]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]], PROJECTION[&quot;Mercator_Auxiliary_Sphere&quot;],PARAMETER[&quot;False_Easting&quot;,0],PARAMETER[&quot;False_Northing&quot;,0],PARAMETER[&quot;Central_Meridian&quot;,0],PARAMETER[&quot;Standard_Parallel_1&quot;,0],PARAMETER[&quot;Scale_Factor&quot;,1],PARAMETER[&quot;Auxiliary_Sphere_Type&quot;,0.0],UNIT[&quot;Meter&quot;,1]]
-        ///.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string StandardProjectionFile {
+        internal static byte[] StandardProjectionFile {
             get {
-                return ResourceManager.GetString("StandardProjectionFile", resourceCulture);
+                object obj = ResourceManager.GetObject("StandardProjectionFile", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

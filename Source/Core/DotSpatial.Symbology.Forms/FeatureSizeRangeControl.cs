@@ -116,8 +116,7 @@ namespace DotSpatial.Symbology.Forms
             _sizeRange.End = args.EndSize;
             _sizeRange.Symbolizer = args.Template;
             _sizeRange.UseSizeRange = args.UseSizeRange;
-            IPointSymbolizer ps = args.Template as IPointSymbolizer;
-            if (ps != null)
+            if (args.Template is IPointSymbolizer ps)
             {
                 psvStart.Visible = true;
                 psvEnd.Visible = true;
@@ -125,8 +124,7 @@ namespace DotSpatial.Symbology.Forms
                 lsvEnd.Visible = false;
             }
 
-            ILineSymbolizer ls = args.Template as ILineSymbolizer;
-            if (ls != null)
+            if (args.Template is ILineSymbolizer ls)
             {
                 lsvStart.Visible = true;
                 lsvEnd.Visible = true;
@@ -153,8 +151,7 @@ namespace DotSpatial.Symbology.Forms
             chkSizeRange.Checked = _sizeRange.UseSizeRange;
             trkStart.Value = (int)_sizeRange.Start;
             trkEnd.Value = (int)_sizeRange.End;
-            IPointSymbolizer ps = _sizeRange.Symbolizer as IPointSymbolizer;
-            if (ps != null)
+            if (_sizeRange.Symbolizer is IPointSymbolizer ps)
             {
                 Color color = ps.GetFillColor();
                 if (_scheme != null && _scheme.EditorSettings.UseColorRange)
@@ -190,8 +187,7 @@ namespace DotSpatial.Symbology.Forms
                 }
             }
 
-            ILineSymbolizer ls = _sizeRange.Symbolizer as ILineSymbolizer;
-            if (ls != null)
+            if (_sizeRange.Symbolizer is ILineSymbolizer ls)
             {
                 Color color = ls.GetFillColor();
                 if (_scheme != null && _scheme.EditorSettings.UseColorRange)
@@ -263,15 +259,13 @@ namespace DotSpatial.Symbology.Forms
         {
             if (_sizeRange == null) return;
 
-            IPointSymbolizer ps = _sizeRange.Symbolizer as IPointSymbolizer;
-            if (ps != null)
+            if (_sizeRange.Symbolizer is IPointSymbolizer ps)
             {
                 _pointDialog.Symbolizer = ps;
                 _pointDialog.ShowDialog(this);
             }
 
-            ILineSymbolizer ls = _sizeRange.Symbolizer as ILineSymbolizer;
-            if (ls != null)
+            if (_sizeRange.Symbolizer is ILineSymbolizer ls)
             {
                 _lineDialog.Symbolizer = ls;
                 _lineDialog.ShowDialog(this);

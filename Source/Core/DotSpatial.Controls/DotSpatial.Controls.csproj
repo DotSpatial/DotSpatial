@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <Description>Windows Forms controls, includes a map control and legend control.</Description>
   </PropertyGroup>
 
   <ItemGroup>

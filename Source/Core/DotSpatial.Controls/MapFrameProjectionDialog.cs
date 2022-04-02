@@ -132,13 +132,11 @@ namespace DotSpatial.Controls
 
         private void BtnChangeToSelectedClick(object sender, EventArgs e)
         {
-            using (var pf = new ProjectionSelectDialog())
-            {
-                pf.SelectedCoordinateSystem = Projection;
-                pf.ChangesApplied += PfOnChangesApplied;
-                pf.ShowDialog(this);
-                pf.ChangesApplied -= PfOnChangesApplied;
-            }
+            using var pf = new ProjectionSelectDialog();
+            pf.SelectedCoordinateSystem = Projection;
+            pf.ChangesApplied += PfOnChangesApplied;
+            pf.ShowDialog(this);
+            pf.ChangesApplied -= PfOnChangesApplied;
         }
 
         private void BtnOkClick(object sender, EventArgs e)
@@ -149,10 +147,9 @@ namespace DotSpatial.Controls
         private void LnkSpatialReferenceLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // Display the appropriate link based on the value of the LinkData property of the Link object.
-            var target = e.Link.LinkData as string;
 
             // If the value looks like a URL, navigate to it.
-            if (target != null && (target.StartsWith("www.") || target.StartsWith("http:")))
+            if (e.Link.LinkData is string target && (target.StartsWith("www.") || target.StartsWith("http:")))
             {
                 Process.Start(target);
             }

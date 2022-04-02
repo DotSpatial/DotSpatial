@@ -73,7 +73,7 @@ namespace DotSpatial.Data
             {
                 // Imagine we have written a header and want to add more stuff
                 _fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write);
-                FileInfo fi = new FileInfo(fileName);
+                FileInfo fi = new(fileName);
                 _fileLength = fi.Length;
                 FileOffset = 0;
             }
@@ -309,7 +309,7 @@ namespace DotSpatial.Data
         /// <param name="values">Values that get written.</param>
         public void Write(char[] values)
         {
-            List<byte> lstData = new List<byte>();
+            List<byte> lstData = new();
             foreach (var b in values)
             {
                 lstData.AddRange(BitConverter.GetBytes(b));

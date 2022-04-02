@@ -60,8 +60,8 @@ namespace DotSpatial.Data
         /// <returns>An IEnvelope interface.</returns>
         public static Extent PixelToProj(this IProj self, Rectangle rect)
         {
-            Point tl = new Point(rect.X, rect.Y);
-            Point br = new Point(rect.Right, rect.Bottom);
+            Point tl = new(rect.X, rect.Y);
+            Point br = new(rect.Right, rect.Bottom);
             Coordinate topLeft = PixelToProj(self, tl);
             Coordinate bottomRight = PixelToProj(self, br);
             return new Extent(topLeft.X, bottomRight.Y, bottomRight.X, topLeft.Y);
@@ -75,7 +75,7 @@ namespace DotSpatial.Data
         /// <returns>A List of IEnvelope geographic bounds that correspond to the specified clip rectangles.</returns>
         public static List<Extent> PixelToProj(this IProj self, List<Rectangle> clipRects)
         {
-            List<Extent> result = new List<Extent>();
+            List<Extent> result = new();
             foreach (Rectangle r in clipRects)
             {
                 result.Add(PixelToProj(self, r));
@@ -118,8 +118,8 @@ namespace DotSpatial.Data
         /// <returns>A Rectangle.</returns>
         public static Rectangle ProjToPixel(this IProj self, Extent env)
         {
-            Coordinate tl = new Coordinate(env.MinX, env.MaxY);
-            Coordinate br = new Coordinate(env.MaxX, env.MinY);
+            Coordinate tl = new(env.MinX, env.MaxY);
+            Coordinate br = new(env.MaxX, env.MinY);
             Point topLeft = ProjToPixel(self, tl);
             Point bottomRight = ProjToPixel(self, br);
             return new Rectangle(topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y);
@@ -133,7 +133,7 @@ namespace DotSpatial.Data
         /// <returns>A list of pixel rectangles that describe the specified region.</returns>
         public static List<Rectangle> ProjToPixel(this IProj self, List<Extent> regions)
         {
-            List<Rectangle> result = new List<Rectangle>();
+            List<Rectangle> result = new();
             foreach (Extent region in regions)
             {
                 if (region == null) continue;

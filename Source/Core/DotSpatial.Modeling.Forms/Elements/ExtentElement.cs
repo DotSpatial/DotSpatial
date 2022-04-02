@@ -98,7 +98,7 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         private void CmdSelectClick(object sender, EventArgs e)
         {
-            ExtentDialog dlg = new ExtentDialog();
+            ExtentDialog dlg = new();
 
             Extent ext = null;
             if (Param != null) ext = Param.Value;

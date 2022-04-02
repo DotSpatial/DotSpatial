@@ -3,6 +3,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
@@ -52,10 +53,10 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
                 _map.Invalidate();
             }
 
-            _map.MapFrame.ViewExtents.MaxX = Convert.ToDouble(xmlRoot.Extents["xMax"]);
-            _map.MapFrame.ViewExtents.MaxY = Convert.ToDouble(xmlRoot.Extents["yMax"]);
-            _map.MapFrame.ViewExtents.MinX = Convert.ToDouble(xmlRoot.Extents["xMin"]);
-            _map.MapFrame.ViewExtents.MinY = Convert.ToDouble(xmlRoot.Extents["yMin"]);
+            _map.MapFrame.ViewExtents.MaxX = Convert.ToDouble(xmlRoot.Extents["xMax"], CultureInfo.InvariantCulture);
+            _map.MapFrame.ViewExtents.MaxY = Convert.ToDouble(xmlRoot.Extents["yMax"], CultureInfo.InvariantCulture);
+            _map.MapFrame.ViewExtents.MinX = Convert.ToDouble(xmlRoot.Extents["xMin"], CultureInfo.InvariantCulture);
+            _map.MapFrame.ViewExtents.MinY = Convert.ToDouble(xmlRoot.Extents["yMin"], CultureInfo.InvariantCulture);
 
             DeserializeGroups(xmlRoot.Groups.Elements());
         }

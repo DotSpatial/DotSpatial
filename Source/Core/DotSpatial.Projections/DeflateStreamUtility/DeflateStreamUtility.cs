@@ -19,16 +19,12 @@ namespace DotSpatial.Projections
                     continue;
                 }
 
-                using (FileStream fs = File.OpenRead(s))
-                {
-                    string sout = Path.ChangeExtension(s, "ds");
-                    using (DeflateStream ds = new DeflateStream(File.OpenWrite(sout), CompressionMode.Compress, false))
-                    {
-                        byte[] buffer = new byte[fs.Length];
-                        fs.Read(buffer, 0, buffer.Length);
-                        ds.Write(buffer, 0, buffer.Length);
-                    }
-                }
+                using FileStream fs = File.OpenRead(s);
+                string sout = Path.ChangeExtension(s, "ds");
+                using DeflateStream ds = new(File.OpenWrite(sout), CompressionMode.Compress, false);
+                byte[] buffer = new byte[fs.Length];
+                fs.Read(buffer, 0, buffer.Length);
+                ds.Write(buffer, 0, buffer.Length);
             }
         }
     }

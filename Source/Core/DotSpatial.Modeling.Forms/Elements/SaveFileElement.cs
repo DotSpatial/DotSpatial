@@ -51,17 +51,15 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         private void BtnAddDataClick(object sender, EventArgs e)
         {
-            FileParam p = Param as FileParam;
-
-            using (SaveFileDialog sfd = new SaveFileDialog())
+            using (SaveFileDialog sfd = new())
             {
                 sfd.OverwritePrompt = true;
 
-                sfd.Filter = p != null ? p.DialogFilter : @"CSV Files|*.csv";
+                sfd.Filter = Param is FileParam p ? p.DialogFilter : @"CSV Files|*.csv";
 
                 if (sfd.ShowDialog() != DialogResult.OK) return;
 
-                TextFile addedTextFile = new TextFile(sfd.FileName);
+                TextFile addedTextFile = new(sfd.FileName);
 
                 // This inserts the new featureset into the list
                 txtDataTable.Text = Path.GetFileNameWithoutExtension(addedTextFile.Filename);

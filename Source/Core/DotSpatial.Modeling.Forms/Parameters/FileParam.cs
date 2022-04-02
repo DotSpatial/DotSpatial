@@ -87,8 +87,8 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <param name="path">Path of the generated text file.</param>
         public override void GenerateDefaultOutput(string path)
         {
-            TextFile addedTextFile = new TextFile
-                                         {
+            TextFile addedTextFile = new()
+            {
                                              Filename = Path.GetDirectoryName(path) + Path.DirectorySeparatorChar + ModelName
                                          };
             Value = addedTextFile;

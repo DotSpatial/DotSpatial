@@ -180,7 +180,7 @@ namespace DotSpatial.Symbology.Forms
             }
 
             // by erasing and drawing off-camera, we avoid flicker
-            Bitmap bmp = new Bitmap(e.Bounds.Width, e.Bounds.Height);
+            Bitmap bmp = new(e.Bounds.Width, e.Bounds.Height);
             Graphics backBuffer = Graphics.FromImage(bmp);
 
             // erase by drawing the background
@@ -199,7 +199,7 @@ namespace DotSpatial.Symbology.Forms
             backBuffer.FillRectangle(_backBrush, new Rectangle(0, 0, e.Bounds.Width, e.Bounds.Height));
 
             // draw the color box
-            Rectangle colorBox = new Rectangle(1, 1, 25, e.Bounds.Height - 2);
+            Rectangle colorBox = new(1, 1, 25, e.Bounds.Height - 2);
             Brush colBrush = new SolidBrush(col);
             backBuffer.FillRectangle(colBrush, colorBox);
             colBrush.Dispose();

@@ -58,7 +58,7 @@ namespace DotSpatial.Data
         /// </returns>
         public IImageData Create(string fileName, int width, int height, bool inRam, IProgressHandler progHandler, ImageBandType band)
         {
-            InRamImageData img = new InRamImageData();
+            InRamImageData img = new();
             img.Create(fileName, width, height, band);
             return img;
         }
@@ -70,7 +70,7 @@ namespace DotSpatial.Data
         /// <returns>An IImageData object.</returns>
         public IImageData Open(string fileName)
         {
-            InRamImageData data = new InRamImageData(fileName);
+            InRamImageData data = new(fileName);
             return data;
         }
 
@@ -81,7 +81,7 @@ namespace DotSpatial.Data
         /// <returns>An IDataSet object.</returns>
         IDataSet IDataProvider.Open(string fileName)
         {
-            InRamImageData data = new InRamImageData(fileName);
+            InRamImageData data = new(fileName);
             return data;
         }
 

@@ -21,11 +21,9 @@ namespace DotSpatial.Symbology
         /// <param name="fileName">the file name.</param>
         public static void Save(this IEnumerable<CustomLineSymbolizer> self, string fileName)
         {
-            using (var myStream = File.Open(fileName, FileMode.Create))
-            {
-                var bformatter = new BinaryFormatter();
-                bformatter.Serialize(myStream, self);
-            }
+            using var myStream = File.Open(fileName, FileMode.Create);
+            var bformatter = new BinaryFormatter();
+            bformatter.Serialize(myStream, self);
         }
 
         #endregion

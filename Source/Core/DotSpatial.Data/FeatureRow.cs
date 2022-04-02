@@ -99,7 +99,7 @@ namespace DotSpatial.Data
                         return _shape?.ToGeometry(_featureTable.GeometryFactory);
                     }
 
-                    WKBReader reader = new WKBReader();
+                    WKBReader reader = new();
                     byte[] geometryBytes = (byte[])this[_featureTable.GeometryColumn];
 
                     _geometry = reader.Read(geometryBytes);

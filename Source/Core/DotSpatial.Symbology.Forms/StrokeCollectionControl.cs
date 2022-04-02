@@ -176,8 +176,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void BtnDownClick(object sender, EventArgs e)
         {
-            IStroke stroke = _lbxItems.SelectedItem as IStroke;
-            if (stroke == null) return;
+            if (_lbxItems.SelectedItem is not IStroke stroke) return;
             _strokes.DecreaseIndex(stroke);
             RefreshList();
             _lbxItems.SelectedItem = stroke;
@@ -186,8 +185,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void BtnRemoveClick(object sender, EventArgs e)
         {
-            IStroke stroke = _lbxItems.SelectedItem as IStroke;
-            if (stroke == null) return;
+            if (_lbxItems.SelectedItem is not IStroke stroke) return;
             int index = _strokes.IndexOf(stroke);
             _strokes.Remove(stroke);
             RefreshList();
@@ -203,8 +201,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void BtnUpClick(object sender, EventArgs e)
         {
-            IStroke stroke = _lbxItems.SelectedItem as IStroke;
-            if (stroke == null) return;
+            if (_lbxItems.SelectedItem is not IStroke stroke) return;
             _strokes.IncreaseIndex(stroke);
             RefreshList();
             _lbxItems.SelectedItem = stroke;
@@ -218,29 +215,24 @@ namespace DotSpatial.Symbology.Forms
 
         private void LbxItemsDrawItem(object sender, DrawItemEventArgs e)
         {
-            Rectangle outer = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
+            Rectangle outer = new(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
                 e.Graphics.FillRectangle(SystemBrushes.Highlight, outer);
             }
             else
             {
-                using (Brush b = new SolidBrush(BackColor))
-                {
-                    e.Graphics.FillRectangle(b, outer);
-                }
+                using Brush b = new SolidBrush(BackColor);
+                e.Graphics.FillRectangle(b, outer);
             }
 
-            Rectangle inner = new Rectangle(e.Bounds.X + 5, e.Bounds.Y + 1, e.Bounds.Width - 10, e.Bounds.Height - 3);
+            Rectangle inner = new(e.Bounds.X + 5, e.Bounds.Y + 1, e.Bounds.Width - 10, e.Bounds.Height - 3);
             e.Graphics.FillRectangle(Brushes.White, inner);
             e.Graphics.DrawRectangle(Pens.Black, inner);
-            IStroke stroke = _lbxItems.Items[e.Index] as IStroke;
-            if (stroke == null) return;
-            using (GraphicsPath gp = new GraphicsPath())
-            {
-                gp.AddLine(new Point(e.Bounds.X + 10, e.Bounds.Y + (e.Bounds.Height / 2)), new Point(e.Bounds.Width - 10, e.Bounds.Y + (e.Bounds.Height / 2)));
-                stroke.DrawPath(e.Graphics, gp, 1);
-            }
+            if (_lbxItems.Items[e.Index] is not IStroke stroke) return;
+            using GraphicsPath gp = new();
+            gp.AddLine(new Point(e.Bounds.X + 10, e.Bounds.Y + (e.Bounds.Height / 2)), new Point(e.Bounds.Width - 10, e.Bounds.Y + (e.Bounds.Height / 2)));
+            stroke.DrawPath(e.Graphics, gp, 1);
         }
 
         #endregion

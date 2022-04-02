@@ -106,10 +106,10 @@ namespace DotSpatial.Data
                 }
             }
 
-            a = a / 9;
-            b = b / 9;
-            g = g / 9;
-            r = r / 9;
+            a /= 9;
+            b /= 9;
+            g /= 9;
+            r /= 9;
             var sum = new Argb(a, r, g, b);
             PutColor(row, col, sum);
         }

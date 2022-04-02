@@ -24,7 +24,7 @@ namespace DotSpatial.Projections.Nad
     {
         #region Private Variables
 
-        private readonly Dictionary<string, Lazy<NadTable>> _tables = new Dictionary<string, Lazy<NadTable>>();
+        private readonly Dictionary<string, Lazy<NadTable>> _tables = new();
 
         #endregion
 

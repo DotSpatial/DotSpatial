@@ -121,7 +121,7 @@ namespace DotSpatial.Data.Forms
             b.Dispose();
 
             // first translate into document coordinates
-            Matrix mat = new Matrix();
+            Matrix mat = new();
             mat.Translate(ClientRectangle.X, ClientRectangle.Y);
             g.Transform = mat;
 
@@ -162,7 +162,7 @@ namespace DotSpatial.Data.Forms
 
             // translate into document coordinates
             Matrix oldMat = e.Graphics.Transform;
-            Matrix mat = new Matrix();
+            Matrix mat = new();
             e.Graphics.Transform = mat;
             foreach (DirectoryItem item in Items)
             {
@@ -202,7 +202,7 @@ namespace DotSpatial.Data.Forms
 
             foreach (string file in files)
             {
-                FileItem fi = new FileItem(file);
+                FileItem fi = new(file);
                 if (fi.ItemType == ItemType.Custom) continue;
                 fi.Top = tp;
                 fi.Font = Font;
@@ -225,7 +225,7 @@ namespace DotSpatial.Data.Forms
                     DirectoryInfo parent = System.IO.Directory.GetParent(_directory);
                     if (parent != null)
                     {
-                        FolderItem up = new FolderItem(parent.FullName)
+                        FolderItem up = new(parent.FullName)
                         {
                             Text = "..",
                             Font = Font,
@@ -246,7 +246,7 @@ namespace DotSpatial.Data.Forms
                 if (Items == null) Items = new List<DirectoryItem>();
                 foreach (string dir in subDirs)
                 {
-                    FolderItem di = new FolderItem(dir)
+                    FolderItem di = new(dir)
                     {
                         Font = Font,
                         Top = tp,

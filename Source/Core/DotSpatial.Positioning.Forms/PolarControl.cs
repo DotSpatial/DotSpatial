@@ -54,10 +54,10 @@ namespace DotSpatial.Positioning.Forms
         [NonSerialized]
         private readonly Thread _interpolationThread;
         [NonSerialized]
-        private readonly ManualResetEvent _interpolationWaitHandle = new ManualResetEvent(false);
-        private readonly Interpolator _rotationInterpolator = new Interpolator(0, 0, 15, InterpolationMethod.CubicEaseOut);
+        private readonly ManualResetEvent _interpolationWaitHandle = new(false);
+        private readonly Interpolator _rotationInterpolator = new(0, 0, 15, InterpolationMethod.CubicEaseOut);
         private int _interpolationIndex = 14;
-        private readonly Object _interpolationSyncRoot = new object();
+        private readonly Object _interpolationSyncRoot = new();
 #endif
 
         private Angle _pRotation = Angle.Empty;
@@ -77,9 +77,9 @@ namespace DotSpatial.Positioning.Forms
         Color _circleBack;
         Color _circleCenter;
         Color _circleBright;
-        readonly ColorBlend _glassShadowColorBlend = new ColorBlend();
-        readonly ColorBlend _glassReflectionColorBlend = new ColorBlend();
-        readonly GraphicsPath _glassShadowPath = new GraphicsPath();
+        readonly ColorBlend _glassShadowColorBlend = new();
+        readonly ColorBlend _glassReflectionColorBlend = new();
+        readonly GraphicsPath _glassShadowPath = new();
         PathGradientBrush _glassShadowBrush;
 
         /// <summary>
@@ -400,16 +400,14 @@ namespace DotSpatial.Positioning.Forms
             // Remake the glass brushes
             MakeBrushes();
 
-            using (GraphicsPath path = new GraphicsPath())
-            {
-                path.AddEllipse(
-                    new Rectangle(-1, -1, ClientRectangle.Width + 2, ClientRectangle.Height + 2));
+            using GraphicsPath path = new();
+            path.AddEllipse(
+                new Rectangle(-1, -1, ClientRectangle.Width + 2, ClientRectangle.Height + 2));
 
-                if (Region != null)
-                    Region.Dispose();
+            if (Region != null)
+                Region.Dispose();
 
-                Region = new Region(path);
-            }
+            Region = new Region(path);
         }
 
 #endif

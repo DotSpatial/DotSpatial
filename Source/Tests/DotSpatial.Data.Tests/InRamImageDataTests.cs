@@ -22,11 +22,9 @@ namespace DotSpatial.Data.Tests
         {
             var imagePath = Common.AbsolutePath(Path.Combine(@"Data\Grids", "Hintergrundkarte.tif"));
 
-            using (var inram = new InRamImageData(imagePath))
-            using (var bitmap = inram.GetBitmap())
-            {
-                Assert.AreEqual(Color.FromArgb(255, 125, 105, 72), bitmap.GetPixel(300, 300)); // if the image was not drawn correctly GetPixel returns the ARGB values for white
-            }
+            using var inram = new InRamImageData(imagePath);
+            using var bitmap = inram.GetBitmap();
+            Assert.AreEqual(Color.FromArgb(255, 125, 105, 72), bitmap.GetPixel(300, 300)); // if the image was not drawn correctly GetPixel returns the ARGB values for white
         }
     }
 }

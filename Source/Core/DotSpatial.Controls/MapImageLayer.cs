@@ -208,15 +208,13 @@ namespace DotSpatial.Controls
 
                 if (Symbolizer != null && Symbolizer.Opacity < 1)
                 {
-                    ColorMatrix matrix = new ColorMatrix
+                    ColorMatrix matrix = new()
                     {
                         Matrix33 = Symbolizer.Opacity // draws the image not completely opaque
                     };
-                    using (var attributes = new ImageAttributes())
-                    {
-                        attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                        g.DrawImage(bmp, new Rectangle(0, 0, r.Width, r.Height), 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
-                    }
+                    using var attributes = new ImageAttributes();
+                    attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                    g.DrawImage(bmp, new Rectangle(0, 0, r.Width, r.Height), 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
                 }
                 else
                 {

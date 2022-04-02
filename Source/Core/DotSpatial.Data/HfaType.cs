@@ -139,7 +139,7 @@ namespace DotSpatial.Data
         /// <param name="stream">Stream to write to.</param>
         public void Dump(Stream stream)
         {
-            StreamWriter sw = new StreamWriter(stream);
+            StreamWriter sw = new(stream);
             sw.Write("HFAType " + TypeName + "/" + NumBytes + "\n");
             foreach (HfaField field in Fields)
             {
@@ -237,7 +237,7 @@ namespace DotSpatial.Data
             string partialInput = input.SkipTo("{");
             while (partialInput != null && partialInput[0] != '}')
             {
-                HfaField fld = new HfaField();
+                HfaField fld = new();
 
                 // If the initialize fails, the return string is null.
                 partialInput = fld.Initialize(partialInput);

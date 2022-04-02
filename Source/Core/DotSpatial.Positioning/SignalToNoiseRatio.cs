@@ -47,22 +47,22 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents a value signifying a signal which is completely obscured.
         /// </summary>
-        public static readonly SignalToNoiseRatio NoSignal = new SignalToNoiseRatio(0);
+        public static readonly SignalToNoiseRatio NoSignal = new(0);
 
         /// <summary>
         /// Represents a value of zero.
         /// </summary>
-        public static readonly SignalToNoiseRatio Empty = new SignalToNoiseRatio(0);
+        public static readonly SignalToNoiseRatio Empty = new(0);
 
         /// <summary>
         /// Represents a value signifying a signal which is partially obscured.
         /// </summary>
-        public static readonly SignalToNoiseRatio HalfSignal = new SignalToNoiseRatio(25);
+        public static readonly SignalToNoiseRatio HalfSignal = new(25);
 
         /// <summary>
         /// Represents a value signifying a signal which is not being obscured.
         /// </summary>
-        public static readonly SignalToNoiseRatio FullSignal = new SignalToNoiseRatio(50);
+        public static readonly SignalToNoiseRatio FullSignal = new(50);
 
         #endregion Fields
 

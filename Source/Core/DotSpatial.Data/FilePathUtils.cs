@@ -32,7 +32,7 @@ namespace DotSpatial.Data
                 if (string.Compare(Path.GetPathRoot(fromDirectory), Path.GetPathRoot(toPath), true) != 0) return toPath;
             }
 
-            StringCollection relativePath = new StringCollection();
+            StringCollection relativePath = new();
             string[] fromDirectories = fromDirectory.Split(Path.DirectorySeparatorChar);
 
             string[] toDirectories = toPath.Split(Path.DirectorySeparatorChar);

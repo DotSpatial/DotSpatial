@@ -151,8 +151,7 @@ namespace DotSpatial.NTSExtension
         /// <exception cref="ArgumentException">Thrown if inMatrix is not a IMatrixD or the number of columns of the first matrix differs from the number of rows from the second matrix.</exception>
         IMatrix IMatrix.Multiply(IMatrix inMatrix)
         {
-            IMatrixD mat = inMatrix as IMatrixD;
-            if (mat == null) throw new ArgumentException("Invalid Matrix provided for inMatrix");
+            if (inMatrix is not IMatrixD mat) throw new ArgumentException("Invalid Matrix provided for inMatrix");
             return Multiply(mat);
         }
 

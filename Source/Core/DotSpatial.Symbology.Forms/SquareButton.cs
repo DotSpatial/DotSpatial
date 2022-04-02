@@ -135,7 +135,7 @@ namespace DotSpatial.Symbology.Forms
         /// <returns>Boolean, true if a change was made.</returns>
         public bool UpdateLight(Point mouseLocation)
         {
-            PointF pt = new PointF(mouseLocation.X, mouseLocation.Y);
+            PointF pt = new(mouseLocation.X, mouseLocation.Y);
             if (Bounds.Contains(pt))
             {
                 if (State.IsLit() == false)
@@ -163,7 +163,7 @@ namespace DotSpatial.Symbology.Forms
         /// <returns>True, if the mouse was clicked inside the button.</returns>
         public bool UpdatePressed(Point mouseLocation)
         {
-            PointF pt = new PointF(mouseLocation.X, mouseLocation.Y);
+            PointF pt = new(mouseLocation.X, mouseLocation.Y);
             if (Bounds.Contains(pt))
             {
                 State = State.InverseDepression();
@@ -216,9 +216,9 @@ namespace DotSpatial.Symbology.Forms
                 bottomRightColor = light;
             }
 
-            Pen topLeftPen = new Pen(topLeftColor);
-            Pen bottomRightPen = new Pen(bottomRightColor);
-            Pen middlePen = new Pen(baseColor);
+            Pen topLeftPen = new(topLeftColor);
+            Pen bottomRightPen = new(bottomRightColor);
+            Pen middlePen = new(baseColor);
             float l = Bounds.Left;
             float r = Bounds.Right;
             float t = Bounds.Top;
@@ -243,13 +243,11 @@ namespace DotSpatial.Symbology.Forms
 
         private void DrawFill(Graphics g, Color baseColor)
         {
-            PointF topLeft = new PointF(Bounds.X, Bounds.Y);
-            PointF bottomRight = new PointF(Bounds.Right, Bounds.Bottom);
+            PointF topLeft = new(Bounds.X, Bounds.Y);
+            PointF bottomRight = new(Bounds.Right, Bounds.Bottom);
             RectangleF inner = RectangleF.Inflate(Bounds, -1F, -1F);
-            using (var br = State.IsPressed() ? CreateGradientBrush(baseColor, bottomRight, topLeft) : CreateGradientBrush(baseColor, topLeft, bottomRight))
-            {
-                g.FillRectangle(br, inner);
-            }
+            using var br = State.IsPressed() ? CreateGradientBrush(baseColor, bottomRight, topLeft) : CreateGradientBrush(baseColor, topLeft, bottomRight);
+            g.FillRectangle(br, inner);
         }
 
         #endregion

@@ -51,7 +51,7 @@ namespace DotSpatial.Analysis
             // Note: we use the ShapeIndices here rather than for each feature in featureset.features as a memory management technique.
             // The current version does not preserve any attribute info.
             // Dan Ames 2/27/2013
-            FeatureSet resultFeatures = new FeatureSet(); // the resulting featureset
+            FeatureSet resultFeatures = new(); // the resulting featureset
             resultFeatures.CopyTableSchema(targetFeatures); // set up the data table in the new feature set
 
             for (short i = 0; i <= targetFeatures.ShapeIndices.Count - 1; i++)

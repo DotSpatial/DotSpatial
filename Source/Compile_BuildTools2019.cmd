@@ -1,2 +1,2 @@
-"%ProgramFiles(x86)%\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe" DotSpatial.sln /target:Clean /property:Configuration=Release
-"%ProgramFiles(x86)%\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe" DotSpatial.sln /target:ReBuild /property:Configuration=Release
+"%ProgramFiles%\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" DotSpatial.sln /target:Clean /property:Configuration=Release
+"%ProgramFiles%\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" DotSpatial.sln /target:ReBuild /property:Configuration=Release

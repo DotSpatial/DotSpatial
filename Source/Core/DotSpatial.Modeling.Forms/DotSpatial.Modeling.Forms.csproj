@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <Description>Windows Forms elements for tools and the modeler.</Description>
   </PropertyGroup>
 
   <ItemGroup>

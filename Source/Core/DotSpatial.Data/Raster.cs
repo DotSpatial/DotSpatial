@@ -897,7 +897,7 @@ namespace DotSpatial.Data
         {
             if (FileExists != null)
             {
-                MessageCancelEventArgs mc = new MessageCancelEventArgs(DataStrings.File0ExistsOverwrite.Replace("%S", fileName));
+                MessageCancelEventArgs mc = new(DataStrings.File0ExistsOverwrite.Replace("%S", fileName));
                 FileExists(this, mc);
                 return mc.Cancel;
             }

@@ -77,7 +77,7 @@ namespace DotSpatial.Data
         {
             get
             {
-                Extent ext = new Extent();
+                Extent ext = new();
                 foreach (IImageData image in TileCollection)
                 {
                     ext.ExpandToInclude(image.Extent);
@@ -205,13 +205,13 @@ namespace DotSpatial.Data
         /// <inheritdoc />
         public virtual Bitmap GetBitmap(Extent envelope, Size pixelSize)
         {
-            Bitmap result = new Bitmap(pixelSize.Width, pixelSize.Height);
+            Bitmap result = new(pixelSize.Width, pixelSize.Height);
             Graphics g = Graphics.FromImage(result);
             foreach (var image in GetImages())
             {
                 Extent bounds = envelope.Intersection(image.Extent);
 
-                Size ps = new Size((int)(pixelSize.Width * bounds.Width / envelope.Width), (int)(pixelSize.Height * bounds.Height / envelope.Height));
+                Size ps = new((int)(pixelSize.Width * bounds.Width / envelope.Width), (int)(pixelSize.Height * bounds.Height / envelope.Height));
                 int x = pixelSize.Width * (int)((bounds.X - envelope.X) / envelope.Width);
                 int y = pixelSize.Height * (int)((envelope.Y - bounds.Y) / envelope.Height);
                 if (ps.Width > 0 && ps.Height > 0)

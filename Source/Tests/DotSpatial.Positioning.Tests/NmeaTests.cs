@@ -23,23 +23,23 @@ namespace DotSpatial.Positioning.Tests
         [Test]
         public void GpggkSentenceFromString()
         {
-            GpggkSentence sentence = new GpggkSentence("$GPGGK,113616.00,041006,4724.5248557,N,00937.1063064,E,3,12,1.7,EHT1171.742,M*6D");
+            GpggkSentence sentence = new("$GPGGK,113616.00,041006,4724.5248557,N,00937.1063064,E,3,12,1.7,EHT1171.742,M*6D");
 
             Assert.AreEqual("$GPGGK,113616.00,041006,4724.5248557,N,00937.1063064,E,3,12,1.7,EHT1171.742,M*6D", sentence.Sentence);
             Assert.AreEqual(FixQuality.PulsePerSecond, sentence.FixQuality);
             Assert.AreEqual(12, sentence.SatellitesInUse);
             Assert.AreEqual(new DilutionOfPrecision(1.7F), sentence.PositionDilutionOfPrecision);
 
-            Latitude l = new Latitude(47, 24.5248557, LatitudeHemisphere.North);
+            Latitude l = new(47, 24.5248557, LatitudeHemisphere.North);
             Assert.AreEqual(l, sentence.Position.Latitude);
 
-            Longitude l2 = new Longitude(9, 37.1063064, LongitudeHemisphere.East);
+            Longitude l2 = new(9, 37.1063064, LongitudeHemisphere.East);
             Assert.AreEqual(l2, sentence.Position.Longitude);
 
             Distance d = new Distance(1171.742, DistanceUnit.Meters).ToLocalUnitType();
             Assert.AreEqual(d, sentence.AltitudeAboveEllipsoid);
 
-            DateTime date = new DateTime(2006, 10, 04, 11, 36, 16, DateTimeKind.Utc);
+            DateTime date = new(2006, 10, 04, 11, 36, 16, DateTimeKind.Utc);
             Assert.AreEqual(date, sentence.UtcDateTime);
         }
 
@@ -49,11 +49,11 @@ namespace DotSpatial.Positioning.Tests
         [Test]
         public void GpgllSentenceFromObject()
         {
-            TimeSpan ts = new TimeSpan(22, 54, 44);
-            Latitude l = new Latitude(49, 16.45, LatitudeHemisphere.North);
-            Longitude l2 = new Longitude(123, 11.12, LongitudeHemisphere.West);
+            TimeSpan ts = new(22, 54, 44);
+            Latitude l = new(49, 16.45, LatitudeHemisphere.North);
+            Longitude l2 = new(123, 11.12, LongitudeHemisphere.West);
 
-            GpgllSentence sentence = new GpgllSentence(new Position(l, l2), ts, FixStatus.Fix);
+            GpgllSentence sentence = new(new Position(l, l2), ts, FixStatus.Fix);
             Assert.AreEqual("$GPGLL,4916.4500,N,12311.1200,W,225444.000,A*2F", sentence.Sentence);
             Assert.AreEqual(l, sentence.Position.Latitude);
             Assert.AreEqual(l2, sentence.Position.Longitude);
@@ -67,10 +67,10 @@ namespace DotSpatial.Positioning.Tests
         [Test]
         public void GpgllSentenceFromString()
         {
-            Latitude l = new Latitude(49, 16.45, LatitudeHemisphere.North);
-            Longitude l2 = new Longitude(123, 11.12, LongitudeHemisphere.West);
+            Latitude l = new(49, 16.45, LatitudeHemisphere.North);
+            Longitude l2 = new(123, 11.12, LongitudeHemisphere.West);
 
-            GpgllSentence sentence = new GpgllSentence("$GPGLL,4916.45,N,12311.12,W,225444,A*1D");
+            GpgllSentence sentence = new("$GPGLL,4916.45,N,12311.12,W,225444,A*1D");
             Assert.AreEqual("$GPGLL,4916.45,N,12311.12,W,225444,A*1D", sentence.Sentence);
             Assert.AreEqual(l, sentence.Position.Latitude);
             Assert.AreEqual(l2, sentence.Position.Longitude);
@@ -84,8 +84,8 @@ namespace DotSpatial.Positioning.Tests
         [Test]
         public void GpgsaSentenceFromObjects()
         {
-            List<Satellite> sateliteList = new List<Satellite>
-                                           {
+            List<Satellite> sateliteList = new()
+            {
                                                new Satellite(19, new Azimuth(30.3), new Elevation(10.5), new SignalToNoiseRatio(50), true),
                                                new Satellite(28, new Azimuth(40.3), new Elevation(70.4), new SignalToNoiseRatio(50), true),
                                                new Satellite(14, new Azimuth(50.3), new Elevation(40.2), new SignalToNoiseRatio(50), true),
@@ -97,12 +97,12 @@ namespace DotSpatial.Positioning.Tests
                                                new Satellite(24, new Azimuth(5.3), new Elevation(40.7), new SignalToNoiseRatio(50), true),
                                            };
 
-            GpgsaSentence sentence = new GpgsaSentence(FixMode.Manual, FixMethod.Fix3D, sateliteList, new DilutionOfPrecision(1.2F), new DilutionOfPrecision(1.2F), new DilutionOfPrecision(1.2F));
+            GpgsaSentence sentence = new(FixMode.Manual, FixMethod.Fix3D, sateliteList, new DilutionOfPrecision(1.2F), new DilutionOfPrecision(1.2F), new DilutionOfPrecision(1.2F));
             Assert.AreEqual("$GPGSA,M,3,19,28,14,18,27,22,31,39,24,,,,1.2,1.2,1.2*38", sentence.Sentence);
             Assert.AreEqual(FixMode.Manual, sentence.FixMode);
             Assert.AreEqual(FixMethod.Fix3D, sentence.FixMethod);
 
-            DilutionOfPrecision dil = new DilutionOfPrecision(1.2F);
+            DilutionOfPrecision dil = new(1.2F);
             Assert.AreEqual(dil, sentence.HorizontalDilutionOfPrecision);
             Assert.AreEqual(dil, sentence.PositionDilutionOfPrecision);
             Assert.AreEqual(dil, sentence.VerticalDilutionOfPrecision);
@@ -120,7 +120,7 @@ namespace DotSpatial.Positioning.Tests
         [Test]
         public void GpgsaSentenceFromString()
         {
-            GpgsaSentence sentence = new GpgsaSentence("$GPGSA,A,3,04,05,,09,12,,,24,,,,,2.5,1.3,2.1*39");
+            GpgsaSentence sentence = new("$GPGSA,A,3,04,05,,09,12,,,24,,,,,2.5,1.3,2.1*39");
             Assert.AreEqual("$GPGSA,A,3,04,05,,09,12,,,24,,,,,2.5,1.3,2.1*39", sentence.Sentence);
             Assert.AreEqual(FixMode.Automatic, sentence.FixMode);
             Assert.AreEqual(FixMethod.Fix3D, sentence.FixMethod);
@@ -141,15 +141,15 @@ namespace DotSpatial.Positioning.Tests
         [Test]
         public void GpgsvSentenceFromObject()
         {
-            List<Satellite> sats = new List<Satellite>
-                                   {
+            List<Satellite> sats = new()
+            {
                                        new Satellite(2, new Azimuth(282.00), new Elevation(59.00), new SignalToNoiseRatio(0)),
                                        new Satellite(3, new Azimuth(287.00), new Elevation(42.00), new SignalToNoiseRatio(0)),
                                        new Satellite(6, new Azimuth(94.00), new Elevation(16.00), new SignalToNoiseRatio(0)),
                                        new Satellite(15, new Azimuth(90.00), new Elevation(80.00), new SignalToNoiseRatio(48))
                                    };
 
-            GpgsvSentence sentence = new GpgsvSentence(2, 1, 8, sats);
+            GpgsvSentence sentence = new(2, 1, 8, sats);
             Assert.AreEqual("$GPGSV,2,1,8,02,59,282,00,03,42,287,00,06,16,094,00,15,80,090,48*49", sentence.Sentence);
             Assert.AreEqual(2, sentence.TotalMessageCount);
             Assert.AreEqual(1, sentence.CurrentMessageNumber);
@@ -168,15 +168,15 @@ namespace DotSpatial.Positioning.Tests
         [Test]
         public void GpgsvSentenceFromString()
         {
-            List<Satellite> sats = new List<Satellite>
-                                   {
+            List<Satellite> sats = new()
+            {
                                        new Satellite(2, new Azimuth(282.00), new Elevation(59.00), new SignalToNoiseRatio(0)),
                                        new Satellite(3, new Azimuth(287.00), new Elevation(42.00), new SignalToNoiseRatio(0)),
                                        new Satellite(6, new Azimuth(94.00), new Elevation(16.00), new SignalToNoiseRatio(0)),
                                        new Satellite(15, new Azimuth(90.00), new Elevation(80.00), new SignalToNoiseRatio(48))
                                    };
 
-            GpgsvSentence sentence = new GpgsvSentence("$GPGSV,2,1,08,02,59,282,00,03,42,287,00,06,16,094,00,15,80,090,48*79");
+            GpgsvSentence sentence = new("$GPGSV,2,1,08,02,59,282,00,03,42,287,00,06,16,094,00,15,80,090,48*79");
             Assert.AreEqual("$GPGSV,2,1,08,02,59,282,00,03,42,287,00,06,16,094,00,15,80,090,48*79", sentence.Sentence);
             Assert.AreEqual(2, sentence.TotalMessageCount);
             Assert.AreEqual(1, sentence.CurrentMessageNumber);
@@ -194,15 +194,15 @@ namespace DotSpatial.Positioning.Tests
         [Test]
         public void GprmcSentenceFromObjects()
         {
-            Latitude l = new Latitude(51, 33.82, LatitudeHemisphere.North);
-            Longitude l2 = new Longitude(0, 42.24, LongitudeHemisphere.West);
-            Position p = new Position(l, l2);
-            DateTime date = new DateTime(2004, 06, 13, 22, 05, 16, DateTimeKind.Utc);
-            Speed s = new Speed(173.8, SpeedUnit.Knots);
-            Azimuth a = new Azimuth(231.8);
-            Longitude mv = new Longitude(4.2, LongitudeHemisphere.West);
+            Latitude l = new(51, 33.82, LatitudeHemisphere.North);
+            Longitude l2 = new(0, 42.24, LongitudeHemisphere.West);
+            Position p = new(l, l2);
+            DateTime date = new(2004, 06, 13, 22, 05, 16, DateTimeKind.Utc);
+            Speed s = new(173.8, SpeedUnit.Knots);
+            Azimuth a = new(231.8);
+            Longitude mv = new(4.2, LongitudeHemisphere.West);
 
-            GprmcSentence sentence = new GprmcSentence(date, true, p, s, a, mv);
+            GprmcSentence sentence = new(date, true, p, s, a, mv);
             Assert.AreEqual("$GPRMC,220516.000,A,5133.8200,N,00042.2400,W,173.8,231.8,130604,4.2,W*67", sentence.Sentence);
 
             Assert.AreEqual(FixStatus.Fix, sentence.FixStatus);
@@ -220,21 +220,21 @@ namespace DotSpatial.Positioning.Tests
         [Test]
         public void GprmcSentenceFromString()
         {
-            GprmcSentence sentence = new GprmcSentence("$GPRMC,194530.000,A,3051.8007,N,10035.9989,W,1.49,111.67,310714,,,A*74");
+            GprmcSentence sentence = new("$GPRMC,194530.000,A,3051.8007,N,10035.9989,W,1.49,111.67,310714,,,A*74");
             Assert.AreEqual("$GPRMC,194530.000,A,3051.8007,N,10035.9989,W,1.49,111.67,310714,,,A*74", sentence.Sentence);
             Assert.AreEqual(FixStatus.Fix, sentence.FixStatus);
 
-            Latitude l = new Latitude(30, 51.8007, LatitudeHemisphere.North);
+            Latitude l = new(30, 51.8007, LatitudeHemisphere.North);
             Assert.AreEqual(l, sentence.Position.Latitude);
 
-            Longitude l2 = new Longitude(100, 35.9989, LongitudeHemisphere.West);
+            Longitude l2 = new(100, 35.9989, LongitudeHemisphere.West);
             Assert.AreEqual(l2, sentence.Position.Longitude);
 
             Assert.AreEqual(new Speed(1.49, SpeedUnit.Knots), sentence.Speed);
             Assert.AreEqual(111.67, sentence.Bearing.DecimalDegrees);
             Assert.AreEqual(Longitude.Invalid, sentence.MagneticVariation);
 
-            DateTime date = new DateTime(2014, 07, 31, 19, 45, 30, DateTimeKind.Utc);
+            DateTime date = new(2014, 07, 31, 19, 45, 30, DateTimeKind.Utc);
             Assert.AreEqual(date, sentence.UtcDateTime);
         }
 
@@ -244,7 +244,7 @@ namespace DotSpatial.Positioning.Tests
         [Test]
         public void GpvtgSentenceFromString()
         {
-            GpvtgSentence sentence = new GpvtgSentence("$GPVTG,054.7,T,034.4,M,005.5,N,010.2,K*48");
+            GpvtgSentence sentence = new("$GPVTG,054.7,T,034.4,M,005.5,N,010.2,K*48");
             Assert.AreEqual("$GPVTG,054.7,T,034.4,M,005.5,N,010.2,K*48", sentence.Sentence);
             Assert.AreEqual(new Speed(5.5, SpeedUnit.Knots), sentence.Speed);
             Assert.AreEqual(54.7, sentence.Bearing.DecimalDegrees);
@@ -256,14 +256,14 @@ namespace DotSpatial.Positioning.Tests
         [Test]
         public void PgrmfSentenceFromString()
         {
-            Latitude l = new Latitude(1, 0.5, LatitudeHemisphere.North);
-            Longitude l2 = new Longitude(1, 23.0, LongitudeHemisphere.West);
-            Position p = new Position(l, l2);
-            DateTime dt = new DateTime(2003, 12, 4, 21, 59, 48);
-            Azimuth a = new Azimuth(62.0);
-            Speed s = new Speed(0, SpeedUnit.KilometersPerHour);
+            Latitude l = new(1, 0.5, LatitudeHemisphere.North);
+            Longitude l2 = new(1, 23.0, LongitudeHemisphere.West);
+            Position p = new(l, l2);
+            DateTime dt = new(2003, 12, 4, 21, 59, 48);
+            Azimuth a = new(62.0);
+            Speed s = new(0, SpeedUnit.KilometersPerHour);
 
-            PgrmfSentence sentence = new PgrmfSentence("$PGRMF,223,424801,041203,215948,13,0100.5000,N,00123.0000,W,A,2,0,62,2,1*35");
+            PgrmfSentence sentence = new("$PGRMF,223,424801,041203,215948,13,0100.5000,N,00123.0000,W,A,2,0,62,2,1*35");
             Assert.AreEqual("$PGRMF,223,424801,041203,215948,13,0100.5000,N,00123.0000,W,A,2,0,62,2,1*35", sentence.Sentence);
 
             Assert.AreEqual(dt, sentence.UtcDateTime);
@@ -303,31 +303,29 @@ namespace DotSpatial.Positioning.Tests
         [Test]
         public void ReadGprmcWithNmeaReader()
         {
-            using (MemoryStream mStrm = new MemoryStream(Encoding.ASCII.GetBytes("$GPRMC,220516.000,A,5133.8200,N,00042.2400,W,173.8,231.8,130604,4.2,W*67")))
-            {
-                NmeaReader nr = new NmeaReader(mStrm);
-                NmeaSentence ns = nr.ReadTypedSentence();
-                GprmcSentence sentence = ns as GprmcSentence;
-                Assert.AreNotEqual(null, sentence);
-                if (sentence == null) return;
+            using MemoryStream mStrm = new(Encoding.ASCII.GetBytes("$GPRMC,220516.000,A,5133.8200,N,00042.2400,W,173.8,231.8,130604,4.2,W*67"));
+            NmeaReader nr = new(mStrm);
+            NmeaSentence ns = nr.ReadTypedSentence();
+            GprmcSentence sentence = ns as GprmcSentence;
+            Assert.AreNotEqual(null, sentence);
+            if (sentence == null) return;
 
-                Assert.AreEqual("$GPRMC,220516.000,A,5133.8200,N,00042.2400,W,173.8,231.8,130604,4.2,W*67", sentence.Sentence);
+            Assert.AreEqual("$GPRMC,220516.000,A,5133.8200,N,00042.2400,W,173.8,231.8,130604,4.2,W*67", sentence.Sentence);
 
-                Latitude l = new Latitude(51, 33.82, LatitudeHemisphere.North);
-                Longitude l2 = new Longitude(0, 42.24, LongitudeHemisphere.West);
-                DateTime date = new DateTime(2004, 06, 13, 22, 05, 16, DateTimeKind.Utc);
-                Speed s = new Speed(173.8, SpeedUnit.Knots);
-                Azimuth a = new Azimuth(231.8);
-                Longitude mv = new Longitude(4.2, LongitudeHemisphere.West);
+            Latitude l = new(51, 33.82, LatitudeHemisphere.North);
+            Longitude l2 = new(0, 42.24, LongitudeHemisphere.West);
+            DateTime date = new(2004, 06, 13, 22, 05, 16, DateTimeKind.Utc);
+            Speed s = new(173.8, SpeedUnit.Knots);
+            Azimuth a = new(231.8);
+            Longitude mv = new(4.2, LongitudeHemisphere.West);
 
-                Assert.AreEqual(FixStatus.Fix, sentence.FixStatus);
-                Assert.AreEqual(l, sentence.Position.Latitude);
-                Assert.AreEqual(l2, sentence.Position.Longitude);
-                Assert.AreEqual(s, sentence.Speed);
-                Assert.AreEqual(a, sentence.Bearing);
-                Assert.AreEqual(mv, sentence.MagneticVariation);
-                Assert.AreEqual(date, sentence.UtcDateTime);
-            }
+            Assert.AreEqual(FixStatus.Fix, sentence.FixStatus);
+            Assert.AreEqual(l, sentence.Position.Latitude);
+            Assert.AreEqual(l2, sentence.Position.Longitude);
+            Assert.AreEqual(s, sentence.Speed);
+            Assert.AreEqual(a, sentence.Bearing);
+            Assert.AreEqual(mv, sentence.MagneticVariation);
+            Assert.AreEqual(date, sentence.UtcDateTime);
         }
 
         #endregion

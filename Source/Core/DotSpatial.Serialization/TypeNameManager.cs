@@ -44,7 +44,7 @@ namespace DotSpatial.Serialization
         /// <returns>A string representing the same type, but with a modern assembly.</returns>
         public string UpdateTypename(string invalidTypeName)
         {
-            QualifiedTypeName myType = new QualifiedTypeName(invalidTypeName);
+            QualifiedTypeName myType = new(invalidTypeName);
             QualifiedTypeName type = myType;
             while (type != null)
             {

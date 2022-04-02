@@ -52,27 +52,27 @@ namespace DotSpatial.Positioning.Forms
         private readonly Thread _interpolationThread;
         private bool _isInterpolationActive;
         // private ManualResetEvent InterpolationThreadWaitHandle = new ManualResetEvent(false);
-        private readonly ManualResetEvent _animationWaitHandle = new ManualResetEvent(false);
-        private readonly Interpolator _valueInterpolator = new Interpolator(15, InterpolationMethod.CubicEaseInOut);
+        private readonly ManualResetEvent _animationWaitHandle = new(false);
+        private readonly Interpolator _valueInterpolator = new(15, InterpolationMethod.CubicEaseInOut);
         private int _interpolationIndex;
 
-        private Size _pNeedleShadowSize = new Size(5, 5);
+        private Size _pNeedleShadowSize = new(5, 5);
 #endif
         private Color _minorTickPenColor = Color.Black;
         private Color _majorTickPenColor = Color.Black;
         private Color _speedLabelBrushColor = Color.Black;
         private Color _needleShadowBrushColor = Color.FromArgb(128, 0, 0, 0);
-        private Speed _pMaximumSpeed = new Speed(120, SpeedUnit.KilometersPerHour);
-        private Speed _pSpeedLabelInterval = new Speed(10, SpeedUnit.KilometersPerHour);
-        private Speed _pMinorTickInterval = new Speed(5, SpeedUnit.KilometersPerHour);
-        private Speed _pMajorTickInterval = new Speed(10, SpeedUnit.KilometersPerHour);
+        private Speed _pMaximumSpeed = new(120, SpeedUnit.KilometersPerHour);
+        private Speed _pSpeedLabelInterval = new(10, SpeedUnit.KilometersPerHour);
+        private Speed _pMinorTickInterval = new(5, SpeedUnit.KilometersPerHour);
+        private Speed _pMajorTickInterval = new(10, SpeedUnit.KilometersPerHour);
         private string _pSpeedLabelFormat = "v";
 
-        private Speed _pSpeed = new Speed(0, SpeedUnit.MetersPerSecond);
+        private Speed _pSpeed = new(0, SpeedUnit.MetersPerSecond);
         private Color _needleFillColor = Color.Red;
         private Color _needleOutlineColor = Color.Black;
-        private Angle _pMinimumAngle = new Angle(40);
-        private Angle _pMaximumAngle = new Angle(320);
+        private Angle _pMinimumAngle = new(40);
+        private Angle _pMaximumAngle = new(320);
         private static readonly PolarCoordinate[] _speedometerNeedle = new[]
 			{
 				new PolarCoordinate(70, new Angle(1), Azimuth.South, PolarCoordinateOrientation.Clockwise),
@@ -258,7 +258,7 @@ namespace DotSpatial.Positioning.Forms
 #if PocketPC
             Speed SpeedToRender = pSpeed;
 #else
-            Speed speedToRender = new Speed(_valueInterpolator[_interpolationIndex], _pSpeed.Units);
+            Speed speedToRender = new(_valueInterpolator[_interpolationIndex], _pSpeed.Units);
 #endif
 
             // Cache drawing intervals and such to prevent a race condition
@@ -286,7 +286,7 @@ namespace DotSpatial.Positioning.Forms
                     start = new PolarCoordinate(95, angle, Azimuth.South, PolarCoordinateOrientation.Clockwise);
                     end = new PolarCoordinate(100, angle, Azimuth.South, PolarCoordinateOrientation.Clockwise);
                     // And draw a line
-                    Pen p = new Pen(_minorTickPenColor);
+                    Pen p = new(_minorTickPenColor);
                     f.DrawLine(p, start, end);
                     p.Dispose();
                 }
@@ -298,37 +298,35 @@ namespace DotSpatial.Positioning.Forms
 
             if (majorInterval > 0)
             {
-                using (Pen majorPen = new Pen(_majorTickPenColor))
+                using Pen majorPen = new(_majorTickPenColor);
+                for (double speed = 0; speed < maxSpeed.Value; speed += majorStep)
                 {
-                    for (double speed = 0; speed < maxSpeed.Value; speed += majorStep)
-                    {
-                        // Convert the speed to an angle
-                        angle = speed * _conversionFactor + _pMinimumAngle.DecimalDegrees;
-                        // Get the coordinate of the line's start
-                        start = new PolarCoordinate(90, angle, Azimuth.South, PolarCoordinateOrientation.Clockwise);
-                        end = new PolarCoordinate(100, angle, Azimuth.South, PolarCoordinateOrientation.Clockwise);
-                        // And draw a line
-
-                        f.DrawLine(majorPen, start, end);
-                    }
-
-                    #region Draw a major tick mark at the maximum speed
-
                     // Convert the speed to an angle
-                    angle = maxSpeed.Value * _conversionFactor + _pMinimumAngle.DecimalDegrees;
+                    angle = speed * _conversionFactor + _pMinimumAngle.DecimalDegrees;
                     // Get the coordinate of the line's start
                     start = new PolarCoordinate(90, angle, Azimuth.South, PolarCoordinateOrientation.Clockwise);
                     end = new PolarCoordinate(100, angle, Azimuth.South, PolarCoordinateOrientation.Clockwise);
                     // And draw a line
-                    f.DrawLine(majorPen, start, end);
 
-                    #endregion
+                    f.DrawLine(majorPen, start, end);
                 }
+
+                #region Draw a major tick mark at the maximum speed
+
+                // Convert the speed to an angle
+                angle = maxSpeed.Value * _conversionFactor + _pMinimumAngle.DecimalDegrees;
+                // Get the coordinate of the line's start
+                start = new PolarCoordinate(90, angle, Azimuth.South, PolarCoordinateOrientation.Clockwise);
+                end = new PolarCoordinate(100, angle, Azimuth.South, PolarCoordinateOrientation.Clockwise);
+                // And draw a line
+                f.DrawLine(majorPen, start, end);
+
+                #endregion
             }
 
             #endregion
 
-            using (SolidBrush fontBrush = new SolidBrush(_speedLabelBrushColor))
+            using (SolidBrush fontBrush = new(_speedLabelBrushColor))
             {
                 if (cachedSpeedLabelInterval > 0)
                 {
@@ -375,8 +373,8 @@ namespace DotSpatial.Positioning.Forms
 #endif
 
             // Then draw the actual needle
-            using (SolidBrush needleFill = new SolidBrush(_needleFillColor)) f.FillPolygon(needleFill, needle);
-            using (Pen needlePen = new Pen(_needleOutlineColor)) f.DrawPolygon(needlePen, needle);
+            using (SolidBrush needleFill = new(_needleFillColor)) f.FillPolygon(needleFill, needle);
+            using Pen needlePen = new(_needleOutlineColor); f.DrawPolygon(needlePen, needle);
         }
 
 #if !PocketPC || DesignTime

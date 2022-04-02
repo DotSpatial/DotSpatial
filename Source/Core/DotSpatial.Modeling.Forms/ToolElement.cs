@@ -64,10 +64,8 @@ namespace DotSpatial.Modeling.Forms
         /// <returns>Indicates whether the tool dialog was exited with ok.</returns>
         public override bool DoubleClick()
         {
-            using (ToolDialog td = new ToolDialog(Tool, ModelElements))
-            {
-                return td.ShowDialog() == DialogResult.OK;
-            }
+            using ToolDialog td = new(Tool, ModelElements);
+            return td.ShowDialog() == DialogResult.OK;
         }
 
         /// <summary>
@@ -75,10 +73,8 @@ namespace DotSpatial.Modeling.Forms
         /// </summary>
         public void UpdateStatus()
         {
-            using (ToolDialog td = new ToolDialog(Tool, ModelElements))
-            {
-                ToolStatus = td.ToolStatus;
-            }
+            using ToolDialog td = new(Tool, ModelElements);
+            ToolStatus = td.ToolStatus;
         }
 
         /// <summary>

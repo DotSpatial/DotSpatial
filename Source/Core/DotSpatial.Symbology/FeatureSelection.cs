@@ -366,7 +366,7 @@ namespace DotSpatial.Symbology
         public void Clear()
         {
             SetFilter(); // ensure the filter state matches this collection
-            List<IFeature> featureList = new List<IFeature>();
+            List<IFeature> featureList = new();
             foreach (IFeature f in Filter)
             {
                 // modifying the same list we are enumerating causes an exception, even if we aren't deleting
@@ -463,7 +463,7 @@ namespace DotSpatial.Symbology
         public DataTable GetAttributes(int startIndex, int numRows)
         {
             int count = 0;
-            DataTable dt = new DataTable();
+            DataTable dt = new();
             dt.Columns.AddRange(_featureSet.GetColumns());
             foreach (IFeature feature in Filter)
             {
@@ -484,8 +484,8 @@ namespace DotSpatial.Symbology
         public DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
         {
             int count = 0;
-            DataTable dt = new DataTable();
-            List<DataColumn> dc = new List<DataColumn>();
+            DataTable dt = new();
+            List<DataColumn> dc = new();
             DataColumn[] original = _featureSet.GetColumns();
             var names = fieldNames as IList<string> ?? fieldNames.ToList();
             foreach (DataColumn c in original)
@@ -810,7 +810,7 @@ namespace DotSpatial.Symbology
         /// <returns>A List of IFeature.</returns>
         public List<IFeature> ToFeatureList()
         {
-            List<IFeature> features = new List<IFeature>();
+            List<IFeature> features = new();
             foreach (IFeature feature in this)
             {
                 features.Add(feature);
@@ -825,7 +825,7 @@ namespace DotSpatial.Symbology
         /// <returns>An in memory featureset that has not yet been saved to a file in any way.</returns>
         public FeatureSet ToFeatureSet()
         {
-            FeatureSet fs = new FeatureSet(ToFeatureList()); // the output features will be copied.
+            FeatureSet fs = new(ToFeatureList()); // the output features will be copied.
             if (fs.Features.Count == 0)
             {
                 if (Filter.FeatureList.Count > 0)
@@ -862,7 +862,7 @@ namespace DotSpatial.Symbology
 
         private Envelope GetEnvelope()
         {
-            Envelope env = new Envelope();
+            Envelope env = new();
             foreach (IFeature f in this)
             {
                 env.ExpandToInclude(f.Geometry.EnvelopeInternal);

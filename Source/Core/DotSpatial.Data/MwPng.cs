@@ -214,7 +214,7 @@ namespace DotSpatial.Data
             if (File.Exists(fileName)) File.Delete(fileName);
             Stream f = new FileStream(fileName, FileMode.CreateNew, FileAccess.Write, FileShare.None, 1000000);
             WriteSignature(f);
-            PngHeader header = new PngHeader(image.Width, image.Height);
+            PngHeader header = new(image.Width, image.Height);
             header.Write(f);
             WriteSrgb(f);
             byte[] refImage = GetBytesFromImage(image);

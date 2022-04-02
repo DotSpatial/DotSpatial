@@ -245,7 +245,7 @@ namespace DotSpatial.Controls
 
             // Sets up the pens and brushes
             Brush scaleBrush = new SolidBrush(_color);
-            Pen scalePen = new Pen(scaleBrush);
+            Pen scalePen = new(scaleBrush);
 
             // Calculates the width of one break in greographic units
             float unitLegnth = g.MeasureString(_unitText, _font).Width * 2;
@@ -281,7 +281,7 @@ namespace DotSpatial.Controls
             {
                 g.DrawLine(scalePen, leftStart, fontHeight * 1.1f, leftStart, fontHeight + (fontHeight * 1.1f));
                 g.DrawString(Math.Abs(geoBreakWidth * i).ToString(CultureInfo.InvariantCulture), _font, scaleBrush, leftStart - (g.MeasureString(Math.Abs(geoBreakWidth * i).ToString(), _font).Width / 2), 0);
-                leftStart = leftStart + breakWidth;
+                leftStart += breakWidth;
             }
 
             g.DrawString(_unitText, _font, scaleBrush, leftStart - breakWidth + (fontHeight / 2), fontHeight * 1.1f);

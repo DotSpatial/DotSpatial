@@ -210,7 +210,7 @@ namespace DotSpatial.Data
         public void Dump(Stream stream)
         {
             string typename;
-            StreamWriter sw = new StreamWriter(stream);
+            StreamWriter sw = new(stream);
             switch (ItemType)
             {
                 case '1':
@@ -305,7 +305,7 @@ namespace DotSpatial.Data
         /// <param name="prefix">The prefix.</param>
         public void DumpInstValue(Stream fpOut, byte[] data, long dataOffset, int dataSize, string prefix)
         {
-            StreamWriter sw = new StreamWriter(fpOut);
+            StreamWriter sw = new(fpOut);
             int extraOffset;
             int nEntries = GetInstCount(data, dataOffset);
 
@@ -453,7 +453,7 @@ namespace DotSpatial.Data
             {
                 // Ok, nasty, the original code simply "pointed" to the byte data at this point and cast the pointer.
                 // We probably need to cycle through until we reach the null character.
-                List<char> chars = new List<char>();
+                List<char> chars = new();
                 while ((char)data[offset] != '\0')
                 {
                     chars.Add((char)data[offset]);
@@ -811,8 +811,7 @@ namespace DotSpatial.Data
                 {
                     // Either a string or a character array
                     nCount = 0;
-                    IEnumerable<char> strVal = value as IEnumerable<char>;
-                    if (strVal != null) nCount = strVal.Count() + 1;
+                    if (value is IEnumerable<char> strVal) nCount = strVal.Count() + 1;
                 }
                 else
                 {
@@ -838,8 +837,8 @@ namespace DotSpatial.Data
                 Array.Copy(blank, 0, data, dataOffset, nBytesToCopy);
                 if (strVal != null)
                 {
-                    ASCIIEncoding ascii = new ASCIIEncoding();
-                    string str = new string(strVal);
+                    ASCIIEncoding ascii = new();
+                    string str = new(strVal);
                     byte[] charData = ascii.GetBytes(str);
                     Array.Copy(charData, 0, data, dataOffset, charData.Length);
                 }

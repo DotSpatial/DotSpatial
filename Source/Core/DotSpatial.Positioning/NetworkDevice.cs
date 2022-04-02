@@ -339,7 +339,7 @@ namespace DotSpatial.Positioning
             {
                 // Endpoints are serialized in their raw byte form to improve compatibility
                 SocketAddress address = _endPoint.Serialize();
-                StringBuilder hexEndPoint = new StringBuilder();
+                StringBuilder hexEndPoint = new();
                 for (int index = 0; index < address.Size; index++)
                     hexEndPoint.Append(address[index].ToString("X2"));
 
@@ -364,7 +364,7 @@ namespace DotSpatial.Positioning
         {
             // Endpoints are serialized in their raw byte form to improve compatibility
             SocketAddress address = _endPoint.Serialize();
-            StringBuilder hexEndPoint = new StringBuilder();
+            StringBuilder hexEndPoint = new();
             for (int index = 0; index < address.Size; index++)
                 hexEndPoint.Append(address[index].ToString("X2"));
 
@@ -388,7 +388,7 @@ namespace DotSpatial.Positioning
         {
             // Endpoints are serialized in their raw byte form to improve compatibility
             SocketAddress address = _endPoint.Serialize();
-            StringBuilder hexEndPoint = new StringBuilder();
+            StringBuilder hexEndPoint = new();
             for (int index = 0; index < address.Size; index++)
                 hexEndPoint.Append(address[index].ToString("X2"));
 

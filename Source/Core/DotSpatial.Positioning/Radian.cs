@@ -68,7 +68,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents a radian with a value of zero.
         /// </summary>
-        public static readonly Radian Empty = new Radian(0.0);
+        public static readonly Radian Empty = new(0.0);
 
         #endregion Fields
 

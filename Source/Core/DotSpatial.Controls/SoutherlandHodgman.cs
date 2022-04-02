@@ -146,7 +146,7 @@ namespace DotSpatial.Controls
         private List<PointF> ClipDirection(IEnumerable<PointF> points, int direction)
         {
             bool previousInside = true;
-            List<PointF> result = new List<PointF>();
+            List<PointF> result = new();
             PointF previous = PointF.Empty;
             foreach (PointF point in points)
             {
@@ -200,7 +200,7 @@ namespace DotSpatial.Controls
         private List<double[]> ClipDirection(IEnumerable<double[]> points, int direction)
         {
             bool previousInside = true;
-            List<double[]> result = new List<double[]>();
+            List<double[]> result = new();
             double[] previous = new double[2];
             bool isFirst = true;
             foreach (double[] point in points)

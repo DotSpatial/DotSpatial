@@ -36,7 +36,7 @@ namespace DotSpatial.Symbology.Forms
         {
             ICharacterSymbol symbol = context?.Instance as ICharacterSymbol;
             IWindowsFormsEditorService dialogProvider = provider?.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
-            CharacterControl cc = new CharacterControl(dialogProvider, symbol);
+            CharacterControl cc = new(dialogProvider, symbol);
             dialogProvider?.DropDownControl(cc);
             return cc.SelectedChar;
         }

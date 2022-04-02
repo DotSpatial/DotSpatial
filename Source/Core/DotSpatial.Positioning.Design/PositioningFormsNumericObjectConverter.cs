@@ -12,7 +12,7 @@ namespace DotSpatial.Positioning.Design
     public abstract class PositioningFormsNumericObjectConverter : PositioningNumericObjectConverter
     {
         /// <inheritdoc />
-        protected override Version HandledAssemblyVersion => new Version("1.0.0.*");
+        protected override Version HandledAssemblyVersion => new("1.0.0.*");
 
         /// <inheritdoc />
         protected override string HandledAssemblyName => "DotSpatial.Positioning.Forms, Culture=neutral, Version=" + HandledAssemblyVersion.ToString(4) + ", PublicKeyToken=3a45fedac1c4cdab";

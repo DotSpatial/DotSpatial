@@ -93,7 +93,7 @@ namespace DotSpatial.Data
             int w = (int)BitConverter.ToUInt32(vals, 9);
             int h = (int)BitConverter.ToUInt32(vals, 13);
 
-            PngHeader result = new PngHeader(w, h)
+            PngHeader result = new(w, h)
             {
                 BitDepth = (BitDepth)vals[17],
                 ColorType = (ColorType)vals[18],

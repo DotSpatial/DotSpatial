@@ -21,7 +21,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using DotSpatial.Positioning.Properties;
+using DotSpatial.Positioning;
 #if !PocketPC || DesignTime
 
 using System.ComponentModel;
@@ -98,39 +98,39 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents a latitude of 0°.
         /// </summary>
-        public static readonly Latitude Equator = new Latitude(0.0);
+        public static readonly Latitude Equator = new(0.0);
         /// <summary>
         /// Represents a latitude of 0°.
         /// </summary>
-        public static readonly Latitude Empty = new Latitude(0.0);
+        public static readonly Latitude Empty = new(0.0);
         /// <summary>
         /// Represents a latitude of 23.5°S.
         /// </summary>
-        public static readonly Latitude TropicOfCapricorn = new Latitude(-23.5);
+        public static readonly Latitude TropicOfCapricorn = new(-23.5);
         /// <summary>
         /// Represents a latitude of 23.5°N.
         /// </summary>
-        public static readonly Latitude TropicOfCancer = new Latitude(23.5);
+        public static readonly Latitude TropicOfCancer = new(23.5);
         /// <summary>
         /// Represents a latitude of 90°N.
         /// </summary>
-        public static readonly Latitude NorthPole = new Latitude(90.0);
+        public static readonly Latitude NorthPole = new(90.0);
         /// <summary>
         /// Represents a latitude of 90°S.
         /// </summary>
-        public static readonly Latitude SouthPole = new Latitude(-90.0);
+        public static readonly Latitude SouthPole = new(-90.0);
         /// <summary>
         /// Represents the minimum possible latitude -90°.
         /// </summary>
-        public static readonly Latitude Minimum = new Latitude(-90.0);
+        public static readonly Latitude Minimum = new(-90.0);
         /// <summary>
         /// Represents the maximum possible latitude of 90°.
         /// </summary>
-        public static readonly Latitude Maximum = new Latitude(90.0);
+        public static readonly Latitude Maximum = new(90.0);
         /// <summary>
         /// Represents an invalid or unspecified value.
         /// </summary>
-        public static readonly Latitude Invalid = new Latitude(double.NaN);
+        public static readonly Latitude Invalid = new(double.NaN);
 
         #endregion Fields
 
@@ -390,7 +390,7 @@ namespace DotSpatial.Positioning
             try
             {
                 // Clean up the string
-                StringBuilder newValue = new StringBuilder(value);
+                StringBuilder newValue = new(value);
                 newValue.Replace("°", " ").Replace("'", " ").Replace("\"", " ").Replace("  ", " ");
                 // Now split the values into an array
                 string[] values = newValue.ToString().Trim().Split(' ');

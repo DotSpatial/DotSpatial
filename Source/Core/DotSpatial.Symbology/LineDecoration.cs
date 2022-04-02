@@ -181,12 +181,12 @@ namespace DotSpatial.Symbology
         {
             if (NumSymbols == 0) return;
 
-            GraphicsPathIterator myIterator = new GraphicsPathIterator(path);
+            GraphicsPathIterator myIterator = new(path);
             myIterator.Rewind();
             int start, end;
             bool isClosed;
             Size2D symbolSize = _symbol.GetSize();
-            Bitmap symbol = new Bitmap((int)symbolSize.Width, (int)symbolSize.Height);
+            Bitmap symbol = new((int)symbolSize.Width, (int)symbolSize.Height);
             Graphics sg = Graphics.FromImage(symbol);
             _symbol.Draw(sg, new Rectangle(0, 0, (int)symbolSize.Width, (int)symbolSize.Height));
             sg.Dispose();
@@ -273,7 +273,7 @@ namespace DotSpatial.Symbology
         /// <param name="angle">Angle, that should be flipped.</param>
         private static void FlipAngle(ref float angle)
         {
-            angle = angle + 180;
+            angle += 180;
             if (angle > 360) angle -= 360;
         }
 
@@ -340,14 +340,14 @@ namespace DotSpatial.Symbology
         private static List<DecorationSpot> GetPosition(PointF[] points, double segLength, int start, int end)
         {
             double coveredDistance = 0; // distance between the last decoration spot and the line end; needed to get the correct position of the next decoration spot on the next line
-            List<DecorationSpot> liste = new List<DecorationSpot>();
+            List<DecorationSpot> liste = new();
 
             for (int i = start; i < end; i++)
             {
                 if (coveredDistance == 0)
                 {
                     // startpoint of the first line or last segment ended on startpoint of next line
-                    DecorationSpot result = new DecorationSpot(points[i], points[i + 1], points[i]);
+                    DecorationSpot result = new(points[i], points[i + 1], points[i]);
                     liste.Add(result);
                     coveredDistance = 0;
                     if (double.IsInfinity(segLength)) return liste; // when segLength is infinit we're looking only for the first decoration spot

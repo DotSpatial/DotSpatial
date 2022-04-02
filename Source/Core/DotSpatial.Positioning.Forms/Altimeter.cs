@@ -37,27 +37,27 @@ namespace DotSpatial.Positioning.Forms
     [ToolboxItem(true)]
     public sealed class Altimeter : PolarControl
     {
-        private Font _altitudeLabelFont = new Font("Tahoma", 12.0f, FontStyle.Regular);
+        private Font _altitudeLabelFont = new("Tahoma", 12.0f, FontStyle.Regular);
         private Thread _interpolationThread;
-        private ManualResetEvent _animationWaitHandle = new ManualResetEvent(false);
-        private readonly Interpolator _valueInterpolator = new Interpolator(15, InterpolationMethod.CubicEaseInOut);
+        private ManualResetEvent _animationWaitHandle = new(false);
+        private readonly Interpolator _valueInterpolator = new(15, InterpolationMethod.CubicEaseInOut);
         private int _interpolationIndex;
         private bool _isInterpolationActive;
-        private SolidBrush _needleShadowBrush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
-        private Size _needleShadowSize = new Size(5, 5);
-        private Pen _majorTickPen = new Pen(Color.Black, 2.0f);
-        private Pen _centerPen = new Pen(Color.Gray);
-        private Pen _minorTickPen = new Pen(Color.Black);
-        private Pen _tensOfThousandsPen = new Pen(Color.Black);
-        private Pen _thousandsPen = new Pen(Color.Black);
-        private Pen _hundredsPen = new Pen(Color.Black);
-        private SolidBrush _altitudeLabelBrush = new SolidBrush(Color.Black);
+        private SolidBrush _needleShadowBrush = new(Color.FromArgb(128, 0, 0, 0));
+        private Size _needleShadowSize = new(5, 5);
+        private Pen _majorTickPen = new(Color.Black, 2.0f);
+        private Pen _centerPen = new(Color.Gray);
+        private Pen _minorTickPen = new(Color.Black);
+        private Pen _tensOfThousandsPen = new(Color.Black);
+        private Pen _thousandsPen = new(Color.Black);
+        private Pen _hundredsPen = new(Color.Black);
+        private SolidBrush _altitudeLabelBrush = new(Color.Black);
         private Distance _altitude = Distance.Empty;
-        private Font _valueFont = new Font("Tahoma", 9.0f, FontStyle.Regular);
-        private SolidBrush _tensOfThousandsBrush = new SolidBrush(Color.Red);
-        private SolidBrush _thousandsBrush = new SolidBrush(Color.Red);
-        private SolidBrush _hundredsBrush = new SolidBrush(Color.Red);
-        private SolidBrush _valueBrush = new SolidBrush(Color.Black);
+        private Font _valueFont = new("Tahoma", 9.0f, FontStyle.Regular);
+        private SolidBrush _tensOfThousandsBrush = new(Color.Red);
+        private SolidBrush _thousandsBrush = new(Color.Red);
+        private SolidBrush _hundredsBrush = new(Color.Red);
+        private SolidBrush _valueBrush = new(Color.Black);
         private string _valueFormat = "v uu";
         private bool _isUsingRealTimeData;
 
@@ -794,7 +794,7 @@ namespace DotSpatial.Positioning.Forms
 
             // What altitude are we drawing?
 
-            Distance altitudeToRender = new Distance(_valueInterpolator[_interpolationIndex], _altitude.Units);
+            Distance altitudeToRender = new(_valueInterpolator[_interpolationIndex], _altitude.Units);
 
             // There are 100 tick marks in 360 degrees.   3.6° per tick mark
             const double conversionFactor = 3.6;
@@ -804,10 +804,10 @@ namespace DotSpatial.Positioning.Forms
                 for (double alt = 0; alt < 100; alt += 1)
                 {
                     // Convert the speed to an angle
-                    Angle angle = new Angle(alt * conversionFactor);
+                    Angle angle = new(alt * conversionFactor);
                     // Get the coordinate of the line's start
-                    PolarCoordinate start = new PolarCoordinate(95, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
-                    PolarCoordinate end = new PolarCoordinate(100, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
+                    PolarCoordinate start = new(95, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
+                    PolarCoordinate end = new(100, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
                     // And draw a line
                     f.DrawLine(_minorTickPen, start, end);
                 }
@@ -818,10 +818,10 @@ namespace DotSpatial.Positioning.Forms
                 for (double alt = 0; alt < 100; alt += 10)
                 {
                     // Convert the speed to an angle
-                    Angle angle = new Angle(alt * conversionFactor);
+                    Angle angle = new(alt * conversionFactor);
                     // Get the coordinate of the line's start
-                    PolarCoordinate start = new PolarCoordinate(94, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
-                    PolarCoordinate end = new PolarCoordinate(100, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
+                    PolarCoordinate start = new(94, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
+                    PolarCoordinate end = new(100, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
                     // And draw a line
                     f.DrawLine(_majorTickPen, start, end);
                     // And also a string

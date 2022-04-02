@@ -17,11 +17,9 @@ namespace DotSpatial.Data.Forms
         /// <returns>A new Shapefile created from the file chosen by the open file dialog.</returns>
         public static Shapefile OpenFile(this Shapefile self)
         {
-            using (var ofd = new OpenFileDialog { Filter = @"Shapefiles (*.shp) |*.shp|All Files|*.*" })
-            {
-                if (ofd.ShowDialog() != DialogResult.OK) return null;
-                return Shapefile.OpenFile(ofd.FileName);
-            }
+            using var ofd = new OpenFileDialog { Filter = @"Shapefiles (*.shp) |*.shp|All Files|*.*" };
+            if (ofd.ShowDialog() != DialogResult.OK) return null;
+            return Shapefile.OpenFile(ofd.FileName);
         }
     }
 }

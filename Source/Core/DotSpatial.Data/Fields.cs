@@ -12,8 +12,8 @@ namespace DotSpatial.Data
     {
         #region Fields
 
-        private readonly Dictionary<string, Field> _nameLookup = new Dictionary<string, Field>();
-        private readonly Dictionary<int, Field> _posLookup = new Dictionary<int, Field>();
+        private readonly Dictionary<string, Field> _nameLookup = new();
+        private readonly Dictionary<int, Field> _posLookup = new();
 
         #endregion
 

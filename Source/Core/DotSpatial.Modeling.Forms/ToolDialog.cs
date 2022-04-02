@@ -20,7 +20,7 @@ namespace DotSpatial.Modeling.Forms
     {
         #region Fields
         private readonly Extent _extent;
-        private readonly List<DialogElement> _listOfDialogElements = new List<DialogElement>();
+        private readonly List<DialogElement> _listOfDialogElements = new();
         private int _elementHeight = 3;
         private ITool _tool;
         #endregion
@@ -55,9 +55,7 @@ namespace DotSpatial.Modeling.Forms
             // We store all the element names here and extract the datasets
             foreach (ModelElement me in modelElements)
             {
-                DataElement de = me as DataElement;
-
-                if (de != null)
+                if (me is DataElement de)
                 {
                     bool addData = true;
                     foreach (Parameter par in tool.OutputParameters)
@@ -145,8 +143,7 @@ namespace DotSpatial.Modeling.Forms
         /// <param name="e">The event args.</param>
         private void ElementClicked(object sender, EventArgs e)
         {
-            DialogElement element = sender as DialogElement;
-            if (element == null)
+            if (sender is not DialogElement element)
             {
                 PopulateHelp(_tool.Name, _tool.Description, _tool.HelpImage);
             }
@@ -175,9 +172,8 @@ namespace DotSpatial.Modeling.Forms
             helpHyperlink.Links[helpHyperlink.Links.IndexOf(e.Link)].Visited = true;
 
             // Display the appropriate link based on the value of the LinkData property of the Link object.
-            string target = e.Link.LinkData as string;
 
-            if (target != null)
+            if (e.Link.LinkData is string target)
                 Process.Start(target);
         }
 
@@ -208,7 +204,7 @@ namespace DotSpatial.Modeling.Forms
             Icon = Images.HammerSmall;
             panelToolIcon.BackgroundImage = tool.Icon ?? Images.Hammer;
 
-            DialogSpacerElement inputSpacer = new DialogSpacerElement
+            DialogSpacerElement inputSpacer = new()
             {
                 Text = ModelingMessageStrings.Input
             };
@@ -217,7 +213,7 @@ namespace DotSpatial.Modeling.Forms
             // Populates the dialog with input elements
             PopulateInputElements();
 
-            DialogSpacerElement outputSpacer = new DialogSpacerElement
+            DialogSpacerElement outputSpacer = new()
             {
                 Text = ModelingMessageStrings.Output
             };
@@ -273,7 +269,7 @@ namespace DotSpatial.Modeling.Forms
             rtbHelp.Size = new Size(0, 0);
 
             // Add the Title
-            Font fBold = new Font("Tahoma", 14, FontStyle.Bold);
+            Font fBold = new("Tahoma", 14, FontStyle.Bold);
             rtbHelp.SelectionFont = fBold;
             rtbHelp.SelectionColor = Color.Black;
             rtbHelp.SelectedText = title + "\r\n\r\n";
@@ -327,8 +323,7 @@ namespace DotSpatial.Modeling.Forms
 
                 // We add an event handler that fires if the parameter is changed
                 param.ValueChanged += ParamValueChanged;
-                ExtentParam p = param as ExtentParam;
-                if (p != null && p.DefaultToMapExtent)
+                if (param is ExtentParam p && p.DefaultToMapExtent)
                 {
                     p.Value = _extent;
                 }

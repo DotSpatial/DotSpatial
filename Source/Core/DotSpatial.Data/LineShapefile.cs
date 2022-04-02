@@ -459,8 +459,8 @@ namespace DotSpatial.Data
 
             foreach (IFeature f in shapefile.Features)
             {
-                List<int> parts = new List<int>();
-                List<Coordinate> points = new List<Coordinate>();
+                List<int> parts = new();
+                List<Coordinate> points = new();
 
                 bool isNullShape = false;
                 int contentLength;

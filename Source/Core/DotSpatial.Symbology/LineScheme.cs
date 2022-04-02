@@ -32,7 +32,7 @@ namespace DotSpatial.Symbology
         public LineScheme()
         {
             Configure();
-            LineCategory def = new LineCategory();
+            LineCategory def = new();
             Categories.Add(def);
         }
 
@@ -82,8 +82,7 @@ namespace DotSpatial.Symbology
         /// <param name="category">The category to add.</param>
         public override void AddCategory(ICategory category)
         {
-            ILineCategory lc = category as ILineCategory;
-            if (lc != null) _categories.Add(lc);
+            if (category is ILineCategory lc) _categories.Add(lc);
         }
 
         /// <summary>
@@ -102,8 +101,7 @@ namespace DotSpatial.Symbology
         /// <returns>A new polygon category.</returns>
         public override ICategory CreateNewCategory(Color fillColor, double size)
         {
-            ILineSymbolizer ls = EditorSettings.TemplateSymbolizer.Copy() as ILineSymbolizer;
-            if (ls != null)
+            if (EditorSettings.TemplateSymbolizer.Copy() is ILineSymbolizer ls)
             {
                 ls.SetFillColor(fillColor);
                 ls.SetWidth(size);
@@ -123,7 +121,7 @@ namespace DotSpatial.Symbology
         /// <returns>A new IFeatureCategory.</returns>
         public override IFeatureCategory CreateRandomCategory(string filterExpression)
         {
-            LineCategory result = new LineCategory();
+            LineCategory result = new();
             Color fillColor = CreateRandomColor();
             result.Symbolizer = new LineSymbolizer(fillColor, 2);
             result.FilterExpression = filterExpression;
@@ -140,8 +138,7 @@ namespace DotSpatial.Symbology
         /// <returns>True, if the index was decreased.</returns>
         public override bool DecreaseCategoryIndex(ICategory category)
         {
-            ILineCategory pc = category as ILineCategory;
-            return pc != null && Categories.DecreaseIndex(pc);
+            return category is ILineCategory pc && Categories.DecreaseIndex(pc);
         }
 
         /// <summary>
@@ -185,8 +182,7 @@ namespace DotSpatial.Symbology
         /// <returns>True, if the index was increased.</returns>
         public override bool IncreaseCategoryIndex(ICategory category)
         {
-            ILineCategory pc = category as ILineCategory;
-            return pc != null && Categories.IncreaseIndex(pc);
+            return category is ILineCategory pc && Categories.IncreaseIndex(pc);
         }
 
         /// <summary>
@@ -196,8 +192,7 @@ namespace DotSpatial.Symbology
         /// <param name="category">The category to insert.</param>
         public override void InsertCategory(int index, ICategory category)
         {
-            ILineCategory lc = category as ILineCategory;
-            if (lc != null) _categories.Insert(index, lc);
+            if (category is ILineCategory lc) _categories.Insert(index, lc);
         }
 
         /// <summary>
@@ -206,8 +201,7 @@ namespace DotSpatial.Symbology
         /// <param name="category">The category to insert.</param>
         public override void RemoveCategory(ICategory category)
         {
-            ILineCategory lc = category as ILineCategory;
-            if (lc != null) _categories.Remove(lc);
+            if (category is ILineCategory lc) _categories.Remove(lc);
         }
 
         /// <summary>
@@ -234,10 +228,9 @@ namespace DotSpatial.Symbology
         /// <returns>The List of colors.</returns>
         protected override List<Color> GetDefaultColors(int count)
         {
-            ILineSymbolizer ls = EditorSettings?.TemplateSymbolizer as ILineSymbolizer;
-            if (ls != null)
+            if (EditorSettings?.TemplateSymbolizer is ILineSymbolizer ls)
             {
-                List<Color> result = new List<Color>();
+                List<Color> result = new();
                 Color c = ls.GetFillColor();
                 for (int i = 0; i < count; i++)
                 {

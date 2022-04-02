@@ -60,7 +60,7 @@ namespace DotSpatial.Symbology
             {
                 if (!_layer.DrawnStatesNeeded) return new Envelope();
 
-                Extent ext = new Extent();
+                Extent ext = new();
                 FastDrawnState[] drawnStates = _layer.DrawnStates;
                 for (int shp = 0; shp < drawnStates.Length; shp++)
                 {
@@ -277,9 +277,9 @@ namespace DotSpatial.Symbology
 
             if (!requiresRun) return counts;
 
-            AttributePager ap = new AttributePager(_layer.DataSet, 100000);
+            AttributePager ap = new(_layer.DataSet, 100000);
             int numinTable = 0;
-            DataTable result = new DataTable();
+            DataTable result = new();
             result.Columns.AddRange(_layer.DataSet.GetColumns());
             FastDrawnState[] drawnStates = _layer.DrawnStates;
             for (int shp = 0; shp < drawnStates.Length; shp++)
@@ -422,7 +422,7 @@ namespace DotSpatial.Symbology
         /// <returns>A List of IFeature.</returns>
         public List<IFeature> ToFeatureList()
         {
-            List<IFeature> result = new List<IFeature>();
+            List<IFeature> result = new();
             FastDrawnState[] drawnStates = _layer.DrawnStates;
             for (int shp = 0; shp < drawnStates.Length; shp++)
             {
@@ -467,9 +467,9 @@ namespace DotSpatial.Symbology
         {
             bool somethingChanged = false;
             SuspendChanges();
-            Extent affected = new Extent();
+            Extent affected = new();
             Polygon reg = region.ToPolygon();
-            ShapeRange env = new ShapeRange(region);
+            ShapeRange env = new(region);
 
             for (int shp = 0; shp < _layer.DrawnStates.Length; shp++)
             {

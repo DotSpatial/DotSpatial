@@ -37,8 +37,7 @@ namespace DotSpatial.Symbology
         /// <returns>The resulting Size2D.</returns>
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            var s = value as string;
-            if (s != null)
+            if (value is string s)
             {
                 try
                 {
@@ -61,7 +60,7 @@ namespace DotSpatial.Symbology
                         y = 0;
                     }
 
-                    Size2D result = new Size2D(x, y);
+                    Size2D result = new(x, y);
                     return result;
                 }
                 catch

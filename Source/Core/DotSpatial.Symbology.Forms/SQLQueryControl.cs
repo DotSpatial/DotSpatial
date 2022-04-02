@@ -331,8 +331,7 @@ namespace DotSpatial.Symbology.Forms
         private void LbxFieldsSelectedIndexChanged(object sender, EventArgs e)
         {
             btnGetUniqueValues.Enabled = true;
-            string field = lbxFields.SelectedItem as string;
-            if (field == null) return;
+            if (lbxFields.SelectedItem is not string field) return;
             IComparable min = null;
             lblMin.Text = string.Empty;
             IComparable max = null;

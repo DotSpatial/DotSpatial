@@ -43,18 +43,16 @@ namespace DotSpatial.Controls
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             _dialogProvider = provider?.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
-            List<int> layerList = new List<int>();
-            LayoutLegend legend = context?.Instance as LayoutLegend;
+            List<int> layerList = new();
             LayoutMap map = null;
-            if (legend != null)
+            if (context?.Instance is LayoutLegend legend)
                 map = legend.Map;
             if (map == null)
                 return layerList;
 
-            CheckedListBox lb = new CheckedListBox();
+            CheckedListBox lb = new();
 
-            List<int> originalList = value as List<int>;
-            if (originalList != null)
+            if (value is List<int> originalList)
             {
                 for (int i = map.MapControl.Layers.Count - 1; i >= 0; i--)
                     lb.Items.Add(map.MapControl.Layers[i].LegendText, originalList.Contains(i));

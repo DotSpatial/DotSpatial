@@ -454,7 +454,7 @@ namespace DotSpatial.Symbology
         public Bitmap CreateBitmap()
         {
             string fileName = Path.ChangeExtension(_raster.Filename, ".bmp");
-            Bitmap bmp = new Bitmap(_raster.NumRows, _raster.NumColumns, PixelFormat.Format32bppArgb);
+            Bitmap bmp = new(_raster.NumRows, _raster.NumColumns, PixelFormat.Format32bppArgb);
             bmp.Save(fileName); // this is needed so that lockbits doesn't cause exceptions
             _raster.DrawToBitmap(this, bmp);
             bmp.Save(fileName);
@@ -513,7 +513,7 @@ namespace DotSpatial.Symbology
             }
 
             // Create a new Bitmap and use LockBits combined with Marshal.Copy to get an array of bytes to work with.
-            Rectangle rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+            Rectangle rect = new(0, 0, bitmap.Width, bitmap.Height);
             try
             {
                 bmpData = bitmap.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
@@ -534,7 +534,7 @@ namespace DotSpatial.Symbology
 
             float[][] hillshade = _hillshade;
 
-            ProgressMeter pm = new ProgressMeter(progressHandler, SymbologyMessageStrings.DesktopRasterExt_PaintingHillshade, bitmap.Height);
+            ProgressMeter pm = new(progressHandler, SymbologyMessageStrings.DesktopRasterExt_PaintingHillshade, bitmap.Height);
             if (bitmap.Width * bitmap.Height < 100000) pm.StepPercent = 50;
             if (bitmap.Width * bitmap.Height < 500000) pm.StepPercent = 10;
             if (bitmap.Width * bitmap.Height < 1000000) pm.StepPercent = 5;

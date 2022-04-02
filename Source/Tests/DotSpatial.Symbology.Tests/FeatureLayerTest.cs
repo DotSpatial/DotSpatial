@@ -32,7 +32,7 @@ namespace DotSpatial.Symbology.Tests
             string filename = Path.Combine(_folder, "soils.shp");
             string fileOut = Path.Combine(_folder, "soilsExport.shp");
 
-            ShapefileLayerProvider provider = new ShapefileLayerProvider();
+            ShapefileLayerProvider provider = new();
             var target = (FeatureLayer)provider.OpenLayer(filename, false, null, null);
             target.SelectByAttribute("[BPEJ_K_S42]>7710");
 
@@ -55,7 +55,7 @@ namespace DotSpatial.Symbology.Tests
             string filename = Path.Combine(_folder, "soils.shp");
             string fileOut = Path.Combine(_folder, "soilsExport.shp");
 
-            ShapefileLayerProvider provider = new ShapefileLayerProvider();
+            ShapefileLayerProvider provider = new();
             var target = (FeatureLayer)provider.OpenLayer(filename, false, null, null);
             target.SelectByAttribute("[BPEJ_K_S42]>7710");
 
@@ -80,7 +80,7 @@ namespace DotSpatial.Symbology.Tests
             var fl = GetFeatureLayer(out PolygonCategory cat);
             fl.SelectionEnabled = selectionEnabled;
             cat.SelectionEnabled = catSelectionEnabled;
-            Envelope e = new Envelope(-72, -66, 40, 48);
+            Envelope e = new(-72, -66, 40, 48);
             Assert.AreEqual(selectionEnabled, fl.Select(e, e, ClearStates.False));
 
             var resultValue = 7;
@@ -109,13 +109,13 @@ namespace DotSpatial.Symbology.Tests
         public void InvertSelection(bool selectionEnabled, bool catSelectionEnabled)
         {
             var fl = GetFeatureLayer(out PolygonCategory cat);
-            Envelope e = new Envelope(-72, -66, 40, 48);
+            Envelope e = new(-72, -66, 40, 48);
             Assert.IsTrue(fl.Select(e, e, ClearStates.False));
 
             fl.SelectionEnabled = selectionEnabled;
             cat.SelectionEnabled = catSelectionEnabled;
 
-            Envelope e2 = new Envelope(-78, -66, 40, 48);
+            Envelope e2 = new(-78, -66, 40, 48);
             Assert.AreEqual(selectionEnabled, fl.InvertSelection(e2, e2));
 
             var resultValue = 3;
@@ -144,13 +144,13 @@ namespace DotSpatial.Symbology.Tests
         public void UnSelect(bool selectionEnabled, bool catSelectionEnabled)
         {
             var fl = GetFeatureLayer(out PolygonCategory cat);
-            Envelope e = new Envelope(-72, -66, 40, 48);
+            Envelope e = new(-72, -66, 40, 48);
             Assert.IsTrue(fl.Select(e, e, ClearStates.False));
 
             fl.SelectionEnabled = selectionEnabled;
             cat.SelectionEnabled = catSelectionEnabled;
 
-            Envelope e2 = new Envelope(-78, -66, 40, 48);
+            Envelope e2 = new(-78, -66, 40, 48);
             Assert.AreEqual(selectionEnabled, fl.UnSelect(e2, e2));
 
             var resultValue = 0;
@@ -208,12 +208,12 @@ namespace DotSpatial.Symbology.Tests
         private static IFeatureLayer GetFeatureLayer(out PolygonCategory cat)
         {
             // load layer with us states
-            ShapefileLayerProvider provider = new ShapefileLayerProvider();
+            ShapefileLayerProvider provider = new();
             var fl = (IFeatureLayer)provider.OpenLayer(Common.AbsolutePath(Path.Combine(@"TestFiles", "50mil_us_states.shp")), false, null, null);
             Assert.IsNotNull(fl);
 
             // add two categories for testing category.SelectionEnabled
-            PolygonScheme scheme = new PolygonScheme();
+            PolygonScheme scheme = new();
             scheme.ClearCategories();
             scheme.AddCategory(new PolygonCategory(Color.LightBlue, Color.DarkBlue, 1)
             {

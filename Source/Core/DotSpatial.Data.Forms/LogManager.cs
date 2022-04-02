@@ -125,7 +125,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>A DialogResult showing the outcome.</returns>
         public DialogResult LogInputBox(string text, out string result)
         {
-            InputBox frm = new InputBox(text);
+            InputBox frm = new(text);
             result = frm.ShowDialog() != DialogResult.OK ? string.Empty : frm.Result;
             LogInput(text, frm.DialogResult, result);
             return frm.DialogResult;
@@ -141,7 +141,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>A DialogResult showing the outcome.</returns>
         public DialogResult LogInputBox(string text, string caption, out string result)
         {
-            InputBox frm = new InputBox(text, caption);
+            InputBox frm = new(text, caption);
             result = frm.ShowDialog() != DialogResult.OK ? string.Empty : frm.Result;
             LogInput(text, frm.DialogResult, result);
             return frm.DialogResult;
@@ -158,7 +158,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>A DialogResult showing the outcome.</returns>
         public DialogResult LogInputBox(string text, string caption, ValidationType validation, out string result)
         {
-            InputBox frm = new InputBox(text, caption, validation);
+            InputBox frm = new(text, caption, validation);
             result = frm.ShowDialog() != DialogResult.OK ? string.Empty : frm.Result;
             LogInput(text, frm.DialogResult, result);
             return frm.DialogResult;
@@ -176,7 +176,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>A DialogResult showing the outcome.</returns>
         public DialogResult LogInputBox(string text, string caption, ValidationType validation, Icon icon, out string result)
         {
-            InputBox frm = new InputBox(text, caption, validation, icon);
+            InputBox frm = new(text, caption, validation, icon);
             result = frm.ShowDialog() != DialogResult.OK ? string.Empty : frm.Result;
             LogInput(text, frm.DialogResult, result);
             return frm.DialogResult;
@@ -192,7 +192,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>A DialogResult showing the outcome.</returns>
         public DialogResult LogInputBox(Form owner, string text, out string result)
         {
-            InputBox frm = new InputBox(owner, text);
+            InputBox frm = new(owner, text);
             result = frm.ShowDialog() != DialogResult.OK ? string.Empty : frm.Result;
             LogInput(text, frm.DialogResult, result);
             return frm.DialogResult;
@@ -209,7 +209,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>A DialogResult showing the outcome.</returns>
         public DialogResult LogInputBox(Form owner, string text, string caption, out string result)
         {
-            InputBox frm = new InputBox(owner, text, caption);
+            InputBox frm = new(owner, text, caption);
             result = frm.ShowDialog() != DialogResult.OK ? string.Empty : frm.Result;
             LogInput(text, frm.DialogResult, result);
             return frm.DialogResult;
@@ -227,7 +227,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>A DialogResult showing the outcome.</returns>
         public DialogResult LogInputBox(Form owner, string text, string caption, ValidationType validation, out string result)
         {
-            InputBox frm = new InputBox(owner, text, caption, validation);
+            InputBox frm = new(owner, text, caption, validation);
             result = frm.ShowDialog() != DialogResult.OK ? string.Empty : frm.Result;
             LogInput(text, frm.DialogResult, result);
             return frm.DialogResult;
@@ -246,7 +246,7 @@ namespace DotSpatial.Data.Forms
         /// <returns>A DialogResult showing the outcome.</returns>
         public DialogResult LogInputBox(Form owner, string text, string caption, ValidationType validation, Icon icon, out string result)
         {
-            InputBox frm = new InputBox(owner, text, caption, validation, icon);
+            InputBox frm = new(owner, text, caption, validation, icon);
             result = frm.ShowDialog() != DialogResult.OK ? string.Empty : frm.Result;
             LogInput(text, frm.DialogResult, result);
             return frm.DialogResult;

@@ -50,7 +50,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        public static readonly StaticFinalizer Current = new StaticFinalizer();
+        public static readonly StaticFinalizer Current = new();
 
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the <see cref="StaticFinalizer"/> is reclaimed by garbage collection.

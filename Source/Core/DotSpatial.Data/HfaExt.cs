@@ -19,7 +19,7 @@ namespace DotSpatial.Data
         /// <returns>An integer read from the string.</returns>
         public static int ExtractInteger(this string input)
         {
-            List<char> number = new List<char>();
+            List<char> number = new();
             int start = 0;
             while (input.Length > start && char.IsDigit(input[start]))
             {

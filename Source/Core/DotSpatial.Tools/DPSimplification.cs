@@ -109,7 +109,7 @@ namespace DotSpatial.Tools
 
                         // convert the coordinates back to a geometry
                         Geometry newGeom = new LineString(newCoords);
-                        Feature newFeature = new Feature(newGeom, output);
+                        Feature newFeature = new(newGeom, output);
                         foreach (DataColumn colSource in input.DataTable.Columns)
                         {
                             newFeature.DataRow[colSource.ColumnName] = t.DataRow[colSource.ColumnName];
@@ -173,7 +173,7 @@ namespace DotSpatial.Tools
                         Geometry newGeom = new LineString(newCoords);
                         numNewPoints += newGeom.NumPoints;
                         numTotalNewPoints += numNewPoints;
-                        Feature newFeature = new Feature(newGeom, output);
+                        Feature newFeature = new(newGeom, output);
                         foreach (DataColumn colSource in input.DataTable.Columns)
                         {
                             newFeature.DataRow[colSource.ColumnName] = input.Features[j].DataRow[colSource.ColumnName];

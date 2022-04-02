@@ -16,7 +16,7 @@ namespace DotSpatial.Symbology.Forms
         #region Fields
 
         private const double E = Math.E;
-        private List<string> _fields = new List<string>();
+        private List<string> _fields = new();
 
         #endregion
 
@@ -231,10 +231,10 @@ namespace DotSpatial.Symbology.Forms
                 double t = 2 * x * x;
                 double p = 1;
                 double s = 1;
-                for (int i = 3; i < Maxloop; i = i + 2)
+                for (int i = 3; i < Maxloop; i += 2)
                 {
                     p = p * t / i;
-                    s = s + p;
+                    s += p;
                     if (p < Tiny) break;
                 }
 
@@ -638,7 +638,7 @@ namespace DotSpatial.Symbology.Forms
 
             double res = 1.0;
             for (int i = 0; i < Math.Floor(n); i++)
-                res = res * (i + 1);
+                res *= (i + 1);
             return res;
         }
 
@@ -710,7 +710,7 @@ namespace DotSpatial.Symbology.Forms
 
             // rescaling
             p = Math.Floor(Math.Log(mantissa, E) / Math.Log(10, E));
-            mantissa = mantissa * Math.Pow(10, -p);
+            mantissa *= Math.Pow(10, -p);
             expo += Convert.ToInt32(p);
         }
 
@@ -1014,7 +1014,7 @@ namespace DotSpatial.Symbology.Forms
         private static double RoundFunction(double x, double d)
         {
             double b = Math.Pow(10, d);
-            x = x * b;
+            x *= b;
             double xi = Convert.ToInt32(Math.Floor(x));
             double xd = x - xi;
             if (xd > 0.5) xi++;
@@ -1041,7 +1041,7 @@ namespace DotSpatial.Symbology.Forms
                 {
                     if (k > 0)
                         cnk = cnk * (n - k + 1) / k;
-                    s1 = s1 + (Math.Pow(-1, k) * cnk / Math.Pow(k + 1, x));
+                    s1 += (Math.Pow(-1, k) * cnk / Math.Pow(k + 1, x));
                 }
 
                 coeff = s1 / Math.Pow(2, 1 + n);
@@ -1067,7 +1067,7 @@ namespace DotSpatial.Symbology.Forms
         {
             const string Division = " / ";
             Expression = rtxtComputaion.Text;
-            Expression = Expression + Division;
+            Expression += Division;
             DisplyExpression();
         }
 
@@ -1075,7 +1075,7 @@ namespace DotSpatial.Symbology.Forms
         {
             const string Minus = " - ";
             Expression = rtxtComputaion.Text;
-            Expression = Expression + Minus;
+            Expression += Minus;
             DisplyExpression();
         }
 
@@ -1083,7 +1083,7 @@ namespace DotSpatial.Symbology.Forms
         {
             const string Times = " * ";
             Expression = rtxtComputaion.Text;
-            Expression = Expression + Times;
+            Expression += Times;
             DisplyExpression();
         }
 
@@ -1091,7 +1091,7 @@ namespace DotSpatial.Symbology.Forms
         {
             const string Plus = " + ";
             Expression = rtxtComputaion.Text;
-            Expression = Expression + Plus;
+            Expression += Plus;
             DisplyExpression();
         }
 
@@ -1131,7 +1131,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void LinkLabel1LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            CalculatorUserGuide calUseGui = new CalculatorUserGuide();
+            CalculatorUserGuide calUseGui = new();
             calUseGui.ShowDialog();
         }
 
@@ -1449,7 +1449,7 @@ namespace DotSpatial.Symbology.Forms
             int count = 0; // index after filtered
 
             // sort the array.
-            List<FunClass> templist1 = new List<FunClass>();
+            List<FunClass> templist1 = new();
             foreach (FunClass funcls in functionClsArr)
             {
                 if (funcls != null)
@@ -1612,7 +1612,7 @@ namespace DotSpatial.Symbology.Forms
 
                             val = EvaluateFunction(GetTokenNo(templist1[a].FunctionName), argVal1, 0.0); // EXECUTE operation
                             templist1[a].Value = val;
-                            finanalVal = finanalVal * val;
+                            finanalVal *= val;
                         }
                         else
                         {

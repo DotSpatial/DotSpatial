@@ -87,7 +87,7 @@ namespace DotSpatial.Symbology
         public PointCategory(Image picture, double size)
         {
             Symbolizer = new PointSymbolizer(picture, size);
-            PictureSymbol ps = new PictureSymbol(picture, size)
+            PictureSymbol ps = new(picture, size)
             {
                 OutlineColor = Color.Cyan,
                 OutlineWidth = 2,
@@ -105,8 +105,7 @@ namespace DotSpatial.Symbology
         {
             Symbolizer = new PointSymbolizer(symbol);
             ISymbol copy = symbol.Copy();
-            IColorable c = copy as IColorable;
-            if (c != null)
+            if (copy is IColorable c)
             {
                 c.Color = Color.Cyan;
             }
@@ -126,8 +125,7 @@ namespace DotSpatial.Symbology
 
             if (copy.Any())
             {
-                IColorable c = symb.Last() as IColorable;
-                if (c != null)
+                if (symb.Last() is IColorable c)
                 {
                     c.Color = Color.Cyan;
                 }

@@ -26,7 +26,7 @@ namespace DotSpatial.Projections.Transforms
     {
         #region Private Variables
 
-        private static readonly TransformManager DefaultManager = new TransformManager();
+        private static readonly TransformManager DefaultManager = new();
         private readonly List<ITransform> _transforms;
 
         #endregion

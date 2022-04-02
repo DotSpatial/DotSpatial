@@ -52,63 +52,55 @@ namespace DotSpatial.Projections
         {
             string location = FileIsEmbedded ? ManifestResourceString : GridFilePath;
             Name = Path.GetFileNameWithoutExtension(location);
-            using (Stream str = GetStream())
-            {
-                if (str == null) return;
-                using (BinaryReader br = new BinaryReader(str))
-                {
-                    // read past 64 bytes of strings/nulls at start of file
-                    br.BaseStream.Seek(64, SeekOrigin.Begin);
-                    NumLambdas = br.ReadInt32();
-                    NumPhis = br.ReadInt32();
-                    br.ReadInt32(); // num z values: always 1
-                    PhiLam ll;
-                    ll.Lambda = br.ReadSingle() * DEG_TO_RAD;
-                    PhiLam cs;
-                    cs.Lambda = br.ReadSingle() * DEG_TO_RAD;
-                    ll.Phi = br.ReadSingle() * DEG_TO_RAD;
-                    LowerLeft = ll;
-                    cs.Phi = br.ReadSingle() * DEG_TO_RAD;
-                    CellSize = cs;
-                    Filled = false;
-                }
-            }
+            using Stream str = GetStream();
+            if (str == null) return;
+            using BinaryReader br = new(str);
+            // read past 64 bytes of strings/nulls at start of file
+            br.BaseStream.Seek(64, SeekOrigin.Begin);
+            NumLambdas = br.ReadInt32();
+            NumPhis = br.ReadInt32();
+            br.ReadInt32(); // num z values: always 1
+            PhiLam ll;
+            ll.Lambda = br.ReadSingle() * DEG_TO_RAD;
+            PhiLam cs;
+            cs.Lambda = br.ReadSingle() * DEG_TO_RAD;
+            ll.Phi = br.ReadSingle() * DEG_TO_RAD;
+            LowerLeft = ll;
+            cs.Phi = br.ReadSingle() * DEG_TO_RAD;
+            CellSize = cs;
+            Filled = false;
         }
 
         /// <inheritdoc></inheritdoc>
         public override void FillData()
         {
-            using (Stream strLos = GetStream())
-            using (Stream strLas = GetLasStream())
+            using Stream strLos = GetStream();
+            using Stream strLas = GetLasStream();
+            if (strLas == null || strLos == null) return;
+            using BinaryReader brLas = new(strLas);
+            using BinaryReader brLos = new(strLos);
+            int numPhis = NumPhis;
+            int numLambdas = NumLambdas;
+            // .las/.los header is padded out to 1 full line of lambdas
+            int offsetToData = ((NumLambdas + 1) * sizeof(Single));
+            brLas.BaseStream.Seek(offsetToData, SeekOrigin.Begin);
+            brLos.BaseStream.Seek(offsetToData, SeekOrigin.Begin);
+            PhiLam[][] cvs = new PhiLam[numPhis][];
+            for (int i = 0; i < numPhis; i++)
             {
-                if (strLas == null || strLos == null) return;
-                using (BinaryReader brLas = new BinaryReader(strLas))
-                using (BinaryReader brLos = new BinaryReader(strLos))
+                cvs[i] = new PhiLam[numLambdas];
+                brLas.ReadSingle(); // discard leading 'zero'
+                brLos.ReadSingle(); // discard leading 'zero'
+                cvs[i][0].Phi = brLas.ReadSingle() * SecToRad;
+                cvs[i][0].Lambda = brLos.ReadSingle() * SecToRad;
+                for (int j = 1; j < NumLambdas; j++)
                 {
-                    int numPhis = NumPhis;
-                    int numLambdas = NumLambdas;
-                    // .las/.los header is padded out to 1 full line of lambdas
-                    int offsetToData = ((NumLambdas + 1) * sizeof(Single));
-                    brLas.BaseStream.Seek(offsetToData, SeekOrigin.Begin);
-                    brLos.BaseStream.Seek(offsetToData, SeekOrigin.Begin);
-                    PhiLam[][] cvs = new PhiLam[numPhis][];
-                    for (int i = 0; i < numPhis; i++)
-                    {
-                        cvs[i] = new PhiLam[numLambdas];
-                        brLas.ReadSingle(); // discard leading 'zero'
-                        brLos.ReadSingle(); // discard leading 'zero'
-                        cvs[i][0].Phi = brLas.ReadSingle() * SecToRad;
-                        cvs[i][0].Lambda = brLos.ReadSingle() * SecToRad;
-                        for (int j = 1; j < NumLambdas; j++)
-                        {
-                            cvs[i][j].Phi += brLas.ReadSingle() * SecToRad;
-                            cvs[i][j].Lambda += brLos.ReadSingle() * SecToRad;
-                        }
-                    }
-                    Cvs = cvs;
-                    Filled = true;
+                    cvs[i][j].Phi += brLas.ReadSingle() * SecToRad;
+                    cvs[i][j].Lambda += brLos.ReadSingle() * SecToRad;
                 }
             }
+            Cvs = cvs;
+            Filled = true;
         }
 
         /// <summary>

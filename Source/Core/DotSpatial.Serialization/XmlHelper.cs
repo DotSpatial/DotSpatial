@@ -20,7 +20,7 @@ namespace DotSpatial.Serialization
         /// <returns>The modified string where the characters are replaced.</returns>
         public static string EscapeInvalidCharacters(string text)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             for (int i = 0; i < text.Length; i++)
             {

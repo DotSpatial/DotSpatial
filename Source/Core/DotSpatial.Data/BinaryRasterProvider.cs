@@ -59,16 +59,14 @@ namespace DotSpatial.Data
         /// <returns>The datatype that was found.</returns>
         public static RasterDataType GetDataType(string fileName)
         {
-            using (var br = new BinaryReader(new FileStream(fileName, FileMode.Open)))
-            {
-                br.ReadInt32(); // NumColumns
-                br.ReadInt32(); // NumRows
-                br.ReadDouble(); // CellWidth
-                br.ReadDouble(); // CellHeight
-                br.ReadDouble(); // xllcenter
-                br.ReadDouble(); // yllcenter
-                return (RasterDataType)br.ReadInt32();
-            }
+            using var br = new BinaryReader(new FileStream(fileName, FileMode.Open));
+            br.ReadInt32(); // NumColumns
+            br.ReadInt32(); // NumRows
+            br.ReadDouble(); // CellWidth
+            br.ReadDouble(); // CellHeight
+            br.ReadDouble(); // xllcenter
+            br.ReadDouble(); // yllcenter
+            return (RasterDataType)br.ReadInt32();
         }
 
         /// <summary>

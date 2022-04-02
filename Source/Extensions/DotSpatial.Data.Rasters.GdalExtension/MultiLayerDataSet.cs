@@ -145,10 +145,8 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             _fileName = fileName;
             _groupName = Path.GetFileNameWithoutExtension(fileName);
 
-            using (var reader = new OgrDataReader(fileName))
-            {
-                _dataSets = reader.GetLayers();
-            }
+            using var reader = new OgrDataReader(fileName);
+            _dataSets = reader.GetLayers();
         }
 
         /// <inheritdoc />

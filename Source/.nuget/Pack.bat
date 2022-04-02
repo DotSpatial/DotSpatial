@@ -19,7 +19,7 @@ nuget pack ..\DotSpatial.NTSExtension\DotSpatial.NTSExtension.csproj -version "%
 nuget pack ..\DotSpatial.Positioning\DotSpatial.Positioning.csproj -version "%NugetVersion%" -Properties "PackageVersion=%PackageVersion%";"Configuration=Release" 
 nuget pack ..\DotSpatial.Positioning.Design\DotSpatial.Positioning.Design.csproj -version "%NugetVersion%" -Properties "PackageVersion=%PackageVersion%";"Configuration=Release" 
 nuget pack ..\DotSpatial.Positioning.Forms\DotSpatial.Positioning.Forms.csproj -version "%NugetVersion%" -Properties "PackageVersion=%PackageVersion%";"Configuration=Release" 
-nuget pack ..\DotSpatial.Projections\DotSpatial.Projections.csproj -version "%NugetVersion%" -Properties "PackageVersion=%PackageVersion%";"Configuration=Release" 
+nuget pack ..\DotSpatial.Projections\DotSpatial.Projections.nuspec -version "%NugetVersion%" -Properties "PackageVersion=%PackageVersion%";"Configuration=Release" 
 nuget pack ..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj -version "%NugetVersion%" -Properties "PackageVersion=%PackageVersion%";"Configuration=Release" 
 nuget pack ..\DotSpatial.Serialization\DotSpatial.Serialization.csproj -version "%NugetVersion%" -Properties "PackageVersion=%PackageVersion%";"Configuration=Release" 
 nuget pack ..\DotSpatial.Symbology\DotSpatial.Symbology.csproj -version "%NugetVersion%" -Properties "PackageVersion=%PackageVersion%";"Configuration=Release" 

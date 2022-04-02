@@ -468,8 +468,7 @@ namespace DotSpatial.Symbology
         {
             if (item.GetParentItem() != this) return false;
 
-            var lyr = item as ILayer;
-            return lyr == null;
+            return item is not ILayer lyr;
         }
 
         /// <summary>
@@ -670,8 +669,7 @@ namespace DotSpatial.Symbology
         protected override void OnCopy(Descriptor copy)
         {
             // Remove event handlers from the copy. (They will be set again when adding to a new map.)
-            Layer copyLayer = copy as Layer;
-            if (copyLayer == null) return;
+            if (copy is not Layer copyLayer) return;
 
             if (copyLayer.LayerSelected != null)
             {
@@ -722,8 +720,7 @@ namespace DotSpatial.Symbology
         /// <param name="editCopy">The version that went into the property dialog.</param>
         protected override void OnCopyProperties(object editCopy)
         {
-            ILayer layer = editCopy as ILayer;
-            if (layer != null)
+            if (editCopy is ILayer layer)
             {
                 SuspendChangeEvent();
                 base.OnCopyProperties(editCopy);
@@ -804,7 +801,7 @@ namespace DotSpatial.Symbology
                                    new SymbologyMenuItem(SymbologyMessageStrings.ZoomToLayer, SymbologyImages.ZoomInMap, ZoomToLayerClick),
                                    new SymbologyMenuItem(SymbologyMessageStrings.SetDynamicVisibilityScale, SymbologyImages.ZoomScale, SetDynamicVisibility)
                                };
-            SymbologyMenuItem mnuData = new SymbologyMenuItem(SymbologyMessageStrings.Data);
+            SymbologyMenuItem mnuData = new(SymbologyMessageStrings.Data);
             mnuData.MenuItems.Add(new SymbologyMenuItem(SymbologyMessageStrings.ExportData, SymbologyImages.save, ExportDataClick));
             ContextMenuItems.Add(mnuData);
             ContextMenuItems.Add(new SymbologyMenuItem(SymbologyMessageStrings.Properties, SymbologyImages.color_scheme, ShowPropertiesClick));
@@ -841,7 +838,7 @@ namespace DotSpatial.Symbology
         private void ShowPropertiesClick(object sender, EventArgs e)
         {
             // Allow subclasses to prevent this class from showing the default dialog
-            HandledEventArgs result = new HandledEventArgs(false);
+            HandledEventArgs result = new(false);
             OnShowProperties(result);
             if (result.Handled) return;
 

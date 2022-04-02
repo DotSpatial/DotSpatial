@@ -267,9 +267,9 @@ namespace DotSpatial.Symbology.Forms
                 Initialize(); // redraw the entire page buffer if necessary
             }
 
-            Bitmap buffer = new Bitmap(clip.Width, clip.Height);
+            Bitmap buffer = new(clip.Width, clip.Height);
             Graphics g = Graphics.FromImage(buffer);
-            Matrix mat = new Matrix();
+            Matrix mat = new();
             mat.Translate(-clip.X, -clip.Y); // draw in "client" coordinates
             g.Transform = mat;
 

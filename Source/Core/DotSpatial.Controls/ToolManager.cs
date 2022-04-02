@@ -62,7 +62,7 @@ namespace DotSpatial.Controls
         {
             get
             {
-                List<DataSetArray> dataSets = new List<DataSetArray>();
+                List<DataSetArray> dataSets = new();
                 if (Legend != null)
                 {
                     foreach (ILegendItem node in Legend.RootNodes)
@@ -277,13 +277,10 @@ namespace DotSpatial.Controls
 
         private static void BwDoWork(object sender, DoWorkEventArgs e)
         {
-            object[] threadParameter = e.Argument as object[];
-            if (threadParameter == null) return;
-            ITool toolToExecute = threadParameter[0] as ITool;
-            ToolProgress progForm = threadParameter[1] as ToolProgress;
+            if (e.Argument is not object[] threadParameter) return;
 
-            if (progForm == null) return;
-            if (toolToExecute == null) return;
+            if (threadParameter[1] is not ToolProgress progForm) return;
+            if (threadParameter[0] is not ITool toolToExecute) return;
             progForm.Progress(0, "==================");
             progForm.Progress(0, string.Format(MessageStrings.ToolManager_ExecutingTool, toolToExecute.Name));
             progForm.Progress(0, "==================");
@@ -316,13 +313,12 @@ namespace DotSpatial.Controls
             _toolToExecute = GetTool(theNode.Name);
             if (_toolToExecute != null)
             {
-                Extent ex = new Extent(-180, -90, 180, 90);
+                Extent ex = new(-180, -90, 180, 90);
 
                 // it wasn't a category?
-                IMapFrame mf = Legend?.RootNodes[0] as IMapFrame;
-                if (mf != null) ex = mf.ViewExtents;
+                if (Legend?.RootNodes[0] is IMapFrame mf) ex = mf.ViewExtents;
 
-                ToolDialog td = new ToolDialog(_toolToExecute, DataSets, ex);
+                ToolDialog td = new(_toolToExecute, DataSets, ex);
                 DialogResult tdResult = td.ShowDialog(this);
                 while (tdResult == DialogResult.OK && td.ToolStatus != ToolStatus.Ok)
                 {
@@ -334,10 +330,10 @@ namespace DotSpatial.Controls
                 {
                     // This fires when the user clicks the "OK" button on a tool dialog
                     // First we create the progress form
-                    ToolProgress progForm = new ToolProgress(1);
+                    ToolProgress progForm = new(1);
 
                     // We create a background worker thread to execute the tool
-                    BackgroundWorker bw = new BackgroundWorker();
+                    BackgroundWorker bw = new();
                     bw.DoWork += BwDoWork;
                     bw.RunWorkerCompleted += ExecutionComplete;
 
@@ -363,15 +359,13 @@ namespace DotSpatial.Controls
             {
                 try
                 {
-                    var featureset = p.Value as IFeatureSet;
-                    if (featureset != null)
+                    if (p.Value is IFeatureSet featureset)
                     {
                         App.Map.AddLayer(featureset.Filename);
                     }
                     else
                     {
-                        var rasterset = p.Value as IRaster;
-                        if (rasterset != null)
+                        if (p.Value is IRaster rasterset)
                         {
                             App.Map.AddLayer(rasterset.Filename);
                         }
@@ -391,7 +385,7 @@ namespace DotSpatial.Controls
         /// <returns>List of all the found datasets.</returns>
         private List<DataSetArray> PopulateDataSets(IGroup root)
         {
-            List<DataSetArray> dataSets = new List<DataSetArray>();
+            List<DataSetArray> dataSets = new();
             if (root != null)
             {
                 foreach (ILayer ml in root)
@@ -399,8 +393,7 @@ namespace DotSpatial.Controls
                     if (ml.DataSet != null)
                     {
                         dataSets.Add(new DataSetArray(ml.LegendText, ml.DataSet));
-                        IFeatureLayer fl = ml as IFeatureLayer;
-                        if (fl != null && fl.Selection.Count > 0)
+                        if (ml is IFeatureLayer fl && fl.Selection.Count > 0)
                             dataSets.Add(new DataSetArray(fl.LegendText + " - Current Selection", fl.Selection.ToFeatureSet()));
                     }
 

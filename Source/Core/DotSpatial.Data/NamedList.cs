@@ -176,7 +176,7 @@ namespace DotSpatial.Data
         /// <returns>The list of names.</returns>
         public string[] GetNames()
         {
-            List<string> result = new List<string>();
+            List<string> result = new();
             foreach (T item in Items)
             {
                 if (!_names.ContainsKey(item))
@@ -229,7 +229,7 @@ namespace DotSpatial.Data
             // When re-ordering, we want to keep the name like category 0 the same,
             // so we can't just clear the values. Instead, to see the item move,
             // the name has to stay with the item.
-            List<T> deleteItems = new List<T>();
+            List<T> deleteItems = new();
             foreach (T item in _names.Keys)
             {
                 if (Items.Contains(item) == false)
@@ -243,7 +243,7 @@ namespace DotSpatial.Data
                 _names.Remove(item);
             }
 
-            List<string> deleteNames = new List<string>();
+            List<string> deleteNames = new();
             foreach (string name in _items.Keys)
             {
                 if (_names.ContainsValue(name) == false)

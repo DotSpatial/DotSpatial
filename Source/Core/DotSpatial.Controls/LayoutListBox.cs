@@ -133,7 +133,7 @@ namespace DotSpatial.Controls
         private void LbxItemsDrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index == -1) return;
-            Rectangle outer = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
+            Rectangle outer = new(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
             Brush textBrush;
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
@@ -146,7 +146,7 @@ namespace DotSpatial.Controls
                 e.Graphics.FillRectangle(Brushes.White, outer);
             }
 
-            Rectangle thumbRect = new Rectangle(outer.X + 3, outer.Y + 3, 32, 32);
+            Rectangle thumbRect = new(outer.X + 3, outer.Y + 3, 32, 32);
             e.Graphics.FillRectangle(Brushes.White, thumbRect);
 
             LayoutElement element = _lbxItems.Items[e.Index] as LayoutElement;
@@ -160,17 +160,15 @@ namespace DotSpatial.Controls
             thumbRect.Width++;
             thumbRect.Height++;
             e.Graphics.DrawRectangle(Pens.Black, thumbRect);
-            Rectangle textRectangle = new Rectangle(outer.X + 40, outer.Y, outer.Width - 40, outer.Height);
-            using (StringFormat drawFormat = new StringFormat())
+            Rectangle textRectangle = new(outer.X + 40, outer.Y, outer.Width - 40, outer.Height);
+            using StringFormat drawFormat = new();
+            drawFormat.Alignment = StringAlignment.Near;
+            drawFormat.FormatFlags = StringFormatFlags.NoWrap;
+            drawFormat.LineAlignment = StringAlignment.Center;
+            drawFormat.Trimming = StringTrimming.EllipsisCharacter;
+            if (element != null)
             {
-                drawFormat.Alignment = StringAlignment.Near;
-                drawFormat.FormatFlags = StringFormatFlags.NoWrap;
-                drawFormat.LineAlignment = StringAlignment.Center;
-                drawFormat.Trimming = StringTrimming.EllipsisCharacter;
-                if (element != null)
-                {
-                    e.Graphics.DrawString(element.Name, Font, textBrush, textRectangle, drawFormat);
-                }
+                e.Graphics.DrawString(element.Name, Font, textBrush, textRectangle, drawFormat);
             }
         }
 

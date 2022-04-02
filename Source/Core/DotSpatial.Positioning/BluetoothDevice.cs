@@ -79,7 +79,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        private static readonly ManualResetEvent _discoveryStartedWaitHandle = new ManualResetEvent(false);
+        private static readonly ManualResetEvent _discoveryStartedWaitHandle = new(false);
         /// <summary>
         ///
         /// </summary>
@@ -123,7 +123,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns a GUID which represents the RFComm service.
         /// </summary>
-        private static readonly Guid _rfCommServiceGuid = new Guid(0x00000003, 0x0000, 0x1000, 0x80, 0x00, 0x00, 0x80, 0x5F, 0x9B, 0x34, 0xFB);
+        private static readonly Guid _rfCommServiceGuid = new(0x00000003, 0x0000, 0x1000, 0x80, 0x00, 0x00, 0x80, 0x5F, 0x9B, 0x34, 0xFB);
         ///// <summary>
         ///// Returns a GUID which represents the L2Cap service.
         ///// </summary>
@@ -624,8 +624,8 @@ namespace DotSpatial.Positioning
                 // Deserialize the endpoint
                 string name = Convert.ToString(endPointKey.GetValue(string.Empty), CultureInfo.InvariantCulture);
                 int port = Convert.ToInt32(portName);
-                Guid guid = new Guid(Convert.ToString(endPointKey.GetValue("GUID"), CultureInfo.InvariantCulture));
-                BluetoothEndPoint endPoint = new BluetoothEndPoint(_address, guid, port);
+                Guid guid = new(Convert.ToString(endPointKey.GetValue("GUID"), CultureInfo.InvariantCulture));
+                BluetoothEndPoint endPoint = new(_address, guid, port);
                 endPoint.SetName(name);
                 endPoint.SuccessfulDetectionCount = Convert.ToInt32(endPointKey.GetValue("Number of Times Detected"));
                 endPoint.FailedDetectionCount = Convert.ToInt32(endPointKey.GetValue("Number of Times Failed"));
@@ -674,7 +674,7 @@ namespace DotSpatial.Positioning
         {
             get
             {
-                List<BluetoothDevice> devices = new List<BluetoothDevice>();
+                List<BluetoothDevice> devices = new();
 
                 // Pass 1: Look for devices recorded in the registry
                 LoadCachedDevices(devices);
@@ -1037,7 +1037,7 @@ namespace DotSpatial.Positioning
 
             #region Variables which must be cleanly finalized
 
-            NativeMethods2.WsaQuerySet query = new NativeMethods2.WsaQuerySet();
+            NativeMethods2.WsaQuerySet query = new();
             NativeMethods2.Blob blob;
             GCHandle blobHandle = GCHandle.Alloc(0, GCHandleType.Weak);
             IntPtr queryHandle = IntPtr.Zero;
@@ -1066,7 +1066,7 @@ namespace DotSpatial.Positioning
                  */
 
                 // First, start up a WSA session.  This call is mandatory (along with WSAShutdown)
-                NativeMethods2.WsaData data = new NativeMethods2.WsaData();
+                NativeMethods2.WsaData data = new();
                 int returnCode = NativeMethods2.WSAStartup(36, data);
                 if (returnCode != 0)
                     throw new Win32Exception(Marshal.GetLastWin32Error());
@@ -1093,7 +1093,7 @@ namespace DotSpatial.Positioning
                  */
 
                 // Create an object to store options
-                NativeMethods2.BthQueryDevice options = new NativeMethods2.BthQueryDevice();
+                NativeMethods2.BthQueryDevice options = new();
 
                 // Ensure that the object does not change places in memory
                 optionsHandle = GCHandle.Alloc(options, GCHandleType.Pinned);
@@ -1190,7 +1190,7 @@ namespace DotSpatial.Positioning
                     }
 
                     // Create an object to pour data into
-                    NativeMethods2.WsaQuerySet result = new NativeMethods2.WsaQuerySet();
+                    NativeMethods2.WsaQuerySet result = new();
 
                     // Marshal the data block into the object
                     Marshal.PtrToStructure(queryResultPointer, result);
@@ -1205,7 +1205,7 @@ namespace DotSpatial.Positioning
                      */
 
                     // Now get a pointer to the device information
-                    NativeMethods2.Blob resultBlob = new NativeMethods2.Blob();
+                    NativeMethods2.Blob resultBlob = new();
 
                     // Is there no blob?
                     if (result.EntityBlob == IntPtr.Zero)
@@ -1215,7 +1215,7 @@ namespace DotSpatial.Positioning
                     Marshal.PtrToStructure(result.EntityBlob, resultBlob);
 
                     // The blob points to a BLUETOOTH_DEVICE_INFO object
-                    NativeMethods2.BthDeviceInfo deviceInfo = new NativeMethods2.BthDeviceInfo();
+                    NativeMethods2.BthDeviceInfo deviceInfo = new();
 
                     // Deserialize the object
                     Marshal.PtrToStructure(resultBlob.Info, deviceInfo);
@@ -1313,7 +1313,7 @@ namespace DotSpatial.Positioning
                 return;
 
             // Make an API call to retrieve information for the device
-            NativeMethods2.BluetoothDeviceInfo info = new NativeMethods2.BluetoothDeviceInfo(_address.ToInt64());
+            NativeMethods2.BluetoothDeviceInfo info = new(_address.ToInt64());
             int errorCode = NativeMethods2.BluetoothGetDeviceInfo(BluetoothRadio.Current.Handle, ref info);
             if (errorCode != 0)
             {
@@ -1390,7 +1390,7 @@ namespace DotSpatial.Positioning
                     BluetoothAddress address = BluetoothAddress.Parse(addressValue);
 
                     // Finally, create a device from this information
-                    BluetoothDevice device = new BluetoothDevice(address);
+                    BluetoothDevice device = new(address);
 
                     // And add it
                     devices.Add(device);
@@ -1425,7 +1425,7 @@ namespace DotSpatial.Positioning
                     }
 
                     // Make a new device object
-                    BluetoothDevice device = new BluetoothDevice(new BluetoothAddress(addressBytes));
+                    BluetoothDevice device = new(new BluetoothAddress(addressBytes));
 
                     // If it's not already in the list, add it
                     if (!devices.Contains(device))

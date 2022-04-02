@@ -22,7 +22,7 @@ namespace DotSpatial.Projections.AuthorityCodes
     {
         #region Fields
 
-        private static readonly Lazy<AuthorityCodeHandler> LazyInstance = new Lazy<AuthorityCodeHandler>(() => new AuthorityCodeHandler(), true);
+        private static readonly Lazy<AuthorityCodeHandler> LazyInstance = new(() => new AuthorityCodeHandler(), true);
         private readonly IDictionary<string, ProjectionInfo> _authorityCodeToProjectionInfo = new Dictionary<string, ProjectionInfo>();
         private readonly IDictionary<string, ProjectionInfo> _authorityNameToProjectionInfo = new Dictionary<string, ProjectionInfo>();
 
@@ -99,28 +99,24 @@ namespace DotSpatial.Projections.AuthorityCodes
 
         private void ReadDefault()
         {
-            using (var str = DeflateStreamReader.DecodeEmbeddedResource("DotSpatial.Projections.AuthorityCodes.epsg.ds"))
-            {
-                ReadFromStream(str, "EPSG");
-            }
+            using var str = DeflateStreamReader.DecodeEmbeddedResource("DotSpatial.Projections.AuthorityCodes.epsg.ds");
+            ReadFromStream(str, "EPSG");
         }
 
         private void ReadFromStream(Stream s, string authority)
         {
-            using (var sr = new StreamReader(s))
+            using var sr = new StreamReader(s);
+            while (!sr.EndOfStream)
             {
-                while (!sr.EndOfStream)
-                {
-                    var line = sr.ReadLine();
-                    if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#", StringComparison.Ordinal)) continue;
-                    if (!line.StartsWith("<") || !line.EndsWith("<>")) continue;
+                var line = sr.ReadLine();
+                if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#", StringComparison.Ordinal)) continue;
+                if (!line.StartsWith("<") || !line.EndsWith("<>")) continue;
 
-                    var endAuthorityCode = line.IndexOf('>', 1);
-                    var authorityCode = line.Substring(1, endAuthorityCode - 1);
-                    var projString = line.Substring(endAuthorityCode + 1, line.Length - 2 - (endAuthorityCode + 1)).Trim();
+                var endAuthorityCode = line.IndexOf('>', 1);
+                var authorityCode = line.Substring(1, endAuthorityCode - 1);
+                var projString = line.Substring(endAuthorityCode + 1, line.Length - 2 - (endAuthorityCode + 1)).Trim();
 
-                    Add(string.Format("{0}:{1}", authority, authorityCode), string.Empty, projString, false);
-                }
+                Add(string.Format("{0}:{1}", authority, authorityCode), string.Empty, projString, false);
             }
         }
 

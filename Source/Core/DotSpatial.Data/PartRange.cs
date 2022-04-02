@@ -57,7 +57,7 @@ namespace DotSpatial.Data
         public Extent CalculateExtent()
         {
             // Create an extent for faster checking in most cases
-            Extent ext = new Extent();
+            Extent ext = new();
 
             // Do this once, and then we can re-use it for each other part.
             foreach (Vertex point in this)

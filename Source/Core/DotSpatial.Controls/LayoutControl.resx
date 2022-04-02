@@ -117,18 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&gt;&gt;_hScrollBar.Name" xml:space="preserve">
-    <value>_hScrollBar</value>
-  </data>
-  <data name="&gt;&gt;_hScrollBar.Type" xml:space="preserve">
-    <value>HScrollBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;_hScrollBar.Parent" xml:space="preserve">
-    <value>_hScrollBarPanel</value>
-  </data>
-  <data name="&gt;&gt;_hScrollBar.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="_hScrollBarPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Bottom</value>

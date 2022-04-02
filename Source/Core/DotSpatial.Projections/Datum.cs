@@ -32,7 +32,7 @@ namespace DotSpatial.Projections
         private Spheroid _spheroid;
         private double[] _toWgs84;
 
-        private static readonly Lazy<DatumsHandler> _datumsHandler = new Lazy<DatumsHandler>(delegate
+        private static readonly Lazy<DatumsHandler> _datumsHandler = new(delegate
         {
             var dh = new DatumsHandler();
             dh.Initialize();

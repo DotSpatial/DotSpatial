@@ -198,8 +198,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void BtnDownClick(object sender, EventArgs e)
         {
-            ISymbol stroke = lbxItems.SelectedItem as ISymbol;
-            if (stroke == null) return;
+            if (lbxItems.SelectedItem is not ISymbol stroke) return;
             _symbols.DecreaseIndex(stroke);
             RefreshList();
             lbxItems.SelectedItem = stroke;
@@ -208,8 +207,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void BtnRemoveClick(object sender, EventArgs e)
         {
-            ISymbol stroke = lbxItems.SelectedItem as ISymbol;
-            if (stroke == null) return;
+            if (lbxItems.SelectedItem is not ISymbol stroke) return;
             int index = _symbols.IndexOf(stroke);
             _symbols.Remove(stroke);
             RefreshList();
@@ -225,8 +223,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void BtnUpClick(object sender, EventArgs e)
         {
-            ISymbol stroke = lbxItems.SelectedItem as ISymbol;
-            if (stroke == null) return;
+            if (lbxItems.SelectedItem is not ISymbol stroke) return;
             _symbols.IncreaseIndex(stroke);
             RefreshList();
             lbxItems.SelectedItem = stroke;
@@ -236,24 +233,21 @@ namespace DotSpatial.Symbology.Forms
         private void LbxItemsDrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index == -1) return;
-            Rectangle outer = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
+            Rectangle outer = new(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
                 e.Graphics.FillRectangle(SystemBrushes.Highlight, outer);
             }
             else
             {
-                using (Brush b = new SolidBrush(BackColor))
-                {
-                    e.Graphics.FillRectangle(b, outer);
-                }
+                using Brush b = new SolidBrush(BackColor);
+                e.Graphics.FillRectangle(b, outer);
             }
 
-            Rectangle inner = new Rectangle(e.Bounds.X + 5, e.Bounds.Y + 1, e.Bounds.Width - 10, e.Bounds.Height - 3);
+            Rectangle inner = new(e.Bounds.X + 5, e.Bounds.Y + 1, e.Bounds.Width - 10, e.Bounds.Height - 3);
             e.Graphics.FillRectangle(Brushes.White, inner);
             e.Graphics.DrawRectangle(Pens.Black, inner);
-            ISymbol stroke = lbxItems.Items[e.Index] as ISymbol;
-            if (stroke == null) return;
+            if (lbxItems.Items[e.Index] is not ISymbol stroke) return;
             Matrix old = e.Graphics.Transform;
             Matrix shift = e.Graphics.Transform;
             Size2D size = _symbols.GetBoundingSize();

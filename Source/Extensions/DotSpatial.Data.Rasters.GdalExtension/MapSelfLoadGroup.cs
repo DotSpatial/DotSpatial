@@ -39,8 +39,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             _dataSet = DataManager.DefaultDataManager.OpenFile(filePath) as ISelfLoadSet;
 
-            var layer = _dataSet?.GetLayer() as MapSelfLoadGroup;
-            if (layer != null)
+            if (_dataSet?.GetLayer() is MapSelfLoadGroup layer)
             {
                 Layers = layer.Layers;
                 FilePath = filePath;

@@ -126,10 +126,9 @@ namespace DotSpatial.Symbology
         public static IFrame ParentMapFrame(this ILegendItem self)
         {
             ILegendItem current = self;
-            IFrame frame = current as IFrame;
             while (current != null)
             {
-                if (frame != null) return frame;
+                if (current is IFrame frame) return frame;
 
                 current = current.GetParentItem();
                 frame = current as IFrame;

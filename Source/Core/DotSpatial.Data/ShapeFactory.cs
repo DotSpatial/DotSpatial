@@ -57,10 +57,10 @@ namespace DotSpatial.Data
         /// <returns>A new Multi-Polygon Shape.</returns>
         public Shape CreateMultiPolygonFromCoordinates(IEnumerable<IEnumerable<Coordinate>> allParts)
         {
-            Shape shp = new Shape(FeatureType.Polygon);
-            List<Coordinate> allCoords = new List<Coordinate>();
-            List<int> offsets = new List<int>();
-            List<int> counts = new List<int>();
+            Shape shp = new(FeatureType.Polygon);
+            List<Coordinate> allCoords = new();
+            List<int> offsets = new();
+            List<int> counts = new();
             int count = 0;
             int numParts = 0;
             foreach (var part in allParts)
@@ -85,11 +85,11 @@ namespace DotSpatial.Data
                 shp.Vertices[(i * 2) + 1] = allCoords[i].Y;
             }
 
-            ShapeRange result = new ShapeRange(FeatureType.Polygon);
+            ShapeRange result = new(FeatureType.Polygon);
 
             for (int i = 0; i < numParts; i++)
             {
-                PartRange prt = new PartRange(shp.Vertices, 0, offsets[i], FeatureType.Polygon)
+                PartRange prt = new(shp.Vertices, 0, offsets[i], FeatureType.Polygon)
                 {
                     NumVertices = counts[i]
                 };

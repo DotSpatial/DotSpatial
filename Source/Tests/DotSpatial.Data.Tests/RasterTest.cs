@@ -32,7 +32,7 @@ namespace DotSpatial.Data.Tests
 
             try
             {
-                using (var openTif = File.Open(rasterFileName, FileMode.Open)) Assert.IsNotNull(openTif);
+                using var openTif = File.Open(rasterFileName, FileMode.Open); Assert.IsNotNull(openTif);
             }
             finally
             {

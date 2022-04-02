@@ -52,7 +52,7 @@ namespace DotSpatial.Controls
             else if (legend?.LayoutControl != null)
                 lc = legend.LayoutControl;
 
-            ListBox lb = new ListBox();
+            ListBox lb = new();
             if (lc == null) return null;
 
             foreach (LayoutElement le in lc.LayoutElements.FindAll(o => o is LayoutMap))

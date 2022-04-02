@@ -73,7 +73,7 @@ namespace DotSpatial.Positioning
         /// A <strong>Percentage</strong> value, representing <strong>0%</strong> and
         ///   <strong>0.0</strong>.
         ///   </value>
-        public static readonly Percent Zero = new Percent(0.0f);
+        public static readonly Percent Zero = new(0.0f);
         /// <summary>
         /// Represents a value of one hundred percent.
         /// </summary>
@@ -81,7 +81,7 @@ namespace DotSpatial.Positioning
         /// A <strong>Percentage</strong> value, meaning <strong>100%</strong> or
         ///   <strong>1.0</strong>.
         ///   </value>
-        public static readonly Percent OneHundredPercent = new Percent(1.0f);
+        public static readonly Percent OneHundredPercent = new(1.0f);
         /// <summary>
         /// Represents a percentage of fifty percent.
         /// </summary>
@@ -89,39 +89,39 @@ namespace DotSpatial.Positioning
         /// A <strong>Percentage</strong> value, representing <strong>50%</strong> or
         ///   <strong>0.5</strong>.
         ///   </value>
-        public static readonly Percent FiftyPercent = new Percent(0.5f);
+        public static readonly Percent FiftyPercent = new(0.5f);
         /// <summary>
         ///
         /// </summary>
-        public static readonly Percent TenPercent = new Percent(0.1f);
+        public static readonly Percent TenPercent = new(0.1f);
         /// <summary>
         ///
         /// </summary>
-        public static readonly Percent TwentyPercent = new Percent(0.2f);
+        public static readonly Percent TwentyPercent = new(0.2f);
         /// <summary>
         ///
         /// </summary>
-        public static readonly Percent ThirtyPercent = new Percent(0.3f);
+        public static readonly Percent ThirtyPercent = new(0.3f);
         /// <summary>
         ///
         /// </summary>
-        public static readonly Percent FortyPercent = new Percent(0.4f);
+        public static readonly Percent FortyPercent = new(0.4f);
         /// <summary>
         ///
         /// </summary>
-        public static readonly Percent SixtyPercent = new Percent(0.6f);
+        public static readonly Percent SixtyPercent = new(0.6f);
         /// <summary>
         ///
         /// </summary>
-        public static readonly Percent SeventyPercent = new Percent(0.7f);
+        public static readonly Percent SeventyPercent = new(0.7f);
         /// <summary>
         ///
         /// </summary>
-        public static readonly Percent EightyPercent = new Percent(0.8f);
+        public static readonly Percent EightyPercent = new(0.8f);
         /// <summary>
         ///
         /// </summary>
-        public static readonly Percent NinetyPercent = new Percent(0.9f);
+        public static readonly Percent NinetyPercent = new(0.9f);
         /// <summary>
         /// Represents a value of twenty-five percent.
         /// </summary>
@@ -129,7 +129,7 @@ namespace DotSpatial.Positioning
         /// A <strong>Percentage</strong> value, representing <strong>25%</strong> or
         ///   <strong>0.25</strong>.
         ///   </value>
-        public static readonly Percent TwentyFivePercent = new Percent(0.25f);
+        public static readonly Percent TwentyFivePercent = new(0.25f);
 
         #endregion Fields
 

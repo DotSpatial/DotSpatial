@@ -69,50 +69,50 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents the worst possible DOP value of fifty.
         /// </summary>
-        public static readonly DilutionOfPrecision Maximum = new DilutionOfPrecision(50.0f);
+        public static readonly DilutionOfPrecision Maximum = new(50.0f);
 
         /// <summary>
         /// Represents the best possible DOP value of one.
         /// </summary>
-        public static readonly DilutionOfPrecision Minimum = new DilutionOfPrecision(1.0f);
+        public static readonly DilutionOfPrecision Minimum = new(1.0f);
 
         /// <summary>
         /// Represents a DOP reading signifying nearly-ideal precision.
         /// </summary>
-        public static readonly DilutionOfPrecision Excellent = new DilutionOfPrecision(3.0f);
+        public static readonly DilutionOfPrecision Excellent = new(3.0f);
 
         /// <summary>
         /// Represents a DOP reading signifying inaccurate positional measurements.
         /// </summary>
-        public static readonly DilutionOfPrecision Fair = new DilutionOfPrecision(20.0f);
+        public static readonly DilutionOfPrecision Fair = new(20.0f);
 
         /// <summary>
         /// Represents a FOP reading signifying grossly inaccurate positional
         /// measurements.
         /// </summary>
-        public static readonly DilutionOfPrecision Poor = new DilutionOfPrecision(50.0f);
+        public static readonly DilutionOfPrecision Poor = new(50.0f);
 
         /// <summary>
         /// Represents a value of 1, where the GPS device is making the most accurate
         /// measurements possible.
         /// </summary>
-        public static readonly DilutionOfPrecision Ideal = new DilutionOfPrecision(1.0f);
+        public static readonly DilutionOfPrecision Ideal = new(1.0f);
 
         /// <summary>
         /// Represents a DOP reading signifying inaccurate positional measurements.
         /// </summary>
-        public static readonly DilutionOfPrecision Moderate = new DilutionOfPrecision(8.0f);
+        public static readonly DilutionOfPrecision Moderate = new(8.0f);
 
         /// <summary>
         /// Represents a DOP reading signifying fairly accurate positional
         /// measurements.
         /// </summary>
-        public static readonly DilutionOfPrecision Good = new DilutionOfPrecision(6.0f);
+        public static readonly DilutionOfPrecision Good = new(6.0f);
 
         /// <summary>
         /// Represents an invalid or unspecified DOP value.
         /// </summary>
-        public static readonly DilutionOfPrecision Invalid = new DilutionOfPrecision(float.NaN);
+        public static readonly DilutionOfPrecision Invalid = new(float.NaN);
 
         #endregion Fields
 

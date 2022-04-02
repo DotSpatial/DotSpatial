@@ -127,7 +127,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                Extent result = new Extent();
+                Extent result = new();
                 foreach (ILayer lyr in GetLayers())
                 {
                     if (lyr.InvalidRegion != null) result.ExpandToInclude(lyr.InvalidRegion);
@@ -309,8 +309,7 @@ namespace DotSpatial.Symbology
         /// <inheritdoc />
         public override bool CanReceiveItem(ILegendItem item)
         {
-            ILayer lyr = item as ILayer;
-            if (lyr != null)
+            if (item is ILayer lyr)
             {
                 if (lyr != this) return true; // don't allow groups to add to themselves
             }
@@ -371,8 +370,7 @@ namespace DotSpatial.Symbology
             IList<ILayer> layers = GetLayers();
             foreach (ILayer item in layers)
             {
-                IGroup grp = item as IGroup;
-                if (grp != null)
+                if (item is IGroup grp)
                 {
                     if (recursive) count += grp.GetLayerCount(true);
                 }
@@ -693,7 +691,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnCreateGroup()
         {
-            Group grp = new Group(Layers, MapFrame, ProgressHandler)
+            Group grp = new(Layers, MapFrame, ProgressHandler)
             {
                 LegendText = "New Group"
             };
@@ -753,15 +751,13 @@ namespace DotSpatial.Symbology
             if (layerList == null) layerList = new List<T>();
             foreach (var layer in group.GetLayers())
             {
-                var grp = layer as IGroup;
-                if (grp != null)
+                if (layer is IGroup grp)
                 {
                     GetNestedLayers(grp, layerList);
                 }
                 else
                 {
-                    var tlayer = layer as T;
-                    if (tlayer != null)
+                    if (layer is T tlayer)
                     {
                         layerList.Add(tlayer);
                     }

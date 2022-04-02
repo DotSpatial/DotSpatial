@@ -111,7 +111,7 @@ namespace DotSpatial.Projections.Transforms
         {
             double sinphi = Math.Sin(lp[PHI]);
             double cosphi = Math.Cos(lp[PHI]);
-            fac.Code = fac.Code | AnalyticModes.IsAnalHk;
+            fac.Code |= AnalyticModes.IsAnalHk;
             fac.H = 1;
             fac.K = _n * (_c - (IsElliptical
                                     ? Proj.Mlfn(lp[PHI], sinphi,

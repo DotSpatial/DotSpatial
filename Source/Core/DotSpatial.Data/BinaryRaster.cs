@@ -154,7 +154,7 @@ namespace DotSpatial.Data
 
             if (IsInRam)
             {
-                ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, numRows);
+                ProgressMeter pm = new(ProgressHandler, DataStrings.CopyingValues, numRows);
 
                 // copy values directly using both data structures
                 for (int row = 0; row < numRows; row++)
@@ -186,13 +186,13 @@ namespace DotSpatial.Data
                 else
                 {
                     // Both sources are file based so we basically copy rows of bytes from one to the other.
-                    FileStream source = new FileStream(Filename, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    FileStream source = new(Filename, FileMode.Open, FileAccess.Read, FileShare.Read);
                     result.WriteHeader(fileName);
-                    FileStream dest = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None);
+                    FileStream dest = new(fileName, FileMode.Append, FileAccess.Write, FileShare.None);
                     source.Seek(HeaderSize, SeekOrigin.Begin);
-                    BinaryReader bReader = new BinaryReader(source);
-                    BinaryWriter bWriter = new BinaryWriter(dest);
-                    ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, numRows);
+                    BinaryReader bReader = new(source);
+                    BinaryWriter bWriter = new(dest);
+                    ProgressMeter pm = new(ProgressHandler, DataStrings.CopyingValues, numRows);
 
                     // copy values directly using both data structures
                     source.Seek(NumColumnsInFile * startRow * ByteSize, SeekOrigin.Current);
@@ -227,10 +227,10 @@ namespace DotSpatial.Data
 
             // If we get here, we either need to check the file because no data is in memory or because
             // the window that is in memory does not have all the values.
-            FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Read);
-            BinaryReader br = new BinaryReader(fs);
+            FileStream fs = new(Filename, FileMode.Open, FileAccess.Read);
+            BinaryReader br = new(fs);
             fs.Seek(HeaderSize, SeekOrigin.Begin);
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, "Calculating Statistics for the entire raster " + Filename, NumRowsInFile);
+            ProgressMeter pm = new(ProgressHandler, "Calculating Statistics for the entire raster " + Filename, NumRowsInFile);
             int count = 0;
             T min = MinValue;
             T max = MaxValue;
@@ -294,7 +294,7 @@ namespace DotSpatial.Data
             if (IsInRam)
             {
                 result.Data = new T[numRows][];
-                ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, endRow) { StartValue = startRow };
+                ProgressMeter pm = new(ProgressHandler, DataStrings.CopyingValues, endRow) { StartValue = startRow };
 
                 // copy values directly using both data structures
                 for (int row = 0; row < numRows; row++)
@@ -332,10 +332,10 @@ namespace DotSpatial.Data
             }
 
             // The window was not in memory, so go ahead and get statistics for the window from the file.
-            FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Read, FileShare.Read, NumColumns * ByteSize);
-            BinaryReader br = new BinaryReader(fs);
+            FileStream fs = new(Filename, FileMode.Open, FileAccess.Read, FileShare.Read, NumColumns * ByteSize);
+            BinaryReader br = new(fs);
             fs.Seek(HeaderSize, SeekOrigin.Begin);
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, "Calculating Statistics for the entire raster " + Filename, NumRows);
+            ProgressMeter pm = new(ProgressHandler, "Calculating Statistics for the entire raster " + Filename, NumRows);
 
             double total = 0;
             double sqrTotal = 0;
@@ -502,13 +502,13 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    FileStream fs = new FileStream(sourceRaster.Filename, FileMode.Open, FileAccess.Write, FileShare.None, numPasteColumns * byteSize);
-                    ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.ReadingValuesFrom_S.Replace("%S", sourceRaster.Filename), numPasteRows);
+                    FileStream fs = new(sourceRaster.Filename, FileMode.Open, FileAccess.Write, FileShare.None, numPasteColumns * byteSize);
+                    ProgressMeter pm = new(ProgressHandler, DataStrings.ReadingValuesFrom_S.Replace("%S", sourceRaster.Filename), numPasteRows);
                     fs.Seek(HeaderSize, SeekOrigin.Begin);
 
                     // Position the binary reader at the top of the "sourceRaster"
                     fs.Seek(sourceStartRow * sourceRaster.NumColumnsInFile * byteSize, SeekOrigin.Current);
-                    BinaryReader br = new BinaryReader(fs);
+                    BinaryReader br = new(fs);
 
                     for (int row = 0; row < numPasteRows; row++)
                     {
@@ -533,10 +533,10 @@ namespace DotSpatial.Data
             else
             {
                 // ----------------------------------------- FILE BASED ---------------------------------
-                FileStream writefs = new FileStream(Filename, FileMode.Open, FileAccess.Write, FileShare.None, NumColumns * byteSize);
-                BinaryWriter bWriter = new BinaryWriter(writefs);
+                FileStream writefs = new(Filename, FileMode.Open, FileAccess.Write, FileShare.None, NumColumns * byteSize);
+                BinaryWriter bWriter = new(writefs);
 
-                ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.WritingValues_S.Replace("%S", Filename), numPasteRows);
+                ProgressMeter pm = new(ProgressHandler, DataStrings.WritingValues_S.Replace("%S", Filename), numPasteRows);
 
                 writefs.Seek(HeaderSize, SeekOrigin.Begin);
                 writefs.Seek(destStartRow * NumColumnsInFile * byteSize, SeekOrigin.Current);
@@ -563,8 +563,8 @@ namespace DotSpatial.Data
                 else
                 {
                     // Since everything is handled from a file, we don't have to type check. Just copy the bytes.
-                    FileStream readfs = new FileStream(sourceRaster.Filename, FileMode.Open, FileAccess.Read, FileShare.Read, numPasteColumns * byteSize);
-                    BinaryReader bReader = new BinaryReader(readfs);
+                    FileStream readfs = new(sourceRaster.Filename, FileMode.Open, FileAccess.Read, FileShare.Read, numPasteColumns * byteSize);
+                    BinaryReader bReader = new(readfs);
                     readfs.Seek(HeaderSize, SeekOrigin.Begin);
                     readfs.Seek(sourceStartRow * sourceRaster.NumColumnsInFile * byteSize, SeekOrigin.Current);
 
@@ -592,13 +592,13 @@ namespace DotSpatial.Data
         /// </summary>
         public void Read()
         {
-            FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Read, FileShare.Read, NumColumns * ByteSize);
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.ReadingValuesFrom_S.Replace("%S", Filename), NumRows);
+            FileStream fs = new(Filename, FileMode.Open, FileAccess.Read, FileShare.Read, NumColumns * ByteSize);
+            ProgressMeter pm = new(ProgressHandler, DataStrings.ReadingValuesFrom_S.Replace("%S", Filename), NumRows);
             fs.Seek(HeaderSize, SeekOrigin.Begin);
 
             // Position the binary reader at the top of the "window"
             fs.Seek(StartRow * NumColumnsInFile * ByteSize, SeekOrigin.Current);
-            BinaryReader br = new BinaryReader(fs);
+            BinaryReader br = new(fs);
 
             Data = new T[NumRows][];
 
@@ -650,7 +650,7 @@ namespace DotSpatial.Data
         /// <param name="fileName">The string fileName specifying what file to load.</param>
         public void ReadHeader(string fileName)
         {
-            BinaryReader br = new BinaryReader(new FileStream(fileName, FileMode.Open));
+            BinaryReader br = new(new FileStream(fileName, FileMode.Open));
             StartColumn = 0;
             NumColumns = br.ReadInt32();
             NumColumnsInFile = NumColumns;
@@ -698,7 +698,7 @@ namespace DotSpatial.Data
         {
             FileStream fs;
             BinaryWriter bw;
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, "Writing values to " + fileName, NumRows);
+            ProgressMeter pm = new(ProgressHandler, "Writing values to " + fileName, NumRows);
             long expectedByteCount = NumRows * NumColumns * ByteSize;
             if (expectedByteCount < 1000000) pm.StepPercent = 5;
             if (expectedByteCount < 5000000) pm.StepPercent = 10;
@@ -706,7 +706,7 @@ namespace DotSpatial.Data
 
             if (File.Exists(fileName))
             {
-                FileInfo fi = new FileInfo(fileName);
+                FileInfo fi = new(fileName);
 
                 // if the following test fails, then the target raster doesn't fit the bill for pasting into, so clear it and write a new one.
                 if (fi.Length == HeaderSize + ByteSize * NumColumnsInFile * NumRowsInFile)
@@ -776,43 +776,41 @@ namespace DotSpatial.Data
         /// <param name="fileName">a fileName to write data to.</param>
         public void WriteHeader(string fileName)
         {
-            using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.OpenOrCreate)))
+            using var bw = new BinaryWriter(new FileStream(fileName, FileMode.OpenOrCreate));
+            bw.Write(NumColumnsInFile);
+            bw.Write(NumRowsInFile);
+            bw.Write(CellWidth);
+            bw.Write(CellHeight);
+            bw.Write(Xllcenter);
+            bw.Write(Yllcenter);
+            bw.Write((int)RasterDataType.INTEGER);
+            bw.Write(Convert.ToInt32(NoDataValue));
+
+            // These are each 256 bytes because they are ASCII encoded, not the standard DotNet Unicode
+            byte[] proj = new byte[255];
+            if (Projection != null)
             {
-                bw.Write(NumColumnsInFile);
-                bw.Write(NumRowsInFile);
-                bw.Write(CellWidth);
-                bw.Write(CellHeight);
-                bw.Write(Xllcenter);
-                bw.Write(Yllcenter);
-                bw.Write((int)RasterDataType.INTEGER);
-                bw.Write(Convert.ToInt32(NoDataValue));
-
-                // These are each 256 bytes because they are ASCII encoded, not the standard DotNet Unicode
-                byte[] proj = new byte[255];
-                if (Projection != null)
+                byte[] temp = Encoding.ASCII.GetBytes(Projection.ToProj4String());
+                int len = Math.Min(temp.Length, 255);
+                for (int i = 0; i < len; i++)
                 {
-                    byte[] temp = Encoding.ASCII.GetBytes(Projection.ToProj4String());
-                    int len = Math.Min(temp.Length, 255);
-                    for (int i = 0; i < len; i++)
-                    {
-                        proj[i] = temp[i];
-                    }
+                    proj[i] = temp[i];
                 }
-
-                bw.Write(proj);
-                byte[] note = new byte[255];
-                if (Notes != null)
-                {
-                    byte[] temp = Encoding.ASCII.GetBytes(Notes);
-                    int len = Math.Min(temp.Length, 255);
-                    for (int i = 0; i < len; i++)
-                    {
-                        note[i] = temp[i];
-                    }
-                }
-
-                bw.Write(note);
             }
+
+            bw.Write(proj);
+            byte[] note = new byte[255];
+            if (Notes != null)
+            {
+                byte[] temp = Encoding.ASCII.GetBytes(Notes);
+                int len = Math.Min(temp.Length, 255);
+                for (int i = 0; i < len; i++)
+                {
+                    note[i] = temp[i];
+                }
+            }
+
+            bw.Write(note);
         }
 
         /// <summary>
@@ -824,16 +822,12 @@ namespace DotSpatial.Data
         /// <param name="value">The actual value to write.</param>
         public void WriteValue(int row, int column, int value)
         {
-            using (var fs = new FileStream(Filename, FileMode.Open, FileAccess.Write, FileShare.None))
-            {
-                fs.Seek(HeaderSize, SeekOrigin.Begin);
-                fs.Seek(row * NumColumnsInFile * ByteSize, SeekOrigin.Current);
-                fs.Seek(column * ByteSize, SeekOrigin.Current);
-                using (var bw = new BinaryWriter(fs))
-                {
-                    bw.Write(value);
-                }
-            }
+            using var fs = new FileStream(Filename, FileMode.Open, FileAccess.Write, FileShare.None);
+            fs.Seek(HeaderSize, SeekOrigin.Begin);
+            fs.Seek(row * NumColumnsInFile * ByteSize, SeekOrigin.Current);
+            fs.Seek(column * ByteSize, SeekOrigin.Current);
+            using var bw = new BinaryWriter(fs);
+            bw.Write(value);
         }
 
         // http://stackoverflow.com/questions/4418636/c-sharp-generics-how-to-use-x-maxvalue-x-minvalue-int-float-double-in-a

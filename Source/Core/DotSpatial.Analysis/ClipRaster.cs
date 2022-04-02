@@ -71,7 +71,7 @@ namespace DotSpatial.Analysis
             double xStart = GetXStart(polygon, output);
             int columnStart = GetStartColumn(polygon, output); // get the index of first column
 
-            ProgressMeter pm = new ProgressMeter(cancelProgressHandler, "Clipping Raster", output.NumColumns) { StepPercent = 5, StartValue = 33 };
+            ProgressMeter pm = new(cancelProgressHandler, "Clipping Raster", output.NumColumns) { StepPercent = 5, StartValue = 33 };
 
             int col = 0;
             for (int columnCurrent = columnStart; columnCurrent < output.NumColumns; columnCurrent++)
@@ -142,11 +142,11 @@ namespace DotSpatial.Analysis
         /// <returns>The borders of the specified feature except vertical lines.</returns>
         private static List<Border> GetBorders(IFeature feature)
         {
-            List<Border> borders = new List<Border>();
+            List<Border> borders = new();
 
             for (int i = 0; i < feature.Geometry.Coordinates.Length - 1; i++)
             {
-                Border border = new Border
+                Border border = new()
                 {
                     X1 = feature.Geometry.Coordinates[i].X,
                     X2 = feature.Geometry.Coordinates[i + 1].X

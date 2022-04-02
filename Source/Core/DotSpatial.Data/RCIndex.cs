@@ -23,7 +23,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets a new RcIndex that is defined as empty when both indices are int.
         /// </summary>
-        public static RcIndex Empty => new RcIndex(int.MinValue, int.MinValue);
+        public static RcIndex Empty => new(int.MinValue, int.MinValue);
 
         /// <summary>
         /// Gets the zero based integer column index.

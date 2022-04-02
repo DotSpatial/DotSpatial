@@ -264,14 +264,12 @@ namespace DotSpatial.Plugins.LiDAR
 
         private void ReadFromLasFile()
         {
-            using (var ofd = new OpenFileDialog { Filter = @"LAS|*.las" })
-            {
-                if (ofd.ShowDialog() != DialogResult.OK) return;
-                string filename = ofd.FileName;
-                LasReader reader = new(filename);
-                reader.initialize();
-                ulong numPoints = reader.getNumPoints();
-            }
+            using var ofd = new OpenFileDialog { Filter = @"LAS|*.las" };
+            if (ofd.ShowDialog() != DialogResult.OK) return;
+            string filename = ofd.FileName;
+            LasReader reader = new(filename);
+            reader.initialize();
+            ulong numPoints = reader.getNumPoints();
         }
 
         #endregion

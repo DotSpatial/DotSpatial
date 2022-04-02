@@ -144,7 +144,7 @@ namespace DotSpatial.Controls
             _currentPoint = e.Location;
             _isDragging = false;
 
-            Envelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X, _geoStartPoint.Y, e.GeographicLocation.Y);
+            Envelope env = new(_geoStartPoint.X, e.GeographicLocation.X, _geoStartPoint.Y, e.GeographicLocation.Y);
             Envelope tolerant = env;
 
             if (_startPoint.X == e.X && _startPoint.Y == e.Y)
