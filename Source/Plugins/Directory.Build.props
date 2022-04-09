@@ -3,7 +3,7 @@
 	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 	
 	<PropertyGroup>
-		<OutputPath>$(SolutionDir)\bin\$(Configuration)\Plugins\$(MSBuildProjectName)\</OutputPath>
+		<OutputPath>$(ProjectDir)..\..\bin\$(Configuration)\Plugins\$(MSBuildProjectName)\</OutputPath> <!-- can't use SolutionDir because it doesn't work when building the csproj directly -->
 		<disabletransitiveprojectreferences>true</disabletransitiveprojectreferences>
 	</PropertyGroup>
 </Project>

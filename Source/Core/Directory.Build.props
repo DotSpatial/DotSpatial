@@ -4,12 +4,12 @@
 	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 	
 	<PropertyGroup>
-		<OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
+		<OutputPath>$(ProjectDir)..\..\bin\$(Configuration)\</OutputPath> <!-- can't use SolutionDir because it doesn't work when building the csproj directly -->
 	</PropertyGroup>
 
 <Target Name="CopyNtsDlls" AfterTargets="Build">
 		<PropertyGroup>
-			<MyFolder>$(SolutionDir)packages\nettopologysuite\2.4.0\lib\netstandard2.0\</MyFolder>
+			<MyFolder>$(ProjectDir)..\..\packages\nettopologysuite\2.4.0\lib\netstandard2.0\</MyFolder>
 		</PropertyGroup>
 		
 		<Copy SourceFiles="$(MyFolder)NetTopologySuite.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
