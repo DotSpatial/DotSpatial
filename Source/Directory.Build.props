@@ -7,17 +7,20 @@
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<ImplicitUsings>disabled</ImplicitUsings>
 		<Nullable>disable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<LangVersion>10.0</LangVersion>
 	</PropertyGroup>
 
-	<PropertyGroup Label="Assembly Info">
-		<AssemblyVersion>3.0.0</AssemblyVersion>
+	<PropertyGroup Label="nuget packages">
+ 		<AssemblyVersion>3.0.0</AssemblyVersion>
 		<FileVersion>3.0.0</FileVersion>
 		<Deterministic>true</Deterministic>
-
 		<Company>DotSpatial Team</Company>
-
-		<CopyrightPeople>$(Company)</CopyrightPeople>
-		<Copyright>Copyright © 2012 - $([System.DateTime]::UtcNow.Year) $(CopyrightPeople)</Copyright>
+		<Authors>$(Company)</Authors>
+		<Copyright>Copyright © 2012 - $([System.DateTime]::UtcNow.Year) $(Company)</Copyright>
+		<PackageTags>Spatial GIS DotSpatial</PackageTags>
+		<PackageProjectUrl>https://github.com/DotSpatial/DotSpatial/</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
 </Project>
