@@ -5,9 +5,8 @@
     <version>$version$</version>
     <authors>$author$</authors>
     <owners />
-    <licenseUrl>https://github.com/DotSpatial/DotSpatial/blob/master/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <projectUrl>https://github.com/DotSpatial/DotSpatial/</projectUrl>
-    <iconUrl>http://download.codeplex.com/Download?ProjectName=dotspatial&amp;DownloadId=246554</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <summary />
@@ -18,6 +17,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net452\" />
+    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net472\" />
   </files>
 </package>
