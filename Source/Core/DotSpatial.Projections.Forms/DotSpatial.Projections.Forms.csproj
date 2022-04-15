@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <Description>Windows Forms controls for working with Projections and coordinate systems.</Description>
   </PropertyGroup>
 	
   <ItemGroup>

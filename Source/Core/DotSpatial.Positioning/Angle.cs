@@ -22,7 +22,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using DotSpatial.Positioning.Properties;
+using DotSpatial.Positioning;
 
 namespace DotSpatial.Positioning
 {

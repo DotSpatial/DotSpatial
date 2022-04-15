@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <Description>Windows forms controls related to customizing map cartographic symbols.</Description>
   </PropertyGroup>
 
   <ItemGroup>

@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
-using DotSpatial.Serialization.Properties;
+using DotSpatial.Serialization;
 
 namespace DotSpatial.Serialization
 {

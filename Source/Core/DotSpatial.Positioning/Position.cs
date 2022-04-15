@@ -24,7 +24,7 @@ using System.Xml.Serialization;
 #if !PocketPC || DesignTime
 
 using System.ComponentModel;
-using DotSpatial.Positioning.Properties;
+using DotSpatial.Positioning;
 
 #endif
 

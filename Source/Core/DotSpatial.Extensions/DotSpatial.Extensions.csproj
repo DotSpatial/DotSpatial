@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <Description>Interfaces which allow DotSpatial to be extended.</Description>
   </PropertyGroup>
 
   <ItemGroup>

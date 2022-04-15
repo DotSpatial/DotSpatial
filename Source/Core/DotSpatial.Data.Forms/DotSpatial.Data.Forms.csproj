@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <Description>Windows Forms controls for working with DotSpatial GIS objects.</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +11,33 @@
     <ProjectReference Include="..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj" />
     <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj" />
     <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DataFormsMessageStrings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DataFormsMessageStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Update="DialogImages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DialogImages.resx</DependentUpon>
+    </Compile>
+    <Compile Update="DirectoryView.cs">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="DataFormsMessageStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DataFormsMessageStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="DialogImages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DialogImages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

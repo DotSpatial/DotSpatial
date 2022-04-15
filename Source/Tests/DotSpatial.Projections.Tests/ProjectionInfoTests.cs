@@ -47,7 +47,7 @@ namespace DotSpatial.Projections.Tests
         {
             var p1 = KnownCoordinateSystems.Geographic.World.WGS1984;
 
-            const string esri = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
+            const string esri = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.017453292519943295]]";
             var p2 = ProjectionInfo.FromEsriString(esri);
 
             var expected = p2.ToEsriString();
@@ -109,7 +109,7 @@ namespace DotSpatial.Projections.Tests
         {
             var p1 = KnownCoordinateSystems.Geographic.NorthAmerica.NorthAmericanDatum1983;
 
-            const string esri = "GEOGCS[\"GCS_North_American_1983\",DATUM[\"D_North_American_1983\",SPHEROID[\"GRS_1980\",6378137,298.257222101004]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
+            const string esri = "GEOGCS[\"GCS_North_American_1983\",DATUM[\"D_North_American_1983\",SPHEROID[\"GRS_1980\",6378137,298.257222101004]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.017453292519943295]]";
             var p2 = ProjectionInfo.FromEsriString(esri);
 
             var expected = p2.ToEsriString();
@@ -163,7 +163,7 @@ namespace DotSpatial.Projections.Tests
             string prjFile = System.IO.Path.GetTempFileName();
             try
             {
-                System.IO.File.WriteAllText(prjFile, Resources.ResourceManager.GetString(resourceName, Resources.Culture));
+                System.IO.File.WriteAllBytes(prjFile,(byte[]) Resources.ResourceManager.GetObject(resourceName, Resources.Culture));
                 ProjectionInfo info = ProjectionInfo.Open(prjFile);
 
                 Assert.AreEqual("WGS_1984_Web_Mercator_Auxiliary_Sphere", info.Name);

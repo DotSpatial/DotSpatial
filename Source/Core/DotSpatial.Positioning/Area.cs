@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using DotSpatial.Positioning.Properties;
+using DotSpatial.Positioning;
 #if !PocketPC || DesignTime
 
 using System.ComponentModel;

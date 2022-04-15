@@ -6,26 +6,41 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Core\DotSpatial.Controls\DotSpatial.Controls.csproj" >
+		<ProjectReference Include="..\..\Core\DotSpatial.Controls\DotSpatial.Controls.csproj">
 			<Private>False</Private>
 			<CopyLocal>False</CopyLocal>
 			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
 		</ProjectReference>
-		<ProjectReference Include="..\..\Core\DotSpatial.Data\DotSpatial.Data.csproj" >
+		<ProjectReference Include="..\..\Core\DotSpatial.Data\DotSpatial.Data.csproj">
 			<Private>False</Private>
 			<CopyLocal>False</CopyLocal>
 			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
 		</ProjectReference>
-		<ProjectReference Include="..\..\Core\DotSpatial.Extensions\DotSpatial.Extensions.csproj" >
+		<ProjectReference Include="..\..\Core\DotSpatial.Extensions\DotSpatial.Extensions.csproj">
 			<Private>False</Private>
 			<CopyLocal>False</CopyLocal>
 			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
 		</ProjectReference>
-		<ProjectReference Include="..\..\Core\DotSpatial.Symbology\DotSpatial.Symbology.csproj" >
+		<ProjectReference Include="..\..\Core\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
 			<Private>False</Private>
 			<CopyLocal>False</CopyLocal>
 			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
 		</ProjectReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

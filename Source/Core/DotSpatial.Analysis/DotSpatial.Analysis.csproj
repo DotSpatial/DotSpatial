@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
+		<Description>Analysis and manipulation classes, such as clip raster with polygon, which are generally wrapped by a tool.</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
