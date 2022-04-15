@@ -4,6 +4,7 @@ configuration: Release
 
 environment:
   packageVersion: 4.0
+  company: 'DotSpatial Team'
 
 cache: 
 - source\packages -> **\packages.config
@@ -39,7 +40,7 @@ nuget:
   
 after_build:
  - ps: '[System.IO.File]::WriteAllText("$env:APPVEYOR_BUILD_FOLDER\source\bin\$env:CONFIGURATION\version.txt", $env:APPVEYOR_REPO_COMMIT)' 
- - ps: nuget pack Source\Core\DotSpatial.Analysis\DotSpatial.Analysis.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
+ - ps: nuget pack Source\Core\DotSpatial.Analysis\DotSpatial.Analysis.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion" 
  - ps: nuget pack Source\Core\DotSpatial.Controls\DotSpatial.Controls.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
  - ps: nuget pack Source\Core\DotSpatial.Data\DotSpatial.Data.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
  - ps: nuget pack Source\Core\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
