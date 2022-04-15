@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Project>
 	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 	
 	<PropertyGroup>
-		<OutputPath>$(ProjectDir)..\..\bin\$(Configuration)\</OutputPath>
+		<OutputPath>$(ProjectDir)..\..\bin\$(Configuration)\</OutputPath> <!-- can't use SolutionDir because it doesn't work when building the csproj directly -->
 	</PropertyGroup>
 
 <Target Name="CopyNtsDlls" AfterTargets="Build">

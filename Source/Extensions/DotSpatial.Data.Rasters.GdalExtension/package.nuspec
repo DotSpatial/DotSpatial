@@ -5,9 +5,8 @@
     <version>$version$</version>
     <authors>$author$</authors>
     <owners />
-    <licenseUrl>https://github.com/DotSpatial/DotSpatial/blob/master/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <projectUrl>https://github.com/DotSpatial/DotSpatial/</projectUrl>
-    <iconUrl>http://www.mapwindow.org/downloads/documentation/dotspatial-package-icons/DotSpatial.Data.Rasters.GdalExtension.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <summary />
@@ -15,6 +14,6 @@
     <tags>Spatial GIS DotSpatial</tags>
   </metadata>
   <files>
-    <file src="..\Release\bin\Plugins\GDAL\**\*.*" target="lib\net452\" />
+    <file src="..\Release\bin\Plugins\GDAL\**\*.*" target="lib\net472\" />
   </files>
 </package>

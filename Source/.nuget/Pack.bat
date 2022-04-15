@@ -5,8 +5,8 @@ cd .nuGet
 
 del *.nupkg
 
-Set NugetVersion=2.0.1.2
-Set PackageVersion=2.0.1.2
+Set NugetVersion=3.0.0
+Set PackageVersion=3.0.0
 
 nuget pack ..\DotSpatial.Analysis\DotSpatial.Analysis.csproj -version "%NugetVersion%" -Properties "PackageVersion=%PackageVersion%";"Configuration=Release" 
 nuget pack ..\DotSpatial.Compatibility\DotSpatial.Compatibility.csproj -version "%NugetVersion%" -Properties "PackageVersion=%PackageVersion%";"Configuration=Release" 

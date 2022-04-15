@@ -1,16 +1,16 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using System;
 
 namespace DotSpatial.Projections.Tests
 {
     [TestFixture]
-    class ReprojectTests
+    internal class ReprojectTests
     {
         [Test]
         public void ReprojectPointsWithOtherRanging()
         {
-            var geographic = ProjectionInfo.FromProj4String(KnownCoordinateSystems.Geographic.World.WGS1984.ToProj4String());
-            var projected = ProjectionInfo.FromProj4String(KnownCoordinateSystems.Projected.World.WebMercator.ToProj4String());
+            ProjectionInfo geographic = ProjectionInfo.FromProj4String(KnownCoordinateSystems.Geographic.World.WGS1984.ToProj4String());
+            ProjectionInfo projected = ProjectionInfo.FromProj4String(KnownCoordinateSystems.Projected.World.WebMercator.ToProj4String());
             geographic.Over = true;
             projected.Over = true;
             double[] pointsXY = { -445, 33 };
@@ -25,17 +25,17 @@ namespace DotSpatial.Projections.Tests
         [Test(Description = "Checks that reprojection for group works the same as reprojection for one point. (https://github.com/DotSpatial/DotSpatial/issues/781)")]
         public void Reprojection_NorthPoleStereographic_ForGroupTheSameAsForOnePoint()
         {
-            var wgs = KnownCoordinateSystems.Geographic.World.WGS1984;
-            var wgs84Points = new double[] { 10, 10, 45, 45, 80, 80 };
+            ProjectionInfo wgs = KnownCoordinateSystems.Geographic.World.WGS1984;
+            double[] wgs84Points = new double[] { 10, 10, 45, 45, 80, 80 };
 
             const double DELTA = double.Epsilon;
 
-            var projectionInfo = KnownCoordinateSystems.Projected.Polar.NorthPoleStereographic;
-            var testProjectionPoints = new double[wgs84Points.Length];
+            ProjectionInfo projectionInfo = KnownCoordinateSystems.Projected.Polar.NorthPoleStereographic;
+            double[] testProjectionPoints = new double[wgs84Points.Length];
             Array.Copy(wgs84Points, testProjectionPoints, testProjectionPoints.Length);
             Reproject.ReprojectPoints(testProjectionPoints, null, wgs, projectionInfo, 0, testProjectionPoints.Length / 2);
 
-            var backWgs84 = new double[testProjectionPoints.Length];
+            double[] backWgs84 = new double[testProjectionPoints.Length];
             Array.Copy(testProjectionPoints, backWgs84, backWgs84.Length);
 
             // Reproject group from projectionInfo to wgs
@@ -44,7 +44,7 @@ namespace DotSpatial.Projections.Tests
             // Now reproject each point separately and verify that it is same as in group reprojection
             for (int i = 0; i < testProjectionPoints.Length / 2; i++)
             {
-                var onePoint = new double[2];
+                double[] onePoint = new double[2];
                 onePoint[0] = testProjectionPoints[i * 2];
                 onePoint[1] = testProjectionPoints[i * 2 + 1];
 
@@ -58,9 +58,9 @@ namespace DotSpatial.Projections.Tests
         [Test(Description = "Checks that there is no NANs in output for LAEA projections (https://github.com/DotSpatial/DotSpatial/issues/387)")]
         public void LAEA_Reprojection_NoNANs()
         {
-            var source = ProjectionInfo.FromProj4String("proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs");
+            ProjectionInfo source = ProjectionInfo.FromProj4String("proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs");
             // Any LAEA projection
-            var dest = ProjectionInfo.FromProj4String("+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +datum=WGS84");
+            ProjectionInfo dest = ProjectionInfo.FromProj4String("+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +datum=WGS84");
 
             double[] vertices = { 13.5, 51.3 };
             Reproject.ReprojectPoints(vertices, null, source, dest, 0, 1);
@@ -72,9 +72,9 @@ namespace DotSpatial.Projections.Tests
         [Test(Description = "Verifies OSGB36 reprojection. (https://github.com/DotSpatial/DotSpatial/issues/732")]
         public void OSGB36_Reprojection()
         {
-            var sourceProjection = ProjectionInfo.FromAuthorityCode("EPSG", 27700);
-            var targetProjection = ProjectionInfo.FromAuthorityCode("EPSG", 4326);
-            var xy = new double[] { 465000, 170000 };
+            ProjectionInfo sourceProjection = ProjectionInfo.FromAuthorityCode("EPSG", 27700);
+            ProjectionInfo targetProjection = ProjectionInfo.FromAuthorityCode("EPSG", 4326);
+            double[] xy = new double[] { 465000, 170000 };
             Reproject.ReprojectPoints(xy, null, sourceProjection, targetProjection, 0, 1);
 
             // see http://www.ordnancesurvey.co.uk/gps/transformation
@@ -91,8 +91,8 @@ namespace DotSpatial.Projections.Tests
         [TestCase(3022, 3021, new double[] { 1536875.736, 7037950.238 }, new double[] { 1649079.352, 7041217.283 }, 1E-3)] // tolerance 1 mm
         public void Reproject_Swedish_Projections_Using_AuthorityCodes(int fromEpsgCode, int toEpsgCode, double[] xy, double[] expected, double tolerance)
         {
-            var sourceProjection = ProjectionInfo.FromAuthorityCode("EPSG", fromEpsgCode);
-            var targetProjection = ProjectionInfo.FromAuthorityCode("EPSG", toEpsgCode);
+            ProjectionInfo sourceProjection = ProjectionInfo.FromAuthorityCode("EPSG", fromEpsgCode);
+            ProjectionInfo targetProjection = ProjectionInfo.FromAuthorityCode("EPSG", toEpsgCode);
             Reproject.ReprojectPoints(xy, null, sourceProjection, targetProjection, 0, 1);
             Assert.AreEqual(expected[0], xy[0], tolerance);
             Assert.AreEqual(expected[1], xy[1], tolerance);
@@ -104,8 +104,8 @@ namespace DotSpatial.Projections.Tests
         [TestCase(3022, 3021, new double[] { 1536875.736, 7037950.238 }, new double[] { 1649079.352, 7041217.283 }, 1E-3)] // tolerance 1 mm
         public void Reproject_Swedish_Projections_Using_KnownCrsNames(int fromEpsgCode, int toEpsgCode, double[] xy, double[] expected, double tolerance)
         {
-            var sourceProjection = getProjectionUsingKnownCrsName(fromEpsgCode);
-            var targetProjection = getProjectionUsingKnownCrsName(toEpsgCode);
+            ProjectionInfo sourceProjection = getProjectionUsingKnownCrsName(fromEpsgCode);
+            ProjectionInfo targetProjection = getProjectionUsingKnownCrsName(toEpsgCode);
             Reproject.ReprojectPoints(xy, null, sourceProjection, targetProjection, 0, 1);
             Assert.AreEqual(expected[0], xy[0], tolerance);
             Assert.AreEqual(expected[1], xy[1], tolerance);
@@ -115,10 +115,10 @@ namespace DotSpatial.Projections.Tests
         public void RT9025gonV_to_WGS84()
         {
             // Test from https://github.com/DotSpatial/DotSpatial/issues/618
-            var target = KnownCoordinateSystems.Projected.NationalGridsSweden.RT9025gonV;
-            var dest = KnownCoordinateSystems.Geographic.World.WGS1984;
+            ProjectionInfo target = KnownCoordinateSystems.Projected.NationalGridsSweden.RT9025gonV;
+            ProjectionInfo dest = KnownCoordinateSystems.Geographic.World.WGS1984;
 
-            var xy = new double[] { 1411545, 6910904 };
+            double[] xy = new double[] { 1411545, 6910904 };
             Reproject.ReprojectPoints(xy, null, target, dest, 0, 1);
 
             Assert.AreEqual(xy[0], 14.10000, 1e-3);
@@ -129,15 +129,25 @@ namespace DotSpatial.Projections.Tests
         {
             ProjectionInfo proj = null;
             if (epsgCode == 3021)
+            {
                 proj = KnownCoordinateSystems.Projected.NationalGridsSweden.RT9025gonV;
+            }
             else if (epsgCode == 3022)
+            {
                 proj = KnownCoordinateSystems.Projected.NationalGridsSweden.RT900gon;
+            }
             else if (epsgCode == 3013)
+            {
                 proj = KnownCoordinateSystems.Projected.NationalGridsSweden.SWEREF991545;
+            }
             else if (epsgCode == 3006)
+            {
                 proj = KnownCoordinateSystems.Projected.NationalGridsSweden.SWEREF99TM;
+            }
             else
+            {
                 throw new Exception("Not included in this test");
+            }
 
             Assert.AreEqual(epsgCode, proj.AuthorityCode);
             return proj;
@@ -149,8 +159,8 @@ namespace DotSpatial.Projections.Tests
         {
             // Test from https://github.com/DotSpatial/DotSpatial/issues/623
 
-            var ed50 = KnownCoordinateSystems.Projected.UtmOther.EuropeanDatum1950UTMZone30N;
-            var wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
+            ProjectionInfo ed50 = KnownCoordinateSystems.Projected.UtmOther.EuropeanDatum1950UTMZone30N;
+            ProjectionInfo wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
             double[] xy = { 450306.555, 4480448.5634 };
 
             Reproject.ReprojectPoints(xy, null, ed50, wgs84, 0, 1);
@@ -205,6 +215,58 @@ namespace DotSpatial.Projections.Tests
 
             Assert.AreEqual(gsiResult[1], coord2000[0], AccuracyLimit, "reprojected JGD2000 x value differs from GSI calculation result");
             Assert.AreEqual(gsiResult[0], coord2000[1], AccuracyLimit, "reprojected JGD2000 y value differs from GSI calculation result");
+        }
+
+        /// <summary>
+        /// Convert Projections from WSG84 to Austira GK West, Central, East 
+        /// </summary>
+        /// <param name="epsgCodeFrom">source procjection projectoin EPSG code</param>
+        /// <param name="xy">coordinates to convert in Austrian projection</param>
+        /// <param name="expected">exprected result in WSG84</param>
+        /// <param name="tolerance">tolerance for conversion</param>
+        [Test]
+        //http://epsg.io/31287 ->http://epsg.io/transform#s_srs=31287&t_srs=4326&x=80560.6300000&y=236779.1900000 /*Rudolfsbrunnen Innnsbruck*/
+        [TestCase(31287 /*MGI / Austria Lambert*/, new double[] { 253617.12, 375762.55 }, new double[] { 11.39752, 47.264943 })]
+        //http://epsg.io/31254 ->http://epsg.io/transform#s_srs=31254&t_srs=4326&x=80560.6300000&y=236779.1900000 /*Rudolfsbrunnen Innnsbruck*/
+        [TestCase(31254 /*MGI / Austria GK West*/, new double[] { 80560.63, 236779.19 }, new double[] { 11.39752, 47.264943 })]
+        //http://epsg.io/31255 ->http://epsg.io/transform#s_srs=31255&t_srs=4326&x=33889.2600000&y=274593.5300000 /*Postamt Bad Aussee*/
+        [TestCase(31255 /*MGI / Austria GK Central*/, new double[] { 33889.26, 274593.53 }, new double[] { 13.7833163, 47.609193 })]
+        //http://epsg.io/31256 ->http://epsg.io/transform#s_srs=31256&t_srs=4326&x=3588.2600000&y=339501.0200000 /*Belvedere Wien*/
+        [TestCase(31256 /*MGI / Austria GK East*/, new double[] { 3588.26, 339501.02 }, new double[] { 16.3804, 48.1939133 })]
+        public void Test_MGI_Austria_To_WSG84(int epsgCodeFrom, double[] xy, double[] expected)
+        {
+            ProjectionInfo wgs84 = ProjectionInfo.FromEpsgCode(4326);
+            ProjectionInfo MGI_Austria_GK_ = ProjectionInfo.FromEpsgCode(epsgCodeFrom);
+            Reproject.ReprojectPoints(xy, null, MGI_Austria_GK_, wgs84, 0, 1);
+            double tolerance = 0.0001d;
+            Assert.AreEqual(expected[0], xy[0], tolerance);
+            Assert.AreEqual(expected[1], xy[1], tolerance);
+        }
+
+        /// <summary>
+        /// Convert Projections Austira GK West, Central, East to WSG84
+        /// </summary>
+        /// <param name="epsgCodeTo">target procection EPSG Code</param>
+        /// <param name="xy">coordinates to convert in WSG84</param>
+        /// <param name="expected">exprected result in Austrian projection</param>
+        /// <param name="tolerance">tolerance for conversion</param>
+        [Test]
+        //http://epsg.io/31287 -> http://epsg.io/transform#s_srs=31287&t_srs=4326&x=80560.6300000&y=236779.1900000  /*Rudolfsbrunnen Innnsbruck*/
+        [TestCase(31287 /*MGI / Austria Lambert*/, new double[] { 11.39752, 47.264943 }, new double[] { 253617.12, 375762.55 })]
+        //http://epsg.io/31254 -> http://epsg.io/transform#s_srs=31254&t_srs=4326&x=80560.6300000&y=236779.1900000 /*Rudolfsbrunnen Innnsbruck*/
+        [TestCase(31254 /*MGI / Austria GK West*/, new double[] { 11.39752, 47.264943 }, new double[] { 80560.63, 236779.19 })]
+        //http://epsg.io/31255 -> http://epsg.io/transform#s_srs=31255&t_srs=4326&x=33889.2600000&y=274593.5300000 /*Postamt Bad Aussee*/
+        [TestCase(31255 /*MGI / Austria GK Central*/, new double[] { 13.7833163, 47.609193 }, new double[] { 33889.26, 274593.53 })]
+        //http://epsg.io/31256 -> http://epsg.io/transform#s_srs=31256&t_srs=4326&x=3588.2600000&y=339501.0200000 /*Belvedere Wien*/
+        [TestCase(31256 /*MGI / Austria GK East*/, new double[] { 16.3804, 48.1939133 }, new double[] { 3588.26, 339501.02 })]
+        public void Test_WSG84_To_MGI_Austria(int epsgCodeTo, double[] xy, double[] expected)
+        {
+            ProjectionInfo wgs84 = ProjectionInfo.FromEpsgCode(4326);
+            ProjectionInfo MGI_Austria_GK_ = ProjectionInfo.FromEpsgCode(epsgCodeTo);
+            double tolerance = 0.08d;
+            Reproject.ReprojectPoints(xy, null, wgs84, MGI_Austria_GK_, 0, 1);
+            Assert.AreEqual(expected[0], xy[0], tolerance);
+            Assert.AreEqual(expected[1], xy[1], tolerance);
         }
     }
 }
