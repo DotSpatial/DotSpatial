@@ -38,22 +38,22 @@ nuget:
   project_feed: false
   
 after_build:
- - ps: '[System.IO.File]::WriteAllText("$env:APPVEYOR_BUILD_FOLDER\source\bin\$env:CONFIGURATION\version.txt", $env:APPVEYOR_REPO_COMMIT)' 
- - ps: nuget pack Source\Core\DotSpatial.Analysis\DotSpatial.Analysis.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.Controls\DotSpatial.Controls.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.Data\DotSpatial.Data.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.Extensions\DotSpatial.Extensions.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.NTSExtension\DotSpatial.NTSExtension.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.Positioning\DotSpatial.Positioning.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.Positioning.Design\DotSpatial.Positioning.Design.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.Positioning.Forms\DotSpatial.Positioning.Forms.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.Projections\DotSpatial.Projections.nuspec -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.Serialization\DotSpatial.Serialization.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.Symbology\DotSpatial.Symbology.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
- - ps: nuget pack Source\Core\DotSpatial.Symbology.Forms\DotSpatial.Symbology.Forms.csproj -version "$env:nugetVersion" -Properties "PackageVersion=$env:nugetVersion"
+ - ps: '[System.IO.File]::WriteAllText("$env:APPVEYOR_BUILD_FOLDER\source\bin\$env:CONFIGURATION\version.txt", $env:APPVEYOR_REPO_COMMIT)'
+ - ps: dotnet pack Source\Core\DotSpatial.Analysis\DotSpatial.Analysis.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.Controls\DotSpatial.Controls.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.Data\DotSpatial.Data.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.Extensions\DotSpatial.Extensions.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.NTSExtension\DotSpatial.NTSExtension.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.Positioning\DotSpatial.Positioning.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.Positioning.Design\DotSpatial.Positioning.Design.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.Positioning.Forms\DotSpatial.Positioning.Forms.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.Projections\DotSpatial.Projections.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.Serialization\DotSpatial.Serialization.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.Symbology\DotSpatial.Symbology.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
+ - ps: dotnet pack Source\Core\DotSpatial.Symbology.Forms\DotSpatial.Symbology.Forms.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
  
  - ps: Push-AppveyorArtifact DotSpatial.Analysis.$env:nugetVersion.nupkg
  - ps: Push-AppveyorArtifact DotSpatial.Controls.$env:nugetVersion.nupkg
