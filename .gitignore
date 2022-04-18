@@ -193,3 +193,6 @@ _Pvt_Extensions/
 # Rider IDE
 .idea
 .DS_Store
+
+# Notepad ++
+*.bak
