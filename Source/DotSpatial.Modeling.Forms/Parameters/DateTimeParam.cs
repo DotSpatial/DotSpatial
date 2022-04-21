@@ -8,7 +8,7 @@ using DotSpatial.Modeling.Forms.Elements;
 namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
-    /// DateTime Parameters returned by an ITool allows the tool to specify default value
+    /// DateTime Parameters returned by an ITool allows the tool to specify default value.
     /// </summary>
     public class DateTimeParam : Parameter
     {
@@ -17,7 +17,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
+        /// <param name="name">The name of the parameter.</param>
         public DateTimeParam(string name)
         {
             Name = name;
@@ -29,8 +29,8 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
-        /// <param name="value">The default value</param>
+        /// <param name="name">The name of the parameter.</param>
+        /// <param name="value">The default value.</param>
         public DateTimeParam(string name, DateTime value)
         {
             Name = name;
@@ -45,7 +45,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         #region Properties
 
         /// <summary>
-        /// Gets or sets the value of the parameter (This is also the default value for input)
+        /// Gets or sets the value of the parameter (This is also the default value for input).
         /// </summary>
         public new DateTime Value
         {

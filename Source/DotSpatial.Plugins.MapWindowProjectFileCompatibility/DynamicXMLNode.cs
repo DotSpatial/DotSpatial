@@ -13,7 +13,7 @@ using System.Xml.Linq;
 namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 {
     /// <summary>
-    /// http://mutable.net/blog/archive/2010/07/07/yet-another-take-on-a-dynamicobject-wrapper-for-xml.aspx
+    /// http://mutable.net/blog/archive/2010/07/07/yet-another-take-on-a-dynamicobject-wrapper-for-xml.aspx.
     /// </summary>
     public class DynamicXMLNode : DynamicObject
     {
@@ -58,7 +58,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// Loads the specified URI.
         /// </summary>
         /// <param name="uri">The URI.</param>
-        /// <returns>The resulting DynamicXMLNode</returns>
+        /// <returns>The resulting DynamicXMLNode.</returns>
         public static DynamicXMLNode Load(string uri)
         {
             return new DynamicXMLNode(XElement.Load(uri));
@@ -68,7 +68,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// Loads the specified stream.
         /// </summary>
         /// <param name="stream">The stream.</param>
-        /// <returns>The resulting DynamicXMLNode</returns>
+        /// <returns>The resulting DynamicXMLNode.</returns>
         public static DynamicXMLNode Load(Stream stream)
         {
             return new DynamicXMLNode(XElement.Load(stream));
@@ -78,7 +78,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// Loads the specified text reader.
         /// </summary>
         /// <param name="textReader">The text reader.</param>
-        /// <returns>The resulting DynamicXMLNode</returns>
+        /// <returns>The resulting DynamicXMLNode.</returns>
         public static DynamicXMLNode Load(TextReader textReader)
         {
             return new DynamicXMLNode(XElement.Load(textReader));
@@ -88,7 +88,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// Loads the specified reader.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <returns>The resulting DynamicXMLNode</returns>
+        /// <returns>The resulting DynamicXMLNode.</returns>
         public static DynamicXMLNode Load(XmlReader reader)
         {
             return new DynamicXMLNode(XElement.Load(reader));
@@ -99,7 +99,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <param name="options">The options.</param>
-        /// <returns>The resulting DynamicXMLNode</returns>
+        /// <returns>The resulting DynamicXMLNode.</returns>
         public static DynamicXMLNode Load(Stream stream, LoadOptions options)
         {
             return new DynamicXMLNode(XElement.Load(stream, options));
@@ -110,7 +110,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// </summary>
         /// <param name="uri">The URI.</param>
         /// <param name="options">The options.</param>
-        /// <returns>The resulting DynamicXMLNode</returns>
+        /// <returns>The resulting DynamicXMLNode.</returns>
         public static DynamicXMLNode Load(string uri, LoadOptions options)
         {
             return new DynamicXMLNode(XElement.Load(uri, options));
@@ -121,7 +121,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// </summary>
         /// <param name="textReader">The text reader.</param>
         /// <param name="options">The options.</param>
-        /// <returns>The resulting DynamicXMLNode</returns>
+        /// <returns>The resulting DynamicXMLNode.</returns>
         public static DynamicXMLNode Load(TextReader textReader, LoadOptions options)
         {
             return new DynamicXMLNode(XElement.Load(textReader, options));
@@ -132,7 +132,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <param name="options">The options.</param>
-        /// <returns>The resulting DynamicXMLNode</returns>
+        /// <returns>The resulting DynamicXMLNode.</returns>
         public static DynamicXMLNode Load(XmlReader reader, LoadOptions options)
         {
             return new DynamicXMLNode(XElement.Load(reader, options));

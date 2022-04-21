@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using DotSpatial.NTSExtension;
-using GeoAPI.Geometries;
+using DotSpatial.Projections;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -19,11 +20,11 @@ namespace DotSpatial.Data
         /// <summary>
         /// Creates a new polygon featureset that is created by buffering each of the individual shapes.
         /// </summary>
-        /// <param name="self">The IFeatureSet to buffer</param>
-        /// <param name="distance">The double distance to buffer</param>
+        /// <param name="self">The IFeatureSet to buffer.</param>
+        /// <param name="distance">The double distance to buffer.</param>
         /// <param name="copyAttributes">Boolean, if this is true, then the new featureset will have
         /// the same attributes as the original.</param>
-        /// <returns>The newly created IFeatureSet</returns>
+        /// <returns>The newly created IFeatureSet.</returns>
         public static IFeatureSet Buffer(this IFeatureSet self, double distance, bool copyAttributes)
         {
             // Dimension the new, output featureset. Buffered shapes are polygons, even if the
@@ -58,7 +59,7 @@ namespace DotSpatial.Data
         /// Generates an empty featureset that has the combined fields from this featureset
         /// and the specified featureset.
         /// </summary>
-        /// <param name="self">This featureset</param>
+        /// <param name="self">This featureset.</param>
         /// <param name="other">The other featureset to combine fields with.</param>
         /// <returns>The created featureset.</returns>
         public static IFeatureSet CombinedFields(this IFeatureSet self, IFeatureSet other)
@@ -90,8 +91,8 @@ namespace DotSpatial.Data
         /// The output will only contain the specified field. Example: Disolving a county
         /// shapefile based on state name to produce a single polygon shaped like the state.
         /// </summary>
-        /// <param name="self">The original featureSet to disolve the features of</param>
-        /// <param name="fieldName">The string field name to use for the disolve operation</param>
+        /// <param name="self">The original featureSet to disolve the features of.</param>
+        /// <param name="fieldName">The string field name to use for the disolve operation.</param>
         /// <returns>A featureset where the geometries of features with the same attribute in the specified field have been combined.</returns>
         public static IFeatureSet Dissolve(this IFeatureSet self, string fieldName)
         {
@@ -128,13 +129,13 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This tests each feature of the input
+        /// This tests each feature of the input.
         /// </summary>
-        /// <param name="self">This featureSet</param>
-        /// <param name="other">The featureSet to perform intersection with</param>
-        /// <param name="joinType">The attribute join type</param>
-        /// <param name="progHandler">A progress handler for status messages</param>
-        /// <returns>An IFeatureSet with the intersecting features, broken down based on the join Type</returns>
+        /// <param name="self">This featureSet.</param>
+        /// <param name="other">The featureSet to perform intersection with.</param>
+        /// <param name="joinType">The attribute join type.</param>
+        /// <param name="progHandler">A progress handler for status messages.</param>
+        /// <returns>An IFeatureSet with the intersecting features, broken down based on the join Type.</returns>
         public static IFeatureSet Intersection(this IFeatureSet self, IFeatureSet other, FieldJoinType joinType, IProgressHandler progHandler)
         {
             IFeatureSet result = null;
@@ -229,22 +230,46 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Tests to see if this feature intersects with the specified envelope
+        /// Tests to see if this feature intersects with the specified envelope.
         /// </summary>
-        /// <param name="self">This feature</param>
-        /// <param name="env">The envelope to test</param>
-        /// <returns>Boolean, true if the intersection occurs</returns>
+        /// <param name="self">This feature.</param>
+        /// <param name="env">The envelope to test.</param>
+        /// <returns>Boolean, true if the intersection occurs.</returns>
         public static bool Intersects(this IFeature self, Envelope env)
         {
             return self.Geometry.EnvelopeInternal.Intersects(env) && self.Geometry.Intersects(env.ToPolygon());
         }
 
         /// <summary>
+        /// This routine takes a DotSpatial Featureset and makes a clone and then reprojects it to the requested Projection.
+        /// It returns a clone of the input so the input is not altered in any way.
+        /// </summary>
+        /// <param name="self">This featureSet.</param>
+        /// <param name="targetPrj">The projection of the target clone FeatureSet.</param>
+        /// <returns>A reprojected clone of the surce FeatureSet.</returns>
+        public static IFeatureSet ReprojectedClone(this IFeatureSet self, ProjectionInfo targetPrj)
+        {
+                // input check
+                if (self == null || targetPrj == null)
+                {
+                    return null;
+                }
+
+                self.FillAttributes();
+                IFeatureSet fsClone = self.CopyFeatures(true);
+                fsClone.IndexMode = false;
+                fsClone.Reproject(targetPrj);
+
+                // success so return the reprojected clone FeatureSet
+                return fsClone;
+        }
+
+        /// <summary>
         /// This method will create a new IFeatureSet with the the shapes that intersect merged into single shapes,
         /// or else it will return a new featureset where EVERY shape is unioned into a single, multi-part shape.
         /// </summary>
-        /// <param name="self">The source of features to union</param>
-        /// <param name="style">This controls whether intersecting or all features are unioned</param>
+        /// <param name="self">The source of features to union.</param>
+        /// <param name="style">This controls whether intersecting or all features are unioned.</param>
         /// <returns>An IFeatureSet with the unioned shapes.</returns>
         public static IFeatureSet UnionShapes(this IFeatureSet self, ShapeRelateType style)
         {

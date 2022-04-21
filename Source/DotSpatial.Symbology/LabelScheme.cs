@@ -34,7 +34,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Categories
+        /// Gets or sets the Categories.
         /// </summary>
         public IList<ILabelCategory> Categories
         {
@@ -56,7 +56,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Adds a category to the scheme, and also names the category with an integer that has not yet been used.
         /// </summary>
-        /// <returns>A new category with a name that has not yet been used</returns>
+        /// <returns>A new category with a name that has not yet been used.</returns>
         public ILabelCategory AddCategory()
         {
             string name = "Category 0";
@@ -98,7 +98,7 @@ namespace DotSpatial.Symbology
         /// scheme. MemberwiseClone is used so that any subclass members appended
         /// to this will be shallow copies unless this method is overridden.
         /// </summary>
-        /// <returns>A Duplicate LabelScheme, but with new, duplicated categories and symbolizers</returns>
+        /// <returns>A Duplicate LabelScheme, but with new, duplicated categories and symbolizers.</returns>
         public virtual LabelScheme Copy()
         {
             LabelScheme result = MemberwiseClone() as LabelScheme;
@@ -120,8 +120,8 @@ namespace DotSpatial.Symbology
         /// priority. If this collection does not contain the category or it is already
         /// at index 0, this will return false.
         /// </summary>
-        /// <param name="category">The ILabelCategory to demote</param>
-        /// <returns>Boolean, true if the demotion was successful</returns>
+        /// <param name="category">The ILabelCategory to demote.</param>
+        /// <returns>Boolean, true if the demotion was successful.</returns>
         public bool Demote(ILabelCategory category)
         {
             if (category == null || Categories == null || Categories.Count == 0 || !Categories.Contains(category)) return false;
@@ -142,7 +142,7 @@ namespace DotSpatial.Symbology
         /// or the category is already at the highest value, this returns false.
         /// </summary>
         /// <param name="category">The category to promote if possible.</param>
-        /// <returns>Boolean, true if the promotion was successful</returns>
+        /// <returns>Boolean, true if the promotion was successful.</returns>
         public bool Promote(ILabelCategory category)
         {
             if (category == null || Categories == null || Categories.Count == 0 || !Categories.Contains(category)) return false;

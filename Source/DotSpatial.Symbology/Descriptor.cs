@@ -34,7 +34,7 @@ namespace DotSpatial.Symbology
         /// to copy a public property from the source object of the same name, if it can find it.
         /// For each matching property name/type, it will attempt to copy the value.
         /// </summary>
-        /// <param name="source">The</param>
+        /// <param name="source">The.</param>
         public void CopyProperties(object source)
         {
             OnCopyProperties(source);
@@ -60,7 +60,7 @@ namespace DotSpatial.Symbology
         /// The default behavior is to cycle through all the properties of this
         /// object, and call Randomize on any that implement the IRandomizable interface.
         /// </summary>
-        /// <param name="generator">The Random seed generator for controling how the random content is created</param>
+        /// <param name="generator">The Random seed generator for controling how the random content is created.</param>
         public void Randomize(Random generator)
         {
             OnRandomize(generator);
@@ -68,7 +68,7 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// This occurs while copying properties from the specified source, and
-        /// is the default handling for subclasses
+        /// is the default handling for subclasses.
         /// </summary>
         /// <param name="source">Source to copy properties from.</param>
         protected virtual void OnCopyProperties(object source)
@@ -209,7 +209,7 @@ namespace DotSpatial.Symbology
         /// This does nothing to normal properties or non public members and needs to be overriden
         /// to provide the special case functionality for sub-classes.
         /// </summary>
-        /// <param name="generator">The random number generator to be used during randomization</param>
+        /// <param name="generator">The random number generator to be used during randomization.</param>
         protected virtual void OnRandomize(Random generator)
         {
             Type original = GetType();

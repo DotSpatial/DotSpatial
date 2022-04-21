@@ -8,7 +8,7 @@ using System.Drawing.Drawing2D;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// BreakSlider
+    /// BreakSlider.
     /// </summary>
     public class BreakSlider : IComparable<BreakSlider>
     {
@@ -28,8 +28,8 @@ namespace DotSpatial.Symbology.Forms
         /// Initializes a new instance of the <see cref="BreakSlider"/> class.
         /// </summary>
         /// <param name="graphBounds">The bounds of the graph to draw in relative to the control.</param>
-        /// <param name="minimum">The minimum value currently in view</param>
-        /// <param name="maximum">The maximum value currently in view</param>
+        /// <param name="minimum">The minimum value currently in view.</param>
+        /// <param name="maximum">The maximum value currently in view.</param>
         /// <param name="range">The color range to connect to this slider.</param>
         public BreakSlider(Rectangle graphBounds, double minimum, double maximum, ColorRange range)
         {
@@ -46,7 +46,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets a bounding rectangle in coordinates relative to the parent
+        /// Gets a bounding rectangle in coordinates relative to the parent.
         /// </summary>
         public Rectangle Bounds => new Rectangle((int)Position - 5, _graphBounds.Top + 5, 10, _graphBounds.Height - 5);
 
@@ -78,7 +78,7 @@ namespace DotSpatial.Symbology.Forms
         public int Count { get; set; }
 
         /// <summary>
-        /// Gets the bounds of the handle that extends above the graph
+        /// Gets the bounds of the handle that extends above the graph.
         /// </summary>
         public Rectangle HandleBounds => new Rectangle((int)Position - 4, _graphBounds.Y - 8, 8, 8);
 
@@ -174,9 +174,9 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Custom drawing
+        /// Custom drawing.
         /// </summary>
-        /// <param name="g">The Graphics surface to draw to</param>
+        /// <param name="g">The Graphics surface to draw to.</param>
         protected virtual void OnDraw(Graphics g)
         {
             if (Value < _min || Value > _max) return;

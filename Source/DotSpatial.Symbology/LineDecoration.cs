@@ -10,7 +10,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// LineDecoration
+    /// LineDecoration.
     /// </summary>
     [Serializable]
     public class LineDecoration : Descriptor, ILineDecoration
@@ -176,7 +176,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="g">The graphics object used for drawing.</param>
         /// <param name="path">The path of the line.</param>
-        /// <param name="scaleWidth">The double scale width for controling markers</param>
+        /// <param name="scaleWidth">The double scale width for controling markers.</param>
         public void Draw(Graphics g, GraphicsPath path, double scaleWidth)
         {
             if (NumSymbols == 0) return;
@@ -254,7 +254,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Handles the creation of random content for the LineDecoration.
         /// </summary>
-        /// <param name="generator">The Random class that generates random numbers</param>
+        /// <param name="generator">The Random class that generates random numbers.</param>
         protected override void OnRandomize(Random generator)
         {
             base.OnRandomize(generator);

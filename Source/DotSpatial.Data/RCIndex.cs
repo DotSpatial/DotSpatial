@@ -11,8 +11,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="RcIndex"/> struct.
         /// </summary>
-        /// <param name="row">The integer row index</param>
-        /// <param name="column">The integer column index</param>
+        /// <param name="row">The integer row index.</param>
+        /// <param name="column">The integer column index.</param>
         public RcIndex(int row, int column)
             : this()
         {
@@ -62,9 +62,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets a boolean that is true if either row or column index has no value
+        /// Gets a boolean that is true if either row or column index has no value.
         /// </summary>
-        /// <returns>Boolean, true if either row or column has no value</returns>
+        /// <returns>Boolean, true if either row or column has no value.</returns>
         public bool IsEmpty()
         {
             return Row == int.MinValue && Column == int.MinValue;

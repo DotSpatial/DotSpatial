@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// DetailedPointSymbolDialog
+    /// DetailedPointSymbolDialog.
     /// </summary>
     public partial class DetailedPointSymbolDialog : Form
     {
@@ -69,7 +69,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Fires the ChangesApplied event
+        /// Fires the ChangesApplied event.
         /// </summary>
         protected virtual void OnApplyChanges()
         {

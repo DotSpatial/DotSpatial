@@ -107,7 +107,7 @@ namespace DotSpatial.Controls.Header
         public abstract object Add(RootItem item);
 
         /// <summary>
-        /// Adds a combo box style item
+        /// Adds a combo box style item.
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns>The added item.</returns>
@@ -131,7 +131,7 @@ namespace DotSpatial.Controls.Header
         /// Remove item from the standard toolbar or ribbon control. Also removes groups or parents when all
         /// items have been removed from them.
         /// </summary>
-        /// <param name="key">The string itemName to remove from the standard toolbar or ribbon control</param>
+        /// <param name="key">The string itemName to remove from the standard toolbar or ribbon control.</param>
         /// <remarks>
         /// If passed a root item the behavior is not defined. The root item should never be empty because
         /// it will be removed when all of its child items are removed.
@@ -164,9 +164,9 @@ namespace DotSpatial.Controls.Header
         public abstract void SelectRoot(string key);
 
         /// <summary>
-        /// Gets header item by key
+        /// Gets header item by key.
         /// </summary>
-        /// <param name="key">Key</param>
+        /// <param name="key">Key.</param>
         /// <returns>Header item or null if not found.</returns>
         protected HeaderItem GetHeaderItemByKey(string key)
         {
@@ -179,7 +179,7 @@ namespace DotSpatial.Controls.Header
         /// Occurs when a root item is selected by the user.
         /// This event also occurs after the SelectRoot method is called.
         /// </summary>
-        /// <param name="key">The key of the new selected root item</param>
+        /// <param name="key">The key of the new selected root item.</param>
         protected void OnRootItemSelected(string key)
         {
             RootItemSelected?.Invoke(this, new RootItemEventArgs(key));

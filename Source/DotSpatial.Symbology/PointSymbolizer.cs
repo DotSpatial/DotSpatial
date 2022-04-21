@@ -30,7 +30,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PointSymbolizer"/> class with only one symbol.
         /// </summary>
-        /// <param name="symbol">The symbol to use for creating this symbolizer</param>
+        /// <param name="symbol">The symbol to use for creating this symbolizer.</param>
         public PointSymbolizer(ISymbol symbol)
         {
             Smoothing = true;
@@ -73,7 +73,7 @@ namespace DotSpatial.Symbology
         /// Initializes a new instance of the <see cref="PointSymbolizer"/> class that has a member that is constructed
         /// from the specified image.
         /// </summary>
-        /// <param name="image">The image to use as a point symbol</param>
+        /// <param name="image">The image to use as a point symbol.</param>
         /// <param name="size">The desired output size of the larger dimension of the image.</param>
         public PointSymbolizer(Image image, double size)
         {
@@ -86,10 +86,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PointSymbolizer"/> class that has a character symbol based on the specified characteristics.
         /// </summary>
-        /// <param name="character">The character to draw</param>
-        /// <param name="fontFamily">The font family to use for rendering the font</param>
-        /// <param name="color">The font color</param>
-        /// <param name="size">The size of the symbol</param>
+        /// <param name="character">The character to draw.</param>
+        /// <param name="fontFamily">The font family to use for rendering the font.</param>
+        /// <param name="color">The font color.</param>
+        /// <param name="size">The size of the symbol.</param>
         public PointSymbolizer(char character, string fontFamily, Color color, double size)
         {
             Symbols = new CopyList<ISymbol>();
@@ -149,10 +149,10 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Draws the specified value
+        /// Draws the specified value.
         /// </summary>
-        /// <param name="g">The Graphics object to draw to</param>
-        /// <param name="target">The Rectangle defining the bounds to draw in</param>
+        /// <param name="g">The Graphics object to draw to.</param>
+        /// <param name="target">The Rectangle defining the bounds to draw in.</param>
         public override void Draw(Graphics g, Rectangle target)
         {
             Size2D size = GetSize();
@@ -172,7 +172,7 @@ namespace DotSpatial.Symbology
         /// drawing the content. This assumes that the graphics object has been translated to the specified point.
         /// </summary>
         /// <param name="g">Graphics object that is used for drawing.</param>
-        /// <param name="scaleSize">Scale size represents the constant to multiply to the geographic measures in order to turn them into pixel coordinates </param>
+        /// <param name="scaleSize">Scale size represents the constant to multiply to the geographic measures in order to turn them into pixel coordinates. </param>
         public void Draw(Graphics g, double scaleSize)
         {
             GraphicsState s = g.Save();
@@ -224,7 +224,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Returns the encapsulating size when considering all of the symbol layers that make up this symbolizer.
         /// </summary>
-        /// <returns>A Size2D</returns>
+        /// <returns>A Size2D.</returns>
         public Size2D GetSize()
         {
             return Symbols.GetBoundingSize();
@@ -258,8 +258,8 @@ namespace DotSpatial.Symbology
         /// Sets the outline, assuming that the symbolizer either supports outlines, or
         /// else by using a second symbol layer.
         /// </summary>
-        /// <param name="outlineColor">The color of the outline</param>
-        /// <param name="width">The width of the outline in pixels</param>
+        /// <param name="outlineColor">The color of the outline.</param>
+        /// <param name="width">The width of the outline in pixels.</param>
         public override void SetOutline(Color outlineColor, double width)
         {
             if (Symbols == null) return;
@@ -282,7 +282,7 @@ namespace DotSpatial.Symbology
         /// This assumes that you wish to simply scale the various sizes.
         /// It will adjust all of the sizes so that the maximum size is the same as the specified size.
         /// </summary>
-        /// <param name="value">The Size2D of the new maximum size</param>
+        /// <param name="value">The Size2D of the new maximum size.</param>
         public void SetSize(Size2D value)
         {
             Size2D oldSize = Symbols.GetBoundingSize();

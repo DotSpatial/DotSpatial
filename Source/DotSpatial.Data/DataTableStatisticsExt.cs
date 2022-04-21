@@ -15,7 +15,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Inspects the members of the dataTable, focusing on the named field. It calculates the median of the values in the named field.
         /// </summary>
-        /// <param name="self">DataTable</param>
+        /// <param name="self">DataTable.</param>
         /// <param name="fieldName">The field name.</param>
         /// <returns>The BoxStatistics.</returns>
         public static BoxStatistics GetBoxStatistics(this DataTable self, string fieldName)

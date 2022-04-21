@@ -19,7 +19,7 @@ namespace DotSpatial.Serialization
         /// <summary>
         /// Searches the entire folder tree beginning at the entry assembly path for types that derive from the specified type.
         /// </summary>
-        /// <typeparam name="T">The base class/interface type</typeparam>
+        /// <typeparam name="T">The base class/interface type.</typeparam>
         /// <returns>A list of all types found in the search.</returns>
         public static IEnumerable<Type> FindDerivedClasses<T>()
         {

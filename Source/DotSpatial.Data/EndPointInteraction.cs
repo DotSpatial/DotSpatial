@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Used by Segment.ClosestPointTo() to detail how the input point interacts with the line segment
+    /// Used by Segment.ClosestPointTo() to detail how the input point interacts with the line segment.
     /// </summary>
     public enum EndPointInteraction
     {

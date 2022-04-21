@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// DashControl
+    /// DashControl.
     /// </summary>
     public class DashControl : Control
     {
@@ -84,13 +84,13 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the color for all the buttons when they are pressed and inactive
+        /// Gets or sets the color for all the buttons when they are pressed and inactive.
         /// </summary>
         [Description("Gets or sets the base color for all the buttons when they are pressed and inactive")]
         public Color ButtonDownDarkColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the base color for all the buttons when they are pressed and active
+        /// Gets or sets the base color for all the buttons when they are pressed and active.
         /// </summary>
         [Description("Gets or sets the base color for all the buttons when they are pressed and active")]
         public Color ButtonDownLitColor { get; set; }
@@ -166,7 +166,7 @@ namespace DotSpatial.Symbology.Forms
         public DashSliderHorizontal HorizontalSlider { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the line
+        /// Gets or sets the color of the line.
         /// </summary>
         [Description("Gets or sets the color that should be used for the filled sections of the line.")]
         public Color LineColor { get; set; }
@@ -177,7 +177,7 @@ namespace DotSpatial.Symbology.Forms
         public double LineWidth { get; set; }
 
         /// <summary>
-        /// Gets the height of the square
+        /// Gets the height of the square.
         /// </summary>
         public double SquareHeight => LineWidth * Height / _blockSize.Height;
 
@@ -187,7 +187,7 @@ namespace DotSpatial.Symbology.Forms
         public double SquareWidth => LineWidth * Width / _blockSize.Width;
 
         /// <summary>
-        /// Gets or sets the vertical Slider
+        /// Gets or sets the vertical Slider.
         /// </summary>
         [Description("Gets or sets the image to use as the vertical slider. If this is null, a simple triangle will be used.")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -296,7 +296,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Occurs when the dash control needs to calculate the pattern
+        /// Occurs when the dash control needs to calculate the pattern.
         /// </summary>
         protected override void OnCreateControl()
         {
@@ -362,7 +362,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Handles the mouse down event
+        /// Handles the mouse down event.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseDown(MouseEventArgs e)
@@ -494,7 +494,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Prevent flicker
+        /// Prevent flicker.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaintBackground(PaintEventArgs e)

@@ -43,8 +43,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonSymbolizer"/> class.
         /// </summary>
-        /// <param name="fillColor">The fill color to use for the polygons</param>
-        /// <param name="outlineColor">The border color to use for the polygons</param>
+        /// <param name="fillColor">The fill color to use for the polygons.</param>
+        /// <param name="outlineColor">The border color to use for the polygons.</param>
         public PolygonSymbolizer(Color fillColor, Color outlineColor)
             : this(fillColor, outlineColor, 1)
         {
@@ -53,9 +53,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonSymbolizer"/> class using a solid fill pattern.
         /// </summary>
-        /// <param name="fillColor">The fill color to use for the polygons</param>
-        /// <param name="outlineColor">The border color to use for the polygons</param>
-        /// <param name="outlineWidth">The width of the outline to use fo</param>
+        /// <param name="fillColor">The fill color to use for the polygons.</param>
+        /// <param name="outlineColor">The border color to use for the polygons.</param>
+        /// <param name="outlineWidth">The width of the outline to use fo.</param>
         public PolygonSymbolizer(Color fillColor, Color outlineColor, double outlineWidth)
         {
             Patterns = new CopyList<IPattern>
@@ -68,10 +68,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonSymbolizer"/> class using a Gradient Pattern with the specified colors and angle.
         /// </summary>
-        /// <param name="startColor">The start color</param>
-        /// <param name="endColor">The end color</param>
-        /// <param name="angle">The direction of the gradient, measured in degrees clockwise from the x-axis</param>
-        /// <param name="style">Controls how the gradient is drawn</param>
+        /// <param name="startColor">The start color.</param>
+        /// <param name="endColor">The end color.</param>
+        /// <param name="angle">The direction of the gradient, measured in degrees clockwise from the x-axis.</param>
+        /// <param name="style">Controls how the gradient is drawn.</param>
         public PolygonSymbolizer(Color startColor, Color endColor, double angle, GradientType style)
         {
             Patterns = new CopyList<IPattern>
@@ -83,12 +83,12 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonSymbolizer"/> class using a Gradient Pattern with the specified colors and angle.
         /// </summary>
-        /// <param name="startColor">The start color</param>
-        /// <param name="endColor">The end color</param>
-        /// <param name="angle">The direction of the gradient, measured in degrees clockwise from the x-axis</param>
-        /// <param name="style">The type of gradient to use</param>
-        /// <param name="outlineColor">The color to use for the border symbolizer</param>
-        /// <param name="outlineWidth">The width of the line to use for the border symbolizer</param>
+        /// <param name="startColor">The start color.</param>
+        /// <param name="endColor">The end color.</param>
+        /// <param name="angle">The direction of the gradient, measured in degrees clockwise from the x-axis.</param>
+        /// <param name="style">The type of gradient to use.</param>
+        /// <param name="outlineColor">The color to use for the border symbolizer.</param>
+        /// <param name="outlineWidth">The width of the line to use for the border symbolizer.</param>
         public PolygonSymbolizer(Color startColor, Color endColor, double angle, GradientType style, Color outlineColor, double outlineWidth)
             : this(startColor, endColor, angle, style)
         {
@@ -98,9 +98,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonSymbolizer"/> class using PicturePattern with the specified image.
         /// </summary>
-        /// <param name="picture">The picture to draw</param>
-        /// <param name="wrap">The way to wrap the picture</param>
-        /// <param name="angle">The angle to rotate the image</param>
+        /// <param name="picture">The picture to draw.</param>
+        /// <param name="wrap">The way to wrap the picture.</param>
+        /// <param name="angle">The angle to rotate the image.</param>
         public PolygonSymbolizer(Image picture, WrapMode wrap, double angle)
         {
             Patterns = new CopyList<IPattern>
@@ -112,11 +112,11 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonSymbolizer"/> class using PicturePattern with the specified image.
         /// </summary>
-        /// <param name="picture">The picture to draw</param>
-        /// <param name="wrap">The way to wrap the picture</param>
-        /// <param name="angle">The angle to rotate the image</param>
-        /// <param name="outlineColor">The color to use for the border symbolizer</param>
-        /// <param name="outlineWidth">The width of the line to use for the border symbolizer</param>
+        /// <param name="picture">The picture to draw.</param>
+        /// <param name="wrap">The way to wrap the picture.</param>
+        /// <param name="angle">The angle to rotate the image.</param>
+        /// <param name="outlineColor">The color to use for the border symbolizer.</param>
+        /// <param name="outlineWidth">The width of the line to use for the border symbolizer.</param>
         public PolygonSymbolizer(Image picture, WrapMode wrap, double angle, Color outlineColor, double outlineWidth)
             : this(picture, wrap, angle)
         {
@@ -139,7 +139,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonSymbolizer"/> class.
         /// </summary>
-        /// <param name="selected">Boolean, true if this should use selection symbology</param>
+        /// <param name="selected">Boolean, true if this should use selection symbology.</param>
         public PolygonSymbolizer(bool selected)
         {
             Patterns = new CopyList<IPattern>();
@@ -193,10 +193,10 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Draws the polygon symbology
+        /// Draws the polygon symbology.
         /// </summary>
-        /// <param name="g">The graphics device to draw to</param>
-        /// <param name="target">The target rectangle to draw symbology content to</param>
+        /// <param name="g">The graphics device to draw to.</param>
+        /// <param name="target">The target rectangle to draw symbology content to.</param>
         public override void Draw(Graphics g, Rectangle target)
         {
             GraphicsPath gp = new GraphicsPath();
@@ -251,7 +251,7 @@ namespace DotSpatial.Symbology
         /// Sets the fill color of the top-most pattern.
         /// If the pattern is not a simple pattern, a simple pattern will be forced.
         /// </summary>
-        /// <param name="color">The Color structure</param>
+        /// <param name="color">The Color structure.</param>
         public void SetFillColor(Color color)
         {
             if (Patterns == null) return;
@@ -270,8 +270,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Sets the outline, assuming that the symbolizer either supports outlines, or else by using a second symbol layer.
         /// </summary>
-        /// <param name="outlineColor">The color of the outline</param>
-        /// <param name="width">The width of the outline in pixels</param>
+        /// <param name="outlineColor">The color of the outline.</param>
+        /// <param name="width">The width of the outline in pixels.</param>
         public override void SetOutline(Color outlineColor, double width)
         {
             if (Patterns == null) return;
@@ -290,7 +290,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Forces the specified width to be the width of every stroke outlining every pattern.
         /// </summary>
-        /// <param name="width">The width to force as the outline width</param>
+        /// <param name="width">The width to force as the outline width.</param>
         public void SetOutlineWidth(double width)
         {
             if (Patterns == null || Patterns.Count == 0) return;

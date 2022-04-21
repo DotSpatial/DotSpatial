@@ -8,7 +8,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// RenderableLegendItem
+    /// RenderableLegendItem.
     /// </summary>
     public class RenderableLegendItem : LegendItem, IRenderableLegendItem
     {
@@ -60,7 +60,7 @@ namespace DotSpatial.Symbology
         public virtual Extent Extent => MyExtent;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the unmanaged drawing structures have been created for this item
+        /// Gets or sets a value indicating whether or not the unmanaged drawing structures have been created for this item.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -114,7 +114,7 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Invalidates the drawing methods
+        /// Invalidates the drawing methods.
         /// </summary>
         public virtual void Invalidate()
         {
@@ -125,8 +125,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Fires the EnvelopeChanged event.
         /// </summary>
-        /// <param name="sender">The object sender for this event (this)</param>
-        /// <param name="e">The EnvelopeArgs specifying the envelope</param>
+        /// <param name="sender">The object sender for this event (this).</param>
+        /// <param name="e">The EnvelopeArgs specifying the envelope.</param>
         protected virtual void OnEnvelopeChanged(object sender, EnvelopeArgs e)
         {
             EnvelopeChanged?.Invoke(sender, e);
@@ -135,8 +135,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Fires the Invalidated event.
         /// </summary>
-        /// <param name="sender">The object sender (usually this)</param>
-        /// <param name="e">An EventArgs parameter</param>
+        /// <param name="sender">The object sender (usually this).</param>
+        /// <param name="e">An EventArgs parameter.</param>
         protected virtual void OnInvalidate(object sender, EventArgs e)
         {
             Invalidated?.Invoke(sender, e);
@@ -145,8 +145,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Fires the Visible Changed event.
         /// </summary>
-        /// <param name="sender">The object sender (usually this)</param>
-        /// <param name="e">An EventArgs parameter</param>
+        /// <param name="sender">The object sender (usually this).</param>
+        /// <param name="e">An EventArgs parameter.</param>
         protected virtual void OnVisibleChanged(object sender, EventArgs e)
         {
             VisibleChanged?.Invoke(sender, e);

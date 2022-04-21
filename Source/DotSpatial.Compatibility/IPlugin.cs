@@ -6,7 +6,7 @@ using System.Drawing;
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// During the Initialize method, the
+    /// During the Initialize method, the.
     /// </summary>
     public interface IPlugin
     {
@@ -86,7 +86,7 @@ namespace DotSpatial.Compatibility
         /// <summary>
         /// This method is called by the DotSpatial when the user double-clicks on the legend.
         /// </summary>
-        /// <param name="handle">Handle of the layer or group that was double-clicked</param>
+        /// <param name="handle">Handle of the layer or group that was double-clicked.</param>
         /// <param name="location">Location that was clicked.  Either a layer or a group.</param>
         /// <param name="handled">Set this parameter to true if your plugin handles this so that no other plugins recieve this message.</param>
         void LegendDoubleClick(int handle, ClickLocation location, ref bool handled);
@@ -96,7 +96,7 @@ namespace DotSpatial.Compatibility
         /// </summary>
         /// <param name="handle">Handle of the layer or group that was under the cursor.</param>
         /// <param name="button">The mouse button that was pressed.  You can use the <c>vb6Buttons</c> enumeration to determine which button was pressed.</param>
-        /// <param name="location">Location that was clicked.  Either a layer or a group</param>
+        /// <param name="location">Location that was clicked.  Either a layer or a group.</param>
         /// <param name="handled">Set this parameter to true if your plugin handles this so that no other plugins recieve this message.</param>
         void LegendMouseDown(int handle, int button, ClickLocation location, ref bool handled);
 
@@ -105,7 +105,7 @@ namespace DotSpatial.Compatibility
         /// </summary>
         /// <param name="handle">Handle of the layer or group that was under the cursor.</param>
         /// <param name="button">The mouse button that was released.  You can use the <c>vb6Buttons</c> enumeration to determine which button it was.</param>
-        /// <param name="location">Location that was clicked.  Either a layer or a group</param>
+        /// <param name="location">Location that was clicked.  Either a layer or a group.</param>
         /// <param name="handled">Set this parameter to true if your plugin handles this so that no other plugins recieve this message.</param>
         void LegendMouseUp(int handle, int button, ClickLocation location, ref bool handled);
 

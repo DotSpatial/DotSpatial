@@ -5,7 +5,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Plugins.WebMap
 {
@@ -31,7 +31,7 @@ namespace DotSpatial.Plugins.WebMap
         #region Properties
 
         /// <summary>
-        /// Gets or sets
+        /// Gets or sets.
         /// </summary>
         public Func<bool> Configure { get; protected set; }
 

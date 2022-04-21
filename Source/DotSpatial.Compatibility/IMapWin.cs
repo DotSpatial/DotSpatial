@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// IMapWin
+    /// IMapWin.
     /// </summary>
     public interface IMapWin
     {
@@ -101,7 +101,7 @@ namespace DotSpatial.Compatibility
         ///  Prompt the user to select a projection, and return the PROJ4 representation of this
         ///  projection. Specify the dialog caption and an optional default projection ("" for none).
         /// </summary>
-        /// <param name="dialogCaption">The text to be displayed on the dialog, e.g. "Please select a projection."</param>
+        /// <param name="dialogCaption">The text to be displayed on the dialog, e.g. "Please select a projection.".</param>
         /// <param name="defaultProjection">The PROJ4 projection string of the projection to default to, "" for none.</param>
         /// <returns>PROJ4 of the selected projection.</returns>
         string GetProjectionFromUser(string dialogCaption, string defaultProjection);
@@ -112,7 +112,7 @@ namespace DotSpatial.Compatibility
         void Refresh();
 
         /// <summary>
-        /// Refreshes Dynamic Visibility
+        /// Refreshes Dynamic Visibility.
         /// </summary>
         void RefreshDynamicVisibility();
 
@@ -133,7 +133,7 @@ namespace DotSpatial.Compatibility
         /// Displays the DotSpatial error dialog, sending to a specific address.
         /// </summary>
         /// <param name="ex">Exception to show.</param>
-        /// <param name="sendEmailTo">Email adress</param>
+        /// <param name="sendEmailTo">Email adress.</param>
         void ShowErrorDialog(Exception ex, string sendEmailTo);
 
         #endregion

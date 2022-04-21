@@ -28,7 +28,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="raster">The raster to create the hillshade from.</param>
         /// <param name="shadedRelief">An implementation of IShadedRelief describing how the hillshade should be created.</param>
-        /// <param name="progressHandler">An implementation of IProgressHandler for progress messages</param>
+        /// <param name="progressHandler">An implementation of IProgressHandler for progress messages.</param>
         /// <returns>The resulting hill shade array.</returns>
         public static float[][] CreateHillShade(this IRaster raster, IShadedRelief shadedRelief, IProgressHandler progressHandler = null)
         {
@@ -77,7 +77,7 @@ namespace DotSpatial.Symbology
         /// <typeparam name="T">Type of the raster.</typeparam>
         /// <param name="raster">The raster to create the hillshade from.</param>
         /// <param name="shadedRelief">An implementation of IShadedRelief describing how the hillshade should be created.</param>
-        /// <param name="progressMeter">An implementation of IProgressHandler for progress messages</param>
+        /// <param name="progressMeter">An implementation of IProgressHandler for progress messages.</param>
         /// <returns>The resulting hill shade array.</returns>
         public static float[][] CreateHillShadeT<T>(this Raster<T> raster, IShadedRelief shadedRelief, ProgressMeter progressMeter)
             where T : IEquatable<T>, IComparable<T>
@@ -92,7 +92,7 @@ namespace DotSpatial.Symbology
         /// <param name="rasterSymbolizer">The raster symbolizer to use for assigning colors.</param>
         /// <param name="bitmap">This must be an Format32bbpArgb bitmap that has already been saved to a file so that it exists.</param>
         /// <param name="progressHandler">The progress handler to use.</param>
-        /// <exception cref="ArgumentNullException">rasterSymbolizer cannot be null</exception>
+        /// <exception cref="ArgumentNullException">rasterSymbolizer cannot be null.</exception>
         public static void DrawToBitmap(this IRaster raster, IRasterSymbolizer rasterSymbolizer, Bitmap bitmap, IProgressHandler progressHandler = null)
         {
             if (raster == null) throw new ArgumentNullException(nameof(raster));
@@ -138,7 +138,7 @@ namespace DotSpatial.Symbology
         /// <param name="raster">The raster to draw to a bitmap.</param>
         /// <param name="rasterSymbolizer">The raster symbolizer to use for assigning colors.</param>
         /// <param name="rgbData">Byte values representing the ARGB image bytes.</param>
-        /// <param name="stride">The stride</param>
+        /// <param name="stride">The stride.</param>
         /// <param name="pm">The progress meter to use.</param>
         public static void DrawToBitmap(this IRaster raster, IRasterSymbolizer rasterSymbolizer, byte[] rgbData, int stride, ProgressMeter pm)
         {
@@ -177,13 +177,13 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Creates a bitmap from this raster using the specified rasterSymbolizer.
         /// </summary>
-        /// <param name="raster">The raster to draw to a bitmap</param>
+        /// <param name="raster">The raster to draw to a bitmap.</param>
         /// <typeparam name="T">Type of the raster.</typeparam>
-        /// <param name="rasterSymbolizer">The raster symbolizer to use for assigning colors</param>
-        /// <param name="rgbData">Byte values representing the ARGB image bytes</param>
-        /// <param name="stride">The stride</param>
+        /// <param name="rasterSymbolizer">The raster symbolizer to use for assigning colors.</param>
+        /// <param name="rgbData">Byte values representing the ARGB image bytes.</param>
+        /// <param name="stride">The stride.</param>
         /// <param name="pm">The progress meter to use.</param>
-        /// <exception cref="ArgumentNullException">rasterSymbolizer cannot be null</exception>
+        /// <exception cref="ArgumentNullException">rasterSymbolizer cannot be null.</exception>
         public static void DrawToBitmapT<T>(Raster<T> raster, IRasterSymbolizer rasterSymbolizer, byte[] rgbData, int stride, ProgressMeter pm)
             where T : struct, IEquatable<T>, IComparable<T>
         {
@@ -293,7 +293,7 @@ namespace DotSpatial.Symbology
         /// Obtains an set of unique values. If there are more than maxCount values, the process stops and overMaxCount is set to true.
         /// </summary>
         /// <param name="raster">the raster to obtain the unique values from.</param>
-        /// <param name="maxCount">An integer specifying the maximum number of values to add to the list of unique values</param>
+        /// <param name="maxCount">An integer specifying the maximum number of values to add to the list of unique values.</param>
         /// <param name="overMaxCount">A boolean that will be true if the process was halted prematurely.</param>
         /// <returns>A set of doubles representing the independant values.</returns>
         public static ISet<double> GetUniqueValues(this IRaster raster, int maxCount, out bool overMaxCount)
@@ -379,7 +379,7 @@ namespace DotSpatial.Symbology
         /// <param name="rasterSymbolizer">The raster symbolizer to use.</param>
         /// <param name="bitmap">The bitmap to edit. Ensure that this has been created and saved at least once.</param>
         /// <param name="progressHandler">An IProgressHandler implementation to receive progress updates.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="rasterSymbolizer"/> cannot be null, <paramref name="raster"/> cannot be null, <paramref name="bitmap"/> cannot be null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="rasterSymbolizer"/> cannot be null, <paramref name="raster"/> cannot be null, <paramref name="bitmap"/> cannot be null.</exception>
         public static void PaintColorSchemeToBitmapT<T>(this Raster<T> raster, IRasterSymbolizer rasterSymbolizer, Bitmap bitmap, IProgressHandler progressHandler)
             where T : struct, IEquatable<T>, IComparable<T>
         {

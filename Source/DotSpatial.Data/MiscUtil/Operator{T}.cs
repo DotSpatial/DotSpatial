@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 namespace DotSpatial.Data.MiscUtil
 {
     /// <summary>
-    /// Provides standard operators (such as addition) over a single type
+    /// Provides standard operators (such as addition) over a single type.
     /// </summary>
     /// <typeparam name="T">The type of the operator.</typeparam>
     /// <seealso cref="Operator"/>
@@ -168,7 +168,7 @@ namespace DotSpatial.Data.MiscUtil
         public static Func<T, T, T> Xor { get; }
 
         /// <summary>
-        /// Gets the zero value for value-types (even full Nullable&lt;TInner&gt;) - or null for reference types
+        /// Gets the zero value for value-types (even full Nullable&lt;TInner&gt;) - or null for reference types.
         /// </summary>
         public static T Zero { get; }
 

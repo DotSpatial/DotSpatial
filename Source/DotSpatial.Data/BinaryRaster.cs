@@ -47,9 +47,9 @@ namespace DotSpatial.Data
         /// If if the raster is less than 64 Million cells, it will be created only in memory, and a Save method should
         /// be called when ready to save it to a file. Otherwise, it creates a blank file with NoData values which start out as 0.
         /// </summary>
-        /// <param name="fileName">The fileName to write to</param>
-        /// <param name="numRows">Integer number of rows</param>
-        /// <param name="numColumns">Integer number of columns</param>
+        /// <param name="fileName">The fileName to write to.</param>
+        /// <param name="numRows">Integer number of rows.</param>
+        /// <param name="numColumns">Integer number of columns.</param>
         public BinaryRaster(string fileName, int numRows, int numColumns)
             : this(fileName, numRows, numColumns, true)
         {
@@ -61,9 +61,9 @@ namespace DotSpatial.Data
         /// If inRam is true and the raster is less than 64 Million cells, it will be created only in memory,
         /// and a Save method should be called when ready to save it to a file. Otherwise, it creates a blank file with NoData values.
         /// </summary>
-        /// <param name="fileName">The fileName to write to</param>
-        /// <param name="numRows">Integer number of rows</param>
-        /// <param name="numColumns">Integer number of columns</param>
+        /// <param name="fileName">The fileName to write to.</param>
+        /// <param name="numRows">Integer number of rows.</param>
+        /// <param name="numColumns">Integer number of columns.</param>
         /// <param name="inRam">If this is true and the raster is small enough, it will load this into memory and not save anything to the file.</param>
         public BinaryRaster(string fileName, int numRows, int numColumns, bool inRam)
         {
@@ -136,10 +136,10 @@ namespace DotSpatial.Data
         /// <param name="startRow">The 0 based integer index of the top row to copy from this raster. If this raster is itself a window, 0 represents the startRow from the file.</param>
         /// <param name="endRow">The integer index of the bottom row to copy from this raster. The largest allowed value is NumRows - 1.</param>
         /// <param name="startColumn">The 0 based integer index of the leftmost column to copy from this raster. If this raster is a window, 0 represents the startColumn from the file.</param>
-        /// <param name="endColumn">The 0 based integer index of the rightmost column to copy from this raster. The largest allowed value is NumColumns - 1</param>
+        /// <param name="endColumn">The 0 based integer index of the rightmost column to copy from this raster. The largest allowed value is NumColumns - 1.</param>
         /// <param name="copyValues">If this is true, the values are saved to the file. If this is false and the data can be loaded into Ram, no file handling is done. Otherwise, a file of NoData values is created.</param>
         /// <param name="inRam">Boolean. If this is true and the window is small enough, a copy of the values will be loaded into memory.</param>
-        /// <returns>An implementation of IRaster</returns>
+        /// <returns>An implementation of IRaster.</returns>
         public new IRaster CopyWindow(string fileName, int startRow, int endRow, int startColumn, int endColumn, bool copyValues, bool inRam)
         {
             int numCols = endColumn - startColumn + 1;
@@ -277,9 +277,9 @@ namespace DotSpatial.Data
         /// <param name="startRow">The 0 based integer index of the top row to get from this raster. If this raster is itself a window, 0 represents the startRow from the file.</param>
         /// <param name="endRow">The integer index of the bottom row to get from this raster. The largest allowed value is NumRows - 1.</param>
         /// <param name="startColumn">The 0 based integer index of the leftmost column to get from this raster. If this raster is a window, 0 represents the startColumn from the file.</param>
-        /// <param name="endColumn">The 0 based integer index of the rightmost column to get from this raster. The largest allowed value is NumColumns - 1</param>
+        /// <param name="endColumn">The 0 based integer index of the rightmost column to get from this raster. The largest allowed value is NumColumns - 1.</param>
         /// <param name="inRam">Boolean. If this is true and the window is small enough, a copy of the values will be loaded into memory.</param>
-        /// <returns>An implementation of IRaster</returns>
+        /// <returns>An implementation of IRaster.</returns>
         public new IRaster GetWindow(int startRow, int endRow, int startColumn, int endColumn, bool inRam)
         {
             int numCols = endColumn - startColumn + 1;
@@ -382,10 +382,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Opens a new instance of the BinaryRaster
+        /// Opens a new instance of the BinaryRaster.
         /// </summary>
-        /// <param name="fileName">The string fileName of the raster file to open</param>
-        /// <param name="inRam">Boolean, indicates whether or not the values for the raster should be loaded into memory</param>
+        /// <param name="fileName">The string fileName of the raster file to open.</param>
+        /// <param name="inRam">Boolean, indicates whether or not the values for the raster should be loaded into memory.</param>
         public virtual void Open(string fileName, bool inRam)
         {
             Filename = fileName;
@@ -405,7 +405,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// This converts this object into a raster defined by the specified window dimensions.
         /// </summary>
-        /// <param name="fileName">The string fileName to open</param>
+        /// <param name="fileName">The string fileName to open.</param>
         /// <param name="startRow">The integer row index to become the first row to load into this raster.</param>
         /// <param name="endRow">The 0 based integer row index to become the last row included in this raster.</param>
         /// <param name="startColumn">The 0 based integer column index for the first column of the raster.</param>
@@ -443,7 +443,7 @@ namespace DotSpatial.Data
         /// <param name="sourceRaster">The raster of values to paste into this raster. If the CellWidth and CellHeight values do not match between the files,
         /// an exception will be thrown. If the sourceRaster overlaps with the edge of this raster, only the intersecting region will be
         /// pasted.</param>
-        /// <param name="startRow">Specifies the row in this raster where the top row of the sourceRaster will be pasted </param>
+        /// <param name="startRow">Specifies the row in this raster where the top row of the sourceRaster will be pasted. </param>
         /// <param name="startColumn">Specifies the column in this raster where the left column of the sourceRaster will be pasted.</param>
         public void PasteRaster(Raster<T> sourceRaster, int startRow, int startColumn)
         {
@@ -645,9 +645,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Writes the header, regardless of which subtype of binary raster this is written for
+        /// Writes the header, regardless of which subtype of binary raster this is written for.
         /// </summary>
-        /// <param name="fileName">The string fileName specifying what file to load</param>
+        /// <param name="fileName">The string fileName specifying what file to load.</param>
         public void ReadHeader(string fileName)
         {
             BinaryReader br = new BinaryReader(new FileStream(fileName, FileMode.Open));
@@ -771,9 +771,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// The string fileName where this will begin to write data by clearing the existing file
+        /// The string fileName where this will begin to write data by clearing the existing file.
         /// </summary>
-        /// <param name="fileName">a fileName to write data to</param>
+        /// <param name="fileName">a fileName to write data to.</param>
         public void WriteHeader(string fileName)
         {
             using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.OpenOrCreate)))

@@ -32,7 +32,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the image bounds being used to define the georeferencing of the image
+        /// Gets or sets the image bounds being used to define the georeferencing of the image.
         /// </summary>
         public IRasterBounds Bounds
         {

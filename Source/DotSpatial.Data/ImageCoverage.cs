@@ -111,7 +111,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Cycles through each of the images and calls the save method on each one
+        /// Cycles through each of the images and calls the save method on each one.
         /// </summary>
         public void Save()
         {

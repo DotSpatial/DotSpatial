@@ -7,7 +7,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// This is simply an alias to make things a tad (though not much) more understandable
+    /// This is simply an alias to make things a tad (though not much) more understandable.
     /// </summary>
     public class PointCategoryCollection : ChangeEventList<IPointCategory>
     {
@@ -56,7 +56,7 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Overrides the OnCopy method to remove the SelectFeatures handler on the copy
+        /// Overrides the OnCopy method to remove the SelectFeatures handler on the copy.
         /// </summary>
         /// <param name="copy">The copy.</param>
         protected override void OnCopy(CopyList<IPointCategory> copy)

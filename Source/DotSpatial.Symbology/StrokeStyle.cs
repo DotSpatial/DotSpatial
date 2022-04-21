@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// StrokeStyle
+    /// StrokeStyle.
     /// </summary>
     public enum StrokeStyle
     {

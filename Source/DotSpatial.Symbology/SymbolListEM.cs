@@ -16,7 +16,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Calculates the bounding size for this entire symbol.
         /// </summary>
-        /// <param name="self">this</param>
+        /// <param name="self">this.</param>
         /// <returns>The calculated size.</returns>
         public static Size2D GetBoundingSize(this IList<ISymbol> self)
         {

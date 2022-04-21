@@ -12,7 +12,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// SymbolSizeChooser
+    /// SymbolSizeChooser.
     /// </summary>
     [DefaultEvent("SelectedSizeChanged")]
     [ToolboxItem(false)]
@@ -87,7 +87,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the box selection color
+        /// Gets or sets the box selection color.
         /// </summary>
         [Description("Gets or sets the box selection color")]
         public Color BoxSelectionColor
@@ -142,7 +142,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the minimum symbol size
+        /// Gets or sets the minimum symbol size.
         /// </summary>
         [Description("Gets or sets the minimum symbol size")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -161,7 +161,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the number of boxes
+        /// Gets or sets the number of boxes.
         /// </summary>
         [Description("Gets or sets the number of boxes")]
         public int NumBoxes
@@ -197,7 +197,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the rounding radius for the boxes
+        /// Gets or sets the rounding radius for the boxes.
         /// </summary>
         [Description("Gets or sets the rounding radius for the boxes")]
         public int RoundingRadius
@@ -262,7 +262,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Prevent redundant updates to the boxes every time a property is changed
+        /// Prevent redundant updates to the boxes every time a property is changed.
         /// </summary>
         public void BeginInit()
         {
@@ -360,7 +360,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Prevent flicker
+        /// Prevent flicker.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaintBackground(PaintEventArgs e)

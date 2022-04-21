@@ -13,7 +13,7 @@ using DotSpatial.Plugins.WebMap.Properties;
 using DotSpatial.Plugins.WebMap.Tiling;
 using DotSpatial.Projections;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Plugins.WebMap
 {
@@ -69,7 +69,7 @@ namespace DotSpatial.Plugins.WebMap
         #region Methods
 
         /// <summary>
-        /// Initialize the DotSpatial plugin
+        /// Initialize the DotSpatial plugin.
         /// </summary>
         public override void Activate()
         {
@@ -121,7 +121,7 @@ namespace DotSpatial.Plugins.WebMap
         }
 
         /// <summary>
-        /// Fires when the plugin should become inactive
+        /// Fires when the plugin should become inactive.
         /// </summary>
         public override void Deactivate()
         {
@@ -243,7 +243,7 @@ namespace DotSpatial.Plugins.WebMap
         private void BwProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             // Do we know what what our progress completion percent is (instead of 50)?
-            App.ProgressHandler.Progress("Loading Basemap ...", e.ProgressPercentage, "Loading Basemap ...");
+            App.ProgressHandler.Progress(e.ProgressPercentage, "Loading Basemap ...");
         }
 
         private void BwRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -259,7 +259,7 @@ namespace DotSpatial.Plugins.WebMap
                 App.Map.IsBusy = false;
                 _busySet = false;
                 App.Map.MapFrame.Invalidate();
-                App.ProgressHandler.Progress(string.Empty, 0, string.Empty);
+                App.ProgressHandler.Reset();
             }
         }
 
@@ -294,12 +294,15 @@ namespace DotSpatial.Plugins.WebMap
             else if (!App.Map.Projection.Equals(_webMercProj))
             {
                 // get original view extents
-                App.ProgressHandler.Progress(string.Empty, 0, "Reprojecting Map Layers...");
+                App.ProgressHandler.Progress(0, "Reprojecting Map Layers...");
                 double[] viewExtentXy = { App.Map.ViewExtents.MinX, App.Map.ViewExtents.MinY, App.Map.ViewExtents.MaxX, App.Map.ViewExtents.MaxY };
                 double[] viewExtentZ = { 0.0, 0.0 };
 
                 // reproject view extents
                 Reproject.ReprojectPoints(viewExtentXy, viewExtentZ, App.Map.Projection, _webMercProj, 0, 2);
+
+                // fix the extents if they are invalid
+                viewExtentXy = GetValidExtent(viewExtentXy);
 
                 // set the new map extents
                 App.Map.ViewExtents = new Extent(viewExtentXy);
@@ -307,7 +310,7 @@ namespace DotSpatial.Plugins.WebMap
                 // if projection is not WebMercator - reproject all layers:
                 App.Map.MapFrame.ReprojectMapFrame(_webMercProj);
 
-                App.ProgressHandler.Progress(string.Empty, 0, "Loading Basemap...");
+                App.ProgressHandler.Progress(0, "Loading Basemap...");
             }
 
             EnableBasemapLayer();
@@ -355,6 +358,37 @@ namespace DotSpatial.Plugins.WebMap
             _featureSetLayer.LegendItemVisible = false;
 
             App.Map.ZoomToMaxExtent();
+        }
+
+        private double[] GetValidExtent(double[] viewExtentXy)
+        {
+            // determine if any coordinate of the reprojected extents are valid
+            int idx = viewExtentXy.ToList().FindIndex(d => double.IsNaN(d) || double.IsInfinity(d));
+            if (idx == -1)
+            {
+                // all coordinates in the extent are valid so return the extent as-is
+                return viewExtentXy;
+            }
+            else
+            {
+                // one or more coordinates are invalid so try to guess a valid value
+                // assume the coordinates are in this order minX, minY, maxX, maxY
+                double minX = viewExtentXy[0];
+                if (double.IsNaN(minX) || double.IsInfinity(minX)) minX = TileCalculator.MinWebMercX;
+
+                double minY = viewExtentXy[1];
+                if (double.IsNaN(minY) || double.IsInfinity(minY)) minY = TileCalculator.MinWebMercY;
+
+                double maxX = viewExtentXy[2];
+                if (double.IsNaN(maxX) || double.IsInfinity(maxX)) maxX = TileCalculator.MaxWebMercX;
+
+                double maxY = viewExtentXy[3];
+                if (double.IsNaN(maxY) || double.IsInfinity(maxY)) maxY = TileCalculator.MaxWebMercY;
+
+                double[] viewExtNew = { minX, minY, maxX, maxY };
+
+                return viewExtNew;
+            }
         }
 
         private bool InsertBaseMapLayer(IMapGroup group)

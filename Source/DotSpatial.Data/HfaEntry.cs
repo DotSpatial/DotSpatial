@@ -10,7 +10,7 @@ using System.Text;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// HfaEntry
+    /// HfaEntry.
     /// </summary>
     public class HfaEntry
     {
@@ -296,7 +296,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// If this is null, then there is no further subtree
+        /// If this is null, then there is no further subtree.
         /// </summary>
         /// <param name="name">The name that gets parsed.</param>
         /// <returns>The subtree name.</returns>

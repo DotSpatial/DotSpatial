@@ -41,9 +41,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="GradientPattern"/> class using the specified colors and angle.
         /// </summary>
-        /// <param name="startColor">The start color</param>
-        /// <param name="endColor">The end color</param>
-        /// <param name="angle">The direction of the gradient, measured in degrees clockwise from the x-axis</param>
+        /// <param name="startColor">The start color.</param>
+        /// <param name="endColor">The end color.</param>
+        /// <param name="angle">The direction of the gradient, measured in degrees clockwise from the x-axis.</param>
         public GradientPattern(Color startColor, Color endColor, double angle)
             : this(startColor, endColor, angle, GradientType.Linear)
         {
@@ -52,10 +52,10 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="GradientPattern"/> class using the specified colors, angle and style.
         /// </summary>
-        /// <param name="startColor">The start color</param>
-        /// <param name="endColor">The end color</param>
-        /// <param name="angle">The direction of the gradient, measured in degrees clockwise from the x-axis</param>
-        /// <param name="style">Controls how the gradient is drawn</param>
+        /// <param name="startColor">The start color.</param>
+        /// <param name="endColor">The end color.</param>
+        /// <param name="angle">The direction of the gradient, measured in degrees clockwise from the x-axis.</param>
+        /// <param name="style">Controls how the gradient is drawn.</param>
         public GradientPattern(Color startColor, Color endColor, double angle, GradientType style)
         {
             Colors = new Color[2];

@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// FeatureTypeMismatchException
+    /// FeatureTypeMismatchException.
     /// </summary>
     public class FeatureTypeMismatchException : ArgumentException
     {

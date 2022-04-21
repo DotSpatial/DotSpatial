@@ -26,11 +26,11 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Converts a colour from HSL to RGB.
         /// </summary>
-        /// <remarks>Adapted from the algoritm in Foley and Van-Dam</remarks>
+        /// <remarks>Adapted from the algoritm in Foley and Van-Dam.</remarks>
         /// <param name="hue">A double representing degrees ranging from 0 to 360 and is equal to the GetHue() on a Color structure.</param>
         /// <param name="saturation">A double value ranging from 0 to 1, where 0 is gray and 1 is fully saturated with color.</param>
         /// <param name="brightness">A double value ranging from 0 to 1, where 0 is black and 1 is white.</param>
-        /// <returns>A Color structure with the equivalent hue saturation and brightness</returns>
+        /// <returns>A Color structure with the equivalent hue saturation and brightness.</returns>
         public static Color ColorFromHsl(double hue, double saturation, double brightness)
         {
             double normalizedHue = hue / 360;
@@ -105,8 +105,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Draws a rectangle with ever so slightly rounded edges. Good for selection borders.
         /// </summary>
-        /// <param name="g">The Graphics object</param>
-        /// <param name="pen">The pen to draw with</param>
+        /// <param name="g">The Graphics object.</param>
+        /// <param name="pen">The pen to draw with.</param>
         /// <param name="rect">The rectangle to draw to.</param>
         public static void DrawRoundedRectangle(Graphics g, Pen pen, Rectangle rect)
         {
@@ -131,7 +131,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="a">one corner point of the rectangle.</param>
         /// <param name="b">The opposing corner of the rectangle.</param>
-        /// <returns>A System.Draing.Rectangle</returns>
+        /// <returns>A System.Draing.Rectangle.</returns>
         public static Rectangle GetRectangle(Point a, Point b)
         {
             int x = Math.Min(a.X, b.X);
@@ -144,8 +144,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets a cool Highlight brush for highlighting things.
         /// </summary>
-        /// <param name="box">The rectangle in the box</param>
-        /// <param name="selectionHighlight">The color to use for the higlight</param>
+        /// <param name="box">The rectangle in the box.</param>
+        /// <param name="selectionHighlight">The color to use for the higlight.</param>
         /// <returns>The highlight brush.</returns>
         public static Brush HighlightBrush(Rectangle box, Color selectionHighlight)
         {
@@ -171,8 +171,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This allows the creation of a transparent color with the specified opacity.
         /// </summary>
-        /// <param name="opacity">A float ranging from 0 for transparent to 1 for opaque</param>
-        /// <returns>A Color</returns>
+        /// <param name="opacity">A float ranging from 0 for transparent to 1 for opaque.</param>
+        /// <returns>A Color.</returns>
         public static Color RandomDarkColor(float opacity)
         {
             int alpha = Convert.ToInt32(opacity * 255);
@@ -184,8 +184,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This allows the creation of a transparent color with the specified opacity.
         /// </summary>
-        /// <param name="opacity">A float ranging from 0 for transparent to 1 for opaque</param>
-        /// <returns>A Color</returns>
+        /// <param name="opacity">A float ranging from 0 for transparent to 1 for opaque.</param>
+        /// <returns>A Color.</returns>
         public static Color RandomLightColor(float opacity)
         {
             int alpha = Convert.ToInt32(opacity * 255);
@@ -197,8 +197,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This allows the creation of a transparent color with the specified opacity.
         /// </summary>
-        /// <param name="opacity">A float ranging from 0 for transparent to 1 for opaque</param>
-        /// <returns>A Color</returns>
+        /// <param name="opacity">A float ranging from 0 for transparent to 1 for opaque.</param>
+        /// <returns>A Color.</returns>
         public static Color RandomTranslucent(float opacity)
         {
             int alpha = Convert.ToInt32(opacity * 255);

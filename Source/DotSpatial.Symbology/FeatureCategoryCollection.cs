@@ -6,7 +6,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// FeatureCategoryCollection
+    /// FeatureCategoryCollection.
     /// </summary>
     public class FeatureCategoryCollection : ChangeEventList<IFeatureCategory>
     {

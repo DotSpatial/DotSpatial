@@ -12,7 +12,7 @@ using System.Globalization;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A scale bar control that can be linked to a map and provide a dynamic scale bar for the print layout
+    /// A scale bar control that can be linked to a map and provide a dynamic scale bar for the print layout.
     /// </summary>
     public class LayoutScaleBar : LayoutElement
     {
@@ -72,7 +72,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the color of the text
+        /// Gets or sets the color of the text.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -92,7 +92,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the font used to draw this text
+        /// Gets or sets the font used to draw this text.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -112,7 +112,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets a layout control
+        /// Gets or sets a layout control.
         /// </summary>
         [Browsable(false)]
         public LayoutControl LayoutControl
@@ -130,7 +130,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the Map control that the scale bar uses for measurement decisions
+        /// Gets or sets the Map control that the scale bar uses for measurement decisions.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -151,7 +151,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the number of breaks the scale bar should have
+        /// Gets or sets the number of breaks the scale bar should have.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -171,7 +171,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the hinting used to draw the text
+        /// Gets or sets the hinting used to draw the text.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -191,7 +191,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the unit to use for the scale bar
+        /// Gets or sets the unit to use for the scale bar.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -211,7 +211,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets the unit text to display after the scale bar
+        /// Gets or sets the unit text to display after the scale bar.
         /// </summary>
         [Browsable(true)]
         [Category("Symbol")]
@@ -235,10 +235,10 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
+        /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object.
         /// </summary>
-        /// <param name="g">The graphics object to draw to</param>
-        /// <param name="printing">Boolean, true if printing to an actual print document</param>
+        /// <param name="g">The graphics object to draw to.</param>
+        /// <param name="printing">Boolean, true if printing to an actual print document.</param>
         public override void Draw(Graphics g, bool printing)
         {
             if (_layoutMap == null || _layoutMap.Scale == 0) return;
@@ -292,10 +292,10 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Returns the conversion factor between the map units and inches
+        /// Returns the conversion factor between the map units and inches.
         /// </summary>
-        /// <param name="mapWinUnits">A string represing the MapUnits</param>
-        /// <returns>A double representing the conversion factor between MapUnits and inches. If something goes wrong we return 0</returns>
+        /// <param name="mapWinUnits">A string represing the MapUnits.</param>
+        /// <returns>A double representing the conversion factor between MapUnits and inches. If something goes wrong we return 0.</returns>
         private static double GetConversionFactor(string mapWinUnits)
         {
             switch (mapWinUnits.ToLower())
@@ -324,7 +324,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Updates the scale bar if the map is deleted
+        /// Updates the scale bar if the map is deleted.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>

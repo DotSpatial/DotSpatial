@@ -145,7 +145,7 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Forces activation
+        /// Forces activation.
         /// </summary>
         public void Activate()
         {
@@ -195,7 +195,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Instructs this tool to perform any actions that should occur on the MouseDown event.
         /// </summary>
-        /// <param name="e">A MouseEventArgs relative to the drawing panel</param>
+        /// <param name="e">A MouseEventArgs relative to the drawing panel.</param>
         public void DoMouseDown(GeoMouseArgs e)
         {
             OnMouseDown(e);
@@ -204,7 +204,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Instructs this tool to perform any actions that should occur on the MouseMove event.
         /// </summary>
-        /// <param name="e">A MouseEventArgs relative to the drawing panel</param>
+        /// <param name="e">A MouseEventArgs relative to the drawing panel.</param>
         public void DoMouseMove(GeoMouseArgs e)
         {
             OnMouseMove(e);
@@ -213,7 +213,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Instructs this tool to perform any actions that should occur on the MouseUp event.
         /// </summary>
-        /// <param name="e">A MouseEventArgs relative to the drawing panel</param>
+        /// <param name="e">A MouseEventArgs relative to the drawing panel.</param>
         public void DoMouseUp(GeoMouseArgs e)
         {
             OnMouseUp(e);
@@ -222,7 +222,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Instructs this tool to perform any actions that should occur on the MouseWheel event.
         /// </summary>
-        /// <param name="e">A MouseEventArgs relative to the drawing panel</param>
+        /// <param name="e">A MouseEventArgs relative to the drawing panel.</param>
         public void DoMouseWheel(GeoMouseArgs e)
         {
             OnMouseWheel(e);
@@ -281,7 +281,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// This is fired when enabled is set to true, and firing this will set enabled to true
+        /// This is fired when enabled is set to true, and firing this will set enabled to true.
         /// </summary>
         protected virtual void OnActivate()
         {
@@ -302,13 +302,13 @@ namespace DotSpatial.Controls
         /// This allows sub-classes to customize the drawing that occurs. All drawing is done
         /// in the image coordinate space, where 0, 0 is the upper left corner of the image.
         /// </summary>
-        /// <param name="e">A PaintEventArgs where the graphics object is already in image coordinates</param>
+        /// <param name="e">A PaintEventArgs where the graphics object is already in image coordinates.</param>
         protected virtual void OnDraw(MapDrawArgs e)
         {
         }
 
         /// <summary>
-        /// Occurs when a key is pressed
+        /// Occurs when a key is pressed.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected virtual void OnKeyDown(KeyEventArgs e)
@@ -318,7 +318,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Allows for inheriting tools to control KeyUp.
         /// </summary>
-        /// <param name="e">A KeyEventArgs parameter</param>
+        /// <param name="e">A KeyEventArgs parameter.</param>
         protected virtual void OnKeyUp(KeyEventArgs e)
         {
             KeyUp?.Invoke(this, e);
@@ -327,7 +327,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Allows for inheriting tools to control OnMouseDoubleClick.
         /// </summary>
-        /// <param name="e">A GeoMouseArgs parameter</param>
+        /// <param name="e">A GeoMouseArgs parameter.</param>
         protected virtual void OnMouseDoubleClick(GeoMouseArgs e)
         {
             MouseDoubleClick?.Invoke(this, e);
@@ -336,7 +336,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Allows for inheriting tools to control OnMouseDown.
         /// </summary>
-        /// <param name="e">A GeoMouseArgs parameter</param>
+        /// <param name="e">A GeoMouseArgs parameter.</param>
         protected virtual void OnMouseDown(GeoMouseArgs e)
         {
             MouseDown?.Invoke(this, e);
@@ -345,7 +345,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Allows for inheriting tools to control OnMouseMove.
         /// </summary>
-        /// <param name="e">A GeoMouseArgs parameter</param>
+        /// <param name="e">A GeoMouseArgs parameter.</param>
         protected virtual void OnMouseMove(GeoMouseArgs e)
         {
             MouseMove?.Invoke(this, e);
@@ -354,7 +354,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Allows for inheriting tools to control OnMouseUp.
         /// </summary>
-        /// <param name="e">A GeoMouseArgs parameter</param>
+        /// <param name="e">A GeoMouseArgs parameter.</param>
         protected virtual void OnMouseUp(GeoMouseArgs e)
         {
             MouseUp?.Invoke(this, e);
@@ -363,7 +363,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Allows for inheriting tools to control OnMouseWheel.
         /// </summary>
-        /// <param name="e">A GeoMouseArgs parameter</param>
+        /// <param name="e">A GeoMouseArgs parameter.</param>
         protected virtual void OnMouseWheel(GeoMouseArgs e)
         {
             MouseWheel?.Invoke(this, e);

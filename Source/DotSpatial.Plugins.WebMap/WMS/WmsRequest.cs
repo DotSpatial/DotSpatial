@@ -11,7 +11,7 @@ using BruTile.Web;
 namespace DotSpatial.Plugins.WebMap.WMS
 {
     /// <summary>
-    /// WmsRequest
+    /// WmsRequest.
     /// </summary>
     public class WmsRequest : IRequest
     {
@@ -40,8 +40,18 @@ namespace DotSpatial.Plugins.WebMap.WMS
             var au = baseUrl.AbsoluteUri;
             if (au.IndexOf("SERVICE=WMS", StringComparison.OrdinalIgnoreCase) == -1)
             {
-                if (!au.EndsWith("?")) au += "?";
-                au += "&SERVICE=WMS";
+                if (au.EndsWith("?") || au.EndsWith("&"))
+                {
+                    au += "SERVICE=WMS";
+                }
+                else if (au.Contains("?"))
+                {
+                    au += "&SERVICE=WMS";
+                }
+                else
+                {
+                    au += "?SERVICE=WMS";
+                }
             }
 
             var url = new StringBuilder(au);

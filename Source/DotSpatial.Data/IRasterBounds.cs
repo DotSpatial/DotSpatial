@@ -14,7 +14,7 @@ namespace DotSpatial.Data
         /// Gets or sets the double affine coefficients that control the world-file
         /// positioning of this image. X' and Y' are real world coords.
         /// X' = [0] + [1] * Column + [2] * Row
-        /// Y' = [3] + [4] * Column + [5] * Row
+        /// Y' = [3] + [4] * Column + [5] * Row.
         /// </summary>
         double[] AffineCoefficients { get; set; }
 
@@ -43,7 +43,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets or sets the difference between the maximum and minimum y values.
-        /// Setting this will change only the minimum Y value, leaving the Top alone
+        /// Setting this will change only the minimum Y value, leaving the Top alone.
         /// </summary>
         /// <returns>max y - min y, or 0 if this is a null <c>Envelope</c>.</returns>
         double Height { get; set; }
@@ -60,7 +60,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets or Sets the difference between the maximum and minimum x values.
-        /// Setting this will change only the Maximum X value, and leave the minimum X alone
+        /// Setting this will change only the Maximum X value, and leave the minimum X alone.
         /// </summary>
         /// <returns>max x - min x, or 0 if this is a null <c>Envelope</c>.</returns>
         double Width { get; set; }

@@ -1,12 +1,12 @@
 cd ..
-call Compile.cmd
+call Compile_BuildTools2019.cmd
 
 cd .nuGet
 
 del *.nupkg
 
-Set NugetVersion=2.0.0-rc1
-Set PackageVersion=2.0.0-rc1
+Set NugetVersion=3.0.0
+Set PackageVersion=3.0.0
 
 nuget pack ..\DotSpatial.Analysis\DotSpatial.Analysis.csproj -version "%NugetVersion%" -Properties "PackageVersion=%PackageVersion%";"Configuration=Release" 
 nuget pack ..\DotSpatial.Compatibility\DotSpatial.Compatibility.csproj -version "%NugetVersion%" -Properties "PackageVersion=%PackageVersion%";"Configuration=Release" 

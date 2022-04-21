@@ -8,7 +8,7 @@ using DotSpatial.Projections;
 namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
-    /// ProjectionParam
+    /// ProjectionParam.
     /// </summary>
     public class ProjectionParam : Parameter
     {

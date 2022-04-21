@@ -9,7 +9,7 @@ using System.Globalization;
 namespace DotSpatial.Positioning.Design
 {
     /// <summary>
-    /// A base Expandable object converter
+    /// A base Expandable object converter.
     /// </summary>
     // The Original Code is from http://geoframework.codeplex.com/ version 2.0
     public abstract class PositioningObjectConverter : ExpandableObjectConverter

@@ -27,6 +27,11 @@ namespace DotSpatial.Projections
 
         #endregion
 
+        #region Static Variables
+
+        public static bool InputIsBigEndian = false;
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -117,12 +122,12 @@ namespace DotSpatial.Projections
             NumLambdas = (int)(Math.Abs(urLam - ll.Lambda) / cs.Lambda + .5) + 1;
             NumPhis = (int)(Math.Abs(urPhi - ll.Phi) / cs.Phi + .5) + 1;
 
-            ll.Lambda *= DEG_TO_RAD;
-            ll.Phi *= DEG_TO_RAD;
+            ll.Lambda = ll.Lambda / 3600 * DEG_TO_RAD;
+            ll.Phi = ll.Phi / 3600 * DEG_TO_RAD;
             LowerLeft = ll;
 
-            cs.Lambda *= DEG_TO_RAD;
-            cs.Phi *= DEG_TO_RAD;
+            cs.Lambda = cs.Lambda / 3600 * DEG_TO_RAD;
+            cs.Phi = cs.Phi / 3600 * DEG_TO_RAD;
             CellSize = cs;
         }
 
@@ -149,13 +154,17 @@ namespace DotSpatial.Projections
                         for (int col = numLambdas - 1; col >= 0; col--)
                         {
                             // shift values are given in "arc-seconds" and need to be converted to radians.
-                            cvs[row][col].Phi = ReadDouble(br) * (Math.PI / 180) / 3600;
-                            cvs[row][col].Lambda = ReadDouble(br) * (Math.PI / 180) / 3600;
+                            cvs[row][col].Phi = ReadFloat(br) * (Math.PI / 180) / 3600;
+                            cvs[row][col].Lambda = ReadFloat(br) * (Math.PI / 180) / 3600;
+
+                            str.Seek(8, SeekOrigin.Current);
                         }
                     }
                     Cvs = cvs;
+                    Filled = true;
                 }
             }
+            Filled = true;
         }
 
         /// <summary>
@@ -169,9 +178,31 @@ namespace DotSpatial.Projections
         {
             byte[] bValue = new byte[8];
             Array.Copy(array, offset, bValue, 0, 8);
-            if (!BitConverter.IsLittleEndian) Array.Reverse(bValue);
+            if (InputIsBigEndian && BitConverter.IsLittleEndian)
+                Array.Reverse(bValue);
             double temp = BitConverter.ToDouble(bValue, 0);
             return temp;
+        }
+
+        /// <summary>
+        /// Gets the double value from the specified position in the byte array
+        /// Using BigEndian format. (TODO: This assumption is not true, at least for Beta2007.gsb, which
+        /// is in LittleEndian). Reversing the bytes produces garbage. I'll tackle this in the next commit.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        private static float ReadFloat(BinaryReader br)
+        {
+            byte[] temp = new byte[4];
+            br.Read(temp, 0, 4);
+
+            if (InputIsBigEndian && BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(temp);
+            }
+            float value = BitConverter.ToSingle(temp, 0);
+            return value;
         }
 
         #endregion

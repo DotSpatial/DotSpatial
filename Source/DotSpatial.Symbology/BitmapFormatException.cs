@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// BitmapFormatException
+    /// BitmapFormatException.
     /// </summary>
     public class BitmapFormatException : FormatException
     {

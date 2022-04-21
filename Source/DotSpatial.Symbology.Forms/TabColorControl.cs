@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// TabColorControl
+    /// TabColorControl.
     /// </summary>
     [DefaultEvent("ColorChanged")]
     [ToolboxItem(false)]
@@ -55,7 +55,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the end color, which controls the RGB end color and the right HSL ranges
+        /// Gets or sets the end color, which controls the RGB end color and the right HSL ranges.
         /// </summary>
         [Category("Colors")]
         [Description("Gets or sets the end color, which controls the RGB end color and the right HSL ranges")]
@@ -75,14 +75,14 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the integer hue shift marking how much the hue slider should be shifted
+        /// Gets or sets the integer hue shift marking how much the hue slider should be shifted.
         /// </summary>
         [Category("Behavior")]
         [Description("Gets or sets the integer hue shift marking how much the hue slider should be shifted")]
         public int HueShift { get; set; }
 
         /// <summary>
-        /// Gets or sets the start color, which controls the RGB start colors and the HSL left ranges
+        /// Gets or sets the start color, which controls the RGB start colors and the HSL left ranges.
         /// </summary>
         [Category("Colors")]
         [Description("Gets or sets the start color, which controls the RGB colors and the HSL range")]

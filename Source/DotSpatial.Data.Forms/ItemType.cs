@@ -4,7 +4,7 @@
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// ItemType
+    /// ItemType.
     /// </summary>
     public enum ItemType
     {

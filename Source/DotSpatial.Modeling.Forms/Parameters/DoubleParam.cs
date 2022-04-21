@@ -7,7 +7,7 @@ using DotSpatial.Modeling.Forms.Elements;
 namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
-    /// Double Parameter returned by an ITool allows the tool to specify a range and default value
+    /// Double Parameter returned by an ITool allows the tool to specify a range and default value.
     /// </summary>
     public class DoubleParam : Parameter
     {
@@ -16,7 +16,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="DoubleParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
+        /// <param name="name">The name of the parameter.</param>
         public DoubleParam(string name)
         {
             Name = name;
@@ -28,8 +28,8 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="DoubleParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
-        /// <param name="value">The default value</param>
+        /// <param name="name">The name of the parameter.</param>
+        /// <param name="value">The default value.</param>
         public DoubleParam(string name, double value)
         {
             Name = name;
@@ -42,10 +42,10 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="DoubleParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
-        /// <param name="value">The default value</param>
-        /// <param name="min">The minimum value</param>
-        /// <param name="max">The maximum value</param>
+        /// <param name="name">The name of the parameter.</param>
+        /// <param name="value">The default value.</param>
+        /// <param name="min">The minimum value.</param>
+        /// <param name="max">The maximum value.</param>
         public DoubleParam(string name, double value, double min, double max)
         {
             Name = name;
@@ -62,12 +62,12 @@ namespace DotSpatial.Modeling.Forms.Parameters
         #region Properties
 
         /// <summary>
-        /// Gets or sets the maximum range for the paramater Default: 1.79769313486232e308
+        /// Gets or sets the maximum range for the paramater Default: 1.79769313486232e308.
         /// </summary>
         public double Max { get; set; } = double.MaxValue;
 
         /// <summary>
-        /// Gets or sets the minimum range for the parameter Default: -1.79769313486232e308
+        /// Gets or sets the minimum range for the parameter Default: -1.79769313486232e308.
         /// </summary>
         public double Min { get; set; } = double.MinValue;
 

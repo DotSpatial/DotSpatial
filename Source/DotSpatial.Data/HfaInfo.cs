@@ -7,7 +7,7 @@ using System.IO;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// HfaInfo
+    /// HfaInfo.
     /// </summary>
     public class HfaInfo
     {
@@ -26,7 +26,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the access type
+        /// Gets or sets the access type.
         /// </summary>
         public HfaAccess Access { get; set; }
 

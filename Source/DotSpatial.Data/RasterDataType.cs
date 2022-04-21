@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Data types specific to grids
+    /// Data types specific to grids.
     /// </summary>
     public enum RasterDataType
     {

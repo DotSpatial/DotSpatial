@@ -174,7 +174,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Disposes the font and titlefont
+        /// Disposes the font and titlefont.
         /// </summary>
         public void Dispose()
         {
@@ -308,8 +308,8 @@ namespace DotSpatial.Symbology.Forms
         /// Given a double value, this returns the floating point position on this graph,
         /// based on the current minimum, maximum values.
         /// </summary>
-        /// <param name="value">The double value to locate</param>
-        /// <returns>A floating point X position</returns>
+        /// <param name="value">The double value to locate.</param>
+        /// <returns>A floating point X position.</returns>
         public float GetPosition(double value)
         {
             Rectangle gb = GetGraphBounds();
@@ -320,8 +320,8 @@ namespace DotSpatial.Symbology.Forms
         /// Given a floating point X coordinate (relative to the control, not just the graph)
         /// this will return the double value represented by that location.
         /// </summary>
-        /// <param name="position">The floating point position</param>
-        /// <returns>The double value at the specified X coordinate</returns>
+        /// <param name="position">The floating point position.</param>
+        /// <returns>The double value at the specified X coordinate.</returns>
         public double GetValue(float position)
         {
             Rectangle gb = GetGraphBounds();

@@ -6,7 +6,6 @@ using System.Data;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Simplify;
 
@@ -44,12 +43,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -58,7 +57,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
@@ -74,12 +73,12 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the DP line simplefy tool programmatically
-        /// Ping Yang Added it for external Testing
+        /// Executes the DP line simplefy tool programmatically.
+        /// Ping Yang Added it for external Testing.
         /// </summary>
-        /// <param name="input">The input polygon feature set</param>
-        /// <param name="tolerance">The tolerance to use when simplefiying</param>
-        /// <param name="output">The output polygon feature set</param>
+        /// <param name="input">The input polygon feature set.</param>
+        /// <param name="tolerance">The tolerance to use when simplefiying.</param>
+        /// <param name="output">The output polygon feature set.</param>
         /// <returns>True, if executed successfully.</returns>
         public bool Execute(IFeatureSet input, double tolerance, IFeatureSet output)
         {
@@ -124,12 +123,12 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the DP line simplefy tool programmatically
+        /// Executes the DP line simplefy tool programmatically.
         /// </summary>
-        /// <param name="input">The input polygon feature set</param>
-        /// <param name="tolerance">The tolerance to use when simplefiying</param>
-        /// <param name="output">The output polygon feature set</param>
-        /// <param name="cancelProgressHandler">The progress handler</param>
+        /// <param name="input">The input polygon feature set.</param>
+        /// <param name="tolerance">The tolerance to use when simplefiying.</param>
+        /// <param name="output">The output polygon feature set.</param>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
         public bool Execute(IFeatureSet input, double tolerance, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
@@ -183,21 +182,21 @@ namespace DotSpatial.Tools
                 }
 
                 // Status updates is done here, shows number of old / new points
-                cancelProgressHandler.Progress(string.Empty, Convert.ToInt32((Convert.ToDouble(j) / Convert.ToDouble(input.Features.Count)) * 100), numOldPoints + "-->" + numNewPoints);
+                cancelProgressHandler.Progress(Convert.ToInt32((Convert.ToDouble(j) / Convert.ToDouble(input.Features.Count)) * 100), numOldPoints + "-->" + numNewPoints);
                 if (cancelProgressHandler.Cancel)
                 {
                     return false;
                 }
             }
 
-            cancelProgressHandler.Progress(string.Empty, 100, TextStrings.Originalnumberofpoints + numTotalOldPoints + " " + TextStrings.Newnumberofpoints + numTotalNewPoints);
+            cancelProgressHandler.Progress(100, TextStrings.Originalnumberofpoints + numTotalOldPoints + " " + TextStrings.Newnumberofpoints + numTotalNewPoints);
 
             output.Save();
             return true;
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {

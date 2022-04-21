@@ -6,19 +6,19 @@ using System.Drawing;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// IColorable
+    /// IColorable.
     /// </summary>
     public interface IColorable
     {
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Color
+        /// Gets or sets the Color.
         /// </summary>
         Color Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the opacity
+        /// Gets or sets the opacity.
         /// </summary>
         float Opacity { get; set; }
 

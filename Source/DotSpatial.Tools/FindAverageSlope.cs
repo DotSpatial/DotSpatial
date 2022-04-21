@@ -5,7 +5,6 @@ using System;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Tools
@@ -41,12 +40,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -55,7 +54,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
@@ -74,9 +73,9 @@ namespace DotSpatial.Tools
         /// Finds the average slope in the given polygons.
         /// </summary>
         /// <param name="ras">The dem Raster(Grid file).</param>
-        /// <param name="zFactor">The scaler factor</param>
+        /// <param name="zFactor">The scaler factor.</param>
         /// <param name="poly">The flow poly shapefile path.</param>
-        /// <param name="output">The resulting DEM of slopes</param>
+        /// <param name="output">The resulting DEM of slopes.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
         public bool Execute(IRaster ras, double zFactor, IFeatureSet poly, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
@@ -97,10 +96,10 @@ namespace DotSpatial.Tools
             output.DataTable.Columns.Add(TextStrings.AveSlope, typeof(double));
 
             IRaster slopeGrid = new Raster
-                                    {
-                                        DataType = ras.DataType,
-                                        Bounds = ras.Bounds
-                                    };
+            {
+                DataType = ras.DataType,
+                Bounds = ras.Bounds
+            };
 
             // FeatureSet polyShape = new FeatureSet();
             int previous = 0;
@@ -137,7 +136,7 @@ namespace DotSpatial.Tools
                 // only update when increment in percentage
                 if (current > previous + 5)
                 {
-                    cancelProgressHandler.Progress(string.Empty, current, current + TextStrings.progresscompleted);
+                    cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
                     previous = current;
                 }
 
@@ -192,29 +191,29 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {
             _inputParam = new Parameter[3];
             _inputParam[0] = new RasterParam(TextStrings.input1altitudeRaster)
-                                 {
-                                     HelpText = TextStrings.InputRasterforaverageslopecalculation
-                                 };
+            {
+                HelpText = TextStrings.InputRasterforaverageslopecalculation
+            };
             _inputParam[1] = new DoubleParam(TextStrings.inputZfactor, 1.0)
-                                 {
-                                     HelpText = TextStrings.InputZfactorforslopedisplay
-                                 };
+            {
+                HelpText = TextStrings.InputZfactorforslopedisplay
+            };
             _inputParam[2] = new PolygonFeatureSetParam(TextStrings.input1polygonfeatureset)
-                                 {
-                                     HelpText = TextStrings.FindAverageSlopeDescription
-                                 };
+            {
+                HelpText = TextStrings.FindAverageSlopeDescription
+            };
 
             _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.Outputfeaturesetwithaverageslope)
-                                  {
-                                      HelpText = TextStrings.Resultofaverageslope
-                                  };
+            {
+                HelpText = TextStrings.Resultofaverageslope
+            };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// This extends the ChangeEventList by providing methods that allow access by an object Key, and will pass
+    /// This extends the ChangeEventList by providing methods that allow access by an object Key, and will pass.
     /// </summary>
     public class LayerCollection : LayerEventList<ILayer>, ILayerCollection
     {

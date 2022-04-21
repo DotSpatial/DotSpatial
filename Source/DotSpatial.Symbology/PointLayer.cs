@@ -26,8 +26,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PointLayer"/> class.
         /// </summary>
-        /// <param name="inFeatureSet">The IFeatureLayer of data values to turn into a graphical PointLayer</param>
-        /// <exception cref="PointFeatureTypeException">Thrown if the featureSet FeatureType is not point or multi-point</exception>
+        /// <param name="inFeatureSet">The IFeatureLayer of data values to turn into a graphical PointLayer.</param>
+        /// <exception cref="PointFeatureTypeException">Thrown if the featureSet FeatureType is not point or multi-point.</exception>
         public PointLayer(IFeatureSet inFeatureSet)
             : this(inFeatureSet, null)
         {
@@ -37,9 +37,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PointLayer"/> class.
         /// </summary>
-        /// <param name="inFeatureSet">Any implementation of an IFeatureLayer</param>
+        /// <param name="inFeatureSet">Any implementation of an IFeatureLayer.</param>
         /// <param name="progressHandler">A valid implementation of the IProgressHandler interface.</param>
-        /// <exception cref="PointFeatureTypeException">Thrown if the featureSet FeatureType is not point or multi-point</exception>
+        /// <exception cref="PointFeatureTypeException">Thrown if the featureSet FeatureType is not point or multi-point.</exception>
         public PointLayer(IFeatureSet inFeatureSet, IProgressHandler progressHandler)
             : base(inFeatureSet, null, progressHandler)
         {
@@ -132,7 +132,7 @@ namespace DotSpatial.Symbology
         /// does not generate a point layer, an exception will be thrown.
         /// </summary>
         /// <param name="fileName">A string fileName to create a point layer for.</param>
-        /// <param name="progressHandler">Any valid implementation of IProgressHandler for receiving progress messages</param>
+        /// <param name="progressHandler">Any valid implementation of IProgressHandler for receiving progress messages.</param>
         /// <returns>A PointLayer created from the specified fileName.</returns>
         public static new IPointLayer OpenFile(string fileName, IProgressHandler progressHandler)
         {

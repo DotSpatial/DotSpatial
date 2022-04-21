@@ -11,7 +11,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// DrawingFilter
+    /// DrawingFilter.
     /// </summary>
     public class DrawingFilter : IDrawingFilter
     {
@@ -287,7 +287,7 @@ namespace DotSpatial.Symbology
         /// This uses the feature as the key and attempts to find the specified drawn state
         /// that describes selection, chunk and category.
         /// </summary>
-        /// <param name="key">The feature</param>
+        /// <param name="key">The feature.</param>
         /// <remarks>The strength is that if someone inserts a new member or re-orders
         /// the features in the featureset, we don't forget which ones are selected.
         /// The disadvantage is that duplicate features in the same featureset
@@ -342,7 +342,7 @@ namespace DotSpatial.Symbology
         /// This will use the filter expressions on the categories to change the categories for those members.
         /// This means that an item will be classified as the last filter that it qualifies for.
         /// </summary>
-        /// <param name="scheme">The scheme of categories to apply to the drawing states</param>
+        /// <param name="scheme">The scheme of categories to apply to the drawing states.</param>
         public void ApplyScheme(IFeatureScheme scheme)
         {
             _scheme = scheme;
@@ -418,7 +418,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a shallow copy
+        /// Creates a shallow copy.
         /// </summary>
         /// <returns>Returns a shallow copy of this object.</returns>
         public object Clone()
@@ -432,8 +432,8 @@ namespace DotSpatial.Symbology
         /// selection state to unselected. This can be overridden in sub-classes to come up
         /// with a different default state.
         /// </summary>
-        /// <param name="index">The integer index to get the default state of</param>
-        /// <returns>An IDrawnState</returns>
+        /// <param name="index">The integer index to get the default state of.</param>
+        /// <returns>An IDrawnState.</returns>
         public virtual IDrawnState GetDefaultState(int index)
         {
             if (_useChunks)
@@ -448,7 +448,7 @@ namespace DotSpatial.Symbology
         /// Gets an enumator for cycling through exclusively the features that satisfy all the listed criteria,
         /// including chunk index, selected state, and scheme category.
         /// </summary>
-        /// <returns>An Enumerator for cycling through the values</returns>
+        /// <returns>An Enumerator for cycling through the values.</returns>
         public IEnumerator<IFeature> GetEnumerator()
         {
             if (!_isInitialized) DoInitialize();
@@ -496,14 +496,14 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the enumerstor.
         /// </summary>
-        /// <returns>The enumerator</returns>
+        /// <returns>The enumerator.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
         /// <summary>
-        /// Fires the Initialized Event
+        /// Fires the Initialized Event.
         /// </summary>
         protected virtual void OnInitialize()
         {

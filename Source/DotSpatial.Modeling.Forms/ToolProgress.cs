@@ -8,7 +8,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
-    /// A form which shows the progress of a tool
+    /// A form which shows the progress of a tool.
     /// </summary>
     public partial class ToolProgress : Form, ICancelProgressHandler
     {
@@ -23,7 +23,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="ToolProgress"/> class.
         /// </summary>
-        /// <param name="numTools">The number of tools that are going to be executed</param>
+        /// <param name="numTools">The number of tools that are going to be executed.</param>
         public ToolProgress(int numTools)
         {
             InitializeComponent();
@@ -36,7 +36,7 @@ namespace DotSpatial.Modeling.Forms
 
         private delegate void UpdateExecComp();
 
-        private delegate void UpdateProg(string key, int percent, string message);
+        private delegate void UpdateProg(int percent, string message);
 
         #region Properties
 
@@ -55,7 +55,7 @@ namespace DotSpatial.Modeling.Forms
         #region Methods
 
         /// <summary>
-        /// This method should be called when the process has been completed
+        /// This method should be called when the process has been completed.
         /// </summary>
         public void ExecutionComplete()
         {
@@ -71,22 +71,29 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// Handles the progress method necessary to implement IProgress
+        /// Handles the progress method necessary to implement IProgress.
         /// </summary>
-        /// <param name="key">This a message with no percentage information..this is ignored</param>
-        /// <param name="percent">The integer percentage from 0 to 100 that is used to control the progress bar</param>
-        /// <param name="message">The actual complete message to show..this is also ignored</param>
-        public void Progress(string key, int percent, string message)
+        /// <param name="percent">The integer percentage from 0 to 100 that is used to control the progress bar.</param>
+        /// <param name="message">The actual complete message to show.</param>
+        public void Progress(int percent, string message)
         {
             if (InvokeRequired)
             {
                 UpdateProg prg = UpdateProgress;
-                BeginInvoke(prg, key, percent, message);
+                BeginInvoke(prg, percent, message);
             }
             else
             {
-                UpdateProgress(key, percent, message);
+                UpdateProgress(percent, message);
             }
+        }
+
+        /// <summary>
+        /// Resets the progress.
+        /// </summary>
+        public void Reset()
+        {
+            Progress(0, string.Empty);
         }
 
         private void BtnCancelClick(object sender, EventArgs e)
@@ -107,16 +114,19 @@ namespace DotSpatial.Modeling.Forms
             _executionComplete = true;
         }
 
-        private void UpdateProgress(string key, int percent, string message)
+        private void UpdateProgress(int percent, string message)
         {
             if (percent < 0) percent = 0;
             if (percent > 100) percent = 100;
+
             _progressBarTool.Value = percent;
+
             if (!string.IsNullOrEmpty(message))
             {
                 _txtBoxStatus.AppendText("\r\n" + DateTime.Now + ": " + message);
             }
         }
+             
 
         #endregion
     }

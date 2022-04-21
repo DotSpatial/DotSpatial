@@ -4,7 +4,7 @@
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// The available feature symbolizer types
+    /// The available feature symbolizer types.
     /// </summary>
     public enum SymbolizerType
     {

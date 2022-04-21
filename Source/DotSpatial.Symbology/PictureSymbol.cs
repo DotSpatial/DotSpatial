@@ -13,7 +13,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// PictureSymbol
+    /// PictureSymbol.
     /// </summary>
     public class PictureSymbol : OutlinedSymbol, IPictureSymbol
     {
@@ -40,7 +40,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PictureSymbol"/> class from the specified image.
         /// </summary>
-        /// <param name="image">The image to use when creating the symbol</param>
+        /// <param name="image">The image to use when creating the symbol.</param>
         public PictureSymbol(Image image)
         {
             SymbolType = SymbolType.Picture;
@@ -53,7 +53,7 @@ namespace DotSpatial.Symbology
         /// The larger dimension from the image will be adjusted to fit the size,
         /// while the smaller dimension will be kept proportional.
         /// </summary>
-        /// <param name="image">The image to use for this symbol</param>
+        /// <param name="image">The image to use for this symbol.</param>
         /// <param name="size">The double size to use for the larger of the two dimensions of the image.</param>
         public PictureSymbol(Image image, double size)
         {
@@ -78,7 +78,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="PictureSymbol"/> class from the specified icon.
         /// </summary>
-        /// <param name="icon">The icon to use when creating this symbol</param>
+        /// <param name="icon">The icon to use when creating this symbol.</param>
         public PictureSymbol(Icon icon)
         {
             SymbolType = SymbolType.Picture;
@@ -105,7 +105,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the image to use when the PictureMode is set to Image
+        /// Gets or sets the image to use when the PictureMode is set to Image.
         /// </summary>
         [XmlIgnore]
         public Image Image
@@ -171,7 +171,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the string image fileName to use
+        /// Gets or sets the string image fileName to use.
         /// </summary>
         [Serialize("ImageFilename")]
         public string ImageFilename
@@ -286,10 +286,10 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// OnDraw
+        /// OnDraw.
         /// </summary>
-        /// <param name="g">Graphics object</param>
-        /// <param name="scaleSize">The double scale Size</param>
+        /// <param name="g">Graphics object.</param>
+        /// <param name="scaleSize">The double scale Size.</param>
         protected override void OnDraw(Graphics g, double scaleSize)
         {
             float dx = (float)(scaleSize * Size.Width / 2);

@@ -33,7 +33,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Initializes a new instance of the <see cref="SimplePattern"/> class.
         /// </summary>
-        /// <param name="fillColor">The fill color to use for this simple pattern</param>
+        /// <param name="fillColor">The fill color to use for this simple pattern.</param>
         public SimplePattern(Color fillColor)
         {
             Outline = null;
@@ -87,8 +87,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Fills the path.
         /// </summary>
-        /// <param name="g">The Graphics device to draw to</param>
-        /// <param name="gp">The GraphicsPath to fill using this pattern</param>
+        /// <param name="g">The Graphics device to draw to.</param>
+        /// <param name="gp">The GraphicsPath to fill using this pattern.</param>
         public override void FillPath(Graphics g, GraphicsPath gp)
         {
             using (Brush b = new SolidBrush(_fillColor))

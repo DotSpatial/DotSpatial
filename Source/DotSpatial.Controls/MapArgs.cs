@@ -48,12 +48,12 @@ namespace DotSpatial.Controls
         public Graphics Device { get; }
 
         /// <summary>
-        /// Gets the Dx
+        /// Gets the Dx.
         /// </summary>
         public double Dx => GeographicExtents.Width != 0.0 ? ImageRectangle.Width / GeographicExtents.Width : 0.0;
 
         /// <summary>
-        /// Gets the Dy
+        /// Gets the Dy.
         /// </summary>
         public double Dy => GeographicExtents.Height != 0.0 ? ImageRectangle.Height / GeographicExtents.Height : 0.0;
 
@@ -63,17 +63,17 @@ namespace DotSpatial.Controls
         public Extent GeographicExtents { get; }
 
         /// <summary>
-        /// Gets the rectangle dimensions of what the buffer should be in pixels
+        /// Gets the rectangle dimensions of what the buffer should be in pixels.
         /// </summary>
         public Rectangle ImageRectangle { get; }
 
         /// <summary>
-        /// Gets the maximum Y value
+        /// Gets the maximum Y value.
         /// </summary>
         public double MaxY => GeographicExtents.MaxY;
 
         /// <summary>
-        /// Gets the minimum X value
+        /// Gets the minimum X value.
         /// </summary>
         public double MinX => GeographicExtents.MinX;
 

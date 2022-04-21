@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// FontBox
+    /// FontBox.
     /// </summary>
     [DefaultProperty("Value")]
     public partial class FontBox : UserControl

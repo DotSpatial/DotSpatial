@@ -55,12 +55,12 @@ namespace DotSpatial.Symbology
         float Extrusion { get; set; }
 
         /// <summary>
-        /// Gets or sets the calculated hillshade map, or re-calculates it if something has changed
+        /// Gets or sets the calculated hillshade map, or re-calculates it if something has changed.
         /// </summary>
         float[][] HillShade { get; set; }
 
         /// <summary>
-        /// Gets or sets the symbol characteristics for the border of this raster
+        /// Gets or sets the symbol characteristics for the border of this raster.
         /// </summary>
         IFeatureSymbolizerOld ImageOutline { get; set; }
 
@@ -72,12 +72,12 @@ namespace DotSpatial.Symbology
         bool IsElevation { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not htis raster should be anti-alliased
+        /// Gets or sets a value indicating whether or not htis raster should be anti-alliased.
         /// </summary>
         bool IsSmoothed { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not this raster should render itself
+        /// Gets or sets a value indicating whether or not this raster should render itself.
         /// </summary>
         bool IsVisible { get; set; }
 
@@ -87,12 +87,12 @@ namespace DotSpatial.Symbology
         bool MeshHasChanged { get; set; }
 
         /// <summary>
-        /// Gets or sets the color to use if the value of the cell corresponds to a No-Data value
+        /// Gets or sets the color to use if the value of the cell corresponds to a No-Data value.
         /// </summary>
         Color NoDataColor { get; set; }
 
         /// <summary>
-        /// Gets or sets a float value from 0 to 1, where 1 is fully opaque while 0 is fully transparent
+        /// Gets or sets a float value from 0 to 1, where 1 is fully opaque while 0 is fully transparent.
         /// </summary>
         float Opacity { get; set; }
 
@@ -129,28 +129,28 @@ namespace DotSpatial.Symbology
         Bitmap CreateBitmap();
 
         /// <summary>
-        /// Causes the raster to calculate a hillshade based on this symbolizer
+        /// Causes the raster to calculate a hillshade based on this symbolizer.
         /// </summary>
         void CreateHillShade();
 
         /// <summary>
-        /// Causes the raster to calculate a hillshade using the specified progress handler
+        /// Causes the raster to calculate a hillshade using the specified progress handler.
         /// </summary>
-        /// <param name="progressHandler">The progress handler to use</param>
+        /// <param name="progressHandler">The progress handler to use.</param>
         void CreateHillShade(IProgressHandler progressHandler);
 
         /// <summary>
         /// Gets the color for a specific row and column. This does not include any hillshade information.
         /// </summary>
         /// <param name="value">The double value to find in the colorbreaks.</param>
-        /// <returns>A Color</returns>
+        /// <returns>A Color.</returns>
         Color GetColor(double value);
 
         /// <summary>
-        /// Creates a bitmap based on the specified RasterSymbolizer
+        /// Creates a bitmap based on the specified RasterSymbolizer.
         /// </summary>
-        /// <param name="bitmap"> the bitmap to paint to</param>
-        /// <param name="progressHandler">The progress handler</param>
+        /// <param name="bitmap"> the bitmap to paint to.</param>
+        /// <param name="progressHandler">The progress handler.</param>
         void PaintShadingToBitmap(Bitmap bitmap, IProgressHandler progressHandler);
 
         /// <summary>

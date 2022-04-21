@@ -41,7 +41,7 @@ namespace DotSpatial.Symbology.Forms
         #region Properties
 
         /// <summary>
-        /// Gets or sets the symbol to use when drawing the various sizes
+        /// Gets or sets the symbol to use when drawing the various sizes.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Browsable(false)]
@@ -64,7 +64,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Fires the SizeChanged event
+        /// Fires the SizeChanged event.
         /// </summary>
         protected virtual void OnSelectedSizeChanged()
         {

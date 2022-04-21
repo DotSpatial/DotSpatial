@@ -6,9 +6,8 @@
     <authors>$author$</authors>
     <description>$description$</description>
     <owners />
-    <licenseUrl>https://github.com/DotSpatial/DotSpatial/blob/master/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <projectUrl>https://github.com/DotSpatial/DotSpatial/</projectUrl>
-    <iconUrl>http://www.mapwindow.org/downloads/documentation/dotspatial-package-icons/DotSpatial.Tools.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary />
     <language>en-US</language>
@@ -19,11 +18,10 @@
       <dependency id="DotSpatial.Extensions" version="$PackageVersion$"/>
       <dependency id="DotSpatial.Modeling.Forms" version="$PackageVersion$"/>
       <dependency id="DotSpatial.Projections" version="$PackageVersion$"/>
-      <dependency id="DotSpatial.NetTopologySuite" />
-      <dependency id="DotSpatial.GeoAPI" />
+      <dependency id="NetTopologySuite" version="2.4.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net40-Client\" />
+    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net472\" />
   </files>
 </package>

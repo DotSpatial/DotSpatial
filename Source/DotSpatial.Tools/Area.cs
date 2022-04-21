@@ -10,7 +10,7 @@ using DotSpatial.Modeling.Forms.Parameters;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Area
+    /// Area.
     /// </summary>
     public class Area : Tool
     {
@@ -40,12 +40,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -119,7 +119,7 @@ namespace DotSpatial.Tools
                 newFeature.DataRow[TextStrings.Area + fieldCount] = output.Features[j].Geometry.Area;
 
                 // Status updates is done here
-                cancelProgressHandler.Progress(string.Empty, Convert.ToInt32((Convert.ToDouble(j) / Convert.ToDouble(input.Features.Count)) * 100), input.Features[j].DataRow[0].ToString());
+                cancelProgressHandler.Progress(Convert.ToInt32((Convert.ToDouble(j) / Convert.ToDouble(input.Features.Count)) * 100), input.Features[j].DataRow[0].ToString());
                 if (cancelProgressHandler.Cancel)
                 {
                     return false;
@@ -132,7 +132,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {

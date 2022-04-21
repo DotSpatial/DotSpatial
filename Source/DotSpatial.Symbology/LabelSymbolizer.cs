@@ -4,7 +4,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using DotSpatial.Serialization;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -168,7 +168,7 @@ namespace DotSpatial.Symbology
         public string LabelAngleField { get; set; }
 
         /// <summary>
-        /// Gets or sets the labeling method
+        /// Gets or sets the labeling method.
         /// </summary>
         [Serialize("LabelMethod")]
         public LabelPlacementMethod LabelPlacementMethod { get; set; }
@@ -234,7 +234,7 @@ namespace DotSpatial.Symbology
         public string PriorityField { get; set; }
 
         /// <summary>
-        /// Gets or sets the scaling behavior for the text
+        /// Gets or sets the scaling behavior for the text.
         /// </summary>
         [Serialize("ScaleMode")]
         public ScaleMode ScaleMode { get; set; }
@@ -264,7 +264,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Uses the properties defined on this symbolizer to return a font.
         /// </summary>
-        /// <returns>A new font</returns>
+        /// <returns>A new font.</returns>
         public Font GetFont()
         {
             return new Font(FontFamily, FontSize, FontStyle);

@@ -12,8 +12,8 @@ namespace DotSpatial.Data
     /// each. So I was writing all of the stupid type specific collection classes, when in reality, I just needed a class like this
     /// that could handle the business logic. Then specific instances can just inherit from this class, but specify the two types.
     /// </summary>
-    /// <typeparam name="TBase">The base type that is inherited</typeparam>
-    /// <typeparam name="TSub">The sub type that inherits from the base type</typeparam>
+    /// <typeparam name="TBase">The base type that is inherited.</typeparam>
+    /// <typeparam name="TSub">The sub type that inherits from the base type.</typeparam>
     public class SubclassList<TBase, TSub> : ChangeEventList<TBase>, IChangeEventList<TSub>
         where TSub : class, TBase
         where TBase : class, IChangeItem
@@ -54,7 +54,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Adds the entire range of enumerable elements.
         /// </summary>
-        /// <param name="items">The items to add</param>
+        /// <param name="items">The items to add.</param>
         public void AddRange(IEnumerable<TSub> items)
         {
             foreach (TSub item in items)
@@ -100,20 +100,20 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the zero based integer index of the specified item of type TSub
+        /// Gets the zero based integer index of the specified item of type TSub.
         /// </summary>
-        /// <param name="item">The item to obtain the index of</param>
-        /// <returns>The zero based integer index of the specified item</returns>
+        /// <param name="item">The item to obtain the index of.</param>
+        /// <returns>The zero based integer index of the specified item.</returns>
         public int IndexOf(TSub item)
         {
             return IndexOf(item as TBase);
         }
 
         /// <summary>
-        /// inserts the specified item into the specified index
+        /// inserts the specified item into the specified index.
         /// </summary>
-        /// <param name="index">The zero based integer index where insertion can take place</param>
-        /// <param name="item">The item to insert of type TSub</param>
+        /// <param name="index">The zero based integer index where insertion can take place.</param>
+        /// <param name="item">The item to insert of type TSub.</param>
         public void Insert(int index, TSub item)
         {
             base.Insert(index, item);
@@ -122,8 +122,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Removes the specified item from the list.
         /// </summary>
-        /// <param name="item">The item to remove</param>
-        /// <returns>Boolean, true if the item was found in the list and removed</returns>
+        /// <param name="item">The item to remove.</param>
+        /// <returns>Boolean, true if the item was found in the list and removed.</returns>
         public bool Remove(TSub item)
         {
             return Remove(item as TBase);
@@ -137,8 +137,8 @@ namespace DotSpatial.Data
         /// I can't simply return the enumerator of the internal list because it would be the wrong type.
         /// Furthermore, I need to know both types so that I can cast them appropriately.
         /// </summary>
-        /// <typeparam name="TB">The base type that is inherited</typeparam>
-        /// <typeparam name="TS">The sub type that inherits from the base type</typeparam>
+        /// <typeparam name="TB">The base type that is inherited.</typeparam>
+        /// <typeparam name="TS">The sub type that inherits from the base type.</typeparam>
         private class SubclassListEnumerator<TB, TS> : IEnumerator<TS>
             where TS : class, TB
         {
@@ -175,7 +175,7 @@ namespace DotSpatial.Data
             #region Methods
 
             /// <summary>
-            /// Disposes any unmanaged memory objects
+            /// Disposes any unmanaged memory objects.
             /// </summary>
             public void Dispose()
             {
@@ -183,7 +183,7 @@ namespace DotSpatial.Data
             }
 
             /// <summary>
-            /// Advances the enumerator to the next position
+            /// Advances the enumerator to the next position.
             /// </summary>
             /// <returns>Boolean, false at the end of the list.</returns>
             public bool MoveNext()
@@ -192,7 +192,7 @@ namespace DotSpatial.Data
             }
 
             /// <summary>
-            /// Resets the enumerator to the beginning of the list
+            /// Resets the enumerator to the beginning of the list.
             /// </summary>
             public void Reset()
             {

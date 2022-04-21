@@ -12,7 +12,7 @@ using OSGeo.GDAL;
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
     /// <summary>
-    /// GDAL Image Source
+    /// GDAL Image Source.
     /// </summary>
     public class GdalImageSource
     {
@@ -59,7 +59,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         #region Properties
 
         /// <summary>
-        /// Gets or sets the bounds
+        /// Gets or sets the bounds.
         /// </summary>
         public RasterBounds Bounds { get; set; }
 
@@ -91,7 +91,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         public int NumOverviews { get; private set; }
 
         /// <summary>
-        /// Gets the number of rows
+        /// Gets the number of rows.
         /// </summary>
         public int NumRows => Bounds?.NumRows ?? 0;
 
@@ -167,12 +167,12 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         ///  Returns the data from the file in the form of ARGB bytes, regardless of how the image
         ///  data is actually stored in the file.
         /// </summary>
-        /// <param name="startRow">The zero based integer index of the first row (Y)</param>
-        /// <param name="startColumn">The zero based integer index of the first column (X)</param>
-        /// <param name="numRows">The number of rows to read</param>
-        /// <param name="numColumns">The number of columns to read</param>
+        /// <param name="startRow">The zero based integer index of the first row (Y).</param>
+        /// <param name="startColumn">The zero based integer index of the first column (X).</param>
+        /// <param name="numRows">The number of rows to read.</param>
+        /// <param name="numColumns">The number of columns to read.</param>
         /// <param name="overview">The integer overview.  0 for the original image.  Each successive index divides the length and height in half.  </param>
-        /// <returns>A Byte of values in ARGB order and in row-major raster-scan sequence</returns>
+        /// <returns>A Byte of values in ARGB order and in row-major raster-scan sequence.</returns>
         public byte[] ReadWindow(int startRow, int startColumn, int numRows, int numColumns, int overview)
         {
             EnsureDatasetOpen();

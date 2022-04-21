@@ -21,7 +21,7 @@ namespace DotSpatial.Controls
         #endregion
 
         /// <summary>
-        /// Result of individual line segment clip
+        /// Result of individual line segment clip.
         /// </summary>
         [Flags]
         public enum LineClipStatus
@@ -156,7 +156,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Clip a linestring
+        /// Clip a linestring.
         /// </summary>
         /// <param name="linestring">Linestrings that should be clipped.</param>
         /// <param name="xmin">The minimum x of the clip rect.</param>

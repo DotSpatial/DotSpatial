@@ -4,7 +4,7 @@
 namespace DotSpatial.Projections.Forms
 {
     /// <summary>
-    /// The Undefined Projection Action enumeration
+    /// The Undefined Projection Action enumeration.
     /// </summary>
     public enum UndefinedProjectionAction
     {

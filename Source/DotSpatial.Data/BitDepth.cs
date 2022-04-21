@@ -4,7 +4,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// BitDepth
+    /// BitDepth.
     /// </summary>
     public enum BitDepth : byte
     {

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// MenuItem
+    /// MenuItem.
     /// </summary>
     public class MenuItem : IMenuItem
     {
@@ -20,7 +20,7 @@ namespace DotSpatial.Compatibility
         /// <summary>
         /// Initializes a new instance of the <see cref="MenuItem"/> class.
         /// </summary>
-        /// <param name="inMenuItem">The ToolStripMenuItem to wrap with this item</param>
+        /// <param name="inMenuItem">The ToolStripMenuItem to wrap with this item.</param>
         public MenuItem(ToolStripMenuItem inMenuItem)
         {
             _menuItem = inMenuItem;
@@ -30,7 +30,7 @@ namespace DotSpatial.Compatibility
 
         /// <summary>
         /// Gets or sets a value indicating whether or not this item should draw a dividing line between itself and any
-        /// items before this item
+        /// items before this item.
         /// </summary>
         public bool BeginsGroup
         {
@@ -67,7 +67,7 @@ namespace DotSpatial.Compatibility
         }
 
         /// <summary>
-        /// Gets or sets the category for this item (used when the user customizes the menu)
+        /// Gets or sets the category for this item (used when the user customizes the menu).
         /// </summary>
         public string Category { get; set; }
 
@@ -88,7 +88,7 @@ namespace DotSpatial.Compatibility
         }
 
         /// <summary>
-        /// Gets or sets the cursor used when the mouse is over this control
+        /// Gets or sets the cursor used when the mouse is over this control.
         /// </summary>
         public Cursor Cursor
         {
@@ -104,7 +104,7 @@ namespace DotSpatial.Compatibility
         }
 
         /// <summary>
-        /// Gets or sets the description of this menu item, used in customization of menu by the user
+        /// Gets or sets the description of this menu item, used in customization of menu by the user.
         /// </summary>
         public string Description { get; set; }
 
@@ -173,17 +173,17 @@ namespace DotSpatial.Compatibility
         }
 
         /// <summary>
-        /// Gets the Name of this item
+        /// Gets the Name of this item.
         /// </summary>
         public string Name => _menuItem.Name;
 
         /// <summary>
-        /// Gets the count of the submenu items contained within this item
+        /// Gets the count of the submenu items contained within this item.
         /// </summary>
         public int NumSubItems => _menuItem.DropDownItems.Count;
 
         /// <summary>
-        /// Gets or sets the icon for the menu item
+        /// Gets or sets the icon for the menu item.
         /// </summary>
         public Image Picture
         {
@@ -199,7 +199,7 @@ namespace DotSpatial.Compatibility
         }
 
         /// <summary>
-        /// Gets or sets the Text shown for the MenuItem
+        /// Gets or sets the Text shown for the MenuItem.
         /// </summary>
         public string Text
         {
@@ -215,7 +215,7 @@ namespace DotSpatial.Compatibility
         }
 
         /// <summary>
-        /// Gets or sets the tool tip text that will pop up for the item when a mouse over event occurs
+        /// Gets or sets the tool tip text that will pop up for the item when a mouse over event occurs.
         /// </summary>
         public string Tooltip
         {
@@ -287,7 +287,7 @@ namespace DotSpatial.Compatibility
         #region Methods
 
         /// <summary>
-        /// Gets a submenu item by its 0-based index
+        /// Gets a submenu item by its 0-based index.
         /// </summary>
         /// <param name="index">Index of the item that should be returned.</param>
         /// <returns>The MenuItem with the given index.</returns>
@@ -297,7 +297,7 @@ namespace DotSpatial.Compatibility
         }
 
         /// <summary>
-        /// Gets a submenu item by its string name
+        /// Gets a submenu item by its string name.
         /// </summary>
         /// <param name="name">Name of the item that should be returned.</param>
         /// <returns>The MenuItem with the given name.</returns>

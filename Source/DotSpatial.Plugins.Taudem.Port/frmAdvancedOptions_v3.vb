@@ -9,7 +9,7 @@
 'for MapWindow (http://www.mapwindow.org)
 
 Public Class frmAdvancedOptions_v3
-    Private Sub frmAdvancedOptions_v3_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub frmAdvancedOptions_v3_Load(ByVal sender As System.Object, ByVal e As EventArgs) Handles MyBase.Load
         chkbxFillPits.Checked = tdbChoiceList.AddPitfillLayer
         chkbxD8.Checked = tdbChoiceList.AddD8Layer
         chkbxD8Area.Checked = tdbChoiceList.AddD8AreaLayer
@@ -32,7 +32,7 @@ Public Class frmAdvancedOptions_v3
         chkbxCalcMergeShed.Checked = tdbChoiceList.calcSpecialMergeWshedFields
     End Sub
 
-    Private Sub frmAdvancedOptions_v3_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub frmAdvancedOptions_v3_FormClosing(ByVal sender As System.Object, ByVal e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         tdbChoiceList.AddPitfillLayer = chkbxFillPits.Checked
         tdbChoiceList.AddD8Layer = chkbxD8.Checked
         tdbChoiceList.AddD8AreaLayer = chkbxD8Area.Checked
@@ -53,7 +53,7 @@ Public Class frmAdvancedOptions_v3
         tdbChoiceList.calcSpecialMergeWshedFields = chkbxCalcMergeShed.Checked
     End Sub
 
-    Private Sub chkbxSelectAll_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkbxSelectAll.CheckedChanged
+    Private Sub chkbxSelectAll_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles chkbxSelectAll.CheckedChanged
         chkbxFillPits.Checked = chkbxSelectAll.Checked
         chkbxD8.Checked = chkbxSelectAll.Checked
         chkbxD8Area.Checked = chkbxSelectAll.Checked
@@ -68,13 +68,13 @@ Public Class frmAdvancedOptions_v3
         chkbxMergedShed.Checked = chkbxSelectAll.Checked
     End Sub
 
-    Private Sub chkbxUseDinf_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkbxUseDinf.CheckedChanged
+    Private Sub chkbxUseDinf_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles chkbxUseDinf.CheckedChanged
         chkbxDinf.Enabled = chkbxUseDinf.Checked
         chkbxAreaDinf.Enabled = chkbxUseDinf.Checked
     End Sub
 
-    Private Sub btnBrowseOut_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseOut.Click
-        Dim myOpenFolder As New System.Windows.Forms.FolderBrowserDialog
+    Private Sub btnBrowseOut_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseOut.Click
+        Dim myOpenFolder As New Windows.Forms.FolderBrowserDialog
 
         myOpenFolder.SelectedPath = tdbFileList.getAbsolutePath(txtbxOut.Text, tdbFileList.dem)
 

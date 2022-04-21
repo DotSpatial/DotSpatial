@@ -4,7 +4,7 @@
 namespace DotSpatial.Positioning.Tests
 {
     /// <summary>
-    /// This class contains all ISerializable classes
+    /// This class contains all ISerializable classes.
     /// </summary>
     public class SampleData1
     {

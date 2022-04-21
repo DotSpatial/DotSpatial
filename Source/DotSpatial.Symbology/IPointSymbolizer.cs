@@ -27,13 +27,13 @@ namespace DotSpatial.Symbology
         /// drawing the content. This assumes that the graphics object has been translated to the specified point.
         /// </summary>
         /// <param name="g">Graphics object that is used for drawing.</param>
-        /// <param name="scaleSize">Scale size represents the constant to multiply to the geographic measures in order to turn them into pixel coordinates </param>
+        /// <param name="scaleSize">Scale size represents the constant to multiply to the geographic measures in order to turn them into pixel coordinates. </param>
         void Draw(Graphics g, double scaleSize);
 
         /// <summary>
-        /// Gets the color of the top-most symbol
+        /// Gets the color of the top-most symbol.
         /// </summary>
-        /// <returns>The color of the top-most symbol</returns>
+        /// <returns>The color of the top-most symbol.</returns>
         Color GetFillColor();
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace DotSpatial.Symbology
         void Scale(double value);
 
         /// <summary>
-        /// Sets the color of the top-most layer symbol
+        /// Sets the color of the top-most layer symbol.
         /// </summary>
         /// <param name="color">The color to assign to the top-most layer.</param>
         void SetFillColor(Color color);
@@ -60,7 +60,7 @@ namespace DotSpatial.Symbology
         /// It will adjust all of the sizes so that the maximum size is
         /// the same as the specified size.
         /// </summary>
-        /// <param name="value">The Size2D of the new maximum size</param>
+        /// <param name="value">The Size2D of the new maximum size.</param>
         void SetSize(Size2D value);
 
         #endregion

@@ -6,7 +6,7 @@ using System.Drawing;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// ColorRange
+    /// ColorRange.
     /// </summary>
     public class ColorRange
     {
@@ -24,7 +24,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="ColorRange"/> class with no limits of the specified color.
         /// </summary>
-        /// <param name="color">The Color to use</param>
+        /// <param name="color">The Color to use.</param>
         public ColorRange(Color color)
         {
             Color = color;
@@ -34,7 +34,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="ColorRange"/> class with the specified color and range.
         /// </summary>
-        /// <param name="color">The Color to use for this range</param>
+        /// <param name="color">The Color to use for this range.</param>
         /// <param name="range">The numeric bounds to use for this color.</param>
         public ColorRange(Color color, Range range)
         {
@@ -76,7 +76,7 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Gets a boolean that is true if the specified value falls within the specified range.
         /// </summary>
-        /// <param name="value">The double value to test</param>
+        /// <param name="value">The double value to test.</param>
         /// <returns>Boolean, true if the value is within the Range.</returns>
         public bool Contains(double value)
         {

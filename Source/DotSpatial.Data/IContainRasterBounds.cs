@@ -9,7 +9,7 @@ namespace DotSpatial.Data
     public interface IContainRasterBounds
     {
         /// <summary>
-        /// Gets or sets the image bounds being used to define the georeferencing of the image
+        /// Gets or sets the image bounds being used to define the georeferencing of the image.
         /// </summary>
         IRasterBounds Bounds { get; set; }
     }

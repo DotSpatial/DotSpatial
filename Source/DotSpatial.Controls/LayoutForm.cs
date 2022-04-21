@@ -45,7 +45,7 @@ namespace DotSpatial.Controls
         public LayoutControl LayoutControl => _layoutControl1;
 
         /// <summary>
-        /// Gets or sets the map that will be used in the layout
+        /// Gets or sets the map that will be used in the layout.
         /// </summary>
         public Map MapControl
         {

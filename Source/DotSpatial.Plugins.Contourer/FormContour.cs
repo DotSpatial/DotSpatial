@@ -11,7 +11,7 @@ using DotSpatial.Plugins.Contourer.Properties;
 namespace DotSpatial.Plugins.Contourer
 {
     /// <summary>
-    /// FormContour
+    /// FormContour.
     /// </summary>
     public partial class FormContour : Form
     {

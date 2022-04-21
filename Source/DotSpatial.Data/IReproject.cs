@@ -8,7 +8,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// This interface supports the basic Reprojection content. CanReproject tests to see if the
     /// DotSpatial.Projections library exists and will return false if it does not exist. In
-    /// such a case the
+    /// such a case the.
     /// </summary>
     public interface IReproject
     {
@@ -21,7 +21,7 @@ namespace DotSpatial.Data
         bool CanReproject { get; }
 
         /// <summary>
-        /// Gets or sets the projection information for this dataset
+        /// Gets or sets the projection information for this dataset.
         /// </summary>
         ProjectionInfo Projection { get; set; }
 

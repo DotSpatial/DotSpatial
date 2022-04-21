@@ -7,7 +7,8 @@ using System.IO;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using DotSpatial.Tests.Common;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Controls.Tests
@@ -18,15 +19,17 @@ namespace DotSpatial.Controls.Tests
     [TestFixture]
     public class MapTest
     {
+        private readonly string _folder = Common.AbsolutePath("TestFiles");
+
         /// <summary>
-        /// A test for ZoomToMaxExtent
+        /// A test for ZoomToMaxExtent.
         /// </summary>
         [Test]
         public void ZoomToMaxExtentTest()
         {
             XmlDeserializer target = new XmlDeserializer();
             Map map = new Map();
-            string path = Path.Combine("TestFiles", "testproject1.dspx");
+            string path = Path.Combine(_folder, "testproject1.dspx");
 
             target.Deserialize(map, File.ReadAllText(path));
 
@@ -63,7 +66,7 @@ namespace DotSpatial.Controls.Tests
         }
 
         /// <summary>
-        /// Test if the new GetAllLayers() method returns the correct number of layers if the map has groups
+        /// Test if the new GetAllLayers() method returns the correct number of layers if the map has groups.
         /// </summary>
         [Test]
         public void GetAllLayersTest()
@@ -87,7 +90,7 @@ namespace DotSpatial.Controls.Tests
         }
 
         /// <summary>
-        /// Test if the new GetAllGroups() method returns the correct number of layers if the map has groups
+        /// Test if the new GetAllGroups() method returns the correct number of layers if the map has groups.
         /// </summary>
         [Test]
         public void GetAllGroupsTest()
@@ -119,7 +122,7 @@ namespace DotSpatial.Controls.Tests
             IMap map = new Map();
 
             // load layer with us states
-            IMapLayer ml = map.AddLayer(Path.Combine(@"Testfiles", "50mil_us_states.shp"));
+            IMapLayer ml = map.AddLayer(Path.Combine(_folder, "50mil_us_states.shp"));
             IFeatureLayer fl = ml as IFeatureLayer;
             Assert.IsNotNull(fl);
 
@@ -141,7 +144,7 @@ namespace DotSpatial.Controls.Tests
             Assert.IsTrue(cat.SelectionEnabled, "Categories must be initialized with SelectionEnabled = true.");
 
             // load the second layer for testing the layers SelectionEnabled property
-            IMapLayer ml2 = map.AddLayer(Path.Combine(@"Testfiles", "50m_admin_0_countries.shp"));
+            IMapLayer ml2 = map.AddLayer(Path.Combine(_folder, "50m_admin_0_countries.shp"));
             ml2.SelectionEnabled = false;
             IFeatureLayer fl2 = ml2 as IFeatureLayer;
             Assert.IsNotNull(fl2);

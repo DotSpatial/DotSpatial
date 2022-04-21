@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// RampSlider
+    /// RampSlider.
     /// </summary>
     [DefaultEvent("ValueChanged")]
     [DefaultProperty("Value")]
@@ -169,7 +169,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the color at the maximum of the ramp
+        /// Gets or sets the color at the maximum of the ramp.
         /// </summary>
         [Category("Ramp")]
         [Description("Gets or sets the color at the top of the ramp.")]
@@ -514,7 +514,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Draws the slider itself in client coordinates
+        /// Draws the slider itself in client coordinates.
         /// </summary>
         /// <param name="g">The graphics object used for drawing.</param>
         /// <param name="clipRectangle">The clip rectangle.</param>
@@ -601,7 +601,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Draws the text for Minimum and Maximum
+        /// Draws the text for Minimum and Maximum.
         /// </summary>
         /// <param name="g">The graphics object used for drawing.</param>
         /// <param name="clipRectangle">The clip rectangle.</param>
@@ -684,7 +684,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Draws the tick marks on this slider
+        /// Draws the tick marks on this slider.
         /// </summary>
         /// <param name="g">The graphics object used for drawing.</param>
         /// <param name="clipRectangle">The clip rectangle.</param>
@@ -856,7 +856,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Prevent flicker
+        /// Prevent flicker.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaintBackground(PaintEventArgs e)

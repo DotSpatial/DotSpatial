@@ -35,9 +35,9 @@ namespace DotSpatial.NTSExtension
         /// <summary>
         /// Translates the matrix by the specified amount in each of the directions by multiplying by a translation matrix created from the specified values.
         /// </summary>
-        /// <param name="x">The translation in the X coordinate</param>
-        /// <param name="y">The translation in the Y coordinate</param>
-        /// <param name="z">The translation in the Z coordinate</param>
+        /// <param name="x">The translation in the X coordinate.</param>
+        /// <param name="y">The translation in the Y coordinate.</param>
+        /// <param name="z">The translation in the Z coordinate.</param>
         /// <returns>The translated matrix.</returns>
         IMatrix4 Translate(double x, double y, double z);
 

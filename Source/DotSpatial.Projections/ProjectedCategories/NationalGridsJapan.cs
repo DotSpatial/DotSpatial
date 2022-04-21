@@ -43,6 +43,25 @@ namespace DotSpatial.Projections.ProjectedCategories
         public readonly ProjectionInfo JGD2000JapanZone7;
         public readonly ProjectionInfo JGD2000JapanZone8;
         public readonly ProjectionInfo JGD2000JapanZone9;
+        public readonly ProjectionInfo JGD2011JapanZone1;
+        public readonly ProjectionInfo JGD2011JapanZone10;
+        public readonly ProjectionInfo JGD2011JapanZone11;
+        public readonly ProjectionInfo JGD2011JapanZone12;
+        public readonly ProjectionInfo JGD2011JapanZone13;
+        public readonly ProjectionInfo JGD2011JapanZone14;
+        public readonly ProjectionInfo JGD2011JapanZone15;
+        public readonly ProjectionInfo JGD2011JapanZone16;
+        public readonly ProjectionInfo JGD2011JapanZone17;
+        public readonly ProjectionInfo JGD2011JapanZone18;
+        public readonly ProjectionInfo JGD2011JapanZone19;
+        public readonly ProjectionInfo JGD2011JapanZone2;
+        public readonly ProjectionInfo JGD2011JapanZone3;
+        public readonly ProjectionInfo JGD2011JapanZone4;
+        public readonly ProjectionInfo JGD2011JapanZone5;
+        public readonly ProjectionInfo JGD2011JapanZone6;
+        public readonly ProjectionInfo JGD2011JapanZone7;
+        public readonly ProjectionInfo JGD2011JapanZone8;
+        public readonly ProjectionInfo JGD2011JapanZone9;
         public readonly ProjectionInfo JapanZone1;
         public readonly ProjectionInfo JapanZone10;
         public readonly ProjectionInfo JapanZone11;
@@ -111,6 +130,26 @@ namespace DotSpatial.Projections.ProjectedCategories
             JGD2000JapanZone8 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=36 +lon_0=138.5 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
             JGD2000JapanZone9 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=36 +lon_0=139.8333333333333 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
 
+            JGD2011JapanZone1 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=33 +lon_0=129.5 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone10 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=40 +lon_0=140.8333333333333 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone11 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=44 +lon_0=140.25 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone12 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=44 +lon_0=142.25 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone13 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=44 +lon_0=144.25 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone14 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=26 +lon_0=142 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone15 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=26 +lon_0=127.5 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone16 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=26 +lon_0=124 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone17 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=26 +lon_0=131 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone18 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=20 +lon_0=136 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone19 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=26 +lon_0=154 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone2 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=33 +lon_0=131 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone3 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=36 +lon_0=132.1666666666667 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone4 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=33 +lon_0=133.5 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone5 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=36 +lon_0=134.3333333333333 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone6 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=36 +lon_0=136 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone7 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=36 +lon_0=137.1666666666667 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone8 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=36 +lon_0=138.5 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+            JGD2011JapanZone9 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=36 +lon_0=139.8333333333333 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
+
             JapanZone1.Name = "Japan_Zone_1";
             JapanZone10.Name = "Japan_Zone_10";
             JapanZone11.Name = "Japan_Zone_11";
@@ -150,6 +189,26 @@ namespace DotSpatial.Projections.ProjectedCategories
             JGD2000JapanZone8.Name = "JGD_2000_Japan_Zone_8";
             JGD2000JapanZone9.Name = "JGD_2000_Japan_Zone_9";
 
+            JGD2011JapanZone1.Name = "JGD_2011_Japan_Zone_1";
+            JGD2011JapanZone10.Name = "JGD_2011_Japan_Zone_10";
+            JGD2011JapanZone11.Name = "JGD_2011_Japan_Zone_11";
+            JGD2011JapanZone12.Name = "JGD_2011_Japan_Zone_12";
+            JGD2011JapanZone13.Name = "JGD_2011_Japan_Zone_13";
+            JGD2011JapanZone14.Name = "JGD_2011_Japan_Zone_14";
+            JGD2011JapanZone15.Name = "JGD_2011_Japan_Zone_15";
+            JGD2011JapanZone16.Name = "JGD_2011_Japan_Zone_16";
+            JGD2011JapanZone17.Name = "JGD_2011_Japan_Zone_17";
+            JGD2011JapanZone18.Name = "JGD_2011_Japan_Zone_18";
+            JGD2011JapanZone19.Name = "JGD_2011_Japan_Zone_19";
+            JGD2011JapanZone2.Name = "JGD_2011_Japan_Zone_2";
+            JGD2011JapanZone3.Name = "JGD_2011_Japan_Zone_3";
+            JGD2011JapanZone4.Name = "JGD_2011_Japan_Zone_4";
+            JGD2011JapanZone5.Name = "JGD_2011_Japan_Zone_5";
+            JGD2011JapanZone6.Name = "JGD_2011_Japan_Zone_6";
+            JGD2011JapanZone7.Name = "JGD_2011_Japan_Zone_7";
+            JGD2011JapanZone8.Name = "JGD_2011_Japan_Zone_8";
+            JGD2011JapanZone9.Name = "JGD_2011_Japan_Zone_9";
+            
             JapanZone1.GeographicInfo.Name = "GCS_Tokyo";
             JapanZone10.GeographicInfo.Name = "GCS_Tokyo";
             JapanZone11.GeographicInfo.Name = "GCS_Tokyo";
@@ -189,6 +248,26 @@ namespace DotSpatial.Projections.ProjectedCategories
             JGD2000JapanZone8.GeographicInfo.Name = "GCS_JGD_2000";
             JGD2000JapanZone9.GeographicInfo.Name = "GCS_JGD_2000";
 
+            JGD2011JapanZone1.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone10.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone11.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone12.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone13.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone14.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone15.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone16.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone17.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone18.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone19.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone2.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone3.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone4.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone5.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone6.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone7.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone8.GeographicInfo.Name = "GCS_JGD_2011";
+            JGD2011JapanZone9.GeographicInfo.Name = "GCS_JGD_2011";
+
             JapanZone1.GeographicInfo.Datum.Name = "D_Tokyo";
             JapanZone10.GeographicInfo.Datum.Name = "D_Tokyo";
             JapanZone11.GeographicInfo.Datum.Name = "D_Tokyo";
@@ -227,8 +306,27 @@ namespace DotSpatial.Projections.ProjectedCategories
             JGD2000JapanZone7.GeographicInfo.Datum.Name = "D_JGD_2000";
             JGD2000JapanZone8.GeographicInfo.Datum.Name = "D_JGD_2000";
             JGD2000JapanZone9.GeographicInfo.Datum.Name = "D_JGD_2000";
-        }
 
+            JGD2011JapanZone1.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone10.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone11.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone12.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone13.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone14.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone15.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone16.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone17.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone18.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone19.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone2.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone3.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone4.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone5.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone6.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone7.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone8.GeographicInfo.Datum.Name = "D_JGD_2011";
+            JGD2011JapanZone9.GeographicInfo.Datum.Name = "D_JGD_2011";
+        }
         #endregion
     }
 }

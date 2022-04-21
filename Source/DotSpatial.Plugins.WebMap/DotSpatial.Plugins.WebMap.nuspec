@@ -5,9 +5,8 @@
     <version>$version$</version>
     <authors>$author$</authors>
     <owners />
-    <licenseUrl>https://github.com/DotSpatial/DotSpatial/blob/master/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <projectUrl>https://github.com/DotSpatial/DotSpatial/</projectUrl>
-    <iconUrl>http://www.mapwindow.org/downloads/documentation/dotspatial-package-icons/DotSpatial.Plugins.WebMap.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <summary />
@@ -24,8 +23,8 @@
     </references>
   </metadata>
   <files>
-    <file src="Lib\Brutile.dll" target="lib\net40-client"/>
-    <file src="Lib\Brutile.Desktop.dll" target="lib\net40-client"/>
-    <file src="app.config" target="lib\net40-client\DotSpatial.Plugins.WebMap.dll.config" />
+    <file src="Lib\Brutile.dll" target="lib\net452"/>
+    <file src="Lib\Brutile.Desktop.dll" target="lib\net452"/>
+    <file src="app.config" target="lib\net452\DotSpatial.Plugins.WebMap.dll.config" />
   </files>
 </package>

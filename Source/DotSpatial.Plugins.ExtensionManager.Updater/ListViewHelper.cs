@@ -11,7 +11,7 @@ using DotSpatial.Plugins.ExtensionManager.Updater.Properties;
 namespace DotSpatial.Plugins.ExtensionManager.Updater
 {
     /// <summary>
-    /// ListViewHelper
+    /// ListViewHelper.
     /// </summary>
     public class ListViewHelper
     {

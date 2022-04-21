@@ -6,7 +6,7 @@ using System.Drawing;
 namespace DotSpatial.Controls.Header
 {
     /// <summary>
-    /// A textbox item
+    /// A textbox item.
     /// </summary>
     public class TextEntryActionItem : ActionItem
     {
@@ -21,7 +21,7 @@ namespace DotSpatial.Controls.Header
         #region Properties
 
         /// <summary>
-        /// Gets or sets a value indicating the color of the text in the dropdownbox
+        /// Gets or sets a value indicating the color of the text in the dropdownbox.
         /// </summary>
         public Color FontColor
         {

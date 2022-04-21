@@ -3,7 +3,7 @@
 
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using System.Linq;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.NTSExtension
@@ -21,15 +21,9 @@ namespace DotSpatial.NTSExtension
         /// </summary>
         /// <param name="rawPoints">The coordinates that should be converted to points.</param>
         /// <returns>The resulting point array.</returns>
-        public static IPoint[] CastToPointArray(this IEnumerable<Coordinate> rawPoints)
+        public static Point[] CastToPointArray(this IEnumerable<Coordinate> rawPoints)
         {
-            List<IPoint> result = new List<IPoint>();
-            foreach (Coordinate rawPoint in rawPoints)
-            {
-                result.Add(new Point(rawPoint));
-            }
-
-            return result.ToArray();
+            return rawPoints.Select(_ => new Point(_)).ToArray();
         }
 
         /// <summary>
@@ -52,7 +46,7 @@ namespace DotSpatial.NTSExtension
         }
 
         /// <summary>
-        /// A Generic Safe Casting method that should simply exist as part of the core framework
+        /// A Generic Safe Casting method that should simply exist as part of the core framework.
         /// </summary>
         /// <typeparam name="T">The type of the member to attempt to cast to.</typeparam>
         /// <param name="obj">The original object to attempt to System.Convert.</param>

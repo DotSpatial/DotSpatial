@@ -13,7 +13,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon
+        /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon.
         /// </summary>
         public static double Epsilon
         {
@@ -53,7 +53,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Calculates the intersection of a polygon shape without relying on the NTS geometry
+        /// Calculates the intersection of a polygon shape without relying on the NTS geometry.
         /// </summary>
         /// <param name="polygonShape">Polygon shape used for calculation.</param>
         /// <param name="otherShape">Other shape of any feature type.</param>
@@ -91,8 +91,8 @@ namespace DotSpatial.Data
         /// For each coordinate in the other part, if it falls in the extent of this polygon, a
         /// ray crossing test is used for point in polygon testing. If it is not in the extent, it is skipped.
         /// </summary>
-        /// <param name="polygonShape">The part of the polygon to analyze polygon</param>
-        /// <param name="otherPart">The other part</param>
+        /// <param name="polygonShape">The part of the polygon to analyze polygon.</param>
+        /// <param name="otherPart">The other part.</param>
         /// <returns>Boolean, true if any coordinate falls inside the polygon.</returns>
         private static bool ContainsVertex(ShapeRange polygonShape, PartRange otherPart)
         {

@@ -69,7 +69,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the size
+        /// Gets or sets the size.
         /// </summary>
         public Size2D Size { get; set; }
 

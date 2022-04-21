@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// This is a control that allows users to easilly modify the various aspects of many different layout components
+    /// This is a control that allows users to easilly modify the various aspects of many different layout components.
     /// </summary>
     // This control will no longer be visible
     [ToolboxItem(false)]
@@ -29,7 +29,7 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets or sets the layout control associated with this property grid
+        /// Gets or sets the layout control associated with this property grid.
         /// </summary>
         [Browsable(false)]
         public LayoutControl LayoutControl
@@ -52,7 +52,7 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// If the selection changes this event is called
+        /// If the selection changes this event is called.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>

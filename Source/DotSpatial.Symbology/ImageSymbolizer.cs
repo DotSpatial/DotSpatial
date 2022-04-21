@@ -7,7 +7,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// ImageSymbolizer
+    /// ImageSymbolizer.
     /// </summary>
     [Serializable]
     public class ImageSymbolizer : LegendItem, IImageSymbolizer

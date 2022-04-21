@@ -55,7 +55,7 @@ namespace DotSpatial.Symbology.Forms
         public int BevelRadius { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of this button
+        /// Gets or sets the color of this button.
         /// </summary>
         [Description("Gets or sets the color of this button")]
         public Color Color
@@ -81,7 +81,7 @@ namespace DotSpatial.Symbology.Forms
         public bool LaunchDialogOnClick { get; set; }
 
         /// <summary>
-        /// Gets or sets the rounding radius that controls how rounded this button appears
+        /// Gets or sets the rounding radius that controls how rounded this button appears.
         /// </summary>
         [Description("Gets or sets the rounding radius that controls how rounded this button appears")]
         public int RoundingRadius { get; set; }
@@ -124,7 +124,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the ColorChanged event
+        /// Fires the ColorChanged event.
         /// </summary>
         protected virtual void OnColorChanged()
         {
@@ -132,7 +132,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Custom drawing code
+        /// Custom drawing code.
         /// </summary>
         /// <param name="g">The graphics object used for drawing.</param>
         /// <param name="clipRectangle">The clip rectangle.</param>
@@ -193,7 +193,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// when the mouse down event is received this also "depresses" the button
+        /// when the mouse down event is received this also "depresses" the button.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnMouseDown(MouseEventArgs e)
@@ -246,7 +246,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Cancels the on paint background event to prevent flicker
+        /// Cancels the on paint background event to prevent flicker.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaintBackground(PaintEventArgs e)

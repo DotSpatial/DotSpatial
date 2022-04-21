@@ -5,13 +5,12 @@ using System;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// Calculate Average Slope for given polygons with more user preferences
+    /// Calculate Average Slope for given polygons with more user preferences.
     /// </summary>
     public class FindAverageSlopeExtented : Tool
     {
@@ -41,12 +40,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -55,7 +54,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
@@ -78,11 +77,11 @@ namespace DotSpatial.Tools
         /// Finds the average slope in the given polygons with more user preferences.
         /// </summary>
         /// <param name="ras">The dem Raster(Grid file).</param>
-        /// <param name="inZFactor">The scaler factor</param>
+        /// <param name="inZFactor">The scaler factor.</param>
         /// <param name="slopeInPercent">The slope in percentage.</param>
         /// <param name="poly">The flow poly shapefile path.</param>
         /// <param name="fldInPolyToStoreSlope">The field name to store average slope in the attribute.</param>
-        /// <param name="outerShpFile">The Featureset where we have the area of interest</param>
+        /// <param name="outerShpFile">The Featureset where we have the area of interest.</param>
         /// <param name="outerShpIndex">The index of featureset which give paticular area of interest.</param>
         /// <param name="output">The path to save created slope Feature set.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
@@ -118,14 +117,14 @@ namespace DotSpatial.Tools
                 // only update when increment in percentage
                 if (current > previous + 5)
                 {
-                    cancelProgressHandler.Progress(string.Empty, current, current + TextStrings.progresscompleted);
+                    cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
                     previous = current;
                 }
 
                 for (int j = 0; j < slopegrid.NumColumns; j++)
                 {
                     Coordinate coordin = slopegrid.CellToProj(i, j);
-                    IPoint pt = new Point(coordin);
+                    Point pt = new Point(coordin);
                     IFeature point = new Feature(pt);
                     if (!outerShpFile.Features[outerShpIndex].Geometry.Covers(point.Geometry))
                     {

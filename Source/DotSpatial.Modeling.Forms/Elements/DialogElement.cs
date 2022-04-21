@@ -44,7 +44,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Parameter that the element represents
+        /// Gets or sets the Parameter that the element represents.
         /// </summary>
         public Parameter Param
         {
@@ -83,7 +83,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// Gets or sets the group box that surrounds the element contents
+        /// Gets or sets the group box that surrounds the element contents.
         /// </summary>
         protected GroupBox GroupBox
         {
@@ -99,7 +99,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// Gets or sets the tool tip text to display when the mouse hovers over the light status
+        /// Gets or sets the tool tip text to display when the mouse hovers over the light status.
         /// </summary>
         protected string LightTipText
         {
@@ -115,7 +115,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
         /// <summary>
-        /// Gets or sets the status label
+        /// Gets or sets the status label.
         /// </summary>
         protected Label StatusLabel
         {
@@ -135,7 +135,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         #region Methods
 
         /// <summary>
-        /// Occurs when the dialong element is clicked
+        /// Occurs when the dialong element is clicked.
         /// </summary>
         /// <param name="sender">Sender that raised the event.</param>
         /// <param name="e">The event args.</param>
@@ -145,9 +145,9 @@ namespace DotSpatial.Modeling.Forms.Elements
         }
 
        /// <summary>
-        /// Called to fire the click event for this element
+        /// Called to fire the click event for this element.
         /// </summary>
-        /// <param name="e">A mouse event args thingy</param>
+        /// <param name="e">A mouse event args thingy.</param>
         protected new void OnClick(EventArgs e)
        {
            Clicked?.Invoke(this, e);

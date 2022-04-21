@@ -7,7 +7,7 @@ using DotSpatial.Modeling.Forms.Elements;
 namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
-    /// String Parameters returned by an ITool allows the tool to specify a default value
+    /// String Parameters returned by an ITool allows the tool to specify a default value.
     /// </summary>
     public class StringParam : Parameter
     {
@@ -16,7 +16,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="StringParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
+        /// <param name="name">The name of the parameter.</param>
         public StringParam(string name)
         {
             Name = name;
@@ -27,8 +27,8 @@ namespace DotSpatial.Modeling.Forms.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="StringParam"/> class.
         /// </summary>
-        /// <param name="name">The name of the parameter</param>
-        /// <param name="value">The default value</param>
+        /// <param name="name">The name of the parameter.</param>
+        /// <param name="value">The default value.</param>
         public StringParam(string name, string value)
         {
             Name = name;

@@ -54,7 +54,7 @@ namespace DotSpatial.Controls
         public AppManager App { get; set; }
 
         /// <summary>
-        /// Gets the data that are available by default to tools
+        /// Gets the data that are available by default to tools.
         /// </summary>
         [Category("ToolManager Appearance")]
         [Description("Sets the data that are available by default to tools")]
@@ -95,20 +95,20 @@ namespace DotSpatial.Controls
         #region Methods
 
         /// <summary>
-        /// Returns true if the Tool Manager can create the tool specified by the Name
+        /// Returns true if the Tool Manager can create the tool specified by the Name.
         /// </summary>
-        /// <param name="name">The unique name of a tool</param>
-        /// <returns>true if the tool can be created otherwise false</returns>
+        /// <param name="name">The unique name of a tool.</param>
+        /// <returns>true if the tool can be created otherwise false.</returns>
         public bool CanCreateTool(string name)
         {
             return Tools.Any(tool => tool.AssemblyQualifiedName == name);
         }
 
         /// <summary>
-        /// Creates a new instance of a tool based on its Name
+        /// Creates a new instance of a tool based on its Name.
         /// </summary>
-        /// <param name="name">The unique name of the tool</param>
-        /// <returns>Returns an new instance of the tool or NULL if the tools unique name doesn't exist in the manager</returns>
+        /// <param name="name">The unique name of the tool.</param>
+        /// <returns>Returns an new instance of the tool or NULL if the tools unique name doesn't exist in the manager.</returns>
         public ITool GetTool(string name)
         {
             ITool tool = Tools.FirstOrDefault(t => t.AssemblyQualifiedName == name);
@@ -189,7 +189,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// This clears the list of available tools and loads them from file again
+        /// This clears the list of available tools and loads them from file again.
         /// </summary>
         public virtual void RefreshTree()
         {
@@ -284,9 +284,9 @@ namespace DotSpatial.Controls
 
             if (progForm == null) return;
             if (toolToExecute == null) return;
-            progForm.Progress(string.Empty, 0, "==================");
-            progForm.Progress(string.Empty, 0, string.Format(MessageStrings.ToolManager_ExecutingTool, toolToExecute.Name));
-            progForm.Progress(string.Empty, 0, "==================");
+            progForm.Progress(0, "==================");
+            progForm.Progress(0, string.Format(MessageStrings.ToolManager_ExecutingTool, toolToExecute.Name));
+            progForm.Progress(0, "==================");
             bool result = false;
             try
             {
@@ -294,14 +294,14 @@ namespace DotSpatial.Controls
             }
             catch (Exception ex)
             {
-                progForm.Progress(string.Empty, 100, "Error: " + ex);
+                progForm.Progress(100, "Error: " + ex);
             }
 
             e.Result = result;
             progForm.ExecutionComplete();
-            progForm.Progress(string.Empty, 100, "==================");
-            progForm.Progress(string.Empty, 100, string.Format(MessageStrings.ToolManager_DoneExecutingTool, toolToExecute.Name));
-            progForm.Progress(string.Empty, 100, "==================");
+            progForm.Progress(100, "==================");
+            progForm.Progress(100, string.Format(MessageStrings.ToolManager_DoneExecutingTool, toolToExecute.Name));
+            progForm.Progress(100, "==================");
         }
 
         private void DoDoubleClick(TreeNode theNode)

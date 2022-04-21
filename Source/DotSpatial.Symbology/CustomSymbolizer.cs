@@ -55,7 +55,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Gets or sets the string group for this predefined symbolizer
+        /// Gets or sets the string group for this predefined symbolizer.
         /// </summary>
         public string Category
         {
@@ -71,7 +71,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the string name for this predefined symbolizer
+        /// Gets or sets the string name for this predefined symbolizer.
         /// </summary>
         public string Name
         {
@@ -87,7 +87,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets or sets the symbolizer for this predifined symbolizer
+        /// Gets or sets the symbolizer for this predifined symbolizer.
         /// </summary>
         public IFeatureSymbolizer Symbolizer
         {
@@ -104,7 +104,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets the type of the symbolizer (point, line, polygon)
+        /// Gets the type of the symbolizer (point, line, polygon).
         /// </summary>
         public SymbolizerType SymbolType { get; private set; }
 
@@ -129,30 +129,30 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Jiri's code to load from XML
+        /// Jiri's code to load from XML.
         /// </summary>
-        /// <param name="xmlDataSource">The xml Data source to load the symbology from</param>
-        /// <param name="uniqueName">A Unique name for the symbology item</param>
+        /// <param name="xmlDataSource">The xml Data source to load the symbology from.</param>
+        /// <param name="uniqueName">A Unique name for the symbology item.</param>
         public void LoadFromXml(string xmlDataSource, string uniqueName)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Jiri's code to load from XML
+        /// Jiri's code to load from XML.
         /// </summary>
-        /// <param name="xmlDataSource">The xml Data source to load the symbology from</param>
-        /// <param name="group">The organizational group or category</param>
-        /// <param name="name">The string name within the specified group or category</param>
+        /// <param name="xmlDataSource">The xml Data source to load the symbology from.</param>
+        /// <param name="group">The organizational group or category.</param>
+        /// <param name="name">The string name within the specified group or category.</param>
         public void LoadFromXml(string xmlDataSource, string group, string name)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Jiri's code to save to XML
+        /// Jiri's code to save to XML.
         /// </summary>
-        /// <param name="xmlDataSource">The xml data source to load the symbology from</param>
+        /// <param name="xmlDataSource">The xml data source to load the symbology from.</param>
         public void SaveToXml(string xmlDataSource)
         {
             throw new NotImplementedException();

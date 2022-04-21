@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// GradientControl
+    /// GradientControl.
     /// </summary>
     [DefaultEvent("PositionChanging")]
     [ToolboxItem(false)]
@@ -129,7 +129,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Gets or sets the color associated with the minimum color
+        /// Gets or sets the color associated with the minimum color.
         /// </summary>
         [Description("Gets or sets the color associated with the minimum value")]
         public Color MinimumColor
@@ -317,7 +317,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Prevent flicker
+        /// Prevent flicker.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected override void OnPaintBackground(PaintEventArgs e)

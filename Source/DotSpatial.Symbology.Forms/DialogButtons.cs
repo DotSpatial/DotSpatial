@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// DialogButtons
+    /// DialogButtons.
     /// </summary>
     [DefaultEvent("OkClicked")]
     [ToolboxItem(true)]
@@ -48,7 +48,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <summary>
-        /// Fires the Apply Clicked event
+        /// Fires the Apply Clicked event.
         /// </summary>
         protected virtual void OnApplyClicked()
         {
@@ -56,7 +56,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the Cancel Clicked event
+        /// Fires the Cancel Clicked event.
         /// </summary>
         protected virtual void OnCancelClicked()
         {
@@ -64,7 +64,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// Fires the ok clicked event
+        /// Fires the ok clicked event.
         /// </summary>
         protected virtual void OnOkClicked()
         {

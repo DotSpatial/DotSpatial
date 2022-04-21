@@ -4,8 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -55,7 +54,7 @@ namespace DotSpatial.Data
         /// Gets or sets an optional GeometryFactory that can be set to control how the geometries on features are
         /// created. if this is not specified, the default GeometryFactory is used.
         /// </summary>
-        IGeometryFactory FeatureGeometryFactory { get; set; }
+        GeometryFactory FeatureGeometryFactory { get; set; }
 
         /// <summary>
         /// Gets the feature lookup Table itself.
@@ -91,7 +90,7 @@ namespace DotSpatial.Data
         List<ShapeRange> ShapeIndices { get; set; }
 
         /// <summary>
-        /// Gets or sets an array of Vertex structures with X and Y coordinates
+        /// Gets or sets an array of Vertex structures with X and Y coordinates.
         /// </summary>
         double[] Vertex { get; set; }
 
@@ -113,8 +112,8 @@ namespace DotSpatial.Data
         /// Generates a new feature, adds it to the features and returns the value.
         /// </summary>
         /// <param name="geometry">The geometry that is used to create the feature.</param>
-        /// <returns>The feature that was added to this featureset</returns>
-        IFeature AddFeature(IGeometry geometry);
+        /// <returns>The feature that was added to this featureset.</returns>
+        IFeature AddFeature(Geometry geometry);
 
         /// <summary>
         /// Adds the FID values as a field called FID, but only if the FID field does not already exist.
@@ -149,7 +148,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Retrieves a subset using exclusively the features matching the specified values. Attributes are always copied.
         /// </summary>
-        /// <param name="indices">An integer list of indices to copy into the new FeatureSet</param>
+        /// <param name="indices">An integer list of indices to copy into the new FeatureSet.</param>
         /// <returns>A FeatureSet with the new items.</returns>
         IFeatureSet CopySubset(List<int> indices);
 
@@ -194,7 +193,7 @@ namespace DotSpatial.Data
         void CopyTableSchema(DataTable sourceTable);
 
         /// <summary>
-        /// Exports current shapefile as a zip archive in memory
+        /// Exports current shapefile as a zip archive in memory.
         /// </summary>
         /// <returns>Shapefile components.</returns>
         ShapefilePackage ExportShapefilePackage();
@@ -203,7 +202,7 @@ namespace DotSpatial.Data
         /// Given a datarow, this will return the associated feature. This FeatureSet uses an internal dictionary, so that even
         /// if the items are re-ordered or have new members inserted, this lookup will still work.
         /// </summary>
-        /// <param name="row">The DataRow for which to obtaind the feature</param>
+        /// <param name="row">The DataRow for which to obtaind the feature.</param>
         /// <returns>The feature to obtain that is associated with the specified data row.</returns>
         IFeature FeatureFromRow(DataRow row);
 
@@ -224,7 +223,7 @@ namespace DotSpatial.Data
         /// Gets the specified feature by constructing it from the vertices, rather
         /// than requiring that all the features be created. (which takes up a lot of memory).
         /// </summary>
-        /// <param name="index">The integer index</param>
+        /// <param name="index">The integer index.</param>
         /// <returns>The specified feature.</returns>
         IFeature GetFeature(int index);
 
@@ -237,7 +236,7 @@ namespace DotSpatial.Data
         /// If attributes are loaded, then it will use the existing datarow. Otherwise, it will read the attributes
         /// from the file. (This second option is not recommended for large repeats. In such a case, the attributes
         /// can be set manually from a larger bulk query of the data source.)</param>
-        /// <returns>The Shape object</returns>
+        /// <returns>The Shape object.</returns>
         Shape GetShape(int index, bool getAttributes);
 
         /// <summary>
@@ -250,7 +249,7 @@ namespace DotSpatial.Data
         /// Switches a boolean so that the next time that the vertices are requested,
         /// they must be re-calculated from the feature coordinates.
         /// </summary>
-        /// <remarks>This only affects reading values from the Vertices cache</remarks>
+        /// <remarks>This only affects reading values from the Vertices cache.</remarks>
         void InvalidateVertices();
 
         /// <summary>
@@ -269,8 +268,8 @@ namespace DotSpatial.Data
         /// For attributes that are small enough to be loaded into a data table, this will join attributes from a foreign table (from an excel file). This method
         /// won't create new rows in this table, so only matching members are brought in, but no rows are removed either, so not all rows will receive data.
         /// </summary>
-        /// <param name="xlsFilePath">The complete path of the file to join</param>
-        /// <param name="localJoinField">The field name to join on in this table</param>
+        /// <param name="xlsFilePath">The complete path of the file to join.</param>
+        /// <param name="localJoinField">The field name to join on in this table.</param>
         /// <param name="xlsJoinField">The field in the foreign table.</param>
         /// <returns>
         /// A modified featureset with the changes.
@@ -299,14 +298,14 @@ namespace DotSpatial.Data
         void RemoveShapesAt(IEnumerable<int> indices);
 
         /// <summary>
-        /// Saves the information in the Layers provided by this datasource onto its existing file location
+        /// Saves the information in the Layers provided by this datasource onto its existing file location.
         /// </summary>
         void Save();
 
         /// <summary>
         /// Saves a datasource to the file.
         /// </summary>
-        /// <param name="fileName">The string fileName location to save to</param>
+        /// <param name="fileName">The string fileName location to save to.</param>
         /// <param name="overwrite">Boolean, if this is true then it will overwrite a file of the existing name.</param>
         void SaveAs(string fileName, bool overwrite);
 
@@ -314,17 +313,17 @@ namespace DotSpatial.Data
         /// returns only the features that have envelopes that
         /// intersect with the specified envelope.
         /// </summary>
-        /// <param name="region">The specified region to test for intersect with</param>
-        /// <returns>A List of the IFeature elements that are contained in this region</returns>
+        /// <param name="region">The specified region to test for intersect with.</param>
+        /// <returns>A List of the IFeature elements that are contained in this region.</returns>
         List<IFeature> Select(Extent region);
 
         /// <summary>
         /// returns only the features that have envelopes that
         /// intersect with the specified envelope.
         /// </summary>
-        /// <param name="region">The specified region to test for intersect with</param>
+        /// <param name="region">The specified region to test for intersect with.</param>
         /// <param name="selectedRegion">This returns the geographic extents for the entire selected area.</param>
-        /// <returns>A List of the IFeature elements that are contained in this region</returns>
+        /// <returns>A List of the IFeature elements that are contained in this region.</returns>
         List<IFeature> Select(Extent region, out Extent selectedRegion);
 
         /// <summary>
@@ -338,14 +337,14 @@ namespace DotSpatial.Data
         /// This version is more tightly integrated to the DataTable and returns the row indices, rather
         /// than attempting to link the results to features themselves, which may not even exist.
         /// </summary>
-        /// <param name="filterExpression">The filter expression</param>
-        /// <returns>The list of indices</returns>
+        /// <param name="filterExpression">The filter expression.</param>
+        /// <returns>The list of indices.</returns>
         List<int> SelectIndexByAttribute(string filterExpression);
 
         /// <summary>
         /// Skips the features themselves and uses the shapeindicies instead.
         /// </summary>
-        /// <param name="region">The region to select members from</param>
+        /// <param name="region">The region to select members from.</param>
         /// <returns>A list of integer valued shape indices that are selected.</returns>
         List<int> SelectIndices(Extent region);
 

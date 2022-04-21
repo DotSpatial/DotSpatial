@@ -4,6 +4,7 @@
 using System;
 using System.IO;
 using DotSpatial.Controls;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests
@@ -24,14 +25,16 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests
         [TestCase(@"Data\United States_Ver2\United States.mwprj", "projectfile.2", Description = "Test Case for projectfile Ver2")]
         public void CanOpenProjectFile(string mprojFile, string projectFileVer)
         {
+            var path = Common.AbsolutePath(mprojFile);
+
             var map = new Map();
             var target = new LegacyProjectDeserializer(map);
             var curDir = Environment.CurrentDirectory;
-            var fileInfo = new FileInfo(mprojFile);
+            var fileInfo = new FileInfo(path);
 
             try
             {
-                dynamic parser = DynamicXMLNode.Load(mprojFile);
+                dynamic parser = DynamicXMLNode.Load(path);
                 Assert.AreEqual(projectFileVer, (string)parser["type"]);
                 Assert.AreEqual(0, map.Layers.Count);
                 Environment.CurrentDirectory = fileInfo.DirectoryName;

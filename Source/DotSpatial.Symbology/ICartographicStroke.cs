@@ -35,12 +35,12 @@ namespace DotSpatial.Symbology
         bool[] DashButtons { get; set; }
 
         /// <summary>
-        /// gets or sets the DashCap for both the start and end caps of the dashes
+        /// gets or sets the DashCap for both the start and end caps of the dashes.
         /// </summary>
         DashCap DashCap { get; set; }
 
         /// <summary>
-        /// Gets or sets the DashPattern as an array of floating point values from 0 to 1
+        /// Gets or sets the DashPattern as an array of floating point values from 0 to 1.
         /// </summary>
         float[] DashPattern { get; set; }
 
@@ -51,7 +51,7 @@ namespace DotSpatial.Symbology
         IList<ILineDecoration> Decorations { get; set; }
 
         /// <summary>
-        /// Gets or sets the line cap for both the start and end of the line
+        /// Gets or sets the line cap for both the start and end of the line.
         /// </summary>
         LineCap EndCap { get; set; }
 
@@ -69,7 +69,7 @@ namespace DotSpatial.Symbology
         float Offset { get; set; }
 
         /// <summary>
-        /// Gets or sets the line cap for both the start and end of the line
+        /// Gets or sets the line cap for both the start and end of the line.
         /// </summary>
         LineCap StartCap { get; set; }
 

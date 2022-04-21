@@ -6,7 +6,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// ValueGrid
+    /// ValueGrid.
     /// </summary>
     /// <typeparam name="T">Type of the items in the ValueGrid.</typeparam>
     public class ValueGrid<T> : IValueGrid
@@ -51,8 +51,8 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets a value at the 0 row, 0 column index.
         /// </summary>
-        /// <param name="row">The 0 based vertical row index from the top</param>
-        /// <param name="column">The 0 based horizontal column index from the left</param>
+        /// <param name="row">The 0 based vertical row index from the top.</param>
+        /// <param name="column">The 0 based horizontal column index from the left.</param>
         /// <returns>An object reference to the actual value in the data member.</returns>
         public double this[int row, int column]
         {

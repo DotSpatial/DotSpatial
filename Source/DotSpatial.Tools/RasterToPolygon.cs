@@ -7,7 +7,6 @@ using System.Diagnostics;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Tools
@@ -43,12 +42,12 @@ namespace DotSpatial.Tools
         #region Properties
 
         /// <summary>
-        /// Gets the input paramater array
+        /// Gets the input paramater array.
         /// </summary>
         public override Parameter[] InputParameters => _inputParam;
 
         /// <summary>
-        /// Gets the output paramater array
+        /// Gets the output paramater array.
         /// </summary>
         public override Parameter[] OutputParameters => _outputParam;
 
@@ -57,7 +56,7 @@ namespace DotSpatial.Tools
         #region Methods
 
         /// <summary>
-        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful
+        /// Once the Parameter have been configured the Execute command can be called, it returns true if successful.
         /// </summary>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
@@ -123,7 +122,7 @@ namespace DotSpatial.Tools
                 int current = Convert.ToInt32((y * 100.0) / input.NumRows);
                 if (current > previous)
                 {
-                    cancelProgressHandler.Progress(string.Empty, current, current + TextStrings.progresscompleted);
+                    cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
                     previous = current;
                 }
 
@@ -136,8 +135,7 @@ namespace DotSpatial.Tools
                         continue;
                     }
 
-                    LineSegmentList lineList;
-                    if (!featureHash.TryGetValue(value, out lineList))
+                    if (!featureHash.TryGetValue(value, out LineSegmentList lineList))
                     {
                         lineList = new LineSegmentList();
                         featureHash.Add(value, lineList);
@@ -519,7 +517,7 @@ namespace DotSpatial.Tools
                 var key = pair.Key;
                 var lineSegList = pair.Value.List;
 
-                var polyList = new List<IPolygon>();
+                var polyList = new List<Polygon>();
                 var ind = 0;
                 while (ind != lineSegList.Count)
                 {
@@ -558,7 +556,7 @@ namespace DotSpatial.Tools
                     polyList.Add(new Polygon(new LinearRing(polyShell.ToArray())));
                 }
 
-                IGeometry geometry = polyList.Count == 1 ? (IGeometry)polyList[0] : new MultiPolygon(polyList.ToArray());
+                Geometry geometry = polyList.Count == 1 ? (Geometry)polyList[0] : new MultiPolygon(polyList.ToArray());
                 var f = output.AddFeature(geometry);
                 f.DataRow["Value"] = key;
 
@@ -574,7 +572,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// The Parameter array should be populated with default values here
+        /// The Parameter array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {

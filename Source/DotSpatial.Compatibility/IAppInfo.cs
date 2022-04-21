@@ -6,7 +6,7 @@ using System.Drawing;
 namespace DotSpatial.Compatibility
 {
     /// <summary>
-    /// AppInfo
+    /// AppInfo.
     /// </summary>
     public interface IAppInfo
     {
@@ -18,12 +18,12 @@ namespace DotSpatial.Compatibility
         string ApplicationName { get; set; }
 
         /// <summary>
-        /// Gets or sets the default directory for file dialogs
+        /// Gets or sets the default directory for file dialogs.
         /// </summary>
         string DefaultDir { get; set; }
 
         /// <summary>
-        /// Gets or sets the icon to be displayed as the default form icon
+        /// Gets or sets the icon to be displayed as the default form icon.
         /// </summary>
         Icon FormIcon { get; set; }
 
@@ -33,7 +33,7 @@ namespace DotSpatial.Compatibility
         string HelpFilePath { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not to show a welcome screen (overriding the Splash Screen)
+        /// Gets or sets a value indicating whether or not to show a welcome screen (overriding the Splash Screen).
         /// </summary>
         bool ShowWelcomeScreen { get; set; }
 
@@ -43,7 +43,7 @@ namespace DotSpatial.Compatibility
         Image SplashPicture { get; set; }
 
         /// <summary>
-        /// Gets or sets how long the splash screen should be displayed
+        /// Gets or sets how long the splash screen should be displayed.
         /// </summary>
         double SplashTime { get; set; }
 
@@ -54,7 +54,7 @@ namespace DotSpatial.Compatibility
         string URL { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to display a splash screen on starting the application
+        /// Gets or sets a value indicating whether to display a splash screen on starting the application.
         /// </summary>
         bool UseSplashScreen { get; set; }
 

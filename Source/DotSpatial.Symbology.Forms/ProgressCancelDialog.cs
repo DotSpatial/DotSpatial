@@ -8,7 +8,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology.Forms
 {
     /// <summary>
-    /// ProgressCancelDialog
+    /// ProgressCancelDialog.
     /// </summary>
     public partial class ProgressCancelDialog : Form, ICancelProgressHandler
     {
@@ -49,7 +49,7 @@ namespace DotSpatial.Symbology.Forms
         #region Methods
 
         /// <inheritdoc />
-        public void Progress(string key, int percent, string message)
+        public void Progress(int percent, string message)
         {
             mwProgressBar1.Value = percent;
             SetMess ms = SetMessage;
@@ -61,6 +61,14 @@ namespace DotSpatial.Symbology.Forms
             {
                 SetMessage(message);
             }
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void Reset()
+        {
+            Progress(0, string.Empty);
         }
 
         private void Button1Click(object sender, EventArgs e)

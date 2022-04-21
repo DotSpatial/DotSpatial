@@ -8,7 +8,7 @@ using System.IO;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Index file class for the .shx file
+    /// Index file class for the .shx file.
     /// </summary>
     public class ShapefileIndexFile
     {
@@ -37,12 +37,12 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the header
+        /// Gets or sets the header.
         /// </summary>
         public ShapefileHeader Header { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of shape headers
+        /// Gets or sets the list of shape headers.
         /// </summary>
         public List<ShapeHeader> Shapes { get; set; }
 
@@ -98,7 +98,7 @@ namespace DotSpatial.Data
         /// Reads the entire index file in order to get a breakdown of how shapes are broken up.
         /// </summary>
         /// <param name="fileName">A string fileName of the .shx file to read.</param>
-        /// <returns>A List of ShapeHeaders that give offsets and lengths so that reading can be optimized</returns>
+        /// <returns>A List of ShapeHeaders that give offsets and lengths so that reading can be optimized.</returns>
         protected List<ShapeHeader> ReadIndexFile(string fileName)
         {
             string shxFilename = fileName;
@@ -156,9 +156,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Writes the current content to the specified file.
         /// </summary>
-        /// <param name="header">The header to write</param>
-        /// <param name="fileName">Basically the same code can be used for the shp and shx files</param>
-        /// <param name="numShapes">The integer number of shapes to write to the file</param>
+        /// <param name="header">The header to write.</param>
+        /// <param name="fileName">Basically the same code can be used for the shp and shx files.</param>
+        /// <param name="numShapes">The integer number of shapes to write to the file.</param>
         private static void WriteHeader(ShapefileHeader header, string fileName, int numShapes)
         {
             string dir = Path.GetDirectoryName(fileName);

@@ -11,14 +11,14 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Creates a new instance of the Africa Class
         /// </summary>
-        [TestFixtureSetUp]
+        [SetUp]
         public void Initialize()
         {
-            
+
         }
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void Aitoffworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Aitoffworld;
@@ -27,7 +27,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void Behrmannworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Behrmannworld;
@@ -44,7 +44,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void CrasterParabolicworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.CrasterParabolicworld;
@@ -53,7 +53,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void Cubeworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Cubeworld;
@@ -70,7 +70,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void EckertIIIworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertIIIworld;
@@ -79,7 +79,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void EckertIIworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertIIworld;
@@ -96,7 +96,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void EckertIworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertIworld;
@@ -105,7 +105,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void EckertVIworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertVIworld;
@@ -114,7 +114,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void EckertVworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertVworld;
@@ -139,7 +139,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void FlatPolarQuarticworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.FlatPolarQuarticworld;
@@ -148,7 +148,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void Fullerworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Fullerworld;
@@ -165,7 +165,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void HammerAitoffworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.HammerAitoffworld;
@@ -174,7 +174,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void Loximuthalworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Loximuthalworld;
@@ -207,13 +207,18 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
         public void PlateCarreeworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.PlateCarreeworld;
             Tester.TestProjection(pStart);
         }
 
+        [Test]
+        public void PlateCarreeFromEsriString()
+        {
+            ProjectionInfo pStart = ProjectionInfo.FromEsriString("PROJCS[\"WGS_1984_Plate_Carree\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Plate_Carree\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",0.0],UNIT[\"Meter\",1.0]]");
+            Tester.TestProjection(pStart);
+        }
 
         [Test]
         public void Polyconicworld()
@@ -224,7 +229,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void QuarticAuthalicworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.QuarticAuthalicworld;
@@ -257,7 +262,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void Timesworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Timesworld;
@@ -274,7 +279,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void VerticalPerspectiveworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.VerticalPerspectiveworld;
@@ -291,7 +296,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WinkelIIworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.WinkelIIworld;
@@ -300,7 +305,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WinkelIworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.WinkelIworld;
@@ -309,7 +314,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void WinkelTripelNGSworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.WinkelTripelNGSworld;

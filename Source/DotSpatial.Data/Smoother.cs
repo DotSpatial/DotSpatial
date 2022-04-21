@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Smoother
+    /// Smoother.
     /// </summary>
     public class Smoother
     {

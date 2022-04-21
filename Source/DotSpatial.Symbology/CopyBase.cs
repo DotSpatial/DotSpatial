@@ -26,9 +26,9 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Creates a duplicate of this descriptor using MemberwiseClone
+        /// Creates a duplicate of this descriptor using MemberwiseClone.
         /// </summary>
-        /// <returns>A clone of this object as a duplicate</returns>
+        /// <returns>A clone of this object as a duplicate.</returns>
         object ICloneable.Clone()
         {
             Descriptor copy = MemberwiseClone() as Descriptor;
@@ -45,8 +45,8 @@ namespace DotSpatial.Symbology
         /// PropertyInfo returns overridden members as separate entries. We would rather work with each members
         /// only one time.
         /// </summary>
-        /// <param name="allProperties">All the properties, including duplicates created by overridden members</param>
-        /// <returns>An Array of PropertyInfo members</returns>
+        /// <param name="allProperties">All the properties, including duplicates created by overridden members.</param>
+        /// <returns>An Array of PropertyInfo members.</returns>
         protected static PropertyInfo[] DistinctNames(IEnumerable<PropertyInfo> allProperties)
         {
             List<string> names = new List<string>();
@@ -62,9 +62,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This occurs during the Copy method and is overridable by sub-classes
+        /// This occurs during the Copy method and is overridable by sub-classes.
         /// </summary>
-        /// <param name="copy">The duplicate descriptor</param>
+        /// <param name="copy">The duplicate descriptor.</param>
         protected virtual void OnCopy(Descriptor copy)
         {
             // This checks any property on copy, and if it is cloneable, it
