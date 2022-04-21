@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 ### Fixed
+- Error when using wildcards in Symbology FilterExpression
 
 ## V3.0
 
