@@ -8,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Text.RegularExpressions;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
 using NetTopologySuite.Geometries;
@@ -157,7 +158,7 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-       #region Properties
+        #region Properties
 
         /// <summary>
         /// Gets the dictionary of extents that is calculated from the categories. This is calculated one time,
@@ -814,6 +815,36 @@ namespace DotSpatial.Symbology
         {
             SelectAction action = (ISelection selection, Envelope region, out Envelope affectedRegion) => selection.InvertSelection(region, out affectedRegion);
             return DoSelectAction(tolerant, strict, selectionMode, ClearStates.False, out affectedArea, action);
+        }
+
+        /// <summary>
+        /// This routine will determine if a string is a valid field name.
+        /// Based on https://support.esri.com/en/technical-article/000005588
+        /// </summary>
+        /// <param name="fieldName">The field name to check.</param>
+        /// <returns>True if the field name is valid, false otherwise.</returns>
+        private static bool IsValidFieldName(string fieldName)
+        {
+            // a null or empty field name is invalid
+            if (string.IsNullOrEmpty(fieldName))
+            {
+                return false;
+            }
+
+            // setup a regex to match invalid characters
+            Regex rgexInv = new("[^a-zA-Z0-9_]", RegexOptions.CultureInvariant);
+
+            // if the string has any invalid characters then return False otherwise do more tests
+            if (rgexInv.IsMatch(fieldName))
+            {
+                return false;
+            }
+
+            // setup a regex to match invalid characters
+            Regex rgexInvStart = new("^([0-9]|_|\\s)", RegexOptions.CultureInvariant);
+
+            // if the field name starts with an invalid character then it's not valid
+            return !rgexInvStart.IsMatch(fieldName);
         }
 
         /// <summary>
@@ -1673,21 +1704,29 @@ namespace DotSpatial.Symbology
         {
             // Fields should be indicated by [ ] characters.
             List<string> allNames = new();
-            if (expression == null)
+
+            if (string.IsNullOrWhiteSpace(expression))
             {
                 return allNames;
             }
 
             bool isField = false; // I don't think nesting is possible
             List<char> currentName = new();
+
             foreach (char current in expression)
             {
                 if (isField)
                 {
                     if (current == ']')
                     {
+                        var fieldName = new string(currentName.ToArray());
                         isField = false;
-                        allNames.Add(new string(currentName.ToArray()));
+
+                        if (IsValidFieldName(fieldName)) // only add field if name is valid
+                        {
+                            allNames.Add(fieldName);
+                        }
+
                         currentName = new List<char>();
                         continue;
                     }

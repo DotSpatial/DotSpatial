@@ -1,13 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## V3.0.1
 
 ### Added
+- Label Setup dialog can now accept any font size (#1434)
 
 ### Changed
 
 ### Fixed
+- Error when using wildcards in Symbology FilterExpression (#1160)
 
 ## V3.0
 

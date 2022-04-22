@@ -530,6 +530,7 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.cmbSize, "cmbSize");
             this.cmbSize.Name = "cmbSize";
             this.cmbSize.SelectedIndexChanged += new System.EventHandler(this.CmbSizeSelectedIndexChanged);
+            this.cmbSize.TextChanged += new System.EventHandler(this.CmbSizeSelectedIndexChanged);
             // 
             // label1
             // 
