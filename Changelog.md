@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## V4.0
+
+### Changed
+- Switched to VS2022
+- Switched to .Net 6
+
+## Fixed
+- Fixed angle calculation for second and third quadrant (#1405) 
+
 ## V3.0.1
 
 ### Added
