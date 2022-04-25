@@ -109,6 +109,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Symbology.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Tools.Tests", "Tests\DotSpatial.Tools.Tests\DotSpatial.Tools.Tests.csproj", "{B2BECF44-6311-4909-8E90-DEC93710D282}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.NTSExtension.Tests", "Tests\DotSpatial.NTSExtension.Tests\DotSpatial.NTSExtension.Tests.csproj", "{BFFFC663-A87C-4B4A-9A94-0392DA6418CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -311,6 +313,10 @@ Global
 		{B2BECF44-6311-4909-8E90-DEC93710D282}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2BECF44-6311-4909-8E90-DEC93710D282}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2BECF44-6311-4909-8E90-DEC93710D282}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFFFC663-A87C-4B4A-9A94-0392DA6418CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFFFC663-A87C-4B4A-9A94-0392DA6418CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFFFC663-A87C-4B4A-9A94-0392DA6418CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFFFC663-A87C-4B4A-9A94-0392DA6418CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -365,6 +371,7 @@ Global
 		{62A05D33-8030-45CA-A5E8-B85FB7EB8E57} = {92FB5F30-9D38-41D1-96D3-E0F1BE1E5120}
 		{072BD3AE-A459-4233-B359-D9954F0A0621} = {92FB5F30-9D38-41D1-96D3-E0F1BE1E5120}
 		{B2BECF44-6311-4909-8E90-DEC93710D282} = {92FB5F30-9D38-41D1-96D3-E0F1BE1E5120}
+		{BFFFC663-A87C-4B4A-9A94-0392DA6418CB} = {92FB5F30-9D38-41D1-96D3-E0F1BE1E5120}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EC5A4840-2C4C-4B30-887F-167F2A52D9E1}

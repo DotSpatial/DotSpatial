@@ -12,8 +12,9 @@
 	</PropertyGroup>
 
 	<PropertyGroup Label="nuget packages">
- 		<AssemblyVersion>3.0.0</AssemblyVersion>
-		<FileVersion>3.0.0</FileVersion>
+		<VersionPrefix>4.0.0</VersionPrefix>
+ 		<AssemblyVersion>$(VersionPrefix)$(VersionSuffix)</AssemblyVersion>
+		<FileVersion>$(VersionPrefix)$(VersionSuffix)</FileVersion>
 		<Deterministic>true</Deterministic>
 		<Company>DotSpatial Team</Company>
 		<Authors>$(Company)</Authors>

@@ -20,16 +20,10 @@ init:
 - ps: $env:nugetVersion = "$env:packageVersion.$env:appveyor_build_number"
 - ps: Update-AppveyorBuild -Version $env:buildVersion
 
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfoShared.*'
-  assembly_version: '$(buildVersion)'
-  assembly_file_version: '$(buildVersion)'
-  assembly_informational_version: '$(nugetVersion)'
-
 dotnet_csproj:
   patch: true 
   file: 'Directory.Build.props'
+  version_prefix: '{version}'
   assembly_version: '{version}'
   file_version: '{version}'
   
