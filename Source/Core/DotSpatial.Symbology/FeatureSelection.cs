@@ -205,6 +205,7 @@ namespace DotSpatial.Symbology
             if (UseVisibility) vis = Visible;
 
             Filter[item] = new DrawnState(cat, sel, chunk, vis);
+            _envelope = null; //reset the envelope so it will be calculated from the selected features the next time the property is accessed
             OnChanged();
         }
 
@@ -501,12 +502,13 @@ namespace DotSpatial.Symbology
             {
                 if (count >= startIndex && count < startIndex + numRows)
                 {
+                    DataRow dr = dt.NewRow();
                     foreach (string name in names)
                     {
-                        DataRow dr = dt.NewRow();
                         dr[name] = feature.DataRow[name];
-                        dt.Rows.Add(dr);
                     }
+
+                    dt.Rows.Add(dr);
                 }
 
                 if (count > numRows + startIndex) break;
@@ -694,6 +696,7 @@ namespace DotSpatial.Symbology
             }
 
             Filter[item] = new DrawnState(cat, sel, chunk, vis);
+            _envelope = null; //reset the envelope so it will be calculated from the selected features the next time the property is accessed
             OnChanged();
             return true;
         }
@@ -825,7 +828,14 @@ namespace DotSpatial.Symbology
         /// <returns>An in memory featureset that has not yet been saved to a file in any way.</returns>
         public FeatureSet ToFeatureSet()
         {
-            FeatureSet fs = new(ToFeatureList()); // the output features will be copied.
+            FeatureSet fs = new(ToFeatureList()) // the output features will be copied.
+            {
+                Projection = _featureSet.Projection,
+                CoordinateType = _featureSet.CoordinateType,
+                FeatureGeometryFactory = _featureSet.FeatureGeometryFactory,
+                FeatureType = _featureSet.FeatureType
+            };
+
             if (fs.Features.Count == 0)
             {
                 if (Filter.FeatureList.Count > 0)

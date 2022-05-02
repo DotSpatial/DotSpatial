@@ -109,10 +109,10 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// </summary>
         /// <param name="filePath">Path of the file that contains the layer that gets loaded.</param>
         /// <returns>The opened layer.</returns>
-        public static MapSelfLoadPointLayer Open(string filePath)
+        public static MapSelfLoadLineLayer Open(string filePath)
         {
             var dataset = DataManager.DefaultDataManager.OpenFile(filePath) as ISelfLoadSet;
-            var layer = dataset?.GetLayer() as MapSelfLoadPointLayer;
+            var layer = dataset?.GetLayer() as MapSelfLoadLineLayer;
             return layer;
         }
 

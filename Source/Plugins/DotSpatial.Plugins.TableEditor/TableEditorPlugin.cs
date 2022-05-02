@@ -58,32 +58,36 @@ namespace DotSpatial.Plugins.TableEditor
 
         private void AddContextMenuItems(ILayer addedLayer)
         {
+            if (addedLayer is null)
+            {
+                return;
+            }
+
             if (addedLayer is IMapGroup grp)
             {
                 // map.layerAdded event doesn't fire for groups. Therefore, it's necessary
                 // to handle this event separately for groups.
                 grp.LayerAdded += MapLayerAdded;
-            }
 
-            if (addedLayer.ContextMenuItems.Exists(item => item.Name == Resources.AttributeTableEditor))
-            {
-                // assume menu item already exists. Do nothing.
-                return;
+                foreach (ILayer layer in grp.Layers)
+                {
+                    AddContextMenuItems(layer);
+                }
             }
+            else if (addedLayer is IFeatureLayer fl)
+            {
+                if (addedLayer.ContextMenuItems.Exists(item => item.Name == Resources.AttributeTableEditor))
+                {
+                    // assume menu item already exists. Do nothing.
+                    return;
+                }
 
-            // add context menu item.
-            var menuItem = new SymbologyMenuItem(Resources.AttributeTableEditor, (sender, args) => ShowAttributes(addedLayer as IFeatureLayer))
-            {
-                Image = Resources.table_16x16
-            };
-            var cmi = addedLayer.ContextMenuItems;
-            if (cmi.Count > 2)
-            {
-                addedLayer.ContextMenuItems.Insert(2, menuItem);
-            }
-            else
-            {
-                addedLayer.ContextMenuItems.Add(menuItem);
+                // add context menu item.
+                var menuItem = new SymbologyMenuItem(Resources.AttributeTableEditor, (sender, args) => ShowAttributes(fl))
+                {
+                    Image = Resources.table_16x16
+                };
+                addedLayer.ContextMenuItems.Insert(0, menuItem);
             }
         }
 
@@ -138,28 +142,9 @@ namespace DotSpatial.Plugins.TableEditor
 
         private void SerializationManagerDeserializing(object sender, SerializingEventArgs e)
         {
-            // context menu items are added to layers when opening a project
-            // this call is necessary because the LayerAdded event doesn't fire when a project is opened.
-            foreach (ILayer layer in App.Map.MapFrame.GetAllLayers())
+            foreach (var layer in App.Map.Layers)
             {
-                if (layer is IFeatureLayer fl)
-                {
-                    if (!fl.ContextMenuItems.Exists(item => item.Name == Resources.AttributeTableEditor))
-                    {
-                        // add context menu item.
-                        var menuItem = new SymbologyMenuItem(Resources.AttributeTableEditor, (o, args) => ShowAttributes(fl))
-                        {
-                            Image = Resources.table_16x16
-                        };
-                        fl.ContextMenuItems.Insert(2, menuItem);
-                    }
-                }
-            }
-
-            // attach layer added events to existing groups
-            foreach (IMapGroup grp in App.Map.MapFrame.GetAllGroups())
-            {
-                grp.LayerAdded += MapLayerAdded;
+                AddContextMenuItems(layer);
             }
         }
 

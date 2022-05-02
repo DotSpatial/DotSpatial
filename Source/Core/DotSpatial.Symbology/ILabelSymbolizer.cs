@@ -129,6 +129,13 @@ namespace DotSpatial.Symbology
         bool HaloEnabled { get; set; }
 
         /// <summary>
+        /// Gets or sets the size of the halo.
+        /// </summary>
+        [Category("Halo")]
+        [Description("Gets or sets the size of the halo.")]
+        float HaloSize { get; set; }
+
+        /// <summary>
         /// Gets or sets the field with angle to draw label.
         /// </summary>
         [Category("General")]

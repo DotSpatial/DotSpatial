@@ -176,6 +176,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets a value indicating whether this item and its child items
         /// appear in the legend when the legend is drawn.
         /// </summary>
+        [Serialize("LegendItemVisible")]
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual bool LegendItemVisible

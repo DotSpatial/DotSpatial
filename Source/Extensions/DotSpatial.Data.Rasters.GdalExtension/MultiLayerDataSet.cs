@@ -129,6 +129,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     return null;
             }
 
+            layer.LegendText = _groupName;
             OgrDataReader.TranslateStyles((IMapFeatureLayer)layer, _dataSets[fs]);
             layer.IsExpanded = false;
             return layer;

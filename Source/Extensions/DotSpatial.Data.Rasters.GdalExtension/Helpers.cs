@@ -20,6 +20,11 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <returns>Opened file as data set.</returns>
         public static Dataset Open(string fileName)
         {
+            if (!System.IO.File.Exists(fileName))
+            {
+                return null;
+            }
+
             try
             {
                 return Gdal.Open(fileName, Access.GA_Update);

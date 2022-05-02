@@ -331,8 +331,7 @@ namespace DotSpatial.Symbology
             MapFrame.SuspendEvents();
             foreach (ILayer layer in GetAllLayers())
             {
-                Envelope layerArea;
-                if (layer.ClearSelection(out layerArea, force))
+                if (layer.ClearSelection(out Envelope layerArea, force))
                 {
                     changed = true;
                     affectedAreas.ExpandToInclude(layerArea);
@@ -516,8 +515,7 @@ namespace DotSpatial.Symbology
 
             foreach (ILayer s in GetAllLayers().Where(_ => _.SelectionEnabled && _.IsVisible))
             {
-                Envelope layerArea;
-                if (s.InvertSelection(tolerant, strict, mode, out layerArea))
+                if (s.InvertSelection(tolerant, strict, mode, out Envelope layerArea))
                 {
                     somethingChanged = true;
                     affectedArea.ExpandToInclude(layerArea);
@@ -574,8 +572,7 @@ namespace DotSpatial.Symbology
 
             foreach (var s in GetAllLayers().Where(_ => _.SelectionEnabled && _.IsVisible))
             {
-                Envelope layerArea;
-                if (s.Select(tolerant, strict, mode, out layerArea, clear))
+                if (s.Select(tolerant, strict, mode, out Envelope layerArea, clear))
                 {
                     somethingChanged = true;
                     affectedArea.ExpandToInclude(layerArea);
@@ -602,8 +599,7 @@ namespace DotSpatial.Symbology
 
             foreach (ILayer s in GetAllLayers().Where(_ => _.SelectionEnabled && _.IsVisible))
             {
-                Envelope layerArea;
-                if (s.UnSelect(tolerant, strict, mode, out layerArea))
+                if (s.UnSelect(tolerant, strict, mode, out Envelope layerArea))
                 {
                     somethingChanged = true;
                     affectedArea.ExpandToInclude(layerArea);
@@ -755,12 +751,34 @@ namespace DotSpatial.Symbology
                 {
                     GetNestedLayers(grp, layerList);
                 }
-                else
+                else if (layer is T tlayer)
                 {
-                    if (layer is T tlayer)
-                    {
-                        layerList.Add(tlayer);
-                    }
+                    layerList.Add(tlayer);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Recursively adds all the layers of the given type that are found in group to layerList.
+        /// </summary>
+        /// <typeparam name="T">Type of the layers that should be included.</typeparam>
+        /// <typeparam name="S"></typeparam>
+        /// <param name="group">Group that contains the layers.</param>
+        /// <param name="layerList">The list the layers should be added to.</param>
+        private static void GetNestedLayersWithoutSublayers<T, S>(IGroup group, List<T> layerList)
+            where T : class
+            where S : class
+        {
+            if (layerList == null) layerList = new List<T>();
+            foreach (var layer in group.GetLayers())
+            {
+                if (layer is IGroup grp)
+                {
+                    GetNestedLayersWithoutSublayers<T,S>(grp, layerList);
+                }
+                else if (layer is T tlayer && !(layer is S))
+                {
+                    layerList.Add(tlayer);
                 }
             }
         }
@@ -804,12 +822,28 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <typeparam name="T">Type of the layers that should be included.</typeparam>
         /// <returns>The list of the layers with the given type.</returns>
-        private List<T> GetAllTypeLayers<T>()
+        public List<T> GetAllTypeLayers<T>()
             where T : class
         {
             var layerList = new List<T>();
             GetNestedLayers(this, layerList);
             return layerList;
+        }
+
+        /// <summary>
+        /// Gets all layers of the given type that are not of the second type.
+        /// </summary>
+        /// <typeparam name="T">The type.</typeparam>
+        /// <typeparam name="S">The type the layers should not have.</typeparam>
+        /// <returns>An enumerable collection of layers with the given type.</returns>
+        public List<T> GetAllTypeLayersWithoutSubtype<T, S>()
+            where T : class
+            where S : class
+        {
+            var layerList = new List<T>();
+            GetNestedLayersWithoutSublayers<T, S>(this, layerList);
+            return layerList;
+
         }
 
         private void LayersItemChanged(object sender, EventArgs e)

@@ -132,6 +132,9 @@ namespace DotSpatial.Projections.AuthorityCodes
                 throw new ArgumentOutOfRangeException(nameof(authorityCode), "Such projection already added.");
             }
             ProjectionInfo pi;
+
+            if (proj4String.Contains("+proj=geocent")) return;
+
             try
             {
                 pi = ProjectionInfo.FromProj4String(proj4String);

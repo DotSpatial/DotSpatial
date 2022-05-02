@@ -37,6 +37,7 @@ namespace DotSpatial.Symbology
             FontStyle = FontStyle.Regular;
             FontColor = Color.Black;
             HaloColor = Color.White;
+            HaloSize = 2;
             HaloEnabled = false;
             ScaleMode = ScaleMode.Symbolic;
             LabelPlacementMethod = LabelPlacementMethod.Centroid;
@@ -160,6 +161,12 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Serialize("HaloEnabled")]
         public bool HaloEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the halo.
+        /// </summary>
+        [Serialize("HaloSize")]
+        public float HaloSize { get; set; }
 
         /// <summary>
         /// Gets or sets the field with angle to draw label.

@@ -1267,6 +1267,26 @@ namespace DotSpatial.Projections
             string unit = esriString.Substring(iStart, esriString.Length - iStart);
             Unit.ParseEsriString(unit);
 
+            var index = esriString.LastIndexOf("AUTHORITY", StringComparison.Ordinal);
+
+            if (index > iStart && index > -1)
+            {
+                // "AUTHORITY[""EPSG"",3068]]
+
+                iStart = index + 10;
+                iEnd = esriString.IndexOf(",", index + 10) - 1;
+
+                Authority = esriString.Substring(iStart, iEnd - iStart).Trim('"');
+
+                iStart = iEnd + 2;
+                iEnd = esriString.IndexOf("]", iStart);
+
+                if (int.TryParse(esriString.Substring(iStart, iEnd - iStart), out int a))
+                {
+                    AuthorityCode = a;
+                }
+            }
+
             if (esriString.Contains("PROJECTION"))
             {
                 iStart = esriString.IndexOf("PROJECTION", StringComparison.Ordinal) + 12;

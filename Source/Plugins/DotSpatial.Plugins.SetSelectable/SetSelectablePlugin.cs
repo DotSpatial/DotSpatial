@@ -63,6 +63,8 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <param name="addedLayer">Layer, that should be added to DGV_Selection.</param>
         private void AddLayer(ILayer addedLayer)
         {
+            if (addedLayer == null) return;
+
             if (addedLayer is IMapGroup grp)
             {
                 // handle layerAdded event separately for groups because map.layerAdded event doesn't fire for groups.
@@ -79,6 +81,32 @@ namespace DotSpatial.Plugins.SetSelectable
             }
         }
 
+        private void RemoveLayer(ILayer layer)
+        {
+            if (layer == null)
+            {
+                return;
+            }
+
+            var grp = layer as IMapGroup;
+
+            if (grp != null)
+            {
+                // handle layerRemoved event separately for groups because map.layerRemoved event doesn't fire for groups.
+                grp.LayerAdded -= MapLayerAdded;
+                grp.LayerRemoved -= MapLayerRemoved;
+
+                foreach (IMapLayer l in grp.Layers)
+                {
+                    RemoveLayer(l);
+                }
+            }
+            else
+            {
+                _dgvSelection.RemoveLayer(layer);
+            }
+        }
+
         /// <summary>
         /// Attaches the LayerAdded/LayerRemoved events to the groups and the map.
         /// </summary>
@@ -87,6 +115,7 @@ namespace DotSpatial.Plugins.SetSelectable
             App.Map.Layers.LayerMoved += LayersLayerMoved;
             App.Map.LayerAdded += MapLayerAdded;
             App.Map.MapFrame.LayerRemoved += MapLayerRemoved;
+
             if (App.Legend != null)
             {
                 App.Legend.OrderChanged += LegendOrderChanged;
@@ -106,6 +135,7 @@ namespace DotSpatial.Plugins.SetSelectable
             App.Map.Layers.LayerMoved -= LayersLayerMoved;
             App.Map.LayerAdded -= MapLayerAdded;
             App.Map.MapFrame.LayerRemoved -= MapLayerRemoved;
+
             foreach (var grp in App.Map.MapFrame.GetAllGroups())
             {
                 grp.LayerAdded -= MapLayerAdded;
@@ -140,7 +170,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <param name="e">The event args.</param>
         private void MapLayerAdded(object sender, LayerEventArgs e)
         {
-            _dgvSelection.AddLayer(e.Layer);
+            AddLayer(e.Layer);
         }
 
         /// <summary>
@@ -150,7 +180,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <param name="e">The event args.</param>
         private void MapLayerRemoved(object sender, LayerEventArgs e)
         {
-            _dgvSelection.RemoveLayer(e.Layer);
+            RemoveLayer(e.Layer);
         }
 
         /// <summary>

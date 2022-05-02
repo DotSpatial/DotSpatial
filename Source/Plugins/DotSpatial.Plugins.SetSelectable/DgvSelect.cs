@@ -100,6 +100,11 @@ namespace DotSpatial.Plugins.SetSelectable
                 if (collection[i] is IFeatureLayer mLayer && _layers.Count > 0)
                 {
                     int index = _layers.FindIndex(f => ReferenceEquals(f.Layer, mLayer));
+                    if (index == -1)
+                    {
+                        continue;
+                    }
+
                     if (index != reverseI)
                     {
                         var layer = _layers[index];

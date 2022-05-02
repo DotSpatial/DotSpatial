@@ -1076,7 +1076,13 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 foreach (var entry in liste)
                 {
                     AddColumns(entry.Value, schema);
-                    if (projInfo != null) entry.Value.Projection = projInfo;
+
+                    if (projInfo != null)
+                    {
+                        entry.Value.Projection = projInfo;
+                    }
+                    
+                    entry.Value.Filename = _fileName;
                     entry.Value.Name = entry.Value.FeatureType.ToString();
                 }
 

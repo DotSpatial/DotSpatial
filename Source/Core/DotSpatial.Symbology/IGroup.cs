@@ -142,6 +142,21 @@ namespace DotSpatial.Symbology
         IList<ILayer> GetLayers();
 
         /// <summary>
+        /// Gets all layers of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type.</typeparam>
+        /// <returns>An enumerable collection of layers with the given type.</returns>
+        List<T> GetAllTypeLayers<T>() where T : class;
+
+        /// <summary>
+        /// Gets all layers of the given type that are not of the second type.
+        /// </summary>
+        /// <typeparam name="T">The type.</typeparam>
+        /// <typeparam name="S">The type the layers should not have.</typeparam>
+        /// <returns>An enumerable collection of layers with the given type.</returns>
+        List<T> GetAllTypeLayersWithoutSubtype<T, S>() where T : class where S : class;
+
+        /// <summary>
         /// Gets the layer handle of the specified layer.
         /// </summary>
         /// <param name="positionInGroup">0 based index into list of layers.</param>

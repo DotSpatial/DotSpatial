@@ -5,8 +5,6 @@ using System;
 using System.Globalization;
 using System.Windows.Forms;
 using DotSpatial.Controls;
-
-
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
