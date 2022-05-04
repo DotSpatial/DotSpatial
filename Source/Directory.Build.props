@@ -8,7 +8,6 @@
 		<ImplicitUsings>disabled</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<LangVersion>10.0</LangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Label="nuget packages">
