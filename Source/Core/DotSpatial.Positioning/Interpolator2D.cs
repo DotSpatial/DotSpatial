@@ -1,29 +1,10 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
-#if !PocketPC || DesignTime
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System.ComponentModel;
 
-#endif
-
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
-
     /// <summary>
     /// Represents a collection of interpolated coordinates using realistic acceleration and deceleration.
     /// </summary>
@@ -35,7 +16,6 @@ namespace DotSpatial.Positioning
     ///   <para>Instances of this class are likely to be thread safe because the class uses
     /// thread synchronization when recalculating interpolated values.</para></remarks>
     [TypeConverter(typeof(ExpandableObjectConverter))]
-#endif
     public sealed class Interpolator2D
     {
         /// <summary>
@@ -129,13 +109,14 @@ namespace DotSpatial.Positioning
         ////[CLSCompliant(false)]
         public Position Minimum
         {
-            get
-            {
-                return _minimum;
-            }
+            get => _minimum;
             set
             {
-                if (_minimum.Equals(value)) return;
+                if (_minimum.Equals(value))
+                {
+                    return;
+                }
+
                 _minimum = value;
                 Recalculate();
             }
@@ -151,13 +132,14 @@ namespace DotSpatial.Positioning
         ////[CLSCompliant(false)]
         public Position Maximum
         {
-            get
-            {
-                return _maximum;
-            }
+            get => _maximum;
             set
             {
-                if (_maximum.Equals(value)) return;
+                if (_maximum.Equals(value))
+                {
+                    return;
+                }
+
                 _maximum = value;
                 Recalculate();
             }
@@ -166,13 +148,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns a Position object from the interpolated series.
         /// </summary>
-        public Position this[int index]
-        {
-            get
-            {
-                return _values[index];
-            }
-        }
+        public Position this[int index] => _values[index];
 
         /// <summary>
         /// Returns the number of calculated positions in the series.
@@ -180,13 +156,14 @@ namespace DotSpatial.Positioning
         /// <value>The count.</value>
         public int Count
         {
-            get
-            {
-                return _count;
-            }
+            get => _count;
             set
             {
-                if (_count == value) return;
+                if (_count == value)
+                {
+                    return;
+                }
+
                 _count = value;
                 // Redefine the array
                 _values = new Position[_count];
@@ -204,13 +181,14 @@ namespace DotSpatial.Positioning
         /// series to be recalculated.</remarks>
         public InterpolationMethod InterpolationMethod
         {
-            get
-            {
-                return _interpolationMethod;
-            }
+            get => _interpolationMethod;
             set
             {
-                if (_interpolationMethod == value) return;
+                if (_interpolationMethod == value)
+                {
+                    return;
+                }
+
                 _interpolationMethod = value;
                 Recalculate();
             }
@@ -239,9 +217,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         public void Swap()
         {
-            Position temp = _minimum;
-            _minimum = _maximum;
-            _maximum = temp;
+            (_maximum, _minimum) = (_minimum, _maximum);
             Recalculate();
         }
     }

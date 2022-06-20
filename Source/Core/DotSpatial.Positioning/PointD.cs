@@ -1,34 +1,15 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-#if !PocketPC || DesignTime
-
-using System.ComponentModel;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents a highly-precise pixel coordinate.
     /// </summary>
@@ -40,7 +21,6 @@ namespace DotSpatial.Positioning
     ///   <para>Instances of this class are guaranteed to be thread-safe because the class is
     /// immutable (its properties can only be changed via constructors).</para></remarks>
     [TypeConverter("DotSpatial.Positioning.Design.PointDConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct PointD : IFormattable, IEquatable<PointD>, IXmlSerializable
     {
         /// <summary>
@@ -124,14 +104,8 @@ namespace DotSpatial.Positioning
         /// <value>The X.</value>
         public double X
         {
-            get
-            {
-                return _x;
-            }
-            set
-            {
-                _x = value;
-            }
+            get => _x;
+            set => _x = value;
         }
 
         /// <summary>
@@ -141,14 +115,8 @@ namespace DotSpatial.Positioning
         /// <value>The lam.</value>
         public double Lam
         {
-            get
-            {
-                return _x;
-            }
-            set
-            {
-                _x = value;
-            }
+            get => _x;
+            set => _x = value;
         }
 
         /// <summary>
@@ -157,14 +125,8 @@ namespace DotSpatial.Positioning
         /// <value>The Y.</value>
         public double Y
         {
-            get
-            {
-                return _y;
-            }
-            set
-            {
-                _y = value;
-            }
+            get => _y;
+            set => _y = value;
         }
 
         /// <summary>
@@ -174,26 +136,14 @@ namespace DotSpatial.Positioning
         /// <value>The phi.</value>
         public double Phi
         {
-            get
-            {
-                return _y;
-            }
-            set
-            {
-                _y = value;
-            }
+            get => _y;
+            set => _y = value;
         }
 
         /// <summary>
         /// Returns whether the current instance has no value.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return (_x == 0 && _y == 0);
-            }
-        }
+        public bool IsEmpty => (_x == 0 && _y == 0);
 
         /// <summary>
         /// Returns whether the current instance has an invalid value.
@@ -288,10 +238,10 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format)
         {
             return ToString(format, CultureInfo.CurrentCulture);
@@ -342,7 +292,9 @@ namespace DotSpatial.Positioning
         public PointD RotateAt(double angle, PointD center)
         {
             if (angle == 0)
+            {
                 return this;
+            }
 
             // Shift the point by its center, rotate, then add the center back in
             return Subtract(center).Rotate(angle).Add(center);
@@ -353,15 +305,13 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">Another object to compare to.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is PointD)
-                return Equals((PointD)obj);
-            return false;
+            return obj is PointD d && Equals(d);
         }
 
         /// <summary>
@@ -374,9 +324,9 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("G", CultureInfo.CurrentCulture);
@@ -573,7 +523,7 @@ namespace DotSpatial.Positioning
         #region Conversions
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.PointD"/> to <see cref="System.String"/>.
+        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.PointD"/> to <see cref="string"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -613,17 +563,19 @@ namespace DotSpatial.Positioning
         #region IFormattable Members
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             return _x.ToString(format, formatProvider)
                 + culture.TextInfo.ListSeparator

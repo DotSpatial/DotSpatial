@@ -34,7 +34,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_fontColor == value) return;
                 _fontColor = value;
-                OnPropertyChanged("FontColor");
+                OnPropertyChanged(nameof(FontColor));
             }
         }
 
@@ -55,7 +55,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_text == value) return;
                 _text = value;
-                OnPropertyChanged("Text");
+                OnPropertyChanged(nameof(Text));
             }
         }
 
@@ -76,7 +76,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_width == value) return;
                 _width = value;
-                OnPropertyChanged("Width");
+                OnPropertyChanged(nameof(Width));
             }
         }
 

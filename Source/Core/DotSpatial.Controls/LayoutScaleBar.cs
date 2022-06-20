@@ -298,29 +298,19 @@ namespace DotSpatial.Controls
         /// <returns>A double representing the conversion factor between MapUnits and inches. If something goes wrong we return 0.</returns>
         private static double GetConversionFactor(string mapWinUnits)
         {
-            switch (mapWinUnits.ToLower())
+            return mapWinUnits.ToLower() switch
             {
-                case "lat/long":
-                    return 4366141.73;
-                case "meters":
-                    return 39.3700787;
-                case "centimeters":
-                    return 0.393700787;
-                case "feet":
-                    return 12;
-                case "inches":
-                    return 1;
-                case "kilometers":
-                    return 39370.0787;
-                case "miles":
-                    return 63360;
-                case "millimeters":
-                    return 0.0393700787;
-                case "yards":
-                    return 36;
-                default:
-                    return 0;
-            }
+                "lat/long" => 4366141.73,
+                "meters" => 39.3700787,
+                "centimeters" => 0.393700787,
+                "feet" => 12,
+                "inches" => 1,
+                "kilometers" => 39370.0787,
+                "miles" => 63360,
+                "millimeters" => 0.0393700787,
+                "yards" => 36,
+                _ => 0,
+            };
         }
 
         /// <summary>

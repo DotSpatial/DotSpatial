@@ -1,19 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 
@@ -50,10 +36,6 @@ namespace DotSpatial.Positioning
     /// updated fix method information has been received from the GPS device.</remarks>
     public sealed class FixMethodEventArgs : EventArgs
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly FixMethod _fixMethod;
 
         /// <summary>
         /// Creates a new instance with the specified fix method.
@@ -61,7 +43,7 @@ namespace DotSpatial.Positioning
         /// <param name="fixMethod">The fix method.</param>
         public FixMethodEventArgs(FixMethod fixMethod)
         {
-            _fixMethod = fixMethod;
+            FixMethod = fixMethod;
         }
 
         /// <summary>
@@ -73,13 +55,7 @@ namespace DotSpatial.Positioning
         /// involved in the fix.  A 2-D fix means that position information is available, but not
         /// altitude.  If at least four satellites are fixed, both position and altitude are known,
         /// and the fix is considered 3-D.</remarks>
-        public FixMethod FixMethod
-        {
-            get
-            {
-                return _fixMethod;
-            }
-        }
+        public FixMethod FixMethod { get; }
     }
 
     /// <summary>
@@ -113,10 +89,6 @@ namespace DotSpatial.Positioning
     /// combined satellite radio signal strength has changed.</remarks>
     public sealed class FixLikelihoodEventArgs : EventArgs
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly FixLikelihood _fixLikelihood;
 
         /// <summary>
         /// Creates a new instance with the specified fix Likelihood.
@@ -124,7 +96,7 @@ namespace DotSpatial.Positioning
         /// <param name="fixLikelihood">The fix likelihood.</param>
         public FixLikelihoodEventArgs(FixLikelihood fixLikelihood)
         {
-            _fixLikelihood = fixLikelihood;
+            FixLikelihood = fixLikelihood;
         }
 
         /// <summary>
@@ -135,13 +107,7 @@ namespace DotSpatial.Positioning
         /// involved in the fix.  A 2-D fix means that position information is available, but not
         /// altitude.  If at least four satellites are fixed, both position and altitude are known,
         /// and the fix is considered 3-D.</remarks>
-        public FixLikelihood FixLikelihood
-        {
-            get
-            {
-                return _fixLikelihood;
-            }
-        }
+        public FixLikelihood FixLikelihood { get; }
     }
 
     /// <summary>
@@ -175,10 +141,6 @@ namespace DotSpatial.Positioning
     /// the receiver switches fix modes from <strong>Automatic</strong> to <strong>Manual</strong> or vice-versa.</remarks>
     public sealed class FixModeEventArgs : EventArgs
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly FixMode _fixMode;
 
         /// <summary>
         /// Creates a new instance with the specified fix method.
@@ -186,7 +148,7 @@ namespace DotSpatial.Positioning
         /// <param name="fixMode">The fix mode.</param>
         public FixModeEventArgs(FixMode fixMode)
         {
-            _fixMode = fixMode;
+            FixMode = fixMode;
         }
 
         /// <summary>
@@ -198,13 +160,7 @@ namespace DotSpatial.Positioning
         /// the process of determining the fix mode is a simple process: if there are three fixed satellites,
         /// a 2-D fix is obtained; if there are four or more fixed satellites, a 3-D fix is in progress. Any
         /// less than three satellites means that no fix is possible.</remarks>
-        public FixMode FixMode
-        {
-            get
-            {
-                return _fixMode;
-            }
-        }
+        public FixMode FixMode { get; }
     }
 
     /// <summary>
@@ -238,10 +194,6 @@ namespace DotSpatial.Positioning
     /// the receiver switches fix modes from <strong>Automatic</strong> to <strong>Manual</strong> or vice-versa.</remarks>
     public sealed class FixQualityEventArgs : EventArgs
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly FixQuality _fixQuality;
 
         /// <summary>
         /// Creates a new instance with the specified fix quality measurement.
@@ -249,19 +201,13 @@ namespace DotSpatial.Positioning
         /// <param name="fixQuality">The fix quality.</param>
         public FixQualityEventArgs(FixQuality fixQuality)
         {
-            _fixQuality = fixQuality;
+            FixQuality = fixQuality;
         }
 
         /// <summary>
         /// Indicates whether the current fix involves satellites and/or DGPS/WAAS ground stations.
         /// </summary>
         /// <value>A value from the <strong>FixQuality</strong> enumeration.</value>
-        public FixQuality FixQuality
-        {
-            get
-            {
-                return _fixQuality;
-            }
-        }
+        public FixQuality FixQuality { get; }
     }
 }

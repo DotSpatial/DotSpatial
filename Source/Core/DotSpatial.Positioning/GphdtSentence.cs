@@ -1,20 +1,6 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// --------------------------------------------------------------------------------------------------------
-// |    Developer                |    Date    |                             Comments
-// |-----------------------------|------------|------------------------------------------------------------
-// | Tidyup  (Ben Tombs)         | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford)    | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// | VladimirArias (Colombia)	 | 02/03/2014 | Added hdt nmea sentence for heading orientation
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
+
 namespace DotSpatial.Positioning
 {
     /// <summary>
@@ -61,7 +47,7 @@ namespace DotSpatial.Positioning
                 x.x = Heading, degrees True 
             */
             Heading = ParseAzimuth(0);
-           }
+        }
 
         #endregion Overrides
 

@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -31,26 +17,6 @@ namespace DotSpatial.Positioning
     /// </summary>
     public class NetworkDevice : Device
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly AddressFamily _addressFamily;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly SocketType _socketType;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly ProtocolType _protocolType;
-        /// <summary>
-        ///
-        /// </summary>
-        private EndPoint _endPoint;
-        /// <summary>
-        ///
-        /// </summary>
-        private Socket _socket;
 
         /// <summary>
         ///
@@ -87,17 +53,15 @@ namespace DotSpatial.Positioning
         /// <param name="endPoint">The end point.</param>
         public NetworkDevice(AddressFamily addressFamily, SocketType socketType, ProtocolType protocolType, EndPoint endPoint)
         {
-            _addressFamily = addressFamily;
-            _socketType = socketType;
-            _protocolType = protocolType;
-            _endPoint = endPoint;
+            AddressFamily = addressFamily;
+            SocketType = socketType;
+            ProtocolType = protocolType;
+            EndPoint = endPoint;
         }
 
         #endregion Constructors
 
         #region Public Properties
-
-#if !PocketPC
 
         /// <summary>
         /// Returns the addressing scheme the socket can use.
@@ -105,16 +69,7 @@ namespace DotSpatial.Positioning
         [Category("Data")]
         [Description("Returns the addressing scheme the socket can use. ")]
         [Browsable(true)]
-#endif
-        public AddressFamily AddressFamily
-        {
-            get
-            {
-                return _addressFamily;
-            }
-        }
-
-#if !PocketPC
+        public AddressFamily AddressFamily { get; }
 
         /// <summary>
         /// Returns the type of protocol used by the socket.
@@ -122,16 +77,7 @@ namespace DotSpatial.Positioning
         [Category("Data")]
         [Description("Returns the type of protocol used by the socket.")]
         [Browsable(true)]
-#endif
-        public SocketType SocketType
-        {
-            get
-            {
-                return _socketType;
-            }
-        }
-
-#if !PocketPC
+        public SocketType SocketType { get; }
 
         /// <summary>
         /// Returns the protocol supported by the socket.
@@ -139,16 +85,7 @@ namespace DotSpatial.Positioning
         [Category("Data")]
         [Description("Returns the protocol supported by the socket.")]
         [Browsable(true)]
-#endif
-        public ProtocolType ProtocolType
-        {
-            get
-            {
-                return _protocolType;
-            }
-        }
-
-#if !PocketPC
+        public ProtocolType ProtocolType { get; }
 
         /// <summary>
         /// Returns the network address for the device.
@@ -158,30 +95,13 @@ namespace DotSpatial.Positioning
         [Description("Returns the network address for the device.")]
         [Browsable(true)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
-#endif
-        public EndPoint EndPoint
-        {
-            get
-            {
-                return _endPoint;
-            }
-            set
-            {
-                _endPoint = value;
-            }
-        }
-
-#if !PocketPC
+        public EndPoint EndPoint { get; set; }
 
         /// <summary>
         /// Returns the socket associated with this device.
         /// </summary>
         [Browsable(false)]
-#endif
-        protected Socket Socket
-        {
-            get { return _socket; }
-        }
+        protected Socket Socket { get; private set; }
 
         #endregion Public Properties
 
@@ -195,10 +115,12 @@ namespace DotSpatial.Positioning
         {
             // If we're already open, complain.
             if (IsOpen)
+            {
                 throw new InvalidOperationException("The Open method was called on a device which is already connected.  Please call the Close method before calling the Open method to ensure that connections are cleaned up properly.");
+            }
 
             // Remember the endpoint
-            _endPoint = endPoint;
+            EndPoint = endPoint;
 
             // And continue opening a connection
             Open();
@@ -214,12 +136,14 @@ namespace DotSpatial.Positioning
         /// <value>The default connect timeout.</value>
         public static TimeSpan DefaultConnectTimeout
         {
-            get { return _defaultConnectTimeout; }
+            get => _defaultConnectTimeout;
             set
             {
                 // The timeout must be greater than zero
                 if (value.TotalSeconds <= 0)
+                {
                     throw new ArgumentOutOfRangeException("DefaultConnectTimeout", "The default connect timeout for a network device must be greater than zero.  A value of five to ten seconds is recommended.");
+                }
 
                 // Set the value
                 _defaultConnectTimeout = value;
@@ -244,13 +168,7 @@ namespace DotSpatial.Positioning
         /// Returns a natural language name for the device.
         /// </summary>
         /// <inheritdocs/>
-        public override string Name
-        {
-            get
-            {
-                return "Network Device";
-            }
-        }
+        public override string Name => "Network Device";
 
         /// <summary>
         /// Creates a new Stream object for the device.
@@ -265,35 +183,41 @@ namespace DotSpatial.Positioning
             OnConfigureSocket();
 
             // Is the socket already connected?
-            if (_socket == null || !_socket.Connected)
+            if (Socket == null || !Socket.Connected)
             {
                 // Close any existing socket
-                if (_socket != null)
-                    _socket.Close();
+                if (Socket != null)
+                {
+                    Socket.Close();
+                }
 
                 // Create a socket
-                _socket = new Socket(_addressFamily, _socketType, _protocolType);
+                Socket = new Socket(AddressFamily, SocketType, ProtocolType)
+                {
 
-                // A smaller buffer size reduces latency.  We want to process data as soon as it's transmitted
-                _socket.ReceiveBufferSize = NmeaReader.IDEAL_NMEA_BUFFER_SIZE;
-                _socket.SendBufferSize = NmeaReader.IDEAL_NMEA_BUFFER_SIZE;
+                    // A smaller buffer size reduces latency.  We want to process data as soon as it's transmitted
+                    ReceiveBufferSize = NmeaReader.IDEAL_NMEA_BUFFER_SIZE,
+                    SendBufferSize = NmeaReader.IDEAL_NMEA_BUFFER_SIZE,
 
-                // Specify the timeout for read/write ops
-                _socket.ReceiveTimeout = 10000; // (int)DefaultReadTimeout.TotalMilliseconds;
-                _socket.SendTimeout = 10000; // = (int)DefaultWriteTimeout.TotalMilliseconds;
+                    // Specify the timeout for read/write ops
+                    ReceiveTimeout = 10000, // (int)DefaultReadTimeout.TotalMilliseconds;
+                    SendTimeout = 10000 // = (int)DefaultWriteTimeout.TotalMilliseconds;
+                };
 
                 // Begin connecting asynchronously
-                IAsyncResult connectResult = _socket.BeginConnect(_endPoint, null, null);
+                IAsyncResult connectResult = Socket.BeginConnect(EndPoint, null, null);
 
                 // Wait up to the timeout for the connection to complete
                 if (!connectResult.AsyncWaitHandle.WaitOne((int)_defaultConnectTimeout.TotalMilliseconds, false))
+                {
                     throw new TimeoutException(Name + " could not connect within the timeout period.");
+                }
 
-                _socket.EndConnect(connectResult);
+                Socket.EndConnect(connectResult);
             }
 
             // Wrap a network stream around the socket.
-            return new NetworkStream(_socket, access, true);
+            return new NetworkStream(Socket, access, true);
 
             // We don't need to set the streams timeouts because they are implied by the
             // socket timeouts set above.
@@ -314,10 +238,10 @@ namespace DotSpatial.Positioning
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            if (_socket != null)
+            if (Socket != null)
             {
                 // Close disconnects the socket and disposes it.
-                _socket.Close();
+                Socket.Close();
             }
 
             // Dispose of the base, closing the stream
@@ -325,8 +249,8 @@ namespace DotSpatial.Positioning
 
             if (disposing)
             {
-                _endPoint = null;
-                _socket = null;
+                EndPoint = null;
+                Socket = null;
             }
         }
 
@@ -338,10 +262,12 @@ namespace DotSpatial.Positioning
             try
             {
                 // Endpoints are serialized in their raw byte form to improve compatibility
-                SocketAddress address = _endPoint.Serialize();
+                SocketAddress address = EndPoint.Serialize();
                 StringBuilder hexEndPoint = new();
                 for (int index = 0; index < address.Size; index++)
+                {
                     hexEndPoint.Append(address[index].ToString("X2"));
+                }
 
                 Registry.LocalMachine.DeleteSubKeyTree(ROOT_KEY_NAME + hexEndPoint);
             }
@@ -363,15 +289,19 @@ namespace DotSpatial.Positioning
         protected override void OnCacheWrite()
         {
             // Endpoints are serialized in their raw byte form to improve compatibility
-            SocketAddress address = _endPoint.Serialize();
+            SocketAddress address = EndPoint.Serialize();
             StringBuilder hexEndPoint = new();
             for (int index = 0; index < address.Size; index++)
+            {
                 hexEndPoint.Append(address[index].ToString("X2"));
+            }
 
             // Save device information
             RegistryKey deviceKey = Registry.LocalMachine.CreateSubKey(ROOT_KEY_NAME + hexEndPoint);
             if (deviceKey == null)
+            {
                 return;
+            }
 
             // Update the success/fail statistics
             deviceKey.SetValue("Number of Times Detected", SuccessfulDetectionCount);
@@ -387,15 +317,19 @@ namespace DotSpatial.Positioning
         protected override void OnCacheRead()
         {
             // Endpoints are serialized in their raw byte form to improve compatibility
-            SocketAddress address = _endPoint.Serialize();
+            SocketAddress address = EndPoint.Serialize();
             StringBuilder hexEndPoint = new();
             for (int index = 0; index < address.Size; index++)
+            {
                 hexEndPoint.Append(address[index].ToString("X2"));
+            }
 
             // Save device stats
             RegistryKey deviceKey = Registry.LocalMachine.OpenSubKey(ROOT_KEY_NAME + hexEndPoint, false);
             if (deviceKey == null)
+            {
                 return;
+            }
 
             // Update the baud rate and etc.
             foreach (string name in deviceKey.GetValueNames())

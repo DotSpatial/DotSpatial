@@ -72,7 +72,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_allowEditingText == value) return;
                 _allowEditingText = value;
-                OnPropertyChanged("AllowEditingText");
+                OnPropertyChanged(nameof(AllowEditingText));
             }
         }
 
@@ -90,7 +90,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_displayText == value) return;
                 _displayText = value;
-                OnPropertyChanged("DisplayText");
+                OnPropertyChanged(nameof(DisplayText));
             }
         }
 
@@ -108,7 +108,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_fontColor == value) return;
                 _fontColor = value;
-                OnPropertyChanged("FontColor");
+                OnPropertyChanged(nameof(FontColor));
             }
         }
 
@@ -131,7 +131,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_multiSelect == value) return;
                 _multiSelect = value;
-                OnPropertyChanged("MultiSelect");
+                OnPropertyChanged(nameof(MultiSelect));
             }
         }
 
@@ -150,7 +150,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_nullValuePrompt == value) return;
                 _nullValuePrompt = value;
-                OnPropertyChanged("NullValuePrompt");
+                OnPropertyChanged(nameof(NullValuePrompt));
             }
         }
 
@@ -169,7 +169,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_selectedItem == value) return;
                 _selectedItem = value;
-                OnPropertyChanged("SelectedItem");
+                OnPropertyChanged(nameof(SelectedItem));
                 OnSelectedValueChanged(new SelectedValueChangedEventArgs(_selectedItem));
             }
         }
@@ -189,7 +189,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_width == value) return;
                 _width = value;
-                OnPropertyChanged("Width");
+                OnPropertyChanged(nameof(Width));
             }
         }
 

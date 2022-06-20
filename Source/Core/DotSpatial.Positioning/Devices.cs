@@ -1,20 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// | VladimirArias (Colombia) | 02/03/2014 | Added hdt nmea sentence for heading orientation
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -57,10 +42,7 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private static bool _isDetectionInProgress;
-        /// <summary>
-        ///
-        /// </summary>
-        private static bool _isClockSynchronizationEnabled;
+
         /// <summary>
         ///
         /// </summary>
@@ -73,26 +55,7 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private static TimeSpan _deviceDetectionTimeout = TimeSpan.FromMinutes(20);
-        /// <summary>
-        ///
-        /// </summary>
-        private static bool _isStreamNeeded;
-        /// <summary>
-        ///
-        /// </summary>
-        private static bool _isOnlyFirstDeviceDetected;
-        /// <summary>
-        ///
-        /// </summary>
-        private static bool _allowBluetoothConnections = true;
-        /// <summary>
-        ///
-        /// </summary>
-        private static bool _allowSerialConnections = true;
-        /// <summary>
-        ///
-        /// </summary>
-        private static bool _allowExhaustiveSerialPortScanning;
+
         /// <summary>
         ///
         /// </summary>
@@ -238,43 +201,7 @@ namespace DotSpatial.Positioning
                 try
                 {
                     // A stream is needed!
-                    _isStreamNeeded = true;
-
-#if PocketPC
-                    /* On mobile devices, the GPS Intermediate Driver can handle responsibility
-                     * of opening and sharing connections to a GPS device.  GPS.NET will defer to the
-                     * GPSID so long as it is supported AND enabled for the device.
-                     */
-
-                    // Are GPSID connections allowed?
-                    GpsIntermediateDriver gpsid = GpsIntermediateDriver.Current;
-
-                    if (
-                        // Is it supported?
-                        gpsid != null
-                        // Are we allowing connections?
-                        && gpsid.AllowConnections
-                        // Has the GPSID not yet been tested?
-                        && (!gpsid.IsDetectionCompleted
-                            // OR, has it been tested AND it's confirmed as a GPS device?
-                            || (gpsid.IsDetectionCompleted && gpsid.IsGpsDevice)
-                            )
-                        )
-                    {
-                        try
-                        {
-                            // Open a connection
-                            gpsid.Open();
-
-                            // It worked!
-                            return gpsid;
-                        }
-                        catch
-                        {
-                            // Feck.  Continue with regular detection
-                        }
-                    }
-#endif
+                    IsStreamNeeded = true;
 
                     // Is any GPS device already detected?
                     if (!IsDeviceDetected)
@@ -317,7 +244,9 @@ namespace DotSpatial.Positioning
 
                         // Skip devices which are not open
                         if (!device.IsOpen)
+                        {
                             continue;
+                        }
 
                         // Return the stream
                         return device;
@@ -341,7 +270,9 @@ namespace DotSpatial.Positioning
 
                             // Is it allowed?
                             if (!device.AllowConnections)
+                            {
                                 continue;
+                            }
 
                             // Open a new connection
                             device.Open();
@@ -352,7 +283,10 @@ namespace DotSpatial.Positioning
                         catch (Exception ex)
                         {
                             // Make sure the device is closed
-                            if (device != null) device.Close();
+                            if (device != null)
+                            {
+                                device.Close();
+                            }
 
                             // We may get all kinds of exceptions when trying to open varying kinds of streams.
                             // If anything fails, just try the next device.
@@ -381,7 +315,9 @@ namespace DotSpatial.Positioning
 
                             // Is it allowed?
                             if (!device.AllowConnections)
+                            {
                                 continue;
+                            }
 
                             // Open a new connection
                             device.Open();
@@ -392,7 +328,10 @@ namespace DotSpatial.Positioning
                         catch (Exception ex)
                         {
                             // Make sure the device is closed
-                            if (device != null) device.Close();
+                            if (device != null)
+                            {
+                                device.Close();
+                            }
 
                             // We may get all kinds of exceptions when trying to open varying kinds of streams.
                             // If anything fails, just try the next device.
@@ -415,7 +354,7 @@ namespace DotSpatial.Positioning
                 finally
                 {
                     // Flag that we no longer need a stream.
-                    _isStreamNeeded = false;
+                    IsStreamNeeded = false;
                 }
             }
         }
@@ -424,31 +363,19 @@ namespace DotSpatial.Positioning
         /// Controls whether Bluetooth devices are included in the search for GPS devices.
         /// </summary>
         /// <value><c>true</c> if [allow bluetooth connections]; otherwise, <c>false</c>.</value>
-        public static bool AllowBluetoothConnections
-        {
-            get { return _allowBluetoothConnections; }
-            set { _allowBluetoothConnections = value; }
-        }
+        public static bool AllowBluetoothConnections { get; set; } = true;
 
         /// <summary>
         /// Controls whether serial devices are included in the search for GPS devices.
         /// </summary>
         /// <value><c>true</c> if [allow serial connections]; otherwise, <c>false</c>.</value>
-        public static bool AllowSerialConnections
-        {
-            get { return _allowSerialConnections; }
-            set { _allowSerialConnections = value; }
-        }
+        public static bool AllowSerialConnections { get; set; } = true;
 
         /// <summary>
         /// Controls whether a complete range of serial devices is searched, regardless of which device appear to actually exist.
         /// </summary>
         /// <value><c>true</c> if [allow exhaustive serial port scanning]; otherwise, <c>false</c>.</value>
-        public static bool AllowExhaustiveSerialPortScanning
-        {
-            get { return _allowExhaustiveSerialPortScanning; }
-            set { _allowExhaustiveSerialPortScanning = value; }
-        }
+        public static bool AllowExhaustiveSerialPortScanning { get; set; }
 
         /// <summary>
         /// Controls the maximum serial port to test when exhaustive detection is enabled.
@@ -456,12 +383,12 @@ namespace DotSpatial.Positioning
         /// <value>The maximum serial port number.</value>
         public static int MaximumSerialPortNumber
         {
-            get { return _maximumSerialPortNumber; }
+            get => _maximumSerialPortNumber;
             set
             {
-                if (_maximumSerialPortNumber < 0 || _maximumSerialPortNumber > 100)
+                if (_maximumSerialPortNumber is < 0 or > 100)
                 {
-                    throw new ArgumentOutOfRangeException("value", _maximumSerialPortNumber, "The maximum serial port number must be between 0 (for COM0:) and 100 (for COM100:).");
+                    throw new ArgumentOutOfRangeException(nameof(value), _maximumSerialPortNumber, "The maximum serial port number must be between 0 (for COM0:) and 100 (for COM100:).");
                 }
 
                 _maximumSerialPortNumber = value;
@@ -471,29 +398,17 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns a list of confirmed GPS devices.
         /// </summary>
-        public static IList<Device> GpsDevices
-        {
-            get
-            {
-                return _gpsDevices;
-            }
-        }
+        public static IList<Device> GpsDevices => _gpsDevices;
 
         /// <summary>
         /// Returns a list of known wireless Bluetooth devices (not necessarily GPS devices).
         /// </summary>
-        public static IList<BluetoothDevice> BluetoothDevices
-        {
-            get { return _bluetoothDevices ?? (_bluetoothDevices = new List<BluetoothDevice>(BluetoothDevice.Cache)); }
-        }
+        public static IList<BluetoothDevice> BluetoothDevices => _bluetoothDevices ??= new List<BluetoothDevice>(BluetoothDevice.Cache);
 
         /// <summary>
         /// Returns a list of known serial devices (not necessarily GPS devices).
         /// </summary>
-        public static IList<SerialDevice> SerialDevices
-        {
-            get { return _serialDevices ?? (_serialDevices = new List<SerialDevice>(SerialDevice.GetCache())); }
-        }
+        public static IList<SerialDevice> SerialDevices => _serialDevices ??= new List<SerialDevice>(SerialDevice.GetCache());
 
         /// <summary>
         /// Controls the amount of time allowed for device detection to complete before it is aborted.
@@ -501,10 +416,7 @@ namespace DotSpatial.Positioning
         /// <value>The device detection timeout.</value>
         public static TimeSpan DeviceDetectionTimeout
         {
-            get
-            {
-                return _deviceDetectionTimeout;
-            }
+            get => _deviceDetectionTimeout;
             set
             {
                 // Valid8
@@ -518,45 +430,17 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if PocketPC
-
-        public static GpsIntermediateDriver GpsIntermediateDriver
-        {
-            get { return GpsIntermediateDriver.Current; }
-        }
-
-        public static bool AllowGpsIntermediateDriver
-        {
-            get { return _AllowGpsIntermediateDriver; }
-            set { _AllowGpsIntermediateDriver = value; }
-        }
-#endif
-
         /// <summary>
         /// Controls whether detection is aborted once one device has been found.
         /// </summary>
         /// <value><c>true</c> if this instance is only first device detected; otherwise, <c>false</c>.</value>
-        public static bool IsOnlyFirstDeviceDetected
-        {
-            get
-            {
-                return _isOnlyFirstDeviceDetected;
-            }
-            set
-            {
-                _isOnlyFirstDeviceDetected = value;
-            }
-        }
+        public static bool IsOnlyFirstDeviceDetected { get; set; }
 
         /// <summary>
         /// Controls whether the system clock should be synchronized to GPS-derived date and time.
         /// </summary>
         /// <value><c>true</c> if this instance is clock synchronization enabled; otherwise, <c>false</c>.</value>
-        public static bool IsClockSynchronizationEnabled
-        {
-            get { return _isClockSynchronizationEnabled; }
-            set { _isClockSynchronizationEnabled = value; }
-        }
+        public static bool IsClockSynchronizationEnabled { get; set; }
 
         /// <summary>
         /// Controls whether the Bluetooth receiver is on and accepting connections.
@@ -564,104 +448,41 @@ namespace DotSpatial.Positioning
         /// <value><c>true</c> if this instance is bluetooth enabled; otherwise, <c>false</c>.</value>
         public static bool IsBluetoothEnabled
         {
-            get
-            {
+            get =>
                 /* We can get the state of the radio if it's a Microsoft stack.
-                 * Thankfully, Microsoft BT stacks are part of Wista, Windows 7, and
-                 * Windows Mobile 5+, making it very common.  However, it's still in 2nd
-                 * place behind Broadcom (Widcomm).  Though, I doubt this will last long.
-                 * So, screw Broadcom.
-                 */
-
-#if PocketPC
-                DotSpatial.Positioning.Gps.IO.NativeMethods.BluetoothRadioMode mode =
-                    DotSpatial.Positioning.Gps.IO.NativeMethods.BluetoothRadioMode.PowerOff;
-                int errorCode = DotSpatial.Positioning.Gps.IO.NativeMethods.BthGetMode(out mode);
-
-                if (errorCode != 0)
-                {
-                    /* I get error "1359" (Internal error) on my HP iPaq 2945, which does NOT have a Microsoft Bluetooth stack.
-                     * I'm guessing that this API just isn't supported on the Widcomm stack.  Rather
-                     * than throw a fit, just gracefully indicate an Off radio.  This will prevent
-                     * BT functions in GPS.NET.
-                     */
-                    return false;
-                }
-
-                /* Connectable and Discoverable both mean "ON".  The only difference is that a
-                 * "discoverable" Bluetooth radio can be seen by other devices.
-                 */
-                return mode != DotSpatial.Positioning.Gps.IO.NativeMethods.BluetoothRadioMode.PowerOff;
-#else
-                return BluetoothRadio.Current != null
+* Thankfully, Microsoft BT stacks are part of Wista, Windows 7, and
+* Windows Mobile 5+, making it very common.  However, it's still in 2nd
+* place behind Broadcom (Widcomm).  Though, I doubt this will last long.
+* So, screw Broadcom.
+*/
+                BluetoothRadio.Current != null
                     && BluetoothRadio.Current.GetIsConnectable();
-#endif
-            }
-            set
-            {
-                _isDetectionInProgress = value;
-#if PocketPC
-                // Convert the boolean to a numeric mode
-                DotSpatial.Positioning.Gps.IO.NativeMethods.BluetoothRadioMode mode =
-                    value ? DotSpatial.Positioning.Gps.IO.NativeMethods.BluetoothRadioMode.Connectable
-                          : DotSpatial.Positioning.Gps.IO.NativeMethods.BluetoothRadioMode.PowerOff;
-
-                // Set the new mode
-                int result = DotSpatial.Positioning.Gps.IO.NativeMethods.BthSetMode(mode);
-                if (result != 0)
-                {
-                    //    throw new Win32Exception(result);
-                }
-#else
-                // TODO: Add support for turning the Bluetooth radio on or off on the desktop.
-#endif
-            }
+            set => _isDetectionInProgress = value;
         }
 
         /// <summary>
         /// Returns whether the Bluetooth stack on the local machine is supported by GPS.NET.
         /// </summary>
-        public static bool IsBluetoothSupported
-        {
-            get
-            {
+        public static bool IsBluetoothSupported =>
                 /* The Microsoft Bluetooth stack provides an API used to enumerate all of the
-                 * "radios" on the local machine.  A "radio" is just a Bluetooth transmitter.
-                 * A vast majority of people will only have one radio; multiple radios would happen
-                 * if, say, somebody had two USB Bluetooth dongles plugged in.
-                 *
-                 * We can confirm that Bluetooth is supported by looking for a local radio.
-                 * This method will return immediately with a non-zero handle if one exists.
-                 */
-                return BluetoothRadio.Current != null;
-            }
-        }
+* "radios" on the local machine.  A "radio" is just a Bluetooth transmitter.
+* A vast majority of people will only have one radio; multiple radios would happen
+* if, say, somebody had two USB Bluetooth dongles plugged in.
+*
+* We can confirm that Bluetooth is supported by looking for a local radio.
+* This method will return immediately with a non-zero handle if one exists.
+*/
+                BluetoothRadio.Current != null;
 
         /// <summary>
         /// Returns whether a GPS device has been found.
         /// </summary>
-        public static bool IsDeviceDetected
-        {
-            get
-            {
-                return _gpsDevices.Count != 0;
-            }
-        }
+        public static bool IsDeviceDetected => _gpsDevices.Count != 0;
 
         /// <summary>
         /// Returns whether the process of finding a GPS device is still working.
         /// </summary>
-        public static bool IsDetectionInProgress
-        {
-            get
-            {
-#if !PocketPC
-                return _detectionThread != null && _detectionThread.IsAlive;
-#else
-                return _DetectionThread != null && _IsDetectionThreadAlive;
-#endif
-            }
-        }
+        public static bool IsDetectionInProgress => _detectionThread != null && _detectionThread.IsAlive;
 
         /// <summary>
         /// Controls the current location on Earth's surface.
@@ -669,19 +490,20 @@ namespace DotSpatial.Positioning
         /// <value>The position.</value>
         public static Position Position
         {
-            get { return _position; }
+            get => _position;
             set
             {
                 // Has anything actually changed?
                 if (_position.Equals(value))
+                {
                     return;
+                }
 
                 // Yes.
                 _position = value;
 
                 // Raise an event
-                if (PositionChanged != null)
-                    PositionChanged(null, new PositionEventArgs(_position));
+                PositionChanged?.Invoke(null, new PositionEventArgs(_position));
             }
         }
 
@@ -691,19 +513,20 @@ namespace DotSpatial.Positioning
         /// <value>The speed.</value>
         public static Speed Speed
         {
-            get { return _speed; }
+            get => _speed;
             set
             {
                 // Has anything actually changed?
                 if (_speed.Equals(value))
+                {
                     return;
+                }
 
                 // Yes.
                 _speed = value;
 
                 // Raise an event
-                if (SpeedChanged != null)
-                    SpeedChanged(null, new SpeedEventArgs(_speed));
+                SpeedChanged?.Invoke(null, new SpeedEventArgs(_speed));
             }
         }
 
@@ -713,7 +536,7 @@ namespace DotSpatial.Positioning
         /// <value>The satellites.</value>
         public static List<Satellite> Satellites
         {
-            get { return _satellites; }
+            get => _satellites;
             set
             {
                 // Look for changes.  A quick check is for a varying number of
@@ -736,14 +559,15 @@ namespace DotSpatial.Positioning
                 }
 
                 if (!isChanged)
+                {
                     return;
+                }
 
                 // Set the new value
                 _satellites = value;
 
                 // Raise an event
-                if (SatellitesChanged != null)
-                    SatellitesChanged(null, new SatelliteListEventArgs(_satellites));
+                SatellitesChanged?.Invoke(null, new SatelliteListEventArgs(_satellites));
             }
         }
 
@@ -753,19 +577,20 @@ namespace DotSpatial.Positioning
         /// <value>The UTC date time.</value>
         public static DateTime UtcDateTime
         {
-            get { return _utcDateTime; }
+            get => _utcDateTime;
             set
             {
                 // Has anything actually changed?
                 if (_utcDateTime.Equals(value))
+                {
                     return;
+                }
 
                 // Yes.
                 _utcDateTime = value;
 
                 // Raise an event
-                if (UtcDateTimeChanged != null)
-                    UtcDateTimeChanged(null, new DateTimeEventArgs(_utcDateTime));
+                UtcDateTimeChanged?.Invoke(null, new DateTimeEventArgs(_utcDateTime));
             }
         }
 
@@ -775,14 +600,8 @@ namespace DotSpatial.Positioning
         /// <value>The date time.</value>
         public static DateTime DateTime
         {
-            get
-            {
-                return _utcDateTime.ToLocalTime();
-            }
-            set
-            {
-                UtcDateTime = value.ToUniversalTime();
-            }
+            get => _utcDateTime.ToLocalTime();
+            set => UtcDateTime = value.ToUniversalTime();
         }
 
         /// <summary>
@@ -791,19 +610,20 @@ namespace DotSpatial.Positioning
         /// <value>The altitude.</value>
         public static Distance Altitude
         {
-            get { return _altitude; }
+            get => _altitude;
             set
             {
                 // Has anything actually changed?
                 if (_altitude.Equals(value))
+                {
                     return;
+                }
 
                 // Yes.
                 _altitude = value;
 
                 // Raise an event
-                if (AltitudeChanged != null)
-                    AltitudeChanged(null, new DistanceEventArgs(_altitude));
+                AltitudeChanged?.Invoke(null, new DistanceEventArgs(_altitude));
             }
         }
 
@@ -813,41 +633,43 @@ namespace DotSpatial.Positioning
         /// <value>The bearing.</value>
         public static Azimuth Bearing
         {
-            get { return _bearing; }
+            get => _bearing;
             set
             {
                 // Has anything actually changed?
                 if (_bearing.Equals(value))
+                {
                     return;
+                }
 
                 // Yes.
                 _bearing = value;
 
                 // Raise an event
-                if (BearingChanged != null)
-                    BearingChanged(null, new AzimuthEventArgs(_bearing));
+                BearingChanged?.Invoke(null, new AzimuthEventArgs(_bearing));
             }
         }
-        
+
         /// <summary>
         /// Controls the current direction of heading.
         /// </summary>
         /// <value>The heading.</value>
         public static Azimuth Heading
         {
-            get { return _heading; }
+            get => _heading;
             set
             {
                 // Has anything actually changed?
                 if (_heading.Equals(value))
+                {
                     return;
+                }
 
                 // Yes.
                 _heading = value;
 
                 // Raise an event
-                if (HeadingChanged != null)
-                    HeadingChanged(null, new AzimuthEventArgs(_heading));
+                HeadingChanged?.Invoke(null, new AzimuthEventArgs(_heading));
             }
         }
 
@@ -896,7 +718,9 @@ namespace DotSpatial.Positioning
         {
             // Start detection on another thread.
             if (_isDetectionInProgress)
+            {
                 return;
+            }
 
             // Signal that detection is in progress
             _isDetectionInProgress = true;
@@ -909,16 +733,7 @@ namespace DotSpatial.Positioning
                 Priority = ThreadPriority.Lowest
             };
 
-#if !PocketPC
-            // Do detection in the background
-#endif
-
             _detectionThread.Start();
-
-#if PocketPC
-            // Signal that the thread is alive (no Thread.IsAlive on the CF :P)
-            _IsDetectionThreadAlive = true;
-#endif
         }
 
         /// <summary>
@@ -929,14 +744,14 @@ namespace DotSpatial.Positioning
         {
             // Undetect all devices (even non-GPS devices) and clear their cache
             foreach (BluetoothDevice device in _bluetoothDevices)
+            {
                 device.Undetect();
-            foreach (SerialDevice device in _serialDevices)
-                device.Undetect();
+            }
 
-#if PocketPC
-            if (GpsIntermediateDriver.Current != null)
-                GpsIntermediateDriver.Current.Undetect();
-#endif
+            foreach (SerialDevice device in _serialDevices)
+            {
+                device.Undetect();
+            }
 
             try
             {
@@ -967,29 +782,17 @@ namespace DotSpatial.Positioning
         {
             // Is a device already detected?  If so, just exit
             if (IsDeviceDetected)
+            {
                 return true;
+            }
 
             // Is detection in progress?  If so, wait until the timeout, or a device is found
             if (IsDetectionInProgress)
             {
-#if !PocketPC
                 // Wait for either a device to be detected, or for detection to complete
                 ManualResetEvent[] waiters = new[] {
                     _detectionCompleteWaitHandle, _deviceDetectedWaitHandle };
                 WaitHandle.WaitAny(waiters, timeout);
-#else
-                /* Mobile devices don't support "WaitAny" to wait on two wait handles.  In rare
-                 * cases, detection may have nothing to do.  So, wait briefly for the entire thread
-                 * to exit.
-                 */
-
-                // Wait briefly for the entire thread to exit
-                if (_DetectionCompleteWaitHandle.WaitOne(2000, false))
-                    return IsDeviceDetected;
-
-                // Wait longer for a device to be found
-                _DeviceDetectedWaitHandle.WaitOne((int)timeout.TotalMilliseconds, false);
-#endif
             }
 
             // No GPS device is known, and detection is not in progress
@@ -1013,13 +816,11 @@ namespace DotSpatial.Positioning
         public static bool WaitForDetection(TimeSpan timeout)
         {
             if (!IsDetectionInProgress)
+            {
                 return true;
+            }
 
-#if PocketPC
-            return _DetectionCompleteWaitHandle.WaitOne((int)timeout.TotalMilliseconds, false);
-#else
             return _detectionCompleteWaitHandle.WaitOne(timeout, false);
-#endif
         }
 
         /// <summary>
@@ -1028,11 +829,7 @@ namespace DotSpatial.Positioning
         /// <param name="e">The <see cref="DotSpatial.Positioning.DeviceEventArgs"/> instance containing the event data.</param>
         internal static void RaiseFixLost(DeviceEventArgs e)
         {
-            EventHandler<DeviceEventArgs> handler = FixLost;
-            if (handler != null)
-            {
-                handler(null, e);
-            }
+            FixLost?.Invoke(null, e);
         }
 
         /// <summary>
@@ -1041,11 +838,7 @@ namespace DotSpatial.Positioning
         /// <param name="e">The <see cref="DotSpatial.Positioning.DeviceEventArgs"/> instance containing the event data.</param>
         internal static void RaiseFixAcquired(DeviceEventArgs e)
         {
-            EventHandler<DeviceEventArgs> handler = FixAcquired;
-            if (handler != null)
-            {
-                handler(null, e);
-            }
+            FixAcquired?.Invoke(null, e);
         }
 
         #endregion Static Methods
@@ -1098,28 +891,6 @@ namespace DotSpatial.Positioning
                 // Clear the device cache to force a re-scan for any new devices
                 ClearDeviceCache();
 
-#if PocketPC
-                // Are we using the GPS Intermediate Driver?
-                GpsIntermediateDriver gpsid = GpsIntermediateDriver.Current;
-
-                // Is the GPSID supported?
-                if (gpsid != null)
-                {
-                    // Yes.  Test it to be sure
-                    gpsid.BeginDetection();
-
-                    // Wait for one device to get detected.  Was it confirmed?
-                    if (gpsid.WaitForDetection())
-                    {
-                        // Yes.  If we only need one device, exit
-                        if (_IsOnlyFirstDeviceDetected)
-                            return;
-                    }
-                }
-
-                /* If we get here, the GPS Intermediate Driver is not responding! */
-
-#endif
                 // Inspect all Bluetooth and serial devices to see if any of them are GPSes
                 BeginBluetoothDetection();
                 BeginSerialDetection(false);
@@ -1130,54 +901,6 @@ namespace DotSpatial.Positioning
                 // Wait for all devices to finish detection
                 WaitForDetectionInternal();
 
-#if PocketPC
-
-                #region Reconfigure the GPS Intermediate Driver (if necessary)
-
-                /* The GPS Intermediate Driver may not have the right "Program Port" (actual GPS port/baud rate)
-                 * settings.  Now that detection has completed, let's see if the GPSID needs configuration.
-                 * If it is flagged as NOT being a GPS device, then it could not connect.  In this case, let's
-                 * find the most reliable serial device and use it.
-                 */
-                if (
-                    // Is the GPSID supported?
-                    gpsid != null
-                    // Are we allowed to configure it?
-                    && gpsid.IsAutomaticallyConfigured
-                    // Is it currently NOT identified as a GPS device?  (connections failed)
-                    && !gpsid.IsGpsDevice)
-                {
-                    // Look through each confirmed GPS device
-                    int count = _GpsDevices.Count;
-                    for (int index = 0; index < count; index++)
-                    {
-                        // Is it a serial device?
-                        SerialDevice device = _GpsDevices[index] as SerialDevice;
-                        if (device == null)
-                            continue;
-
-                        // Yes.  Use it!
-                        try
-                        {
-                            gpsid.HardwarePort = device;
-
-                            // The GPSID is now working
-                            Add(gpsid);
-                        }
-                        catch (Exception ex)
-                        {
-                            // Notify of the error gracefully
-                            OnDeviceDetectionAttemptFailed(new DeviceDetectionException(gpsid, ex));
-                        }
-
-                        // That's the best device, so quit
-                        break;
-                    }
-                }
-
-                #endregion Reconfigure the GPS Intermediate Driver (if necessary)
-
-#endif
                 if (!IsDeviceDetected && AllowSerialConnections)
                 {
                     // If we get here, and there are still no GPSes detected, then try detecting serial devices again,
@@ -1197,25 +920,23 @@ namespace DotSpatial.Positioning
 
                 Debug.WriteLine("Aborting all device detection threads", DEBUG_CATEGORY);
 
-#if PocketPC
-                // Stop detection for the GPSID
-                if (GpsIntermediateDriver.Current != null)
-                    GpsIntermediateDriver.Current.CancelDetection();
-#endif
-
                 // Stop detection for each Bluetooth device
                 foreach (BluetoothDevice t in _bluetoothDevices)
+                {
                     t.CancelDetection();
+                }
 
                 // Stop detection for each serial device
                 foreach (SerialDevice t in _serialDevices)
+                {
                     t.CancelDetection();
+                }
 
                 #endregion Abort detection for all devices
 
                 // Determine whether we should block until all detection threads have canceled
                 bool isAsync = false;
-                if (ex.ExceptionState != null && ex.ExceptionState is bool)
+                if (ex.ExceptionState is not null and bool)
                 {
                     isAsync = (bool)ex.ExceptionState;
                 }
@@ -1226,15 +947,20 @@ namespace DotSpatial.Positioning
                     Debug.WriteLine("Waiting for device detection threads to abort", DEBUG_CATEGORY);
                     while (_currentlyDetectingWaitHandles.Count != 0)
                     {
-                        try { _currentlyDetectingWaitHandles[0].WaitOne(); }
-                        finally { _currentlyDetectingWaitHandles.RemoveAt(0); }
+                        try
+                        {
+                            _currentlyDetectingWaitHandles[0].WaitOne();
+                        }
+                        finally
+                        {
+                            _currentlyDetectingWaitHandles.RemoveAt(0);
+                        }
                     }
                 }
 
                 // Signal the cancellation
                 Debug.WriteLine("All device detection threads have been aborted", DEBUG_CATEGORY);
-                if (DeviceDetectionCanceled != null)
-                    DeviceDetectionCanceled(null, EventArgs.Empty);
+                DeviceDetectionCanceled?.Invoke(null, EventArgs.Empty);
             }
             finally
             {
@@ -1242,11 +968,6 @@ namespace DotSpatial.Positioning
                 _detectionCompleteWaitHandle.Set();
                 _currentlyDetectingWaitHandles.Clear();    // <--  Already empty?
                 _isDetectionInProgress = false;
-
-#if PocketPC
-                // Signal that the thread is alive (no Thread.IsAlive on the CF :P)
-                _IsDetectionThreadAlive = false;
-#endif
             }
         }
 
@@ -1257,7 +978,9 @@ namespace DotSpatial.Positioning
         private static void DetectionThreadProcWatcher(object over9000)
         {
             if (_detectionCompleteWaitHandle.WaitOne((int)_deviceDetectionTimeout.TotalMilliseconds, false))
+            {
                 return;
+            }
 
             // If we get here, then the timeout has expired. So cancel detection.
             CancelDetection();
@@ -1278,7 +1001,9 @@ namespace DotSpatial.Positioning
                 // Start bluetooth detection for each device
                 int count = BluetoothDevices.Count;
                 for (int index = 0; index < count; index++)
+                {
                     _bluetoothDevices[index].BeginDetection();
+                }
             }
         }
 
@@ -1304,7 +1029,7 @@ namespace DotSpatial.Positioning
                     if (omitColonSuffix && device.Port.EndsWith(":", StringComparison.Ordinal))
                     {
                         // Remove the colon suffix from the port name
-                        string newName = device.Port.Substring(0, device.Port.Length - 1);
+                        string newName = device.Port[0..^1];
                         if (!string.IsNullOrEmpty(newName))
                         {
                             RenameDevice(device, newName);
@@ -1319,7 +1044,7 @@ namespace DotSpatial.Positioning
                  * cases, such as when a PCMCIA GPS device is plugged in and fails to create
                  * a registry entry.
                  */
-                if (_allowExhaustiveSerialPortScanning)
+                if (AllowExhaustiveSerialPortScanning)
                 {
                     Debug.WriteLine("Scanning all serial ports", DEBUG_CATEGORY);
 
@@ -1340,12 +1065,16 @@ namespace DotSpatial.Positioning
 
                         // If it's already being scanned, skip to the next port
                         if (alreadyBeingScanned)
+                        {
                             continue;
+                        }
 
                         // Build the port name
                         string portName = "COM" + index;
                         if (!omitColonSuffix)
+                        {
                             portName += ":";
+                        }
 
                         // This is a new device.  Scan it
                         SerialDevice exhaustivePort = new(portName);
@@ -1364,22 +1093,6 @@ namespace DotSpatial.Positioning
             // Is Bluetooth supported and turned on?
             if (IsBluetoothSupported && IsBluetoothEnabled)
             {
-#if PocketPC
-                /* Notice: For mobile devices, only one connection is allowed at a time.
-                * As a result, we use a static SyncRoot to ensure that connections
-                * and discovery happens in serial.  For this reason, we will not attempt
-                * to discover devices until *after* trying to detect existing ones.
-                */
-
-                // Wait for existing devices to be tested
-                int count = _BluetoothDevices.Count;
-                for (int index = 0; index < count; index++)
-                {
-                    // Complete detection for this device
-                    _BluetoothDevices[index].WaitForDetection();
-                }
-#endif
-
                 // Begin searching for brand new devices
                 Debug.WriteLine("Discovering new Bluetooth devices", DEBUG_CATEGORY);
                 BluetoothDevice.DiscoverDevices(true);
@@ -1406,10 +1119,10 @@ namespace DotSpatial.Positioning
                     ManualResetEvent handle = _currentlyDetectingWaitHandles[0];
                     if (handle != null)
                     {
-#if !PocketPC
                         if (!handle.SafeWaitHandle.IsClosed)
-#endif
+                        {
                             handle.WaitOne();
+                        }
                     }
                 }
                 catch (ObjectDisposedException)
@@ -1440,6 +1153,7 @@ namespace DotSpatial.Positioning
                     return;
                 }
             }
+
             device.Port = newName;
             device.SetName(newName);
         }
@@ -1469,8 +1183,7 @@ namespace DotSpatial.Positioning
             _currentlyDetectingWaitHandles.Add(device.DetectionWaitHandle);
 
             // Notify via an event
-            if (DeviceDetectionAttempted != null)
-                DeviceDetectionAttempted(device, new DeviceEventArgs(device));
+            DeviceDetectionAttempted?.Invoke(device, new DeviceEventArgs(device));
         }
 
         /// <summary>
@@ -1479,8 +1192,7 @@ namespace DotSpatial.Positioning
         /// <param name="exception">The exception.</param>
         internal static void OnDeviceDetectionAttemptFailed(DeviceDetectionException exception)
         {
-            if (DeviceDetectionAttemptFailed != null)
-                DeviceDetectionAttemptFailed(exception.Device, new DeviceDetectionExceptionEventArgs(exception));
+            DeviceDetectionAttemptFailed?.Invoke(exception.Device, new DeviceDetectionExceptionEventArgs(exception));
         }
 
         /// <summary>
@@ -1491,8 +1203,7 @@ namespace DotSpatial.Positioning
             _detectionCompleteWaitHandle.Reset();
 
             // Signal that detection has started
-            if (DeviceDetectionStarted != null)
-                DeviceDetectionStarted(null, EventArgs.Empty);
+            DeviceDetectionStarted?.Invoke(null, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1501,8 +1212,7 @@ namespace DotSpatial.Positioning
         internal static void OnDeviceDetectionCompleted()
         {
             // Signal that detection has started
-            if (DeviceDetectionCompleted != null)
-                DeviceDetectionCompleted(null, EventArgs.Empty);
+            DeviceDetectionCompleted?.Invoke(null, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1511,8 +1221,7 @@ namespace DotSpatial.Positioning
         /// <param name="device">The device.</param>
         internal static void OnDeviceDiscovered(Device device)
         {
-            if (DeviceDiscovered != null)
-                DeviceDiscovered(null, new DeviceEventArgs(device));
+            DeviceDiscovered?.Invoke(null, new DeviceEventArgs(device));
         }
 
         /// <summary>
@@ -1535,24 +1244,19 @@ namespace DotSpatial.Positioning
             _deviceDetectedWaitHandle.Set();
 
             // Raise an event
-            if (DeviceDetected != null)
-                DeviceDetected(device, new DeviceEventArgs(device));
+            DeviceDetected?.Invoke(device, new DeviceEventArgs(device));
 
             // Are we only detecting the first device?  If so, abort now
-            if (_isOnlyFirstDeviceDetected)
+            if (IsOnlyFirstDeviceDetected)
+            {
                 CancelDetection(true);
+            }
         }
 
         /// <summary>
         /// Gets a value indicating whether this instance is stream needed.
         /// </summary>
-        internal static bool IsStreamNeeded
-        {
-            get
-            {
-                return _isStreamNeeded;
-            }
-        }
+        internal static bool IsStreamNeeded { get; private set; }
 
         #endregion Private Methods
     }
@@ -1562,10 +1266,6 @@ namespace DotSpatial.Positioning
     /// </summary>
     public class DeviceDetectionException : IOException
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly Device _device;
 
         /// <summary>
         /// Creates a new instance of a DeviceDetectionException
@@ -1575,7 +1275,7 @@ namespace DotSpatial.Positioning
         public DeviceDetectionException(Device device, Exception innerException)
             : base(innerException.Message, innerException)
         {
-            _device = device;
+            Device = device;
         }
 
         /// <summary>
@@ -1586,7 +1286,7 @@ namespace DotSpatial.Positioning
         public DeviceDetectionException(Device device, string message)
             : base(message)
         {
-            _device = device;
+            Device = device;
         }
 
         /// <summary>
@@ -1598,16 +1298,13 @@ namespace DotSpatial.Positioning
         public DeviceDetectionException(Device device, string message, Exception innerException)
             : base(message, innerException)
         {
-            _device = device;
+            Device = device;
         }
 
         /// <summary>
         /// The device that caused the exception
         /// </summary>
-        public Device Device
-        {
-            get { return _device; }
-        }
+        public Device Device { get; }
     }
 
     /// <summary>
@@ -1615,10 +1312,6 @@ namespace DotSpatial.Positioning
     /// </summary>
     public class DeviceDetectionExceptionEventArgs : EventArgs
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly DeviceDetectionException _exception;
 
         /// <summary>
         /// Creates a new instance of the DeviceDetectionException event arguments.
@@ -1626,29 +1319,17 @@ namespace DotSpatial.Positioning
         /// <param name="exception">The exception.</param>
         public DeviceDetectionExceptionEventArgs(DeviceDetectionException exception)
         {
-            _exception = exception;
+            Exception = exception;
         }
 
         /// <summary>
         /// The device that is involved in the event
         /// </summary>
-        public Device Device
-        {
-            get
-            {
-                return _exception.Device;
-            }
-        }
+        public Device Device => Exception.Device;
 
         /// <summary>
         /// The exception
         /// </summary>
-        public DeviceDetectionException Exception
-        {
-            get
-            {
-                return _exception;
-            }
-        }
+        public DeviceDetectionException Exception { get; }
     }
 }

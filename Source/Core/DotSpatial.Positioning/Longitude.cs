@@ -1,36 +1,16 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using DotSpatial.Positioning;
-#if !PocketPC || DesignTime
-
-using System.ComponentModel;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents a line of constant distance east or west from the Prime Meridian.
     /// </summary>
@@ -76,13 +56,8 @@ namespace DotSpatial.Positioning
     ///   <para>Instances of this class are guaranteed to be thread-safe because the class is
     /// immutable (its properties can only be changed via constructors).</para></remarks>
     [TypeConverter("DotSpatial.Positioning.Design.LongitudeConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct Longitude : IFormattable, IComparable<Longitude>, IEquatable<Longitude>, ICloneable<Longitude>, IXmlSerializable
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private double _decimalDegrees;
 
         #region Constants
 
@@ -142,7 +117,7 @@ namespace DotSpatial.Positioning
         public Longitude(double decimalDegrees)
         {
             // Set the decimal degrees value
-            _decimalDegrees = decimalDegrees;
+            DecimalDegrees = decimalDegrees;
         }
 
         /// <summary>
@@ -168,7 +143,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public Longitude(double decimalDegrees, LongitudeHemisphere hemisphere)
         {
-            _decimalDegrees = ToDecimalDegrees(decimalDegrees, hemisphere);
+            DecimalDegrees = ToDecimalDegrees(decimalDegrees, hemisphere);
         }
 
         /// <summary>
@@ -178,7 +153,7 @@ namespace DotSpatial.Positioning
         /// <returns>An <strong>Longitude</strong> containing the specified value.</returns>
         public Longitude(int hours)
         {
-            _decimalDegrees = ToDecimalDegrees(hours);
+            DecimalDegrees = ToDecimalDegrees(hours);
         }
 
         /// <summary>
@@ -202,7 +177,7 @@ namespace DotSpatial.Positioning
         /// <returns>An <strong>Longitude</strong> containing the specified value.</returns>
         public Longitude(int hours, int minutes, double seconds)
         {
-            _decimalDegrees = ToDecimalDegrees(hours, minutes, seconds);
+            DecimalDegrees = ToDecimalDegrees(hours, minutes, seconds);
         }
 
         /// <summary>
@@ -223,7 +198,7 @@ namespace DotSpatial.Positioning
         /// (without the negative sign) with no exception being thrown.</para></remarks>
         public Longitude(int hours, int minutes, double seconds, LongitudeHemisphere hemisphere)
         {
-            _decimalDegrees = ToDecimalDegrees(hours, minutes, seconds, hemisphere);
+            DecimalDegrees = ToDecimalDegrees(hours, minutes, seconds, hemisphere);
         }
 
         /// <summary>
@@ -244,7 +219,7 @@ namespace DotSpatial.Positioning
         /// <remarks>An <strong>Longitude</strong> containing the specified value.</remarks>
         public Longitude(int hours, double decimalMinutes)
         {
-            _decimalDegrees = ToDecimalDegrees(hours, decimalMinutes);
+            DecimalDegrees = ToDecimalDegrees(hours, decimalMinutes);
         }
 
         /// <summary>
@@ -271,7 +246,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public Longitude(int hours, double decimalMinutes, LongitudeHemisphere hemisphere)
         {
-            _decimalDegrees = ToDecimalDegrees(hours, decimalMinutes, hemisphere);
+            DecimalDegrees = ToDecimalDegrees(hours, decimalMinutes, hemisphere);
         }
 
         /// <summary>
@@ -410,13 +385,15 @@ namespace DotSpatial.Positioning
             if (string.IsNullOrEmpty(value))
             {
                 // Yes. Set to zero
-                _decimalDegrees = 0;
+                DecimalDegrees = 0;
                 return;
             }
 
             // Default to the current culture
             if (culture == null)
+            {
                 culture = CultureInfo.CurrentCulture;
+            }
 
             // We'll be replacing and trimming a lot, so use a Stringbuilder
             StringBuilder newValue = new(value);
@@ -464,72 +441,69 @@ namespace DotSpatial.Positioning
                 {
                     case 0:
                         // Return a blank Longitude
-                        _decimalDegrees = 0.0;
+                        DecimalDegrees = 0.0;
                         return;
                     case 1: // Decimal degrees
                         // Is it nothing?
                         if (values[0].Length == 0)
                         {
-                            _decimalDegrees = 0.0;
+                            DecimalDegrees = 0.0;
                             return;
                         }
                         // Is it infinity?
-                        if (String.Compare(values[0], Resources.Common_Infinity, true, culture) == 0)
+                        if (string.Compare(values[0], Resources.Common_Infinity, true, culture) == 0)
                         {
-                            _decimalDegrees = double.PositiveInfinity;
+                            DecimalDegrees = double.PositiveInfinity;
                             return;
                         }
                         // Is it empty?
-                        if (String.Compare(values[0], Resources.Common_Empty, true, culture) == 0)
+                        if (string.Compare(values[0], Resources.Common_Empty, true, culture) == 0)
                         {
-                            _decimalDegrees = 0.0;
+                            DecimalDegrees = 0.0;
                             return;
                         }
                         // Look at the number of digits, this might be HHHMMSS format.
-                        if (values[0].Length == 7 && values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) == -1)
+                        if (values[0].Length == 7 && !values[0].Contains(culture.NumberFormat.NumberDecimalSeparator))
                         {
-                            _decimalDegrees = ToDecimalDegrees(
-                                int.Parse(values[0].Substring(0, 3), culture),
+                            DecimalDegrees = ToDecimalDegrees(
+                                int.Parse(values[0][..3], culture),
                                 int.Parse(values[0].Substring(3, 2), culture),
                                 double.Parse(values[0].Substring(5, 2), culture),
                                 hemisphere);
                             break;
                         }
-                        if (values[0].Length == 8 && values[0][0] == '-' && values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) == -1)
+
+                        if (values[0].Length == 8 && values[0][0] == '-' && !values[0].Contains(culture.NumberFormat.NumberDecimalSeparator))
                         {
-                            _decimalDegrees = ToDecimalDegrees(
-                                int.Parse(values[0].Substring(0, 4), culture),
+                            DecimalDegrees = ToDecimalDegrees(
+                                int.Parse(values[0][..4], culture),
                                 int.Parse(values[0].Substring(4, 2), culture),
                                 double.Parse(values[0].Substring(6, 2), culture),
                                 hemisphere);
                             break;
                         }
-                        _decimalDegrees = ToDecimalDegrees(
-                            double.Parse(values[0], culture),
-                            hemisphere);
+
+                        DecimalDegrees = ToDecimalDegrees(double.Parse(values[0], culture), hemisphere);
                         break;
                     case 2: // Hours and decimal minutes
                         // If this is a fractional value, remember that it is
                         if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
                         {
-                            throw new ArgumentException(Resources.Longitude_OnlyRightmostIsDecimal, "value");
+                            throw new ArgumentException(Resources.Longitude_OnlyRightmostIsDecimal, nameof(value));
                         }
                         // Set decimal degrees
-                        _decimalDegrees = ToDecimalDegrees(
-                            int.Parse(values[0], culture),
-                            float.Parse(values[1], culture),
-                            hemisphere);
+                        DecimalDegrees = ToDecimalDegrees(int.Parse(values[0], culture), float.Parse(values[1], culture), hemisphere);
 
                         break;
                     default: // Hours, minutes and seconds  (most likely)
                         // If this is a fractional value, remember that it is
-                        if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1 || values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
+                        if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1 || values[1].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
                         {
-                            throw new ArgumentException(Resources.Longitude_OnlyRightmostIsDecimal, "value");
+                            throw new ArgumentException(Resources.Longitude_OnlyRightmostIsDecimal, nameof(value));
                         }
 
                         // Set decimal degrees
-                        _decimalDegrees = ToDecimalDegrees(
+                        DecimalDegrees = ToDecimalDegrees(
                             int.Parse(values[0], culture),
                             int.Parse(values[1], culture),
                             double.Parse(values[2], culture),
@@ -539,11 +513,7 @@ namespace DotSpatial.Positioning
             }
             catch (Exception ex)
             {
-#if PocketPC
-                    throw new ArgumentException(Properties.Resources.Longitude_InvalidFormat, ex);
-#else
-                throw new ArgumentException(Resources.Longitude_InvalidFormat, "value", ex);
-#endif
+                throw new ArgumentException(Resources.Longitude_InvalidFormat, nameof(value), ex);
             }
         }
 
@@ -554,7 +524,7 @@ namespace DotSpatial.Positioning
         public Longitude(XmlReader reader)
         {
             // Initialize all fields
-            _decimalDegrees = Double.NaN;
+            DecimalDegrees = double.NaN;
 
             // Deserialize the object from XML
             ReadXml(reader);
@@ -594,13 +564,7 @@ namespace DotSpatial.Positioning
         ///   </code>
         ///   </example>
         /// <remarks>This property returns the value of the angle as a single number.</remarks>
-        public double DecimalDegrees
-        {
-            get
-            {
-                return _decimalDegrees;
-            }
-        }
+        public double DecimalDegrees { get; private set; }
 
         /// <summary>
         /// Returns the minutes and seconds as a single numeric value.
@@ -632,20 +596,11 @@ namespace DotSpatial.Positioning
         /// decimal value.</remarks>
         public double DecimalMinutes
         {
-            get
-            {
-#if Framework20 && !PocketPC
-                return Math.Round(
+            get => Math.Round(
                     (Math.Abs(
-                        _decimalDegrees - Math.Truncate(_decimalDegrees)) * 60.0),
-                    // Apparently we must round to two less places to preserve accuracy
+                        DecimalDegrees - Math.Truncate(DecimalDegrees)) * 60.0),
+                        // Apparently we must round to two less places to preserve accuracy
                         MAXIMUM_PRECISION_DIGITS - 2);
-#else
-                return Math.Round(
-                    (Math.Abs(
-                        _DecimalDegrees - Truncate(_DecimalDegrees)) * 60.0), MaximumPrecisionDigits - 2);
-#endif
-            }
         }
 
         /// <summary>
@@ -675,17 +630,7 @@ namespace DotSpatial.Positioning
         /// and <see cref="Seconds">Seconds</see> properties to create a full angular measurement.
         /// This property is the same as <strong>DecimalDegrees</strong> without any fractional
         /// value.</remarks>
-        public int Hours
-        {
-            get
-            {
-#if Framework20 && !PocketPC
-                return (int)Math.Truncate(_decimalDegrees);
-#else
-                return Truncate(_DecimalDegrees);
-#endif
-            }
-        }
+        public int Hours => (int)Math.Truncate(DecimalDegrees);
 
         /// <summary>
         /// Returns the integer minutes portion of an angular measurement.
@@ -714,19 +659,9 @@ namespace DotSpatial.Positioning
         /// measurement.</remarks>
         public int Minutes
         {
-            get
-            {
-                return (int)(
-                    Math.Abs(
-#if Framework20 && !PocketPC
-Math.Truncate(
-#else
-                        Truncate(
-#endif
-Math.Round(
-                    // Calculations appear to support one less digit than the maximum allowed precision
-                                (_decimalDegrees - Hours) * 60.0, MAXIMUM_PRECISION_DIGITS - 1))));
-            }
+            get => (int)Math.Abs(Math.Truncate(Math.Round(
+                                // Calculations appear to support one less digit than the maximum allowed precision
+                                (DecimalDegrees - Hours) * 60.0, MAXIMUM_PRECISION_DIGITS - 1)));
         }
 
         /// <summary>
@@ -756,13 +691,10 @@ Math.Round(
         /// measurement.</remarks>
         public double Seconds
         {
-            get
-            {
-                return Math.Round(
-                                (Math.Abs(_decimalDegrees - Hours) * 60.0 - Minutes) * 60.0,
-                    // This property appears to support one less digit than the maximum allowed
+            get => Math.Round(
+                                (Math.Abs(DecimalDegrees - Hours) * 60.0 - Minutes) * 60.0,
+                                // This property appears to support one less digit than the maximum allowed
                                 MAXIMUM_PRECISION_DIGITS - 4);
-            }
         }
 
         /// <summary>
@@ -776,8 +708,11 @@ Math.Round(
             get
             {
                 // And set the hemisphere
-                if (_decimalDegrees < 0)
+                if (DecimalDegrees < 0)
+                {
                     return LongitudeHemisphere.West;
+                }
+
                 return LongitudeHemisphere.East;
             }
         }
@@ -789,13 +724,7 @@ Math.Round(
         {
             get
             {
-#if Framework20 && !PocketPC
                 double longitudeTemp = (DecimalDegrees + 180) - (int)Math.Truncate((DecimalDegrees + 180) / 360) * 360 - 180;
-#else
-            double LongitudeTemp = (DecimalDegrees + 180) - Angle.Truncate((DecimalDegrees + 180) / 360) * 360 - 180;
-#endif
-
-                // int ZoneNumber = 0;
 
                 // Adjust for special zone numbers
                 if (DecimalDegrees >= 56.0 && DecimalDegrees < 64.0 && longitudeTemp >= 3.0 && longitudeTemp < 12.0)
@@ -803,53 +732,30 @@ Math.Round(
                     return 32;
                 }
                 // Special zones for Svalbard
-                if (DecimalDegrees >= 72 && DecimalDegrees < 84.0)
+                if (DecimalDegrees is >= 72 and < 84.0)
                 {
-                    if (longitudeTemp >= 0.0 && longitudeTemp < 9.0)
+                    if (longitudeTemp is >= 0.0 and < 9.0)
                     {
                         return 31;
                     }
-                    if (longitudeTemp >= 9.0 && longitudeTemp < 21.0)
+
+                    if (longitudeTemp is >= 9.0 and < 21.0)
                     {
                         return 33;
                     }
-                    if (longitudeTemp >= 21.0 && longitudeTemp < 33.0)
+
+                    if (longitudeTemp is >= 21.0 and < 33.0)
                     {
                         return 35;
                     }
-                    if (longitudeTemp >= 33.0 && longitudeTemp < 42.0)
+
+                    if (longitudeTemp is >= 33.0 and < 42.0)
                     {
                         return 37;
                     }
                 }
 
-                // else
-                {
-#if Framework20 && !PocketPC
-                    return (int)Math.Truncate((longitudeTemp + 180) / 6) + 1;
-#else
-                    return Angle.Truncate((LongitudeTemp + 180) / 6) + 1;
-#endif
-                }
-
-                // return ZoneNumber;
-
-                //                int Zone;
-                //                if (ToRadians() < Math.PI)
-                //#if Framework20 && !PocketPC
-                //                    Zone = (int)Math.Truncate(31 + (DecimalDegrees / 6.0));
-                //#else
-                //                    Zone = Truncate(31 + (DecimalDegrees / 6.0));
-                //#endif
-                //                else
-                //#if Framework20 && !PocketPC
-                //                    Zone = (int)Math.Truncate((DecimalDegrees / 6.0) - 29);
-                //#else
-                //                    Zone = Truncate((DecimalDegrees / 6.0) - 29);
-                //#endif
-                //                if (Zone > 60)
-                //                    Zone = 1;
-                //                return Zone;
+                return (int)Math.Truncate((longitudeTemp + 180) / 6) + 1;
             }
         }
 
@@ -859,41 +765,23 @@ Math.Round(
         /// <value>A <strong>Boolean</strong>, <strong>True</strong> if the
         /// <strong>DecimalDegrees</strong> property is zero.</value>
         /// <seealso cref="Empty">Empty Field</seealso>
-        public bool IsEmpty
-        {
-            get
-            {
-                return (_decimalDegrees == 0);
-            }
-        }
+        public bool IsEmpty => (DecimalDegrees == 0);
 
         /// <summary>
         /// Indicates if the current instance represents an infinite value.
         /// </summary>
-        public bool IsInfinity
-        {
-            get
-            {
-                return double.IsInfinity(_decimalDegrees);
-            }
-        }
+        public bool IsInfinity => double.IsInfinity(DecimalDegrees);
 
         /// <summary>
         /// Indicates whether the value is invalid or unspecified.
         /// </summary>
-        public bool IsInvalid
-        {
-            get { return double.IsNaN(_decimalDegrees); }
-        }
+        public bool IsInvalid => double.IsNaN(DecimalDegrees);
 
         /// <summary>
         /// Indicates whether the value has been normalized and is within the
         /// allowed bounds of -180° and 180°.
         /// </summary>
-        public bool IsNormalized
-        {
-            get { return _decimalDegrees >= -180 && _decimalDegrees <= 180; }
-        }
+        public bool IsNormalized => DecimalDegrees is >= (-180) and <= 180;
 
         #endregion Public Properties
 
@@ -906,8 +794,11 @@ Math.Round(
         /// <returns>The <strong>Longitude</strong> containing the smallest value.</returns>
         public Longitude LesserOf(Longitude value)
         {
-            if (_decimalDegrees < value.DecimalDegrees)
+            if (DecimalDegrees < value.DecimalDegrees)
+            {
                 return this;
+            }
+
             return value;
         }
 
@@ -918,8 +809,11 @@ Math.Round(
         /// <returns>An <strong>Longitude</strong> containing the largest value.</returns>
         public Longitude GreaterOf(Longitude value)
         {
-            if (_decimalDegrees > value.DecimalDegrees)
+            if (DecimalDegrees > value.DecimalDegrees)
+            {
                 return this;
+            }
+
             return value;
         }
 
@@ -932,7 +826,7 @@ Math.Round(
         /// The <see cref="DecimalDegrees">DecimalDegrees</see> property of each instance is compared.</remarks>
         public int Compare(double value)
         {
-            return _decimalDegrees.CompareTo(value);
+            return DecimalDegrees.CompareTo(value);
         }
 
         /// <summary>
@@ -987,7 +881,7 @@ Math.Round(
         /// radians before performing a trigonometric function.</remarks>
         public Radian ToRadians()
         {
-            return new Radian(_decimalDegrees * Radian.RADIANS_PER_DEGREE);
+            return new Radian(DecimalDegrees * Radian.RADIANS_PER_DEGREE);
         }
 
         /// <summary>
@@ -1074,7 +968,7 @@ Math.Round(
         /// <returns></returns>
         public Longitude Ceiling()
         {
-            return new Longitude(Math.Ceiling(_decimalDegrees));
+            return new Longitude(Math.Ceiling(DecimalDegrees));
         }
 
         /// <summary>
@@ -1083,17 +977,8 @@ Math.Round(
         /// <returns></returns>
         public Longitude Floor()
         {
-            return new Longitude(Math.Floor(_decimalDegrees));
+            return new Longitude(Math.Floor(DecimalDegrees));
         }
-
-#if !Framework20 || PocketPC
-        internal static int Truncate(double value)
-        {
-            return value > 0
-                ? (int)(value - (value - Math.Floor(value)))
-                : (int)(value - (value - Math.Ceiling(value)));
-        }
-#endif
 
         /// <summary>
         /// Returns a new instance whose value is rounded the specified number of decimals.
@@ -1102,7 +987,7 @@ Math.Round(
         /// <returns></returns>
         public Longitude Round(int decimals)
         {
-            return new Longitude(Math.Round(_decimalDegrees, decimals));
+            return new Longitude(Math.Round(DecimalDegrees, decimals));
         }
 
         /// <summary>
@@ -1130,11 +1015,9 @@ Math.Round(
         {
             // Interval must be > 0
             if (interval == 0)
-#if PocketPC
-                throw new ArgumentOutOfRangeException(Properties.Resources.Angle_InvalidInterval);
-#else
-                throw new ArgumentOutOfRangeException("interval", interval, Resources.Angle_InvalidInterval);
-#endif
+            {
+                throw new ArgumentOutOfRangeException(nameof(interval), interval, Resources.Angle_InvalidInterval);
+            }
             // Get the amount in seconds
             double newSeconds = Seconds;
             // double HalfInterval = interval * 0.5;
@@ -1145,13 +1028,17 @@ Math.Round(
                 double nextInterval = value + interval;
                 // Is the seconds value greater than the next interval?
                 if (newSeconds > nextInterval)
+                {
                     // Yes.  Continue on
                     continue;
+                }
                 // Is the seconds value closer to the current or next interval?
                 newSeconds = newSeconds < (value + nextInterval) * 0.5 ? value : nextInterval;
                 // Is the new value 60?  If so, make it zero
                 if (newSeconds == 60)
+                {
                     newSeconds = 0;
+                }
                 // Return the new value
                 return new Longitude(Hours, Minutes, newSeconds);
             }
@@ -1170,39 +1057,17 @@ Math.Round(
         public Longitude Normalize()
         {
             // Is the value not a number, infinity, or already normalized?
-            if (double.IsInfinity(_decimalDegrees) || double.IsNaN(_decimalDegrees))
+            if (double.IsInfinity(DecimalDegrees) || double.IsNaN(DecimalDegrees))
+            {
                 return this;
+            }
             // If we're off the eastern edge (180E) wrap back around from the west
-            if (_decimalDegrees > 180)
-                return new Longitude(-180 + (_decimalDegrees % 180));
+            if (DecimalDegrees > 180)
+            {
+                return new Longitude(-180 + (DecimalDegrees % 180));
+            }
             // If we're off the western edge (180W) wrap back around from the east
-            return _decimalDegrees < -180 ? new Longitude(180 + (_decimalDegrees % 180)) : this;
-
-            /*
-            // Calculate the number of times the degree value winds completely
-            // through a hemisphere
-            int HemisphereFlips = Convert.ToInt32(Math.Floor(_DecimalDegrees / 360.0));
-
-            // If the value is in the western hemisphere, apply another flip
-            if (_DecimalDegrees < 0)
-                HemisphereFlips++;
-
-            // Calculate the new value
-            double NewValue = _DecimalDegrees % 360;
-
-            // if the value is > 180, return 360 - X
-            if (NewValue > 180)
-                NewValue = 360 - NewValue;
-
-            // If the value id < -180, return -360 - X
-            else if (NewValue < -180.0)
-                NewValue = -360.0 - NewValue;
-
-            if (HemisphereFlips % 2 != 0)
-                return new Longitude(-NewValue);
-            else
-                return new Longitude(NewValue);
-             */
+            return DecimalDegrees < -180 ? new Longitude(180 + (DecimalDegrees % 180)) : this;
         }
 
         #endregion Public Methods
@@ -1220,9 +1085,7 @@ Math.Round(
         public override bool Equals(object obj)
         {
             // Only compare the same type
-            if (obj is Longitude)
-                return Equals((Longitude)obj);
-            return false;
+            return obj is Longitude longitude && Equals(longitude);
         }
 
         /// <summary>
@@ -1234,7 +1097,7 @@ Math.Round(
         /// safely with hash tables.</remarks>
         public override int GetHashCode()
         {
-            return _decimalDegrees.GetHashCode();
+            return DecimalDegrees.GetHashCode();
         }
 
         /// <summary>
@@ -1508,15 +1371,12 @@ Math.Round(
             //    default:
             //        return ToDecimalDegrees(hours, decimalMinutes);
             //}
-            switch (hemisphere)
+            return hemisphere switch
             {
-                case LongitudeHemisphere.West:
-                    return -Math.Abs(hours) - decimalMinutes / 60.0;
-                case LongitudeHemisphere.East:
-                    return Math.Abs(hours) + decimalMinutes / 60.0;
-                default:
-                    return ToDecimalDegrees(hours, decimalMinutes);
-            }
+                LongitudeHemisphere.West => -Math.Abs(hours) - decimalMinutes / 60.0,
+                LongitudeHemisphere.East => Math.Abs(hours) + decimalMinutes / 60.0,
+                _ => ToDecimalDegrees(hours, decimalMinutes),
+            };
         }
 
         /// <summary>
@@ -1538,15 +1398,12 @@ Math.Round(
             //    default:
             //        return ToDecimalDegrees(decimalDegrees);
             //}
-            switch (hemisphere)
+            return hemisphere switch
             {
-                case LongitudeHemisphere.West:
-                    return -Math.Abs(decimalDegrees);
-                case LongitudeHemisphere.East:
-                    return Math.Abs(decimalDegrees);
-                default:
-                    return decimalDegrees;
-            }
+                LongitudeHemisphere.West => -Math.Abs(decimalDegrees),
+                LongitudeHemisphere.East => Math.Abs(decimalDegrees),
+                _ => decimalDegrees,
+            };
         }
 
         /// <summary>
@@ -1565,15 +1422,12 @@ Math.Round(
         /// places, the maximum precision allowed by this type.</remarks>
         public static double ToDecimalDegrees(int hours, int minutes, double seconds, LongitudeHemisphere hemisphere)
         {
-            switch (hemisphere)
+            return hemisphere switch
             {
-                case LongitudeHemisphere.West:
-                    return -Math.Abs(hours) - minutes / 60.0 - seconds / 3600.0;
-                case LongitudeHemisphere.East:
-                    return Math.Abs(hours) + minutes / 60.0 + seconds / 3600.0;
-                default:
-                    return ToDecimalDegrees(hours, minutes, seconds);
-            }
+                LongitudeHemisphere.West => -Math.Abs(hours) - minutes / 60.0 - seconds / 3600.0,
+                LongitudeHemisphere.East => Math.Abs(hours) + minutes / 60.0 + seconds / 3600.0,
+                _ => ToDecimalDegrees(hours, minutes, seconds),
+            };
             // switch (hemisphere)
             //{
             //    case LongitudeHemisphere.West:
@@ -1893,7 +1747,7 @@ Math.Round(
         /// method cannot be used to modify an existing instance.</font></para></remarks>
         public Longitude Increment()
         {
-            return new Longitude(_decimalDegrees + 1.0);
+            return new Longitude(DecimalDegrees + 1.0);
         }
 
         /// <summary>
@@ -1914,7 +1768,7 @@ Math.Round(
         ///   </example>
         public Longitude Add(double value)
         {
-            return new Longitude(_decimalDegrees + value);
+            return new Longitude(DecimalDegrees + value);
         }
 
         /// <summary>
@@ -1924,7 +1778,7 @@ Math.Round(
         /// <returns></returns>
         public Longitude Add(Longitude value)
         {
-            return new Longitude(_decimalDegrees + value.DecimalDegrees);
+            return new Longitude(DecimalDegrees + value.DecimalDegrees);
         }
 
         /// <summary>
@@ -1960,7 +1814,7 @@ Math.Round(
         /// method cannot be used to modify an existing instance.</font></para></remarks>
         public Longitude Decrement()
         {
-            return new Longitude(_decimalDegrees - 1.0);
+            return new Longitude(DecimalDegrees - 1.0);
         }
 
         /// <summary>
@@ -1981,7 +1835,7 @@ Math.Round(
         ///   </example>
         public Longitude Subtract(double value)
         {
-            return new Longitude(_decimalDegrees - value);
+            return new Longitude(DecimalDegrees - value);
         }
 
         /// <summary>
@@ -1991,7 +1845,7 @@ Math.Round(
         /// <returns></returns>
         public Longitude Subtract(Longitude value)
         {
-            return new Longitude(_decimalDegrees - value.DecimalDegrees);
+            return new Longitude(DecimalDegrees - value.DecimalDegrees);
         }
 
         /// <summary>
@@ -2012,7 +1866,7 @@ Math.Round(
         ///   </example>
         public Longitude Multiply(double value)
         {
-            return new Longitude(_decimalDegrees * value);
+            return new Longitude(DecimalDegrees * value);
         }
 
         /// <summary>
@@ -2022,7 +1876,7 @@ Math.Round(
         /// <returns></returns>
         public Longitude Multiply(Longitude value)
         {
-            return new Longitude(_decimalDegrees * value.DecimalDegrees);
+            return new Longitude(DecimalDegrees * value.DecimalDegrees);
         }
 
         /// <summary>
@@ -2043,7 +1897,7 @@ Math.Round(
         ///   </example>
         public Longitude Divide(double value)
         {
-            return new Longitude(_decimalDegrees / value);
+            return new Longitude(DecimalDegrees / value);
         }
 
         /// <summary>
@@ -2053,7 +1907,7 @@ Math.Round(
         /// <returns></returns>
         public Longitude Divide(Longitude value)
         {
-            return new Longitude(_decimalDegrees / value.DecimalDegrees);
+            return new Longitude(DecimalDegrees / value.DecimalDegrees);
         }
 
         /// <summary>
@@ -2064,7 +1918,7 @@ Math.Round(
         /// smaller than the specified value.</returns>
         public bool IsLessThan(Longitude value)
         {
-            return _decimalDegrees < value.DecimalDegrees;
+            return DecimalDegrees < value.DecimalDegrees;
         }
 
         /// <summary>
@@ -2074,7 +1928,7 @@ Math.Round(
         /// <returns><c>true</c> if [is less than] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsLessThan(double value)
         {
-            return _decimalDegrees < value;
+            return DecimalDegrees < value;
         }
 
         /// <summary>
@@ -2088,7 +1942,7 @@ Math.Round(
         /// specified value. This method is the same as the "&lt;=" operator.</remarks>
         public bool IsLessThanOrEqualTo(Longitude value)
         {
-            return _decimalDegrees <= value.DecimalDegrees;
+            return DecimalDegrees <= value.DecimalDegrees;
         }
 
         /// <summary>
@@ -2098,7 +1952,7 @@ Math.Round(
         /// <returns><c>true</c> if [is less than or equal to] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsLessThanOrEqualTo(double value)
         {
-            return _decimalDegrees <= value;
+            return DecimalDegrees <= value;
         }
 
         /// <summary>
@@ -2109,7 +1963,7 @@ Math.Round(
         /// greater than the specified value.</returns>
         public bool IsGreaterThan(Longitude value)
         {
-            return _decimalDegrees > value.DecimalDegrees;
+            return DecimalDegrees > value.DecimalDegrees;
         }
 
         /// <summary>
@@ -2119,7 +1973,7 @@ Math.Round(
         /// <returns><c>true</c> if [is greater than] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsGreaterThan(double value)
         {
-            return _decimalDegrees > value;
+            return DecimalDegrees > value;
         }
 
         /// <summary>
@@ -2131,7 +1985,7 @@ Math.Round(
         /// greater than or equal to the specified value.</returns>
         public bool IsGreaterThanOrEqualTo(Longitude value)
         {
-            return _decimalDegrees >= value.DecimalDegrees;
+            return DecimalDegrees >= value.DecimalDegrees;
         }
 
         /// <summary>
@@ -2141,7 +1995,7 @@ Math.Round(
         /// <returns><c>true</c> if [is greater than or equal to] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsGreaterThanOrEqualTo(double value)
         {
-            return _decimalDegrees >= value;
+            return DecimalDegrees >= value;
         }
 
         #endregion Operators
@@ -2279,7 +2133,7 @@ Math.Round(
         /// <returns>An <strong>Longitude</strong> of the same value as the current instance.</returns>
         public Longitude Clone()
         {
-            return new Longitude(_decimalDegrees);
+            return new Longitude(DecimalDegrees);
         }
 
         #endregion ICloneable<Longitude> Members
@@ -2331,7 +2185,7 @@ Math.Round(
         /// reference.</em></para></remarks>
         public bool Equals(Longitude other, int decimals)
         {
-            return Math.Round(_decimalDegrees, decimals) == Math.Round(other.DecimalDegrees, decimals);
+            return Math.Round(DecimalDegrees, decimals) == Math.Round(other.DecimalDegrees, decimals);
         }
 
         /// <summary>
@@ -2341,7 +2195,7 @@ Math.Round(
         /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(Longitude other)
         {
-            return _decimalDegrees.Equals(other.DecimalDegrees);
+            return DecimalDegrees.Equals(other.DecimalDegrees);
         }
 
         #endregion IEquatable<Longitude> Members
@@ -2363,7 +2217,7 @@ Math.Round(
         /// This object is greater than <paramref name="other"/>.</returns>
         public int CompareTo(Longitude other)
         {
-            return _decimalDegrees.CompareTo(other.DecimalDegrees);
+            return DecimalDegrees.CompareTo(other.DecimalDegrees);
         }
 
         #endregion IComparable<Longitude> Members
@@ -2429,7 +2283,9 @@ Math.Round(
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             string subFormat;
             string newFormat;
@@ -2438,19 +2294,28 @@ Math.Round(
             {
                 // Is it infinity?
                 if (double.IsPositiveInfinity(DecimalDegrees))
+                {
                     return "+" + Resources.Common_Infinity;
+                }
                 // Is it infinity?
                 if (double.IsNegativeInfinity(DecimalDegrees))
+                {
                     return "-" + Resources.Common_Infinity;
+                }
+
                 if (double.IsNaN(DecimalDegrees))
+                {
                     return "NaN";
+                }
 
                 // Use the default if "g" is passed
                 format = format.ToLower(culture);
 
                 // IF the format is "G", use the default format
-                if (String.Compare(format, "g", true, culture) == 0)
+                if (string.Compare(format, "g", true, culture) == 0)
+                {
                     format = "HHH°MM'SS.SSSS\"i";
+                }
 
                 // Replace the "d" with "h" since degrees is the same as hours
                 format = format.Replace("d", "h")
@@ -2459,7 +2324,9 @@ Math.Round(
                 // Only one decimal is allowed
                 if (format.IndexOf(culture.NumberFormat.NumberDecimalSeparator) !=
                     format.LastIndexOf(culture.NumberFormat.NumberDecimalSeparator))
+                {
                     throw new ArgumentException(Resources.Longitude_OnlyRightmostIsDecimal);
+                }
                 // Is there an hours specifier?
                 int startChar = format.IndexOf("H");
                 int endChar;
@@ -2476,7 +2343,7 @@ Math.Round(
                     {
                         isDecimalHandled = true;
                         // If an indicator is present, drop the minus sign
-                        format = format.Replace(subFormat, format.IndexOf("I") > -1 ? Math.Abs(_decimalDegrees).ToString(newFormat, culture) : _decimalDegrees.ToString(newFormat, culture));
+                        format = format.Replace(subFormat, format.IndexOf("I") > -1 ? Math.Abs(DecimalDegrees).ToString(newFormat, culture) : DecimalDegrees.ToString(newFormat, culture));
                     }
                     else
                     {
@@ -2500,6 +2367,7 @@ Math.Round(
                         {
                             throw new ArgumentException(Resources.Longitude_OnlyRightmostIsDecimal);
                         }
+
                         isDecimalHandled = true;
                         format = format.Replace(subFormat, DecimalMinutes.ToString(newFormat, culture));
                     }
@@ -2525,6 +2393,7 @@ Math.Round(
                         {
                             throw new ArgumentException(Resources.Longitude_OnlyRightmostIsDecimal);
                         }
+
                         format = format.Replace(subFormat, Seconds.ToString(newFormat, culture));
                     }
                     else
@@ -2546,7 +2415,7 @@ Math.Round(
                     switch (subFormat.Length)
                     {
                         case 1: // Double character
-                            format = format.Replace("I", Hemisphere.ToString().Substring(0, 1));
+                            format = format.Replace("I", Hemisphere.ToString()[..1]);
                             break;
                         case 3: // multiple character
                             format = format.Replace("III", Hemisphere.ToString());
@@ -2555,8 +2424,11 @@ Math.Round(
                 }
 
                 // If nothing then return zero
-                if (String.Compare(format, "°", true, culture) == 0)
+                if (string.Compare(format, "°", true, culture) == 0)
+                {
                     return "0°";
+                }
+
                 return format;
             }
             catch
@@ -2584,7 +2456,7 @@ Math.Round(
         /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteString(_decimalDegrees.ToString("G17", CultureInfo.InvariantCulture));
+            writer.WriteString(DecimalDegrees.ToString("G17", CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -2593,7 +2465,7 @@ Math.Round(
         /// <param name="reader">The <see cref="T:System.Xml.XmlReader"/> stream from which the object is deserialized.</param>
         public void ReadXml(XmlReader reader)
         {
-            _decimalDegrees = reader.NodeType == XmlNodeType.Text ? reader.ReadContentAsDouble() : reader.ReadElementContentAsDouble();
+            DecimalDegrees = reader.NodeType == XmlNodeType.Text ? reader.ReadContentAsDouble() : reader.ReadElementContentAsDouble();
         }
 
         #endregion IXmlSerializable Members

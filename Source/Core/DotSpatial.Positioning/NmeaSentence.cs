@@ -1,20 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// | DonK                     |  5/25/2011 | Fixed the bug in parsing NMEA sentence (Dotspatial issue 295)
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -31,7 +16,14 @@ namespace DotSpatial.Positioning
     {
         #region Fields
 
+        /// <summary>
+        /// The format used for formating latitude values.
+        /// </summary>
         public const string LatitudeFormat = "HHMM.MMMM,I,";
+
+        /// <summary>
+        /// The format used for formating longitude values.
+        /// </summary>
         public const string LongitudeFormat = "HHHMM.MMMM,I,";
         private bool _isValid;
         private string _sentence;
@@ -91,15 +83,19 @@ namespace DotSpatial.Positioning
         {
             // Does it already have a checksum?
             if (ExistingChecksum != null)
+            {
                 return;
+            }
 
             // No. Set the current checksum
             ExistingChecksum = CorrectChecksum;
             _isValid = true;
 
             // Does it contain an asterisk? If not, add one
-            if (Sentence.IndexOf("*", StringComparison.Ordinal) == -1)
+            if (!Sentence.Contains('*'))
+            {
                 Sentence += '*';
+            }
 
             // Calculate and append the checksum
             Sentence += CorrectChecksum;
@@ -112,14 +108,23 @@ namespace DotSpatial.Positioning
         {
             // Get the location of the dollar sign
             int dollarSignIndex = Sentence.IndexOf("$", StringComparison.Ordinal);
-            if (dollarSignIndex == -1) return; // If it's -1, this is invalid
+            if (dollarSignIndex == -1)
+            {
+                return; // If it's -1, this is invalid
+            }
 
             // Get the location of the first comma. This will mark the end of the command word and the start of data.
             int firstCommaIndex = Sentence.IndexOf(",", StringComparison.Ordinal);
-            if (firstCommaIndex == -1) return; // If it's -1, this is invalid
+            if (firstCommaIndex == -1)
+            {
+                return; // If it's -1, this is invalid
+            }
 
             // Determine if the data is not properly formated. Not propertly formated data leads to a negative length.
-            if (firstCommaIndex < dollarSignIndex) return;
+            if (firstCommaIndex < dollarSignIndex)
+            {
+                return;
+            }
 
             // The data starts just after the first comma
             int dataStartIndex = firstCommaIndex + 1;
@@ -132,14 +137,17 @@ namespace DotSpatial.Positioning
             *
             * ... the string is interned, which allows us to compare the word by reference.
             */
-            CommandWord = string.Intern(Sentence.Substring(dollarSignIndex, firstCommaIndex - dollarSignIndex));
+            CommandWord = string.Intern(Sentence[dollarSignIndex..firstCommaIndex]);
 
             // Next, get the index of the asterisk
             int asteriskIndex = Sentence.IndexOf("*", StringComparison.Ordinal);
             int dataEndIndex = asteriskIndex == -1 ? Sentence.Length - 1 : asteriskIndex - 1; // dataEndIndex is before asterix if it exists, otherwise it's the last character
 
             // Determine if the data is properly formated. Not propertly formated data leads to a negative length.
-            if (dataEndIndex < dataStartIndex) return;
+            if (dataEndIndex < dataStartIndex)
+            {
+                return;
+            }
 
             /* Extract the words for the sentence, starting just after the first comma and ending
             * just before the asterisk or at the end of the string.
@@ -151,7 +159,9 @@ namespace DotSpatial.Positioning
             // Calculate the checksum for this portion
             byte checksum = (byte)Sentence[dollarSignIndex + 1];
             for (int index = dollarSignIndex + 2; index <= dataEndIndex; index++)
+            {
                 checksum ^= (byte)Sentence[index];
+            }
 
             CorrectChecksum = checksum.ToString("X2", NmeaCultureInfo); // The checksum is the two-character hexadecimal value
 
@@ -174,7 +184,11 @@ namespace DotSpatial.Positioning
         /// <returns>Invalid if position is outside of Words array or word at the position is empty.</returns>
         protected Azimuth ParseAzimuth(int position)
         {
-            if (Words.Length <= position || Words[position].Length == 0) return Azimuth.Invalid;
+            if (Words.Length <= position || Words[position].Length == 0)
+            {
+                return Azimuth.Invalid;
+            }
+
             return Azimuth.Parse(Words[position], NmeaCultureInfo);
         }
 
@@ -185,7 +199,11 @@ namespace DotSpatial.Positioning
         /// <returns>Invalid if position is outside of Words array or word at the position is empty.</returns>
         protected DilutionOfPrecision ParseDilution(int position)
         {
-            if (Words.Length <= position || Words[position].Length == 0 || float.Parse(Words[position], NmeaCultureInfo) <= 0) return DilutionOfPrecision.Invalid;
+            if (Words.Length <= position || Words[position].Length == 0 || float.Parse(Words[position], NmeaCultureInfo) <= 0)
+            {
+                return DilutionOfPrecision.Invalid;
+            }
+
             return new DilutionOfPrecision(float.Parse(Words[position], NmeaCultureInfo));
         }
 
@@ -197,7 +215,11 @@ namespace DotSpatial.Positioning
         /// <returns>Invalid if position is outside of Words array or word at the position is empty.</returns>
         protected Distance ParseDistance(int position, DistanceUnit unit)
         {
-            if (Words.Length <= position || Words[position].Length == 0) return Distance.Invalid;
+            if (Words.Length <= position || Words[position].Length == 0)
+            {
+                return Distance.Invalid;
+            }
+
             return new Distance(double.Parse(Words[position], NmeaCultureInfo), unit);
         }
 
@@ -209,22 +231,24 @@ namespace DotSpatial.Positioning
         /// <returns>Unknown if the position was outside of the Word array or the word was empty or contained an unknown value.</returns>
         protected FixMethod ParseFixMethod(int position, bool noFixAt1)
         {
-            if (Words.Length <= position || Words[position].Length == 0) return FixMethod.Unknown;
+            if (Words.Length <= position || Words[position].Length == 0)
+            {
+                return FixMethod.Unknown;
+            }
 
             int value = int.Parse(Words[position], NmeaCultureInfo);
-            if (noFixAt1) value -= 1; // if noFix starts at 1 we subtract 1 so that we can use the value in the switch block
-
-            switch (value)
+            if (noFixAt1)
             {
-                case 0:
-                    return FixMethod.NoFix;
-                case 1:
-                    return FixMethod.Fix2D;
-                case 2:
-                    return FixMethod.Fix3D;
-                default:
-                    return FixMethod.Unknown;
+                value -= 1; // if noFix starts at 1 we subtract 1 so that we can use the value in the switch block
             }
+
+            return value switch
+            {
+                0 => FixMethod.NoFix,
+                1 => FixMethod.Fix2D,
+                2 => FixMethod.Fix3D,
+                _ => FixMethod.Unknown,
+            };
         }
 
         /// <summary>
@@ -238,6 +262,7 @@ namespace DotSpatial.Positioning
             {
                 return Words[position] == "A" ? FixMode.Automatic : Words[position] == "M" ? FixMode.Manual : FixMode.Unknown;
             }
+
             return FixMode.Unknown;
         }
 
@@ -249,31 +274,24 @@ namespace DotSpatial.Positioning
         /// <returns>Unknown if position is outside of Words array or word at the position is empty or the given value is not between 0 and 8.</returns>
         protected FixQuality ParseFixQuality(int position)
         {
-            if (Words.Length <= position || Words[position].Length == 0) return FixQuality.Unknown;
-
-            switch (int.Parse(Words[position], NmeaCultureInfo))
+            if (Words.Length <= position || Words[position].Length == 0)
             {
-                case 0:
-                    return FixQuality.NoFix;
-                case 1:
-                    return FixQuality.GpsFix;
-                case 2:
-                    return FixQuality.DifferentialGpsFix;
-                case 3:
-                    return FixQuality.PulsePerSecond;
-                case 4:
-                    return FixQuality.FixedRealTimeKinematic;
-                case 5:
-                    return FixQuality.FloatRealTimeKinematic;
-                case 6:
-                    return FixQuality.Estimated;
-                case 7:
-                    return FixQuality.ManualInput;
-                case 8:
-                    return FixQuality.Simulated;
-                default:
-                    return FixQuality.Unknown;
+                return FixQuality.Unknown;
             }
+
+            return int.Parse(Words[position], NmeaCultureInfo) switch
+            {
+                0 => FixQuality.NoFix,
+                1 => FixQuality.GpsFix,
+                2 => FixQuality.DifferentialGpsFix,
+                3 => FixQuality.PulsePerSecond,
+                4 => FixQuality.FixedRealTimeKinematic,
+                5 => FixQuality.FloatRealTimeKinematic,
+                6 => FixQuality.Estimated,
+                7 => FixQuality.ManualInput,
+                8 => FixQuality.Simulated,
+                _ => FixQuality.Unknown,
+            };
         }
 
         /// <summary>
@@ -283,7 +301,11 @@ namespace DotSpatial.Positioning
         /// <returns>Unknown if position is outside of Words array or word at the position is empty.</returns>
         protected FixStatus ParseFixStatus(int position)
         {
-            if (Words.Length <= position || Words[position].Length == 0) return FixStatus.Unknown;
+            if (Words.Length <= position || Words[position].Length == 0)
+            {
+                return FixStatus.Unknown;
+            }
+
             return Words[position].Equals("A", StringComparison.OrdinalIgnoreCase) ? FixStatus.Fix : FixStatus.NoFix;
         }
 
@@ -300,18 +322,20 @@ namespace DotSpatial.Positioning
             List<int> positions = new() { latitudeValuePosition, latitudeHemispherePosition, longitudeValuePosition, longitudeHemispherePosition };
 
             if (Words.Length <= positions.Max() || positions.Any(pos => Words[pos].Length < 1)) // not enough words or empty field result in invalid position
+            {
                 return Position.Invalid;
+            }
 
             // Parse the latitude
             string latitudeWord = Words[latitudeValuePosition];
-            int latitudeHours = int.Parse(latitudeWord.Substring(0, 2), NmeaCultureInfo);
-            double latitudeDecimalMinutes = double.Parse(latitudeWord.Substring(2), NmeaCultureInfo);
+            int latitudeHours = int.Parse(latitudeWord[..2], NmeaCultureInfo);
+            double latitudeDecimalMinutes = double.Parse(latitudeWord[2..], NmeaCultureInfo);
             LatitudeHemisphere latitudeHemisphere = Words[latitudeHemispherePosition].Equals("N", StringComparison.Ordinal) ? LatitudeHemisphere.North : LatitudeHemisphere.South;
 
             // Parse the longitude
             string longitudeWord = Words[longitudeValuePosition];
-            int longitudeHours = int.Parse(longitudeWord.Substring(0, 3), NmeaCultureInfo);
-            double longitudeDecimalMinutes = double.Parse(longitudeWord.Substring(3), NmeaCultureInfo);
+            int longitudeHours = int.Parse(longitudeWord[..3], NmeaCultureInfo);
+            double longitudeDecimalMinutes = double.Parse(longitudeWord[3..], NmeaCultureInfo);
             LongitudeHemisphere longitudeHemisphere = Words[longitudeHemispherePosition].Equals("E", StringComparison.Ordinal) ? LongitudeHemisphere.East : LongitudeHemisphere.West;
 
             return new Position(new Latitude(latitudeHours, latitudeDecimalMinutes, latitudeHemisphere), new Longitude(longitudeHours, longitudeDecimalMinutes, longitudeHemisphere));
@@ -325,7 +349,11 @@ namespace DotSpatial.Positioning
         /// <returns>Invalid if position is outside of Words array or word at the position is empty.</returns>
         protected Speed ParseSpeed(int position, SpeedUnit unit)
         {
-            if (Words.Length <= position || Words[position].Length == 0) return Speed.Invalid;
+            if (Words.Length <= position || Words[position].Length == 0)
+            {
+                return Speed.Invalid;
+            }
+
             return new Speed(double.Parse(Words[position], NmeaCultureInfo), unit);
         }
 
@@ -340,18 +368,20 @@ namespace DotSpatial.Positioning
             int maxPos = Math.Max(timePosition, datePosition);
 
             if (Words.Length <= maxPos || Words[timePosition].Length == 0 && Words[datePosition].Length == 0)
+            {
                 return DateTime.MinValue;
+            }
 
             // Parse the UTC time
             string utcTimeWord = Words[timePosition];
-            int utcHours = int.Parse(utcTimeWord.Substring(0, 2), NmeaCultureInfo);
+            int utcHours = int.Parse(utcTimeWord[..2], NmeaCultureInfo);
             int utcMinutes = int.Parse(utcTimeWord.Substring(2, 2), NmeaCultureInfo);
             int utcSeconds = int.Parse(utcTimeWord.Substring(4, 2), NmeaCultureInfo);
-            int utcMilliseconds = utcTimeWord.Length > 6 ? Convert.ToInt32(float.Parse(utcTimeWord.Substring(6), NmeaCultureInfo) * 1000, NmeaCultureInfo) : 0;
+            int utcMilliseconds = utcTimeWord.Length > 6 ? Convert.ToInt32(float.Parse(utcTimeWord[6..], NmeaCultureInfo) * 1000, NmeaCultureInfo) : 0;
 
             // Parse the UTC date
             string utcDateWord = Words[datePosition];
-            int utcDay = int.Parse(utcDateWord.Substring(0, 2), NmeaCultureInfo);
+            int utcDay = int.Parse(utcDateWord[..2], NmeaCultureInfo);
             int utcMonth = int.Parse(utcDateWord.Substring(2, 2), NmeaCultureInfo);
             int utcYear = int.Parse(utcDateWord.Substring(4, 2), NmeaCultureInfo) + 2000;
 
@@ -367,13 +397,16 @@ namespace DotSpatial.Positioning
         protected TimeSpan ParseUtcTimeSpan(int position)
         {
             // Do we have enough data to process the UTC time?
-            if (Words.Length <= position || Words[position].Length == 0) return TimeSpan.MinValue;
+            if (Words.Length <= position || Words[position].Length == 0)
+            {
+                return TimeSpan.MinValue;
+            }
 
             string utcTimeWord = Words[position];
-            int utcHours = int.Parse(utcTimeWord.Substring(0, 2), NmeaCultureInfo);
+            int utcHours = int.Parse(utcTimeWord[..2], NmeaCultureInfo);
             int utcMinutes = int.Parse(utcTimeWord.Substring(2, 2), NmeaCultureInfo);
             int utcSeconds = int.Parse(utcTimeWord.Substring(4, 2), NmeaCultureInfo);
-            int utcMilliseconds = utcTimeWord.Length > 6 ? Convert.ToInt32(float.Parse(utcTimeWord.Substring(6), NmeaCultureInfo) * 1000, NmeaCultureInfo) : 0;
+            int utcMilliseconds = utcTimeWord.Length > 6 ? Convert.ToInt32(float.Parse(utcTimeWord[6..], NmeaCultureInfo) * 1000, NmeaCultureInfo) : 0;
 
             // Build a TimeSpan for this value
             return new TimeSpan(0, utcHours, utcMinutes, utcSeconds, utcMilliseconds);
@@ -409,7 +442,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         public string Sentence
         {
-            get { return _sentence; }
+            get => _sentence;
             protected set
             {
                 _sentence = value;
@@ -424,13 +457,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns whether the pack data is well-formed.
         /// </summary>
-        public override bool IsValid
-        {
-            get
-            {
-                return _isValid;
-            }
-        }
+        public override bool IsValid => _isValid;
 
         /// <summary>
         /// Converts the packet into an array of bytes.
@@ -442,11 +469,11 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString(string format, IFormatProvider formatProvider)
         {
             return Sentence;
@@ -463,9 +490,36 @@ namespace DotSpatial.Positioning
         /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(NmeaSentence other)
         {
-            if (other == null) return false;
-            if (Sentence == null) return other.Sentence == null;
+            if (other == null)
+            {
+                return false;
+            }
+
+            if (Sentence == null)
+            {
+                return other.Sentence == null;
+            }
+
             return Sentence.Equals(other.Sentence, StringComparison.Ordinal);
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="obj">An object to compare with this object.</param>
+        /// <returns>true if the current object is equal to the <paramref name="obj"/> parameter; otherwise, false.</returns>
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as NmeaSentence);
+        }
+
+        /// <summary>
+        /// Gets the hash code.
+        /// </summary>
+        /// <returns>The hash code.</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         #endregion IEquatable<NmeaSentence> Members
@@ -505,7 +559,6 @@ namespace DotSpatial.Positioning
     /// </example>
     public sealed class NmeaSentenceEventArgs : EventArgs
     {
-        private readonly NmeaSentence _sentence;
 
         /// <summary>
         /// Creates a new instance with the specified block of raw GPS data and a flag indicating if the sentence was fully parsed.
@@ -515,7 +568,7 @@ namespace DotSpatial.Positioning
         /// <seealso cref="Sentence">Sentence Property</seealso>
         public NmeaSentenceEventArgs(NmeaSentence sentence)
         {
-            _sentence = sentence;
+            Sentence = sentence;
         }
 
         /// <summary>
@@ -524,12 +577,6 @@ namespace DotSpatial.Positioning
         /// <value>A String containing one line of raw NMEA or Garmin® text data.</value>
         /// <remarks>When using the NMEA-0183 or Garmin® text protocols, this property stores text for one individual line.  For the Garmin® binary protocol, a signature such as "(Garmin waypoint data)" is stored instead of actual binary data.</remarks>
         /// <seealso cref="Type">Type Property</seealso>
-        public NmeaSentence Sentence
-        {
-            get
-            {
-                return _sentence;
-            }
-        }
+        public NmeaSentence Sentence { get; }
     }
 }

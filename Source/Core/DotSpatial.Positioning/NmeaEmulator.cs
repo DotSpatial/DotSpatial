@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -80,22 +66,7 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private DilutionOfPrecision _meanDOP = DilutionOfPrecision.Good;
-        /// <summary>
-        ///
-        /// </summary>
-        private FixMode _fixMode = FixMode.Automatic;
-        /// <summary>
-        ///
-        /// </summary>
-        private FixStatus _fixStatus = FixStatus.Fix;
-        /// <summary>
-        ///
-        /// </summary>
-        private FixMethod _fixMethod = FixMethod.Fix3D;
-        /// <summary>
-        ///
-        /// </summary>
-        private FixQuality _fixQuality = FixQuality.Simulated;
+
         /// <summary>
         ///
         /// </summary>
@@ -166,10 +137,7 @@ namespace DotSpatial.Positioning
         /// <value>The interval.</value>
         public override TimeSpan Interval
         {
-            get
-            {
-                return base.Interval;
-            }
+            get => base.Interval;
             set
             {
                 base.Interval = value;
@@ -202,27 +170,59 @@ namespace DotSpatial.Positioning
 
                     Satellites.Add(new Satellite(32, new Azimuth(Seed.Next(360)), new Elevation(Seed.Next(90)), new SignalToNoiseRatio(Seed.Next(50))));
                     if (sats > 1)
+                    {
                         Satellites.Add(new Satellite(24, new Azimuth(Seed.Next(360)), new Elevation(Seed.Next(90)), new SignalToNoiseRatio(Seed.Next(50))));
+                    }
+
                     if (sats > 2)
+                    {
                         Satellites.Add(new Satellite(25, new Azimuth(Seed.Next(360)), new Elevation(Seed.Next(90)), new SignalToNoiseRatio(Seed.Next(50))));
+                    }
+
                     if (sats > 3)
+                    {
                         Satellites.Add(new Satellite(26, new Azimuth(Seed.Next(360)), new Elevation(Seed.Next(90)), new SignalToNoiseRatio(Seed.Next(50))));
+                    }
+
                     if (sats > 4)
+                    {
                         Satellites.Add(new Satellite(27, new Azimuth(Seed.Next(360)), new Elevation(Seed.Next(90)), new SignalToNoiseRatio(Seed.Next(50))));
+                    }
+
                     if (sats > 5)
+                    {
                         Satellites.Add(new Satellite(16, new Azimuth(Seed.Next(360)), new Elevation(Seed.Next(90)), new SignalToNoiseRatio(Seed.Next(50))));
+                    }
+
                     if (sats > 6)
+                    {
                         Satellites.Add(new Satellite(14, new Azimuth(Seed.Next(360)), new Elevation(Seed.Next(90)), new SignalToNoiseRatio(Seed.Next(50))));
+                    }
+
                     if (sats > 7)
+                    {
                         Satellites.Add(new Satellite(6, new Azimuth(Seed.Next(360)), new Elevation(Seed.Next(90)), new SignalToNoiseRatio(Seed.Next(50))));
+                    }
+
                     if (sats > 8)
+                    {
                         Satellites.Add(new Satellite(7, new Azimuth(Seed.Next(360)), new Elevation(Seed.Next(90)), new SignalToNoiseRatio(Seed.Next(50))));
+                    }
+
                     if (sats > 9)
+                    {
                         Satellites.Add(new Satellite(4, new Azimuth(Seed.Next(360)), new Elevation(Seed.Next(90)), new SignalToNoiseRatio(Seed.Next(50))));
+                    }
+
                     if (sats > 10)
+                    {
                         Satellites.Add(new Satellite(19, new Azimuth(Seed.Next(360)), new Elevation(Seed.Next(90)), new SignalToNoiseRatio(Seed.Next(50))));
+                    }
+
                     if (sats > 11)
+                    {
                         Satellites.Add(new Satellite(8, new Azimuth(Seed.Next(360)), new Elevation(Seed.Next(90)), new SignalToNoiseRatio(Seed.Next(50))));
+                    }
                 }
             }
 
@@ -300,7 +300,9 @@ namespace DotSpatial.Positioning
             base.OnEmulation();
 
             if (Route.Count == 0)
+            {
                 CurrentPosition = EmulatePositionError(CurrentPosition);
+            }
 
             /* NMEA devices will transmit "bursts" of NMEA sentences, followed by a one-second pause.
              * Other sentences (usually $GPGSV) are transmitted once every few seconds.  This emulator,
@@ -319,7 +321,7 @@ namespace DotSpatial.Positioning
                 _gpggaLastSent = UtcDateTime;
 
                 // Queue the sentence to the read buffer
-                WriteSentenceToClient(new GpggaSentence(UtcDateTime.TimeOfDay, CurrentPosition, _fixQuality, trackedCount,
+                WriteSentenceToClient(new GpggaSentence(UtcDateTime.TimeOfDay, CurrentPosition, EmulatedFixQuality, trackedCount,
                     _horizontalDOP, Altitude.Add(EmulateError(_verticalDOP)), Distance.Empty, TimeSpan.Zero, -1)); // Add an error to the altitude written to the client but don't change the actual value (otherwise it will "walk")
             }
 
@@ -332,7 +334,7 @@ namespace DotSpatial.Positioning
                 _gprmcLastSent = UtcDateTime;
 
                 // Queue the sentence to the read buffer
-                WriteSentenceToClient(new GprmcSentence(UtcDateTime, _fixStatus == FixStatus.Fix, CurrentPosition, Speed,
+                WriteSentenceToClient(new GprmcSentence(UtcDateTime, EmulatedFixStatus == FixStatus.Fix, CurrentPosition, Speed,
                     Bearing, _magneticVariation));
             }
 
@@ -345,7 +347,7 @@ namespace DotSpatial.Positioning
                 _gpgllLastSent = UtcDateTime;
 
                 // Write a $GPGLL to the client
-                WriteSentenceToClient(new GpgllSentence(CurrentPosition, UtcDateTime.TimeOfDay, _fixStatus));
+                WriteSentenceToClient(new GpgllSentence(CurrentPosition, UtcDateTime.TimeOfDay, EmulatedFixStatus));
             }
 
             // $GPGSA
@@ -357,7 +359,7 @@ namespace DotSpatial.Positioning
                 _gpgsaLastSent = UtcDateTime;
 
                 // Queue the sentence to the read buffer
-                WriteSentenceToClient(new GpgsaSentence(_fixMode, _fixMethod, Satellites,
+                WriteSentenceToClient(new GpgsaSentence(EmulatedFixMode, EmulatedFixMethod, Satellites,
                     _meanDOP, _horizontalDOP, _verticalDOP));
             }
 
@@ -381,9 +383,13 @@ namespace DotSpatial.Positioning
 
             // And signal that we have data (or not)
             if (ReadBuffer.Count == 0)
+            {
                 ReadDataAvailableWaitHandle.Reset();
+            }
             else
+            {
                 ReadDataAvailableWaitHandle.Set();
+            }
         }
 
         /// <summary>
@@ -423,7 +429,9 @@ namespace DotSpatial.Positioning
              * Otherwise, we'll ignore it completely.
              */
             if (ReadBuffer.Count + sentenceBytes.Length + 2 > ReadBuffer.Capacity)
+            {
                 return;
+            }
 
             // Add the bytes
             ReadBuffer.AddRange(sentenceBytes);
@@ -439,7 +447,7 @@ namespace DotSpatial.Positioning
         /// <value>The horizontal dilution of precision.</value>
         public DilutionOfPrecision HorizontalDilutiuonOfPrecision
         {
-            get { return _horizontalDOP; }
+            get => _horizontalDOP;
             set
             {
                 _horizontalDOP = value;
@@ -453,7 +461,7 @@ namespace DotSpatial.Positioning
         /// <value>The vertical dilution of precision.</value>
         public DilutionOfPrecision VerticalDilutiuonOfPrecision
         {
-            get { return _verticalDOP; }
+            get => _verticalDOP;
             set
             {
                 _verticalDOP = value;
@@ -467,7 +475,7 @@ namespace DotSpatial.Positioning
         /// <value>The mean dilution of precision.</value>
         public DilutionOfPrecision MeanDilutiuonOfPrecision
         {
-            get { return _meanDOP; }
+            get => _meanDOP;
             set
             {
                 _meanDOP = value;
@@ -479,41 +487,25 @@ namespace DotSpatial.Positioning
         /// Emulated Fix Mode
         /// </summary>
         /// <value>The emulated fix mode.</value>
-        public FixMode EmulatedFixMode
-        {
-            get { return _fixMode; }
-            set { _fixMode = value; }
-        }
+        public FixMode EmulatedFixMode { get; set; } = FixMode.Automatic;
 
         /// <summary>
         /// Emulated Fix Status
         /// </summary>
         /// <value>The emulated fix status.</value>
-        public FixStatus EmulatedFixStatus
-        {
-            get { return _fixStatus; }
-            set { _fixStatus = value; }
-        }
+        public FixStatus EmulatedFixStatus { get; set; } = FixStatus.Fix;
 
         /// <summary>
         /// Emulated Fix Method
         /// </summary>
         /// <value>The emulated fix method.</value>
-        public FixMethod EmulatedFixMethod
-        {
-            get { return _fixMethod; }
-            set { _fixMethod = value; }
-        }
+        public FixMethod EmulatedFixMethod { get; set; } = FixMethod.Fix3D;
 
         /// <summary>
         /// Emulated Fix Quality
         /// </summary>
         /// <value>The emulated fix quality.</value>
-        public FixQuality EmulatedFixQuality
-        {
-            get { return _fixQuality; }
-            set { _fixQuality = value; }
-        }
+        public FixQuality EmulatedFixQuality { get; set; } = FixQuality.Simulated;
 
         /// <summary>
         /// Magnetic Variation
@@ -521,8 +513,8 @@ namespace DotSpatial.Positioning
         /// <value>The magnetic variation.</value>
         public Longitude MagneticVariation
         {
-            get { return _magneticVariation; }
-            set { _magneticVariation = value; }
+            get => _magneticVariation;
+            set => _magneticVariation = value;
         }
     }
 }

@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -21,7 +7,6 @@ using System.Globalization;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents a confidence level in the precision of GPS data.
     /// </summary>
@@ -43,18 +28,8 @@ namespace DotSpatial.Positioning
     /// your application, an article is available to help you.  You can find it online at the DotSpatial.Positioning web site here:
     /// http://dotspatial.codeplex.com/Articles/WritingApps2_1.aspx. </para></remarks>
     [TypeConverter("DotSpatial.Positioning.Design.DilutionOfPrecisionConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct DilutionOfPrecision : IFormattable, IComparable<DilutionOfPrecision>, IEquatable<DilutionOfPrecision>
     {
-        #region Private members
-
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly float _value;
-
-        #endregion Private members
-
         #region Fields
 
         /// <summary>
@@ -136,9 +111,11 @@ namespace DotSpatial.Positioning
         public DilutionOfPrecision(float value)
         {
             if (value <= 0)
+            {
                 throw new ArgumentException("Dilution of precision value must be > 0");
+            }
 
-            _value = value;
+            Value = value;
         }
 
         #endregion Constructors
@@ -148,48 +125,24 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns the numeric value of the rating.
         /// </summary>
-        public float Value
-        {
-            get
-            {
-                return _value;
-            }
-        }
+        public float Value { get; }
 
         /// <summary>
         /// Returns whether the value is zero.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _value.Equals(0.0f);
-            }
-        }
+        public bool IsEmpty => Value.Equals(0.0f);
 
         /// <summary>
         /// Returns whether the value is invalid or unspecified.
         /// </summary>
-        public bool IsInvalid
-        {
-            get
-            {
-                return float.IsNaN(_value) || float.IsInfinity(_value);
-            }
-        }
+        public bool IsInvalid => float.IsNaN(Value) || float.IsInfinity(Value);
 
         /// <summary>
         /// Returns the estimated precision as a measurable distance.
         /// </summary>
         /// <remarks>The precision estimate is a product of this value and the value of the
         /// CurrentAverageDevicePrecision static property.</remarks>
-        public Distance EstimatedPrecision
-        {
-            get
-            {
-                return Distance.FromMeters(_currentAverageDevicePrecision.ToMeters().Value * _value).ToLocalUnitType();
-            }
-        }
+        public Distance EstimatedPrecision => Distance.FromMeters(_currentAverageDevicePrecision.ToMeters().Value * Value).ToLocalUnitType();
 
         /// <summary>
         /// Returns a friendly name for the level of precision.
@@ -199,32 +152,36 @@ namespace DotSpatial.Positioning
             get
             {
                 // -Infinity --> 0.0
-                if (_value < 0.0f)
+                if (Value < 0.0f)
                 {
                     return DilutionOfPrecisionRating.Unknown;
                 }
                 // 0.1 --> 1.0
-                if (_value > 0.0f && _value <= 1.0f)
+                if (Value is > 0.0f and <= 1.0f)
                 {
                     return DilutionOfPrecisionRating.Ideal;
                 }
                 // 1.1 --> 3.0
-                if (_value <= 3.0f)
+                if (Value <= 3.0f)
                 {
                     return DilutionOfPrecisionRating.Excellent;
                 }
-                if (_value <= 6.0f)
+
+                if (Value <= 6.0f)
                 {
                     return DilutionOfPrecisionRating.Good;
                 }
-                if (_value <= 8.0f)
+
+                if (Value <= 8.0f)
                 {
                     return DilutionOfPrecisionRating.Moderate;
                 }
-                if (_value <= 20.0f)
+
+                if (Value <= 20.0f)
                 {
                     return DilutionOfPrecisionRating.Fair;
                 }
+
                 return DilutionOfPrecisionRating.Poor;
             }
         }
@@ -234,15 +191,13 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">Another object to compare to.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is DilutionOfPrecision)
-                return Equals((DilutionOfPrecision)obj);
-            return false;
+            return obj is DilutionOfPrecision precision && Equals(precision);
         }
 
         /// <summary>
@@ -251,13 +206,13 @@ namespace DotSpatial.Positioning
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
         {
-            return _value.GetHashCode();
+            return Value.GetHashCode();
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("G", CultureInfo.CurrentCulture);
@@ -277,14 +232,13 @@ namespace DotSpatial.Positioning
         /// assist GPS.NET in calculating the current estimated measurable amount of error in latitude/longitude reports.</remarks>
         public static Distance CurrentAverageDevicePrecision
         {
-            get
-            {
-                return _currentAverageDevicePrecision;
-            }
+            get => _currentAverageDevicePrecision;
             set
             {
                 if (value.Value <= 0)
+                {
                     throw new ArgumentOutOfRangeException("CurrentAverageDevicePrecision", "The average precision of the current GPS device must be a value greater than zero.");
+                }
 
                 _currentAverageDevicePrecision = value;
             }
@@ -301,7 +255,7 @@ namespace DotSpatial.Positioning
         /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(DilutionOfPrecision other)
         {
-            return _value == other.Value;
+            return Value == other.Value;
         }
 
         #endregion IEquatable<DilutionOfPrecision> Members
@@ -309,27 +263,31 @@ namespace DotSpatial.Positioning
         #region IFormattable Members
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             // If the format is "G", use the default format
             if (format.Equals("G", StringComparison.OrdinalIgnoreCase))
+            {
                 format = "0.0 (R)";
+            }
 
             // Replace "R" with the rating
             format = format.Replace("R", Rating.ToString());
 
             // Now format the value
-            return _value.ToString(format, culture);
+            return Value.ToString(format, culture);
         }
 
         #endregion IFormattable Members
@@ -341,17 +299,79 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns>A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings:
-        /// Value
-        /// Meaning
-        /// Less than zero
-        /// This object is less than the <paramref name="other"/> parameter.
-        /// Zero
-        /// This object is equal to <paramref name="other"/>.
-        /// Greater than zero
-        /// This object is greater than <paramref name="other"/>.</returns>
+        /// Value - Meaning
+        /// Less than zero - This object is less than the <paramref name="other"/> parameter.
+        /// Zero - This object is equal to <paramref name="other"/>.
+        /// Greater than zero - This object is greater than <paramref name="other"/>.</returns>
         public int CompareTo(DilutionOfPrecision other)
         {
-            return _value.CompareTo(other.Value);
+            return Value.CompareTo(other.Value);
+        }
+
+        /// <summary>
+        /// Indicates whether the left object is equal to the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>true if both are equal.</returns>
+        public static bool operator ==(DilutionOfPrecision left, DilutionOfPrecision right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Indicates whether the left object is equal to the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>true if both are not equal.</returns>
+        public static bool operator !=(DilutionOfPrecision left, DilutionOfPrecision right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Indicates whether the left object is smaller than the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>true if the left object is smaller than the right.</returns>
+        public static bool operator <(DilutionOfPrecision left, DilutionOfPrecision right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        /// <summary>
+        /// Indicates whether the left object is smaller than or the same as the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>true if the left object is smaller than or the same as the right.</returns>
+        public static bool operator <=(DilutionOfPrecision left, DilutionOfPrecision right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
+
+        /// <summary>
+        /// Indicates whether the left object is bigger than the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>true if the left object is bigger than the right.</returns>
+        public static bool operator >(DilutionOfPrecision left, DilutionOfPrecision right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+
+        /// <summary>
+        /// Indicates whether the left object is bigger than or the same as the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>true if the left object is bigger than or the same as the right.</returns>
+        public static bool operator >=(DilutionOfPrecision left, DilutionOfPrecision right)
+        {
+            return left.CompareTo(right) >= 0;
         }
 
         #endregion IComparable<DilutionOfPrecision> Members
@@ -444,10 +464,6 @@ namespace DotSpatial.Positioning
     /// provide notification when hours, minutes, decimal minutes or seconds properties have changed.</remarks>
     public sealed class DilutionOfPrecisionEventArgs : EventArgs
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly DilutionOfPrecision _dilutionOfPrecision;
 
         /// <summary>
         /// Creates a new instance with the specified DOP measurement.
@@ -455,18 +471,12 @@ namespace DotSpatial.Positioning
         /// <param name="dilutionOfPrecision">The dilution of precision.</param>
         public DilutionOfPrecisionEventArgs(DilutionOfPrecision dilutionOfPrecision)
         {
-            _dilutionOfPrecision = dilutionOfPrecision;
+            DilutionOfPrecision = dilutionOfPrecision;
         }
 
         /// <summary>
         /// A DilutionOfPrecision object which is the target of the event.
         /// </summary>
-        public DilutionOfPrecision DilutionOfPrecision
-        {
-            get
-            {
-                return _dilutionOfPrecision;
-            }
-        }
+        public DilutionOfPrecision DilutionOfPrecision { get; }
     }
 }

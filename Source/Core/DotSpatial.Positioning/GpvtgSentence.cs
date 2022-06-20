@@ -1,19 +1,6 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
+
 namespace DotSpatial.Positioning
 {
     /// <summary>
@@ -85,20 +72,27 @@ namespace DotSpatial.Positioning
 
             // Bearing
             Bearing = ParseAzimuth(0);
-            
+
             // Magnetic Variation
             if (wordCount >= 3 && words[2].Length != 0)
+            {
                 MagneticVariation = new Longitude(double.Parse(words[2], NmeaCultureInfo) - Bearing.DecimalDegrees);
+            }
             else
+            {
                 MagneticVariation = Longitude.Invalid;
-            
+            }
+
             // Speed is reported as both knots and KM/H. We can parse either of the values.
             // First, try to parse knots. If that fails, parse KM/h.
             Speed = ParseSpeed(4, SpeedUnit.Knots);
             if (Speed == Speed.Invalid || Speed.Value == 0)
             {
                 Speed s = ParseSpeed(6, SpeedUnit.KilometersPerHour);
-                if (s != Speed.Invalid) Speed = s;
+                if (s != Speed.Invalid)
+                {
+                    Speed = s;
+                }
             }
 
         }
@@ -116,7 +110,7 @@ namespace DotSpatial.Positioning
         /// The Speed
         /// </summary>
         public Speed Speed { get; private set; }
-        
+
         /// <summary>
         /// The Magnetic Variation
         /// </summary>

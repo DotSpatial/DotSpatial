@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -22,7 +8,6 @@ using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using DotSpatial.Positioning;
 
 namespace DotSpatial.Positioning
 {
@@ -30,13 +15,9 @@ namespace DotSpatial.Positioning
     /// Represents an angular measurement around a circle.
     /// </summary>
     /// <seealso cref="Azimuth">Azimuth Class</seealso>
-    ///
     /// <seealso cref="Elevation">Elevation Class</seealso>
-    ///
     /// <seealso cref="Latitude">Latitude Class</seealso>
-    ///
     /// <seealso cref="Longitude">Longitude Class</seealso>
-    ///
     /// <example>
     /// These examples create new instances of Angle objects.
     ///   <code lang="VB" description="Create an angle of 90°">
@@ -76,10 +57,6 @@ namespace DotSpatial.Positioning
     [TypeConverter("DotSpatial.Positioning.Design.AngleConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
     public struct Angle : IFormattable, IComparable<Angle>, IEquatable<Angle>, ICloneable<Angle>, IXmlSerializable
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private double _decimalDegrees;
 
         #region Constants
 
@@ -165,7 +142,7 @@ namespace DotSpatial.Positioning
         public Angle(double decimalDegrees)
         {
             // Set the decimal degrees value
-            _decimalDegrees = decimalDegrees;
+            DecimalDegrees = decimalDegrees;
         }
 
         /// <summary>
@@ -175,7 +152,7 @@ namespace DotSpatial.Positioning
         /// <returns>An <strong>Angle</strong> containing the specified value.</returns>
         public Angle(int hours)
         {
-            _decimalDegrees = ToDecimalDegrees(hours);
+            DecimalDegrees = ToDecimalDegrees(hours);
         }
 
         /// <summary>
@@ -199,7 +176,7 @@ namespace DotSpatial.Positioning
         /// <returns>An <strong>Angle</strong> containing the specified value.</returns>
         public Angle(int hours, int minutes, double seconds)
         {
-            _decimalDegrees = ToDecimalDegrees(hours, minutes, seconds);
+            DecimalDegrees = ToDecimalDegrees(hours, minutes, seconds);
         }
 
         /// <summary>
@@ -220,7 +197,7 @@ namespace DotSpatial.Positioning
         /// <remarks>An <strong>Angle</strong> containing the specified value.</remarks>
         public Angle(int hours, double decimalMinutes)
         {
-            _decimalDegrees = ToDecimalDegrees(hours, decimalMinutes);
+            DecimalDegrees = ToDecimalDegrees(hours, decimalMinutes);
         }
 
         /// <summary>
@@ -278,13 +255,15 @@ namespace DotSpatial.Positioning
             if (string.IsNullOrEmpty(value))
             {
                 // Yes. Set to zero
-                _decimalDegrees = 0;
+                DecimalDegrees = 0;
                 return;
             }
 
             // Default to the current culture
             if (culture == null)
+            {
                 culture = CultureInfo.CurrentCulture;
+            }
 
             // Yes. First, clean up the strings
             try
@@ -299,62 +278,64 @@ namespace DotSpatial.Positioning
                 {
                     case 0:
                         // Return a blank Angle
-                        _decimalDegrees = 0.0;
+                        DecimalDegrees = 0.0;
                         return;
                     case 1: // Decimal degrees
                         // Is it infinity?
-                        if (String.Compare(values[0], Resources.Common_Infinity, true, culture) == 0)
+                        if (string.Compare(values[0], Resources.Common_Infinity, true, culture) == 0)
                         {
-                            _decimalDegrees = double.PositiveInfinity;
+                            DecimalDegrees = double.PositiveInfinity;
                             return;
                         }
                         // Is it empty?
-                        if (String.Compare(values[0], Resources.Common_Empty, true, culture) == 0)
+                        if (string.Compare(values[0], Resources.Common_Empty, true, culture) == 0)
                         {
-                            _decimalDegrees = 0.0;
+                            DecimalDegrees = 0.0;
                             return;
                         }
 
                         // Look at the number of digits, this might be HHHMMSS format.
-                        if (values[0].Length == 7 && values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator, StringComparison.CurrentCulture) == -1)
+                        if (values[0].Length == 7 && !values[0].Contains(culture.NumberFormat.NumberDecimalSeparator, StringComparison.CurrentCulture))
                         {
-                            _decimalDegrees = ToDecimalDegrees(
-                                int.Parse(values[0].Substring(0, 3), culture),
+                            DecimalDegrees = ToDecimalDegrees(
+                                int.Parse(values[0][..3], culture),
                                 int.Parse(values[0].Substring(3, 2), culture),
                                 double.Parse(values[0].Substring(5, 2), culture));
                             return;
                         }
-                        if (values[0].Length == 8 && values[0][0] == '-' && values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator, StringComparison.CurrentCulture) == -1)
+
+                        if (values[0].Length == 8 && values[0][0] == '-' && !values[0].Contains(culture.NumberFormat.NumberDecimalSeparator, StringComparison.CurrentCulture))
                         {
-                            _decimalDegrees = ToDecimalDegrees(
-                                int.Parse(values[0].Substring(0, 4), culture),
+                            DecimalDegrees = ToDecimalDegrees(
+                                int.Parse(values[0][..4], culture),
                                 int.Parse(values[0].Substring(4, 2), culture),
                                 double.Parse(values[0].Substring(6, 2), culture));
                             return;
                         }
-                        _decimalDegrees = double.Parse(values[0], culture);
+
+                        DecimalDegrees = double.Parse(values[0], culture);
                         return;
                     case 2: // Hours and decimal minutes
                         // If this is a fractional value, remember that it is
                         if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator, StringComparison.Ordinal) != -1)
                         {
-                            throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal, "value");
+                            throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal, nameof(value));
                         }
 
                         // Set decimal degrees
-                        _decimalDegrees = ToDecimalDegrees(
+                        DecimalDegrees = ToDecimalDegrees(
                             int.Parse(values[0], culture),
                             float.Parse(values[1], culture));
                         return;
                     default: // Hours, minutes and seconds  (most likely)
                         // If this is a fractional value, remember that it is
-                        if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1 || values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
+                        if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1 || values[1].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
                         {
-                            throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal, "value");
+                            throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal, nameof(value));
                         }
 
                         // Set decimal degrees
-                        _decimalDegrees = ToDecimalDegrees(int.Parse(values[0], culture),
+                        DecimalDegrees = ToDecimalDegrees(int.Parse(values[0], culture),
                             int.Parse(values[1], culture),
                             double.Parse(values[2], culture));
                         return;
@@ -362,11 +343,7 @@ namespace DotSpatial.Positioning
             }
             catch (Exception ex)
             {
-#if PocketPC
-                    throw new ArgumentException(Properties.Resources.Angle_InvalidFormat, ex);
-#else
-                throw new ArgumentException(Resources.Angle_InvalidFormat, "value", ex);
-#endif
+                throw new ArgumentException(Resources.Angle_InvalidFormat, nameof(value), ex);
             }
         }
 
@@ -377,7 +354,7 @@ namespace DotSpatial.Positioning
         public Angle(XmlReader reader)
         {
             // Initialize all fields
-            _decimalDegrees = Double.NaN;
+            DecimalDegrees = double.NaN;
 
             // Deserialize the object from XML
             ReadXml(reader);
@@ -417,13 +394,7 @@ namespace DotSpatial.Positioning
         ///   </code>
         ///   </example>
         /// <remarks>This property returns the value of the angle as a single number.</remarks>
-        public double DecimalDegrees
-        {
-            get
-            {
-                return _decimalDegrees;
-            }
-        }
+        public double DecimalDegrees { get; private set; }
 
         /// <summary>
         /// Returns the minutes and seconds as a single numeric value.
@@ -455,20 +426,10 @@ namespace DotSpatial.Positioning
         /// decimal value.</remarks>
         public double DecimalMinutes
         {
-            get
-            {
-#if Framework20 && !PocketPC
-                return Math.Round(
-                    (Math.Abs(
-                        _decimalDegrees - Math.Truncate(_decimalDegrees)) * 60.0),
-                    // Apparently we must round to two less places to preserve accuracy
+            get => Math.Round(Math.Abs(
+                        DecimalDegrees - Math.Truncate(DecimalDegrees)) * 60.0,
+                        // Apparently we must round to two less places to preserve accuracy
                         MAXIMUM_PRECISION_DIGITS - 2);
-#else
-                return Math.Round(
-                    (Math.Abs(
-                        _decimalDegrees - Truncate(_decimalDegrees)) * 60.0), MAXIMUM_PRECISION_DIGITS - 2);
-#endif
-            }
         }
 
         /// <summary>
@@ -498,17 +459,7 @@ namespace DotSpatial.Positioning
         /// and <see cref="Seconds">Seconds</see> properties to create a full angular measurement.
         /// This property is the same as <strong>DecimalDegrees</strong> without any fractional
         /// value.</remarks>
-        public int Hours
-        {
-            get
-            {
-#if Framework20 && !PocketPC
-                return (int)Math.Truncate(_decimalDegrees);
-#else
-                return Truncate(_decimalDegrees);
-#endif
-            }
-        }
+        public int Hours => (int)Math.Truncate(DecimalDegrees);
 
         /// <summary>
         /// Returns the integer minutes portion of an angular measurement.
@@ -537,19 +488,9 @@ namespace DotSpatial.Positioning
         /// measurement.</remarks>
         public int Minutes
         {
-            get
-            {
-                return Convert.ToInt32(
-                    Math.Abs(
-#if Framework20 && !PocketPC
-Math.Truncate(
-#else
-                        Truncate(
-#endif
-Math.Round(
-                    // Calculations appear to support one less digit than the maximum allowed precision
-                                (_decimalDegrees - Hours) * 60.0, MAXIMUM_PRECISION_DIGITS - 1))));
-            }
+            get => Convert.ToInt32(Math.Abs(Math.Truncate(Math.Round(
+                                // Calculations appear to support one less digit than the maximum allowed precision
+                                (DecimalDegrees - Hours) * 60.0, MAXIMUM_PRECISION_DIGITS - 1))));
         }
 
         /// <summary>
@@ -579,13 +520,9 @@ Math.Round(
         /// measurement.</remarks>
         public double Seconds
         {
-            get
-            {
-                return Math.Round(
-                                (Math.Abs(_decimalDegrees - Hours) * 60.0 - Minutes) * 60.0,
-                    // This property appears to support one less digit than the maximum allowed
+            get => Math.Round((Math.Abs(DecimalDegrees - Hours) * 60.0 - Minutes) * 60.0,
+                                // This property appears to support one less digit than the maximum allowed
                                 MAXIMUM_PRECISION_DIGITS - 4);
-            }
         }
 
         /// <summary>
@@ -594,41 +531,23 @@ Math.Round(
         /// <value>A <strong>Boolean</strong>, <strong>True</strong> if the
         /// <strong>DecimalDegrees</strong> property is zero.</value>
         /// <seealso cref="Empty">Empty Field</seealso>
-        public bool IsEmpty
-        {
-            get
-            {
-                return (_decimalDegrees == 0);
-            }
-        }
+        public bool IsEmpty => (DecimalDegrees == 0);
 
         /// <summary>
         /// Indicates if the current instance represents an infinite value.
         /// </summary>
-        public bool IsInfinity
-        {
-            get
-            {
-                return double.IsInfinity(_decimalDegrees);
-            }
-        }
+        public bool IsInfinity => double.IsInfinity(DecimalDegrees);
 
         /// <summary>
         /// Indicates whether the value is invalid or unspecified.
         /// </summary>
-        public bool IsInvalid
-        {
-            get { return double.IsNaN(_decimalDegrees); }
-        }
+        public bool IsInvalid => double.IsNaN(DecimalDegrees);
 
         /// <summary>
         /// Indicates whether the value has been normalized and is within the
         /// allowed bounds of 0° and 360°.
         /// </summary>
-        public bool IsNormalized
-        {
-            get { return _decimalDegrees >= 0 && _decimalDegrees < 360; }
-        }
+        public bool IsNormalized => DecimalDegrees is >= 0 and < 360;
 
         #endregion Public Properties
 
@@ -641,8 +560,11 @@ Math.Round(
         /// <returns>An <strong>Angle</strong> containing the largest value.</returns>
         public Angle GreaterOf(Angle value)
         {
-            if (_decimalDegrees > value.DecimalDegrees)
+            if (DecimalDegrees > value.DecimalDegrees)
+            {
                 return this;
+            }
+
             return value;
         }
 
@@ -653,8 +575,11 @@ Math.Round(
         /// <returns>The <strong>Angle</strong> containing the smallest value.</returns>
         public Angle LesserOf(Angle value)
         {
-            if (_decimalDegrees < value.DecimalDegrees)
+            if (DecimalDegrees < value.DecimalDegrees)
+            {
                 return this;
+            }
+
             return value;
         }
 
@@ -684,7 +609,7 @@ Math.Round(
         /// circle.</remarks>
         public Angle Mirror()
         {
-            return new Angle(_decimalDegrees + 180.0).Normalize();
+            return new Angle(DecimalDegrees + 180.0).Normalize();
         }
 
         /// <summary>
@@ -720,11 +645,12 @@ Math.Round(
         /// class, this function is the same as "value Mod 360".</remarks>
         public Angle Normalize()
         {
-            double value = _decimalDegrees;
+            double value = DecimalDegrees;
             while (value < 0)
             {
                 value += 360.0;
             }
+
             return new Angle(value % 360);
         }
 
@@ -751,7 +677,7 @@ Math.Round(
         /// radians before performing a trigonometric function.</remarks>
         public Radian ToRadians()
         {
-            return Radian.FromDegrees(_decimalDegrees);
+            return Radian.FromDegrees(DecimalDegrees);
         }
 
         /// <summary>
@@ -794,7 +720,7 @@ Math.Round(
         /// <returns></returns>
         public Angle Ceiling()
         {
-            return new Angle(Math.Ceiling(_decimalDegrees));
+            return new Angle(Math.Ceiling(DecimalDegrees));
         }
 
         /// <summary>
@@ -803,17 +729,8 @@ Math.Round(
         /// <returns></returns>
         public Angle Floor()
         {
-            return new Angle(Math.Floor(_decimalDegrees));
+            return new Angle(Math.Floor(DecimalDegrees));
         }
-
-#if !Framework20 || PocketPC
-        internal static int Truncate(double value)
-        {
-            return value > 0
-                ? (int)(value - (value - Math.Floor(value)))
-                : (int)(value - (value - Math.Ceiling(value)));
-        }
-#endif
 
         /// <summary>
         /// Returns a new instance whose Seconds property is evenly divisible by 15.
@@ -834,7 +751,7 @@ Math.Round(
         /// <returns></returns>
         public Angle Round(int decimals)
         {
-            return new Angle(Math.Round(_decimalDegrees, decimals));
+            return new Angle(Math.Round(DecimalDegrees, decimals));
         }
 
         /// <summary>
@@ -850,11 +767,9 @@ Math.Round(
         {
             // Interval must be > 0
             if (interval == 0)
-#if PocketPC
-                throw new ArgumentOutOfRangeException(Properties.Resources.Angle_InvalidInterval);
-#else
-                throw new ArgumentOutOfRangeException("interval", interval, Resources.Angle_InvalidInterval);
-#endif
+            {
+                throw new ArgumentOutOfRangeException(nameof(interval), interval, Resources.Angle_InvalidInterval);
+            }
             // Get the amount in seconds
             double newSeconds = Seconds;
             // double HalfInterval = interval * 0.5;
@@ -865,13 +780,17 @@ Math.Round(
                 double nextInterval = value + interval;
                 // Is the seconds value greater than the next interval?
                 if (newSeconds > nextInterval)
+                {
                     // Yes.  Continue on
                     continue;
+                }
                 // Is the seconds value closer to the current or next interval?
                 newSeconds = newSeconds < (value + nextInterval) * 0.5 ? value : nextInterval;
                 // Is the new value 60?  If so, make it zero
                 if (newSeconds == 60)
+                {
                     newSeconds = 0;
+                }
                 // Return the new value
                 return new Angle(Hours, Minutes, newSeconds);
             }
@@ -894,8 +813,10 @@ Math.Round(
         public override bool Equals(object obj)
         {
             // Convert objects to an Angle as needed before comparison
-            if (obj is Angle)
-                return Equals((Angle)obj);
+            if (obj is Angle angle)
+            {
+                return Equals(angle);
+            }
 
             // Nothing else will work, so False
             return false;
@@ -910,7 +831,7 @@ Math.Round(
         /// safely with hash tables.</remarks>
         public override int GetHashCode()
         {
-            return _decimalDegrees.GetHashCode();
+            return DecimalDegrees.GetHashCode();
         }
 
         /// <summary>
@@ -1468,7 +1389,7 @@ Math.Round(
         /// method cannot be used to modify an existing instance.</font></para></remarks>
         public Angle Increment()
         {
-            return new Angle(_decimalDegrees + 1.0);
+            return new Angle(DecimalDegrees + 1.0);
         }
 
         /// <summary>
@@ -1489,7 +1410,7 @@ Math.Round(
         ///   </example>
         public Angle Add(double value)
         {
-            return new Angle(_decimalDegrees + value);
+            return new Angle(DecimalDegrees + value);
         }
 
         /// <summary>
@@ -1499,7 +1420,7 @@ Math.Round(
         /// <returns></returns>
         public Angle Add(Angle angle)
         {
-            return new Angle(_decimalDegrees + angle.DecimalDegrees);
+            return new Angle(DecimalDegrees + angle.DecimalDegrees);
         }
 
         /// <summary>
@@ -1535,7 +1456,7 @@ Math.Round(
         /// method cannot be used to modify an existing instance.</font></para></remarks>
         public Angle Decrement()
         {
-            return new Angle(_decimalDegrees - 1.0);
+            return new Angle(DecimalDegrees - 1.0);
         }
 
         /// <summary>
@@ -1556,7 +1477,7 @@ Math.Round(
         ///   </example>
         public Angle Subtract(double value)
         {
-            return new Angle(_decimalDegrees - value);
+            return new Angle(DecimalDegrees - value);
         }
 
         /// <summary>
@@ -1566,7 +1487,7 @@ Math.Round(
         /// <returns></returns>
         public Angle Subtract(Angle value)
         {
-            return new Angle(_decimalDegrees - value.DecimalDegrees);
+            return new Angle(DecimalDegrees - value.DecimalDegrees);
         }
 
         /// <summary>
@@ -1587,7 +1508,7 @@ Math.Round(
         ///   </example>
         public Angle Multiply(double value)
         {
-            return new Angle(_decimalDegrees * value);
+            return new Angle(DecimalDegrees * value);
         }
 
         /// <summary>
@@ -1597,7 +1518,7 @@ Math.Round(
         /// <returns></returns>
         public Angle Multiply(Angle value)
         {
-            return new Angle(_decimalDegrees * value.DecimalDegrees);
+            return new Angle(DecimalDegrees * value.DecimalDegrees);
         }
 
         /// <summary>
@@ -1618,7 +1539,7 @@ Math.Round(
         ///   </example>
         public Angle Divide(double value)
         {
-            return new Angle(_decimalDegrees / value);
+            return new Angle(DecimalDegrees / value);
         }
 
         /// <summary>
@@ -1628,7 +1549,7 @@ Math.Round(
         /// <returns></returns>
         public Angle Divide(Angle angle)
         {
-            return new Angle(_decimalDegrees / angle.DecimalDegrees);
+            return new Angle(DecimalDegrees / angle.DecimalDegrees);
         }
 
         /// <summary>
@@ -1639,7 +1560,7 @@ Math.Round(
         /// smaller than the specified value.</returns>
         public bool IsLessThan(Angle value)
         {
-            return _decimalDegrees < value.DecimalDegrees;
+            return DecimalDegrees < value.DecimalDegrees;
         }
 
         /// <summary>
@@ -1649,7 +1570,7 @@ Math.Round(
         /// <returns><c>true</c> if [is less than] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsLessThan(double value)
         {
-            return _decimalDegrees < value;
+            return DecimalDegrees < value;
         }
 
         /// <summary>
@@ -1663,7 +1584,7 @@ Math.Round(
         /// specified value. This method is the same as the "&lt;=" operator.</remarks>
         public bool IsLessThanOrEqualTo(Angle value)
         {
-            return _decimalDegrees <= value.DecimalDegrees;
+            return DecimalDegrees <= value.DecimalDegrees;
         }
 
         /// <summary>
@@ -1673,7 +1594,7 @@ Math.Round(
         /// <returns><c>true</c> if [is less than or equal to] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsLessThanOrEqualTo(double value)
         {
-            return _decimalDegrees <= value;
+            return DecimalDegrees <= value;
         }
 
         /// <summary>
@@ -1684,7 +1605,7 @@ Math.Round(
         /// greater than the specified value.</returns>
         public bool IsGreaterThan(Angle value)
         {
-            return _decimalDegrees > value.DecimalDegrees;
+            return DecimalDegrees > value.DecimalDegrees;
         }
 
         /// <summary>
@@ -1694,7 +1615,7 @@ Math.Round(
         /// <returns><c>true</c> if [is greater than] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsGreaterThan(double value)
         {
-            return _decimalDegrees > value;
+            return DecimalDegrees > value;
         }
 
         /// <summary>
@@ -1706,7 +1627,7 @@ Math.Round(
         /// greater than or equal to the specified value.</returns>
         public bool IsGreaterThanOrEqualTo(Angle value)
         {
-            return _decimalDegrees >= value.DecimalDegrees;
+            return DecimalDegrees >= value.DecimalDegrees;
         }
 
         /// <summary>
@@ -1716,7 +1637,7 @@ Math.Round(
         /// <returns><c>true</c> if [is greater than or equal to] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsGreaterThanOrEqualTo(double value)
         {
-            return _decimalDegrees >= value;
+            return DecimalDegrees >= value;
         }
 
         #endregion Operators
@@ -1854,7 +1775,7 @@ Math.Round(
         /// <returns>An <strong>Angle</strong> of the same value as the current instance.</returns>
         public Angle Clone()
         {
-            return new Angle(_decimalDegrees);
+            return new Angle(DecimalDegrees);
         }
 
         #endregion ICloneable<Angle> Members
@@ -1870,7 +1791,7 @@ Math.Round(
         /// The <see cref="DecimalDegrees">DecimalDegrees</see> property of each instance is compared.</remarks>
         public int CompareTo(Angle other)
         {
-            return _decimalDegrees.CompareTo(other.DecimalDegrees);
+            return DecimalDegrees.CompareTo(other.DecimalDegrees);
         }
 
         #endregion IComparable<Angle> Members
@@ -1921,7 +1842,7 @@ Math.Round(
         /// reference.</em></para></remarks>
         public bool Equals(Angle angle)
         {
-            return _decimalDegrees.Equals(angle.DecimalDegrees);
+            return DecimalDegrees.Equals(angle.DecimalDegrees);
         }
 
         /// <summary>
@@ -1969,7 +1890,7 @@ Math.Round(
         /// reference.</em></para></remarks>
         public bool Equals(Angle angle, int decimals)
         {
-            return Math.Round(_decimalDegrees, decimals).Equals(Math.Round(angle.DecimalDegrees, decimals));
+            return Math.Round(DecimalDegrees, decimals).Equals(Math.Round(angle.DecimalDegrees, decimals));
         }
 
         #endregion IEquatable<Angle> Members
@@ -2011,7 +1932,9 @@ Math.Round(
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             string subFormat;
             string newFormat;
@@ -2019,17 +1942,26 @@ Math.Round(
             try
             {
                 // Is it infinity?
-                if (double.IsPositiveInfinity(_decimalDegrees))
+                if (double.IsPositiveInfinity(DecimalDegrees))
+                {
                     return "+" + Resources.Common_Infinity;
+                }
                 // Is it infinity?
-                if (double.IsNegativeInfinity(_decimalDegrees))
+                if (double.IsNegativeInfinity(DecimalDegrees))
+                {
                     return "-" + Resources.Common_Infinity;
-                if (double.IsNaN(_decimalDegrees))
+                }
+
+                if (double.IsNaN(DecimalDegrees))
+                {
                     return "NaN";
+                }
 
                 // Use the default if "g" is passed
-                if (String.Compare(format, "g", StringComparison.OrdinalIgnoreCase) == 0)
+                if (string.Compare(format, "g", StringComparison.OrdinalIgnoreCase) == 0)
+                {
                     format = "d.dddd°";
+                }
 
                 // Replace the "d" with "h" since degrees is the same as hours
                 format = format.ToUpper(CultureInfo.InvariantCulture).Replace("D", "H");
@@ -2037,7 +1969,9 @@ Math.Round(
                 // Only one decimal is allowed
                 if (format.IndexOf(culture.NumberFormat.NumberDecimalSeparator, StringComparison.Ordinal) !=
                     format.LastIndexOf(culture.NumberFormat.NumberDecimalSeparator, StringComparison.Ordinal))
+                {
                     throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal);
+                }
 
                 // Is there an hours specifier?
                 int startChar = format.IndexOf("H");
@@ -2078,6 +2012,7 @@ Math.Round(
                         {
                             throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal);
                         }
+
                         isDecimalHandled = true;
                         format = format.Replace(subFormat, DecimalMinutes.ToString(newFormat, culture));
                     }
@@ -2103,6 +2038,7 @@ Math.Round(
                         {
                             throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal);
                         }
+
                         format = format.Replace(subFormat, Seconds.ToString(newFormat, culture));
                     }
                     else
@@ -2111,8 +2047,11 @@ Math.Round(
                     }
                 }
                 // If nothing then return zero
-                if (String.Compare(format, "°", true, culture) == 0)
+                if (string.Compare(format, "°", true, culture) == 0)
+                {
                     return "0°";
+                }
+
                 return format;
             }
             catch
@@ -2153,7 +2092,7 @@ Math.Round(
             writer.WriteAttributeString("uom", "degrees");
 
             // Write the angle value
-            writer.WriteString(_decimalDegrees.ToString("G17", CultureInfo.InvariantCulture));
+            writer.WriteString(DecimalDegrees.ToString("G17", CultureInfo.InvariantCulture));
 
             // Close up the element
             writer.WriteEndElement();
@@ -2173,11 +2112,13 @@ Math.Round(
 
             // Move to the <gml:angle> element
             if (!reader.IsStartElement("angle", Xml.GML_XML_NAMESPACE))
+            {
                 reader.ReadToDescendant("angle", Xml.GML_XML_NAMESPACE);
+            }
 
             // Read in the element content
             // I'm going to assume for now that the unit of measure is degrees.
-            _decimalDegrees = reader.ReadElementContentAsDouble();
+            DecimalDegrees = reader.ReadElementContentAsDouble();
 
             reader.Read();
         }

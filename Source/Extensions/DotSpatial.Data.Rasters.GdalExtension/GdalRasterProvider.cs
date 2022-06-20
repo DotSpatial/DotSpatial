@@ -200,29 +200,18 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 return null;
             }
 
-            switch (fileExtension.ToLower())
+            return fileExtension.ToLower() switch
             {
-                case ".asc": return "AAIGrid";
-
-                case ".adf": return "AAIGrid";
-
-                case ".tiff":
-                case ".tif": return "GTiff";
-
-                case ".img": return "HFA";
-
-                case ".gff": return "GFF";
-
-                case ".dt0":
-                case ".dt1":
-                case ".dt2": return "DTED";
-
-                case ".ter": return "Terragen";
-
-                case ".nc": return "netCDF";
-
-                default: return null;
-            }
+                ".asc" => "AAIGrid",
+                ".adf" => "AAIGrid",
+                ".tiff" or ".tif" => "GTiff",
+                ".img" => "HFA",
+                ".gff" => "GFF",
+                ".dt0" or ".dt1" or ".dt2" => "DTED",
+                ".ter" => "Terragen",
+                ".nc" => "netCDF",
+                _ => null,
+            };
         }
 
         private static IRaster WrapDataSetInRaster(string name, Type dataType, Dataset dataset)

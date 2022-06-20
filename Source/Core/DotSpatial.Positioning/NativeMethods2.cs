@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.IO;
@@ -281,10 +267,7 @@ namespace DotSpatial.Positioning
             /// <summary>
             /// Returns the address of the device.
             /// </summary>
-            public BluetoothAddress Address
-            {
-                get { return new BluetoothAddress(AddressCode); }
-            }
+            public BluetoothAddress Address => new(AddressCode);
 
             /// <summary>
             /// Returns the friendly nameof the device.
@@ -294,8 +277,11 @@ namespace DotSpatial.Positioning
                 get
                 {
                     string value = Encoding.UTF8.GetString(NameBinary, 0, NameBinary.Length).Trim('\0');
-                    if (String.IsNullOrEmpty(value))
+                    if (string.IsNullOrEmpty(value))
+                    {
                         return Address.ToString();
+                    }
+
                     return value;
                 }
             }
@@ -573,15 +559,15 @@ namespace DotSpatial.Positioning
             {
                 SystemTime result = new()
                 {
-                                            Year = (short)value.Year,
-                                            Month = (short)value.Month,
-                                            DayOfWeek = (short)value.DayOfWeek,
-                                            Day = (short)value.Day,
-                                            Hour = (short)value.Hour,
-                                            Minute = (short)value.Minute,
-                                            Second = (short)value.Second,
-                                            Milliseconds = (short)value.Millisecond
-                                        };
+                    Year = (short)value.Year,
+                    Month = (short)value.Month,
+                    DayOfWeek = (short)value.DayOfWeek,
+                    Day = (short)value.Day,
+                    Hour = (short)value.Hour,
+                    Minute = (short)value.Minute,
+                    Second = (short)value.Second,
+                    Milliseconds = (short)value.Millisecond
+                };
                 return result;
             }
         }
@@ -598,7 +584,7 @@ namespace DotSpatial.Positioning
             /// The high-order byte specifies the minor version number; the low-order byte specifies the major version number.
             /// wVersion.
             /// </summary>
-            public Int16 Version = 36;        // 2.2
+            public short Version = 36;        // 2.2
 
             /// <summary>
             /// The highest version of the Windows Sockets specification that the Ws2_32.dll can support. The high-order byte
@@ -607,7 +593,7 @@ namespace DotSpatial.Positioning
             /// passed to the WSAStartup function is the highest version of the Windows Sockets specification that the Ws2_32.dll
             /// can support.  wHighVersion.
             /// </summary>
-            public Int16 HighVersion = 36;    // 2.2
+            public short HighVersion = 36;    // 2.2
 
             /// <summary>
             /// A NULL-terminated ASCII string into which the Ws2_32.dll copies a description of the Windows Sockets implementation.
@@ -631,12 +617,12 @@ namespace DotSpatial.Positioning
             /// of Windows Sockets changed in version 2 to support multiple providers, and the WSADATA structure no longer applies to
             /// a single vendor's stack. iMaxSockets.
             /// </summary>
-            public Int16 MaxSockets;
+            public short MaxSockets;
 
             /// <summary>
             /// The maximum datagram message size. This member is ignored for Windows Sockets version 2 and later.  iMaxUdpDg.
             /// </summary>
-            public Int16 MaximumMessageSize;
+            public short MaximumMessageSize;
 
             /// <summary>
             /// A pointer to vendor-specific information. This member should be ignored for Windows Sockets version 2 and later.
@@ -919,7 +905,7 @@ namespace DotSpatial.Positioning
             /// The size, in bytes, of the SP_DEVICE_INTERFACE_DETAIL_DATA structure.
             /// For more information, see the following Remarks section.  cbSize.
             /// </summary>
-            public UInt32 ByteSize;
+            public uint ByteSize;
 
             /// <summary>
             /// A NULL-terminated string that contains the device interface path. This path can be passed to Win32 functions such as CreateFile.
@@ -963,8 +949,8 @@ namespace DotSpatial.Positioning
         /// <remarks>For information about using a device instance handle that is bound to the local machine, see CM_Get_Child.</remarks>
         [DllImport("setupapi.dll", SetLastError = true)]
         public static extern int CM_Get_Parent(
-           out UInt32 pdnDevInst,
-           UInt32 dnDevInst,
+           out uint pdnDevInst,
+           uint dnDevInst,
            int ulFlags
         );
 
@@ -986,7 +972,7 @@ namespace DotSpatial.Positioning
         /// For information about using device instance handles that are bound to the local machine, see CM_Get_Child.</remarks>
         [DllImport("setupapi.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern int CM_Get_Device_ID(
-           UInt32 dnDevInst,
+           uint dnDevInst,
            IntPtr buffer,
            int bufferLen,
            int ulFlags
@@ -1071,7 +1057,7 @@ namespace DotSpatial.Positioning
         [DllImport("setupapi.dll", SetLastError = true)]
         public static extern bool SetupDiEnumDeviceInfo(
             IntPtr hDevInfo,
-            UInt32 memberIndex,
+            uint memberIndex,
             ref SpDevinfoData devInfo);
 
         /// <summary>
@@ -1105,11 +1091,11 @@ namespace DotSpatial.Positioning
         /// the name of the device interface that can be passed to a Win32 function such as CreateFile
         /// (described in Microsoft Windows SDK documentation) to get a handle to the interface.</remarks>
         [DllImport("setupapi.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern Boolean SetupDiEnumDeviceInterfaces(
+        public static extern bool SetupDiEnumDeviceInterfaces(
            IntPtr hDevInfo,
            IntPtr devInfo,
            ref Guid interfaceClassGuid,
-           UInt32 memberIndex,
+           uint memberIndex,
            ref SpDeviceInterfaceData deviceInterfaceData
         );
 
@@ -1142,12 +1128,12 @@ namespace DotSpatial.Positioning
         /// completed with an error, FALSE is returned and the error code for the failure can be retrieved by calling
         /// GetLastError.</returns>
         [DllImport("setupapi.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern Boolean SetupDiGetDeviceInterfaceDetail(
+        public static extern bool SetupDiGetDeviceInterfaceDetail(
            IntPtr hDevInfo,
            ref SpDeviceInterfaceData deviceInterfaceData,
            ref SpDeviceInterfaceDetailData deviceInterfaceDetailData,
-           UInt32 deviceInterfaceDetailDataSize,
-           out UInt32 requiredSize,
+           uint deviceInterfaceDetailDataSize,
+           out uint requiredSize,
            ref SpDevinfoData deviceInfoData
         );
 
@@ -1297,7 +1283,7 @@ namespace DotSpatial.Positioning
         /// WSAEFAULT - The lpWSAData parameter is not a valid pointer.</returns>
         [DllImport("Ws2_32.DLL", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern int WSAStartup(
-            UInt16 wVersionRequested,
+            ushort wVersionRequested,
             WsaData wsaData);
 
         // http://msdn.microsoft.com/en-us/library/ms741549%28VS.85%29.aspx

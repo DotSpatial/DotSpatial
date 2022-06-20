@@ -20,12 +20,12 @@ namespace DotSpatial.Plugins.WebMap.Configuration
         {
             get
             {
-                return (bool)this["Ignore"];
+                return (bool)this[nameof(Ignore)];
             }
 
             set
             {
-                this["Ignore"] = value;
+                this[nameof(Ignore)] = value;
             }
         }
 
@@ -37,7 +37,7 @@ namespace DotSpatial.Plugins.WebMap.Configuration
         {
             get
             {
-                return (string)this["Key"];
+                return (string)this[nameof(Key)];
             }
 
             set
@@ -54,12 +54,12 @@ namespace DotSpatial.Plugins.WebMap.Configuration
         {
             get
             {
-                return (string)this["Url"];
+                return (string)this[nameof(Url)];
             }
 
             set
             {
-                this["Url"] = value;
+                this[nameof(Url)] = value;
             }
         }
 

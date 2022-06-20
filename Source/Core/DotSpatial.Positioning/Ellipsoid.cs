@@ -1,36 +1,16 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-#if !PocketPC || DesignTime
-
-using System.ComponentModel;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
-
     /// <summary>
     /// Represents a flattened sphere which approximates Earth's size and shape.
     /// </summary>
@@ -52,49 +32,17 @@ namespace DotSpatial.Positioning
     ///   <para>Instances of this class are guaranteed to be thread-safe because the class is
     /// immutable (its properties can only be set via constructors).</para></remarks>
     [TypeConverter(typeof(ExpandableObjectConverter))]
-#endif
     public sealed class Ellipsoid : IEquatable<Ellipsoid>, IXmlSerializable
     {
         /// <summary>
         ///
         /// </summary>
-        private int _epsgNumber = 32767;
-        /// <summary>
-        ///
-        /// </summary>
         private Distance _equatorialRadius;
-        /// <summary>
-        ///
-        /// </summary>
-        private double _equatorialRadiusMeters; // Cached for frequent use during calculations
+
         /// <summary>
         ///
         /// </summary>
         private Distance _polarRadius;
-        /// <summary>
-        ///
-        /// </summary>
-        private double _polarRadiusMeters;      // Cached for frequent use during calculations
-        /// <summary>
-        ///
-        /// </summary>
-        private string _name;
-        /// <summary>
-        ///
-        /// </summary>
-        private double _flattening;
-        /// <summary>
-        ///
-        /// </summary>
-        private double _inverseFlattening;
-        /// <summary>
-        ///
-        /// </summary>
-        private double _eccentricity;
-        /// <summary>
-        ///
-        /// </summary>
-        private double _eccentricitySquared;
 
         /// <summary>
         ///
@@ -420,15 +368,15 @@ namespace DotSpatial.Positioning
         #endregion Fields
 
         #region Constructors
-        
-// ReSharper disable UnusedMember.Global
+
+        // ReSharper disable UnusedMember.Global
 
         // Needed for xml serialization\deserialization
         internal Ellipsoid()
         {
-            
+
         }
-// ReSharper restore UnusedMember.Global
+        // ReSharper restore UnusedMember.Global
 
         /// <summary>
         /// Creates a new instance with the specified type, name, equatorial raduis and polar radius.
@@ -439,7 +387,7 @@ namespace DotSpatial.Positioning
         /// <remarks>This constructor allows user-defined ellipsoids to be created for specialized applications.</remarks>
         public Ellipsoid(string name, Distance equatorialRadius, Distance polarRadius)
         {
-            _name = name;
+            Name = name;
             _equatorialRadius = equatorialRadius;
             _polarRadius = polarRadius;
 
@@ -460,9 +408,9 @@ namespace DotSpatial.Positioning
         /// <param name="inverseFlattening">The inverse flattening.</param>
         public Ellipsoid(string name, Distance equatorialRadius, double inverseFlattening)
         {
-            _name = name;
+            Name = name;
             _equatorialRadius = equatorialRadius;
-            _inverseFlattening = inverseFlattening;
+            InverseFlattening = inverseFlattening;
 
             // Perform calculations
             Calculate();
@@ -483,11 +431,11 @@ namespace DotSpatial.Positioning
         /// <param name="name">The name.</param>
         internal Ellipsoid(int epsgNumber, double a, double invf, double b, string name)
         {
-            _name = name;
-            _epsgNumber = epsgNumber;
+            Name = name;
+            EpsgNumber = epsgNumber;
             _equatorialRadius = Distance.FromMeters(a);
             _polarRadius = Distance.FromMeters(b);
-            _inverseFlattening = invf;
+            InverseFlattening = invf;
             Calculate();
 
             SanityCheck();
@@ -513,8 +461,10 @@ namespace DotSpatial.Positioning
         /// </summary>
         private void SanityCheck()
         {
-            if ((_equatorialRadius.IsEmpty && _inverseFlattening == 0) || (_equatorialRadius.IsEmpty && _polarRadius.IsEmpty))
+            if ((_equatorialRadius.IsEmpty && InverseFlattening == 0) || (_equatorialRadius.IsEmpty && _polarRadius.IsEmpty))
+            {
                 throw new ArgumentException("The radii and inverse flattening of an allipsoid cannot be zero.   Please specify either the equatorial and polar radius, or the equatorial radius and the inverse flattening for this ellipsoid.");
+            }
         }
 
         /// <summary>
@@ -524,22 +474,25 @@ namespace DotSpatial.Positioning
         {
             double a = _equatorialRadius.ToMeters().Value;
             double b = _polarRadius.ToMeters().Value;
-            double invf = _inverseFlattening;
+            double invf = InverseFlattening;
 
             // Check the input. If a minor axis wasn't supplied, calculate it.
-            if (b == 0) b = -(((1.0 / invf) * a) - a);
+            if (b == 0)
+            {
+                b = -(((1.0 / invf) * a) - a);
+            }
 
             _polarRadius = Distance.FromMeters(b);
 
-            _flattening = (_equatorialRadius.ToMeters().Value - _polarRadius.ToMeters().Value) / _equatorialRadius.ToMeters().Value;
-            _inverseFlattening = 1.0 / _flattening;
-            _eccentricity = Math.Sqrt((Math.Pow(_equatorialRadius.Value, 2) - Math.Pow(_polarRadius.Value, 2)) / Math.Pow(_equatorialRadius.Value, 2));
-            _eccentricitySquared = Math.Pow(Eccentricity, 2);
+            Flattening = (_equatorialRadius.ToMeters().Value - _polarRadius.ToMeters().Value) / _equatorialRadius.ToMeters().Value;
+            InverseFlattening = 1.0 / Flattening;
+            Eccentricity = Math.Sqrt((Math.Pow(_equatorialRadius.Value, 2) - Math.Pow(_polarRadius.Value, 2)) / Math.Pow(_equatorialRadius.Value, 2));
+            EccentricitySquared = Math.Pow(Eccentricity, 2);
 
             // This is used very frequently by calculations.  Since ellipsoids do not change, there's
             // no need to call .ToMeters() thousands of times.
-            _equatorialRadiusMeters = _equatorialRadius.ToMeters().Value;
-            _polarRadiusMeters = _polarRadius.ToMeters().Value;
+            EquatorialRadiusMeters = _equatorialRadius.ToMeters().Value;
+            PolarRadiusMeters = _polarRadius.ToMeters().Value;
         }
 
         #endregion Private Methods
@@ -547,15 +500,13 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is Ellipsoid)
-                return Equals((Ellipsoid)obj);
-            return false;
+            return obj is Ellipsoid ellipsoid && Equals(ellipsoid);
         }
 
         /// <summary>
@@ -568,12 +519,12 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
-            return _name;
+            return Name;
         }
 
         #endregion Overrides
@@ -584,20 +535,14 @@ namespace DotSpatial.Positioning
         /// European Petroleum Survey Group number for this ellipsoid. The ESPG standards are now maintained by OGP
         /// (International Association of Oil and Gas Producers).
         /// </summary>
-        public int EpsgNumber
-        {
-            get { return _epsgNumber; }
-        }
+        public int EpsgNumber { get; private set; } = 32767;
 
         /// <summary>
         /// Indicates the descriptive name of the ellipsoid.
         /// </summary>
         /// <value>A <strong>String</strong> containing the name of the ellipsoid.</value>
         /// <remarks>This property is typically used to display ellipsoid information on a user interface.</remarks>
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; private set; }
 
         /// <summary>
         /// Represents the distance from Earth's center to the equator.
@@ -608,10 +553,7 @@ namespace DotSpatial.Positioning
         /// This property is used in conjunction with the <strong>PolarRadius</strong> property
         /// to define an ellipsoidal shape. This property returns the same value as the
         /// <strong>SemiMajorAxis</strong> property.</remarks>
-        public Distance EquatorialRadius
-        {
-            get { return _equatorialRadius; }
-        }
+        public Distance EquatorialRadius => _equatorialRadius;
 
         /// <summary>
         /// Represents the distance from Earth's center to the North or South pole.
@@ -622,10 +564,7 @@ namespace DotSpatial.Positioning
         /// This property is used in conjunction with the <strong>EquatorialRadius</strong>
         /// property to define an ellipsoidal shape. This property returns the same value as
         /// the <strong>SemiMinorAxis</strong> property.</remarks>
-        public Distance PolarRadius
-        {
-            get { return _polarRadius; }
-        }
+        public Distance PolarRadius => _polarRadius;
 
         /// <summary>
         /// Represents the distance from Earth's center to the equator.
@@ -636,10 +575,7 @@ namespace DotSpatial.Positioning
         /// This property is used in conjunction with the <strong>SemiMinorAxis</strong>
         /// property to define an ellipsoidal shape. This property returns the same value as
         /// the <strong>EquatorialRadius</strong> property.</remarks>
-        public Distance SemiMajorAxis
-        {
-            get { return _equatorialRadius; }
-        }
+        public Distance SemiMajorAxis => _equatorialRadius;
 
         /// <summary>
         /// Represents the distance from Earth's center to the North or South pole.
@@ -650,10 +586,7 @@ namespace DotSpatial.Positioning
         /// This property is used in conjunction with the <strong>SemiMajorAxis</strong>
         /// property to define an ellipsoidal shape. This property returns the same value as
         /// the <strong>PolarRadius</strong> property.</remarks>
-        public Distance SemiMinorAxis
-        {
-            get { return _polarRadius; }
-        }
+        public Distance SemiMinorAxis => _polarRadius;
 
         /// <summary>
         /// Indicates if the ellipsoid is describing a perfect sphere.
@@ -663,10 +596,7 @@ namespace DotSpatial.Positioning
         /// results, however, spherical ellipsoids should not be used. This property, when used
         /// correctly, can improve performance for mathematics when coordinate precision is less of
         /// a concern, such as viewing a map from a high altitude.</remarks>
-        public bool IsSpherical
-        {
-            get { return _equatorialRadius.Equals(_polarRadius); }
-        }
+        public bool IsSpherical => _equatorialRadius.Equals(_polarRadius);
 
         /// <summary>
         /// Indicates the inverse of the shape of an ellipsoid relative to a sphere.
@@ -675,10 +605,7 @@ namespace DotSpatial.Positioning
         /// <seealso cref="EquatorialRadius">EquatorialRadius Property</seealso>
         /// <remarks>This property is used frequently in equations. Inverse flattening is defined as
         /// one divided by the <strong>Flattening</strong> property.:</remarks>
-        public double InverseFlattening
-        {
-            get { return _inverseFlattening; }
-        }
+        public double InverseFlattening { get; private set; }
 
         /// <summary>
         /// Indicates the shape of the ellipsoid relative to a sphere.
@@ -687,13 +614,7 @@ namespace DotSpatial.Positioning
         /// <seealso cref="EquatorialRadius">EquatorialRadius Property</seealso>
         /// <remarks>This property compares the equatorial radius with the polar radius to measure the
         /// amount that the ellipsoid is "squished" vertically.</remarks>
-        public double Flattening
-        {
-            get
-            {
-                return _flattening;
-            }
-        }
+        public double Flattening { get; private set; }
 
         /// <summary>
         /// Returns the rate of flattening of the ellipsoid.
@@ -702,26 +623,14 @@ namespace DotSpatial.Positioning
         /// <remarks>The eccentricity is a positive number less than 1, or 0 in the case of a circle.
         /// The greater the eccentricity is, the larger the ratio of the equatorial radius to the
         /// polar radius is, and therefore the more elongated the ellipse is.</remarks>
-        public double Eccentricity
-        {
-            get
-            {
-                return _eccentricity;
-            }
-        }
+        public double Eccentricity { get; private set; }
 
         /// <summary>
         /// Returns the square of the eccentricity.
         /// </summary>
         /// <remarks>This property returns the value of the <strong>Eccentricity</strong> property,
         /// squared. It is used frequently during coordinate conversion formulas.</remarks>
-        public double EccentricitySquared
-        {
-            get
-            {
-                return _eccentricitySquared;
-            }
-        }
+        public double EccentricitySquared { get; private set; }
 
         #endregion Public Properties
 
@@ -730,46 +639,22 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Gets the polar radius meters.
         /// </summary>
-        internal double PolarRadiusMeters
-        {
-            get
-            {
-                return _polarRadiusMeters;
-            }
-        }
+        internal double PolarRadiusMeters { get; private set; }
 
         /// <summary>
         /// Gets the equatorial radius meters.
         /// </summary>
-        internal double EquatorialRadiusMeters
-        {
-            get
-            {
-                return _equatorialRadiusMeters;
-            }
-        }
+        internal double EquatorialRadiusMeters { get; private set; }
 
         /// <summary>
         /// Gets the semi major axis meters.
         /// </summary>
-        internal double SemiMajorAxisMeters
-        {
-            get
-            {
-                return _equatorialRadiusMeters;
-            }
-        }
+        internal double SemiMajorAxisMeters => EquatorialRadiusMeters;
 
         /// <summary>
         /// Gets the semi minor meters.
         /// </summary>
-        internal double SemiMinorMeters
-        {
-            get
-            {
-                return _polarRadiusMeters;
-            }
-        }
+        internal double SemiMinorMeters => PolarRadiusMeters;
 
         #endregion Internal Propertis
 
@@ -786,7 +671,9 @@ namespace DotSpatial.Positioning
             foreach (Ellipsoid item in _ellipsoids)
             {
                 if (item.Name == name)
+                {
                     return item;
+                }
             }
             // Search the EPSG objects
             return _epsgEllipsoids.FirstOrDefault(item => item.Name == name);
@@ -817,7 +704,9 @@ namespace DotSpatial.Positioning
         public bool Equals(Ellipsoid other)
         {
             if (other == null)
+            {
                 return false;
+            }
 
             return other.EquatorialRadius.Equals(_equatorialRadius)
                 && other.PolarRadius.Equals(_polarRadius);
@@ -834,7 +723,9 @@ namespace DotSpatial.Positioning
         public bool Equals(Ellipsoid other, int decimals)
         {
             if (other == null)
+            {
                 return false;
+            }
 
             return other.EquatorialRadius.Equals(_equatorialRadius, decimals)
                 && other.PolarRadius.Equals(_polarRadius, decimals);
@@ -876,10 +767,10 @@ namespace DotSpatial.Positioning
 
             writer.WriteStartElement(Xml.GML_XML_PREFIX, "Ellipsoid", Xml.GML_XML_NAMESPACE);
 
-            writer.WriteElementString(Xml.GML_XML_PREFIX, "ellipsoidName", Xml.GML_XML_NAMESPACE, _name);
+            writer.WriteElementString(Xml.GML_XML_PREFIX, "ellipsoidName", Xml.GML_XML_NAMESPACE, Name);
 
             writer.WriteStartElement(Xml.GML_XML_PREFIX, "ellipsoidID", Xml.GML_XML_NAMESPACE);
-            writer.WriteString(_epsgNumber.ToString());
+            writer.WriteString(EpsgNumber.ToString());
             writer.WriteEndElement();
 
             writer.WriteStartElement(Xml.GML_XML_PREFIX, "semiMajorAxis", Xml.GML_XML_NAMESPACE);
@@ -908,15 +799,19 @@ namespace DotSpatial.Positioning
         {
             // Read until we have an element
             while (!reader.EOF && reader.NodeType != XmlNodeType.Element)
+            {
                 reader.Read();
+            }
 
             // If we're at EOF, exit
             if (reader.EOF)
+            {
                 return;
+            }
 
             // Remember the current depth. We'll keep reading until we return to this depth
             int depth = reader.Depth;
-         
+
             // Notify of the read
             OnReadXml(reader);
 
@@ -935,7 +830,9 @@ namespace DotSpatial.Positioning
 
                 // If this is an element, process it
                 if (reader.NodeType == XmlNodeType.Element)
+                {
                     OnReadXml(reader);
+                }
             }
 
             reader.Read();
@@ -950,10 +847,10 @@ namespace DotSpatial.Positioning
             switch (reader.LocalName)
             {
                 case "ellipsoidName":
-                    _name = reader.ReadElementContentAsString();
+                    Name = reader.ReadElementContentAsString();
                     break;
                 case "ellipsoidID":
-                    _epsgNumber = reader.ReadElementContentAsInt();
+                    EpsgNumber = reader.ReadElementContentAsInt();
                     break;
                 case "semiMajorAxis":
                     _equatorialRadius = new Distance(reader.ReadElementContentAsDouble(), DistanceUnit.Meters);
@@ -966,7 +863,7 @@ namespace DotSpatial.Positioning
                     reader.Read();
                     break;
                 case "inverseFlattening":
-                    _inverseFlattening = reader.ReadElementContentAsDouble();
+                    InverseFlattening = reader.ReadElementContentAsDouble();
                     break;
                 default:
                     // Read deeper

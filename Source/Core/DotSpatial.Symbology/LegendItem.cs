@@ -300,18 +300,14 @@ namespace DotSpatial.Symbology
         /// <returns>A boolean indicating whether or not this item can have other items dropped on it.</returns>
         public virtual bool CanReceiveItem(ILegendItem item)
         {
-            switch (LegendType)
+            return LegendType switch
             {
-                case LegendType.Scheme:
-                    return item.LegendType == LegendType.Symbol;
-                case LegendType.Group:
-                    return item.LegendType != LegendType.Symbol && item.LegendType != LegendType.Scheme;
-                case LegendType.Layer:
-                    return item.LegendType == LegendType.Symbol || item.LegendType == LegendType.Scheme;
-            }
-
-            // symbols and custom items can't receive anything
-            return false;
+                LegendType.Scheme => item.LegendType == LegendType.Symbol,
+                LegendType.Group => item.LegendType != LegendType.Symbol && item.LegendType != LegendType.Scheme,
+                LegendType.Layer => item.LegendType == LegendType.Symbol || item.LegendType == LegendType.Scheme,
+                // symbols and custom items can't receive anything
+                _ => false,
+            };
         }
 
         /// <summary>

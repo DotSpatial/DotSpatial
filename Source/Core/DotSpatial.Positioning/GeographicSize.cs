@@ -1,48 +1,20 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
-using System.Globalization;
-#if !PocketPC || DesignTime
-
 using System.ComponentModel;
-
-#endif
+using System.Globalization;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents a two-dimensional rectangular area.
     /// </summary>
     /// <remarks>Instances of this class are guaranteed to be thread-safe because the class is
     /// immutable (it's properties can only be set via constructors).</remarks>
     [TypeConverter("DotSpatial.Positioning.Design.GeographicSizeConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct GeographicSize : IFormattable, IEquatable<GeographicSize>
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly Distance _width;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly Distance _height;
 
         #region Fields
 
@@ -74,8 +46,8 @@ namespace DotSpatial.Positioning
         /// <param name="height">The height.</param>
         public GeographicSize(Distance width, Distance height)
         {
-            _width = width;
-            _height = height;
+            Width = width;
+            Height = height;
         }
 
         /// <summary>
@@ -103,8 +75,8 @@ namespace DotSpatial.Positioning
             switch (values.Length)
             {
                 case 2:
-                    _width = Distance.Parse(values[0], culture);
-                    _height = Distance.Parse(values[1], culture);
+                    Width = Distance.Parse(values[0], culture);
+                    Height = Distance.Parse(values[1], culture);
                     break;
                 default:
                     throw new ArgumentException("A GeographicSize could not be created from a string because the string was not in an identifiable format.  The format should be \"(w, h)\" where \"w\" represents a width in degrees, and \"h\" represents a height in degrees.  The values should be separated by a comma (or other character depending on the current culture).");
@@ -118,57 +90,27 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns the ratio of the size's width to its height.
         /// </summary>
-        public float AspectRatio
-        {
-            get
-            {
-                return Convert.ToSingle(_width.ToMeters().Value / _height.ToMeters().Value);
-            }
-        }
+        public float AspectRatio => Convert.ToSingle(Width.ToMeters().Value / Height.ToMeters().Value);
 
         /// <summary>
         /// Returns the left-to-right size.
         /// </summary>
-        public Distance Width
-        {
-            get
-            {
-                return _width;
-            }
-        }
+        public Distance Width { get; }
 
         /// <summary>
         /// Returns the top-to-bottom size.
         /// </summary>
-        public Distance Height
-        {
-            get
-            {
-                return _height;
-            }
-        }
+        public Distance Height { get; }
 
         /// <summary>
         /// Indicates if the size has zero values.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return (_width.IsEmpty && _height.IsEmpty);
-            }
-        }
+        public bool IsEmpty => (Width.IsEmpty && Height.IsEmpty);
 
         /// <summary>
         /// Returns whether the current instance has invalid values.
         /// </summary>
-        public bool IsInvalid
-        {
-            get
-            {
-                return _width.IsInvalid && _height.IsInvalid;
-            }
-        }
+        public bool IsInvalid => Width.IsInvalid && Height.IsInvalid;
 
         #endregion Public Properties
 
@@ -197,11 +139,13 @@ namespace DotSpatial.Positioning
 
             // Do the values already match?
             if (currentAspect == aspectRatio)
+            {
                 return this;
+            }
 
             // Convert to meters first
-            Distance widthMeters = _width.ToMeters();
-            Distance heightMeters = _height.ToMeters();
+            Distance widthMeters = Width.ToMeters();
+            Distance heightMeters = Height.ToMeters();
 
             // Is the new ratio higher or lower?
             if (aspectRatio > currentAspect)
@@ -224,7 +168,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public GeographicSize Add(GeographicSize size)
         {
-            return new GeographicSize(_width.Add(size.Width), _height.Add(size.Height));
+            return new GeographicSize(Width.Add(size.Width), Height.Add(size.Height));
         }
 
         /// <summary>
@@ -234,7 +178,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public GeographicSize Subtract(GeographicSize size)
         {
-            return new GeographicSize(_width.Subtract(size.Width), _height.Subtract(size.Height));
+            return new GeographicSize(Width.Subtract(size.Width), Height.Subtract(size.Height));
         }
 
         /// <summary>
@@ -244,7 +188,7 @@ namespace DotSpatial.Positioning
         /// <returns>A <strong>GeographicSize</strong> representing the product of the current instance with the specified size.</returns>
         public GeographicSize Multiply(GeographicSize size)
         {
-            return new GeographicSize(_width.Multiply(size.Width), _height.Multiply(size.Height));
+            return new GeographicSize(Width.Multiply(size.Width), Height.Multiply(size.Height));
         }
 
         /// <summary>
@@ -254,14 +198,14 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public GeographicSize Divide(GeographicSize size)
         {
-            return new GeographicSize(_width.Divide(size.Width), _height.Divide(size.Height));
+            return new GeographicSize(Width.Divide(size.Width), Height.Divide(size.Height));
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format)
         {
             return ToString(format, CultureInfo.CurrentCulture);
@@ -272,15 +216,13 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">Another object to compare to.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is GeographicSize)
-                return Equals((GeographicSize)obj);
-            return false;
+            return obj is GeographicSize size && Equals(size);
         }
 
         /// <summary>
@@ -289,13 +231,13 @@ namespace DotSpatial.Positioning
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
         {
-            return _width.GetHashCode() ^ _height.GetHashCode();
+            return Width.GetHashCode() ^ Height.GetHashCode();
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("G", CultureInfo.CurrentCulture);
@@ -331,7 +273,7 @@ namespace DotSpatial.Positioning
         #region Conversions
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="System.String"/> to <see cref="DotSpatial.Positioning.GeographicSize"/>.
+        /// Performs an explicit conversion from <see cref="string"/> to <see cref="DotSpatial.Positioning.GeographicSize"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -341,7 +283,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.GeographicSize"/> to <see cref="System.String"/>.
+        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.GeographicSize"/> to <see cref="string"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -373,8 +315,30 @@ namespace DotSpatial.Positioning
         /// <returns>A <strong>Boolean</strong>, <strong>True</strong> if the values of both objects are the same out to the number of decimals specified.</returns>
         public bool Equals(GeographicSize value, int decimals)
         {
-            return _width.Equals(value.Width, decimals)
-                && _height.Equals(value.Height, decimals);
+            return Width.Equals(value.Width, decimals)
+                && Height.Equals(value.Height, decimals);
+        }
+
+        /// <summary>
+        /// Compares the left with the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>True if both objects are equal.</returns>
+        public static bool operator ==(GeographicSize left, GeographicSize right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Compares the left with the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>True if both objects are not equal.</returns>
+        public static bool operator !=(GeographicSize left, GeographicSize right)
+        {
+            return !(left == right);
         }
 
         #endregion IEquatable<GeographicSize> Members
@@ -382,21 +346,23 @@ namespace DotSpatial.Positioning
         #region IFormattable Members
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
-            return _width.ToString(format, culture)
+            return Width.ToString(format, culture)
                 + culture.TextInfo.ListSeparator + " "
-                + _height.ToString(format, culture);
+                + Height.ToString(format, culture);
         }
 
         #endregion IFormattable Members

@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -25,68 +11,26 @@ using System.Net;
 using System.Security;
 using System.Text;
 using System.Threading;
-#if !PocketPC || ICodeInAVacuum
-
-using System.Runtime.CompilerServices;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC
-
     /// <summary>
     /// Represents a device on the local machine.
     /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
     [DefaultProperty("Name")]
-#endif
     public abstract class Device : IDisposable, IFormattable, IComparable<Device>
     {
         /// <summary>
         ///
         /// </summary>
         private bool _allowConnections = true;
-        /// <summary>
-        ///
-        /// </summary>
-        private bool _isGpsDevice;
-        /// <summary>
-        ///
-        /// </summary>
-        private bool _isDetectionCompleted;
-        /// <summary>
-        ///
-        /// </summary>
-        private bool _isOpen;
-        /// <summary>
-        ///
-        /// </summary>
-        private int _successfulDetectionCount;
-        /// <summary>
-        ///
-        /// </summary>
-        private int _failedDetectionCount;
-        /// <summary>
-        ///
-        /// </summary>
-        private DateTime _dateDetected;
-        /// <summary>
-        ///
-        /// </summary>
-        private DateTime _dateConnected;
+
         /// <summary>
         ///
         /// </summary>
         private DateTime _connectionStarted;
-        /// <summary>
-        ///
-        /// </summary>
-        private TimeSpan _connectionTime;
-        /// <summary>
-        ///
-        /// </summary>
-        private Stream _baseStream;
+
         /// <summary>
         ///
         /// </summary>
@@ -95,13 +39,7 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private ManualResetEvent _detectionStartedWaitHandle = new(false);
-        /// <summary>
-        ///
-        /// </summary>
-        private ManualResetEvent _detectionCompleteWaitHandle = new(false);
-#if PocketPC
-        private bool _IsDetectionThreadAlive;
-#endif
+
         /// <summary>
         ///
         /// </summary>
@@ -116,15 +54,10 @@ namespace DotSpatial.Positioning
         /// </summary>
         private static TimeSpan _defaultWriteTimeout = TimeSpan.FromSeconds(3);
 
-#if PocketPC
-        // Registry values return "Default" on the CF instead of a blank string
-        internal const string DefaultRegistryValueName = "Default";
-#else
         /// <summary>
         ///
         /// </summary>
         internal const string DEFAULT_REGISTRY_VALUE_NAME = "";
-#endif
 
         #region Constructors
 
@@ -165,8 +98,7 @@ namespace DotSpatial.Positioning
             // Note the time. We'll use this to calculate the connection time later
             _connectionStarted = DateTime.Now;
 
-            if (Connecting != null)
-                Connecting(this, EventArgs.Empty);
+            Connecting?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -175,11 +107,10 @@ namespace DotSpatial.Positioning
         protected virtual void OnConnected()
         {
             // How long did it take to connect?
-            _connectionTime = _connectionTime.Add(DateTime.Now.Subtract(_connectionStarted));
+            TotalConnectionTime = TotalConnectionTime.Add(DateTime.Now.Subtract(_connectionStarted));
 
             // Raise an event
-            if (Connected != null)
-                Connected(this, EventArgs.Empty);
+            Connected?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -187,8 +118,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         protected virtual void OnDisconnecting()
         {
-            if (Disconnecting != null)
-                Disconnecting(this, EventArgs.Empty);
+            Disconnecting?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -196,15 +126,12 @@ namespace DotSpatial.Positioning
         /// </summary>
         protected virtual void OnDisconnected()
         {
-            if (Disconnected != null)
-                Disconnected(this, EventArgs.Empty);
+            Disconnected?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion Events
 
         #region Public Properties
-
-#if !PocketPC
 
         /// <summary>
         /// Returns a natural language name for the device.
@@ -213,31 +140,13 @@ namespace DotSpatial.Positioning
         [Description("Returns a natural language name for the device.")]
         [Browsable(true)]
         [ParenthesizePropertyName(true)]
-#endif
-        public virtual string Name
-        {
-            get
-            {
-                return "Unidentified Device";
-            }
-        }
-
-#if !PocketPC
+        public virtual string Name => "Unidentified Device";
 
         /// <summary>
         /// Returns a reset event used to determine when GPS detection has completed.
         /// </summary>
         [Browsable(false)]
-#endif
-        public ManualResetEvent DetectionWaitHandle
-        {
-            get
-            {
-                return _detectionCompleteWaitHandle;
-            }
-        }
-
-#if !PocketPC
+        public ManualResetEvent DetectionWaitHandle { get; private set; } = new(false);
 
         /// <summary>
         /// Returns whether a connection is established with the device.
@@ -245,16 +154,7 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns whether a connection is established with the device.")]
         [Browsable(true)]
-#endif
-        public bool IsOpen
-        {
-            get
-            {
-                return _isOpen;
-            }
-        }
-
-#if !PocketPC
+        public bool IsOpen { get; private set; }
 
         /// <summary>
         /// Returns the stream associated with this device.
@@ -264,16 +164,7 @@ namespace DotSpatial.Positioning
         /// to dispose of this stream.  If no connection is open, this property will return <strong>null</strong>.</remarks>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-#endif
-        public Stream BaseStream
-        {
-            get
-            {
-                return _baseStream;
-            }
-        }
-
-#if !PocketPC
+        public Stream BaseStream { get; private set; }
 
         /// <summary>
         /// Returns the date and time the device was last confirmed as a GPS device.
@@ -281,13 +172,7 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns the date and time the device was last confirmed as a GPS device.")]
         [Browsable(true)]
-#endif
-        public DateTime DateDetected
-        {
-            get { return _dateDetected; }
-        }
-
-#if !PocketPC
+        public DateTime DateDetected { get; private set; }
 
         /// <summary>
         /// Returns the date and time the device last opened a connection.
@@ -295,13 +180,7 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns the date and time the device last opened a connection.")]
         [Browsable(true)]
-#endif
-        public DateTime DateConnected
-        {
-            get { return _dateConnected; }
-        }
-
-#if !PocketPC
+        public DateTime DateConnected { get; private set; }
 
         /// <summary>
         /// Returns whether the device is currently being examined for GPS data.
@@ -309,20 +188,7 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns whether the device is currently being examined for GPS data.")]
         [Browsable(true)]
-#endif
-        public bool IsDetectionInProgress
-        {
-            get
-            {
-#if !PocketPC
-                return _detectionThread != null && _detectionThread.IsAlive;
-#else
-                return _DetectionThread != null && _IsDetectionThreadAlive;
-#endif
-            }
-        }
-
-#if !PocketPC
+        public bool IsDetectionInProgress => _detectionThread != null && _detectionThread.IsAlive;
 
         /// <summary>
         /// Controls whether the device can be queried for GPS data.
@@ -336,20 +202,11 @@ namespace DotSpatial.Positioning
         [Description("Controls whether the device can be queried for GPS data.")]
         [Browsable(true)]
         [DefaultValue(true)]
-#endif
         public virtual bool AllowConnections
         {
-            get
-            {
-                return _allowConnections;
-            }
-            set
-            {
-                _allowConnections = value;
-            }
+            get => _allowConnections;
+            set => _allowConnections = value;
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Returns whether GPS protocol detection has been completed.
@@ -357,16 +214,7 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns whether GPS protocol detection has been completed.")]
         [Browsable(true)]
-#endif
-        public bool IsDetectionCompleted
-        {
-            get
-            {
-                return _isDetectionCompleted;
-            }
-        }
-
-#if !PocketPC
+        public bool IsDetectionCompleted { get; private set; }
 
         /// <summary>
         /// Returns whether the device has been confirmed as a GPS device.
@@ -374,16 +222,7 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns whether the device has been confirmed as a GPS device.")]
         [Browsable(true)]
-#endif
-        public bool IsGpsDevice
-        {
-            get
-            {
-                return _isGpsDevice;
-            }
-        }
-
-#if !PocketPC
+        public bool IsGpsDevice { get; private set; }
 
         /// <summary>
         /// Controls the number of times this device has been confirmed as a GPS device.
@@ -394,16 +233,7 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Controls the number of times this device has been confirmed as a GPS device.")]
         [Browsable(true)]
-#endif
-        public int SuccessfulDetectionCount
-        {
-            get
-            {
-                return _successfulDetectionCount;
-            }
-        }
-
-#if !PocketPC
+        public int SuccessfulDetectionCount { get; private set; }
 
         /// <summary>
         /// Controls the number of times this device has failed to identify itself as a GPS device.
@@ -415,16 +245,7 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Controls the number of times this device has failed to identify itself as a GPS device.")]
         [Browsable(true)]
-#endif
-        public int FailedDetectionCount
-        {
-            get
-            {
-                return _failedDetectionCount;
-            }
-        }
-
-#if !PocketPC
+        public int FailedDetectionCount { get; private set; }
 
         /// <summary>
         /// Returns the chance that a connection to the device will be successful.
@@ -433,20 +254,23 @@ namespace DotSpatial.Positioning
         [Description("Returns the chance that a connection to the device will be successful.")]
         [Browsable(true)]
         [ParenthesizePropertyName(true)]
-#endif
         public Percent Reliability
         {
             get
             {
-                if (_successfulDetectionCount == 0)
+                if (SuccessfulDetectionCount == 0)
+                {
                     return Percent.Zero;
-                if (_failedDetectionCount == 0)
+                }
+
+                if (FailedDetectionCount == 0)
+                {
                     return Percent.OneHundredPercent;
-                return new Percent(_successfulDetectionCount / Convert.ToSingle(_successfulDetectionCount + _failedDetectionCount));
+                }
+
+                return new Percent(SuccessfulDetectionCount / Convert.ToSingle(SuccessfulDetectionCount + FailedDetectionCount));
             }
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Returns the average amount of time required to open a connection.
@@ -454,18 +278,18 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns the average amount of time required to open a connection.")]
         [Browsable(true)]
-#endif
         public TimeSpan AverageConnectionTime
         {
             get
             {
-                if (_successfulDetectionCount == 0)
+                if (SuccessfulDetectionCount == 0)
+                {
                     return TimeSpan.Zero;
-                return TimeSpan.FromMilliseconds(_connectionTime.TotalMilliseconds / _successfulDetectionCount);
+                }
+
+                return TimeSpan.FromMilliseconds(TotalConnectionTime.TotalMilliseconds / SuccessfulDetectionCount);
             }
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Returns the total amount of time spent so far opening a connection.
@@ -473,14 +297,7 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns the total amount of time spent so far opening a connection.")]
         [Browsable(true)]
-#endif
-        public TimeSpan TotalConnectionTime
-        {
-            get
-            {
-                return _connectionTime;
-            }
-        }
+        public TimeSpan TotalConnectionTime { get; private set; }
 
         #endregion Public Properties
 
@@ -492,7 +309,7 @@ namespace DotSpatial.Positioning
         /// <param name="date">The date.</param>
         protected void SetDateConnected(DateTime date)
         {
-            _dateConnected = date;
+            DateConnected = date;
         }
 
         /// <summary>
@@ -501,7 +318,7 @@ namespace DotSpatial.Positioning
         /// <param name="date">The date.</param>
         protected void SetDateDetected(DateTime date)
         {
-            _dateDetected = date;
+            DateDetected = date;
         }
 
         /// <summary>
@@ -510,7 +327,7 @@ namespace DotSpatial.Positioning
         /// <param name="time">The time.</param>
         protected void SetTotalConnectionTime(TimeSpan time)
         {
-            _connectionTime = time;
+            TotalConnectionTime = time;
         }
 
         /// <summary>
@@ -519,7 +336,7 @@ namespace DotSpatial.Positioning
         /// <param name="count">The count.</param>
         protected void SetFailedDetectionCount(int count)
         {
-            _failedDetectionCount = count;
+            FailedDetectionCount = count;
         }
 
         /// <summary>
@@ -528,7 +345,7 @@ namespace DotSpatial.Positioning
         /// <param name="count">The count.</param>
         protected void SetSuccessfulDetectionCount(int count)
         {
-            _successfulDetectionCount = count;
+            SuccessfulDetectionCount = count;
         }
 
         /// <summary>
@@ -592,7 +409,7 @@ namespace DotSpatial.Positioning
             bool isOpenedByUs = false;
 
             // Is the device connected?
-            if (!_isOpen)
+            if (!IsOpen)
             {
                 try
                 {
@@ -618,12 +435,16 @@ namespace DotSpatial.Positioning
             try
             {
                 // Is this NMEA?  If not, return failure
-                if (!NmeaReader.IsNmea(_baseStream))
+                if (!NmeaReader.IsNmea(BaseStream))
+                {
                     return false;
+                }
 
                 // Yes!  If nobody needs this stream, and we created it, close it
                 if (!Devices.IsStreamNeeded && isOpenedByUs)
+                {
                     Close();
+                }
 
                 // Return success
                 return true;
@@ -636,7 +457,9 @@ namespace DotSpatial.Positioning
 
                 // If we opened the connection, close it to clean up
                 if (isOpenedByUs)
+                {
                     Close();
+                }
 
                 // And return failure
                 return false;
@@ -673,8 +496,10 @@ namespace DotSpatial.Positioning
             lock (_syncRoot)
             {
                 // Are we already connected?  If so, exit
-                if (_isOpen)
+                if (IsOpen)
+                {
                     return;
+                }
 
                 //  Signal that we're connecting
                 OnConnecting();
@@ -682,27 +507,27 @@ namespace DotSpatial.Positioning
                 try
                 {
                     // Make a new connection
-                    _baseStream = OpenStream(access, sharing);
+                    BaseStream = OpenStream(access, sharing);
 
                     // If it worked, then we need the finalizer
                     GC.ReRegisterForFinalize(this);
 
                     // Update the last-connected date
-                    _dateConnected = DateTime.Now;
+                    DateConnected = DateTime.Now;
                 }
                 finally
                 {
                     // Do we have a stream?
-                    if (_baseStream != null)
+                    if (BaseStream != null)
                     {
                         // Yes.  Signal that we're connected
-                        _isOpen = true;
+                        IsOpen = true;
                         OnConnected();
                     }
                     else
                     {
                         // No.
-                        _isOpen = false;
+                        IsOpen = false;
                         OnDisconnected();
                     }
                 }
@@ -714,18 +539,20 @@ namespace DotSpatial.Positioning
         /// </summary>
         public virtual void Reset()
         {
-            if (!_isOpen)
+            if (!IsOpen)
+            {
                 return;
+            }
 
             // Flag that we're closed
-            _isOpen = false;
+            IsOpen = false;
 
             /* Do not close the stream!  We set it to null and just de-reference it.  We do this
              * because in some cases (such as a suspend/resume), the PDA has cleaned up the connection
              * already; a call to close the stream results in a hang.  This works around suspend/resume
              * closure by just resetting the device.
              */
-            _baseStream = null;
+            BaseStream = null;
         }
 
         /// <summary>
@@ -741,9 +568,9 @@ namespace DotSpatial.Positioning
             OnCacheRemove();
 
             // And clear all flags
-            _isGpsDevice = false;
-            _isDetectionCompleted = false;
-            _isOpen = false;
+            IsGpsDevice = false;
+            IsDetectionCompleted = false;
+            IsOpen = false;
             _connectionStarted = DateTime.MinValue;
         }
 
@@ -792,26 +619,40 @@ namespace DotSpatial.Positioning
 
                     // Get the command word for the sentence
                     if (!sentences.Contains(sentence.CommandWord))
+                    {
                         sentences.Add(sentence.CommandWord);
+                    }
 
                     // What features are supported?
                     if (sentence is IPositionSentence positionSentence)
+                    {
                         isPositionSupported = true;
+                    }
 
                     if (sentence is IAltitudeSentence altitudeSentence)
+                    {
                         isAltitudeSupported = true;
+                    }
 
                     if (sentence is IBearingSentence bearingSentence)
+                    {
                         isBearingSupported = true;
+                    }
 
                     if (sentence is IHorizontalDilutionOfPrecisionSentence hdopSentence)
+                    {
                         isPrecisionSupported = true;
+                    }
 
                     if (sentence is ISpeedSentence speedSentence)
+                    {
                         isSpeedSupported = true;
+                    }
 
                     if (sentence is ISatelliteCollectionSentence satellitesSentence)
+                    {
                         isSatellitesSupported = true;
+                    }
 
                     // Is everything supported?  If so, we have a healthy GPS device.  It's okay to exit
                     if (isPositionSupported && isAltitudeSupported && isBearingSupported && isPrecisionSupported && isSatellitesSupported && isSpeedSupported)
@@ -886,28 +727,27 @@ namespace DotSpatial.Positioning
         {
             // If we're already detecting, exit
             if (IsDetectionInProgress)
+            {
                 return;
+            }
 
             // In some rare cases I get a NullReferenceException below.  This happens if the object has been finalized.
-            if (_detectionCompleteWaitHandle == null)
+            if (DetectionWaitHandle == null)
+            {
                 return;
+            }
 
             // Indicate we're in progress
-            _detectionCompleteWaitHandle.Reset();
+            DetectionWaitHandle.Reset();
 
             // Rev up a new thread
             _detectionThread = new Thread(DetectionThreadProc)
-                                   {
-                                       Name =
+            {
+                Name =
                                            "GPS.NET Protocol Detector on " + Name + " (http://dotspatial.codeplex.com)",
-                                       IsBackground = true
-                                   };
+                IsBackground = true
+            };
             _detectionThread.Start();
-
-#if PocketPC
-            // This is a replacement for Thread.IsAlive
-            _IsDetectionThreadAlive = true;
-#endif
 
             // Wait for the thread to fire up
             _detectionStartedWaitHandle.WaitOne();
@@ -923,11 +763,13 @@ namespace DotSpatial.Positioning
         {
             lock (_syncRoot)
             {
-                if (!_isOpen)
+                if (!IsOpen)
+                {
                     return;
+                }
 
                 // Signal that we're not open
-                _isOpen = false;
+                IsOpen = false;
 
                 // Signal that we're disconnecting
                 OnDisconnecting();
@@ -935,18 +777,15 @@ namespace DotSpatial.Positioning
                 try
                 {
                     // Close the connection
-                    _baseStream.Close();
-
-#if Framework30
-                    _baseStream.Dispose();
-#endif
+                    BaseStream.Close();
+                    BaseStream.Dispose();
                 }
                 catch (ObjectDisposedException) { }
                 catch (NullReferenceException) { }
                 finally
                 {
                     // Null it out for the GC
-                    _baseStream = null;
+                    BaseStream = null;
                 }
 
                 // Signal that we're disconnected
@@ -972,16 +811,13 @@ namespace DotSpatial.Positioning
         {
             // Is detection in progress?
             if (!IsDetectionInProgress)
+            {
                 return false;
+            }
 
             // Yes.  Wait up to the timeout to complete
-#if !PocketPC
-            _detectionCompleteWaitHandle.WaitOne(timeout, false);
+            DetectionWaitHandle.WaitOne(timeout, false);
             return IsGpsDevice;
-#else
-            _DetectionCompleteWaitHandle.WaitOne((int)timeout.TotalMilliseconds, false);
-            return IsGpsDevice;
-#endif
         }
 
         /// <summary>
@@ -1006,7 +842,7 @@ namespace DotSpatial.Positioning
 
             try
             {
-                _detectionCompleteWaitHandle.Reset();
+                DetectionWaitHandle.Reset();
             }
             catch (ObjectDisposedException)
             { }
@@ -1024,22 +860,19 @@ namespace DotSpatial.Positioning
             _detectionStartedWaitHandle.Set();
 
             // Signal that detection has started
-            _isDetectionCompleted = false;
+            IsDetectionCompleted = false;
 
             // It is critical that finalizers for this task complete.  This ensures connections get closed.
-#if !PocketPC
-            RuntimeHelpers.PrepareConstrainedRegions();
-#endif
             try
             {
                 // Is it already detected?
-                if (!_isGpsDevice)
+                if (!IsGpsDevice)
                 {
                     // Signal that detection started
                     Devices.OnDeviceDetectionAttempted(this);
 
                     // Find out if this is a GPS device
-                    _isGpsDevice = DetectProtocol();
+                    IsGpsDevice = DetectProtocol();
                 }
             }
             catch (DeviceDetectionException ex)
@@ -1064,7 +897,7 @@ namespace DotSpatial.Positioning
                 {
                     if (
                         // Close the port if detection failed
-                        !_isGpsDevice
+                        !IsGpsDevice
                         // Close the port if no connection is needed
                         || !Devices.IsStreamNeeded)
                     {
@@ -1074,7 +907,7 @@ namespace DotSpatial.Positioning
                 }
 
                 // If it is, register it.
-                if (_isGpsDevice)
+                if (IsGpsDevice)
                 {
                     Debug.WriteLine(Name + " is a valid GPS device", Devices.DEBUG_CATEGORY);
 
@@ -1082,35 +915,33 @@ namespace DotSpatial.Positioning
                     Devices.Add(this);
 
                     // Increase the success statistic
-                    _successfulDetectionCount++;
+                    SuccessfulDetectionCount++;
 
                     // RESET the failure count.  We're only interested in CONSECUTIVE failures.
-                    _failedDetectionCount = 0;
+                    FailedDetectionCount = 0;
 
                     // Update the date last detected
-                    _dateDetected = DateTime.Now;
+                    DateDetected = DateTime.Now;
                 }
                 else
                 {
                     Debug.WriteLine(Name + " is not a valid GPS device", Devices.DEBUG_CATEGORY);
 
                     // Increase the failure statistic
-                    _failedDetectionCount++;
+                    FailedDetectionCount++;
                 }
 
                 // Save information to the registry
                 OnCacheWrite();
 
                 // Signal proper completion
-                _isDetectionCompleted = true;
+                IsDetectionCompleted = true;
 
                 // Indicate completion
-                if (_detectionCompleteWaitHandle != null)
-                    _detectionCompleteWaitHandle.Set();
-
-#if PocketPC
-                _IsDetectionThreadAlive = false;
-#endif
+                if (DetectionWaitHandle != null)
+                {
+                    DetectionWaitHandle.Set();
+                }
             }
         }
 
@@ -1124,12 +955,14 @@ namespace DotSpatial.Positioning
         /// <param name="value">if set to <c>true</c> [value].</param>
         internal void SetIsGpsDevice(bool value)
         {
-            if (_isGpsDevice == value)
+            if (IsGpsDevice == value)
+            {
                 return;
+            }
 
-            _isGpsDevice = value;
+            IsGpsDevice = value;
 
-            if (_isGpsDevice)
+            if (IsGpsDevice)
             {
                 Devices.Add(this);
             }
@@ -1145,12 +978,14 @@ namespace DotSpatial.Positioning
         /// <value>The default read timeout.</value>
         public static TimeSpan DefaultReadTimeout
         {
-            get { return _defaultReadTimeout; }
+            get => _defaultReadTimeout;
             set
             {
                 // The timeout must be greater than zero
                 if (value.TotalSeconds <= 0)
+                {
                     throw new ArgumentOutOfRangeException("DefaultReadTimeout", "The default read timeout for a device must be greater than zero.  A value of five to ten seconds is recommended.");
+                }
 
                 // Set the value
                 _defaultReadTimeout = value;
@@ -1163,12 +998,14 @@ namespace DotSpatial.Positioning
         /// <value>The default write timeout.</value>
         public static TimeSpan DefaultWriteTimeout
         {
-            get { return _defaultWriteTimeout; }
+            get => _defaultWriteTimeout;
             set
             {
                 // The timeout must be greater than zero
                 if (value.TotalSeconds <= 0)
+                {
                     throw new ArgumentOutOfRangeException("DefaultWriteTimeout", "The default Write timeout for a device must be greater than zero.  A value of five to ten seconds is recommended.");
+                }
 
                 // Set the value
                 _defaultWriteTimeout = value;
@@ -1189,59 +1026,22 @@ namespace DotSpatial.Positioning
         public static Distance PrecisionEstimate(FixQuality quality)
         {
             // We only need the expected device error
-            switch (quality)
+            return quality switch
             {
-                case FixQuality.NoFix:
-                    // In this case, there's no fix.  Return 6 meters
-                    return DilutionOfPrecision.CurrentAverageDevicePrecision;
-                case FixQuality.DifferentialGpsFix:
-                    /* Differential GPS (meaning a geosynchronous satellite such as WAAS, EGNOS or MSAS)
+                FixQuality.NoFix => DilutionOfPrecision.CurrentAverageDevicePrecision,// In this case, there's no fix.  Return 6 meters
+                FixQuality.DifferentialGpsFix => Distance.FromMeters(2.75),/* Differential GPS (meaning a geosynchronous satellite such as WAAS, EGNOS or MSAS)
                      * is between 0.5m and 5m, or 2.75m on average.
                      */
-                    return Distance.FromMeters(2.75);
-                case FixQuality.FixedRealTimeKinematic:
-                    /* Real-Time Kinematic or RTK is a very high precision tech used for surveying.  It's
+                FixQuality.FixedRealTimeKinematic => Distance.FromCentimeters(3),/* Real-Time Kinematic or RTK is a very high precision tech used for surveying.  It's
                      * not really meant for being in motion like in a car, but surveying equipment.
                      */
-                    return Distance.FromCentimeters(3);
-                case FixQuality.FloatRealTimeKinematic:
-                    /* Floating Real-Time Kinematic (Float RTK) is also high precision, but not as good as
+                FixQuality.FloatRealTimeKinematic => Distance.FromCentimeters(60),/* Floating Real-Time Kinematic (Float RTK) is also high precision, but not as good as
                      * fixed RTK (see above)
                      */
-                    return Distance.FromCentimeters(60);
-                default:
-                    /* Consumer GPS devices are capable of about 5-7 meters of precision.  In cases not,
+                _ => DilutionOfPrecision.CurrentAverageDevicePrecision,/* Consumer GPS devices are capable of about 5-7 meters of precision.  In cases not,
                      * handled above, there's no special fix in effect.
                      */
-                    return DilutionOfPrecision.CurrentAverageDevicePrecision;
-            }
-
-            // switch (_FixQuality)
-            //{
-            //    case FixQuality.NoFix:
-            //        // In this case, there's no fix.  Return 6 meters * Maximum DOP (50)
-            //        return Distance.FromMeters(300);
-            //    case FixQuality.DifferentialGpsFix:
-            //        /* Differential GPS (meaning a geosynchronous satellite such as WAAS, EGNOS or MSAS)
-            //         * is between 0.5m and 5m, or 2.75m on average.
-            //         */
-            //        return Distance.FromMeters(2.75).Multiply(_HorizontalDOP.Value);
-            //    case FixQuality.FixedRealTimeKinematic:
-            //        /* Real-Time Kinematic or RTK is a very high precision tech used for surveying.  It's
-            //         * not really meant for being in motion like in a car, but surveying equipment.
-            //         */
-            //        return Distance.FromCentimeters(3).Multiply(_HorizontalDOP.Value);
-            //    case FixQuality.FloatRealTimeKinematic:
-            //        /* Floating Real-Time Kinematic (Float RTK) is also high precision, but not as good as
-            //         * fixed RTK (see above)
-            //         */
-            //        return Distance.FromCentimeters(60).Multiply(_HorizontalDOP.Value);
-            //    default:
-            //        /* Consumer GPS devices are capable of about 5-7 meters of precision.  In cases not,
-            //         * handled above, there's no special fix in effect.
-            //         */
-            //        return Distance.FromMeters(6).Multiply(_HorizontalDOP.Value);
-            //}
+            };
         }
 
         /// <summary>
@@ -1294,17 +1094,22 @@ namespace DotSpatial.Positioning
             Close();
 
             // Shut down the wait handle
-            if (_detectionCompleteWaitHandle != null)
-                _detectionCompleteWaitHandle.Close();
+            if (DetectionWaitHandle != null)
+            {
+                DetectionWaitHandle.Close();
+            }
+
             if (_detectionStartedWaitHandle != null)
+            {
                 _detectionStartedWaitHandle.Close();
+            }
 
             // If we're disposing managed objects, release them
             if (disposing)
             {
-                _baseStream = null;
+                BaseStream = null;
                 _detectionThread = null;
-                _detectionCompleteWaitHandle = null;
+                DetectionWaitHandle = null;
                 _detectionStartedWaitHandle = null;
             }
         }
@@ -1314,20 +1119,20 @@ namespace DotSpatial.Positioning
         #region IFormattable Members
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("G", CultureInfo.CurrentCulture);
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public virtual string ToString(string format, IFormatProvider formatProvider)
         {
             return Name;
@@ -1349,7 +1154,9 @@ namespace DotSpatial.Positioning
         public virtual int CompareTo(Device other)
         {
             if (ReferenceEquals(this, other))
+            {
                 return 0;
+            }
 
             // Which has a better rate of success?
             int result = other.Reliability.Value.CompareTo(Reliability.Value);
@@ -1358,6 +1165,7 @@ namespace DotSpatial.Positioning
                 // Both of them.  Which one connects faster?
                 result = AverageConnectionTime.CompareTo(other.AverageConnectionTime);
             }
+
             return result;
         }
 
@@ -1369,10 +1177,6 @@ namespace DotSpatial.Positioning
     /// </summary>
     public sealed class DeviceEventArgs : EventArgs
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly Device _device;
 
         /// <summary>
         /// A default instance
@@ -1385,19 +1189,13 @@ namespace DotSpatial.Positioning
         /// <param name="device">The device.</param>
         public DeviceEventArgs(Device device)
         {
-            _device = device;
+            Device = device;
         }
 
         /// <summary>
         /// The device
         /// </summary>
-        public Device Device
-        {
-            get
-            {
-                return _device;
-            }
-        }
+        public Device Device { get; }
     }
 
     /// <summary>
@@ -1409,42 +1207,6 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private readonly Device _device;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly bool _isWorkingProperly;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly string _log;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly string[] _supportedSentences;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly bool _isPositionSupported;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly bool _isAltitudeSupported;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly bool _isBearingSupported;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly bool _isPrecisionSupported;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly bool _isSpeedSupported;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly bool _isSatellitesSupported;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceAnalysis"/> class.
@@ -1464,70 +1226,61 @@ namespace DotSpatial.Positioning
     bool isPrecisionSupported, bool isSpeedSupported, bool isSatellitesSupported)
         {
             _device = device;
-            _isWorkingProperly = isWorkingProperly;
-            _log = log;
-            _supportedSentences = supportedSentences;
-            _isPositionSupported = isPositionSupported;
-            _isAltitudeSupported = isAltitudeSupported;
-            _isBearingSupported = isBearingSupported;
-            _isPrecisionSupported = isPrecisionSupported;
-            _isSpeedSupported = isSpeedSupported;
-            _isSatellitesSupported = isSatellitesSupported;
+            IsWorkingProperly = isWorkingProperly;
+            Log = log;
+            SupportedSentences = supportedSentences;
+            IsPositionSupported = isPositionSupported;
+            IsAltitudeSupported = isAltitudeSupported;
+            IsBearingSupported = isBearingSupported;
+            IsPrecisionSupported = isPrecisionSupported;
+            IsSpeedSupported = isSpeedSupported;
+            IsSatellitesSupported = isSatellitesSupported;
         }
 
         /// <summary>
         /// Returns a log of activity while the device was tested.
         /// </summary>
-        public string Log
-        {
-            get { return _log; }
-        }
+        public string Log { get; }
 
         /// <summary>
         /// Returns whether the device is healthy
         /// </summary>
-        public bool IsWorkingProperly
-        {
-            get { return _isWorkingProperly; }
-        }
+        public bool IsWorkingProperly { get; }
 
         /// <summary>
         /// Returns NMEA sentences discovered during analysis.
         /// </summary>
-        public string[] SupportedSentences
-        {
-            get { return _supportedSentences; }
-        }
+        public string[] SupportedSentences { get; }
 
         /// <summary>
         /// Returns whether real-time latitude and longitude are reported by the device.
         /// </summary>
-        public bool IsPositionSupported { get { return _isPositionSupported; } }
+        public bool IsPositionSupported { get; }
 
         /// <summary>
         /// Returns whether the distance above sea level is reported by the device.
         /// </summary>
-        public bool IsAltitudeSupported { get { return _isAltitudeSupported; } }
+        public bool IsAltitudeSupported { get; }
 
         /// <summary>
         /// Returns whether the real-time direction of travel is reported by the device.
         /// </summary>
-        public bool IsBearingSupported { get { return _isBearingSupported; } }
+        public bool IsBearingSupported { get; }
 
         /// <summary>
         /// Returns whether dilution of precision information is reported by the device.
         /// </summary>
-        public bool IsPrecisionSupported { get { return _isPrecisionSupported; } }
+        public bool IsPrecisionSupported { get; }
 
         /// <summary>
         /// Returns whether the real-time rate of travel is reported by the device.
         /// </summary>
-        public bool IsSpeedSupported { get { return _isSpeedSupported; } }
+        public bool IsSpeedSupported { get; }
 
         /// <summary>
         /// Returns whether real-time satellite information is reported by the device.
         /// </summary>
-        public bool IsSatellitesSupported { get { return _isSatellitesSupported; } }
+        public bool IsSatellitesSupported { get; }
 
         /// <summary>
         /// Sends this analysis anonymously to DotSpatial.Positioning for further study.
@@ -1575,23 +1328,6 @@ namespace DotSpatial.Positioning
             data += "&IsGps=" + _device.IsGpsDevice;
             data += "&Reliability=" + _device.Reliability.ToString().Replace("%", string.Empty);
 
-#if PocketPC
-            // Is this a GPSID?
-            if (gpsid != null)
-            {
-                data += "&Type=GPSID";
-                data += "&ProgramPort=" + gpsid.Port;
-
-                if (gpsid.HardwarePort == null)
-                    data += "&HardwarePort=None&HardwareBaud=0";
-                else
-                {
-                    data += "&HardwarePort=" + gpsid.HardwarePort.Port;
-                    data += "&HardwareBaud=" + gpsid.HardwarePort.BaudRate;
-                }
-            }
-            else
-#endif
             if (_device is SerialDevice serialDevice)
             {
                 data += "&Type=Serial";
@@ -1608,7 +1344,7 @@ namespace DotSpatial.Positioning
             }
 
             // Now append the log
-            data += "&Log=" + _log;
+            data += "&Log=" + Log;
 
             // Get a byte array
             byte[] buffer = Encoding.UTF8.GetBytes(data);
@@ -1632,13 +1368,19 @@ namespace DotSpatial.Positioning
                 response = request.GetResponse() as HttpWebResponse;
 
                 // Display the status.
-                if (response != null) return response.StatusDescription == "OK";
+                if (response != null)
+                {
+                    return response.StatusDescription == "OK";
+                }
             }
             finally
             {
                 if (response != null)
+                {
                     response.Close();
+                }
             }
+
             return true;
         }
     }

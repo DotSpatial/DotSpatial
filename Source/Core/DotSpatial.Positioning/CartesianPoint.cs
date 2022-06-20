@@ -1,19 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -24,12 +10,10 @@ using System.Xml.Serialization;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents an Earth-centered, Earth-fixed (ECEF) Cartesian coordinate.
     /// </summary>
     [TypeConverter("DotSpatial.Positioning.Design.CartesianPointConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct CartesianPoint : IFormattable, IEquatable<CartesianPoint>, IXmlSerializable
     {
         /// <summary>
@@ -99,57 +83,27 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns the horizontal (longitude) portion of a Cartesian coordinate.
         /// </summary>
-        public Distance X
-        {
-            get
-            {
-                return _x;
-            }
-        }
+        public Distance X => _x;
 
         /// <summary>
         /// Returns the vertical (latitude) portion of a Cartesian coordinate.
         /// </summary>
-        public Distance Y
-        {
-            get
-            {
-                return _y;
-            }
-        }
+        public Distance Y => _y;
 
         /// <summary>
         /// Returns the altitude portion of a Cartesian coordinate.
         /// </summary>
-        public Distance Z
-        {
-            get
-            {
-                return _z;
-            }
-        }
+        public Distance Z => _z;
 
         /// <summary>
         /// Indicates whether the current instance has no value.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _x.IsEmpty && _y.IsEmpty && _z.IsEmpty;
-            }
-        }
+        public bool IsEmpty => _x.IsEmpty && _y.IsEmpty && _z.IsEmpty;
 
         /// <summary>
         /// Indicates whether the current instance is invalid or unspecified.
         /// </summary>
-        public bool IsInvalid
-        {
-            get
-            {
-                return _x.IsInvalid && _y.IsInvalid && _z.IsInvalid;
-            }
-        }
+        public bool IsInvalid => _x.IsInvalid && _y.IsInvalid && _z.IsInvalid;
 
         #endregion Public Properties
 
@@ -179,7 +133,9 @@ namespace DotSpatial.Positioning
         public Position3D ToPosition3D(Ellipsoid ellipsoid)
         {
             if (ellipsoid == null)
-                throw new ArgumentNullException("ellipsoid");
+            {
+                throw new ArgumentNullException(nameof(ellipsoid));
+            }
 
             #region New code
 
@@ -296,7 +252,9 @@ return
             // alt(k) = abs(z(k))-b;
 
             if (k)
+            {
                 alt = Math.Abs(z) - b;
+            }
 
             // return
 
@@ -322,10 +280,10 @@ return
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format)
         {
             return ToString(format, CultureInfo.CurrentCulture);
@@ -336,15 +294,40 @@ return
         #region Overrides
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">Another object to compare to.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is CartesianPoint)
-                return Equals((CartesianPoint)obj);
+            if (obj is CartesianPoint point)
+            {
+                return Equals(point);
+            }
+
             return false;
+        }
+
+        /// <summary>
+        /// Determines whether the left object is equal to the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>true if both are equal.</returns>
+        public static bool operator ==(CartesianPoint left, CartesianPoint right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Determines whether the left object is not equal to the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>true if both are not equal.</returns>
+        public static bool operator !=(CartesianPoint left, CartesianPoint right)
+        {
+            return !(left == right);
         }
 
         /// <summary>
@@ -357,9 +340,9 @@ return
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("G", CultureInfo.CurrentCulture);
@@ -370,17 +353,19 @@ return
         #region IFormattable Members
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             return _x.ToString(format, culture) + culture.TextInfo.ListSeparator
                 + _y.ToString(format, culture) + culture.TextInfo.ListSeparator
@@ -465,7 +450,9 @@ return
             // Move to the <gml:pos> or <gml:coord> element
             if (!reader.IsStartElement("pos", Xml.GML_XML_NAMESPACE)
                 && !reader.IsStartElement("coord", Xml.GML_XML_NAMESPACE))
+            {
                 reader.ReadStartElement();
+            }
 
             switch (reader.LocalName.ToLower(CultureInfo.InvariantCulture))
             {
@@ -477,11 +464,15 @@ return
 
                     // Deserialize the Y
                     if (values.Length >= 2)
+                    {
                         _y = Distance.FromMeters(double.Parse(values[1], CultureInfo.InvariantCulture));
+                    }
 
                     // Deserialize the Z
                     if (values.Length == 3)
+                    {
                         _z = Distance.FromMeters(double.Parse(values[2], CultureInfo.InvariantCulture));
+                    }
 
                     break;
                 case "coord":
@@ -508,12 +499,15 @@ return
 
                         // If we're at an end element, stop
                         if (reader.NodeType == XmlNodeType.EndElement)
+                        {
                             break;
+                        }
                     }
                     // Read the </gml:coord> end tag
                     reader.ReadEndElement();
                     break;
             }
+
             reader.Read();
         }
 

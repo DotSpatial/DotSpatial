@@ -1,43 +1,21 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using DotSpatial.Positioning;
-#if !PocketPC || DesignTime
-
-using System.ComponentModel;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
-    /// Represents an angular measurement around the horizon between 0° and
-    /// 360°.
+    /// Represents an angular measurement around the horizon between 0° and 360°.
     /// </summary>
     /// <example>
-    /// These examples create new instances of an Azimuth object using different
-    /// techniques.
+    /// These examples create new instances of an Azimuth object using different techniques.
     ///   <code lang="VB" description="Create a new instance of 45° (northeast).">
     /// Dim MyAzimuth As New Azimuth(45)
     ///   </code>
@@ -57,18 +35,11 @@ namespace DotSpatial.Positioning
     /// Azimuth MyAzimuth = Azimuth.NorthNorthwest;
     ///   </code>
     ///   </example>
-    /// <remarks>This class is used to indicate a horizontal direction of travel, such as the
-    /// bearing from one point on Earth to another. This class can also be combined with an
-    /// Elevation object to form a three-dimensional direction towards an object in space,
-    /// such as a GPS satellite.</remarks>
+    /// <remarks>This class is used to indicate a horizontal direction of travel, such as the bearing from one point on Earth to another. This class can also be combined with an Elevation object to form a three-dimensional direction towards an object in space, such as a GPS satellite.</remarks>
     [TypeConverter("DotSpatial.Positioning.Design.AzimuthConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
+
     public struct Azimuth : IFormattable, IComparable<Azimuth>, IEquatable<Azimuth>, IEquatable<Direction>, ICloneable<Azimuth>, IXmlSerializable
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private double _decimalDegrees;
 
         #region Constants
 
@@ -99,7 +70,7 @@ namespace DotSpatial.Positioning
         public Azimuth(double decimalDegrees)
         {
             // Set the decimal degrees value
-            _decimalDegrees = decimalDegrees;
+            DecimalDegrees = decimalDegrees;
         }
 
         /// <summary>
@@ -109,7 +80,7 @@ namespace DotSpatial.Positioning
         /// <returns>An <strong>Azimuth</strong> containing the specified value.</returns>
         public Azimuth(int hours)
         {
-            _decimalDegrees = ToDecimalDegrees(hours);
+            DecimalDegrees = ToDecimalDegrees(hours);
         }
 
         /// <summary>
@@ -133,7 +104,7 @@ namespace DotSpatial.Positioning
         /// <returns>An <strong>Azimuth</strong> containing the specified value.</returns>
         public Azimuth(int hours, int minutes, double seconds)
         {
-            _decimalDegrees = ToDecimalDegrees(hours, minutes, seconds);
+            DecimalDegrees = ToDecimalDegrees(hours, minutes, seconds);
         }
 
         /// <summary>
@@ -154,7 +125,7 @@ namespace DotSpatial.Positioning
         /// <remarks>An <strong>Azimuth</strong> containing the specified value.</remarks>
         public Azimuth(int hours, double decimalMinutes)
         {
-            _decimalDegrees = ToDecimalDegrees(hours, decimalMinutes);
+            DecimalDegrees = ToDecimalDegrees(hours, decimalMinutes);
         }
 
         /// <summary>
@@ -226,104 +197,106 @@ namespace DotSpatial.Positioning
             if (string.IsNullOrEmpty(value))
             {
                 // Yes. Set to zero
-                _decimalDegrees = 0;
+                DecimalDegrees = 0;
                 return;
             }
 
             // Default to the current culture
             if (culture == null)
+            {
                 culture = CultureInfo.CurrentCulture;
+            }
 
             // Try to see it as a cardinal direction
             switch (value.Trim().ToUpper(CultureInfo.InvariantCulture))
             {
                 case "N":
                 case "NORTH":
-                    _decimalDegrees = North.DecimalDegrees;
+                    DecimalDegrees = North.DecimalDegrees;
                     return;
                 case "NNE":
                 case "NORTHNORTHEAST":
                 case "NORTH-NORTHEAST":
                 case "NORTH NORTHEAST":
-                    _decimalDegrees = NorthNortheast.DecimalDegrees;
+                    DecimalDegrees = NorthNortheast.DecimalDegrees;
                     return;
                 case "NE":
                 case "NORTHEAST":
                 case "NORTH-EAST":
                 case "NORTH EAST":
-                    _decimalDegrees = Northeast.DecimalDegrees;
+                    DecimalDegrees = Northeast.DecimalDegrees;
                     return;
                 case "ENE":
                 case "EASTNORTHEAST":
                 case "EAST-NORTHEAST":
                 case "EAST NORTHEAST":
-                    _decimalDegrees = EastNortheast.DecimalDegrees;
+                    DecimalDegrees = EastNortheast.DecimalDegrees;
                     return;
                 case "E":
                 case "EAST":
-                    _decimalDegrees = East.DecimalDegrees;
+                    DecimalDegrees = East.DecimalDegrees;
                     return;
                 case "ESE":
                 case "EASTSOUTHEAST":
                 case "EAST-SOUTHEAST":
                 case "EAST SOUTHEAST":
-                    _decimalDegrees = EastSoutheast.DecimalDegrees;
+                    DecimalDegrees = EastSoutheast.DecimalDegrees;
                     return;
                 case "SE":
                 case "SOUTHEAST":
                 case "SOUTH-EAST":
                 case "SOUTH EAST":
-                    _decimalDegrees = Southeast.DecimalDegrees;
+                    DecimalDegrees = Southeast.DecimalDegrees;
                     return;
                 case "SSE":
                 case "SOUTHSOUTHEAST":
                 case "SOUTH-SOUTHEAST":
                 case "SOUTH SOUTHEAST":
-                    _decimalDegrees = SouthSoutheast.DecimalDegrees;
+                    DecimalDegrees = SouthSoutheast.DecimalDegrees;
                     return;
                 case "S":
                 case "SOUTH":
-                    _decimalDegrees = South.DecimalDegrees;
+                    DecimalDegrees = South.DecimalDegrees;
                     return;
                 case "SSW":
                 case "SOUTHSOUTHWEST":
                 case "SOUTH-SOUTHWEST":
                 case "SOUTH SOUTHWEST":
-                    _decimalDegrees = SouthSouthwest.DecimalDegrees;
+                    DecimalDegrees = SouthSouthwest.DecimalDegrees;
                     return;
                 case "SW":
                 case "SOUTHWEST":
                 case "SOUTH-WEST":
                 case "SOUTH WEST":
-                    _decimalDegrees = Southwest.DecimalDegrees;
+                    DecimalDegrees = Southwest.DecimalDegrees;
                     return;
                 case "WSW":
                 case "WESTSOUTHWEST":
                 case "WEST-SOUTHWEST":
                 case "WEST SOUTHWEST":
-                    _decimalDegrees = WestSouthwest.DecimalDegrees;
+                    DecimalDegrees = WestSouthwest.DecimalDegrees;
                     return;
                 case "W":
                 case "WEST":
-                    _decimalDegrees = West.DecimalDegrees;
+                    DecimalDegrees = West.DecimalDegrees;
                     return;
                 case "WNW":
                 case "WESTNORTHWEST":
                 case "WEST-NORTHWEST":
                 case "WEST NORTHWEST":
-                    _decimalDegrees = WestNorthwest.DecimalDegrees;
+                    DecimalDegrees = WestNorthwest.DecimalDegrees;
                     return;
                 case "NW":
                 case "NORTHWEST":
                 case "NORTH-WEST":
                 case "NORTH WEST":
-                    _decimalDegrees = Northwest.DecimalDegrees;
+                    DecimalDegrees = Northwest.DecimalDegrees;
                     return;
                 case "NNW":
                 case "NORTHNORTHWEST":
                 case "NORTH-NORTHWEST":
                 case "NORTH NORTHWEST":
-                    _decimalDegrees = NorthNorthwest.DecimalDegrees;
+                    DecimalDegrees = NorthNorthwest.DecimalDegrees;
                     return;
             }
 
@@ -340,60 +313,62 @@ namespace DotSpatial.Positioning
                 {
                     case 0:
                         // Return a blank Azimuth
-                        _decimalDegrees = 0.0;
+                        DecimalDegrees = 0.0;
                         return;
                     case 1: // Decimal degrees
                         // Is it infinity?
-                        if (String.Compare(values[0], Resources.Common_Infinity, true, culture) == 0)
+                        if (string.Compare(values[0], Resources.Common_Infinity, true, culture) == 0)
                         {
-                            _decimalDegrees = double.PositiveInfinity;
+                            DecimalDegrees = double.PositiveInfinity;
                             return;
                         }
                         // Is it empty?
-                        if (String.Compare(values[0], Resources.Common_Empty, true, culture) == 0)
+                        if (string.Compare(values[0], Resources.Common_Empty, true, culture) == 0)
                         {
-                            _decimalDegrees = 0.0;
+                            DecimalDegrees = 0.0;
                             return;
                         }
                         // Look at the number of digits, this might be HHHMMSS format.
                         if (values[0].Length == 7 && values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) == -1)
                         {
-                            _decimalDegrees = ToDecimalDegrees(
-                                int.Parse(values[0].Substring(0, 3), culture),
+                            DecimalDegrees = ToDecimalDegrees(
+                                int.Parse(values[0][..3], culture),
                                 int.Parse(values[0].Substring(3, 2), culture),
                                 double.Parse(values[0].Substring(5, 2), culture));
                             return;
                         }
+
                         if (values[0].Length == 8 && values[0][0] == '-' && values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) == -1)
                         {
-                            _decimalDegrees = ToDecimalDegrees(
-                                int.Parse(values[0].Substring(0, 4), culture),
+                            DecimalDegrees = ToDecimalDegrees(
+                                int.Parse(values[0][..4], culture),
                                 int.Parse(values[0].Substring(4, 2), culture),
                                 double.Parse(values[0].Substring(6, 2), culture));
                             return;
                         }
-                        _decimalDegrees = double.Parse(values[0], culture);
+
+                        DecimalDegrees = double.Parse(values[0], culture);
                         return;
                     case 2: // Hours and decimal minutes
                         // If this is a fractional value, remember that it is
                         if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
                         {
-                            throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal, "value");
+                            throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal, nameof(value));
                         }
                         // Set decimal degrees
-                        _decimalDegrees = ToDecimalDegrees(
+                        DecimalDegrees = ToDecimalDegrees(
                             int.Parse(values[0], culture),
                             float.Parse(values[1], culture));
                         return;
                     default: // Hours, minutes and seconds  (most likely)
                         // If this is a fractional value, remember that it is
-                        if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1 || values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
+                        if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1 || values[1].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
                         {
-                            throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal, "value");
+                            throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal, nameof(value));
                         }
 
                         // Set decimal degrees
-                        _decimalDegrees = ToDecimalDegrees(
+                        DecimalDegrees = ToDecimalDegrees(
                             int.Parse(values[0], culture),
                             int.Parse(values[1], culture),
                             double.Parse(values[2], culture));
@@ -402,11 +377,7 @@ namespace DotSpatial.Positioning
             }
             catch (Exception ex)
             {
-#if PocketPC
-                    throw new ArgumentException(Properties.Resources.Angle_InvalidFormat, ex);
-#else
-                throw new ArgumentException(Resources.Angle_InvalidFormat, "value", ex);
-#endif
+                throw new ArgumentException(Resources.Angle_InvalidFormat, nameof(value), ex);
             }
         }
 
@@ -417,7 +388,7 @@ namespace DotSpatial.Positioning
         public Azimuth(XmlReader reader)
         {
             // Initialize all fields
-            _decimalDegrees = Double.NaN;
+            DecimalDegrees = double.NaN;
 
             // Deserialize the object from XML
             ReadXml(reader);
@@ -702,13 +673,7 @@ namespace DotSpatial.Positioning
         ///   </code>
         ///   </example>
         /// <remarks>This property returns the value of the angle as a single number.</remarks>
-        public double DecimalDegrees
-        {
-            get
-            {
-                return _decimalDegrees;
-            }
-        }
+        public double DecimalDegrees { get; private set; }
 
         /// <summary>
         /// Returns the minutes and seconds as a single numeric value.
@@ -740,20 +705,10 @@ namespace DotSpatial.Positioning
         /// decimal value.</remarks>
         public double DecimalMinutes
         {
-            get
-            {
-#if Framework20 && !PocketPC
-                return Math.Round(
-                    (Math.Abs(
-                        _decimalDegrees - Math.Truncate(_decimalDegrees)) * 60.0),
-                    // Apparently we must round to two less places to preserve accuracy
+            get => Math.Round(Math.Abs(
+                        DecimalDegrees - Math.Truncate(DecimalDegrees)) * 60.0,
+                        // Apparently we must round to two less places to preserve accuracy
                         MAXIMUM_PRECISION_DIGITS - 2);
-#else
-                return Math.Round(
-                    (Math.Abs(
-                        _DecimalDegrees - Truncate(_DecimalDegrees)) * 60.0), MaximumPrecisionDigits - 2);
-#endif
-            }
         }
 
         /// <summary>
@@ -783,17 +738,7 @@ namespace DotSpatial.Positioning
         /// and <see cref="Seconds">Seconds</see> properties to create a full angular measurement.
         /// This property is the same as <strong>DecimalDegrees</strong> without any fractional
         /// value.</remarks>
-        public int Hours
-        {
-            get
-            {
-#if Framework20 && !PocketPC
-                return (int)Math.Truncate(_decimalDegrees);
-#else
-                return Truncate(_DecimalDegrees);
-#endif
-            }
-        }
+        public int Hours => (int)Math.Truncate(DecimalDegrees);
 
         /// <summary>
         /// Returns the integer minutes portion of an angular measurement.
@@ -822,19 +767,9 @@ namespace DotSpatial.Positioning
         /// measurement.</remarks>
         public int Minutes
         {
-            get
-            {
-                return Convert.ToInt32(
-                    Math.Abs(
-#if Framework20 && !PocketPC
-Math.Truncate(
-#else
-                        Truncate(
-#endif
-Math.Round(
-                    // Calculations appear to support one less digit than the maximum allowed precision
-                                (_decimalDegrees - Hours) * 60.0, MAXIMUM_PRECISION_DIGITS - 1))));
-            }
+            get => Convert.ToInt32(Math.Abs(Math.Truncate(Math.Round(
+                                // Calculations appear to support one less digit than the maximum allowed precision
+                                (DecimalDegrees - Hours) * 60.0, MAXIMUM_PRECISION_DIGITS - 1))));
         }
 
         /// <summary>
@@ -864,13 +799,10 @@ Math.Round(
         /// measurement.</remarks>
         public double Seconds
         {
-            get
-            {
-                return Math.Round(
-                                (Math.Abs(_decimalDegrees - Hours) * 60.0 - Minutes) * 60.0,
-                    // This property appears to support one less digit than the maximum allowed
+            get => Math.Round(
+                                (Math.Abs(DecimalDegrees - Hours) * 60.0 - Minutes) * 60.0,
+                                // This property appears to support one less digit than the maximum allowed
                                 MAXIMUM_PRECISION_DIGITS - 4);
-            }
         }
 
         /// <summary>
@@ -899,37 +831,85 @@ Math.Round(
             get
             {
                 if ((DecimalDegrees >= (360 - 11.25) & DecimalDegrees < 360) || (DecimalDegrees >= 0 & DecimalDegrees <= (0 + 11.25))) // North
+                {
                     return Direction.North;
+                }
+
                 if (DecimalDegrees >= (22.5 - 11.25) & DecimalDegrees < (22.5 + 11.25)) // North-Northeast
+                {
                     return Direction.NorthNortheast;
+                }
+
                 if (DecimalDegrees >= (45 - 11.25) & DecimalDegrees < (45 + 11.25)) // Northeast
+                {
                     return Direction.Northeast;
+                }
+
                 if (DecimalDegrees >= (67.5 - 11.25) & DecimalDegrees < (67.5 + 11.25)) // East-Northeast
+                {
                     return Direction.EastNortheast;
+                }
+
                 if (DecimalDegrees >= (90 - 11.25) & DecimalDegrees < (90 + 11.25)) // East
+                {
                     return Direction.East;
+                }
+
                 if (DecimalDegrees >= (112.5 - 11.25) & DecimalDegrees < (112.5 + 11.25)) // East-Southeast
+                {
                     return Direction.EastSoutheast;
+                }
+
                 if (DecimalDegrees >= (135 - 11.25) & DecimalDegrees < (135 + 11.25)) // Southeast
+                {
                     return Direction.Southeast;
+                }
+
                 if (DecimalDegrees >= (157.5 - 11.25) & DecimalDegrees < (157.5 + 11.25)) // South-Southeast
+                {
                     return Direction.SouthSoutheast;
+                }
+
                 if (DecimalDegrees >= (180 - 11.25) & DecimalDegrees < (180 + 11.25)) // South
+                {
                     return Direction.South;
+                }
+
                 if (DecimalDegrees >= (202.5 - 11.25) & DecimalDegrees < (202.5 + 11.25)) // South-Southwest
+                {
                     return Direction.SouthSouthwest;
+                }
+
                 if (DecimalDegrees >= (225 - 11.25) & DecimalDegrees < (225 + 11.25)) // South
+                {
                     return Direction.Southwest;
+                }
+
                 if (DecimalDegrees >= (247.5 - 11.25) & DecimalDegrees < (247.5 + 11.25)) // West-Southwest
+                {
                     return Direction.WestSouthwest;
+                }
+
                 if (DecimalDegrees >= (270 - 11.25) & DecimalDegrees < (270 + 11.25)) // South
+                {
                     return Direction.West;
+                }
+
                 if (DecimalDegrees >= (292.5 - 11.25) & DecimalDegrees < (292.5 + 11.25)) // West-Northwest
+                {
                     return Direction.WestNorthwest;
+                }
+
                 if (DecimalDegrees >= (315 - 11.25) & DecimalDegrees < (315 + 11.25)) // Northwest
+                {
                     return Direction.Northwest;
+                }
+
                 if (DecimalDegrees >= (337.5 - 11.25) & DecimalDegrees < (337.5 + 11.25)) // North-Northwest
+                {
                     return Direction.NorthNorthwest;
+                }
+
                 return 0;
             }
         }
@@ -940,41 +920,23 @@ Math.Round(
         /// <value>A <strong>Boolean</strong>, <strong>True</strong> if the
         /// <strong>DecimalDegrees</strong> property is zero.</value>
         /// <seealso cref="Empty">Empty Field</seealso>
-        public bool IsEmpty
-        {
-            get
-            {
-                return (_decimalDegrees == 0);
-            }
-        }
+        public bool IsEmpty => (DecimalDegrees == 0);
 
         /// <summary>
         /// Indicates if the current instance represents an infinite value.
         /// </summary>
-        public bool IsInfinity
-        {
-            get
-            {
-                return double.IsInfinity(_decimalDegrees);
-            }
-        }
+        public bool IsInfinity => double.IsInfinity(DecimalDegrees);
 
         /// <summary>
         /// Indicates whether the value is invalid or unspecified.
         /// </summary>
-        public bool IsInvalid
-        {
-            get { return double.IsNaN(_decimalDegrees); }
-        }
+        public bool IsInvalid => double.IsNaN(DecimalDegrees);
 
         /// <summary>
         /// Indicates whether the value has been normalized and is within the
         /// allowed bounds of 0° and 360°.
         /// </summary>
-        public bool IsNormalized
-        {
-            get { return _decimalDegrees >= 0 && _decimalDegrees < 360; }
-        }
+        public bool IsNormalized => DecimalDegrees is >= 0 and < 360;
 
         #endregion Public Properties
 
@@ -1013,11 +975,12 @@ Math.Round(
         /// class, this function is the same as "value Mod 360".</remarks>
         public Azimuth Normalize()
         {
-            double value = _decimalDegrees;
+            double value = DecimalDegrees;
             while (value < 0)
             {
                 value += 360.0;
             }
+
             return new Azimuth(value % 360);
         }
 
@@ -1038,11 +1001,11 @@ Math.Round(
             if (start.DecimalDegrees <= end.DecimalDegrees)
             {
                 // Yes.  This is a simple check
-                return _decimalDegrees >= start.DecimalDegrees && _decimalDegrees <= end.DecimalDegrees;
+                return DecimalDegrees >= start.DecimalDegrees && DecimalDegrees <= end.DecimalDegrees;
             }
             // No, the value crosses the 0/360 line.
-            return (_decimalDegrees >= 0 && _decimalDegrees <= end.DecimalDegrees)
-                   || (_decimalDegrees <= 360 && _decimalDegrees >= start.DecimalDegrees);
+            return (DecimalDegrees >= 0 && DecimalDegrees <= end.DecimalDegrees)
+                   || (DecimalDegrees <= 360 && DecimalDegrees >= start.DecimalDegrees);
         }
 
         /// <summary>
@@ -1051,7 +1014,7 @@ Math.Round(
         /// <returns></returns>
         public Azimuth Ceiling()
         {
-            return new Azimuth(Math.Ceiling(_decimalDegrees));
+            return new Azimuth(Math.Ceiling(DecimalDegrees));
         }
 
         /// <summary>
@@ -1060,17 +1023,8 @@ Math.Round(
         /// <returns></returns>
         public Azimuth Floor()
         {
-            return new Azimuth(Math.Floor(_decimalDegrees));
+            return new Azimuth(Math.Floor(DecimalDegrees));
         }
-
-#if !Framework20 || PocketPC
-        internal static int Truncate(double value)
-        {
-            return value > 0
-                ? (int)(value - (value - Math.Floor(value)))
-                : (int)(value - (value - Math.Ceiling(value)));
-        }
-#endif
 
         /// <summary>
         /// Returns a new instance whose value is rounded the specified number of decimals.
@@ -1079,7 +1033,7 @@ Math.Round(
         /// <returns></returns>
         public Azimuth Round(int decimals)
         {
-            return new Azimuth(Math.Round(_decimalDegrees, decimals));
+            return new Azimuth(Math.Round(DecimalDegrees, decimals));
         }
 
         /// <summary>
@@ -1107,11 +1061,9 @@ Math.Round(
         {
             // Interval must be > 0
             if (interval == 0)
-#if PocketPC
-                throw new ArgumentOutOfRangeException(Properties.Resources.Angle_InvalidInterval);
-#else
-                throw new ArgumentOutOfRangeException("interval", interval, Resources.Angle_InvalidInterval);
-#endif
+            {
+                throw new ArgumentOutOfRangeException(nameof(interval), interval, Resources.Angle_InvalidInterval);
+            }
             // Get the amount in seconds
             double newSeconds = Seconds;
             // double HalfInterval = interval * 0.5;
@@ -1122,13 +1074,17 @@ Math.Round(
                 double nextInterval = value + interval;
                 // Is the seconds value greater than the next interval?
                 if (newSeconds > nextInterval)
+                {
                     // Yes.  Continue on
                     continue;
+                }
                 // Is the seconds value closer to the current or next interval?
                 newSeconds = newSeconds < (value + nextInterval) * 0.5 ? value : nextInterval;
                 // Is the new value 60?  If so, make it zero
                 if (newSeconds == 60)
+                {
                     newSeconds = 0;
+                }
                 // Return the new value
                 return new Azimuth(Hours, Minutes, newSeconds);
             }
@@ -1215,8 +1171,11 @@ Math.Round(
         /// <returns>The <strong>Azimuth</strong> containing the smallest value.</returns>
         public Azimuth LesserOf(Azimuth value)
         {
-            if (_decimalDegrees < value.DecimalDegrees)
+            if (DecimalDegrees < value.DecimalDegrees)
+            {
                 return this;
+            }
+
             return value;
         }
 
@@ -1227,8 +1186,11 @@ Math.Round(
         /// <returns>An <strong>Azimuth</strong> containing the largest value.</returns>
         public Azimuth GreaterOf(Azimuth value)
         {
-            if (_decimalDegrees > value.DecimalDegrees)
+            if (DecimalDegrees > value.DecimalDegrees)
+            {
                 return this;
+            }
+
             return value;
         }
 
@@ -1258,7 +1220,7 @@ Math.Round(
         /// circle.</remarks>
         public Azimuth Mirror()
         {
-            return new Azimuth(_decimalDegrees + 180.0).Normalize();
+            return new Azimuth(DecimalDegrees + 180.0).Normalize();
         }
 
         /// <summary>
@@ -1284,7 +1246,7 @@ Math.Round(
         /// radians before performing a trigonometric function.</remarks>
         public Radian ToRadians()
         {
-            return Radian.FromDegrees(_decimalDegrees);
+            return Radian.FromDegrees(DecimalDegrees);
         }
 
         /// <summary>
@@ -1308,26 +1270,31 @@ Math.Round(
             {
                 return 0;
             }
+
             if (tempBearing1 <= Math.PI * 0.5 && tempBearing2 >= Math.PI)
             {
                 if (tempBearing2 <= Math.PI * 2 * 0.75)
                 {
                     return Radian.ToDegrees(tempBearing2 - tempBearing1);
                 }
+
                 tempBearing1 += Math.PI;
                 tempBearing2 -= Math.PI;
                 return Radian.ToDegrees(tempBearing2 - tempBearing1);
             }
+
             if (tempBearing2 <= Math.PI * 0.5 && tempBearing1 >= Math.PI)
             {
                 if (tempBearing1 <= Math.PI * 2 * 0.75)
                 {
                     return Radian.ToDegrees(tempBearing2 - tempBearing1);
                 }
+
                 tempBearing2 += Math.PI;
                 tempBearing1 -= Math.PI;
                 return Radian.ToDegrees(tempBearing2 - tempBearing1);
             }
+
             if (tempBearing1 - tempBearing2 >= Math.PI)
             {
                 tempBearing1 -= Math.PI;
@@ -1336,6 +1303,7 @@ Math.Round(
             {
                 tempBearing2 -= Math.PI;
             }
+
             return Radian.ToDegrees(tempBearing2 - tempBearing1);
         }
 
@@ -1354,11 +1322,13 @@ Math.Round(
         public override bool Equals(object obj)
         {
             // Convert objects to an Azimuth as needed before comparison
-            if (obj is Azimuth)
-                return Equals((Azimuth)obj);
+            if (obj is Azimuth azimuth)
+            {
+                return Equals(azimuth);
+            }
 
             // Compare degree value
-            return _decimalDegrees.Equals(obj);
+            return DecimalDegrees.Equals(obj);
         }
 
         /// <summary>
@@ -1370,7 +1340,7 @@ Math.Round(
         /// safely with hash tables.</remarks>
         public override int GetHashCode()
         {
-            return _decimalDegrees.GetHashCode();
+            return DecimalDegrees.GetHashCode();
         }
 
         /// <summary>
@@ -1423,43 +1393,26 @@ Math.Round(
         /// <returns>An <strong>Azimuth</strong> equivalent to the specified direction.</returns>
         public static Azimuth FromDirection(Direction direction)
         {
-            switch (direction)
+            return direction switch
             {
-                case Direction.North:
-                    return North;
-                case Direction.NorthNortheast:
-                    return NorthNortheast;
-                case Direction.Northeast:
-                    return Northeast;
-                case Direction.EastNortheast:
-                    return EastNortheast;
-                case Direction.East:
-                    return East;
-                case Direction.EastSoutheast:
-                    return EastSoutheast;
-                case Direction.Southeast:
-                    return Southeast;
-                case Direction.SouthSoutheast:
-                    return SouthSoutheast;
-                case Direction.South:
-                    return South;
-                case Direction.SouthSouthwest:
-                    return SouthSouthwest;
-                case Direction.Southwest:
-                    return Southwest;
-                case Direction.WestSouthwest:
-                    return WestSouthwest;
-                case Direction.West:
-                    return West;
-                case Direction.WestNorthwest:
-                    return WestNorthwest;
-                case Direction.Northwest:
-                    return Northwest;
-                case Direction.NorthNorthwest:
-                    return NorthNorthwest;
-                default:
-                    return Empty;
-            }
+                Direction.North => North,
+                Direction.NorthNortheast => NorthNortheast,
+                Direction.Northeast => Northeast,
+                Direction.EastNortheast => EastNortheast,
+                Direction.East => East,
+                Direction.EastSoutheast => EastSoutheast,
+                Direction.Southeast => Southeast,
+                Direction.SouthSoutheast => SouthSoutheast,
+                Direction.South => South,
+                Direction.SouthSouthwest => SouthSouthwest,
+                Direction.Southwest => Southwest,
+                Direction.WestSouthwest => WestSouthwest,
+                Direction.West => West,
+                Direction.WestNorthwest => WestNorthwest,
+                Direction.Northwest => Northwest,
+                Direction.NorthNorthwest => NorthNorthwest,
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -2103,7 +2056,7 @@ Math.Round(
         /// method cannot be used to modify an existing instance.</font></para></remarks>
         public Azimuth Increment()
         {
-            return new Azimuth(_decimalDegrees + 1.0);
+            return new Azimuth(DecimalDegrees + 1.0);
         }
 
         /// <summary>
@@ -2124,7 +2077,7 @@ Math.Round(
         ///   </example>
         public Azimuth Add(double value)
         {
-            return new Azimuth(_decimalDegrees + value);
+            return new Azimuth(DecimalDegrees + value);
         }
 
         /// <summary>
@@ -2134,7 +2087,7 @@ Math.Round(
         /// <returns></returns>
         public Azimuth Add(Azimuth value)
         {
-            return new Azimuth(_decimalDegrees + value.DecimalDegrees);
+            return new Azimuth(DecimalDegrees + value.DecimalDegrees);
         }
 
         /// <summary>
@@ -2170,7 +2123,7 @@ Math.Round(
         /// method cannot be used to modify an existing instance.</font></para></remarks>
         public Azimuth Decrement()
         {
-            return new Azimuth(_decimalDegrees - 1.0);
+            return new Azimuth(DecimalDegrees - 1.0);
         }
 
         /// <summary>
@@ -2191,7 +2144,7 @@ Math.Round(
         ///   </example>
         public Azimuth Subtract(double value)
         {
-            return new Azimuth(_decimalDegrees - value);
+            return new Azimuth(DecimalDegrees - value);
         }
 
         /// <summary>
@@ -2201,7 +2154,7 @@ Math.Round(
         /// <returns></returns>
         public Azimuth Subtract(Azimuth value)
         {
-            return new Azimuth(_decimalDegrees - value.DecimalDegrees);
+            return new Azimuth(DecimalDegrees - value.DecimalDegrees);
         }
 
         /// <summary>
@@ -2222,7 +2175,7 @@ Math.Round(
         ///   </example>
         public Azimuth Multiply(double value)
         {
-            return new Azimuth(_decimalDegrees * value);
+            return new Azimuth(DecimalDegrees * value);
         }
 
         /// <summary>
@@ -2232,7 +2185,7 @@ Math.Round(
         /// <returns></returns>
         public Azimuth Multiply(Azimuth value)
         {
-            return new Azimuth(_decimalDegrees * value.DecimalDegrees);
+            return new Azimuth(DecimalDegrees * value.DecimalDegrees);
         }
 
         /// <summary>
@@ -2253,7 +2206,7 @@ Math.Round(
         ///   </example>
         public Azimuth Divide(double value)
         {
-            return new Azimuth(_decimalDegrees / value);
+            return new Azimuth(DecimalDegrees / value);
         }
 
         /// <summary>
@@ -2263,7 +2216,7 @@ Math.Round(
         /// <returns></returns>
         public Azimuth Divide(Azimuth value)
         {
-            return new Azimuth(_decimalDegrees / value.DecimalDegrees);
+            return new Azimuth(DecimalDegrees / value.DecimalDegrees);
         }
 
         /// <summary>
@@ -2274,7 +2227,7 @@ Math.Round(
         /// smaller than the specified value.</returns>
         public bool IsLessThan(Azimuth value)
         {
-            return _decimalDegrees < value.DecimalDegrees;
+            return DecimalDegrees < value.DecimalDegrees;
         }
 
         /// <summary>
@@ -2284,7 +2237,7 @@ Math.Round(
         /// <returns><c>true</c> if [is less than] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsLessThan(double value)
         {
-            return _decimalDegrees < value;
+            return DecimalDegrees < value;
         }
 
         /// <summary>
@@ -2298,7 +2251,7 @@ Math.Round(
         /// specified value. This method is the same as the "&lt;=" operator.</remarks>
         public bool IsLessThanOrEqualTo(Azimuth value)
         {
-            return _decimalDegrees <= value.DecimalDegrees;
+            return DecimalDegrees <= value.DecimalDegrees;
         }
 
         /// <summary>
@@ -2308,7 +2261,7 @@ Math.Round(
         /// <returns><c>true</c> if [is less than or equal to] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsLessThanOrEqualTo(double value)
         {
-            return _decimalDegrees <= value;
+            return DecimalDegrees <= value;
         }
 
         /// <summary>
@@ -2319,7 +2272,7 @@ Math.Round(
         /// greater than the specified value.</returns>
         public bool IsGreaterThan(Azimuth value)
         {
-            return _decimalDegrees > value.DecimalDegrees;
+            return DecimalDegrees > value.DecimalDegrees;
         }
 
         /// <summary>
@@ -2329,7 +2282,7 @@ Math.Round(
         /// <returns><c>true</c> if [is greater than] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsGreaterThan(double value)
         {
-            return _decimalDegrees > value;
+            return DecimalDegrees > value;
         }
 
         /// <summary>
@@ -2341,7 +2294,7 @@ Math.Round(
         /// greater than or equal to the specified value.</returns>
         public bool IsGreaterThanOrEqualTo(Azimuth value)
         {
-            return _decimalDegrees >= value.DecimalDegrees;
+            return DecimalDegrees >= value.DecimalDegrees;
         }
 
         /// <summary>
@@ -2351,7 +2304,7 @@ Math.Round(
         /// <returns><c>true</c> if [is greater than or equal to] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsGreaterThanOrEqualTo(double value)
         {
-            return _decimalDegrees >= value;
+            return DecimalDegrees >= value;
         }
 
         #endregion Math methods
@@ -2366,7 +2319,7 @@ Math.Round(
         /// <returns>An <strong>Azimuth</strong> of the same value as the current instance.</returns>
         public Azimuth Clone()
         {
-            return new Azimuth(_decimalDegrees);
+            return new Azimuth(DecimalDegrees);
         }
 
         #endregion ICloneable<Azimuth> Members
@@ -2382,7 +2335,7 @@ Math.Round(
         /// The <see cref="DecimalDegrees">DecimalDegrees</see> property of each instance is compared.</remarks>
         public int CompareTo(Azimuth other)
         {
-            return _decimalDegrees.CompareTo(other.DecimalDegrees);
+            return DecimalDegrees.CompareTo(other.DecimalDegrees);
         }
 
         #endregion IComparable<Azimuth> Members
@@ -2542,13 +2495,17 @@ Math.Round(
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             // Convert to upper case
             format = format.ToUpper(culture);
             // Use a default format
-            if (String.Compare(format, "G", false, culture) == 0)
+            if (string.Compare(format, "G", false, culture) == 0)
+            {
                 format = "CC";
+            }
 
             string subFormat;
             string newFormat;
@@ -2557,16 +2514,25 @@ Math.Round(
             {
                 // Is it infinity?
                 if (double.IsPositiveInfinity(DecimalDegrees))
+                {
                     return "+" + Resources.Common_Infinity;
+                }
                 // Is it infinity?
                 if (double.IsNegativeInfinity(DecimalDegrees))
+                {
                     return "-" + Resources.Common_Infinity;
+                }
+
                 if (double.IsNaN(DecimalDegrees))
+                {
                     return "NaN";
+                }
                 // Use the default if "g" is passed
                 format = format.ToLower(culture);
                 if (format == "g")
+                {
                     format = "d.dddd°";
+                }
                 // Replace the "d" with "h" since degrees is the same as hours
                 format = format.Replace("d", "h")
                     // Convert the format to uppercase
@@ -2574,7 +2540,9 @@ Math.Round(
                 // Only one decimal is allowed
                 if (format.IndexOf(culture.NumberFormat.NumberDecimalSeparator) !=
                     format.LastIndexOf(culture.NumberFormat.NumberDecimalSeparator))
+                {
                     throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal);
+                }
                 // Is there an hours specifier?
                 int startChar = format.IndexOf("H");
                 int endChar;
@@ -2614,6 +2582,7 @@ Math.Round(
                         {
                             throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal);
                         }
+
                         isDecimalHandled = true;
                         format = format.Replace(subFormat, DecimalMinutes.ToString(newFormat, culture));
                     }
@@ -2639,6 +2608,7 @@ Math.Round(
                         {
                             throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal);
                         }
+
                         format = format.Replace(subFormat, Seconds.ToString(newFormat, culture));
                     }
                     else
@@ -2647,8 +2617,10 @@ Math.Round(
                     }
                 }
                 // If nothing then return zero
-                if (String.Compare(format, "°", true, culture) == 0)
+                if (string.Compare(format, "°", true, culture) == 0)
+                {
                     return "0°";
+                }
 
                 // Is there an hours specifier?
                 startChar = format.IndexOf("C");
@@ -2716,6 +2688,7 @@ Math.Round(
                                     format = format.Replace(subFormat, "NNW");
                                     break;
                             }
+
                             break;
                         default:
                             switch (Direction)
@@ -2769,6 +2742,7 @@ Math.Round(
                                     format = format.Replace(subFormat, "North-Northwest");
                                     break;
                             }
+
                             break;
                     }
                 }
@@ -2800,7 +2774,7 @@ Math.Round(
         /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteString(_decimalDegrees.ToString("G17", CultureInfo.InvariantCulture));
+            writer.WriteString(DecimalDegrees.ToString("G17", CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -2809,7 +2783,7 @@ Math.Round(
         /// <param name="reader">The <see cref="T:System.Xml.XmlReader"/> stream from which the object is deserialized.</param>
         public void ReadXml(XmlReader reader)
         {
-            _decimalDegrees = reader.NodeType == XmlNodeType.Text ? reader.ReadContentAsDouble() : reader.ReadElementContentAsDouble();
+            DecimalDegrees = reader.NodeType == XmlNodeType.Text ? reader.ReadContentAsDouble() : reader.ReadElementContentAsDouble();
         }
 
         #endregion IXmlSerializable Members

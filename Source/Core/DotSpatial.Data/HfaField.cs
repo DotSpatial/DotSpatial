@@ -209,81 +209,29 @@ namespace DotSpatial.Data
         /// <param name="stream">The stream to write to.</param>
         public void Dump(Stream stream)
         {
-            string typename;
             StreamWriter sw = new(stream);
-            switch (ItemType)
+            string typename = ItemType switch
             {
-                case '1':
-                    typename = "U1";
-                    break;
-                case '2':
-                    typename = "U2";
-                    break;
-                case '4':
-                    typename = "U4";
-                    break;
-                case 'c':
-                    typename = "UChar";
-                    break;
-                case 'C':
-                    typename = "CHAR";
-                    break;
-                case 'e':
-                    typename = "ENUM";
-                    break;
-                case 's':
-                    typename = "USHORT";
-                    break;
-
-                case 'S':
-                    typename = "SHORT";
-                    break;
-
-                case 't':
-                    typename = "TIME";
-                    break;
-
-                case 'l':
-                    typename = "ULONG";
-                    break;
-
-                case 'L':
-                    typename = "LONG";
-                    break;
-
-                case 'f':
-                    typename = "FLOAT";
-                    break;
-
-                case 'd':
-                    typename = "DOUBLE";
-                    break;
-
-                case 'm':
-                    typename = "COMPLEX";
-                    break;
-
-                case 'M':
-                    typename = "DCOMPLEX";
-                    break;
-
-                case 'b':
-                    typename = "BASEDATA";
-                    break;
-
-                case 'o':
-                    typename = ItemObjectTypeString;
-                    break;
-
-                case 'x':
-                    typename = "InlineType";
-                    break;
-
-                default:
-                    typename = "Unknowm";
-                    break;
-            }
-
+                '1' => "U1",
+                '2' => "U2",
+                '4' => "U4",
+                'c' => "UChar",
+                'C' => "CHAR",
+                'e' => "ENUM",
+                's' => "USHORT",
+                'S' => "SHORT",
+                't' => "TIME",
+                'l' => "ULONG",
+                'L' => "LONG",
+                'f' => "FLOAT",
+                'd' => "DOUBLE",
+                'm' => "COMPLEX",
+                'M' => "DCOMPLEX",
+                'b' => "BASEDATA",
+                'o' => ItemObjectTypeString,
+                'x' => "InlineType",
+                _ => "Unknowm",
+            };
             string tc = (Pointer == 'p' || Pointer == '*') ? Pointer.ToString() : " ";
             string name = typename.PadRight(19);
             sw.WriteLine("    " + name + " " + tc + " " + FieldName + "[" + ItemCount + "];");

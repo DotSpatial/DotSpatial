@@ -1,35 +1,15 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using DotSpatial.Positioning;
-#if !PocketPC || DesignTime
-
-using System.ComponentModel;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents the measurement of surface area of a polygon on Earth's
     /// surface.
@@ -56,17 +36,12 @@ namespace DotSpatial.Positioning
     ///   <para>Instances of this structure are guaranteed to be thread-safe because they are
     /// immutable (properties can only be modified via constructors).</para></remarks>
     [TypeConverter("DotSpatial.Positioning.Design.AreaConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct Area : IFormattable, IComparable<Area>, IEquatable<Area>, IXmlSerializable
     {
         /// <summary>
         ///
         /// </summary>
         private double _value;
-        /// <summary>
-        ///
-        /// </summary>
-        private AreaUnit _units;
 
         #region Constants
 
@@ -346,7 +321,7 @@ namespace DotSpatial.Positioning
         public Area(double value, AreaUnit units)
         {
             _value = value;
-            _units = units;
+            Units = units;
         }
 
         /// <summary>
@@ -382,7 +357,7 @@ namespace DotSpatial.Positioning
         ///
         /// <returns>An <strong>Area</strong> object.</returns>
         ///
-        /// <seealso cref="Parse(System.String)">Parse(string) Method</seealso>
+        /// <seealso cref="Parse(string)">Parse(string) Method</seealso>
         /// <remarks>This powerful constructor is used to convert an area measurement in the form of a
         /// string into an object, such as one entered by a user or read from a file. This
         /// constructor can accept any output created via the <see cref="ToString()">ToString</see>
@@ -425,7 +400,7 @@ namespace DotSpatial.Positioning
         ///
         /// <returns>An <strong>Area</strong> object.</returns>
         ///
-        /// <seealso cref="Parse(System.String)">Parse(string) Method</seealso>
+        /// <seealso cref="Parse(string)">Parse(string) Method</seealso>
         /// <remarks>This powerful constructor is used to convert an area measurement in the form of a
         /// string into an object, such as one entered by a user or read from a file. This
         /// constructor can accept any output created via the <see cref="ToString()">ToString</see>
@@ -436,12 +411,14 @@ namespace DotSpatial.Positioning
             if (string.IsNullOrEmpty(value))
             {
                 _value = 0;
-                _units = AreaUnit.SquareCentimeters;
+                Units = AreaUnit.SquareCentimeters;
                 return;
             }
 
             if (culture == null)
+            {
                 culture = CultureInfo.CurrentCulture;
+            }
 
             string unit;
 
@@ -449,16 +426,17 @@ namespace DotSpatial.Positioning
             {
                 // Convert to uppercase and remove commas
                 value = value.Trim();
-                if (String.Compare(value, Resources.Common_Infinity, true, culture) == 0)
+                if (string.Compare(value, Resources.Common_Infinity, true, culture) == 0)
                 {
                     _value = double.PositiveInfinity;
-                    _units = AreaUnit.SquareNauticalMiles;
+                    Units = AreaUnit.SquareNauticalMiles;
                     return;
                 }
-                if (String.Compare(value, Resources.Common_Empty, true, culture) == 0)
+
+                if (string.Compare(value, Resources.Common_Empty, true, culture) == 0)
                 {
                     _value = 0;
-                    _units = AreaUnit.SquareCentimeters;
+                    Units = AreaUnit.SquareCentimeters;
                     return;
                 }
 
@@ -475,28 +453,26 @@ namespace DotSpatial.Positioning
                         || digit == "8" || digit == "9"
                         || digit == culture.NumberFormat.NumberGroupSeparator
                         || digit == culture.NumberFormat.NumberDecimalSeparator)
+                    {
                         // Allow continuation
                         count++;
+                    }
                     else
+                    {
                         // Non-numeric character!
                         break;
+                    }
                 }
-                unit = value.Substring(count).Trim();
+
+                unit = value[count..].Trim();
                 // Get the numeric portion
-                string numericPortion = count > 0 ? value.Substring(0, count) : "0";
-#if PocketPC
-                try
-                {
-                    _Value = double.Parse(NumericPortion, NumberStyles.Any, culture);
-                }
-                catch
-                {
-                    throw new ArgumentException(Properties.Resources.Area_InvalidNumericPortion, "value");
-                }
-#else
+                string numericPortion = count > 0 ? value[..count] : "0";
+
                 if (!double.TryParse(numericPortion, NumberStyles.Any, culture, out _value))
-                    throw new ArgumentException(Resources.Area_InvalidNumericPortion, "value");
-#endif
+                {
+                    throw new ArgumentException(Resources.Area_InvalidNumericPortion, nameof(value));
+                }
+
                 // Try to interpret the measurement
                 // Remove any notion of "square"
                 unit = unit.Replace("SQUARE", "S").Replace("SQ.", "S").Replace("SQ", "S").Replace(" ", string.Empty).Trim();
@@ -507,7 +483,7 @@ namespace DotSpatial.Positioning
                     case "AC":
                     case "ACRE":
                     case "ACRES":
-                        _units = AreaUnit.Acres;
+                        Units = AreaUnit.Acres;
                         break;
                     case "SCM":
                     case "SCM.":
@@ -515,7 +491,7 @@ namespace DotSpatial.Positioning
                     case "SCENTIMETERS":
                     case "SCENTIMETRE":
                     case "SCENTIMETRES":
-                        _units = AreaUnit.SquareCentimeters;
+                        Units = AreaUnit.SquareCentimeters;
                         break;
                     case "SM":
                     case "SM.":
@@ -523,7 +499,7 @@ namespace DotSpatial.Positioning
                     case "SMETRES":
                     case "SMETRE":
                     case "SMETER":
-                        _units = AreaUnit.SquareMeters;
+                        Units = AreaUnit.SquareMeters;
                         break;
                     case "SKM":
                     case "SKM.":
@@ -531,54 +507,51 @@ namespace DotSpatial.Positioning
                     case "SKILOMETERS":
                     case "SKILOMETRE":
                     case "SKILOMETER":
-                        _units = AreaUnit.SquareKilometers;
+                        Units = AreaUnit.SquareKilometers;
                         break;
                     case "SMI":
                     case "SMI.":
                     case "SMILE":
                     case "SMILES":
                     case "SSTATUTEMILES":
-                        _units = AreaUnit.SquareStatuteMiles;
+                        Units = AreaUnit.SquareStatuteMiles;
                         break;
                     case "SNM":
                     case "SNM.":
                     case "SNAUTICALMILE":
                     case "SNAUTICALMILES":
-                        _units = AreaUnit.SquareNauticalMiles;
+                        Units = AreaUnit.SquareNauticalMiles;
                         break;
                     case "SIN":
                     case "SIN.":
                     case "S\"":
                     case "SINCHES":
                     case "SINCH":
-                        _units = AreaUnit.SquareInches;
+                        Units = AreaUnit.SquareInches;
                         break;
                     case "SFT":
                     case "SFT.":
                     case "S'":
                     case "SFOOT":
                     case "SFEET":
-                        _units = AreaUnit.SquareFeet;
+                        Units = AreaUnit.SquareFeet;
                         break;
                     default:
                         if (_value == 0)
                         {
-                            _units = RegionInfo.CurrentRegion.IsMetric ? AreaUnit.SquareMeters : AreaUnit.SquareFeet;
+                            Units = RegionInfo.CurrentRegion.IsMetric ? AreaUnit.SquareMeters : AreaUnit.SquareFeet;
                         }
                         else
                         {
-                            throw new ArgumentException(Resources.Area_InvalidUnitPortion, "value");
+                            throw new ArgumentException(Resources.Area_InvalidUnitPortion, nameof(value));
                         }
+
                         break;
                 }
             }
             catch (Exception ex)
             {
-#if PocketPC
-                    throw new ArgumentException(Properties.Resources.Area_InvalidFormat, ex);
-#else
-                throw new ArgumentException(Resources.Area_InvalidFormat, "value", ex);
-#endif
+                throw new ArgumentException(Resources.Area_InvalidFormat, nameof(value), ex);
             }
         }
 
@@ -589,8 +562,8 @@ namespace DotSpatial.Positioning
         public Area(XmlReader reader)
         {
             // Initialize all fields
-            _value = Double.NaN;
-            _units = 0;
+            _value = double.NaN;
+            Units = 0;
 
             // Deserialize the object from XML
             ReadXml(reader);
@@ -608,13 +581,7 @@ namespace DotSpatial.Positioning
         /// <remarks>Each area measurement consists of a numeric value paired with a unit type
         /// describing the value. It is not possible to create an area measurement without also
         /// specifying a value.</remarks>
-        public AreaUnit Units
-        {
-            get
-            {
-                return _units;
-            }
-        }
+        public AreaUnit Units { get; private set; }
 
         /// <summary>
         /// Returns the numeric portion of an area measurement.
@@ -623,26 +590,14 @@ namespace DotSpatial.Positioning
         /// <seealso cref="Units">Units Property</seealso>
         /// <remarks>This property is paired with the <strong>Units</strong> property to form a
         /// complete area measurement.</remarks>
-        public double Value
-        {
-            get
-            {
-                return _value;
-            }
-        }
+        public double Value => _value;
 
         /// <summary>
         /// Indicates if the value of the current instance is zero.
         /// </summary>
         /// <value>A <strong>Boolean</strong>, <strong>True</strong> if the <strong>Value</strong>
         /// property is zero.</value>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _value == 0;
-            }
-        }
+        public bool IsEmpty => _value == 0;
 
         /// <summary>
         /// Indicates if the current instance is using a Metric unit.
@@ -656,12 +611,9 @@ namespace DotSpatial.Positioning
         /// <strong>ToImperialUnitType</strong> methods.</remarks>
         public bool IsMetric
         {
-            get
-            {
-                return _units == AreaUnit.SquareCentimeters
-                    || _units == AreaUnit.SquareMeters
-                    || _units == AreaUnit.SquareKilometers;
-            }
+            get => Units is AreaUnit.SquareCentimeters
+                    or AreaUnit.SquareMeters
+                    or AreaUnit.SquareKilometers;
         }
 
         /// <summary>
@@ -669,13 +621,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <value>A <strong>Boolean</strong>, <strong>True</strong> if the current instance
         /// represents an infinite value.</value>
-        public bool IsInfinity
-        {
-            get
-            {
-                return double.IsInfinity(_value);
-            }
-        }
+        public bool IsInfinity => double.IsInfinity(_value);
 
         #endregion Public Properties
 
@@ -724,28 +670,18 @@ namespace DotSpatial.Positioning
         /// may convert from any unit type to any other unit type.</remarks>
         public Area ToSquareFeet()
         {
-            switch (_units)
+            return Units switch
             {
-                case AreaUnit.Acres:
-                    return new Area(_value * SQUARE_FEET_PER_ACRE, AreaUnit.SquareFeet);
-                case AreaUnit.SquareCentimeters:
-                    return new Area(_value * SQUARE_FEET_PER_SQUARE_CENTIMETER, AreaUnit.SquareFeet);
-                case AreaUnit.SquareMeters:
-                    return new Area(_value * SQUARE_FEET_PER_SQUARE_METER, AreaUnit.SquareFeet);
-                case AreaUnit.SquareFeet:
-                    return this;
-                case AreaUnit.SquareInches:
-                    return new Area(_value * SQUARE_FEET_PER_SQUARE_INCH, AreaUnit.SquareFeet);
-                case AreaUnit.SquareKilometers:
-                    return new Area(_value * SQUARE_FEET_PER_SQUARE_KILOMETER, AreaUnit.SquareFeet);
-                case AreaUnit.SquareStatuteMiles:
-                    return new Area(_value * SQUARE_FEET_PER_SQUARE_STATUTE_MILE, AreaUnit.SquareFeet);
-                case AreaUnit.SquareNauticalMiles:
-                    return new Area(_value * SQUARE_FEET_PER_SQUARE_NAUTICAL_MILE, AreaUnit.SquareFeet);
-                default:
-                    // This should never happen!  Included only to satisfy the compiler
-                    return Empty;
-            }
+                AreaUnit.Acres => new Area(_value * SQUARE_FEET_PER_ACRE, AreaUnit.SquareFeet),
+                AreaUnit.SquareCentimeters => new Area(_value * SQUARE_FEET_PER_SQUARE_CENTIMETER, AreaUnit.SquareFeet),
+                AreaUnit.SquareMeters => new Area(_value * SQUARE_FEET_PER_SQUARE_METER, AreaUnit.SquareFeet),
+                AreaUnit.SquareFeet => this,
+                AreaUnit.SquareInches => new Area(_value * SQUARE_FEET_PER_SQUARE_INCH, AreaUnit.SquareFeet),
+                AreaUnit.SquareKilometers => new Area(_value * SQUARE_FEET_PER_SQUARE_KILOMETER, AreaUnit.SquareFeet),
+                AreaUnit.SquareStatuteMiles => new Area(_value * SQUARE_FEET_PER_SQUARE_STATUTE_MILE, AreaUnit.SquareFeet),
+                AreaUnit.SquareNauticalMiles => new Area(_value * SQUARE_FEET_PER_SQUARE_NAUTICAL_MILE, AreaUnit.SquareFeet),
+                _ => Empty,// This should never happen!  Included only to satisfy the compiler
+            };
         }
 
         /// <summary>
@@ -791,28 +727,18 @@ namespace DotSpatial.Positioning
         /// may convert from any unit type to any other unit type.</remarks>
         public Area ToSquareInches()
         {
-            switch (_units)
+            return Units switch
             {
-                case AreaUnit.Acres:
-                    return new Area(_value * SQUARE_INCHES_PER_ACRE, AreaUnit.SquareInches);
-                case AreaUnit.SquareCentimeters:
-                    return new Area(_value * SQUARE_INCHES_PER_SQUARE_CENTIMETER, AreaUnit.SquareInches);
-                case AreaUnit.SquareMeters:
-                    return new Area(_value * SQUARE_INCHES_PER_SQUARE_METER, AreaUnit.SquareInches);
-                case AreaUnit.SquareFeet:
-                    return new Area(_value * SQUARE_INCHES_PER_SQUARE_FOOT, AreaUnit.SquareInches);
-                case AreaUnit.SquareInches:
-                    return this;
-                case AreaUnit.SquareKilometers:
-                    return new Area(_value * SQUARE_INCHES_PER_SQUARE_KILOMETER, AreaUnit.SquareInches);
-                case AreaUnit.SquareStatuteMiles:
-                    return new Area(_value * SQUARE_INCHES_PER_SQUARE_STATUTE_MILE, AreaUnit.SquareInches);
-                case AreaUnit.SquareNauticalMiles:
-                    return new Area(_value * SQUARE_INCHES_PER_SQUARE_NAUTICAL_MILE, AreaUnit.SquareInches);
-                default:
-                    // This should never happen!  Included only to satisfy the compiler
-                    return Empty;
-            }
+                AreaUnit.Acres => new Area(_value * SQUARE_INCHES_PER_ACRE, AreaUnit.SquareInches),
+                AreaUnit.SquareCentimeters => new Area(_value * SQUARE_INCHES_PER_SQUARE_CENTIMETER, AreaUnit.SquareInches),
+                AreaUnit.SquareMeters => new Area(_value * SQUARE_INCHES_PER_SQUARE_METER, AreaUnit.SquareInches),
+                AreaUnit.SquareFeet => new Area(_value * SQUARE_INCHES_PER_SQUARE_FOOT, AreaUnit.SquareInches),
+                AreaUnit.SquareInches => this,
+                AreaUnit.SquareKilometers => new Area(_value * SQUARE_INCHES_PER_SQUARE_KILOMETER, AreaUnit.SquareInches),
+                AreaUnit.SquareStatuteMiles => new Area(_value * SQUARE_INCHES_PER_SQUARE_STATUTE_MILE, AreaUnit.SquareInches),
+                AreaUnit.SquareNauticalMiles => new Area(_value * SQUARE_INCHES_PER_SQUARE_NAUTICAL_MILE, AreaUnit.SquareInches),
+                _ => Empty,// This should never happen!  Included only to satisfy the compiler
+            };
         }
 
         /// <summary>
@@ -858,28 +784,18 @@ namespace DotSpatial.Positioning
         /// may convert from any unit type to any other unit type.</remarks>
         public Area ToSquareKilometers()
         {
-            switch (_units)
+            return Units switch
             {
-                case AreaUnit.Acres:
-                    return new Area(_value * SQUARE_KILOMETERS_PER_ACRE, AreaUnit.SquareKilometers);
-                case AreaUnit.SquareCentimeters:
-                    return new Area(_value * SQUARE_KILOMETERS_PER_SQUARE_CENTIMETER, AreaUnit.SquareKilometers);
-                case AreaUnit.SquareMeters:
-                    return new Area(_value * SQUARE_KILOMETERS_PER_SQUARE_METER, AreaUnit.SquareKilometers);
-                case AreaUnit.SquareFeet:
-                    return new Area(_value * SQUARE_KILOMETERS_PER_SQUARE_FOOT, AreaUnit.SquareKilometers);
-                case AreaUnit.SquareInches:
-                    return new Area(_value * SQUARE_KILOMETERS_PER_SQUARE_INCH, AreaUnit.SquareKilometers);
-                case AreaUnit.SquareKilometers:
-                    return this;
-                case AreaUnit.SquareStatuteMiles:
-                    return new Area(_value * SQUARE_KILOMETERS_PER_SQUARE_STATUTE_MILE, AreaUnit.SquareKilometers);
-                case AreaUnit.SquareNauticalMiles:
-                    return new Area(_value * SQUARE_KILOMETERS_PER_SQUARE_NAUTICAL_MILE, AreaUnit.SquareKilometers);
-                default:
-                    // This should never happen!  Included only to satisfy the compiler
-                    return Empty;
-            }
+                AreaUnit.Acres => new Area(_value * SQUARE_KILOMETERS_PER_ACRE, AreaUnit.SquareKilometers),
+                AreaUnit.SquareCentimeters => new Area(_value * SQUARE_KILOMETERS_PER_SQUARE_CENTIMETER, AreaUnit.SquareKilometers),
+                AreaUnit.SquareMeters => new Area(_value * SQUARE_KILOMETERS_PER_SQUARE_METER, AreaUnit.SquareKilometers),
+                AreaUnit.SquareFeet => new Area(_value * SQUARE_KILOMETERS_PER_SQUARE_FOOT, AreaUnit.SquareKilometers),
+                AreaUnit.SquareInches => new Area(_value * SQUARE_KILOMETERS_PER_SQUARE_INCH, AreaUnit.SquareKilometers),
+                AreaUnit.SquareKilometers => this,
+                AreaUnit.SquareStatuteMiles => new Area(_value * SQUARE_KILOMETERS_PER_SQUARE_STATUTE_MILE, AreaUnit.SquareKilometers),
+                AreaUnit.SquareNauticalMiles => new Area(_value * SQUARE_KILOMETERS_PER_SQUARE_NAUTICAL_MILE, AreaUnit.SquareKilometers),
+                _ => Empty,// This should never happen!  Included only to satisfy the compiler
+            };
         }
 
         /// <summary>
@@ -925,28 +841,18 @@ namespace DotSpatial.Positioning
         /// may convert from any unit type to any other unit type.</remarks>
         public Area ToSquareMeters()
         {
-            switch (_units)
+            return Units switch
             {
-                case AreaUnit.Acres:
-                    return new Area(_value * SQUARE_METERS_PER_ACRE, AreaUnit.SquareMeters);
-                case AreaUnit.SquareCentimeters:
-                    return new Area(_value * SQUARE_METERS_PER_SQUARE_CENTIMETER, AreaUnit.SquareMeters);
-                case AreaUnit.SquareMeters:
-                    return this;
-                case AreaUnit.SquareFeet:
-                    return new Area(_value * SQUARE_METERS_PER_SQUARE_FOOT, AreaUnit.SquareMeters);
-                case AreaUnit.SquareInches:
-                    return new Area(_value * SQUARE_METERS_PER_SQUARE_INCH, AreaUnit.SquareMeters);
-                case AreaUnit.SquareKilometers:
-                    return new Area(_value * SQUARE_METERS_PER_SQUARE_KILOMETER, AreaUnit.SquareMeters);
-                case AreaUnit.SquareStatuteMiles:
-                    return new Area(_value * SQUARE_METERS_PER_SQUARE_STATUTE_MILE, AreaUnit.SquareMeters);
-                case AreaUnit.SquareNauticalMiles:
-                    return new Area(_value * SQUARE_METERS_PER_SQUARE_NAUTICAL_MILE, AreaUnit.SquareMeters);
-                default:
-                    // This should never happen!  Included only to satisfy the compiler
-                    return Empty;
-            }
+                AreaUnit.Acres => new Area(_value * SQUARE_METERS_PER_ACRE, AreaUnit.SquareMeters),
+                AreaUnit.SquareCentimeters => new Area(_value * SQUARE_METERS_PER_SQUARE_CENTIMETER, AreaUnit.SquareMeters),
+                AreaUnit.SquareMeters => this,
+                AreaUnit.SquareFeet => new Area(_value * SQUARE_METERS_PER_SQUARE_FOOT, AreaUnit.SquareMeters),
+                AreaUnit.SquareInches => new Area(_value * SQUARE_METERS_PER_SQUARE_INCH, AreaUnit.SquareMeters),
+                AreaUnit.SquareKilometers => new Area(_value * SQUARE_METERS_PER_SQUARE_KILOMETER, AreaUnit.SquareMeters),
+                AreaUnit.SquareStatuteMiles => new Area(_value * SQUARE_METERS_PER_SQUARE_STATUTE_MILE, AreaUnit.SquareMeters),
+                AreaUnit.SquareNauticalMiles => new Area(_value * SQUARE_METERS_PER_SQUARE_NAUTICAL_MILE, AreaUnit.SquareMeters),
+                _ => Empty,// This should never happen!  Included only to satisfy the compiler
+            };
         }
 
         /// <summary>
@@ -992,28 +898,18 @@ namespace DotSpatial.Positioning
         /// may convert from any unit type to any other unit type.</remarks>
         public Area ToSquareNauticalMiles()
         {
-            switch (_units)
+            return Units switch
             {
-                case AreaUnit.Acres:
-                    return new Area(_value * SQUARE_NAUTICAL_MILES_PER_ACRE, AreaUnit.SquareNauticalMiles);
-                case AreaUnit.SquareCentimeters:
-                    return new Area(_value * SQUARE_NAUTICAL_MILES_PER_SQUARE_CENTIMETER, AreaUnit.SquareNauticalMiles);
-                case AreaUnit.SquareMeters:
-                    return new Area(_value * SQUARE_NAUTICAL_MILES_PER_SQUARE_METER, AreaUnit.SquareNauticalMiles);
-                case AreaUnit.SquareFeet:
-                    return new Area(_value * SQUARE_NAUTICAL_MILES_PER_SQUARE_FOOT, AreaUnit.SquareNauticalMiles);
-                case AreaUnit.SquareInches:
-                    return new Area(_value * SQUARE_NAUTICAL_MILES_PER_SQUARE_INCH, AreaUnit.SquareNauticalMiles);
-                case AreaUnit.SquareKilometers:
-                    return new Area(_value * SQUARE_NAUTICAL_MILES_PER_SQUARE_KILOMETER, AreaUnit.SquareNauticalMiles);
-                case AreaUnit.SquareStatuteMiles:
-                    return new Area(_value * SQUARE_NAUTICAL_MILES_PER_SQUARE_STATUTE_MILE, AreaUnit.SquareNauticalMiles);
-                case AreaUnit.SquareNauticalMiles:
-                    return this;
-                default:
-                    // This should never happen!  Included only to satisfy the compiler
-                    return Empty;
-            }
+                AreaUnit.Acres => new Area(_value * SQUARE_NAUTICAL_MILES_PER_ACRE, AreaUnit.SquareNauticalMiles),
+                AreaUnit.SquareCentimeters => new Area(_value * SQUARE_NAUTICAL_MILES_PER_SQUARE_CENTIMETER, AreaUnit.SquareNauticalMiles),
+                AreaUnit.SquareMeters => new Area(_value * SQUARE_NAUTICAL_MILES_PER_SQUARE_METER, AreaUnit.SquareNauticalMiles),
+                AreaUnit.SquareFeet => new Area(_value * SQUARE_NAUTICAL_MILES_PER_SQUARE_FOOT, AreaUnit.SquareNauticalMiles),
+                AreaUnit.SquareInches => new Area(_value * SQUARE_NAUTICAL_MILES_PER_SQUARE_INCH, AreaUnit.SquareNauticalMiles),
+                AreaUnit.SquareKilometers => new Area(_value * SQUARE_NAUTICAL_MILES_PER_SQUARE_KILOMETER, AreaUnit.SquareNauticalMiles),
+                AreaUnit.SquareStatuteMiles => new Area(_value * SQUARE_NAUTICAL_MILES_PER_SQUARE_STATUTE_MILE, AreaUnit.SquareNauticalMiles),
+                AreaUnit.SquareNauticalMiles => this,
+                _ => Empty,// This should never happen!  Included only to satisfy the compiler
+            };
         }
 
         /// <summary>
@@ -1059,28 +955,18 @@ namespace DotSpatial.Positioning
         /// "statute mile" is frequently referred to as "mile" by itself.</remarks>
         public Area ToSquareStatuteMiles()
         {
-            switch (_units)
+            return Units switch
             {
-                case AreaUnit.Acres:
-                    return new Area(_value * SQUARE_STATUTE_MILES_PER_ACRE, AreaUnit.SquareStatuteMiles);
-                case AreaUnit.SquareCentimeters:
-                    return new Area(_value * SQUARE_STATUTE_MILES_PER_SQUARE_CENTIMETER, AreaUnit.SquareStatuteMiles);
-                case AreaUnit.SquareMeters:
-                    return new Area(_value * SQUARE_STATUTE_MILES_PER_SQUARE_METER, AreaUnit.SquareStatuteMiles);
-                case AreaUnit.SquareFeet:
-                    return new Area(_value * SQUARE_STATUTE_MILES_PER_SQUARE_FOOT, AreaUnit.SquareStatuteMiles);
-                case AreaUnit.SquareInches:
-                    return new Area(_value * SQUARE_STATUTE_MILES_PER_SQUARE_INCH, AreaUnit.SquareStatuteMiles);
-                case AreaUnit.SquareKilometers:
-                    return new Area(_value * SQUARE_STATUTE_MILES_PER_SQUARE_KILOMETER, AreaUnit.SquareStatuteMiles);
-                case AreaUnit.SquareStatuteMiles:
-                    return this;
-                case AreaUnit.SquareNauticalMiles:
-                    return new Area(_value * SQUARE_STATUTE_MILES_PER_SQUARE_NAUTICAL_MILE, AreaUnit.SquareStatuteMiles);
-                default:
-                    // This should never happen!  Included only to satisfy the compiler
-                    return Empty;
-            }
+                AreaUnit.Acres => new Area(_value * SQUARE_STATUTE_MILES_PER_ACRE, AreaUnit.SquareStatuteMiles),
+                AreaUnit.SquareCentimeters => new Area(_value * SQUARE_STATUTE_MILES_PER_SQUARE_CENTIMETER, AreaUnit.SquareStatuteMiles),
+                AreaUnit.SquareMeters => new Area(_value * SQUARE_STATUTE_MILES_PER_SQUARE_METER, AreaUnit.SquareStatuteMiles),
+                AreaUnit.SquareFeet => new Area(_value * SQUARE_STATUTE_MILES_PER_SQUARE_FOOT, AreaUnit.SquareStatuteMiles),
+                AreaUnit.SquareInches => new Area(_value * SQUARE_STATUTE_MILES_PER_SQUARE_INCH, AreaUnit.SquareStatuteMiles),
+                AreaUnit.SquareKilometers => new Area(_value * SQUARE_STATUTE_MILES_PER_SQUARE_KILOMETER, AreaUnit.SquareStatuteMiles),
+                AreaUnit.SquareStatuteMiles => this,
+                AreaUnit.SquareNauticalMiles => new Area(_value * SQUARE_STATUTE_MILES_PER_SQUARE_NAUTICAL_MILE, AreaUnit.SquareStatuteMiles),
+                _ => Empty,// This should never happen!  Included only to satisfy the compiler
+            };
         }
 
         /// <summary>
@@ -1114,28 +1000,18 @@ namespace DotSpatial.Positioning
         /// <remarks>This method will perform a conversion regardless of the current unit type.</remarks>
         public Area ToAcres()
         {
-            switch (_units)
+            return Units switch
             {
-                case AreaUnit.Acres:
-                    return this;
-                case AreaUnit.SquareCentimeters:
-                    return new Area(_value * ACRES_PER_SQUARE_CENTIMETER, AreaUnit.Acres);
-                case AreaUnit.SquareMeters:
-                    return new Area(_value * ACRES_PER_SQUARE_METER, AreaUnit.Acres);
-                case AreaUnit.SquareFeet:
-                    return new Area(_value * ACRES_PER_SQUARE_FOOT, AreaUnit.Acres);
-                case AreaUnit.SquareInches:
-                    return new Area(_value * ACRES_PER_SQUARE_INCH, AreaUnit.Acres);
-                case AreaUnit.SquareKilometers:
-                    return new Area(_value * ACRES_PER_SQUARE_KILOMETER, AreaUnit.Acres);
-                case AreaUnit.SquareStatuteMiles:
-                    return new Area(_value * ACRES_PER_SQUARE_STATUTE_MILE, AreaUnit.Acres);
-                case AreaUnit.SquareNauticalMiles:
-                    return new Area(_value * ACRES_PER_SQUARE_NAUTICAL_MILE, AreaUnit.Acres);
-                default:
-                    // This should never happen!  Included only to satisfy the compiler
-                    return Empty;
-            }
+                AreaUnit.Acres => this,
+                AreaUnit.SquareCentimeters => new Area(_value * ACRES_PER_SQUARE_CENTIMETER, AreaUnit.Acres),
+                AreaUnit.SquareMeters => new Area(_value * ACRES_PER_SQUARE_METER, AreaUnit.Acres),
+                AreaUnit.SquareFeet => new Area(_value * ACRES_PER_SQUARE_FOOT, AreaUnit.Acres),
+                AreaUnit.SquareInches => new Area(_value * ACRES_PER_SQUARE_INCH, AreaUnit.Acres),
+                AreaUnit.SquareKilometers => new Area(_value * ACRES_PER_SQUARE_KILOMETER, AreaUnit.Acres),
+                AreaUnit.SquareStatuteMiles => new Area(_value * ACRES_PER_SQUARE_STATUTE_MILE, AreaUnit.Acres),
+                AreaUnit.SquareNauticalMiles => new Area(_value * ACRES_PER_SQUARE_NAUTICAL_MILE, AreaUnit.Acres),
+                _ => Empty,// This should never happen!  Included only to satisfy the compiler
+            };
         }
 
         /// <summary>
@@ -1169,28 +1045,18 @@ namespace DotSpatial.Positioning
         /// <remarks>This method will perform a conversion regardless of the current unit type.</remarks>
         public Area ToSquareCentimeters()
         {
-            switch (_units)
+            return Units switch
             {
-                case AreaUnit.Acres:
-                    return new Area(_value * SQUARE_CENTIMETERS_PER_ACRE, AreaUnit.Acres);
-                case AreaUnit.SquareCentimeters:
-                    return this;
-                case AreaUnit.SquareMeters:
-                    return new Area(_value * SQUARE_CENTIMETERS_PER_SQUARE_METER, AreaUnit.Acres);
-                case AreaUnit.SquareFeet:
-                    return new Area(_value * SQUARE_CENTIMETERS_PER_SQUARE_FOOT, AreaUnit.Acres);
-                case AreaUnit.SquareInches:
-                    return new Area(_value * SQUARE_CENTIMETERS_PER_SQUARE_INCH, AreaUnit.Acres);
-                case AreaUnit.SquareKilometers:
-                    return new Area(_value * SQUARE_CENTIMETERS_PER_SQUARE_KILOMETER, AreaUnit.Acres);
-                case AreaUnit.SquareStatuteMiles:
-                    return new Area(_value * SQUARE_CENTIMETERS_PER_SQUARE_STATUTE_MILE, AreaUnit.Acres);
-                case AreaUnit.SquareNauticalMiles:
-                    return new Area(_value * SQUARE_CENTIMETERS_PER_SQUARE_NAUTICAL_MILE, AreaUnit.Acres);
-                default:
-                    // This should never happen!  Included only to satisfy the compiler
-                    return Empty;
-            }
+                AreaUnit.Acres => new Area(_value * SQUARE_CENTIMETERS_PER_ACRE, AreaUnit.Acres),
+                AreaUnit.SquareCentimeters => this,
+                AreaUnit.SquareMeters => new Area(_value * SQUARE_CENTIMETERS_PER_SQUARE_METER, AreaUnit.Acres),
+                AreaUnit.SquareFeet => new Area(_value * SQUARE_CENTIMETERS_PER_SQUARE_FOOT, AreaUnit.Acres),
+                AreaUnit.SquareInches => new Area(_value * SQUARE_CENTIMETERS_PER_SQUARE_INCH, AreaUnit.Acres),
+                AreaUnit.SquareKilometers => new Area(_value * SQUARE_CENTIMETERS_PER_SQUARE_KILOMETER, AreaUnit.Acres),
+                AreaUnit.SquareStatuteMiles => new Area(_value * SQUARE_CENTIMETERS_PER_SQUARE_STATUTE_MILE, AreaUnit.Acres),
+                AreaUnit.SquareNauticalMiles => new Area(_value * SQUARE_CENTIMETERS_PER_SQUARE_NAUTICAL_MILE, AreaUnit.Acres),
+                _ => Empty,// This should never happen!  Included only to satisfy the compiler
+            };
         }
 
         /// <summary>
@@ -1227,11 +1093,20 @@ namespace DotSpatial.Positioning
             Area temp = ToSquareStatuteMiles();
             // If the value is less than one, bump down
             if (Math.Abs(temp.Value) < 1.0)
+            {
                 temp = temp.ToSquareFeet();
+            }
+
             if (Math.Abs(temp.Value) < 1.0)
+            {
                 temp = temp.ToSquareInches();
+            }
+
             if (Math.Abs(temp.Value) < 1.0)
+            {
                 temp = temp.ToSquareCentimeters();
+            }
+
             return temp;
         }
 
@@ -1268,10 +1143,15 @@ namespace DotSpatial.Positioning
             Area temp = ToSquareKilometers();
             // If the value is less than one, bump down
             if (Math.Abs(temp.Value) < 1.0)
+            {
                 temp = temp.ToSquareMeters();
+            }
             // And so on until we find the right unit
             if (Math.Abs(temp.Value) < 1.0)
+            {
                 temp = temp.ToSquareCentimeters();
+            }
+
             return temp;
         }
 
@@ -1296,7 +1176,10 @@ namespace DotSpatial.Positioning
         {
             // Find the largest possible units in the local region's system
             if (RegionInfo.CurrentRegion.IsMetric)
+            {
                 return ToMetricUnitType();
+            }
+
             return ToImperialUnitType();
         }
 
@@ -1324,29 +1207,18 @@ namespace DotSpatial.Positioning
         /// <remarks>This method will perform a conversion regardless of the current unit type.</remarks>
         public Area ToUnitType(AreaUnit value)
         {
-            switch (value)
+            return value switch
             {
-                case AreaUnit.Acres:
-                    return ToAcres();
-                case AreaUnit.SquareCentimeters:
-                    return ToSquareCentimeters();
-                case AreaUnit.SquareFeet:
-                    return ToSquareFeet();
-                case AreaUnit.SquareInches:
-                    return ToSquareInches();
-                case AreaUnit.SquareKilometers:
-                    return ToSquareKilometers();
-                case AreaUnit.SquareMeters:
-                    return ToSquareMeters();
-                case AreaUnit.SquareNauticalMiles:
-                    return ToSquareNauticalMiles();
-                case AreaUnit.SquareStatuteMiles:
-
-                    return ToSquareStatuteMiles();
-                default:
-                    // This should never happen!  Included only to satisfy the compiler
-                    return Empty;
-            }
+                AreaUnit.Acres => ToAcres(),
+                AreaUnit.SquareCentimeters => ToSquareCentimeters(),
+                AreaUnit.SquareFeet => ToSquareFeet(),
+                AreaUnit.SquareInches => ToSquareInches(),
+                AreaUnit.SquareKilometers => ToSquareKilometers(),
+                AreaUnit.SquareMeters => ToSquareMeters(),
+                AreaUnit.SquareNauticalMiles => ToSquareNauticalMiles(),
+                AreaUnit.SquareStatuteMiles => ToSquareStatuteMiles(),
+                _ => Empty,// This should never happen!  Included only to satisfy the compiler
+            };
         }
 
         /// <summary>
@@ -1411,7 +1283,7 @@ namespace DotSpatial.Positioning
         /// before adding.</remarks>
         public Area Add(Area value)
         {
-            return new Area(_value + value.ToUnitType(_units).Value, _units);
+            return new Area(_value + value.ToUnitType(Units).Value, Units);
         }
 
         /// <summary>
@@ -1444,7 +1316,7 @@ namespace DotSpatial.Positioning
         /// instance before subtracting.</remarks>
         public Area Subtract(Area value)
         {
-            return new Area(_value - value.ToUnitType(_units).Value, _units);
+            return new Area(_value - value.ToUnitType(Units).Value, Units);
         }
 
         /// <summary>
@@ -1478,7 +1350,7 @@ namespace DotSpatial.Positioning
         /// instance before multiplication.</remarks>
         public Area Multiply(Area value)
         {
-            return new Area(_value * value.ToUnitType(_units).Value, _units);
+            return new Area(_value * value.ToUnitType(Units).Value, Units);
         }
 
         /// <summary>
@@ -1510,7 +1382,7 @@ namespace DotSpatial.Positioning
         /// before devision.</remarks>
         public Area Divide(Area value)
         {
-            return new Area(_value / value.ToUnitType(_units).Value, _units);
+            return new Area(_value / value.ToUnitType(Units).Value, Units);
         }
 
         /// <summary>
@@ -1547,7 +1419,7 @@ namespace DotSpatial.Positioning
         /// instance.</font></font></para></remarks>
         public Area Increment()
         {
-            return new Area(_value + 1.0, _units);
+            return new Area(_value + 1.0, Units);
         }
 
         /// <summary>
@@ -1583,7 +1455,7 @@ namespace DotSpatial.Positioning
         /// this method will not modify the current instance.</font></para></remarks>
         public Area Decrement()
         {
-            return new Area(_value - 1.0, _units);
+            return new Area(_value - 1.0, Units);
         }
 
         /// <summary>
@@ -1759,8 +1631,10 @@ namespace DotSpatial.Positioning
         public override bool Equals(object obj)
         {
             // If the type is the same, compare the values
-            if (obj is Area)
-                return Equals((Area)obj);
+            if (obj is Area area)
+            {
+                return Equals(area);
+            }
 
             // Not equal
             return false;
@@ -1927,7 +1801,7 @@ namespace DotSpatial.Positioning
         #region Conversions
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="System.String"/> to <see cref="DotSpatial.Positioning.Area"/>.
+        /// Performs an explicit conversion from <see cref="string"/> to <see cref="DotSpatial.Positioning.Area"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -1937,7 +1811,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.Area"/> to <see cref="System.String"/>.
+        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.Area"/> to <see cref="string"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -1961,7 +1835,7 @@ namespace DotSpatial.Positioning
         /// the comparison.</remarks>
         public int CompareTo(Area other)
         {
-            return _value.CompareTo(other.ToUnitType(_units).Value);
+            return _value.CompareTo(other.ToUnitType(Units).Value);
         }
 
         #endregion IComparable<Area> Members
@@ -2038,14 +1912,16 @@ namespace DotSpatial.Positioning
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             string subFormat;
             // Dim IsDecimalHandled As Boolean
             try
             {
                 // Use the default if "g" is passed
-                if (String.Compare(format, "g", true, CultureInfo.InvariantCulture) == 0)
+                if (string.Compare(format, "g", true, CultureInfo.InvariantCulture) == 0)
                 {
                     format = "#" + culture.NumberFormat.NumberGroupSeparator + "##0.00 uu";
                 }
@@ -2073,7 +1949,7 @@ namespace DotSpatial.Positioning
                     switch (subFormat.Length)
                     {
                         case 1:
-                            switch (_units)
+                            switch (Units)
                             {
                                 case AreaUnit.Acres:
                                     format = format.Replace("U", "A");
@@ -2100,9 +1976,10 @@ namespace DotSpatial.Positioning
                                     format = format.Replace("U", "nm²");
                                     break;
                             }
+
                             break;
                         case 2:
-                            switch (_units)
+                            switch (Units)
                             {
                                 case AreaUnit.Acres:
                                     format = format.Replace("UU", "ac");
@@ -2129,11 +2006,12 @@ namespace DotSpatial.Positioning
                                     format = format.Replace("UU", "sq. nmi");
                                     break;
                             }
+
                             break;
                         case 3:
                             if (Value == 1)
                             {
-                                switch (_units)
+                                switch (Units)
                                 {
                                     case AreaUnit.Acres:
                                         format = format.Replace("UUU", "acre");
@@ -2163,7 +2041,7 @@ namespace DotSpatial.Positioning
                             }
                             else
                             {
-                                switch (_units)
+                                switch (Units)
                                 {
                                     case AreaUnit.Acres:
                                         format = format.Replace("UUU", "acres");
@@ -2191,6 +2069,7 @@ namespace DotSpatial.Positioning
                                         break;
                                 }
                             }
+
                             break;
                     }
                 }
@@ -2199,16 +2078,8 @@ namespace DotSpatial.Positioning
             }
             catch (Exception ex)
             {
-#if PocketPC
-                throw new ArgumentException(Properties.Resources.Area_InvalidFormat, ex);
-#else
-                throw new ArgumentException(Resources.Area_InvalidFormat, "format", ex);
-#endif
+                throw new ArgumentException(Resources.Area_InvalidFormat, nameof(format), ex);
             }
-            // catch
-            //{
-            //    throw new ArgumentException(Properties.Resources.Area_InvalidFormat), "format");
-            //}
         }
 
         #endregion IFormattable Members
@@ -2230,7 +2101,7 @@ namespace DotSpatial.Positioning
         /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteElementString("Units", _units.ToString());
+            writer.WriteElementString("Units", Units.ToString());
             writer.WriteElementString("Value", _value.ToString("G17", CultureInfo.InvariantCulture));
         }
 
@@ -2242,9 +2113,11 @@ namespace DotSpatial.Positioning
         {
             // Move to the <Units> element
             if (!reader.IsStartElement("Units"))
+            {
                 reader.ReadToDescendant("Units");
+            }
 
-            _units = (AreaUnit)Enum.Parse(typeof(AreaUnit), reader.ReadElementContentAsString(), true);
+            Units = (AreaUnit)Enum.Parse(typeof(AreaUnit), reader.ReadElementContentAsString(), true);
             _value = reader.ReadElementContentAsDouble();
 
             reader.Read();

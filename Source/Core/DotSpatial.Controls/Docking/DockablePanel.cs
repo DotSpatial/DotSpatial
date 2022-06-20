@@ -77,7 +77,7 @@ namespace DotSpatial.Controls.Docking
                 }
 
                 _caption = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Caption"));
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(Caption)));
             }
         }
 
@@ -101,7 +101,7 @@ namespace DotSpatial.Controls.Docking
                 }
 
                 _defaultSortOrder = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("DefaultSortOrder"));
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(DefaultSortOrder)));
             }
         }
 
@@ -124,7 +124,7 @@ namespace DotSpatial.Controls.Docking
                 }
 
                 _dock = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Dock"));
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(Dock)));
             }
         }
 
@@ -147,7 +147,7 @@ namespace DotSpatial.Controls.Docking
                 }
 
                 _innerControl = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("InnerControl"));
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(InnerControl)));
             }
         }
 
@@ -170,7 +170,7 @@ namespace DotSpatial.Controls.Docking
                 }
 
                 _key = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Key"));
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(Key)));
             }
         }
 
@@ -188,7 +188,7 @@ namespace DotSpatial.Controls.Docking
             set
             {
                 _smallImage = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("SmallImage"));
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(SmallImage)));
             }
         }
 

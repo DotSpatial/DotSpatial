@@ -1,51 +1,22 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using DotSpatial.Positioning;
-#if !PocketPC || DesignTime
-
-using System.ComponentModel;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents the measurement of a straight line between between two points on
     /// Earth's surface.
     /// </summary>
     [TypeConverter("DotSpatial.Positioning.Design.DistanceConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct Distance : IFormattable, IComparable<Distance>, IEquatable<Distance>, IXmlSerializable
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private double _value;
-        /// <summary>
-        ///
-        /// </summary>
-        private DistanceUnit _units;
 
         #region Constants
 
@@ -291,8 +262,8 @@ namespace DotSpatial.Positioning
         ///   </example>
         public Distance(double value, DistanceUnit units)
         {
-            _value = value;
-            _units = units;
+            Value = value;
+            Units = units;
         }
 
         /// <summary>
@@ -345,14 +316,16 @@ namespace DotSpatial.Positioning
             if (string.IsNullOrEmpty(value))
             {
                 // Return a blank distance in Imperial or English system
-                _value = 0;
-                _units = DistanceUnit.Meters;
+                Value = 0;
+                Units = DistanceUnit.Meters;
                 return;
             }
 
             // Default to the current culture if none is given
             if (culture == null)
+            {
                 culture = CultureInfo.CurrentCulture;
+            }
 
             // Trim surrounding spaces and switch to uppercase
             value = value.Trim()
@@ -361,27 +334,29 @@ namespace DotSpatial.Positioning
             // Is it infinity?
             if (value == "INFINITY")
             {
-                _value = Infinity.Value;
-                _units = DistanceUnit.Meters;
+                Value = Infinity.Value;
+                Units = DistanceUnit.Meters;
                 return;
             }
-            if (value == "SEALEVEL" || value == "SEA LEVEL")
+
+            if (value is "SEALEVEL" or "SEA LEVEL")
             {
-                _value = SeaLevel.Value;
-                _units = DistanceUnit.Meters;
+                Value = SeaLevel.Value;
+                Units = DistanceUnit.Meters;
                 return;
             }
+
             if (value == "EMPTY")
             {
-                _value = 0;
-                _units = DistanceUnit.Meters;
+                Value = 0;
+                Units = DistanceUnit.Meters;
                 return;
             }
             // Go until the first non-number character
             int count = 0;
             while (count < value.Length)
             {
-                var subValue = value[count].ToString(CultureInfo.InvariantCulture);
+                string subValue = value[count].ToString(CultureInfo.InvariantCulture);
                 if (char.IsDigit(subValue, 0) ||
                     subValue == culture.NumberFormat.NumberGroupSeparator ||
                     subValue == culture.NumberFormat.NumberDecimalSeparator ||
@@ -391,51 +366,56 @@ namespace DotSpatial.Positioning
                     count++;
                 }
                 else
+                {
                     // Non-numeric character!
                     break;
+                }
             }
 
-            string unit = value.Substring(count).Trim();
+            string unit = value[count..].Trim();
             // Get the numeric portion
-            string numericPortion = count > 0 ? value.Substring(0, count) : "0";
+            string numericPortion = count > 0 ? value[..count] : "0";
             try
             {
-                _value = double.Parse(numericPortion, culture);
+                Value = double.Parse(numericPortion, culture);
             }
             catch (Exception ex)
             {
-#if PocketPC
-                    throw new ArgumentException(Properties.Resources.Distance_InvalidNumericPortion, ex);
-#else
-                throw new ArgumentException(Resources.Distance_InvalidNumericPortion, "value", ex);
-#endif
+                throw new ArgumentException(Resources.Distance_InvalidNumericPortion, nameof(value), ex);
             }
 
             // Try to interpret the measurement
-            if ((unit == "M") || (unit == "M.") || (unit == "METERS") || (unit == "METRES")
-                || (unit == "METRE") || (unit == "METER"))
-                _units = DistanceUnit.Meters;
-            else if ((unit == "CM") || (unit == "CM.") || (unit == "CENTIMETER")
-                     || (unit == "CENTIMETERS") || (unit == "CENTIMETRE") || (unit == "CENTIMETRES"))
-                _units = DistanceUnit.Centimeters;
-            else if ((unit == "KM") || (unit == "KM.") || (unit == "KILOMETRES")
-                     || (unit == "KILOMETERS") || (unit == "KILOMETRE") || (unit == "KILOMETER"))
-                _units = DistanceUnit.Kilometers;
-            else if ((unit == "MI") || (unit == "MI.") || (unit == "MILE")
-                     || (unit == "MILES") || (unit == "STATUTE MILES"))
-                _units = DistanceUnit.StatuteMiles;
-            else if ((unit == "NM") || (unit == "NM.") || (unit == "NAUTICAL MILE")
-                     || (unit == "NAUTICAL MILES"))
-                _units = DistanceUnit.NauticalMiles;
-            else if ((unit == "IN") || (unit == "IN.") || (unit == "\"") || (unit == "INCHES")
-                     || (unit == "INCH"))
-                _units = DistanceUnit.Inches;
-            else if ((unit == "FT") || (unit == "FT.") || (unit == "'") || (unit == "FOOT")
-                     || (unit == "FEET"))
-                _units = DistanceUnit.Feet;
+            if (unit is "M" or "M." or "METERS" or "METRES" or "METRE" or "METER")
+            {
+                Units = DistanceUnit.Meters;
+            }
+            else if (unit is "CM" or "CM." or "CENTIMETER" or "CENTIMETERS" or "CENTIMETRE" or "CENTIMETRES")
+            {
+                Units = DistanceUnit.Centimeters;
+            }
+            else if (unit is "KM" or "KM." or "KILOMETRES" or "KILOMETERS" or "KILOMETRE" or "KILOMETER")
+            {
+                Units = DistanceUnit.Kilometers;
+            }
+            else if (unit is "MI" or "MI." or "MILE" or "MILES" or "STATUTE MILES")
+            {
+                Units = DistanceUnit.StatuteMiles;
+            }
+            else if (unit is "NM" or "NM." or "NAUTICAL MILE" or "NAUTICAL MILES")
+            {
+                Units = DistanceUnit.NauticalMiles;
+            }
+            else if (unit is "IN" or "IN." or "\"" or "INCHES" or "INCH")
+            {
+                Units = DistanceUnit.Inches;
+            }
+            else if (unit is "FT" or "FT." or "'" or "FOOT" or "FEET")
+            {
+                Units = DistanceUnit.Feet;
+            }
             else
             {
-                throw new ArgumentException(Resources.Distance_InvalidUnitPortion, "value");
+                throw new ArgumentException(Resources.Distance_InvalidUnitPortion, nameof(value));
             }
         }
 
@@ -446,8 +426,8 @@ namespace DotSpatial.Positioning
         public Distance(XmlReader reader)
         {
             // Initialize all fields
-            _value = Double.NaN;
-            _units = 0;
+            Value = double.NaN;
+            Units = 0;
 
             // Deserialize the object from XML
             ReadXml(reader);
@@ -489,13 +469,7 @@ namespace DotSpatial.Positioning
         /// <seealso cref="Units">Units Property</seealso>
         /// <remarks>This property is paired with the <see cref="Units">Units</see> property to form a complete distance
         /// measurement.</remarks>
-        public double Value
-        {
-            get
-            {
-                return _value;
-            }
-        }
+        public double Value { get; private set; }
 
         /// <summary>
         /// Describes the unit portion of a distance measurement.
@@ -556,59 +530,32 @@ namespace DotSpatial.Positioning
         /// Distance3.Value = Distance1.ToMeters().Value + Distance2.ToMeters().Value;
         ///   </code>
         ///   </para></remarks>
-        public DistanceUnit Units
-        {
-            get
-            {
-                return _units;
-            }
-        }
+        public DistanceUnit Units { get; private set; }
 
         /// <summary>
         /// Returns whether the value is invalid or unspecified.
         /// </summary>
-        public bool IsInvalid
-        {
-            get
-            {
-                return double.IsNaN(_value);
-            }
-        }
+        public bool IsInvalid => double.IsNaN(Value);
 
         /// <summary>
         /// Returns whether the value is zero.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _value == 0;
-            }
-        }
+        public bool IsEmpty => Value == 0;
 
         /// <summary>
         /// Returns whether the unit of measurement is metric.
         /// </summary>
         public bool IsMetric
         {
-            get
-            {
-                return _units == DistanceUnit.Centimeters
-                    || _units == DistanceUnit.Meters
-                    || _units == DistanceUnit.Kilometers;
-            }
+            get => Units is DistanceUnit.Centimeters
+                    or DistanceUnit.Meters
+                    or DistanceUnit.Kilometers;
         }
 
         /// <summary>
         /// Returns whether the value is infinite.
         /// </summary>
-        public bool IsInfinity
-        {
-            get
-            {
-                return double.IsInfinity(_value);
-            }
-        }
+        public bool IsInfinity => double.IsInfinity(Value);
 
         #endregion Public Properties
 
@@ -683,25 +630,17 @@ namespace DotSpatial.Positioning
         /// type. You may convert from any unit type to any unit type.</remarks>
         public Distance ToFeet()
         {
-            switch (_units)
+            return Units switch
             {
-                case DistanceUnit.Meters:
-                    return new Distance(_value * FEET_PER_METER, DistanceUnit.Feet);
-                case DistanceUnit.Centimeters:
-                    return new Distance(_value * FEET_PER_CENTIMETER, DistanceUnit.Feet);
-                case DistanceUnit.Feet:
-                    return this;
-                case DistanceUnit.Inches:
-                    return new Distance(_value * FEET_PER_INCH, DistanceUnit.Feet);
-                case DistanceUnit.Kilometers:
-                    return new Distance(_value * FEET_PER_KILOMETER, DistanceUnit.Feet);
-                case DistanceUnit.StatuteMiles:
-                    return new Distance(_value * FEET_PER_STATUTE_MILE, DistanceUnit.Feet);
-                case DistanceUnit.NauticalMiles:
-                    return new Distance(_value * FEET_PER_NAUTICAL_MILE, DistanceUnit.Feet);
-                default:
-                    return Empty;
-            }
+                DistanceUnit.Meters => new Distance(Value * FEET_PER_METER, DistanceUnit.Feet),
+                DistanceUnit.Centimeters => new Distance(Value * FEET_PER_CENTIMETER, DistanceUnit.Feet),
+                DistanceUnit.Feet => this,
+                DistanceUnit.Inches => new Distance(Value * FEET_PER_INCH, DistanceUnit.Feet),
+                DistanceUnit.Kilometers => new Distance(Value * FEET_PER_KILOMETER, DistanceUnit.Feet),
+                DistanceUnit.StatuteMiles => new Distance(Value * FEET_PER_STATUTE_MILE, DistanceUnit.Feet),
+                DistanceUnit.NauticalMiles => new Distance(Value * FEET_PER_NAUTICAL_MILE, DistanceUnit.Feet),
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -747,25 +686,17 @@ namespace DotSpatial.Positioning
         /// type. You may convert from any unit type to any unit type.</remarks>
         public Distance ToInches()
         {
-            switch (_units)
+            return Units switch
             {
-                case DistanceUnit.Meters:
-                    return new Distance(_value * INCHES_PER_METER, DistanceUnit.Inches);
-                case DistanceUnit.Centimeters:
-                    return new Distance(_value * INCHES_PER_CENTIMETER, DistanceUnit.Inches);
-                case DistanceUnit.Feet:
-                    return new Distance(_value * INCHES_PER_FOOT, DistanceUnit.Inches);
-                case DistanceUnit.Inches:
-                    return this;
-                case DistanceUnit.Kilometers:
-                    return new Distance(_value * INCHES_PER_KILOMETER, DistanceUnit.Inches);
-                case DistanceUnit.StatuteMiles:
-                    return new Distance(_value * INCHES_PER_STATUTE_MILE, DistanceUnit.Inches);
-                case DistanceUnit.NauticalMiles:
-                    return new Distance(_value * INCHES_PER_NAUTICAL_MILE, DistanceUnit.Inches);
-                default:
-                    return Empty;
-            }
+                DistanceUnit.Meters => new Distance(Value * INCHES_PER_METER, DistanceUnit.Inches),
+                DistanceUnit.Centimeters => new Distance(Value * INCHES_PER_CENTIMETER, DistanceUnit.Inches),
+                DistanceUnit.Feet => new Distance(Value * INCHES_PER_FOOT, DistanceUnit.Inches),
+                DistanceUnit.Inches => this,
+                DistanceUnit.Kilometers => new Distance(Value * INCHES_PER_KILOMETER, DistanceUnit.Inches),
+                DistanceUnit.StatuteMiles => new Distance(Value * INCHES_PER_STATUTE_MILE, DistanceUnit.Inches),
+                DistanceUnit.NauticalMiles => new Distance(Value * INCHES_PER_NAUTICAL_MILE, DistanceUnit.Inches),
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -811,25 +742,17 @@ namespace DotSpatial.Positioning
         /// type. You may convert from any unit type to any unit type.</remarks>
         public Distance ToKilometers()
         {
-            switch (_units)
+            return Units switch
             {
-                case DistanceUnit.Meters:
-                    return new Distance(_value * KILOMETERS_PER_METER, DistanceUnit.Kilometers);
-                case DistanceUnit.Centimeters:
-                    return new Distance(_value * KILOMETERS_PER_CENTIMETER, DistanceUnit.Kilometers);
-                case DistanceUnit.Feet:
-                    return new Distance(_value * KILOMETERS_PER_FOOT, DistanceUnit.Kilometers);
-                case DistanceUnit.Inches:
-                    return new Distance(_value * KILOMETERS_PER_INCH, DistanceUnit.Kilometers);
-                case DistanceUnit.Kilometers:
-                    return this;
-                case DistanceUnit.StatuteMiles:
-                    return new Distance(_value * KILOMETERS_PER_STATUTE_MILE, DistanceUnit.Kilometers);
-                case DistanceUnit.NauticalMiles:
-                    return new Distance(_value * KILOMETERS_PER_NAUTICAL_MILE, DistanceUnit.Kilometers);
-                default:
-                    return Empty;
-            }
+                DistanceUnit.Meters => new Distance(Value * KILOMETERS_PER_METER, DistanceUnit.Kilometers),
+                DistanceUnit.Centimeters => new Distance(Value * KILOMETERS_PER_CENTIMETER, DistanceUnit.Kilometers),
+                DistanceUnit.Feet => new Distance(Value * KILOMETERS_PER_FOOT, DistanceUnit.Kilometers),
+                DistanceUnit.Inches => new Distance(Value * KILOMETERS_PER_INCH, DistanceUnit.Kilometers),
+                DistanceUnit.Kilometers => this,
+                DistanceUnit.StatuteMiles => new Distance(Value * KILOMETERS_PER_STATUTE_MILE, DistanceUnit.Kilometers),
+                DistanceUnit.NauticalMiles => new Distance(Value * KILOMETERS_PER_NAUTICAL_MILE, DistanceUnit.Kilometers),
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -875,25 +798,17 @@ namespace DotSpatial.Positioning
         /// type. You may convert from any unit type to any unit type.</remarks>
         public Distance ToMeters()
         {
-            switch (_units)
+            return Units switch
             {
-                case DistanceUnit.Meters:
-                    return this;
-                case DistanceUnit.Centimeters:
-                    return new Distance(_value * METERS_PER_CENTIMETER, DistanceUnit.Meters);
-                case DistanceUnit.Feet:
-                    return new Distance(_value * METERS_PER_FOOT, DistanceUnit.Meters);
-                case DistanceUnit.Inches:
-                    return new Distance(_value * METERS_PER_INCH, DistanceUnit.Meters);
-                case DistanceUnit.Kilometers:
-                    return new Distance(_value * METERS_PER_KILOMETER, DistanceUnit.Meters);
-                case DistanceUnit.StatuteMiles:
-                    return new Distance(_value * METERS_PER_STATUTE_MILE, DistanceUnit.Meters);
-                case DistanceUnit.NauticalMiles:
-                    return new Distance(_value * METERS_PER_NAUTICAL_MILE, DistanceUnit.Meters);
-                default:
-                    return Empty;
-            }
+                DistanceUnit.Meters => this,
+                DistanceUnit.Centimeters => new Distance(Value * METERS_PER_CENTIMETER, DistanceUnit.Meters),
+                DistanceUnit.Feet => new Distance(Value * METERS_PER_FOOT, DistanceUnit.Meters),
+                DistanceUnit.Inches => new Distance(Value * METERS_PER_INCH, DistanceUnit.Meters),
+                DistanceUnit.Kilometers => new Distance(Value * METERS_PER_KILOMETER, DistanceUnit.Meters),
+                DistanceUnit.StatuteMiles => new Distance(Value * METERS_PER_STATUTE_MILE, DistanceUnit.Meters),
+                DistanceUnit.NauticalMiles => new Distance(Value * METERS_PER_NAUTICAL_MILE, DistanceUnit.Meters),
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -939,25 +854,17 @@ namespace DotSpatial.Positioning
         /// type. You may convert from any unit type to any unit type.</remarks>
         public Distance ToCentimeters()
         {
-            switch (_units)
+            return Units switch
             {
-                case DistanceUnit.Centimeters:
-                    return this;
-                case DistanceUnit.Meters:
-                    return new Distance(_value * CENTIMETERS_PER_METER, DistanceUnit.Centimeters);
-                case DistanceUnit.Feet:
-                    return new Distance(_value * CENTIMETERS_PER_FOOT, DistanceUnit.Centimeters);
-                case DistanceUnit.Inches:
-                    return new Distance(_value * CENTIMETERS_PER_INCH, DistanceUnit.Centimeters);
-                case DistanceUnit.Kilometers:
-                    return new Distance(_value * CENTIMETERS_PER_KILOMETER, DistanceUnit.Centimeters);
-                case DistanceUnit.StatuteMiles:
-                    return new Distance(_value * CENTIMETERS_PER_STATUTE_MILE, DistanceUnit.Centimeters);
-                case DistanceUnit.NauticalMiles:
-                    return new Distance(_value * CENTIMETERS_PER_NAUTICAL_MILE, DistanceUnit.Centimeters);
-                default:
-                    return Empty;
-            }
+                DistanceUnit.Centimeters => this,
+                DistanceUnit.Meters => new Distance(Value * CENTIMETERS_PER_METER, DistanceUnit.Centimeters),
+                DistanceUnit.Feet => new Distance(Value * CENTIMETERS_PER_FOOT, DistanceUnit.Centimeters),
+                DistanceUnit.Inches => new Distance(Value * CENTIMETERS_PER_INCH, DistanceUnit.Centimeters),
+                DistanceUnit.Kilometers => new Distance(Value * CENTIMETERS_PER_KILOMETER, DistanceUnit.Centimeters),
+                DistanceUnit.StatuteMiles => new Distance(Value * CENTIMETERS_PER_STATUTE_MILE, DistanceUnit.Centimeters),
+                DistanceUnit.NauticalMiles => new Distance(Value * CENTIMETERS_PER_NAUTICAL_MILE, DistanceUnit.Centimeters),
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -1003,25 +910,17 @@ namespace DotSpatial.Positioning
         /// type. You may convert from any unit type to any unit type.</remarks>
         public Distance ToNauticalMiles()
         {
-            switch (_units)
+            return Units switch
             {
-                case DistanceUnit.Meters:
-                    return new Distance(_value * NAUTICAL_MILES_PER_METER, DistanceUnit.NauticalMiles);
-                case DistanceUnit.Centimeters:
-                    return new Distance(_value * NAUTICAL_MILES_PER_CENTIMETER, DistanceUnit.NauticalMiles);
-                case DistanceUnit.Feet:
-                    return new Distance(_value * NAUTICAL_MILES_PER_FOOT, DistanceUnit.NauticalMiles);
-                case DistanceUnit.Inches:
-                    return new Distance(_value * NAUTICAL_MILES_PER_INCH, DistanceUnit.NauticalMiles);
-                case DistanceUnit.Kilometers:
-                    return new Distance(_value * NAUTICAL_MILES_PER_KILOMETER, DistanceUnit.NauticalMiles);
-                case DistanceUnit.StatuteMiles:
-                    return new Distance(_value * NAUTICAL_MILES_PER_STATUTE_MILE, DistanceUnit.NauticalMiles);
-                case DistanceUnit.NauticalMiles:
-                    return this;
-                default:
-                    return Empty;
-            }
+                DistanceUnit.Meters => new Distance(Value * NAUTICAL_MILES_PER_METER, DistanceUnit.NauticalMiles),
+                DistanceUnit.Centimeters => new Distance(Value * NAUTICAL_MILES_PER_CENTIMETER, DistanceUnit.NauticalMiles),
+                DistanceUnit.Feet => new Distance(Value * NAUTICAL_MILES_PER_FOOT, DistanceUnit.NauticalMiles),
+                DistanceUnit.Inches => new Distance(Value * NAUTICAL_MILES_PER_INCH, DistanceUnit.NauticalMiles),
+                DistanceUnit.Kilometers => new Distance(Value * NAUTICAL_MILES_PER_KILOMETER, DistanceUnit.NauticalMiles),
+                DistanceUnit.StatuteMiles => new Distance(Value * NAUTICAL_MILES_PER_STATUTE_MILE, DistanceUnit.NauticalMiles),
+                DistanceUnit.NauticalMiles => this,
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -1067,25 +966,17 @@ namespace DotSpatial.Positioning
         /// type. You may convert from any unit type to any unit type.</remarks>
         public Distance ToStatuteMiles()
         {
-            switch (_units)
+            return Units switch
             {
-                case DistanceUnit.Meters:
-                    return new Distance(_value * STATUTE_MILES_PER_METER, DistanceUnit.StatuteMiles);
-                case DistanceUnit.Centimeters:
-                    return new Distance(_value * STATUTE_MILES_PER_CENTIMETER, DistanceUnit.StatuteMiles);
-                case DistanceUnit.Feet:
-                    return new Distance(_value * STATUTE_MILES_PER_FOOT, DistanceUnit.StatuteMiles);
-                case DistanceUnit.Inches:
-                    return new Distance(_value * STATUTE_MILES_PER_INCH, DistanceUnit.StatuteMiles);
-                case DistanceUnit.Kilometers:
-                    return new Distance(_value * STATUTE_MILES_PER_KILOMETER, DistanceUnit.StatuteMiles);
-                case DistanceUnit.StatuteMiles:
-                    return this;
-                case DistanceUnit.NauticalMiles:
-                    return new Distance(_value * STATUTE_MILES_PER_NAUTICAL_MILE, DistanceUnit.StatuteMiles);
-                default:
-                    return Empty;
-            }
+                DistanceUnit.Meters => new Distance(Value * STATUTE_MILES_PER_METER, DistanceUnit.StatuteMiles),
+                DistanceUnit.Centimeters => new Distance(Value * STATUTE_MILES_PER_CENTIMETER, DistanceUnit.StatuteMiles),
+                DistanceUnit.Feet => new Distance(Value * STATUTE_MILES_PER_FOOT, DistanceUnit.StatuteMiles),
+                DistanceUnit.Inches => new Distance(Value * STATUTE_MILES_PER_INCH, DistanceUnit.StatuteMiles),
+                DistanceUnit.Kilometers => new Distance(Value * STATUTE_MILES_PER_KILOMETER, DistanceUnit.StatuteMiles),
+                DistanceUnit.StatuteMiles => this,
+                DistanceUnit.NauticalMiles => new Distance(Value * STATUTE_MILES_PER_NAUTICAL_MILE, DistanceUnit.StatuteMiles),
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -1095,25 +986,17 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Distance ToUnitType(DistanceUnit newUnits)
         {
-            switch (newUnits)
+            return newUnits switch
             {
-                case DistanceUnit.Centimeters:
-                    return ToCentimeters();
-                case DistanceUnit.Feet:
-                    return ToFeet();
-                case DistanceUnit.Inches:
-                    return ToInches();
-                case DistanceUnit.Kilometers:
-                    return ToKilometers();
-                case DistanceUnit.Meters:
-                    return ToMeters();
-                case DistanceUnit.NauticalMiles:
-                    return ToNauticalMiles();
-                case DistanceUnit.StatuteMiles:
-                    return ToStatuteMiles();
-                default:
-                    return Empty;
-            }
+                DistanceUnit.Centimeters => ToCentimeters(),
+                DistanceUnit.Feet => ToFeet(),
+                DistanceUnit.Inches => ToInches(),
+                DistanceUnit.Kilometers => ToKilometers(),
+                DistanceUnit.Meters => ToMeters(),
+                DistanceUnit.NauticalMiles => ToNauticalMiles(),
+                DistanceUnit.StatuteMiles => ToStatuteMiles(),
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -1130,11 +1013,20 @@ namespace DotSpatial.Positioning
             Distance temp = ToStatuteMiles();
             // If the value is less than one, bump down
             if (Math.Abs(temp.Value) < 1.0)
+            {
                 temp = temp.ToFeet();
+            }
+
             if (Math.Abs(temp.Value) < 1.0)
+            {
                 temp = temp.ToInches();
+            }
+
             if (Math.Abs(temp.Value) < 1.0)
+            {
                 temp = temp.ToCentimeters();
+            }
+
             return temp;
         }
 
@@ -1153,11 +1045,15 @@ namespace DotSpatial.Positioning
 
             // If the value is less than one, bump down
             if (Math.Abs(temp.Value) < 1.0)
+            {
                 temp = temp.ToMeters();
+            }
 
             // And so on until we find the right unit
             if (Math.Abs(temp.Value) < 1.0)
+            {
                 temp = temp.ToCentimeters();
+            }
 
             return temp;
         }
@@ -1175,7 +1071,10 @@ namespace DotSpatial.Positioning
         {
             // Find the largest possible units in the local region's system
             if (RegionInfo.CurrentRegion.IsMetric)
+            {
                 return ToMetricUnitType();
+            }
+
             return ToImperialUnitType();
         }
 
@@ -1197,7 +1096,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Distance Round(int decimals)
         {
-            return new Distance(Math.Round(_value, decimals), _units);
+            return new Distance(Math.Round(Value, decimals), Units);
         }
 
         /// <summary>
@@ -1248,7 +1147,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Distance Add(Distance value)
         {
-            return new Distance(_value + value.ToUnitType(Units).Value, _units);
+            return new Distance(Value + value.ToUnitType(Units).Value, Units);
         }
 
         /// <summary>
@@ -1258,7 +1157,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Distance Add(double value)
         {
-            return new Distance(_value + value, _units);
+            return new Distance(Value + value, Units);
         }
 
         /// <summary>
@@ -1268,7 +1167,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Distance Subtract(Distance value)
         {
-            return new Distance(_value - value.ToUnitType(Units).Value, _units);
+            return new Distance(Value - value.ToUnitType(Units).Value, Units);
         }
 
         /// <summary>
@@ -1278,7 +1177,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Distance Subtract(double value)
         {
-            return new Distance(_value - value, _units);
+            return new Distance(Value - value, Units);
         }
 
         /// <summary>
@@ -1288,7 +1187,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Distance Multiply(Distance value)
         {
-            return new Distance(_value * value.ToUnitType(Units).Value, _units);
+            return new Distance(Value * value.ToUnitType(Units).Value, Units);
         }
 
         /// <summary>
@@ -1298,7 +1197,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Distance Multiply(double value)
         {
-            return new Distance(_value * value, _units);
+            return new Distance(Value * value, Units);
         }
 
         /// <summary>
@@ -1308,7 +1207,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Distance Divide(Distance value)
         {
-            return new Distance(_value / value.ToUnitType(Units).Value, _units);
+            return new Distance(Value / value.ToUnitType(Units).Value, Units);
         }
 
         /// <summary>
@@ -1318,7 +1217,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Distance Divide(double value)
         {
-            return new Distance(_value / value, _units);
+            return new Distance(Value / value, Units);
         }
 
         /// <summary>
@@ -1327,7 +1226,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Distance Increment()
         {
-            return new Distance(_value + 1.0, _units);
+            return new Distance(Value + 1.0, Units);
         }
 
         /// <summary>
@@ -1336,7 +1235,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Distance Decrement()
         {
-            return new Distance(_value - 1.0, _units);
+            return new Distance(Value - 1.0, Units);
         }
 
         /// <summary>
@@ -1392,78 +1291,14 @@ namespace DotSpatial.Positioning
         /// <returns>A <strong>Boolean</strong>, True if the values are equivalent.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is Distance)
+            if (obj is Distance distance)
+            {
                 // If the type is the same, compare the values
-                return Equals((Distance)obj);
+                return Equals(distance);
+            }
+
             return base.Equals(obj);
         }
-
-        ///// <summary>
-        ///// Returns a distance, in inches, matching the specified distance in pixels.
-        ///// </summary>
-        ///// <param name="pixels"></param>
-        ///// <returns></returns>
-        // public static Distance FromPixels(double pixels)
-        //{
-        //    return new Distance(pixels / CurrentPixelsPerInch, DistanceUnit.Inches);
-        //}
-
-        //        public static double CurrentPixelsPerInch
-        //        {
-        //            get
-        //            {
-        //                double pDpi;
-        //#if !PocketPC
-        //                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromHwnd((IntPtr)0))
-        //                {
-        //                    pDpi = (g.DpiX + g.DpiY) * 0.5;
-        //                }
-        //#else
-        //                //            Pocket PC:
-        //                //            Portrait / Landscape QVGA (240x320, 96 dpi)
-        //                //            Portrait / Landscape VGA (480x640, 192 dpi)
-        //                //            Square screen (240x240, 96 dpi)
-        //                //            Square screen VGA (480x480, 192 dpi)
-        //                //            Smartphone:
-        //                //            Portrait (176x220, 96 dpi)
-        //                //            Portrait QVGA (240x320, 192 dpi)
-        //                switch (System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width)
-        //                {
-        //                    case 240:
-        //                        switch (System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
-        //                        {
-        //                            case 320:
-        //                                pDpi = 192;
-        //                                break;
-        //                            default:
-        //                                pDpi = 96;
-        //                                break;
-        //                        }
-        //                        break;
-        //                    case 480:
-        //                        switch (System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
-        //                        {
-        //                            default:
-        //                                pDpi = 192;
-        //                                break;
-        //                        }
-        //                        break;
-        //                    case 176:
-        //                        switch (System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
-        //                        {
-        //                            default:
-        //                                pDpi = 96;
-        //                                break;
-        //                        }
-        //                        break;
-        //                    default:
-        //                        pDpi = 96;
-        //                        break;
-        //                }
-        //#endif
-        //                return pDpi;
-        //            }
-        //        }
 
         /// <summary>
         /// Returns a hash code for this instance.
@@ -1680,32 +1515,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public static DistanceUnit ParseDistanceUnit(string value)
         {
-#if !PocketPC || Framework20
             return (DistanceUnit)Enum.Parse(typeof(DistanceUnit), value, true);
-#else
-			return (DistanceUnit)Enum.ToObject(typeof(DistanceUnit), value);
-
-//			value = value.ToLower(CultureInfo.InvariantCulture);
-//			switch (value)
-//			{
-//				case "kilometers":
-//					return DistanceUnit.Kilometers;
-//				case "meters":
-//					return DistanceUnit.Meters;
-//				case "centimeters":
-//					return DistanceUnit.Centimeters;
-//				case "nauticalmiles":
-//					return DistanceUnit.NauticalMiles;
-//				case "statutemiles":
-//					return DistanceUnit.StatuteMiles;
-//				case "feet":
-//					return DistanceUnit.Feet;
-//				case "inches":
-//					return DistanceUnit.Inches;
-//				default:
-//					throw new ArgumentException("The specified value could not be recognized as an DistanceUnit enumeration value.");
-//			}
-#endif
         }
 
         /// <summary>
@@ -1907,7 +1717,7 @@ namespace DotSpatial.Positioning
         #region Conversions
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="System.String"/> to <see cref="DotSpatial.Positioning.Distance"/>.
+        /// Performs an explicit conversion from <see cref="string"/> to <see cref="DotSpatial.Positioning.Distance"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -1917,7 +1727,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.Distance"/> to <see cref="System.String"/>.
+        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.Distance"/> to <see cref="string"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -1938,7 +1748,7 @@ namespace DotSpatial.Positioning
         /// <remarks>This method compares the current instance to the specified object up to four digits of precision.</remarks>
         public bool Equals(Distance other)
         {
-            return _value.Equals(other.ToUnitType(_units).Value);
+            return Value.Equals(other.ToUnitType(Units).Value);
         }
 
         /// <summary>
@@ -1950,7 +1760,7 @@ namespace DotSpatial.Positioning
         /// <remarks>This method compares the current instance to the specified object at up to the specified number of digits of precision.</remarks>
         public bool Equals(Distance other, int decimals)
         {
-            return Math.Round(_value, decimals) == Math.Round(other.ToUnitType(_units).Value, decimals);
+            return Math.Round(Value, decimals) == Math.Round(other.ToUnitType(Units).Value, decimals);
         }
 
         #endregion IEquatable<Distance> Members
@@ -1997,12 +1807,14 @@ namespace DotSpatial.Positioning
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             try
             {
                 // Use the default if "g" is passed
-                if (String.Compare(format, "g", true, culture) == 0)
+                if (string.Compare(format, "g", true, culture) == 0)
                 {
                     format = "#" + culture.NumberFormat.NumberGroupSeparator + "##0.00 uu";
                 }
@@ -2028,7 +1840,7 @@ namespace DotSpatial.Positioning
                     switch (subFormat.Length)
                     {
                         case 1:
-                            switch (_units)
+                            switch (Units)
                             {
                                 case DistanceUnit.Centimeters:
                                     format = format.Replace("U", "cm");
@@ -2052,9 +1864,10 @@ namespace DotSpatial.Positioning
                                     format = format.Replace("U", "nm");
                                     break;
                             }
+
                             break;
                         case 2:
-                            switch (_units)
+                            switch (Units)
                             {
                                 case DistanceUnit.Centimeters:
                                     format = format.Replace("UU", "cm");
@@ -2078,11 +1891,12 @@ namespace DotSpatial.Positioning
                                     format = format.Replace("UU", "nm");
                                     break;
                             }
+
                             break;
                         case 3:
                             if (Value == 1)
                             {
-                                switch (_units)
+                                switch (Units)
                                 {
                                     case DistanceUnit.Centimeters:
                                         format = format.Replace("UUU", "centimeter");
@@ -2109,7 +1923,7 @@ namespace DotSpatial.Positioning
                             }
                             else
                             {
-                                switch (_units)
+                                switch (Units)
                                 {
                                     case DistanceUnit.Centimeters:
                                         format = format.Replace("UUU", "centimeters");
@@ -2134,6 +1948,7 @@ namespace DotSpatial.Positioning
                                         break;
                                 }
                             }
+
                             break;
                     }
                 }
@@ -2169,7 +1984,7 @@ namespace DotSpatial.Positioning
         /// This object is greater than <paramref name="other"/>.</returns>
         public int CompareTo(Distance other)
         {
-            return _value.CompareTo(other.ToUnitType(_units).Value);
+            return Value.CompareTo(other.ToUnitType(Units).Value);
         }
 
         #endregion IComparable<Distance> Members
@@ -2191,8 +2006,8 @@ namespace DotSpatial.Positioning
         /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteElementString("Units", _units.ToString());
-            writer.WriteElementString("Value", _value.ToString("G17", CultureInfo.InvariantCulture));
+            writer.WriteElementString("Units", Units.ToString());
+            writer.WriteElementString("Value", Value.ToString("G17", CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -2203,10 +2018,12 @@ namespace DotSpatial.Positioning
         {
             // Move to the <Units> element
             if (!reader.IsStartElement("Units"))
+            {
                 reader.ReadToDescendant("Units");
+            }
 
-            _units = (DistanceUnit)Enum.Parse(typeof(DistanceUnit), reader.ReadElementContentAsString(), true);
-            _value = reader.ReadElementContentAsDouble();
+            Units = (DistanceUnit)Enum.Parse(typeof(DistanceUnit), reader.ReadElementContentAsString(), true);
+            Value = reader.ReadElementContentAsDouble();
             reader.Read();
         }
 

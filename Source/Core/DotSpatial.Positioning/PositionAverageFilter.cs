@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -40,11 +26,6 @@ namespace DotSpatial.Positioning
         private Position3D _filteredPositon;
 
         /// <summary>
-        ///
-        /// </summary>
-        private int _sampleCount;
-
-        /// <summary>
         /// Creates an uninitialized filter with a sample count of 4
         /// </summary>
         public PositionAverageFilter()
@@ -58,7 +39,7 @@ namespace DotSpatial.Positioning
         public PositionAverageFilter(int sampleCount)
         {
             _samples = new List<Position3D>(sampleCount);
-            _sampleCount = sampleCount;
+            SampleCount = sampleCount;
         }
 
         /// <summary>
@@ -80,7 +61,7 @@ namespace DotSpatial.Positioning
         public PositionAverageFilter(IList<Position> positions, int sampleCount)
         {
             Initialize(positions);
-            _sampleCount = sampleCount;
+            SampleCount = sampleCount;
         }
 
         // Average position calculation
@@ -109,35 +90,23 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Gets the number of samples required for a valid filtered value.
         /// </summary>
-        public int SampleCount
-        {
-            get { return _sampleCount; }
-        }
+        public int SampleCount { get; private set; }
 
         /// <summary>
         /// Gets a list of the current observed locations
         /// </summary>
-        public Position3D[] ObservedLocations
-        {
-            get { return _samples.ToArray(); }
-        }
+        public Position3D[] ObservedLocations => _samples.ToArray();
 
         /// <summary>
         /// Not implemented in the PositionAverage filter. Use ObservedLocations to get a list
         /// of observed locations.
         /// </summary>
-        public override Position3D ObservedLocation
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public override Position3D ObservedLocation => throw new NotImplementedException();
 
         /// <summary>
         /// Gets the filtered location
         /// </summary>
-        public override Position3D FilteredLocation
-        {
-            get { return _filteredPositon; }
-        }
+        public override Position3D FilteredLocation => _filteredPositon;
 
         /// <summary>
         /// Gets a value indicating the state of the filter.
@@ -145,10 +114,7 @@ namespace DotSpatial.Positioning
         /// <remarks>The filter is considered initialized and thus reporting valid filtered
         /// locations, when the SampleCount property equals the number of values returned
         /// by the ObservedLocations property.</remarks>
-        public override bool IsInitialized
-        {
-            get { return _samples.Count == _sampleCount; }
-        }
+        public override bool IsInitialized => _samples.Count == SampleCount;
 
         /// <summary>
         /// Gets the time elapsed from the oldest to the most resent position sample.
@@ -161,7 +127,9 @@ namespace DotSpatial.Positioning
 
                 int count = _sampleTimes.Count;
                 if (count > 0)
+                {
                     result = _sampleTimes[count - 1].Subtract(_sampleTimes[0]);
+                }
 
                 return result;
             }
@@ -195,13 +163,13 @@ namespace DotSpatial.Positioning
         /// property.</remarks>
         public void Initialize(IList<Position3D> positions)
         {
-            _samples = new List<Position3D>(_sampleCount + 1);
-            _sampleTimes = new List<DateTime>(_sampleCount + 1);
+            _samples = new List<Position3D>(SampleCount + 1);
+            _sampleTimes = new List<DateTime>(SampleCount + 1);
 
             _samples.AddRange(positions);
             _sampleTimes.Add(DateTime.Now);
 
-            _sampleCount = positions.Count;
+            SampleCount = positions.Count;
 
             Filter();
         }
@@ -225,8 +193,8 @@ namespace DotSpatial.Positioning
         /// properties.</remarks>
         public override void Initialize(Position3D gpsPosition)
         {
-            _samples = new List<Position3D>(_sampleCount + 1);
-            _sampleTimes = new List<DateTime>(_sampleCount + 1);
+            _samples = new List<Position3D>(SampleCount + 1);
+            _sampleTimes = new List<DateTime>(SampleCount + 1);
 
             _samples.Add(gpsPosition);
             _sampleTimes.Add(DateTime.Now);
@@ -293,7 +261,7 @@ namespace DotSpatial.Positioning
             int maxCount = 0;
 
             // Only average the number of samples specified in the constructor
-            while (count > _sampleCount)
+            while (count > SampleCount)
             {
                 _samples.RemoveAt(0);
                 count--;

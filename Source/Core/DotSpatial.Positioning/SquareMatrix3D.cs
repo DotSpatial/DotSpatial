@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Drawing.Drawing2D;
@@ -63,11 +49,6 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private double _m33;
-
-        /// <summary>
-        ///
-        /// </summary>
-        private double[] _elements;
 
         #region Constructors
 
@@ -121,7 +102,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         private void Elementary()
         {
-            _elements = new[] {
+            Elements = new[] {
                 _m11, _m12, _m13,
                 _m21, _m22, _m23,
                 _m31, _m32, _m33};
@@ -134,26 +115,17 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Elements
         /// </summary>
-        public double[] Elements
-        {
-            get { return _elements; }
-        }
+        public double[] Elements { get; private set; }
 
         /// <summary>
         /// Indicates whether or not this is an identity matrix
         /// </summary>
-        public bool IsIdentity
-        {
-            get { return Equals(new SquareMatrix3D()); }
-        }
+        public bool IsIdentity => Equals(new SquareMatrix3D());
 
         /// <summary>
         /// Indicates whether or not this matrix is invertable.
         /// </summary>
-        public bool IsInvertable
-        {
-            get { return Determinant() != 0; }
-        }
+        public bool IsInvertable => Determinant() != 0;
 
         #endregion Public Properties
 
@@ -339,9 +311,15 @@ namespace DotSpatial.Positioning
         /// </summary>
         public void Reset()
         {
-            _m11 = 1; _m12 = 0; _m13 = 0;
-            _m21 = 0; _m22 = 1; _m23 = 0;
-            _m31 = 0; _m32 = 0; _m33 = 1;
+            _m11 = 1;
+            _m12 = 0;
+            _m13 = 0;
+            _m21 = 0;
+            _m22 = 1;
+            _m23 = 0;
+            _m31 = 0;
+            _m32 = 0;
+            _m33 = 1;
 
             Elementary();
         }
@@ -351,9 +329,9 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return string.Format(
@@ -375,14 +353,17 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
             if (obj is SquareMatrix3D)
+            {
                 return Equals((SquareMatrix3D)obj);
+            }
+
             return false;
         }
 
@@ -403,10 +384,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns an identity matrix.
         /// </summary>
-        public static SquareMatrix3D Identity
-        {
-            get { return new SquareMatrix3D(); }
-        }
+        public static SquareMatrix3D Identity => new();
 
         #endregion Static Properties
 

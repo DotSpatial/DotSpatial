@@ -65,7 +65,7 @@ namespace DotSpatial.Controls.Header
                 if (_key == value)
                     return;
                 _key = value;
-                OnPropertyChanged("Key");
+                OnPropertyChanged(nameof(Key));
             }
         }
 

@@ -774,20 +774,12 @@ namespace DotSpatial.Controls
         {
             Polygon pg = geom as Polygon;
             if (pg == null) return RectangleF.Empty;
-            Coordinate c;
-            switch (symb.LabelPlacementMethod)
+            Coordinate c = symb.LabelPlacementMethod switch
             {
-                case LabelPlacementMethod.Centroid:
-                    c = pg.Centroid.Coordinates[0];
-                    break;
-                case LabelPlacementMethod.InteriorPoint:
-                    c = pg.InteriorPoint.Coordinate;
-                    break;
-                default:
-                    c = geom.EnvelopeInternal.Centre;
-                    break;
-            }
-
+                LabelPlacementMethod.Centroid => pg.Centroid.Coordinates[0],
+                LabelPlacementMethod.InteriorPoint => pg.InteriorPoint.Coordinate,
+                _ => geom.EnvelopeInternal.Centre,
+            };
             return PlaceLabel(c, e, labelSize, symb, angle);
         }
 
@@ -802,29 +794,19 @@ namespace DotSpatial.Controls
             ContentAlignment orientation = symb.Orientation;
             float x = symb.OffsetX;
             float y = -symb.OffsetY;
-            switch (orientation)
+            return orientation switch
             {
-                case ContentAlignment.TopLeft:
-                    return new PointF(-size.Width + x, -size.Height + y);
-                case ContentAlignment.TopCenter:
-                    return new PointF((-size.Width / 2) + x, -size.Height + y);
-                case ContentAlignment.TopRight:
-                    return new PointF(0 + x, -size.Height + y);
-                case ContentAlignment.MiddleLeft:
-                    return new PointF(-size.Width + x, (-size.Height / 2) + y);
-                case ContentAlignment.MiddleCenter:
-                    return new PointF((-size.Width / 2) + x, (-size.Height / 2) + y);
-                case ContentAlignment.MiddleRight:
-                    return new PointF(0 + x, (-size.Height / 2) + y);
-                case ContentAlignment.BottomLeft:
-                    return new PointF(-size.Width + x, 0 + y);
-                case ContentAlignment.BottomCenter:
-                    return new PointF((-size.Width / 2) + x, 0 + y);
-                case ContentAlignment.BottomRight:
-                    return new PointF(0 + x, 0 + y);
-            }
-
-            return new PointF(0, 0);
+                ContentAlignment.TopLeft => new PointF(-size.Width + x, -size.Height + y),
+                ContentAlignment.TopCenter => new PointF((-size.Width / 2) + x, -size.Height + y),
+                ContentAlignment.TopRight => new PointF(0 + x, -size.Height + y),
+                ContentAlignment.MiddleLeft => new PointF(-size.Width + x, (-size.Height / 2) + y),
+                ContentAlignment.MiddleCenter => new PointF((-size.Width / 2) + x, (-size.Height / 2) + y),
+                ContentAlignment.MiddleRight => new PointF(0 + x, (-size.Height / 2) + y),
+                ContentAlignment.BottomLeft => new PointF(-size.Width + x, 0 + y),
+                ContentAlignment.BottomCenter => new PointF((-size.Width / 2) + x, 0 + y),
+                ContentAlignment.BottomRight => new PointF(0 + x, 0 + y),
+                _ => new PointF(0, 0),
+            };
         }
 
         private static void RotateAt(Graphics gr, float cx, float cy, float angle)

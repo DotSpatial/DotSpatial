@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.IO;
@@ -35,10 +21,6 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private StreamReader _reader;
-        /// <summary>
-        ///
-        /// </summary>
-        private TimeSpan _readInterval;
 
         /// <summary>
         /// Creates a Text File Emulator from the specified file path with a default read interval of 400 seconds
@@ -56,18 +38,14 @@ namespace DotSpatial.Positioning
         public TextFileEmulator(string filePath, TimeSpan readInterval)
         {
             _filePath = filePath;
-            _readInterval = readInterval;
+            ReadInterval = readInterval;
         }
 
         /// <summary>
         /// Gets or sets the ReadInterval for the Text File Emulator
         /// </summary>
         /// <value>The read interval.</value>
-        public TimeSpan ReadInterval
-        {
-            get { return _readInterval; }
-            set { _readInterval = value; }
-        }
+        public TimeSpan ReadInterval { get; set; }
 
         /// <summary>
         /// OnEmulation event handler
@@ -89,25 +67,16 @@ namespace DotSpatial.Positioning
             if (line != null)
             {
                 if (ReadBuffer.Count + line.Length > ReadBuffer.Capacity)
+                {
                     return;
+                }
 
                 // Write the string
                 ReadBuffer.AddRange(Encoding.ASCII.GetBytes(line));
             }
 
             // Sleep
-#if PocketPC
-            Thread.Sleep((int)_ReadInterval.TotalMilliseconds);
-#else
-            Thread.Sleep(_readInterval);
-#endif
+            Thread.Sleep(ReadInterval);
         }
-
-        // TODO: We should be able to get rid of this. Not used internally anymore.
-        // public override Emulator Clone()
-        //{
-        //    // Return a copy of this emulator
-        //    return new TextFileEmulator(_FilePath);
-        //}
     }
 }

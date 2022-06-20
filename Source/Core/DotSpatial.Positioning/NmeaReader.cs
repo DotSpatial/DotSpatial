@@ -1,20 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// | VladimirArias (Colombia) | 02/03/2014 | Added hdt nmea sentence for heading orientation
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.IO;
@@ -66,7 +51,9 @@ namespace DotSpatial.Positioning
         {
             // If the stream is null, complain
             if (stream == null)
-                throw new ArgumentNullException("stream", "The base stream of an NMEA stream cannot be null.");
+            {
+                throw new ArgumentNullException(nameof(stream), "The base stream of an NMEA stream cannot be null.");
+            }
 
             // Remember the stream
             _stream = stream;
@@ -119,6 +106,7 @@ namespace DotSpatial.Positioning
 
                 // See if this is a valid NMEA sentence
                 if (testLine != null)
+                {
                     if (
                         // Does it begin with a dollar sign?
                         testLine.StartsWith("$", StringComparison.OrdinalIgnoreCase)
@@ -127,6 +115,7 @@ namespace DotSpatial.Positioning
                     {
                         return true;
                     }
+                }
             }
 
             return false;
@@ -155,7 +144,9 @@ namespace DotSpatial.Positioning
 
                     // If it's non-null, return it
                     if (value != null)
+                    {
                         return new NmeaSentence(value);
+                    }
 
                     // Wait for a moment
                     Thread.Sleep(100);
@@ -201,7 +192,9 @@ namespace DotSpatial.Positioning
             NmeaSentence sentence = ReadSentence();
             // If it's invalid, keep reading
             while (!sentence.IsValid)
+            {
                 sentence = ReadSentence();
+            }
             // Return the sentence
             return sentence;
         }
@@ -228,40 +221,47 @@ namespace DotSpatial.Positioning
                 // Yes.  Convert it using the fast pre-parseed constructor
                 return new GprmcSentence(sentence.Sentence, sentence.CommandWord, sentence.Words, sentence.ExistingChecksum);
             }
+
             if (sentence.CommandWord.EndsWith("RMF", StringComparison.Ordinal))
             {
                 // Yes.  Convert it using the fast pre-parseed constructor
                 return new PgrmfSentence(sentence.Sentence, sentence.CommandWord, sentence.Words, sentence.ExistingChecksum);
             }
+
             if (sentence.CommandWord.EndsWith("GGA", StringComparison.Ordinal))
             {
                 // Yes.  Convert it using the fast pre-parseed constructor
                 return new GpggaSentence(sentence.Sentence, sentence.CommandWord, sentence.Words, sentence.ExistingChecksum);
             }
+
             if (sentence.CommandWord.EndsWith("GLL", StringComparison.Ordinal))
             {
                 // Yes.  Convert it using the fast pre-parseed constructor
                 return new GpgllSentence(sentence.Sentence, sentence.CommandWord, sentence.Words, sentence.ExistingChecksum);
             }
+
             if (sentence.CommandWord.EndsWith("GSV", StringComparison.Ordinal))
             {
                 // Yes.  Convert it using the fast pre-parseed constructor
                 return new GpgsvSentence(sentence.Sentence, sentence.CommandWord, sentence.Words, sentence.ExistingChecksum);
             }
+
             if (sentence.CommandWord.EndsWith("GSA", StringComparison.Ordinal))
             {
                 // Yes.  Convert it using the fast pre-parseed constructor
                 return new GpgsaSentence(sentence.Sentence, sentence.CommandWord, sentence.Words, sentence.ExistingChecksum);
             }
+
             if (sentence.CommandWord.EndsWith("VTG", StringComparison.Ordinal))
             {
                 // Yes. Convert it using the fast pre-parseed constructor
                 return new GpvtgSentence(sentence.Sentence, sentence.CommandWord, sentence.Words, sentence.ExistingChecksum);
             }
+
             if (sentence.CommandWord.EndsWith("HDT", StringComparison.Ordinal))
             {
                 // Yes. Convert it using the fast pre-parseed constructor
-                
+
                 return new GphdtSentence(sentence.Sentence, sentence.CommandWord, sentence.Words, sentence.ExistingChecksum);
             }
 
@@ -273,7 +273,9 @@ namespace DotSpatial.Positioning
 
                 // Was anything returned?
                 if (e.Result != null)
+                {
                     return e.Result;
+                }
             }
 
             // It's completely unrecognized, so return it as is
@@ -290,7 +292,9 @@ namespace DotSpatial.Positioning
             IPositionSentence sentence = ReadTypedSentence() as IPositionSentence;
             // If not, start over (recursive)
             while (sentence == null)
+            {
                 sentence = ReadTypedSentence() as IPositionSentence;
+            }
             // Return the location
             return sentence.Position;
         }
@@ -305,7 +309,9 @@ namespace DotSpatial.Positioning
             IUtcDateTimeSentence sentence = ReadTypedSentence() as IUtcDateTimeSentence;
             // If not, start over (recursive)
             while (sentence == null)
+            {
                 sentence = ReadTypedSentence() as IUtcDateTimeSentence;
+            }
             // Return the location
             return sentence.UtcDateTime;
         }
@@ -329,7 +335,9 @@ namespace DotSpatial.Positioning
             ISpeedSentence sentence = ReadTypedSentence() as ISpeedSentence;
             // If not, start over (recursive)
             while (sentence == null)
+            {
                 sentence = ReadTypedSentence() as ISpeedSentence;
+            }
             // Return the location
             return sentence.Speed;
         }
@@ -344,11 +352,13 @@ namespace DotSpatial.Positioning
             IBearingSentence sentence = ReadTypedSentence() as IBearingSentence;
             // If not, start over (recursive)
             while (sentence == null)
+            {
                 sentence = ReadTypedSentence() as IBearingSentence;
+            }
             // Return the location
             return sentence.Bearing;
         }
-        
+
         /// <summary>
         /// Reads the Heading direction
         /// </summary>
@@ -359,7 +369,9 @@ namespace DotSpatial.Positioning
             IHeadingSentence sentence = ReadTypedSentence() as IHeadingSentence;
             // If not, start over (recursive)
             while (sentence == null)
+            {
                 sentence = ReadTypedSentence() as IHeadingSentence;
+            }
             // Return the location
             return sentence.Heading;
         }
@@ -374,7 +386,9 @@ namespace DotSpatial.Positioning
             IFixQualitySentence sentence = ReadTypedSentence() as IFixQualitySentence;
             // If not, start over (recursive)
             while (sentence == null)
+            {
                 sentence = ReadTypedSentence() as IFixQualitySentence;
+            }
             // Return the location
             return sentence.FixQuality;
         }
@@ -389,7 +403,9 @@ namespace DotSpatial.Positioning
             IAltitudeSentence sentence = ReadTypedSentence() as IAltitudeSentence;
             // If not, start over (recorsive)
             while (sentence == null)
+            {
                 sentence = ReadTypedSentence() as IAltitudeSentence;
+            }
             // Return the location
             return sentence.Altitude;
         }
@@ -404,7 +420,9 @@ namespace DotSpatial.Positioning
             IHorizontalDilutionOfPrecisionSentence sentence = ReadTypedSentence() as IHorizontalDilutionOfPrecisionSentence;
             // If not, start over (recursive)
             while (sentence == null)
+            {
                 sentence = ReadTypedSentence() as IHorizontalDilutionOfPrecisionSentence;
+            }
             // Return the location
             return sentence.HorizontalDilutionOfPrecision;
         }
@@ -417,14 +435,6 @@ namespace DotSpatial.Positioning
     /// </summary>
     public class NmeaSentenceResolverEventArgs : EventArgs
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly NmeaSentence _sentence;
-        /// <summary>
-        ///
-        /// </summary>
-        private NmeaSentence _result;
 
         /// <summary>
         /// Creates a new instance of the Nmea Sentence Resolver Event arguments class
@@ -432,34 +442,18 @@ namespace DotSpatial.Positioning
         /// <param name="sentence">The sentence.</param>
         public NmeaSentenceResolverEventArgs(NmeaSentence sentence)
         {
-            _sentence = sentence;
+            Sentence = sentence;
         }
 
         /// <summary>
         /// Returns the NMEA sentence which needs to be resolved.
         /// </summary>
-        public NmeaSentence Sentence
-        {
-            get
-            {
-                return _sentence;
-            }
-        }
+        public NmeaSentence Sentence { get; }
 
         /// <summary>
         /// Controls a more-strongly-typed NMEA sentence if resolution is successful.
         /// </summary>
         /// <value>The result.</value>
-        public NmeaSentence Result
-        {
-            get
-            {
-                return _result;
-            }
-            set
-            {
-                _result = value;
-            }
-        }
+        public NmeaSentence Result { get; set; }
     }
 }

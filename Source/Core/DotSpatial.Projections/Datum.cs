@@ -233,25 +233,15 @@ namespace DotSpatial.Projections
                 if (Name == null)
                     return null;
 
-                switch (Name)
+                return Name switch
                 {
-                    case "D_WGS_1984":
-                        return "WGS84";
-
-                    case "D_Greek":
-                        return "GGRS87";
-
-                    case "D_North_American_1983":
-                        return "NAD83";
-
-                    case "D_North_American_1927":
-                        return "NAD27";
-
-                    default:
-                        // not sure where to lookup the remaining, missing values.
-                        // also we could include this information in the datum.xml file where much of this information resides.
-                        return null;
-                }
+                    "D_WGS_1984" => "WGS84",
+                    "D_Greek" => "GGRS87",
+                    "D_North_American_1983" => "NAD83",
+                    "D_North_American_1927" => "NAD27",
+                    _ => null,// not sure where to lookup the remaining, missing values.
+                              // also we could include this information in the datum.xml file where much of this information resides.
+                };
             }
             set
             {
@@ -405,9 +395,9 @@ namespace DotSpatial.Projections
         /// <exception cref="ArgumentOutOfRangeException">Throws if <paramref name="values"/> has length not 3 or 7.</exception>
         public void InitializeToWgs84(string[] values)
         {
-            if (values == null) throw new ArgumentNullException("values");
+            if (values == null) throw new ArgumentNullException(nameof(values));
             if (values.Length != 3 && values.Length != 7)
-                throw new ArgumentOutOfRangeException("values", "Unrecognized ToWgs84 array length. The number of elements in the array should be 3 or 7");
+                throw new ArgumentOutOfRangeException(nameof(values), "Unrecognized ToWgs84 array length. The number of elements in the array should be 3 or 7");
 
             _toWgs84 = new double[values.Length];
             for (int i = 0; i < values.Length; i++)

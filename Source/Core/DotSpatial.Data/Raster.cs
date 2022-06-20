@@ -557,27 +557,26 @@ namespace DotSpatial.Data
 
             // Compare the strings, ignoring case
             var eUp = extension?.ToUpper() ?? string.Empty;
-            switch (eUp)
+            return eUp switch
             {
-                case ".ASC": return RasterFileType.Ascii;
-                case ".ARC": return RasterFileType.Ascii;
-                case ".BGD": return RasterFileType.Binary;
-                case ".FLT": return RasterFileType.Flt;
-                case ".ADF": return RasterFileType.Esri;
-                case ".ECW": return RasterFileType.Ecw;
-                case ".BIL": return RasterFileType.Bil;
-                case ".SID": return RasterFileType.MrSid;
-                case ".AUX": return RasterFileType.Paux;
-                case ".PIX": return RasterFileType.PciDsk;
-                case ".DHM": return RasterFileType.Dted;
-                case ".DT0": return RasterFileType.Dted;
-                case ".DT1": return RasterFileType.Dted;
-                case ".TIF": return RasterFileType.GeoTiff;
-                case ".IMG": return RasterFileType.Bil;
-                case ".DDF": return RasterFileType.Sdts;
-            }
-
-            return RasterFileType.Custom;
+                ".ASC" => RasterFileType.Ascii,
+                ".ARC" => RasterFileType.Ascii,
+                ".BGD" => RasterFileType.Binary,
+                ".FLT" => RasterFileType.Flt,
+                ".ADF" => RasterFileType.Esri,
+                ".ECW" => RasterFileType.Ecw,
+                ".BIL" => RasterFileType.Bil,
+                ".SID" => RasterFileType.MrSid,
+                ".AUX" => RasterFileType.Paux,
+                ".PIX" => RasterFileType.PciDsk,
+                ".DHM" => RasterFileType.Dted,
+                ".DT0" => RasterFileType.Dted,
+                ".DT1" => RasterFileType.Dted,
+                ".TIF" => RasterFileType.GeoTiff,
+                ".IMG" => RasterFileType.Bil,
+                ".DDF" => RasterFileType.Sdts,
+                _ => RasterFileType.Custom,
+            };
         }
 
         /// <summary>

@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -21,48 +7,30 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Security.Permissions;
 using System.Threading;
 using Microsoft.Win32;
 
 namespace DotSpatial.Positioning
 {
-    // [RegistryPermission(SecurityAction.LinkDemand, ViewAndModify = @"HKEY_LOCAL_MACHINE\SOFTWARE\DotSpatial.Positioning\GPS.NET\3.0\Devices\Bluetooth")]
     /// <summary>
     /// Represents a service on a Bluetooth(tm) device.
     /// </summary>
     /// <remarks>Bluetooth GPS devices often provide access to data using sockets.  In order to establish a connection
     /// to a Bluetooth GPS device,</remarks>
-    [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
     public sealed class BluetoothDevice : NetworkDevice, IEquatable<BluetoothDevice>
     {
         /// <summary>
         ///
         /// </summary>
         private string _name;
-        /// <summary>
-        ///
-        /// </summary>
-        private BluetoothAddress _address;
+
         /// <summary>
         ///
         /// </summary>
         private SerialDevice _virtualSerialPort;
-        /// <summary>
-        ///
-        /// </summary>
-        private DeviceClass _class;
-        /// <summary>
-        ///
-        /// </summary>
-        private DeviceClass _minorClass;
-        /// <summary>
-        ///
-        /// </summary>
-        private ServiceClass _serviceClass;
+
 #if ServicesSupported
         /* For our purposes, we can assume that Bluetooth devices will offer a generic L2Cap/RFCOMM service.
          * that's good enough.
@@ -92,10 +60,6 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private static TimeSpan _discoveryTimeout = TimeSpan.FromSeconds(5);
-        /// <summary>
-        ///
-        /// </summary>
-        private static int _maximumAllowedFailures = 20;
 
         #region Constants
 
@@ -148,19 +112,19 @@ namespace DotSpatial.Positioning
         /// <param name="name">The name.</param>
         public BluetoothDevice(BluetoothAddress address, string name)
             : base(
-                // Open a Bluetooth connection as a stream
+               // Open a Bluetooth connection as a stream
                BLUETOOTH_FAMILY,
-                // Streams are used for all communications
+               // Streams are used for all communications
                SocketType.Stream,
-                // All Bluetooth connections will use RFComm (?)
+               // All Bluetooth connections will use RFComm (?)
                RF_COMM,
-                /* After dicking around with many Bluetooth devices, I find that a vast majority of them
-                 * expose a single service on port one (1), with no GUID.  So, it's a pretty safe assumption.
-                 * However, a service GUID *is* required on mobile devices.
-                 */
+               /* After dicking around with many Bluetooth devices, I find that a vast majority of them
+                * expose a single service on port one (1), with no GUID.  So, it's a pretty safe assumption.
+                * However, a service GUID *is* required on mobile devices.
+                */
                new BluetoothEndPoint(address, _rfCommServiceGuid))
         {
-            _address = address;
+            Address = address;
             _name = name;
 
             // Read the cache
@@ -183,7 +147,7 @@ namespace DotSpatial.Positioning
                 // Use the endpoint
                 endPoint)
         {
-            _address = endPoint.Address;
+            Address = endPoint.Address;
             _name = name;
 
             // Populate cache information
@@ -210,13 +174,7 @@ namespace DotSpatial.Positioning
         [Description("Returns the address of the device.")]
         [Browsable(true)]
         [ParenthesizePropertyName(true)]
-        public BluetoothAddress Address
-        {
-            get
-            {
-                return _address;
-            }
-        }
+        public BluetoothAddress Address { get; }
 
         /// <summary>
         /// Returns the primary purpose of the device.
@@ -224,13 +182,7 @@ namespace DotSpatial.Positioning
         [Category("Bluetooth")]
         [Description("Returns the primary purpose of the device.")]
         [Browsable(true)]
-        public DeviceClass Class
-        {
-            get
-            {
-                return _class;
-            }
-        }
+        public DeviceClass Class { get; private set; }
 
         /// <summary>
         /// Returns a sub-category describing the purpose of the device.
@@ -238,13 +190,7 @@ namespace DotSpatial.Positioning
         [Category("Bluetooth")]
         [Description("Returns a sub-category describing the purpose of the device.")]
         [Browsable(true)]
-        public DeviceClass MinorClass
-        {
-            get
-            {
-                return _minorClass;
-            }
-        }
+        public DeviceClass MinorClass { get; private set; }
 
         /// <summary>
         /// Returns the major type of device.
@@ -252,13 +198,7 @@ namespace DotSpatial.Positioning
         [Category("Bluetooth")]
         [Description("Returns the major type of device.")]
         [Browsable(true)]
-        public ServiceClass ServiceClass
-        {
-            get
-            {
-                return _serviceClass;
-            }
-        }
+        public ServiceClass ServiceClass { get; private set; }
 
         /// <summary>
         /// Returns a serial device which has been linked to this device.
@@ -284,7 +224,7 @@ namespace DotSpatial.Positioning
                      */
 
                     // Start with the device address, without the colons
-                    string address = _address.ToString().Replace(":", string.Empty);
+                    string address = Address.ToString().Replace(":", string.Empty);
 
                     /* Now examine the registry
                      *
@@ -298,7 +238,9 @@ namespace DotSpatial.Positioning
 
                     // If this is null, there are no virtual ports at all
                     if (key == null)
+                    {
                         return null;
+                    }
 
                     // Yes.  Enumerate the enumerators
                     string[] bluetoothEnumerators = key.GetSubKeyNames();
@@ -337,7 +279,10 @@ namespace DotSpatial.Positioning
                         }
 
                         // Clean up
-                        if (enumeratorKey != null) enumeratorKey.Close();
+                        if (enumeratorKey != null)
+                        {
+                            enumeratorKey.Close();
+                        }
                     }
 
                     // Clean up
@@ -363,8 +308,10 @@ namespace DotSpatial.Positioning
             get
             {
                 // If the name is not known, try to get it now
-                if (_name.Equals(_address.ToString()))
+                if (_name.Equals(Address.ToString()))
+                {
                     Refresh();
+                }
 
                 return _name;
             }
@@ -376,14 +323,8 @@ namespace DotSpatial.Positioning
         /// <value><c>true</c> if [allow connections]; otherwise, <c>false</c>.</value>
         public override bool AllowConnections
         {
-            get
-            {
-                return base.AllowConnections && Devices.AllowBluetoothConnections;
-            }
-            set
-            {
-                base.AllowConnections = value;
-            }
+            get => base.AllowConnections && Devices.AllowBluetoothConnections;
+            set => base.AllowConnections = value;
         }
 
         /// <summary>
@@ -393,7 +334,9 @@ namespace DotSpatial.Positioning
         protected override void Dispose(bool disposing)
         {
             if (_virtualSerialPort != null)
+            {
                 _virtualSerialPort.Dispose();
+            }
 
             if (disposing)
             {
@@ -420,8 +363,7 @@ namespace DotSpatial.Positioning
             }
 
             // Is this a computer?
-            if (Class == DeviceClass.Computer
-                || Class == DeviceClass.Phone)
+            if (Class is DeviceClass.Computer or DeviceClass.Phone)
             {
                 Debug.WriteLine(Name + " will not be tested because it is a computer", Devices.DEBUG_CATEGORY);
                 Devices.OnDeviceDetectionAttemptFailed(
@@ -440,7 +382,9 @@ namespace DotSpatial.Positioning
 
             // If we have a track record of success and a connection worked in the past hour, that's good enough.
             if (SuccessfulDetectionCount > 5 && DateTime.Now.Subtract(DateDetected) < TimeSpan.FromHours(1))
+            {
                 return true;
+            }
 
 #if ServicesSupported
             // If we're still discovering services, wait.
@@ -481,7 +425,9 @@ namespace DotSpatial.Positioning
 
             // Yes!  If nobody needs this stream, and we created it, close it
             if (!Devices.IsStreamNeeded)
+            {
                 Close();
+            }
 
             // Return success
             return true;
@@ -494,7 +440,7 @@ namespace DotSpatial.Positioning
         {
             try
             {
-                Registry.LocalMachine.DeleteSubKeyTree(MY_ROOT_KEY_NAME + _address);
+                Registry.LocalMachine.DeleteSubKeyTree(MY_ROOT_KEY_NAME + Address);
             }
             catch (UnauthorizedAccessException)
             { }
@@ -518,7 +464,7 @@ namespace DotSpatial.Positioning
             try
             {
                 // Save device information
-                deviceKey = Registry.LocalMachine.CreateSubKey(MY_ROOT_KEY_NAME + _address);
+                deviceKey = Registry.LocalMachine.CreateSubKey(MY_ROOT_KEY_NAME + Address);
                 if (deviceKey != null)
                 {
                     // Save the friendly name of the device
@@ -544,7 +490,9 @@ namespace DotSpatial.Positioning
                         {
                             // Save the name
                             if (endPoint.Name != null)
+                            {
                                 endPointKey.SetValue(string.Empty, endPoint.Name);
+                            }
 
                             // Save the service GUID
                             endPointKey.SetValue("GUID", endPoint.Service.ToString());
@@ -565,7 +513,9 @@ namespace DotSpatial.Positioning
             finally
             {
                 if (deviceKey != null)
+                {
                     deviceKey.Close();
+                }
             }
         }
 
@@ -575,9 +525,11 @@ namespace DotSpatial.Positioning
         protected override void OnCacheRead()
         {
             // Save device stats
-            RegistryKey deviceKey = Registry.LocalMachine.OpenSubKey(MY_ROOT_KEY_NAME + _address, false);
+            RegistryKey deviceKey = Registry.LocalMachine.OpenSubKey(MY_ROOT_KEY_NAME + Address, false);
             if (deviceKey == null)
+            {
                 return;
+            }
 
             // Update the baud rate and etc.
             foreach (string name in deviceKey.GetValueNames())
@@ -603,13 +555,13 @@ namespace DotSpatial.Positioning
                         SetTotalConnectionTime(TimeSpan.Parse(Convert.ToString(deviceKey.GetValue(name), CultureInfo.InvariantCulture)));
                         break;
                     case "Class":
-                        _class = (DeviceClass)Enum.Parse(typeof(DeviceClass), Convert.ToString(deviceKey.GetValue(name), CultureInfo.InvariantCulture), false);
+                        Class = (DeviceClass)Enum.Parse(typeof(DeviceClass), Convert.ToString(deviceKey.GetValue(name), CultureInfo.InvariantCulture), false);
                         break;
                     case "Minor Class":
-                        _minorClass = (DeviceClass)Enum.Parse(typeof(DeviceClass), Convert.ToString(deviceKey.GetValue(name), CultureInfo.InvariantCulture), false);
+                        MinorClass = (DeviceClass)Enum.Parse(typeof(DeviceClass), Convert.ToString(deviceKey.GetValue(name), CultureInfo.InvariantCulture), false);
                         break;
                     case "Service Class":
-                        _serviceClass = (ServiceClass)Enum.Parse(typeof(ServiceClass), Convert.ToString(deviceKey.GetValue(name), CultureInfo.InvariantCulture), false);
+                        ServiceClass = (ServiceClass)Enum.Parse(typeof(ServiceClass), Convert.ToString(deviceKey.GetValue(name), CultureInfo.InvariantCulture), false);
                         break;
                 }
             }
@@ -619,13 +571,15 @@ namespace DotSpatial.Positioning
             {
                 RegistryKey endPointKey = deviceKey.OpenSubKey(portName, false);
                 if (endPointKey == null)
+                {
                     continue;
+                }
 
                 // Deserialize the endpoint
                 string name = Convert.ToString(endPointKey.GetValue(string.Empty), CultureInfo.InvariantCulture);
                 int port = Convert.ToInt32(portName);
                 Guid guid = new(Convert.ToString(endPointKey.GetValue("GUID"), CultureInfo.InvariantCulture));
-                BluetoothEndPoint endPoint = new(_address, guid, port);
+                BluetoothEndPoint endPoint = new(Address, guid, port);
                 endPoint.SetName(name);
                 endPoint.SuccessfulDetectionCount = Convert.ToInt32(endPointKey.GetValue("Number of Times Detected"));
                 endPoint.FailedDetectionCount = Convert.ToInt32(endPointKey.GetValue("Number of Times Failed"));
@@ -652,17 +606,7 @@ namespace DotSpatial.Positioning
         /// could return wireless headphones, or the neighbor's computer.  This property controls how many times a device will be
         /// tested before it is no longer included for searches.  If a device's failure count goes beyond this number, attempts
         /// will no longer be made to connect to the device.</remarks>
-        public static int MaximumAllowedFailures
-        {
-            get
-            {
-                return _maximumAllowedFailures;
-            }
-            set
-            {
-                _maximumAllowedFailures = value;
-            }
-        }
+        public static int MaximumAllowedFailures { get; set; } = 20;
 
         /// <summary>
         /// Returns a list of known Bluetooth devices.
@@ -695,14 +639,13 @@ namespace DotSpatial.Positioning
         /// <value>The discovery timeout.</value>
         public static TimeSpan DiscoveryTimeout
         {
-            get
-            {
-                return _discoveryTimeout;
-            }
+            get => _discoveryTimeout;
             set
             {
                 if (value.TotalSeconds > 255)
+                {
                     throw new ArgumentOutOfRangeException("DiscoveryTimeout", "The discovery timeout must be a value between 0 and 255 seconds.");
+                }
 
                 _discoveryTimeout = value;
             }
@@ -739,11 +682,15 @@ namespace DotSpatial.Positioning
         {
             // Is discovery already in progress?
             if (_isDeviceDiscoveryInProgress)
+            {
                 return;
+            }
 
             // Is Bluetooth enabled?
             if (!Devices.IsBluetoothEnabled)
+            {
                 throw new InvalidOperationException("Bluetooth is currently turned off.");
+            }
 
             // Signal that we've started
             _isDeviceDiscoveryInProgress = true;
@@ -753,12 +700,12 @@ namespace DotSpatial.Positioning
 
             // Start Bluetooth discovery
             DeviceDiscoveryThread = new Thread(DiscoverDevicesThreadProc)
-                                        {
-                                            IsBackground = true,
-                                            Name =
+            {
+                IsBackground = true,
+                Name =
                                                 "GPS.NET Bluetooth Device Discovery Thread (http://dotspatial.codeplex.com)",
-                                            Priority = ThreadPriority.Lowest
-                                        };
+                Priority = ThreadPriority.Lowest
+            };
 
             DeviceDiscoveryThread.Start();
 
@@ -787,7 +734,9 @@ namespace DotSpatial.Positioning
                 || !DeviceDiscoveryThread.IsAlive
 
             )
+            {
                 return true;
+            }
 
             return DeviceDiscoveryThread.Join(timeout);
         }
@@ -835,9 +784,8 @@ namespace DotSpatial.Positioning
              * 'critical finalizer'.
              */
 
-#if !PocketPC
             RuntimeHelpers.PrepareConstrainedRegions();
-#endif
+      
             try
             {
                 /* Service discovery for Bluetooth devices is very similar to discovery for new devices.
@@ -886,17 +834,12 @@ namespace DotSpatial.Positioning
                 // Pass in a pointer to the device
                 query.lpszContext = deviceAddressHandle.AddrOfPinnedObject();
 
-#if !PocketPC
                 // Next, flags are configured which instruct the API call to return specific information
                 NativeMethods.LookupFlags flags = NativeMethods.LookupFlags.None;
 
                 // If we're flushing the cache, add that flag
                 if (_IsDeviceDiscoveryCacheFlushed)
                     flags |= NativeMethods.LookupFlags.FlushCache;
-#else
-                // Next, flags are configured which instruct the API call to return specific information
-                NativeMethods.LookupFlags flags = NativeMethods.LookupFlags.Containers;
-#endif
 
                 // Perform the query
                 returnCode = NativeMethods.WSALookupServiceBegin(query, flags, ref queryHandle);
@@ -943,16 +886,12 @@ namespace DotSpatial.Positioning
                     returnCode = NativeMethods.WSALookupServiceNext(
                         // Use the handle of our current query
                         queryHandle,
-#if !PocketPC
                         // Indicate that we want the GUID, name and and comments
                         NativeMethods.LookupFlags.ReturnType
                         | NativeMethods.LookupFlags.ReturnAddr
                         | NativeMethods.LookupFlags.ReturnName
                         | NativeMethods.LookupFlags.ReturnComment,
-#else
-                        // Indicate that we want the GUID and the name
-                        NativeMethods.LookupFlags.None,
-#endif
+     
                         // Indicate the size of the block of memory
                         ref resultBufferSize,
                         // Pass a pointer to the memory block itself
@@ -1052,7 +991,6 @@ namespace DotSpatial.Positioning
              * 'critical finalizer'.
              */
 
-            RuntimeHelpers.PrepareConstrainedRegions();
             try
             {
                 /* Bluetooth device discovery involves making calls to native methods, namely
@@ -1069,7 +1007,9 @@ namespace DotSpatial.Positioning
                 NativeMethods2.WsaData data = new();
                 int returnCode = NativeMethods2.WSAStartup(36, data);
                 if (returnCode != 0)
+                {
                     throw new Win32Exception(Marshal.GetLastWin32Error());
+                }
 
                 #region Start a search for devices
 
@@ -1086,7 +1026,9 @@ namespace DotSpatial.Positioning
 
                 // Are we ignoring the cache?  If so, add the flag
                 if (_isDeviceDiscoveryCacheFlushed)
+                {
                     controlOptions |= NativeMethods2.WasLookupControlOptions.FlushCache;
+                }
 
                 /* For this circumstance, we must specify additional query information in the
                  * form of a BLOB containing a BTH_QUERY_DEVICE  (I know lol)
@@ -1209,7 +1151,9 @@ namespace DotSpatial.Positioning
 
                     // Is there no blob?
                     if (result.EntityBlob == IntPtr.Zero)
+                    {
                         continue;
+                    }
 
                     // Deserialize the blob into delicious cake
                     Marshal.PtrToStructure(result.EntityBlob, resultBlob);
@@ -1229,12 +1173,16 @@ namespace DotSpatial.Positioning
                     foreach (BluetoothDevice existing in Devices.BluetoothDevices)
                     {
                         if (existing.Address.Equals(deviceInfo.Address))
+                        {
                             alreadyExists = true;
+                        }
                     }
 
                     // If it already exists, continue
                     if (alreadyExists)
+                    {
                         continue;
+                    }
 
                     // Create a device from this information
                     BluetoothDevice device = deviceInfo.ToDevice();
@@ -1243,8 +1191,7 @@ namespace DotSpatial.Positioning
                     device.Refresh();
 
                     // Raise en event signaling the detection
-                    if (DeviceDiscovered != null)
-                        DeviceDiscovered(null, new DeviceEventArgs(device));
+                    DeviceDiscovered?.Invoke(null, new DeviceEventArgs(device));
 
                     #endregion Decode the device information
                 }
@@ -1280,7 +1227,9 @@ namespace DotSpatial.Positioning
 
                 // If a query was in progress, end it
                 if (queryHandle != IntPtr.Zero)
+                {
                     NativeMethods2.WSALookupServiceEnd(queryHandle);
+                }
 
                 // Finally, finish with stuffs
                 NativeMethods2.WSACleanup();
@@ -1296,8 +1245,6 @@ namespace DotSpatial.Positioning
 
         #region Internal Methods
 
-#if !PocketPC
-
         /// <summary>
         /// Refreshes this instance.
         /// </summary>
@@ -1310,17 +1257,21 @@ namespace DotSpatial.Positioning
 
             // Do we have a Bluetooth radio to work with?
             if (BluetoothRadio.Current == null)
+            {
                 return;
+            }
 
             // Make an API call to retrieve information for the device
-            NativeMethods2.BluetoothDeviceInfo info = new(_address.ToInt64());
+            NativeMethods2.BluetoothDeviceInfo info = new(Address.ToInt64());
             int errorCode = NativeMethods2.BluetoothGetDeviceInfo(BluetoothRadio.Current.Handle, ref info);
             if (errorCode != 0)
             {
                 // And error code of "1168" means the device was not found.  It just means that
                 // the device is unknown by the system and no info is available.
                 if (errorCode == 1168)
+                {
                     return;
+                }
 
                 throw new Win32Exception(errorCode);
             }
@@ -1339,31 +1290,25 @@ namespace DotSpatial.Positioning
 
             // If the date/time the device was last used exists, use it
             if (info.LastUsed.Year != 0)
+            {
                 SetDateConnected(info.LastUsed.ToDateTime());
+            }
 
             // Was a friendly name returned?  If so, use it
-            if (!String.IsNullOrEmpty(info.Name))
+            if (!string.IsNullOrEmpty(info.Name))
+            {
                 _name = info.Name;
+            }
 
             // Some additional shiz; the class and sub-class for the device.  GPS is surprisingly unorganized here!
             // The class will typically be "Miscellaneous" for BT GPS devices :P
-            _class = (DeviceClass)(info.DeviceClass & 0x1F00);
-            _minorClass = (DeviceClass)(info.DeviceClass & 0xFC);
-            _serviceClass = (ServiceClass)(info.DeviceClass & 0xFFE000);
+            Class = (DeviceClass)(info.DeviceClass & 0x1F00);
+            MinorClass = (DeviceClass)(info.DeviceClass & 0xFC);
+            ServiceClass = (ServiceClass)(info.DeviceClass & 0xFFE000);
 
             // Save everything to the registry
             OnCacheWrite();
         }
-
-#else
-        // Deserializes an int into class and service information
-        internal void SetClassOfDevice(uint classOfDevice)
-        {
-            _Class = (DeviceClass)(classOfDevice & 0x1F00);
-            _MinorClass = (DeviceClass)(classOfDevice & 0xFC);
-            _ServiceClass = (ServiceClass)(classOfDevice & 0xFFE000);
-        }
-#endif
 
         #endregion Internal Methods
 
@@ -1407,7 +1352,6 @@ namespace DotSpatial.Positioning
         /// <param name="devices">The list to which the devices are added.</param>
         private static void LoadWindowsDevices(IList<BluetoothDevice> devices)
         {
-#if !PocketPC
             RegistryKey existingDevicesKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\BTHPORT\Parameters\Devices", false);
             if (existingDevicesKey != null)
             {
@@ -1429,13 +1373,14 @@ namespace DotSpatial.Positioning
 
                     // If it's not already in the list, add it
                     if (!devices.Contains(device))
+                    {
                         devices.Add(device);
+                    }
                 }
 
                 // Close the key
                 existingDevicesKey.Close();
             }
-#endif
         }
 
         #endregion Private Methods
@@ -1449,24 +1394,34 @@ namespace DotSpatial.Positioning
         /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(BluetoothDevice other)
         {
-            if (ReferenceEquals(other, null))
+            if (other is null)
+            {
                 return false;
-            return _address.Equals(other.Address);
+            }
+
+            return Address.Equals(other.Address);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as BluetoothDevice);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         #endregion IEquatable<BluetoothDevice> Members
-
-        #region Unused Code (Commented Out)
-
-        // public override void Close()
-        //{
-        //    lock (BluetoothStackSyncRoot)
-        //    {
-        //        base.Close();
-        //    }
-        //}
-
-        #endregion Unused Code (Commented Out)
     }
 
     /// <summary>

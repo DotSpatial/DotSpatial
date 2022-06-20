@@ -623,7 +623,7 @@ namespace DotSpatial.Projections
                 return info;
             }
 
-            throw new ArgumentOutOfRangeException("authority", ProjectionMessages.AuthorityCodeNotFound);
+            throw new ArgumentOutOfRangeException(nameof(authority), ProjectionMessages.AuthorityCodeNotFound);
         }
 
         /// <summary>

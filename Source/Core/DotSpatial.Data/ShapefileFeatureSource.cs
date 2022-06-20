@@ -150,19 +150,13 @@ namespace DotSpatial.Data
         {
             var header = new ShapefileHeader(filename);
 
-            switch (header.ShapeType)
+            return header.ShapeType switch
             {
-                case ShapeType.Polygon:
-                case ShapeType.PolygonM:
-                case ShapeType.PolygonZ: return new PolygonShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
-                case ShapeType.PolyLine:
-                case ShapeType.PolyLineM:
-                case ShapeType.PolyLineZ: return new LineShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
-                case ShapeType.Point:
-                case ShapeType.PointM:
-                case ShapeType.PointZ: return new PointShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
-                default: throw new ClassNotSupportedException($"Cannot create ShapefileFeatureSource for {header.ShapeType} shape type"); // TODO jany_ why use classNotSupportedException if message not a class name?  resulting Errormessage makes no sense
-            }
+                ShapeType.Polygon or ShapeType.PolygonM or ShapeType.PolygonZ => new PolygonShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows),
+                ShapeType.PolyLine or ShapeType.PolyLineM or ShapeType.PolyLineZ => new LineShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows),
+                ShapeType.Point or ShapeType.PointM or ShapeType.PointZ => new PointShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows),
+                _ => throw new ClassNotSupportedException($"Cannot create ShapefileFeatureSource for {header.ShapeType} shape type"),// TODO jany_ why use classNotSupportedException if message not a class name?  resulting Errormessage makes no sense
+            };
         }
 
         /// <summary>

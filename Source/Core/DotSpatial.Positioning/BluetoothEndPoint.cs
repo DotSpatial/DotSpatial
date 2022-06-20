@@ -1,77 +1,32 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
-#if !PocketPC
-
-using System.ComponentModel;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC
-
     /// <summary>
     /// Represents a Bluetooth service on a device.
     /// </summary>
     [Description("Returns a GUID indentifying the service.")]
     [DefaultProperty("Name")]
     [TypeConverter(typeof(ExpandableObjectConverter))]
-#endif
     public sealed class BluetoothEndPoint : EndPoint, IEquatable<BluetoothEndPoint>, IFormattable
     {
         /// <summary>
         ///
         /// </summary>
         private readonly SocketAddress _socketAddress;
-        /// <summary>
-        ///
-        /// </summary>
-        private BluetoothAddress _address;
-        /// <summary>
-        ///
-        /// </summary>
-        private Guid _service;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly int _port;
-        /// <summary>
-        ///
-        /// </summary>
-        private string _name;
-        /// <summary>
-        ///
-        /// </summary>
-        private int _successfulDetectionCount;
-        /// <summary>
-        ///
-        /// </summary>
-        private int _failedDetectionCount;
 
         /// <summary>
         ///
         /// </summary>
         private const AddressFamily BLUETOOTH_FAMILY = (AddressFamily)32;
-#if !PocketPC
+
         /// <summary>
         ///
         /// </summary>
@@ -92,13 +47,6 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private const int DEFAULT_PORT = 1;
-#else
-        private const int PacketSize = 40;
-        private const int AddressOffset = 8;
-        private const int ServiceGuidOffset = 16;
-        private const int PortOffset = 32;
-        private const int DefaultPort = 0;
-#endif
 
         #region Constructors
 
@@ -154,9 +102,9 @@ namespace DotSpatial.Positioning
         /// <param name="port">The port.</param>
         public BluetoothEndPoint(BluetoothAddress address, Guid service, int port)
         {
-            _address = address;
-            _service = service;
-            _port = port;
+            Address = address;
+            Service = service;
+            Port = port;
 
             // Create a new Bluetooth socket address
             _socketAddress = new SocketAddress(BLUETOOTH_FAMILY, PACKET_SIZE);
@@ -167,17 +115,23 @@ namespace DotSpatial.Positioning
             // Copy the device address in
             byte[] addressBytes = address.Address;
             for (int index = 0; index < 6; index++)
+            {
                 _socketAddress[index + ADDRESS_OFFSET] = addressBytes[index];
+            }
 
             // Copy in the service GUID
             byte[] guidBytes = service.ToByteArray();
             for (int index = 0; index < 16; index++)
+            {
                 _socketAddress[index + SERVICE_GUID_OFFSET] = guidBytes[index];
+            }
 
             // Copy in the port
             byte[] portBytes = BitConverter.GetBytes(port);
             for (int index = 0; index < 4; index++)
+            {
                 _socketAddress[index + PORT_OFFSET] = portBytes[index];
+            }
         }
 
         /// <summary>
@@ -191,27 +145,34 @@ namespace DotSpatial.Positioning
             // Deserialize the address
             byte[] addressBytes = new byte[6];
             for (int index = 0; index < 6; index++)
+            {
                 addressBytes[index] = socketAddress[index + ADDRESS_OFFSET];
-            _address = new BluetoothAddress(addressBytes);
+            }
+
+            Address = new BluetoothAddress(addressBytes);
 
             // Deserialize the service GUID
             byte[] serviceBytes = new byte[16];
             for (int index = 0; index < 16; index++)
+            {
                 serviceBytes[index] = socketAddress[index + SERVICE_GUID_OFFSET];
-            _service = new Guid(serviceBytes);
+            }
+
+            Service = new Guid(serviceBytes);
 
             // Deserialize the port
             byte[] portBytes = new byte[4];
             for (int index = 0; index < 4; index++)
+            {
                 portBytes[index] = socketAddress[index + PORT_OFFSET];
-            _port = BitConverter.ToInt32(portBytes, 0);
+            }
+
+            Port = BitConverter.ToInt32(portBytes, 0);
         }
 
         #endregion Constructors
 
         #region Public Properties
-
-#if !PocketPC
 
         /// <summary>
         /// Returns a GUID identifying the service.
@@ -219,16 +180,7 @@ namespace DotSpatial.Positioning
         [Category("Data")]
         [Description("Returns a GUID indentifying the service.")]
         [Browsable(true)]
-#endif
-        public Guid Service
-        {
-            get
-            {
-                return _service;
-            }
-        }
-
-#if !PocketPC
+        public Guid Service { get; }
 
         /// <summary>
         /// Returns the port used for opening connections.
@@ -236,16 +188,7 @@ namespace DotSpatial.Positioning
         [Category("Data")]
         [Description("Returns the port used for opening connections.")]
         [Browsable(true)]
-#endif
-        public int Port
-        {
-            get
-            {
-                return _port;
-            }
-        }
-
-#if !PocketPC
+        public int Port { get; }
 
         /// <summary>
         /// Returns a friendly name for the endpoint.
@@ -254,16 +197,7 @@ namespace DotSpatial.Positioning
         [Description("Returns a friendly name for the endpoint.")]
         [Browsable(true)]
         [ParenthesizePropertyName(true)]
-#endif
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-        }
-
-#if !PocketPC
+        public string Name { get; private set; }
 
         /// <summary>
         /// Returns the unique address of the device, used for connections.
@@ -271,16 +205,7 @@ namespace DotSpatial.Positioning
         [Category("Data")]
         [Description("Returns the unique address of the device, used for connections.")]
         [Browsable(true)]
-#endif
-        public BluetoothAddress Address
-        {
-            get
-            {
-                return _address;
-            }
-        }
-
-#if !PocketPC
+        public BluetoothAddress Address { get; }
 
         /// <summary>
         /// Controls the number of times this endpoint has been identified as a GPS service.
@@ -289,14 +214,7 @@ namespace DotSpatial.Positioning
         [Category("Data")]
         [Description("Controls the number of times this endpoint has been identified as a GPS service.")]
         [Browsable(true)]
-#endif
-        public int SuccessfulDetectionCount
-        {
-            get { return _successfulDetectionCount; }
-            set { _successfulDetectionCount = value; }
-        }
-
-#if !PocketPC
+        public int SuccessfulDetectionCount { get; set; }
 
         /// <summary>
         /// Controls the number of times this endpoint has failed to identify itself as a GPS service.
@@ -305,12 +223,7 @@ namespace DotSpatial.Positioning
         [Category("Data")]
         [Description("Controls the number of times this endpoint has failed to identify itself as a GPS service.")]
         [Browsable(true)]
-#endif
-        public int FailedDetectionCount
-        {
-            get { return _failedDetectionCount; }
-            set { _failedDetectionCount = value; }
-        }
+        public int FailedDetectionCount { get; set; }
 
         #endregion Public Properties
 
@@ -322,7 +235,7 @@ namespace DotSpatial.Positioning
         /// <param name="name">The name.</param>
         internal void SetName(string name)
         {
-            _name = name;
+            Name = name;
         }
 
         #endregion Internal Methods
@@ -335,23 +248,27 @@ namespace DotSpatial.Positioning
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
         {
-            return _address.GetHashCode() ^ _port.GetHashCode() ^ _service.GetHashCode();
+            return Address.GetHashCode() ^ Port.GetHashCode() ^ Service.GetHashCode();
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
             // If it's unll, return false
-            if (ReferenceEquals(obj, null))
+            if (obj is null)
+            {
                 return false;
+            }
 
             // Try to cast as this object type
             if (obj is BluetoothEndPoint endPoint)
+            {
                 return Equals(endPoint);
+            }
 
             // Not our kind of object
             return base.Equals(obj);
@@ -371,7 +288,10 @@ namespace DotSpatial.Positioning
         {
             // If it's not a BT socket, skip it
             if (socketAddress.Family != BLUETOOTH_FAMILY)
+            {
                 return base.Create(socketAddress);
+            }
+
             return new BluetoothEndPoint(socketAddress);
         }
 
@@ -390,9 +310,9 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("G", CultureInfo.CurrentUICulture);
@@ -408,13 +328,7 @@ namespace DotSpatial.Positioning
         /// <PermissionSet>
         ///   <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence"/>
         ///   </PermissionSet>
-        public override AddressFamily AddressFamily
-        {
-            get
-            {
-                return BLUETOOTH_FAMILY;
-            }
-        }
+        public override AddressFamily AddressFamily => BLUETOOTH_FAMILY;
 
         #endregion Overrides
 
@@ -427,9 +341,9 @@ namespace DotSpatial.Positioning
         /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(BluetoothEndPoint other)
         {
-            return _address.Equals(other.Address)
-                && _port.Equals(other.Port)
-                && _service.Equals(other.Service);
+            return Address.Equals(other.Address)
+                && Port.Equals(other.Port)
+                && Service.Equals(other.Service);
         }
 
         #endregion IEquatable<BluetoothEndPoint> Members
@@ -437,37 +351,42 @@ namespace DotSpatial.Positioning
         #region IFormattable Members
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            if (String.IsNullOrEmpty(_name))
+            if (string.IsNullOrEmpty(Name))
             {
                 CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
                 if (string.IsNullOrEmpty(format))
+                {
                     format = "G";
+                }
 
                 // Start with the address
-                string result = _address.ToString(format, formatProvider);
+                string result = Address.ToString(format, formatProvider);
 
                 // Append the port if it's non-zero
-                if (_port != 0)
-                    result += culture.TextInfo.ListSeparator + " Port " + _port.ToString(format, formatProvider);
+                if (Port != 0)
+                {
+                    result += culture.TextInfo.ListSeparator + " Port " + Port.ToString(format, formatProvider);
+                }
 
                 // Append the GUID if it's not empty
-                if (!_service.Equals(Guid.Empty))
+                if (!Service.Equals(Guid.Empty))
                 {
                     // Guid objects have very limited formats, the default "D" format is used.
-                    result += culture.TextInfo.ListSeparator + " Service " + _service.ToString("D", formatProvider);
+                    result += culture.TextInfo.ListSeparator + " Service " + Service.ToString("D", formatProvider);
                 }
 
                 return result;
             }
-            return _name;
+
+            return Name;
         }
 
         #endregion IFormattable Members

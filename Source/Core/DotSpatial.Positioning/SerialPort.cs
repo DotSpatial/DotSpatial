@@ -1,24 +1,10 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
-using System.Text;
-using System.IO.Ports;
-using System.IO;
 using System;
+using System.IO;
+using System.IO.Ports;
+using System.Text;
 
 namespace DotSpatial.Positioning
 {
@@ -27,28 +13,13 @@ namespace DotSpatial.Positioning
     /// known bugs and limitations.
     /// </summary>
     internal class SerialPort
-#if PocketPC
-        : IDisposable
-#else
  : System.IO.Ports.SerialPort
-#endif
     {
-#if PocketPC
-        /* Older devices run into problems when trying to use .NET's SerialPort class.
-         * For example, it will barf trying to open the GPS Intermediate Driver because
-         * the driver may *temporarily* report error #21 until the underlying GPS port
-         * is opened.  So, we need a custom SerialStream class for this case.
-         */
-        private SerialStream _BaseStream;
-        private string _Port;
-        private int _BaudRate;
-#endif
-
         /// <summary>
         ///
         /// </summary>
         private StreamReader _reader;
-        private bool onMono = Type.GetType("Mono.Runtime") != null;
+        private readonly bool onMono = Type.GetType("Mono.Runtime") != null;
 
         #region Constructors
 
@@ -59,14 +30,6 @@ namespace DotSpatial.Positioning
         {
         }
 
-#if PocketPC
-        public SerialPort(string portName, int baudRate)
-        {
-            _Port = portName;
-            _BaudRate = baudRate;
-        }
-#else
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SerialPort"/> class.
         /// </summary>
@@ -76,10 +39,6 @@ namespace DotSpatial.Positioning
             : this(portName, baudRate, Parity.None, 8, StopBits.One)
         {
         }
-
-#endif
-
-#if !PocketPC
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.IO.Ports.SerialPort"/> class using the specified port name, baud rate, parity bit, data bits, and stop bit.
@@ -99,80 +58,20 @@ namespace DotSpatial.Positioning
             WriteBufferSize = NmeaReader.IDEAL_NMEA_BUFFER_SIZE;
             ReadBufferSize = NmeaReader.IDEAL_NMEA_BUFFER_SIZE;
             if (!onMono) // ReceivedBytesThreshold is not implemented on mono, thus throwing an exception.
+            {
                 ReceivedBytesThreshold = 65535;  // We don't need this event, so max out the threshold
+            }
+
             Encoding = Encoding.ASCII;
         }
-
-#endif
 
         #endregion Constructors
 
         #region Public Properties
 
-#if PocketPC
-        public string PortName
-        {
-            get
-            {
-                return _Port;
-            }
-            set
-            {
-                _Port = value;
-            }
-        }
-
-        public int BaudRate
-        {
-            get
-            {
-                return _BaudRate;
-            }
-            set
-            {
-                _BaudRate = value;
-            }
-        }
-
-        public SerialStream BaseStream
-        {
-            get
-            {
-                return _BaseStream;
-            }
-        }
-
-        public bool IsOpen
-        {
-            get
-            {
-                return _BaseStream != null;
-            }
-        }
-
-        public int ReadTimeout
-        {
-            get
-            {
-                return _BaseStream.ReadTimeout;
-            }
-            set
-            {
-                _BaseStream.ReadTimeout = value;
-            }
-        }
-#endif
-
         #endregion Public Properties
 
         #region Public Methods
-
-#if PocketPC
-        public void Open(FileAccess access, FileShare sharing)
-        {
-            _BaseStream = new SerialStream(_Port, _BaudRate, access, sharing);
-        }
-#else
 
         /// <summary>
         /// Opens a new serial port connection.
@@ -203,26 +102,6 @@ namespace DotSpatial.Positioning
             GC.SuppressFinalize(BaseStream);
         }
 
-#endif
-
-#if PocketPC
-        public void Close()
-        {
-            if (_BaseStream != null)
-            {
-                _BaseStream.Close();
-                _BaseStream = null;
-            }
-        }
-#endif
-
-#if PocketPC
-        public void DiscardInBuffer()
-        {
-            _BaseStream.DiscardInBuffer();
-        }
-#endif
-
         /// <summary>
         /// Reads up to the <see cref="P:System.IO.Ports.SerialPort.NewLine"/> value in the input buffer.
         /// </summary>
@@ -251,22 +130,6 @@ namespace DotSpatial.Positioning
         #endregion Public Methods
 
         #region Implementation of IDisposable
-
-#if PocketPC
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-#endif
-
-#if PocketPC
-        protected void Dispose(bool disposing)
-        {
-            if (disposing)
-                Close();
-        }
-#else
 
         /// <summary>
         /// Releases the unmanaged resources used by the <see cref="T:System.IO.Ports.SerialPort"/> and optionally releases the managed resources.
@@ -298,8 +161,6 @@ namespace DotSpatial.Positioning
 
             base.Dispose(disposing);
         }
-
-#endif
 
         #endregion Implementation of IDisposable
     }

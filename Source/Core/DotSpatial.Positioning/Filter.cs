@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 
@@ -29,27 +15,22 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        private static readonly KalmanFilter _defaultFilter = new();
-
         /// <summary>
         /// The default Kalman filter
         /// </summary>
-        public static KalmanFilter Default
-        {
-            get { return _defaultFilter; }
-        }
+        public static KalmanFilter Default { get; } = new();
 
         #endregion
 
         /// <summary>
         /// The observed position
         /// </summary>
-        public Position ObservedPosition { get { return new Position(ObservedLocation.Latitude, ObservedLocation.Longitude); } }
+        public Position ObservedPosition => new(ObservedLocation.Latitude, ObservedLocation.Longitude);
 
         /// <summary>
         /// The filtered position
         /// </summary>
-        public Position FilteredPosition { get { return new Position(FilteredLocation.Latitude, FilteredLocation.Longitude); } }
+        public Position FilteredPosition => new(FilteredLocation.Latitude, FilteredLocation.Longitude);
 
         /// <summary>
         /// The observed location

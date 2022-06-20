@@ -1,16 +1,7 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from DotSpatial.Positioning.dll
-//
-// Created on 11/1/2010 By Ted Dunsford to try to deal with Security exceptions by a broken LinkDemand.
-//
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
-using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using Microsoft.Win32.SafeHandles;
@@ -49,7 +40,6 @@ namespace DotSpatial.Positioning
         /// <param name="hFind">The h find.</param>
         /// <returns></returns>
         [DllImport("Irprops.cpl")]
-        [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
         [SecurityCritical]
         private static extern bool BluetoothFindRadioClose(IntPtr hFind);
     }

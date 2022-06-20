@@ -1,43 +1,22 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Threading;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-#if !PocketPC || DesignTime
-
-using System.ComponentModel;
-using DotSpatial.Positioning;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents a specific location on Earth's surface.
     /// </summary>
     /// <remarks>Instances of this class are guaranteed to be thread-safe because the class is
     /// immutable (its properties can only be changed via constructors).</remarks>
     [TypeConverter("DotSpatial.Positioning.Design.PositionConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct Position : IFormattable, IEquatable<Position>, ICloneable<Position>, IXmlSerializable
     {
         /// <summary>
@@ -159,6 +138,7 @@ namespace DotSpatial.Positioning
                 _longitude = Longitude.Empty;
                 return;
             }
+
             if (value == "Empty")
             {
                 _latitude = Latitude.Empty;
@@ -176,11 +156,7 @@ namespace DotSpatial.Positioning
             }
 
             // Raise an exception
-#if PocketPC
-                throw new ArgumentException(Properties.Resources.Position_InvalidFormat);
-#else
-            throw new ArgumentException(Resources.Position_InvalidFormat, "value");
-#endif
+            throw new ArgumentException(Resources.Position_InvalidFormat, nameof(value));
         }
 
         /// <summary>
@@ -212,52 +188,28 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents the vertical North/South portion of the location.
         /// </summary>
-        public Latitude Latitude
-        {
-            get { return _latitude; }
-        }
+        public Latitude Latitude => _latitude;
 
         /// <summary>
         /// Represents the horizontal East/West portion of the location.
         /// </summary>
-        public Longitude Longitude
-        {
-            get { return _longitude; }
-        }
+        public Longitude Longitude => _longitude;
 
         /// <summary>
         /// Indicates if the position has no value.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _latitude.IsEmpty && _longitude.IsEmpty;
-            }
-        }
+        public bool IsEmpty => _latitude.IsEmpty && _longitude.IsEmpty;
 
         /// <summary>
         /// Indicates if the position has an invalid or unspecified value.
         /// </summary>
-        public bool IsInvalid
-        {
-            get
-            {
-                return _latitude.IsInvalid || _longitude.IsInvalid;
-            }
-        }
+        public bool IsInvalid => _latitude.IsInvalid || _longitude.IsInvalid;
 
         /// <summary>
         /// Indicates whether the position has been normalized and is within the
         /// allowed bounds of -90° and 90° latitude and -180° and 180° longitude.
         /// </summary>
-        public bool IsNormalized
-        {
-            get
-            {
-                return _latitude.IsNormalized && _longitude.IsNormalized;
-            }
-        }
+        public bool IsNormalized => _latitude.IsNormalized && _longitude.IsNormalized;
 
         #endregion Public Properties
 
@@ -267,7 +219,7 @@ namespace DotSpatial.Positioning
         /// Outputs the current instance as a string using the specified format.
         /// </summary>
         /// <param name="format">The format.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         /// <overloads>Outputs the current instance as a formatted string.</overloads>
         public string ToString(string format)
         {
@@ -586,7 +538,9 @@ namespace DotSpatial.Positioning
 
             // If positions are equivalent, return zero
             if (Equals(destination))
+            {
                 return Azimuth.Empty;
+            }
 
             #region Newer code
 
@@ -919,7 +873,9 @@ namespace DotSpatial.Positioning
             //    lambda(kidx) = -lambda(kidx);
 
             if (kidx)
+            {
                 goodLambda = -goodLambda;
+            }
 
             //    numer = cos(U2).*sin(lambda);
 
@@ -940,18 +896,24 @@ namespace DotSpatial.Positioning
             //    a12(kidx)=a12(kidx)+2*pi;
 
             if (kidx)
+            {
                 a12 += 2 * Math.PI;
+            }
 
             //    % from poles:
             //    a12(lat1tr <= -90) = 0;
 
             if (lat1Tr <= -90.0)
+            {
                 a12 = 0;
+            }
 
             //    a12(lat1tr >= 90 ) = pi;
 
             if (lat1Tr >= 90)
+            {
                 a12 = Math.PI;
+            }
 
             //    varargout{2} = reshape(a12 * 57.2957795130823, keepsize); % to degrees
 
@@ -1136,7 +1098,9 @@ namespace DotSpatial.Positioning
         public TimeSpan TimeTo(Position destination, Speed speed)
         {
             if (speed.Value <= 0)
-                throw new ArgumentOutOfRangeException("destination");
+            {
+                throw new ArgumentOutOfRangeException(nameof(destination));
+            }
 
             // Perform the calculation
             return TimeSpan.FromSeconds(DistanceTo(destination).ToMeters().Value
@@ -1210,11 +1174,15 @@ namespace DotSpatial.Positioning
 
             // If they want the high-speed formula, use it
             if (!isApproximated)
+            {
                 return DistanceTo(destination);
+            }
 
             // The ellipsoid cannot be null
             if (ellipsoid == null)
-                throw new ArgumentNullException("ellipsoid", Resources.Position_DistanceTo_Null_Ellipsoid);
+            {
+                throw new ArgumentNullException(nameof(ellipsoid), Resources.Position_DistanceTo_Null_Ellipsoid);
+            }
 
             // Dim AdjustedDestination As Position = destination.ToDatum(Datum)
             // USING THE FORMULA FROM:
@@ -1490,7 +1458,9 @@ return
 
             // If positions are equivalent, return zero
             if (Equals(destination))
+            {
                 return Distance.Empty;
+            }
 
             #region Newer code
 
@@ -2032,6 +2002,7 @@ return
                 return Empty;
                 // throw new GeoException("No intersection exists between these two points and the given bearings.");
             }
+
             ang1 = Math.Abs(ang1);
             ang2 = Math.Abs(ang2);
             double ang3 = Math.Acos(Math.Sin(ang1) * Math.Sin(ang2) * Math.Cos(s) - Math.Cos(ang1) * Math.Cos(ang2));
@@ -2350,16 +2321,13 @@ return
         #region Overrides
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">Another object to compare to.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is Position)
-                return Equals((Position)obj);
-
-            return false;
+            return obj is Position position && Equals(position);
         }
 
         /// <summary>
@@ -2374,7 +2342,7 @@ return
         /// <summary>
         /// Outputs the current instance as a string using the default format.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("g", CultureInfo.CurrentCulture); // Always support "g" as a default format
@@ -2641,6 +2609,7 @@ return
                         {
                             return Invalid;
                         }
+
                         pLatitude = Latitude.Parse(word, culture);
                         isLatitudeHandled = true;
                     }
@@ -2651,6 +2620,7 @@ return
                         {
                             return Invalid;
                         }
+
                         pLongitude = Longitude.Parse(word, culture);
                         isLongitudeHandled = true;
                     }
@@ -2809,7 +2779,7 @@ return
         #region Conversions
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="System.String"/> to <see cref="DotSpatial.Positioning.Position"/>.
+        /// Performs an explicit conversion from <see cref="string"/> to <see cref="DotSpatial.Positioning.Position"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -2819,7 +2789,7 @@ return
         }
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.Position"/> to <see cref="System.String"/>.
+        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.Position"/> to <see cref="string"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -2882,13 +2852,15 @@ return
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             // Output as latitude and longitude
             return Latitude.ToString(format, culture)
@@ -2954,7 +2926,9 @@ return
             // Move to the <gml:pos> or <gml:coord> element
             if (!reader.IsStartElement("pos", Xml.GML_XML_NAMESPACE)
                 && !reader.IsStartElement("coord", Xml.GML_XML_NAMESPACE))
+            {
                 reader.ReadStartElement();
+            }
 
             switch (reader.LocalName.ToLower(CultureInfo.InvariantCulture))
             {
@@ -2965,7 +2939,10 @@ return
                     _longitude = new Longitude(double.Parse(values[0], CultureInfo.InvariantCulture));
                     // Deserialize the latitude
                     if (values.Length > 1)
+                    {
                         _latitude = new Latitude(double.Parse(values[1], CultureInfo.InvariantCulture));
+                    }
+
                     break;
                 case "coordinates":
                     // Read the "X Y" string, then split by the space between them
@@ -2975,7 +2952,10 @@ return
                     _longitude = new Longitude(double.Parse(coords[0], CultureInfo.InvariantCulture));
                     // Deserialize the latitude
                     if (coords.Length > 1)
+                    {
                         _latitude = new Latitude(double.Parse(coords[1], CultureInfo.InvariantCulture));
+                    }
+
                     break;
                 case "coord":
                     // Read the <gml:coord> start tag
@@ -3004,12 +2984,15 @@ return
 
                         // If we're at an end element, stop
                         if (reader.NodeType == XmlNodeType.EndElement)
+                        {
                             break;
+                        }
                     }
                     // Read the </gml:coord> end tag
                     reader.ReadEndElement();
                     break;
             }
+
             reader.Read();
         }
 

@@ -19,24 +19,18 @@ namespace DotSpatial.Data
         /// <returns>An integer that represents the bit count of the specified type.</returns>
         public static int GetBitCount(this HfaEpt dataType)
         {
-            switch (dataType)
+            return dataType switch
             {
-                case HfaEpt.U1: return 1;
-                case HfaEpt.U2: return 2;
-                case HfaEpt.U4: return 4;
-                case HfaEpt.U8:
-                case HfaEpt.S8: return 8;
-                case HfaEpt.U16:
-                case HfaEpt.S16: return 16;
-                case HfaEpt.U32:
-                case HfaEpt.S32:
-                case HfaEpt.Single: return 32;
-                case HfaEpt.Double:
-                case HfaEpt.Char64: return 64;
-                case HfaEpt.Char128: return 128;
-            }
-
-            return 0;
+                HfaEpt.U1 => 1,
+                HfaEpt.U2 => 2,
+                HfaEpt.U4 => 4,
+                HfaEpt.U8 or HfaEpt.S8 => 8,
+                HfaEpt.U16 or HfaEpt.S16 => 16,
+                HfaEpt.U32 or HfaEpt.S32 or HfaEpt.Single => 32,
+                HfaEpt.Double or HfaEpt.Char64 => 64,
+                HfaEpt.Char128 => 128,
+                _ => 0,
+            };
         }
 
         /// <summary>

@@ -55,22 +55,13 @@ namespace DotSpatial.Symbology.Forms
         {
             Name = txtName.Text;
             string type = Convert.ToString(cmbType.SelectedItem);
-            switch (type)
+            Type = type switch
             {
-                case "Double":
-                    Type = typeof(double);
-                    break;
-                case "String":
-                    Type = typeof(string);
-                    break;
-                case "int":
-                    Type = typeof(int);
-                    break;
-                default:
-                    Type = typeof(double);
-                    break;
-            }
-
+                "Double" => typeof(double),
+                "String" => typeof(string),
+                "int" => typeof(int),
+                _ => typeof(double),
+            };
             Size = Convert.ToInt32(nudSize.Value);
             DialogResult = DialogResult.OK;
         }

@@ -1,36 +1,16 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using DotSpatial.Positioning;
-#if !PocketPC || DesignTime
-
-using System.ComponentModel;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents a vertical angular measurement between -90° and 90°.
     /// </summary>
@@ -73,13 +53,8 @@ namespace DotSpatial.Positioning
     /// object (which measures a horizontal angle) to form a three-dimensional direction to an
     /// object in space, such as a GPS satellite.</remarks>
     [TypeConverter("DotSpatial.Positioning.Design.ElevationConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct Elevation : IFormattable, IComparable<Elevation>, IEquatable<Elevation>, ICloneable<Elevation>, IXmlSerializable
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private double _decimalDegrees;
 
         #region Constants
 
@@ -186,7 +161,7 @@ namespace DotSpatial.Positioning
         public Elevation(double decimalDegrees)
         {
             // Set the decimal degrees value
-            _decimalDegrees = decimalDegrees;
+            DecimalDegrees = decimalDegrees;
         }
 
         /// <summary>
@@ -196,7 +171,7 @@ namespace DotSpatial.Positioning
         /// <returns>An <strong>Elevation</strong> containing the specified value.</returns>
         public Elevation(int hours)
         {
-            _decimalDegrees = ToDecimalDegrees(hours);
+            DecimalDegrees = ToDecimalDegrees(hours);
         }
 
         /// <summary>
@@ -217,7 +192,7 @@ namespace DotSpatial.Positioning
         /// <remarks>An <strong>Elevation</strong> containing the specified value.</remarks>
         public Elevation(int hours, double decimalMinutes)
         {
-            _decimalDegrees = ToDecimalDegrees(hours, decimalMinutes);
+            DecimalDegrees = ToDecimalDegrees(hours, decimalMinutes);
         }
 
         /// <summary>
@@ -241,7 +216,7 @@ namespace DotSpatial.Positioning
         /// <returns>An <strong>Elevation</strong> containing the specified value.</returns>
         public Elevation(int hours, int minutes, double seconds)
         {
-            _decimalDegrees = ToDecimalDegrees(hours, minutes, seconds);
+            DecimalDegrees = ToDecimalDegrees(hours, minutes, seconds);
         }
 
         /// <summary>
@@ -299,13 +274,15 @@ namespace DotSpatial.Positioning
             if (string.IsNullOrEmpty(value))
             {
                 // Yes. Set to zero
-                _decimalDegrees = 0;
+                DecimalDegrees = 0;
                 return;
             }
 
             // Default to the current culture
             if (culture == null)
+            {
                 culture = CultureInfo.CurrentCulture;
+            }
 
             // Yes. First, clean up the strings
             try
@@ -320,61 +297,63 @@ namespace DotSpatial.Positioning
                 {
                     case 0:
                         // Return a blank Elevation
-                        _decimalDegrees = 0.0;
+                        DecimalDegrees = 0.0;
                         return;
                     case 1: // Decimal degrees
                         // Is it infinity?
-                        if (String.Compare(values[0], Resources.Common_Infinity, true, culture) == 0)
+                        if (string.Compare(values[0], Resources.Common_Infinity, true, culture) == 0)
                         {
-                            _decimalDegrees = double.PositiveInfinity;
+                            DecimalDegrees = double.PositiveInfinity;
                             return;
                         }
                         // Is it empty?
-                        if (String.Compare(values[0], Resources.Common_Empty, true, culture) == 0)
+                        if (string.Compare(values[0], Resources.Common_Empty, true, culture) == 0)
                         {
-                            _decimalDegrees = 0.0;
+                            DecimalDegrees = 0.0;
                             return;
                         }
                         // Look at the number of digits, this might be HHHMMSS format.
-                        if (values[0].Length == 7 && values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) == -1)
+                        if (values[0].Length == 7 && !values[0].Contains(culture.NumberFormat.NumberDecimalSeparator, StringComparison.CurrentCulture))
                         {
-                            _decimalDegrees = ToDecimalDegrees(
-                                int.Parse(values[0].Substring(0, 3), culture),
+                            DecimalDegrees = ToDecimalDegrees(
+                                int.Parse(values[0][..3], culture),
                                 int.Parse(values[0].Substring(3, 2), culture),
                                 double.Parse(values[0].Substring(5, 2), culture));
                             return;
                         }
-                        if (values[0].Length == 8 && values[0][0] == '-' && values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) == -1)
+
+                        if (values[0].Length == 8 && values[0][0] == '-' && !values[0].Contains(culture.NumberFormat.NumberDecimalSeparator, StringComparison.CurrentCulture))
                         {
-                            _decimalDegrees = ToDecimalDegrees(
-                                int.Parse(values[0].Substring(0, 4), culture),
+                            DecimalDegrees = ToDecimalDegrees(
+                                int.Parse(values[0][..4], culture),
                                 int.Parse(values[0].Substring(4, 2), culture),
                                 double.Parse(values[0].Substring(6, 2), culture));
                             return;
                         }
-                        _decimalDegrees = double.Parse(values[0], culture);
+
+                        DecimalDegrees = double.Parse(values[0], culture);
                         return;
                     case 2: // Hours and decimal minutes
                         // If this is a fractional value, remember that it is
                         if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
                         {
-                            throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal, "value");
+                            throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal, nameof(value));
                         }
 
                         // Set decimal degrees
-                        _decimalDegrees = ToDecimalDegrees(
+                        DecimalDegrees = ToDecimalDegrees(
                             int.Parse(values[0], culture),
                             float.Parse(values[1], culture));
                         return;
                     default: // Hours, minutes and seconds  (most likely)
                         // If this is a fractional value, remember that it is
-                        if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1 || values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
+                        if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1 || values[1].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
                         {
-                            throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal, "value");
+                            throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal, nameof(value));
                         }
 
                         // Set decimal degrees
-                        _decimalDegrees = ToDecimalDegrees(
+                        DecimalDegrees = ToDecimalDegrees(
                             int.Parse(values[0], culture),
                             int.Parse(values[1], culture),
                             double.Parse(values[2], culture));
@@ -383,11 +362,7 @@ namespace DotSpatial.Positioning
             }
             catch (Exception ex)
             {
-#if PocketPC
-                throw new ArgumentException(Properties.Resources.Angle_InvalidFormat, ex);
-#else
-                throw new ArgumentException(Resources.Angle_InvalidFormat, "value", ex);
-#endif
+                throw new ArgumentException(Resources.Angle_InvalidFormat, nameof(value), ex);
             }
         }
 
@@ -398,7 +373,7 @@ namespace DotSpatial.Positioning
         public Elevation(XmlReader reader)
         {
             // Initialize all fields
-            _decimalDegrees = Double.NaN;
+            DecimalDegrees = double.NaN;
 
             // Deserialize the object from XML
             ReadXml(reader);
@@ -438,13 +413,7 @@ namespace DotSpatial.Positioning
         ///   </code>
         ///   </example>
         /// <remarks>This property returns the value of the angle as a single number.</remarks>
-        public double DecimalDegrees
-        {
-            get
-            {
-                return _decimalDegrees;
-            }
-        }
+        public double DecimalDegrees { get; private set; }
 
         /// <summary>
         /// Returns the minutes and seconds as a single numeric value.
@@ -476,20 +445,11 @@ namespace DotSpatial.Positioning
         /// decimal value.</remarks>
         public double DecimalMinutes
         {
-            get
-            {
-#if Framework20 && !PocketPC
-                return Math.Round(
+            get => Math.Round(
                     (Math.Abs(
-                        _decimalDegrees - Math.Truncate(_decimalDegrees)) * 60.0),
-                    // Apparently we must round to two less places to preserve accuracy
+                        DecimalDegrees - Math.Truncate(DecimalDegrees)) * 60.0),
+                        // Apparently we must round to two less places to preserve accuracy
                         MAXIMUM_PRECISION_DIGITS - 2);
-#else
-                return Math.Round(
-                    (Math.Abs(
-                        _DecimalDegrees - Truncate(_DecimalDegrees)) * 60.0), MaximumPrecisionDigits - 2);
-#endif
-            }
         }
 
         /// <summary>
@@ -519,17 +479,7 @@ namespace DotSpatial.Positioning
         /// and <see cref="Seconds">Seconds</see> properties to create a full angular measurement.
         /// This property is the same as <strong>DecimalDegrees</strong> without any fractional
         /// value.</remarks>
-        public int Hours
-        {
-            get
-            {
-#if Framework20 && !PocketPC
-                return (int)Math.Truncate(_decimalDegrees);
-#else
-                return Truncate(_DecimalDegrees);
-#endif
-            }
-        }
+        public int Hours => (int)Math.Truncate(DecimalDegrees);
 
         /// <summary>
         /// Returns the integer minutes portion of an angular measurement.
@@ -558,19 +508,10 @@ namespace DotSpatial.Positioning
         /// measurement.</remarks>
         public int Minutes
         {
-            get
-            {
-                return Convert.ToInt32(
-                    Math.Abs(
-#if Framework20 && !PocketPC
-Math.Truncate(
-#else
-                        Truncate(
-#endif
-Math.Round(
-                    // Calculations appear to support one less digit than the maximum allowed precision
-                                (_decimalDegrees - Hours) * 60.0, MAXIMUM_PRECISION_DIGITS - 1))));
-            }
+            get => Convert.ToInt32(
+                    Math.Abs(Math.Truncate(Math.Round(
+                                // Calculations appear to support one less digit than the maximum allowed precision
+                                (DecimalDegrees - Hours) * 60.0, MAXIMUM_PRECISION_DIGITS - 1))));
         }
 
         /// <summary>
@@ -600,13 +541,10 @@ Math.Round(
         /// measurement.</remarks>
         public double Seconds
         {
-            get
-            {
-                return Math.Round(
-                                (Math.Abs(_decimalDegrees - Hours) * 60.0 - Minutes) * 60.0,
-                    // This property appears to support one less digit than the maximum allowed
+            get => Math.Round(
+                                (Math.Abs(DecimalDegrees - Hours) * 60.0 - Minutes) * 60.0,
+                                // This property appears to support one less digit than the maximum allowed
                                 MAXIMUM_PRECISION_DIGITS - 4);
-            }
         }
 
         /// <summary>
@@ -615,41 +553,23 @@ Math.Round(
         /// <value>A <strong>Boolean</strong>, <strong>True</strong> if the
         /// <strong>DecimalDegrees</strong> property is zero.</value>
         /// <seealso cref="Empty">Empty Field</seealso>
-        public bool IsEmpty
-        {
-            get
-            {
-                return (_decimalDegrees == 0);
-            }
-        }
+        public bool IsEmpty => (DecimalDegrees == 0);
 
         /// <summary>
         /// Indicates if the current instance represents an infinite value.
         /// </summary>
-        public bool IsInfinity
-        {
-            get
-            {
-                return double.IsInfinity(_decimalDegrees);
-            }
-        }
+        public bool IsInfinity => double.IsInfinity(DecimalDegrees);
 
         /// <summary>
         /// Indicates if the current instance is invalid or unspecified.
         /// </summary>
-        public bool IsInvalid
-        {
-            get { return double.IsNaN(_decimalDegrees); }
-        }
+        public bool IsInvalid => double.IsNaN(DecimalDegrees);
 
         /// <summary>
         /// Indicates whether the current instance has been normalized and is within the
         /// allowed bounds of -90° and 90°.
         /// </summary>
-        public bool IsNormalized
-        {
-            get { return _decimalDegrees >= -90 && _decimalDegrees <= 90; }
-        }
+        public bool IsNormalized => DecimalDegrees is >= (-90) and <= 90;
 
         #endregion Public Properties
 
@@ -664,33 +584,44 @@ Math.Round(
         public Elevation Normalize()
         {
             // Is the value not a number, infinity, or already normalized?
-            if (double.IsInfinity(_decimalDegrees)
-                || double.IsNaN(_decimalDegrees)
+            if (double.IsInfinity(DecimalDegrees)
+                || double.IsNaN(DecimalDegrees)
                 || IsNormalized)
+            {
                 return this;
+            }
 
             // Calculate the number of times the degree value winds completely
             // through a hemisphere
-            int hemisphereFlips = Convert.ToInt32(Math.Floor(_decimalDegrees / 180.0));
+            int hemisphereFlips = Convert.ToInt32(Math.Floor(DecimalDegrees / 180.0));
 
             // If the value is in the southern hemisphere, apply another flip
-            if (_decimalDegrees < 0)
+            if (DecimalDegrees < 0)
+            {
                 hemisphereFlips++;
+            }
 
             // Calculate the new value
-            double newValue = _decimalDegrees % 180;
+            double newValue = DecimalDegrees % 180;
 
             // if the value is > 90, return 180 - X
             if (newValue > 90)
+            {
                 newValue = 180 - newValue;
+            }
 
             // If the value id < -180, return -180 - X
             else if (newValue < -90.0)
+            {
                 newValue = -180.0 - newValue;
+            }
 
             // Account for flips around hemispheres by flipping the sign
             if (hemisphereFlips % 2 != 0)
+            {
                 return new Elevation(-newValue);
+            }
+
             return new Elevation(newValue);
         }
 
@@ -700,7 +631,7 @@ Math.Round(
         /// <returns></returns>
         public Elevation Ceiling()
         {
-            return new Elevation(Math.Ceiling(_decimalDegrees));
+            return new Elevation(Math.Ceiling(DecimalDegrees));
         }
 
         /// <summary>
@@ -709,17 +640,8 @@ Math.Round(
         /// <returns></returns>
         public Elevation Floor()
         {
-            return new Elevation(Math.Floor(_decimalDegrees));
+            return new Elevation(Math.Floor(DecimalDegrees));
         }
-
-#if !Framework20 || PocketPC
-        internal static int Truncate(double value)
-        {
-            return value > 0
-                ? (int)(value - (value - Math.Floor(value)))
-                : (int)(value - (value - Math.Ceiling(value)));
-        }
-#endif
 
         /// <summary>
         /// Returns a new instance whose value is rounded the specified number of decimals.
@@ -728,7 +650,7 @@ Math.Round(
         /// <returns></returns>
         public Elevation Round(int decimals)
         {
-            return new Elevation(Math.Round(_decimalDegrees, decimals));
+            return new Elevation(Math.Round(DecimalDegrees, decimals));
         }
 
         /// <summary>
@@ -756,11 +678,9 @@ Math.Round(
         {
             // Interval must be > 0
             if (interval == 0)
-#if PocketPC
-                throw new ArgumentOutOfRangeException(Properties.Resources.Angle_InvalidInterval);
-#else
-                throw new ArgumentOutOfRangeException("interval", interval, Resources.Angle_InvalidInterval);
-#endif
+            {
+                throw new ArgumentOutOfRangeException(nameof(interval), interval, Resources.Angle_InvalidInterval);
+            }
             // Get the amount in seconds
             double newSeconds = Seconds;
             // double HalfInterval = interval * 0.5;
@@ -771,13 +691,17 @@ Math.Round(
                 double nextInterval = value + interval;
                 // Is the seconds value greater than the next interval?
                 if (newSeconds > nextInterval)
+                {
                     // Yes.  Continue on
                     continue;
+                }
                 // Is the seconds value closer to the current or next interval?
                 newSeconds = newSeconds < (value + nextInterval) * 0.5 ? value : nextInterval;
                 // Is the new value 60?  If so, make it zero
                 if (newSeconds == 60)
+                {
                     newSeconds = 0;
+                }
                 // Return the new value
                 return new Elevation(Hours, Minutes, newSeconds);
             }
@@ -792,8 +716,11 @@ Math.Round(
         /// <returns>The <strong>Elevation</strong> containing the smallest value.</returns>
         public Elevation LesserOf(Elevation value)
         {
-            if (_decimalDegrees < value.DecimalDegrees)
+            if (DecimalDegrees < value.DecimalDegrees)
+            {
                 return this;
+            }
+
             return value;
         }
 
@@ -804,8 +731,11 @@ Math.Round(
         /// <returns>An <strong>Elevation</strong> containing the largest value.</returns>
         public Elevation GreaterOf(Elevation value)
         {
-            if (_decimalDegrees > value.DecimalDegrees)
+            if (DecimalDegrees > value.DecimalDegrees)
+            {
                 return this;
+            }
+
             return value;
         }
 
@@ -835,7 +765,7 @@ Math.Round(
         /// circle.</remarks>
         public Elevation Mirror()
         {
-            return new Elevation(_decimalDegrees + 180.0).Normalize();
+            return new Elevation(DecimalDegrees + 180.0).Normalize();
         }
 
         /// <summary>
@@ -861,7 +791,7 @@ Math.Round(
         /// radians before performing a trigonometric function.</remarks>
         public Radian ToRadians()
         {
-            return Radian.FromDegrees(_decimalDegrees);
+            return Radian.FromDegrees(DecimalDegrees);
         }
 
         /// <summary>
@@ -912,29 +842,16 @@ Math.Round(
         /// <remarks>This</remarks>
         public override bool Equals(object obj)
         {
-#if !PocketPC || Framework20
-            // ?
-            if (ReferenceEquals(obj, null))
-                return false;
-#endif
-            // Convert objects to an Elevation as needed before comparison
-            if (obj is Elevation || obj is string)
-                return _decimalDegrees.Equals(((Elevation)obj).DecimalDegrees);
-            if (obj is double)
+            return obj switch
             {
-                return _decimalDegrees.Equals(((Elevation)(double)obj).DecimalDegrees);
-            }
-            if (obj is int)
-            {
-                return _decimalDegrees.Equals(((Elevation)(int)obj).DecimalDegrees);
-            }
-            if (obj is float)
-            {
-                return _decimalDegrees.Equals(((Elevation)(float)obj).DecimalDegrees);
-            }
-
-            // Nothing else will work, so False
-            return false;
+                null => false,
+                Elevation or string => DecimalDegrees.Equals(((Elevation)obj).DecimalDegrees),
+                double d => DecimalDegrees.Equals(((Elevation)d).DecimalDegrees),
+                int i => DecimalDegrees.Equals(((Elevation)i).DecimalDegrees),
+                float f => DecimalDegrees.Equals(((Elevation)f).DecimalDegrees),
+                // Nothing else will work, so False
+                _ => false
+            };
         }
 
         /// <summary>
@@ -946,7 +863,7 @@ Math.Round(
         /// safely with hash tables.</remarks>
         public override int GetHashCode()
         {
-            return _decimalDegrees.GetHashCode();
+            return DecimalDegrees.GetHashCode();
         }
 
         /// <summary>
@@ -1480,7 +1397,7 @@ Math.Round(
         /// method cannot be used to modify an existing instance.</font></para></remarks>
         public Elevation Increment()
         {
-            return new Elevation(_decimalDegrees + 1.0);
+            return new Elevation(DecimalDegrees + 1.0);
         }
 
         /// <summary>
@@ -1501,7 +1418,7 @@ Math.Round(
         ///   </example>
         public Elevation Add(double value)
         {
-            return new Elevation(_decimalDegrees + value);
+            return new Elevation(DecimalDegrees + value);
         }
 
         /// <summary>
@@ -1511,7 +1428,7 @@ Math.Round(
         /// <returns></returns>
         public Elevation Add(Elevation value)
         {
-            return new Elevation(_decimalDegrees + value.DecimalDegrees);
+            return new Elevation(DecimalDegrees + value.DecimalDegrees);
         }
 
         /// <summary>
@@ -1547,7 +1464,7 @@ Math.Round(
         /// method cannot be used to modify an existing instance.</font></para></remarks>
         public Elevation Decrement()
         {
-            return new Elevation(_decimalDegrees - 1.0);
+            return new Elevation(DecimalDegrees - 1.0);
         }
 
         /// <summary>
@@ -1568,7 +1485,7 @@ Math.Round(
         ///   </example>
         public Elevation Subtract(double value)
         {
-            return new Elevation(_decimalDegrees - value);
+            return new Elevation(DecimalDegrees - value);
         }
 
         /// <summary>
@@ -1578,7 +1495,7 @@ Math.Round(
         /// <returns></returns>
         public Elevation Subtract(Elevation value)
         {
-            return new Elevation(_decimalDegrees - value.DecimalDegrees);
+            return new Elevation(DecimalDegrees - value.DecimalDegrees);
         }
 
         /// <summary>
@@ -1599,7 +1516,7 @@ Math.Round(
         ///   </example>
         public Elevation Multiply(double value)
         {
-            return new Elevation(_decimalDegrees * value);
+            return new Elevation(DecimalDegrees * value);
         }
 
         /// <summary>
@@ -1609,7 +1526,7 @@ Math.Round(
         /// <returns></returns>
         public Elevation Multiply(Elevation value)
         {
-            return new Elevation(_decimalDegrees * value.DecimalDegrees);
+            return new Elevation(DecimalDegrees * value.DecimalDegrees);
         }
 
         /// <summary>
@@ -1630,7 +1547,7 @@ Math.Round(
         ///   </example>
         public Elevation Divide(double value)
         {
-            return new Elevation(_decimalDegrees / value);
+            return new Elevation(DecimalDegrees / value);
         }
 
         /// <summary>
@@ -1640,7 +1557,7 @@ Math.Round(
         /// <returns></returns>
         public Elevation Divide(Elevation value)
         {
-            return new Elevation(_decimalDegrees / value.DecimalDegrees);
+            return new Elevation(DecimalDegrees / value.DecimalDegrees);
         }
 
         /// <summary>
@@ -1651,7 +1568,7 @@ Math.Round(
         /// smaller than the specified value.</returns>
         public bool IsLessThan(Elevation value)
         {
-            return _decimalDegrees < value.DecimalDegrees;
+            return DecimalDegrees < value.DecimalDegrees;
         }
 
         /// <summary>
@@ -1661,7 +1578,7 @@ Math.Round(
         /// <returns><c>true</c> if [is less than] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsLessThan(double value)
         {
-            return _decimalDegrees < value;
+            return DecimalDegrees < value;
         }
 
         /// <summary>
@@ -1675,7 +1592,7 @@ Math.Round(
         /// specified value. This method is the same as the "&lt;=" operator.</remarks>
         public bool IsLessThanOrEqualTo(Elevation value)
         {
-            return _decimalDegrees <= value.DecimalDegrees;
+            return DecimalDegrees <= value.DecimalDegrees;
         }
 
         /// <summary>
@@ -1685,7 +1602,7 @@ Math.Round(
         /// <returns><c>true</c> if [is less than or equal to] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsLessThanOrEqualTo(double value)
         {
-            return _decimalDegrees <= value;
+            return DecimalDegrees <= value;
         }
 
         /// <summary>
@@ -1696,7 +1613,7 @@ Math.Round(
         /// greater than the specified value.</returns>
         public bool IsGreaterThan(Elevation value)
         {
-            return _decimalDegrees > value.DecimalDegrees;
+            return DecimalDegrees > value.DecimalDegrees;
         }
 
         /// <summary>
@@ -1706,7 +1623,7 @@ Math.Round(
         /// <returns><c>true</c> if [is greater than] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsGreaterThan(double value)
         {
-            return _decimalDegrees > value;
+            return DecimalDegrees > value;
         }
 
         /// <summary>
@@ -1718,7 +1635,7 @@ Math.Round(
         /// greater than or equal to the specified value.</returns>
         public bool IsGreaterThanOrEqualTo(Elevation value)
         {
-            return _decimalDegrees >= value.DecimalDegrees;
+            return DecimalDegrees >= value.DecimalDegrees;
         }
 
         /// <summary>
@@ -1728,7 +1645,7 @@ Math.Round(
         /// <returns><c>true</c> if [is greater than or equal to] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsGreaterThanOrEqualTo(double value)
         {
-            return _decimalDegrees >= value;
+            return DecimalDegrees >= value;
         }
 
         #endregion Operators
@@ -1866,7 +1783,7 @@ Math.Round(
         /// <returns>An <strong>Elevation</strong> of the same value as the current instance.</returns>
         public Elevation Clone()
         {
-            return new Elevation(_decimalDegrees);
+            return new Elevation(DecimalDegrees);
         }
 
         #endregion ICloneable<Elevation> Members
@@ -1909,18 +1826,32 @@ Math.Round(
 
             if (string.IsNullOrEmpty(format)
                 || format == "g" || format == "G")
+            {
                 format = "e";
+            }
 
             if (format == "e")
             {
                 if (DecimalDegrees < 0)
+                {
                     return "Below the horizon";
+                }
+
                 if (DecimalDegrees < 30)
+                {
                     return "Near the horizon";
+                }
+
                 if (DecimalDegrees < 60)
+                {
                     return "Halfway up from the horizon";
+                }
+
                 if (DecimalDegrees < 80)
+                {
                     return "Almost directly overhead";
+                }
+
                 return "Directly overhead";
             }
 
@@ -1932,16 +1863,25 @@ Math.Round(
             {
                 // Is it infinity?
                 if (double.IsPositiveInfinity(DecimalDegrees))
+                {
                     return "+" + Resources.Common_Infinity;
+                }
                 // Is it infinity?
                 if (double.IsNegativeInfinity(DecimalDegrees))
+                {
                     return "-" + Resources.Common_Infinity;
+                }
+
                 if (double.IsNaN(DecimalDegrees))
+                {
                     return "NaN";
+                }
                 // Use the default if "g" is passed
                 format = format.ToLower(culture);
                 if (format == "g")
+                {
                     format = "d.dddd°";
+                }
                 // Replace the "d" with "h" since degrees is the same as hours
                 format = format.Replace("d", "h")
                     // Convert the format to uppercase
@@ -1949,7 +1889,9 @@ Math.Round(
                 // Only one decimal is allowed
                 if (format.IndexOf(culture.NumberFormat.NumberDecimalSeparator) !=
                     format.LastIndexOf(culture.NumberFormat.NumberDecimalSeparator))
+                {
                     throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal);
+                }
                 // Is there an hours specifier?
                 int startChar = format.IndexOf("H");
                 int endChar;
@@ -1989,6 +1931,7 @@ Math.Round(
                         {
                             throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal);
                         }
+
                         isDecimalHandled = true;
                         format = format.Replace(subFormat, DecimalMinutes.ToString(newFormat, culture));
                     }
@@ -2014,6 +1957,7 @@ Math.Round(
                         {
                             throw new ArgumentException(Resources.Angle_OnlyRightmostIsDecimal);
                         }
+
                         format = format.Replace(subFormat, Seconds.ToString(newFormat, culture));
                     }
                     else
@@ -2022,8 +1966,11 @@ Math.Round(
                     }
                 }
                 // If nothing then return zero
-                if (String.Compare(format, "°", true, culture) == 0)
+                if (string.Compare(format, "°", true, culture) == 0)
+                {
                     return "0°";
+                }
+
                 return format;
             }
             catch
@@ -2107,7 +2054,7 @@ Math.Round(
         /// The <see cref="DecimalDegrees">DecimalDegrees</see> property of each instance is compared.</remarks>
         public int CompareTo(Elevation other)
         {
-            return _decimalDegrees.CompareTo(other.DecimalDegrees);
+            return DecimalDegrees.CompareTo(other.DecimalDegrees);
         }
 
         #endregion IComparable<Elevation> Members
@@ -2129,7 +2076,7 @@ Math.Round(
         /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteString(_decimalDegrees.ToString("G17", CultureInfo.InvariantCulture));
+            writer.WriteString(DecimalDegrees.ToString("G17", CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -2138,7 +2085,7 @@ Math.Round(
         /// <param name="reader">The <see cref="T:System.Xml.XmlReader"/> stream from which the object is deserialized.</param>
         public void ReadXml(XmlReader reader)
         {
-            _decimalDegrees = reader.NodeType == XmlNodeType.Text ? reader.ReadContentAsDouble() : reader.ReadElementContentAsDouble();
+            DecimalDegrees = reader.NodeType == XmlNodeType.Text ? reader.ReadContentAsDouble() : reader.ReadElementContentAsDouble();
         }
 
         #endregion IXmlSerializable Members

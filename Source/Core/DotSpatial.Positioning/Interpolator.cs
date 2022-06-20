@@ -1,26 +1,8 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
-#if !PocketPC || DesignTime
-
 using System.ComponentModel;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
@@ -80,8 +62,6 @@ namespace DotSpatial.Positioning
         ExponentialEaseOut
     }
 
-#if !PocketPC || DesignTime
-
     /// <summary>
     /// Calculates intermediate values between two bounding values.
     /// </summary>
@@ -90,7 +70,6 @@ namespace DotSpatial.Positioning
     /// accelerating and decelerating. This class is also used to calculate intermediate values
     /// for features such as image georeferencing and estimating precision errors.</remarks>
     [TypeConverter(typeof(ExpandableObjectConverter))]
-#endif
     public sealed class Interpolator
     {
         /// <summary>
@@ -188,16 +167,16 @@ namespace DotSpatial.Positioning
         /// <value>The minimum.</value>
         public double Minimum
         {
-            get
-            {
-                return _minimum;
-            }
+            get => _minimum;
             set
             {
                 lock (_syncRoot)
                 {
                     if (_minimum == value)
+                    {
                         return;
+                    }
+
                     _minimum = value;
                     Recalculate();
                 }
@@ -210,15 +189,16 @@ namespace DotSpatial.Positioning
         /// <value>The maximum.</value>
         public double Maximum
         {
-            get
-            {
-                return _maximum;
-            }
+            get => _maximum;
             set
             {
                 lock (_syncRoot)
                 {
-                    if (_maximum == value) return;
+                    if (_maximum == value)
+                    {
+                        return;
+                    }
+
                     _maximum = value;
                     Recalculate();
                 }
@@ -231,15 +211,16 @@ namespace DotSpatial.Positioning
         /// <value>The interpolation method.</value>
         public InterpolationMethod InterpolationMethod
         {
-            get
-            {
-                return _interpolationMethod;
-            }
+            get => _interpolationMethod;
             set
             {
                 lock (_syncRoot)
                 {
-                    if (_interpolationMethod == value) return;
+                    if (_interpolationMethod == value)
+                    {
+                        return;
+                    }
+
                     _interpolationMethod = value;
                     Recalculate();
                 }
@@ -252,16 +233,16 @@ namespace DotSpatial.Positioning
         /// <value>The count.</value>
         public int Count
         {
-            get
-            {
-                return _count;
-            }
+            get => _count;
             set
             {
                 lock (_syncRoot)
                 {
                     if (_count == value)
+                    {
                         return;
+                    }
+
                     _count = value;
                     // Recalculate the array
                     Recalculate();
@@ -276,9 +257,7 @@ namespace DotSpatial.Positioning
         {
             lock (_syncRoot)
             {
-                double temp = _minimum;
-                _minimum = _maximum;
-                _maximum = temp;
+                (_maximum, _minimum) = (_minimum, _maximum);
                 Recalculate();
             }
         }
@@ -293,9 +272,15 @@ namespace DotSpatial.Positioning
                 // lock (SyncRoot)
                 {
                     if (index > Count - 1)
+                    {
                         return _values[Count - 1];
+                    }
+
                     if (index < 0)
+                    {
                         return _values[0];
+                    }
+
                     return _values[index];
                 }
             }
@@ -353,6 +338,7 @@ namespace DotSpatial.Positioning
                     {
                         return ((_maximum - _minimum) * 0.5 * index * index + _minimum);
                     }
+
                     return (-(_maximum - _minimum) * 0.5 * ((--index) * (index - 2) - 1) + _minimum);
                 case InterpolationMethod.CubicEaseIn:
                     // Cubic easing in - accelerating from zero velocity
@@ -366,6 +352,7 @@ namespace DotSpatial.Positioning
                     {
                         return ((_maximum - _minimum) * 0.5 * index * index * index + _minimum);
                     }
+
                     return ((_maximum - _minimum) * 0.5 * ((index -= 2) * index * index + 2) + _minimum);
                 case InterpolationMethod.QuarticEaseIn:
                     // Quartic easing in - accelerating from zero velocity
@@ -376,6 +363,7 @@ namespace DotSpatial.Positioning
                     {
                         return _minimum;
                     }
+
                     return ((_maximum - _minimum) * Math.Pow(2, (10 * (index / zeroCount - 1))) + _minimum);
                 case InterpolationMethod.ExponentialEaseOut:
                     // exponential (2^Index) easing out - decelerating to zero velocity
@@ -383,6 +371,7 @@ namespace DotSpatial.Positioning
                     {
                         return (_minimum + (_maximum - _minimum));
                     }
+
                     return ((_maximum - _minimum) * (-Math.Pow(2, -10 * index / zeroCount) + 1) + _minimum);
                 default:
                     return 0;

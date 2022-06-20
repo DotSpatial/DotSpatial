@@ -188,19 +188,14 @@ namespace DotSpatial.Symbology.Forms
 
         private ModifySelectionMode GetSelectMode()
         {
-            switch (cmbMethod.SelectedIndex)
+            return cmbMethod.SelectedIndex switch
             {
-                case 0:
-                    return ModifySelectionMode.Replace;
-                case 1:
-                    return ModifySelectionMode.Append;
-                case 2:
-                    return ModifySelectionMode.Subtract;
-                case 3:
-                    return ModifySelectionMode.SelectFrom;
-            }
-
-            return ModifySelectionMode.Replace;
+                0 => ModifySelectionMode.Replace,
+                1 => ModifySelectionMode.Append,
+                2 => ModifySelectionMode.Subtract,
+                3 => ModifySelectionMode.SelectFrom,
+                _ => ModifySelectionMode.Replace,
+            };
         }
 
         #endregion

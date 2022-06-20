@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -28,24 +14,7 @@ namespace DotSpatial.Positioning
     /// </summary>
     public abstract class Emulator : Stream
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly string _name;
-        // Stores data to be read by the client
-        /// <summary>
-        ///
-        /// </summary>
-        private ManualResetEvent _readDataAvailableWaitHandle;
-        /// <summary>
-        ///
-        /// </summary>
-        private List<byte> _readBuffer;
-        // Stores data sent by the client
-        /// <summary>
-        ///
-        /// </summary>
-        private ManualResetEvent _writeDataAvailableWaitHandle;
+
         /// <summary>
         ///
         /// </summary>
@@ -118,44 +87,12 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private readonly List<Satellite> _satellites;
-        /// <summary>
-        ///
-        /// </summary>
-        private FixQuality _fixQuality;
-        /// <summary>
-        ///
-        /// </summary>
-        private FixMode _fixMode;
-        /// <summary>
-        ///
-        /// </summary>
-        private FixMethod _fixMethod;
-        /// <summary>
-        ///
-        /// </summary>
-        private FixStatus _fixStatus;
-        /// <summary>
-        ///
-        /// </summary>
-        private DilutionOfPrecision _horizontalDop;
-        /// <summary>
-        ///
-        /// </summary>
-        private DilutionOfPrecision _verticalDop;
-        /// <summary>
-        ///
-        /// </summary>
-        private DilutionOfPrecision _meanDop;
+
         /// <summary>
         ///
         /// </summary>
         private TimeSpan _interval = TimeSpan.FromSeconds(1);
 
-        // Random emulation variables
-        /// <summary>
-        ///
-        /// </summary>
-        private Random _seed;
         /// <summary>
         ///
         /// </summary>
@@ -172,14 +109,6 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private double _bearingArc;
-        /// <summary>
-        ///
-        /// </summary>
-        private bool _isRandom;
-
-#if PocketPC
-        private bool _IsEmulationThreadAlive;
-#endif
 
         /// <summary>
         ///
@@ -207,11 +136,13 @@ namespace DotSpatial.Positioning
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static int DefaultReadBufferSize
         {
-            get { return _defaultReadBufferSize; }
+            get => _defaultReadBufferSize;
             set
             {
                 if (value < 128)
+                {
                     throw new ArgumentOutOfRangeException("DefaultReadBufferSize", "The default read buffer size must be 128 bytes or greater.");
+                }
 
                 _defaultReadBufferSize = value;
             }
@@ -224,11 +155,13 @@ namespace DotSpatial.Positioning
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static int DefaultWriteBufferSize
         {
-            get { return _defaultWriteBufferSize; }
+            get => _defaultWriteBufferSize;
             set
             {
                 if (value < 128)
+                {
                     throw new ArgumentOutOfRangeException("DefaultWriteBufferSize", "The default write buffer size must be 128 bytes or greater.");
+                }
 
                 _defaultWriteBufferSize = value;
             }
@@ -240,11 +173,13 @@ namespace DotSpatial.Positioning
         /// <value>The default read timeout.</value>
         public static TimeSpan DefaultReadTimeout
         {
-            get { return _defaultReadTimeout; }
+            get => _defaultReadTimeout;
             set
             {
                 if (value.TotalMilliseconds < 500)
+                {
                     throw new ArgumentOutOfRangeException("DefaultReadTimeout", "The default read timeout should be 500ms or greater to avoid premature timeout issues.");
+                }
 
                 _defaultReadTimeout = value;
             }
@@ -256,11 +191,13 @@ namespace DotSpatial.Positioning
         /// <value>The default write timeout.</value>
         public static TimeSpan DefaultWriteTimeout
         {
-            get { return _defaultWriteTimeout; }
+            get => _defaultWriteTimeout;
             set
             {
                 if (value.TotalMilliseconds < 500)
+                {
                     throw new ArgumentOutOfRangeException("DefaultWriteTimeout", "The default write timeout should be 500ms or greater to avoid premature timeout issues.");
+                }
 
                 _defaultWriteTimeout = value;
             }
@@ -292,15 +229,15 @@ namespace DotSpatial.Positioning
         /// <param name="name">The name.</param>
         protected Emulator(string name)
         {
-            _name = name;
+            Name = name;
 
             // Create new buffers for reading and writing
-            _readBuffer = new List<byte>(_defaultReadBufferSize);
+            ReadBuffer = new List<byte>(_defaultReadBufferSize);
             _writeBuffer = new List<byte>(_defaultWriteBufferSize);
 
             // Initialize simulated values
-            _readDataAvailableWaitHandle = new ManualResetEvent(false);
-            _writeDataAvailableWaitHandle = new ManualResetEvent(false);
+            ReadDataAvailableWaitHandle = new ManualResetEvent(false);
+            WriteDataAvailableWaitHandle = new ManualResetEvent(false);
             _emulationIntervalWaitHandle = new ManualResetEvent(false);
 
             // Default timeouts for reading and writing
@@ -308,26 +245,26 @@ namespace DotSpatial.Positioning
             _writeTimeout = _defaultWriteTimeout;
 
             // Simulated values
-            _seed = new Random();
+            Seed = new Random();
             _utcDateTime = DateTime.UtcNow;
             _currentPosition = Positioning.Position.Empty;
             _altitude = Distance.FromFeet(1000);
             _route = new List<Position>();
             _satellites = new List<Satellite>();
-            _fixQuality = FixQuality.GpsFix;
-            _fixMode = FixMode.Automatic;
-            _fixMethod = FixMethod.Fix3D;
-            _fixStatus = FixStatus.Fix;
-            _horizontalDop = DilutionOfPrecision.Good;
-            _verticalDop = DilutionOfPrecision.Good;
-            _meanDop = DilutionOfPrecision.Good;
+            FixQuality = FixQuality.GpsFix;
+            FixMode = FixMode.Automatic;
+            FixMethod = FixMethod.Fix3D;
+            FixStatus = FixStatus.Fix;
+            HorizontalDilutionOfPrecision = DilutionOfPrecision.Good;
+            VerticalDilutionOfPrecision = DilutionOfPrecision.Good;
+            MeanDilutionOfPrecision = DilutionOfPrecision.Good;
 
             _speed = Speed.FromStatuteMilesPerHour(20);
             _speedLow = Speed.FromKilometersPerSecond(10).Value;
             _speedHigh = Speed.FromKilometersPerSecond(25).Value;
 
             _bearing = Azimuth.Southwest;
-            _bearingStart = _seed.NextDouble() * 360;
+            _bearingStart = Seed.NextDouble() * 360;
             _bearingArc = 10;
         }
 
@@ -342,22 +279,20 @@ namespace DotSpatial.Positioning
         {
             // It's already open
             if (_thread != null)
+            {
                 return;
+            }
 
             _isRunning = true;
 
             // Create a thread which processes the incoming (from the client) and outgoing (to the client) data
             _thread = new Thread(EmulatorThreadProc)
-                          {
-                              IsBackground = true,
-                              Priority = ThreadPriority.Normal,
-                              Name = _name
-                          };
+            {
+                IsBackground = true,
+                Priority = ThreadPriority.Normal,
+                Name = Name
+            };
             _thread.Start();
-
-#if PocketPC
-            _IsEmulationThreadAlive = true;
-#endif
         }
 
         /// <summary>
@@ -386,8 +321,7 @@ namespace DotSpatial.Positioning
             catch (Exception ex)
             {
                 // Raise the error via an event
-                if (ExceptionOccurred != null)
-                    ExceptionOccurred(this, new ExceptionEventArgs(ex));
+                ExceptionOccurred?.Invoke(this, new ExceptionEventArgs(ex));
             }
         }
 
@@ -413,7 +347,10 @@ namespace DotSpatial.Positioning
             if (_route.Count == 0)
             {
                 // Randomize the speed and direction if required.
-                if (_isRandom) Randomize();
+                if (IsRandom)
+                {
+                    Randomize();
+                }
 
                 // No.  Just move in a straight line
                 _currentPosition = _currentPosition.TranslateTo(_bearing, distanceMoved);
@@ -432,7 +369,9 @@ namespace DotSpatial.Positioning
                     // Select the next position in the route as our destination.
                     _routeIndex++;
                     if (_routeIndex > _route.Count - 1)
+                    {
                         _routeIndex = 0;
+                    }
 
                     // Set the next destination point
                     _currentDestination = _route[_routeIndex];
@@ -454,25 +393,12 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Gets a value indicating whether this instance is emulation thread alive.
         /// </summary>
-        private bool IsEmulationThreadAlive
-        {
-            get
-            {
-#if !PocketPC
-                return _thread.IsAlive;
-#else
-                return _IsEmulationThreadAlive;
-#endif
-            }
-        }
+        private bool IsEmulationThreadAlive => _thread.IsAlive;
 
         /// <summary>
         /// Returns the current randomizer for emulation.
         /// </summary>
-        protected Random Seed
-        {
-            get { return _seed; }
-        }
+        protected Random Seed { get; private set; }
 
         /// <summary>
         /// Returns the amount of time the emulator waits before processing new data.
@@ -480,8 +406,8 @@ namespace DotSpatial.Positioning
         /// <value>The interval.</value>
         public virtual TimeSpan Interval
         {
-            get { return _interval; }
-            set { _interval = value; }
+            get => _interval;
+            set => _interval = value;
         }
 
         /// <summary>
@@ -490,7 +416,7 @@ namespace DotSpatial.Positioning
         /// <param name="isRandom">The state to toggle the flag.</param>
         protected void SetRandom(bool isRandom)
         {
-            _isRandom = isRandom;
+            IsRandom = isRandom;
         }
 
         #endregion Private/Protected Members
@@ -500,19 +426,13 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Indicates whether enough satellite signals exist to determine the current location.
         /// </summary>
-        public bool IsFixed
-        {
-            get { return _fixMethod == FixMethod.Fix3D; }
-        }
+        public bool IsFixed => FixMethod == FixMethod.Fix3D;
 
         /// <summary>
         /// Gets a value indicating whether or not the emulator is generating data that
         /// changes in random manner.
         /// </summary>
-        public bool IsRandom
-        {
-            get { return _isRandom; }
-        }
+        public bool IsRandom { get; private set; }
 
         /// <summary>
         /// Randomizes the emulation by changing speed and direction
@@ -524,13 +444,13 @@ namespace DotSpatial.Positioning
         public virtual void Randomize()
         {
             // Flag it so the emulation will use random values
-            _isRandom = true;
+            IsRandom = true;
 
             // Randomize the speed within range
-            _speed = Speed.FromMetersPerSecond((_seed.NextDouble() * (_speedHigh - _speedLow)) + _speedLow);
+            _speed = Speed.FromMetersPerSecond((Seed.NextDouble() * (_speedHigh - _speedLow)) + _speedLow);
 
             // Randomize the bearing within the arc.
-            _bearing = new Azimuth(_seed.NextDouble() * _bearingArc + (_bearingStart - (_bearingArc * .5))).Normalize();
+            _bearing = new Azimuth(Seed.NextDouble() * _bearingArc + (_bearingStart - (_bearingArc * .5))).Normalize();
 
             // Reset the bearing origin
             _bearingStart = _bearing.DecimalDegrees;
@@ -551,10 +471,10 @@ namespace DotSpatial.Positioning
         public void Randomize(Random seed, Speed speedLow, Speed speedHigh, Azimuth bearingStart, Azimuth bearingArc)
         {
             // Flag it so the emulation will use random values
-            _isRandom = true;
+            IsRandom = true;
 
             // Get the randomizer parameters
-            _seed = seed;
+            Seed = seed;
 
             // Get the speed variance
             _speedLow = speedLow.ToMetersPerSecond().Value;
@@ -570,19 +490,16 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// The string Name of the emulator
         /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         /// <inheritdocs/>
         public override string ToString()
         {
-            return _name;
+            return Name;
         }
 
         #region Real-time specified
@@ -593,11 +510,11 @@ namespace DotSpatial.Positioning
         /// <value>The altitude.</value>
         public Distance Altitude
         {
-            get { return _altitude; }
+            get => _altitude;
             set
             {
                 _altitude = value;
-                _isRandom = false;
+                IsRandom = false;
             }
         }
 
@@ -607,11 +524,11 @@ namespace DotSpatial.Positioning
         /// <value>The speed.</value>
         public Speed Speed
         {
-            get { return _speed; }
+            get => _speed;
             set
             {
                 _speed = value;
-                _isRandom = false;
+                IsRandom = false;
             }
         }
 
@@ -621,116 +538,79 @@ namespace DotSpatial.Positioning
         /// <value>The bearing.</value>
         public Azimuth Bearing
         {
-            get { return _bearing; }
+            get => _bearing;
             set
             {
                 // If we're following a route, changing the bearing is not allowed
                 if (_route.Count != 0)
+                {
                     throw new InvalidOperationException("The current bearing can only be set if there is no route to follow.  With a route specified, the emulator will automatically recalculate the bearing.");
+                }
 
                 _bearing = value;
-                _isRandom = false;
+                IsRandom = false;
             }
         }
 
         /// <summary>
         /// The integer count of fixed satellites
         /// </summary>
-        public int FixedSatelliteCount
-        {
-            get
-            {
+        public int FixedSatelliteCount =>
                 // Bump up the count whenever a fixed satellite is found
 
-                return _satellites.Count(satellite => satellite.IsFixed);
-            }
-        }
+                _satellites.Count(satellite => satellite.IsFixed);
 
         /// <summary>
         /// The quality of the GPS signal
         /// </summary>
         /// <value>The fix quality.</value>
-        public FixQuality FixQuality
-        {
-            get { return _fixQuality; }
-            set { _fixQuality = value; }
-        }
+        public FixQuality FixQuality { get; set; }
 
         /// <summary>
         /// The mode of the signal fix
         /// </summary>
         /// <value>The fix mode.</value>
-        public FixMode FixMode
-        {
-            get { return _fixMode; }
-            set { _fixMode = value; }
-        }
+        public FixMode FixMode { get; set; }
 
         /// <summary>
         /// the fix method
         /// </summary>
         /// <value>The fix method.</value>
-        public FixMethod FixMethod
-        {
-            get { return _fixMethod; }
-            set { _fixMethod = value; }
-        }
+        public FixMethod FixMethod { get; set; }
 
         /// <summary>
         /// The status of the fix
         /// </summary>
         /// <value>The fix status.</value>
-        public FixStatus FixStatus
-        {
-            get { return _fixStatus; }
-            set { _fixStatus = value; }
-        }
+        public FixStatus FixStatus { get; set; }
 
         /// <summary>
         /// the Horizontal Dilution of Precision (HPDOP)
         /// </summary>
         /// <value>The horizontal dilution of precision.</value>
-        public DilutionOfPrecision HorizontalDilutionOfPrecision
-        {
-            get { return _horizontalDop; }
-            set { _horizontalDop = value; }
-        }
+        public DilutionOfPrecision HorizontalDilutionOfPrecision { get; set; }
 
         /// <summary>
         /// The Vertical Dilution of Precision (VPDOP)
         /// </summary>
         /// <value>The vertical dilution of precision.</value>
-        public DilutionOfPrecision VerticalDilutionOfPrecision
-        {
-            get { return _verticalDop; }
-            set { _verticalDop = value; }
-        }
+        public DilutionOfPrecision VerticalDilutionOfPrecision { get; set; }
 
         /// <summary>
         /// The average of the Dilution of precision values.
         /// </summary>
         /// <value>The mean dilution of precision.</value>
-        public DilutionOfPrecision MeanDilutionOfPrecision
-        {
-            get { return _meanDop; }
-            set { _meanDop = value; }
-        }
+        public DilutionOfPrecision MeanDilutionOfPrecision { get; set; }
 
         /// <summary>
         /// Gets the list of satellites.
         /// </summary>
-        public IList<Satellite> Satellites
-        {
-            get { return _satellites; }
-        }
+        public IList<Satellite> Satellites => _satellites;
 
         /// <summary>
         /// Gets the list of positions that make up this route
         /// </summary>
-        public IList<Position> Route
-        {
-            get { return _route; }
-        }
+        public IList<Position> Route => _route;
 
         /// <summary>
         /// Gets the Position structure for the current position
@@ -738,11 +618,13 @@ namespace DotSpatial.Positioning
         /// <value>The current position.</value>
         public Position CurrentPosition
         {
-            get { return _currentPosition; }
+            get => _currentPosition;
             set
             {
                 if (_route.Count != 0)
+                {
                     throw new InvalidOperationException("The current position can only be set if there is no route to follow.  With a route specified, the emulator will traverse it automatically.");
+                }
 
                 _currentPosition = value;
             }
@@ -754,11 +636,13 @@ namespace DotSpatial.Positioning
         /// <value>The current destination.</value>
         public Position CurrentDestination
         {
-            get { return _currentDestination; }
+            get => _currentDestination;
             set
             {
                 if (_route.Count > 0)
+                {
                     throw new InvalidOperationException("The destination can only be set if there is no route to follow.  With a route specified, the emulator will traverse it automatically.");
+                }
 
                 _currentDestination = value;
             }
@@ -767,18 +651,12 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Gets the DateTime structure for Now
         /// </summary>
-        public DateTime DateTime
-        {
-            get { return DateTime.Now; }
-        }
+        public DateTime DateTime => DateTime.Now;
 
         /// <summary>
         /// Gets the UtcCorrected value for Now
         /// </summary>
-        public DateTime UtcDateTime
-        {
-            get { return DateTime.UtcNow; }
-        }
+        public DateTime UtcDateTime => DateTime.UtcNow;
 
         #endregion Real-time specified
 
@@ -788,31 +666,19 @@ namespace DotSpatial.Positioning
         /// When overridden in a derived class, gets a value indicating whether the current stream supports reading.
         /// </summary>
         /// <returns>true if the stream supports reading; otherwise, false.</returns>
-        public override bool CanRead
-        {
-            get { return !_isDisposed; }
-        }
+        public override bool CanRead => !_isDisposed;
 
         /// <summary>
         /// When overridden in a derived class, gets a value indicating whether the current stream supports seeking.
         /// </summary>
         /// <returns>true if the stream supports seeking; otherwise, false.</returns>
-        public override bool CanSeek
-        {
-            get { return false; }
-        }
+        public override bool CanSeek => false;
 
         /// <summary>
         /// Gets a value that determines whether the current stream can time out.
         /// </summary>
         /// <returns>A value that determines whether the current stream can time out.</returns>
-        public override bool CanTimeout
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool CanTimeout => true;
 
         /// <summary>
         /// When overridden in a derived class, clears all buffers for this stream and causes any buffered data to be written to the underlying device.
@@ -821,7 +687,7 @@ namespace DotSpatial.Positioning
         public override void Flush()
         {
             // Clear all buffers
-            _readBuffer.Clear();
+            ReadBuffer.Clear();
             _writeBuffer.Clear();
         }
 
@@ -883,30 +749,27 @@ namespace DotSpatial.Positioning
              */
 
             // If there's nothing to read, block a while for data
-            if (_readBuffer.Count == 0
+            if (ReadBuffer.Count == 0
                 // Wait for data.  If there is none, throw a big baby tantrum
-#if PocketPC
-                && !_ReadDataAvailableWaitHandle.WaitOne(ReadTimeout, false)
-#else
-                && !_readDataAvailableWaitHandle.WaitOne(_readTimeout)
-#endif
-)
+                && !ReadDataAvailableWaitHandle.WaitOne(_readTimeout))
             {
                 throw new TimeoutException("The emulator has not generated any data within the read timeout period.");
             }
 
             // Calculate the number of bytes to read
-            int bytesToRead = _readBuffer.Count < count ? _readBuffer.Count : count;
+            int bytesToRead = ReadBuffer.Count < count ? ReadBuffer.Count : count;
 
             // Copy the read buffer to the target array
-            _readBuffer.CopyTo(offset, buffer, 0, bytesToRead);
+            ReadBuffer.CopyTo(offset, buffer, 0, bytesToRead);
 
             // Remove the read bytes from the buffer
-            _readBuffer.RemoveRange(0, bytesToRead);
+            ReadBuffer.RemoveRange(0, bytesToRead);
 
             // If the buffer is empty, reset
-            if (_readBuffer.Count == 0)
-                _readDataAvailableWaitHandle.Reset();
+            if (ReadBuffer.Count == 0)
+            {
+                ReadDataAvailableWaitHandle.Reset();
+            }
 
             // Return the bytes read
             return bytesToRead;
@@ -922,30 +785,32 @@ namespace DotSpatial.Positioning
         public override int ReadByte()
         {
             // If there's nothing to read, block a while for data
-            if (_readBuffer.Count == 0)
+            if (ReadBuffer.Count == 0)
             {
                 // Wait for data.  If there is none, return -1
-#if PocketPC
-                if (!_ReadDataAvailableWaitHandle.WaitOne(ReadTimeout, false))
-#else
-                if (!_readDataAvailableWaitHandle.WaitOne(ReadTimeout))
-#endif
+                if (!ReadDataAvailableWaitHandle.WaitOne(ReadTimeout))
+                {
                     return -1;
+                }
             }
 
             // Anything?  If not, return -1
-            if (_readBuffer.Count == 0)
+            if (ReadBuffer.Count == 0)
+            {
                 return -1;
+            }
 
             // Yes.  Get the first byte
-            int result = Convert.ToInt32(_readBuffer[0]);
+            int result = Convert.ToInt32(ReadBuffer[0]);
 
             // And remove it from the list
-            _readBuffer.RemoveAt(0);
+            ReadBuffer.RemoveAt(0);
 
             // If the buffer is empty, reset
-            if (_readBuffer.Count == 0)
-                _readDataAvailableWaitHandle.Reset();
+            if (ReadBuffer.Count == 0)
+            {
+                ReadDataAvailableWaitHandle.Reset();
+            }
 
             // Return the byte read
             return result;
@@ -954,34 +819,22 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Gets the read buffer.
         /// </summary>
-        protected List<byte> ReadBuffer
-        {
-            get { return _readBuffer; }
-        }
+        protected List<byte> ReadBuffer { get; private set; }
 
         /// <summary>
         /// Gets the read data available wait handle.
         /// </summary>
-        protected ManualResetEvent ReadDataAvailableWaitHandle
-        {
-            get { return _readDataAvailableWaitHandle; }
-        }
+        protected ManualResetEvent ReadDataAvailableWaitHandle { get; private set; }
 
         /// <summary>
         /// Gets the write buffer.
         /// </summary>
-        protected IList<byte> WriteBuffer
-        {
-            get { return _writeBuffer; }
-        }
+        protected IList<byte> WriteBuffer => _writeBuffer;
 
         /// <summary>
         /// Gets the write data available wait handle.
         /// </summary>
-        protected ManualResetEvent WriteDataAvailableWaitHandle
-        {
-            get { return _writeDataAvailableWaitHandle; }
-        }
+        protected ManualResetEvent WriteDataAvailableWaitHandle { get; private set; }
 
         /// <summary>
         /// When overridden in a derived class, writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.
@@ -1006,10 +859,12 @@ namespace DotSpatial.Positioning
         {
             // Write the buffer, byte-by-byte to the incoming buffer
             for (int index = offset; index < offset + count; index++)
+            {
                 _writeBuffer.Add(buffer[index]);
+            }
 
             // Set the writing wait handle
-            _writeDataAvailableWaitHandle.Set();
+            WriteDataAvailableWaitHandle.Set();
         }
 
         /// <summary>
@@ -1027,7 +882,7 @@ namespace DotSpatial.Positioning
             _writeBuffer.Add(value);
 
             // Set the writing wait handle
-            _writeDataAvailableWaitHandle.Set();
+            WriteDataAvailableWaitHandle.Set();
         }
 
         /// <summary>
@@ -1043,14 +898,8 @@ namespace DotSpatial.Positioning
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
         public override long Position
         {
-            get
-            {
-                return 0;
-            }
-            set
-            {
-                throw new NotSupportedException();
-            }
+            get => 0;
+            set => throw new NotSupportedException();
         }
 
         /// <summary>
@@ -1061,24 +910,16 @@ namespace DotSpatial.Positioning
         /// <exception cref="T:System.NotSupportedException">A class derived from Stream does not support seeking. </exception>
         ///
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
-        public override long Length
-        {
-            get { return _readBuffer.Count; }
-        }
+        public override long Length => ReadBuffer.Count;
 
         /// <summary>
         /// When overridden in a derived class, gets a value indicating whether the current stream supports writing.
         /// </summary>
         /// <returns>true if the stream supports writing; otherwise, false.</returns>
-        public override bool CanWrite
-        {
-            get
-            {
+        public override bool CanWrite =>
                 //  By default, emulators are read-only.  Implementers (such as Garmin or SiRF)
                 // will override this.
-                return false;
-            }
-        }
+                false;
 
         /// <summary>
         /// Gets or sets a value, in milliseconds, that determines how long the stream will attempt to read before timing out.
@@ -1089,14 +930,8 @@ namespace DotSpatial.Positioning
         /// <exception cref="T:System.InvalidOperationException">The <see cref="P:System.IO.Stream.ReadTimeout"/> method always throws an <see cref="T:System.InvalidOperationException"/>. </exception>
         public override int ReadTimeout
         {
-            get
-            {
-                return Convert.ToInt32(_readTimeout.TotalMilliseconds);
-            }
-            set
-            {
-                _readTimeout = TimeSpan.FromMilliseconds(value);
-            }
+            get => Convert.ToInt32(_readTimeout.TotalMilliseconds);
+            set => _readTimeout = TimeSpan.FromMilliseconds(value);
         }
 
         /// <summary>
@@ -1108,14 +943,8 @@ namespace DotSpatial.Positioning
         /// <exception cref="T:System.InvalidOperationException">The <see cref="P:System.IO.Stream.WriteTimeout"/> method always throws an <see cref="T:System.InvalidOperationException"/>. </exception>
         public override int WriteTimeout
         {
-            get
-            {
-                return Convert.ToInt32(_writeTimeout.TotalMilliseconds);
-            }
-            set
-            {
-                _writeTimeout = TimeSpan.FromMilliseconds(value);
-            }
+            get => Convert.ToInt32(_writeTimeout.TotalMilliseconds);
+            set => _writeTimeout = TimeSpan.FromMilliseconds(value);
         }
 
         #region Cloning
@@ -1165,7 +994,9 @@ namespace DotSpatial.Positioning
         public override void Close()
         {
             if (_emulationIntervalWaitHandle != null)
+            {
                 _emulationIntervalWaitHandle.Set();
+            }
 
             _isRunning = false;
 
@@ -1178,12 +1009,20 @@ namespace DotSpatial.Positioning
             _thread = null;
 
             // Now clean up the handles
-            if (_readDataAvailableWaitHandle != null)
-                _readDataAvailableWaitHandle.Reset();
-            if (_writeDataAvailableWaitHandle != null)
-                _writeDataAvailableWaitHandle.Reset();
+            if (ReadDataAvailableWaitHandle != null)
+            {
+                ReadDataAvailableWaitHandle.Reset();
+            }
+
+            if (WriteDataAvailableWaitHandle != null)
+            {
+                WriteDataAvailableWaitHandle.Reset();
+            }
+
             if (_emulationIntervalWaitHandle != null)
+            {
                 _emulationIntervalWaitHandle.Reset();
+            }
         }
 
         /// <summary>
@@ -1194,7 +1033,9 @@ namespace DotSpatial.Positioning
         {
             // If we're already disposed, just exit
             if (_isDisposed)
+            {
                 return;
+            }
 
             // Indicate that we're disposed
             _isDisposed = true;
@@ -1203,20 +1044,28 @@ namespace DotSpatial.Positioning
             Close();
 
             // Now clean up the handles
-            if (_readDataAvailableWaitHandle != null)
-                _readDataAvailableWaitHandle.Close();
-            if (_writeDataAvailableWaitHandle != null)
-                _writeDataAvailableWaitHandle.Close();
+            if (ReadDataAvailableWaitHandle != null)
+            {
+                ReadDataAvailableWaitHandle.Close();
+            }
+
+            if (WriteDataAvailableWaitHandle != null)
+            {
+                WriteDataAvailableWaitHandle.Close();
+            }
+
             if (_emulationIntervalWaitHandle != null)
+            {
                 _emulationIntervalWaitHandle.Close();
+            }
 
             // Are we disposing of managed objects?
             if (disposing)
             {
                 _writeBuffer = null;
-                _readBuffer = null;
-                _readDataAvailableWaitHandle = null;
-                _writeDataAvailableWaitHandle = null;
+                ReadBuffer = null;
+                ReadDataAvailableWaitHandle = null;
+                WriteDataAvailableWaitHandle = null;
                 _emulationIntervalWaitHandle = null;
                 _thread = null;
                 _route = null;

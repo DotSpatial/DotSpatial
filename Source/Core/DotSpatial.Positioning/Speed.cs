@@ -1,35 +1,15 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using DotSpatial.Positioning;
-#if !PocketPC || DesignTime
-
-using System.ComponentModel;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents a measurement of an object's rate of travel.
     /// </summary>
@@ -50,17 +30,12 @@ namespace DotSpatial.Positioning
     ///   <para>Instances of this structure are guaranteed to be thread-safe because it is
     /// immutable (its properties can only be modified via constructors).</para></remarks>
     [TypeConverter("DotSpatial.Positioning.Design.SpeedConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct Speed : IFormattable, IComparable<Speed>, IEquatable<Speed>, IXmlSerializable
     {
         /// <summary>
         ///
         /// </summary>
         private double _value;
-        /// <summary>
-        ///
-        /// </summary>
-        private SpeedUnit _units;
 
         #region Constants
 
@@ -211,11 +186,11 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents the largest possible speed.
         /// </summary>
-        public static readonly Speed Maximum = new Speed(Double.MaxValue, SpeedUnit.KilometersPerSecond).ToLocalUnitType();
+        public static readonly Speed Maximum = new Speed(double.MaxValue, SpeedUnit.KilometersPerSecond).ToLocalUnitType();
         /// <summary>
         /// Represents the smallest possible speed.
         /// </summary>
-        public static readonly Speed Minimum = new Speed(Double.MinValue, SpeedUnit.KilometersPerSecond).ToLocalUnitType();
+        public static readonly Speed Minimum = new Speed(double.MinValue, SpeedUnit.KilometersPerSecond).ToLocalUnitType();
 
         /// <summary>
         /// Returns the rate of travel of sound waves at sea level.
@@ -243,7 +218,7 @@ namespace DotSpatial.Positioning
         public Speed(double value, SpeedUnit units)
         {
             _value = value;
-            _units = units;
+            Units = units;
         }
 
         /// <summary>
@@ -269,9 +244,10 @@ namespace DotSpatial.Positioning
             if (string.IsNullOrEmpty(value))
             {
                 _value = 0;
-                _units = SpeedUnit.MetersPerSecond;
+                Units = SpeedUnit.MetersPerSecond;
                 return;
             }
+
             try
             {
                 // Convert to uppercase and remove commas
@@ -279,26 +255,29 @@ namespace DotSpatial.Positioning
                 if (value == "INFINITY")
                 {
                     _value = Infinity.Value;
-                    _units = Infinity.Units;
+                    Units = Infinity.Units;
                 }
+
                 if (value == "EMPTY")
                 {
                     _value = 0;
-                    _units = SpeedUnit.MetersPerSecond;
+                    Units = SpeedUnit.MetersPerSecond;
                 }
 
                 int count = value.Length - 1;
                 while (count >= 0)
                 {
-                    if (Char.IsNumber(value, count))
+                    if (char.IsNumber(value, count))
                     {
                         count++;
                         break;
                     }
+
                     count--;
                 }
-                unit = value.Substring(count).Trim();
-                string numericPortion = value.Substring(0, count);
+
+                unit = value[count..].Trim();
+                string numericPortion = value[..count];
                 double.TryParse(numericPortion, out _value);
 
                 string tempUnits = unit.ToUpper(CultureInfo.InvariantCulture).Trim()
@@ -344,37 +323,20 @@ namespace DotSpatial.Positioning
                     .Replace("KTS", "K")
                     .Replace("KT", "K");
                 // Try to interpret the measurement
-                switch (tempUnits)
+                Units = tempUnits switch
                 {
-                    case "FT/S":
-                        _units = SpeedUnit.FeetPerSecond;
-                        break;
-                    case "KPH":
-                        _units = SpeedUnit.KilometersPerHour;
-                        break;
-                    case "KM/S":
-                        _units = SpeedUnit.KilometersPerSecond;
-                        break;
-                    case "K":
-                        _units = SpeedUnit.Knots;
-                        break;
-                    case "M/S":
-                        _units = SpeedUnit.MetersPerSecond;
-                        break;
-                    case "MI/H":
-                        _units = SpeedUnit.StatuteMilesPerHour;
-                        break;
-                    default:
-                        throw new FormatException(Resources.Speed_InvalidUnitPortion);
-                }
+                    "FT/S" => SpeedUnit.FeetPerSecond,
+                    "KPH" => SpeedUnit.KilometersPerHour,
+                    "KM/S" => SpeedUnit.KilometersPerSecond,
+                    "K" => SpeedUnit.Knots,
+                    "M/S" => SpeedUnit.MetersPerSecond,
+                    "MI/H" => SpeedUnit.StatuteMilesPerHour,
+                    _ => throw new FormatException(Resources.Speed_InvalidUnitPortion),
+                };
             }
             catch (Exception ex)
             {
-#if PocketPC
-				throw new ArgumentException(Properties.Resources.Speed_InvalidFormat, ex);
-#else
-                throw new ArgumentException(Resources.Speed_InvalidFormat, "value", ex);
-#endif
+                throw new ArgumentException(Resources.Speed_InvalidFormat, nameof(value), ex);
             }
         }
 
@@ -385,8 +347,8 @@ namespace DotSpatial.Positioning
         public Speed(XmlReader reader)
         {
             // Initialize all fields
-            _value = Double.NaN;
-            _units = 0;
+            _value = double.NaN;
+            Units = 0;
 
             // Deserialize the object from XML
             ReadXml(reader);
@@ -402,13 +364,7 @@ namespace DotSpatial.Positioning
         /// <remarks>This property is combined with the
         /// <see cref="Units">Units</see> property to form a complete
         /// speed measurement.</remarks>
-        public double Value
-        {
-            get
-            {
-                return _value;
-            }
-        }
+        public double Value => _value;
 
         /// <summary>
         /// Returns the units portion of the speed measurement.
@@ -425,56 +381,32 @@ namespace DotSpatial.Positioning
         /// ToKilometersPerHour</see> or <see cref="Speed.ToStatuteMilesPerHour">
         /// ToStatuteMilesPerHour</see> to ensure that the speed is in the correct unit
         /// type before performing mathematics.</para></remarks>
-        public SpeedUnit Units
-        {
-            get
-            {
-                return _units;
-            }
-        }
+        public SpeedUnit Units { get; private set; }
 
         /// <summary>
         /// Indicates if the measurement is zero.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _value == 0;
-            }
-        }
+        public bool IsEmpty => _value == 0;
 
         /// <summary>
         /// Indicates if the unit of measurement is a Metric unit type.
         /// </summary>
         public bool IsMetric
         {
-            get
-            {
-                return _units == SpeedUnit.KilometersPerHour
-                    || _units == SpeedUnit.KilometersPerSecond
-                    || _units == SpeedUnit.MetersPerSecond;
-            }
+            get => Units is SpeedUnit.KilometersPerHour
+                    or SpeedUnit.KilometersPerSecond
+                    or SpeedUnit.MetersPerSecond;
         }
 
         /// <summary>
         /// Indicates if the measurement is infinite.
         /// </summary>
-        public bool IsInfinity
-        {
-            get
-            {
-                return double.IsInfinity(_value);
-            }
-        }
+        public bool IsInfinity => double.IsInfinity(_value);
 
         /// <summary>
         /// Indicates if the current instance is invalid or unspecified.
         /// </summary>
-        public bool IsInvalid
-        {
-            get { return double.IsNaN(_value); }
-        }
+        public bool IsInvalid => double.IsNaN(_value);
 
         #endregion Public Properties
 
@@ -496,7 +428,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Speed Round(int decimals)
         {
-            return new Speed(Math.Round(_value, decimals), _units);
+            return new Speed(Math.Round(_value, decimals), Units);
         }
 
         /// <summary>
@@ -506,23 +438,16 @@ namespace DotSpatial.Positioning
         /// <remarks>The measurement is converted regardless of its current unit type.</remarks>
         public Speed ToFeetPerSecond() //'Implements ISpeed.ToFeetPerSecond
         {
-            switch (Units)
+            return Units switch
             {
-                case SpeedUnit.StatuteMilesPerHour:
-                    return new Speed(Value * STATUTE_MPH_PER_FPS, SpeedUnit.FeetPerSecond);
-                case SpeedUnit.KilometersPerHour:
-                    return new Speed(Value * KPH_PER_FPS, SpeedUnit.FeetPerSecond);
-                case SpeedUnit.KilometersPerSecond:
-                    return new Speed(Value * KPS_PER_FPS, SpeedUnit.FeetPerSecond);
-                case SpeedUnit.FeetPerSecond:
-                    return this;
-                case SpeedUnit.MetersPerSecond:
-                    return new Speed(Value * MPS_PER_FPS, SpeedUnit.FeetPerSecond);
-                case SpeedUnit.Knots:
-                    return new Speed(Value * KNOTS_PER_FPS, SpeedUnit.FeetPerSecond);
-                default:
-                    return Empty;
-            }
+                SpeedUnit.StatuteMilesPerHour => new Speed(Value * STATUTE_MPH_PER_FPS, SpeedUnit.FeetPerSecond),
+                SpeedUnit.KilometersPerHour => new Speed(Value * KPH_PER_FPS, SpeedUnit.FeetPerSecond),
+                SpeedUnit.KilometersPerSecond => new Speed(Value * KPS_PER_FPS, SpeedUnit.FeetPerSecond),
+                SpeedUnit.FeetPerSecond => this,
+                SpeedUnit.MetersPerSecond => new Speed(Value * MPS_PER_FPS, SpeedUnit.FeetPerSecond),
+                SpeedUnit.Knots => new Speed(Value * KNOTS_PER_FPS, SpeedUnit.FeetPerSecond),
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -532,23 +457,16 @@ namespace DotSpatial.Positioning
         /// <remarks>The measurement is converted regardless of its current unit type.</remarks>
         public Speed ToKilometersPerHour() //'Implements ISpeed.ToKilometersPerHour
         {
-            switch (Units)
+            return Units switch
             {
-                case SpeedUnit.StatuteMilesPerHour:
-                    return new Speed(Value * STATUTE_MPH_PER_KPH, SpeedUnit.KilometersPerHour);
-                case SpeedUnit.KilometersPerHour:
-                    return this;
-                case SpeedUnit.FeetPerSecond:
-                    return new Speed(Value * FPS_PER_KPH, SpeedUnit.KilometersPerHour);
-                case SpeedUnit.MetersPerSecond:
-                    return new Speed(Value * MPS_PER_KPH, SpeedUnit.KilometersPerHour);
-                case SpeedUnit.Knots:
-                    return new Speed(Value * KNOTS_PER_KPH, SpeedUnit.KilometersPerHour);
-                case SpeedUnit.KilometersPerSecond:
-                    return new Speed(Value * KPS_PER_KPH, SpeedUnit.KilometersPerHour);
-                default:
-                    return Empty;
-            }
+                SpeedUnit.StatuteMilesPerHour => new Speed(Value * STATUTE_MPH_PER_KPH, SpeedUnit.KilometersPerHour),
+                SpeedUnit.KilometersPerHour => this,
+                SpeedUnit.FeetPerSecond => new Speed(Value * FPS_PER_KPH, SpeedUnit.KilometersPerHour),
+                SpeedUnit.MetersPerSecond => new Speed(Value * MPS_PER_KPH, SpeedUnit.KilometersPerHour),
+                SpeedUnit.Knots => new Speed(Value * KNOTS_PER_KPH, SpeedUnit.KilometersPerHour),
+                SpeedUnit.KilometersPerSecond => new Speed(Value * KPS_PER_KPH, SpeedUnit.KilometersPerHour),
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -558,23 +476,16 @@ namespace DotSpatial.Positioning
         /// <remarks>The measurement is converted regardless of its current unit type.</remarks>
         public Speed ToKilometersPerSecond() //'Implements ISpeed.ToKilometersPerSecond
         {
-            switch (Units)
+            return Units switch
             {
-                case SpeedUnit.StatuteMilesPerHour:
-                    return new Speed(Value * STATUTE_MPH_PER_KPS, SpeedUnit.KilometersPerSecond);
-                case SpeedUnit.KilometersPerHour:
-                    return new Speed(Value * KPH_PER_KPS, SpeedUnit.KilometersPerSecond);
-                case SpeedUnit.KilometersPerSecond:
-                    return this;
-                case SpeedUnit.FeetPerSecond:
-                    return new Speed(Value * FPS_PER_KPS, SpeedUnit.KilometersPerSecond);
-                case SpeedUnit.MetersPerSecond:
-                    return new Speed(Value * MPS_PER_KPS, SpeedUnit.KilometersPerSecond);
-                case SpeedUnit.Knots:
-                    return new Speed(Value * KNOTS_PER_KPS, SpeedUnit.KilometersPerSecond);
-                default:
-                    return Empty;
-            }
+                SpeedUnit.StatuteMilesPerHour => new Speed(Value * STATUTE_MPH_PER_KPS, SpeedUnit.KilometersPerSecond),
+                SpeedUnit.KilometersPerHour => new Speed(Value * KPH_PER_KPS, SpeedUnit.KilometersPerSecond),
+                SpeedUnit.KilometersPerSecond => this,
+                SpeedUnit.FeetPerSecond => new Speed(Value * FPS_PER_KPS, SpeedUnit.KilometersPerSecond),
+                SpeedUnit.MetersPerSecond => new Speed(Value * MPS_PER_KPS, SpeedUnit.KilometersPerSecond),
+                SpeedUnit.Knots => new Speed(Value * KNOTS_PER_KPS, SpeedUnit.KilometersPerSecond),
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -584,23 +495,16 @@ namespace DotSpatial.Positioning
         /// <remarks>The measurement is converted regardless of its current unit type.</remarks>
         public Speed ToKnots() //'Implements ISpeed.ToKnots
         {
-            switch (Units)
+            return Units switch
             {
-                case SpeedUnit.StatuteMilesPerHour:
-                    return new Speed(Value * STATUTE_MPH_PER_KNOT, SpeedUnit.Knots);
-                case SpeedUnit.KilometersPerHour:
-                    return new Speed(Value * KPH_PER_KNOT, SpeedUnit.Knots);
-                case SpeedUnit.KilometersPerSecond:
-                    return new Speed(Value * KPS_PER_KNOT, SpeedUnit.Knots);
-                case SpeedUnit.FeetPerSecond:
-                    return new Speed(Value * FPS_PER_KNOT, SpeedUnit.Knots);
-                case SpeedUnit.MetersPerSecond:
-                    return new Speed(Value * MPS_PER_KNOT, SpeedUnit.Knots);
-                case SpeedUnit.Knots:
-                    return this;
-                default:
-                    return Empty;
-            }
+                SpeedUnit.StatuteMilesPerHour => new Speed(Value * STATUTE_MPH_PER_KNOT, SpeedUnit.Knots),
+                SpeedUnit.KilometersPerHour => new Speed(Value * KPH_PER_KNOT, SpeedUnit.Knots),
+                SpeedUnit.KilometersPerSecond => new Speed(Value * KPS_PER_KNOT, SpeedUnit.Knots),
+                SpeedUnit.FeetPerSecond => new Speed(Value * FPS_PER_KNOT, SpeedUnit.Knots),
+                SpeedUnit.MetersPerSecond => new Speed(Value * MPS_PER_KNOT, SpeedUnit.Knots),
+                SpeedUnit.Knots => this,
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -610,23 +514,16 @@ namespace DotSpatial.Positioning
         /// <remarks>The measurement is converted regardless of its current unit type.</remarks>
         public Speed ToMetersPerSecond() //'Implements ISpeed.ToMetersPerSecond
         {
-            switch (Units)
+            return Units switch
             {
-                case SpeedUnit.StatuteMilesPerHour:
-                    return new Speed(Value * STATUTE_MPH_PER_MPS, SpeedUnit.MetersPerSecond);
-                case SpeedUnit.KilometersPerHour:
-                    return new Speed(Value * KPH_PER_MPS, SpeedUnit.MetersPerSecond);
-                case SpeedUnit.KilometersPerSecond:
-                    return new Speed(Value * KPS_PER_MPS, SpeedUnit.MetersPerSecond);
-                case SpeedUnit.FeetPerSecond:
-                    return new Speed(Value * FPS_PER_MPS, SpeedUnit.MetersPerSecond);
-                case SpeedUnit.MetersPerSecond:
-                    return this;
-                case SpeedUnit.Knots:
-                    return new Speed(Value * KNOTS_PER_MPS, SpeedUnit.MetersPerSecond);
-                default:
-                    return Empty;
-            }
+                SpeedUnit.StatuteMilesPerHour => new Speed(Value * STATUTE_MPH_PER_MPS, SpeedUnit.MetersPerSecond),
+                SpeedUnit.KilometersPerHour => new Speed(Value * KPH_PER_MPS, SpeedUnit.MetersPerSecond),
+                SpeedUnit.KilometersPerSecond => new Speed(Value * KPS_PER_MPS, SpeedUnit.MetersPerSecond),
+                SpeedUnit.FeetPerSecond => new Speed(Value * FPS_PER_MPS, SpeedUnit.MetersPerSecond),
+                SpeedUnit.MetersPerSecond => this,
+                SpeedUnit.Knots => new Speed(Value * KNOTS_PER_MPS, SpeedUnit.MetersPerSecond),
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -636,23 +533,16 @@ namespace DotSpatial.Positioning
         /// <remarks>The measurement is converted regardless of its current unit type.</remarks>
         public Speed ToStatuteMilesPerHour()
         {
-            switch (Units)
+            return Units switch
             {
-                case SpeedUnit.StatuteMilesPerHour:
-                    return this;
-                case SpeedUnit.KilometersPerHour:
-                    return new Speed(Value * KPH_PER_STATUTE_MPH, SpeedUnit.StatuteMilesPerHour);
-                case SpeedUnit.KilometersPerSecond:
-                    return new Speed(Value * KPS_PER_STATUTE_MPH, SpeedUnit.StatuteMilesPerHour);
-                case SpeedUnit.FeetPerSecond:
-                    return new Speed(Value * FPS_PER_STATUTE_MPH, SpeedUnit.StatuteMilesPerHour);
-                case SpeedUnit.MetersPerSecond:
-                    return new Speed(Value * MPS_PER_STATUTE_MPH, SpeedUnit.StatuteMilesPerHour);
-                case SpeedUnit.Knots:
-                    return new Speed(Value * KNOTS_PER_STATUTE_MPH, SpeedUnit.StatuteMilesPerHour);
-                default:
-                    return Empty;
-            }
+                SpeedUnit.StatuteMilesPerHour => this,
+                SpeedUnit.KilometersPerHour => new Speed(Value * KPH_PER_STATUTE_MPH, SpeedUnit.StatuteMilesPerHour),
+                SpeedUnit.KilometersPerSecond => new Speed(Value * KPS_PER_STATUTE_MPH, SpeedUnit.StatuteMilesPerHour),
+                SpeedUnit.FeetPerSecond => new Speed(Value * FPS_PER_STATUTE_MPH, SpeedUnit.StatuteMilesPerHour),
+                SpeedUnit.MetersPerSecond => new Speed(Value * MPS_PER_STATUTE_MPH, SpeedUnit.StatuteMilesPerHour),
+                SpeedUnit.Knots => new Speed(Value * KNOTS_PER_STATUTE_MPH, SpeedUnit.StatuteMilesPerHour),
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -662,23 +552,16 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Speed ToUnitType(SpeedUnit value)
         {
-            switch (value)
+            return value switch
             {
-                case SpeedUnit.FeetPerSecond:
-                    return ToFeetPerSecond();
-                case SpeedUnit.KilometersPerHour:
-                    return ToKilometersPerHour();
-                case SpeedUnit.KilometersPerSecond:
-                    return ToKilometersPerSecond();
-                case SpeedUnit.Knots:
-                    return ToKnots();
-                case SpeedUnit.MetersPerSecond:
-                    return ToMetersPerSecond();
-                case SpeedUnit.StatuteMilesPerHour:
-                    return ToStatuteMilesPerHour();
-                default:
-                    return Empty;
-            }
+                SpeedUnit.FeetPerSecond => ToFeetPerSecond(),
+                SpeedUnit.KilometersPerHour => ToKilometersPerHour(),
+                SpeedUnit.KilometersPerSecond => ToKilometersPerSecond(),
+                SpeedUnit.Knots => ToKnots(),
+                SpeedUnit.MetersPerSecond => ToMetersPerSecond(),
+                SpeedUnit.StatuteMilesPerHour => ToStatuteMilesPerHour(),
+                _ => Empty,
+            };
         }
 
         /// <summary>
@@ -696,7 +579,10 @@ namespace DotSpatial.Positioning
             Speed temp = ToStatuteMilesPerHour();
             // If the value is less than one, bump down
             if (Math.Abs(temp.Value) < 1.0)
+            {
                 temp = temp.ToFeetPerSecond();
+            }
+
             return temp;
         }
 
@@ -715,10 +601,15 @@ namespace DotSpatial.Positioning
             Speed temp = ToKilometersPerHour();
             // If the value is less than one, bump down
             if (Math.Abs(temp.Value) < 1.0)
+            {
                 temp = temp.ToMetersPerSecond();
+            }
             // And so on until we find the right unit
             if (Math.Abs(temp.Value) < 1.0)
+            {
                 temp = temp.ToKilometersPerSecond();
+            }
+
             return temp;
         }
 
@@ -736,7 +627,10 @@ namespace DotSpatial.Positioning
         {
             // Find the largest possible units in the local region's system
             if (RegionInfo.CurrentRegion.IsMetric)
+            {
                 return ToMetricUnitType();
+            }
+
             return ToImperialUnitType();
         }
 
@@ -745,7 +639,7 @@ namespace DotSpatial.Positioning
         /// format.
         /// </summary>
         /// <param name="format">The format.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format)
         {
             return ToString(format, CultureInfo.CurrentCulture);
@@ -774,8 +668,11 @@ namespace DotSpatial.Positioning
         /// <returns>A <strong>Boolean</strong>, <strong>True</strong> if the values are equivalent.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is Speed)
-                return Equals((Speed)obj);
+            if (obj is Speed speed)
+            {
+                return Equals(speed);
+            }
+
             return false;
         }
 
@@ -791,7 +688,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Outputs the speed measurement as a formatted string.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("g", CultureInfo.CurrentCulture); // Always support "g" as a default format
@@ -968,11 +865,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public static SpeedUnit ParseSpeedUnit(string value)
         {
-#if !PocketPC || Framework20
             return (SpeedUnit)Enum.Parse(typeof(SpeedUnit), value, true);
-#else
-			return (SpeedUnit)Enum.ToObject(typeof(SpeedUnit), value);
-#endif
         }
 
         /// <summary>
@@ -1155,7 +1048,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Speed Multiply(Speed value)
         {
-            return new Speed(_value * value.ToUnitType(_units).Value, _units);
+            return new Speed(_value * value.ToUnitType(Units).Value, Units);
         }
 
         /// <summary>
@@ -1175,7 +1068,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Speed Divide(Speed value)
         {
-            return new Speed(_value / value.ToUnitType(_units).Value, _units);
+            return new Speed(_value / value.ToUnitType(Units).Value, Units);
         }
 
         /// <summary>
@@ -1253,7 +1146,7 @@ namespace DotSpatial.Positioning
         #region Conversions
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="System.String"/> to <see cref="DotSpatial.Positioning.Speed"/>.
+        /// Performs an explicit conversion from <see cref="string"/> to <see cref="DotSpatial.Positioning.Speed"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -1263,7 +1156,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.Speed"/> to <see cref="System.String"/>.
+        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.Speed"/> to <see cref="string"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -1283,7 +1176,7 @@ namespace DotSpatial.Positioning
         /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(Speed other)
         {
-            return _value == other.ToUnitType(_units).Value;
+            return _value == other.ToUnitType(Units).Value;
         }
 
         /// <summary>
@@ -1294,7 +1187,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public bool Equals(Speed other, int decimals)
         {
-            return Math.Round(_value, decimals) == Math.Round(other.ToUnitType(_units).Value, decimals);
+            return Math.Round(_value, decimals) == Math.Round(other.ToUnitType(Units).Value, decimals);
         }
 
         #endregion IEquatable<Speed> Members
@@ -1316,7 +1209,7 @@ namespace DotSpatial.Positioning
         /// This object is greater than <paramref name="other"/>.</returns>
         public int CompareTo(Speed other)
         {
-            return _value.CompareTo(other.ToUnitType(_units).Value);
+            return _value.CompareTo(other.ToUnitType(Units).Value);
         }
 
         #endregion IComparable<Speed> Members
@@ -1329,13 +1222,15 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             string subFormat;
 
@@ -1345,15 +1240,19 @@ namespace DotSpatial.Positioning
                 format = format.ToUpper(CultureInfo.InvariantCulture);
 
                 // Use the default if "g" is passed
-                if (String.Compare(format, "G", true, culture) == 0)
+                if (string.Compare(format, "G", true, culture) == 0)
+                {
                     format = "#" + culture.NumberFormat.NumberGroupSeparator + "##0.00 U";
+                }
 
                 // Replace "V" with zeroes
                 format = format.Replace("V", "0");
 
                 // Replace the "d" with "h" since degrees is the same as hours
                 if (format.Replace("U", string.Empty).Length != 0)
+                {
                     format = Value.ToString(format, culture);
+                }
 
                 // Is there a units specifier°
                 int startChar = format.IndexOf("U");
@@ -1388,6 +1287,7 @@ namespace DotSpatial.Positioning
                                     format = format.Replace("U", "MPH");
                                     break;
                             }
+
                             break;
                         case 2:
                             switch (Units)
@@ -1411,6 +1311,7 @@ namespace DotSpatial.Positioning
                                     format = format.Replace("UU", "mi/hour");
                                     break;
                             }
+
                             break;
                         case 3:
                             switch (Units)
@@ -1434,6 +1335,7 @@ namespace DotSpatial.Positioning
                                     format = format.Replace("UUU", "miles/hour");
                                     break;
                             }
+
                             break;
                         case 4:
                             switch (Units)
@@ -1457,6 +1359,7 @@ namespace DotSpatial.Positioning
                                     format = format.Replace("UUUU", "miles per hour");
                                     break;
                             }
+
                             break;
                     }
                 }
@@ -1465,16 +1368,8 @@ namespace DotSpatial.Positioning
             }
             catch (Exception ex)
             {
-#if PocketPC
-                throw new ArgumentException(Properties.Resources.Speed_InvalidFormat, ex);
-#else
-                throw new ArgumentException(Resources.Speed_InvalidFormat, "format", ex);
-#endif
+                throw new ArgumentException(Resources.Speed_InvalidFormat, nameof(format), ex);
             }
-            // catch
-            //{
-            //    throw new ArgumentException(Properties.Resources.Speed_InvalidFormat), "value");
-            //}
         }
 
         #endregion IFormattable Members
@@ -1496,7 +1391,7 @@ namespace DotSpatial.Positioning
         /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteElementString("Units", _units.ToString());
+            writer.WriteElementString("Units", Units.ToString());
             writer.WriteElementString("Value", _value.ToString("G17", CultureInfo.InvariantCulture));
         }
 
@@ -1508,9 +1403,11 @@ namespace DotSpatial.Positioning
         {
             // Move to the <Units> element
             if (!reader.IsStartElement("Units"))
+            {
                 reader.ReadToDescendant("Units");
+            }
 
-            _units = (SpeedUnit)Enum.Parse(typeof(SpeedUnit), reader.ReadElementContentAsString(), false);
+            Units = (SpeedUnit)Enum.Parse(typeof(SpeedUnit), reader.ReadElementContentAsString(), false);
             _value = reader.ReadElementContentAsDouble();
 
             reader.Read();

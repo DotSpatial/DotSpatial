@@ -1,33 +1,14 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-#if !PocketPC || DesignTime
-
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents information about a GPS satellite in orbit above Earth.
     /// </summary>
@@ -41,13 +22,8 @@ namespace DotSpatial.Positioning
     /// received from the GPS device.</para>
     ///   <para><img src="Satellite.jpg"/></para></remarks>
     [TypeConverter(typeof(ExpandableObjectConverter))]
-#endif
     public struct Satellite : IFormattable, IEquatable<Satellite>, IComparable<Satellite>
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly int _pseudorandomNumber;
         /// <summary>
         ///
         /// </summary>
@@ -110,7 +86,7 @@ namespace DotSpatial.Positioning
         /// <param name="isFixed">if set to <c>true</c> [is fixed].</param>
         public Satellite(int pseudorandomNumber, Azimuth azimuth, Elevation elevation, SignalToNoiseRatio signalToNoiseRatio, bool isFixed)
         {
-            _pseudorandomNumber = pseudorandomNumber;
+            PseudorandomNumber = pseudorandomNumber;
             _azimuth = azimuth;
             _elevation = elevation;
             _signalToNoiseRatio = signalToNoiseRatio;
@@ -122,8 +98,6 @@ namespace DotSpatial.Positioning
 
         #region Public Properties
 
-#if !PocketPC
-
         /// <summary>
         /// Returns the unique identifier of the satellite.
         /// </summary>
@@ -131,16 +105,7 @@ namespace DotSpatial.Positioning
         [Description("Returns the unique identifier of the satellite.")]
         [Browsable(true)]
         [ParenthesizePropertyName(true)]
-#endif
-        public int PseudorandomNumber
-        {
-            get
-            {
-                return _pseudorandomNumber;
-            }
-        }
-
-#if !PocketPC
+        public int PseudorandomNumber { get; }
 
         /// <summary>
         /// Returns the horizontal direction towards the satellite from the current location.
@@ -149,23 +114,19 @@ namespace DotSpatial.Positioning
         [Category("Location")]
         [Description("Returns the horizontal direction towards the satellite from the current location.")]
         [Browsable(true)]
-#endif
         public Azimuth Azimuth
         {
-            get
-            {
-                return _azimuth;
-            }
+            get => _azimuth;
             set
             {
                 if (_azimuth.Equals(value))
+                {
                     return;
+                }
 
                 _azimuth = value;
             }
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Returns the vertical direction towards the satellite from the current
@@ -175,23 +136,19 @@ namespace DotSpatial.Positioning
         [Category("Location")]
         [Description("Returns the vertical direction towards the satellite from the current location.")]
         [Browsable(true)]
-#endif
         public Elevation Elevation
         {
-            get
-            {
-                return _elevation;
-            }
+            get => _elevation;
             set
             {
                 if (_elevation.Equals(value))
+                {
                     return;
+                }
 
                 _elevation = value;
             }
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Returns the strength of the satellite's radio signal as it is being
@@ -201,23 +158,19 @@ namespace DotSpatial.Positioning
         [Category("Radio Signal")]
         [Description("Returns the strength of the satellite's radio signal as it is being received.")]
         [Browsable(true)]
-#endif
         public SignalToNoiseRatio SignalToNoiseRatio
         {
-            get
-            {
-                return _signalToNoiseRatio;
-            }
+            get => _signalToNoiseRatio;
             set
             {
                 if (_signalToNoiseRatio.Equals(value))
+                {
                     return;
+                }
 
                 _signalToNoiseRatio = value;
             }
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Returns the date and time that the satellite's signal was detected.
@@ -226,23 +179,19 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns the date and time that the satellite's signal was detected.")]
         [Browsable(true)]
-#endif
         public DateTime LastSignalReceived
         {
-            get
-            {
-                return _lastSignalReceived;
-            }
+            get => _lastSignalReceived;
             set
             {
                 if (_lastSignalReceived.Equals(value))
+                {
                     return;
+                }
 
                 _lastSignalReceived = value;
             }
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Returns whether the satellite's signal is being used to calculate the current
@@ -252,23 +201,19 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns whether the satellite's signal is being used to calculate the current location.")]
         [Browsable(true)]
-#endif
         public bool IsFixed
         {
-            get
-            {
-                return _isFixed;
-            }
+            get => _isFixed;
             set
             {
                 if (_isFixed.Equals(value))
+                {
                     return;
+                }
 
                 _isFixed = value;
             }
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Returns whether the satellite's signal is currently being detected.
@@ -276,16 +221,7 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns whether the satellite's signal is currently being detected.")]
         [Browsable(true)]
-#endif
-        public bool IsTracked
-        {
-            get
-            {
-                return !_signalToNoiseRatio.IsEmpty;
-            }
-        }
-
-#if !PocketPC
+        public bool IsTracked => !_signalToNoiseRatio.IsEmpty;
 
         /// <summary>
         /// Returns the amount of time elapsed since the signal was last received.
@@ -293,16 +229,7 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns whether the satellite's signal is currently being detected.")]
         [Browsable(true)]
-#endif
-        public TimeSpan SignalAge
-        {
-            get
-            {
-                return DateTime.Now.Subtract(_lastSignalReceived);
-            }
-        }
-
-#if !PocketPC
+        public TimeSpan SignalAge => DateTime.Now.Subtract(_lastSignalReceived);
 
         /// <summary>
         /// Returns whether the satellite's signal has recently been received.
@@ -310,16 +237,7 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns whether the satellite's signal has recently been received.")]
         [Browsable(true)]
-#endif
-        public bool IsActive
-        {
-            get
-            {
-                return _isFixed || SignalAge.TotalSeconds < 10.0;
-            }
-        }
-
-#if !PocketPC
+        public bool IsActive => _isFixed || SignalAge.TotalSeconds < 10.0;
 
         /// <summary>
         /// Indicates whether the current satellite with this PRN is providing additional corrective
@@ -333,7 +251,6 @@ namespace DotSpatial.Positioning
         [Category("Behavior")]
         [Description("Indicates whether the current satellite with this PRN is providing additional corrective signals to increase precision.")]
         [Browsable(true)]
-#endif
         public bool IsDifferentialGpsSatellite
         {
             get
@@ -345,85 +262,24 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
-
         /// <summary>
         /// Returns the government project responsible for launching the current satellite with this PRN.
         /// </summary>
         [Category("Statistics")]
         [Description("Returns the government project responsible for launching the current satellite with this PRN.")]
         [Browsable(true)]
-#endif
         public SatelliteClass Class
         {
-            get
+            get => PseudorandomNumber switch
             {
-                switch (_pseudorandomNumber)
-                {
-                    case 122:
-                    case 134:
-                    case 125:
-                    case 135:
-                    case 138:
-                    case 35:
-                    case 47:
-                    case 48:
-                    case 51:
-                        return SatelliteClass.Waas;
-                    case 120:
-                    case 124:
-                    case 126:
-                    case 131:
-                    case 33:
-                    case 37:
-                    case 39:
-                    case 44:
-                        return SatelliteClass.Egnos;
-                    case 129:
-                    case 137:
-                    case 42:
-                    case 50:
-                        return SatelliteClass.Msas;
-                    case 01: // USA-232
-                    case 02: // USA-180
-                    case 03: // USA-258
-                    case 04: // USA-96 (In reserve)
-                    case 05: // USA-206
-                    case 06: // USA-251
-                    case 07: // USA-201
-                    case 08: // USA-262
-                    case 09: // USA-256
-                    case 10: // USA-265
-                    case 11: // USA-145
-                    case 12: // USA-192
-                    case 13: // USA-132
-                    case 14: // USA-154
-                    case 15: // USA-196
-                    case 16: // USA-166
-                    case 17: // USA-183
-                    case 18: // USA-156
-                    case 19: // USA-177
-                    case 20: // USA-150
-                    case 21: // USA-168
-                    case 22: // USA-175
-                    case 23: // USA-178
-                    case 24: // USA-239
-                    case 25: // USA-213
-                    case 26: // USA-260
-                    case 27: // USA-242
-                    case 28: // USA-151
-                    case 29: // USA-199
-                    case 30: // USA-248
-                    case 31: // USA-190
-                    case 32: // USA-266
-                        return SatelliteClass.Navstar;
-                    default:
-                        return SatelliteClass.Unknown;
-                }
-            }
+                122 or 134 or 125 or 135 or 138 or 35 or 47 or 48 or 51 => SatelliteClass.Waas,
+                120 or 124 or 126 or 131 or 33 or 37 or 39 or 44 => SatelliteClass.Egnos,
+                129 or 137 or 42 or 50 => SatelliteClass.Msas,
+                // USA-232
+                01 or 02 or 03 or 04 or 05 or 06 or 07 or 08 or 09 or 10 or 11 or 12 or 13 or 14 or 15 or 16 or 17 or 18 or 19 or 20 or 21 or 22 or 23 or 24 or 25 or 26 or 27 or 28 or 29 or 30 or 31 or 32 => SatelliteClass.Navstar,
+                _ => SatelliteClass.Unknown,
+            };
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Returns the atomic clock currently in service for the satellite with this PRN.
@@ -431,55 +287,19 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns the atomic clock currently in service for the satellite with this PRN.")]
         [Browsable(true)]
-#endif
         public SatelliteAtomicClockType AtomicClockType
         {
-            get
-            {
+            get =>
                 // Data was compiled from the US Military: ftp:// tycho.usno.navy.mil/pub/gps/gpstd.txt
-                switch (_pseudorandomNumber)
+                PseudorandomNumber switch
                 {
-                    case 01: // USA-232
-                    case 02: // USA-180
-                    case 03: // USA-258
-                    case 04: // USA-96
-                    case 05: // USA-206
-                    case 06: // USA-251
-                    case 07: // USA-201
-                    case 09: // USA-256
-                    case 10: // USA-265
-                    case 11: // USA-145
-                    case 12: // USA-192
-                    case 13: // USA-132
-                    case 14: // USA-154
-                    case 15: // USA-196
-                    case 16: // USA-166
-                    case 17: // USA-183
-                    case 18: // USA-156
-                    case 19: // USA-177
-                    case 20: // USA-150
-                    case 21: // USA-168
-                    case 22: // USA-175
-                    case 23: // USA-178
-                    case 25: // USA-213
-                    case 26: // USA-260
-                    case 27: // USA-242
-                    case 28: // USA-151
-                    case 29: // USA-199
-                    case 30: // USA-248
-                    case 31: // USA-190
-                    case 32: // USA-266
-                        return SatelliteAtomicClockType.Rubidium;
-                    case 08: // USA-262
-                    case 24: // USA-239
-                        return SatelliteAtomicClockType.Cesium;
-                    default:
-                        return SatelliteAtomicClockType.Unknown;
-                }
-            }
+                    // USA-232
+                    01 or 02 or 03 or 04 or 05 or 06 or 07 or 09 or 10 or 11 or 12 or 13 or 14 or 15 or 16 or 17 or 18 or 19 or 20 or 21 or 22 or 23 or 25 or 26 or 27 or 28 or 29 or 30 or 31 or 32 => SatelliteAtomicClockType.Rubidium,
+                    // USA-262
+                    08 or 24 => SatelliteAtomicClockType.Cesium,
+                    _ => SatelliteAtomicClockType.Unknown,
+                };
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Returns the launch block of the current satellite with this PRN.
@@ -487,55 +307,21 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns the launch block of the current satellite with this PRN.")]
         [Browsable(true)]
-#endif
         public SatelliteBlock Block
         {
-            get
-            {
+            get =>
                 // Data was compiled from Wikipedia: https://en.wikipedia.org/wiki/List_of_GPS_satellites
-                switch (_pseudorandomNumber)
+                PseudorandomNumber switch
                 {
-                    case 01: // USA-232
-                    case 03: // USA-258
-                    case 06: // USA-251
-                    case 08: // USA-262
-                    case 09: // USA-256
-                    case 10: // USA-265
-                    case 24: // USA-239
-                    case 25: // USA-213
-                    case 26: // USA-260
-                    case 27: // USA-242
-                    case 30: // USA-248
-                    case 32: // USA-266
-                        return SatelliteBlock.IIF;
-                    case 02: // USA-180
-                    case 11: // USA-145
-                    case 13: // USA-132
-                    case 14: // USA-154
-                    case 16: // USA-166
-                    case 18: // USA-156
-                    case 19: // USA-177
-                    case 20: // USA-150
-                    case 21: // USA-168
-                    case 22: // USA-175
-                    case 23: // USA-178
-                    case 28: // USA-151
-                        return SatelliteBlock.IIR;
-                    case 05: // USA-206
-                    case 07: // USA-201
-                    case 12: // USA-192
-                    case 15: // USA-196
-                    case 17: // USA-183
-                    case 29: // USA-199
-                    case 31: // USA-190
-                        return SatelliteBlock.IIRM;
-                }
-
-                return SatelliteBlock.Unknown;
-            }
+                    // USA-232
+                    01 or 03 or 06 or 08 or 09 or 10 or 24 or 25 or 26 or 27 or 30 or 32 => SatelliteBlock.IIF,
+                    // USA-180
+                    02 or 11 or 13 or 14 or 16 or 18 or 19 or 20 or 21 or 22 or 23 or 28 => SatelliteBlock.IIR,
+                    // USA-206
+                    05 or 07 or 12 or 15 or 17 or 29 or 31 => SatelliteBlock.IIRM,
+                    _ => SatelliteBlock.Unknown,
+                };
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Returns the date the current satellite with this PRN was placed into orbit.
@@ -543,13 +329,12 @@ namespace DotSpatial.Positioning
         [Category("Statistics")]
         [Description("Returns the date the current satellite with this PRN was placed into orbit.")]
         [Browsable(true)]
-#endif
         public DateTime LaunchDate
         {
             get
             {
                 // Data was compiled from the US Military: ftp:// tycho.usno.navy.mil/pub/gps/gpstd.txt
-                switch (_pseudorandomNumber)
+                switch (PseudorandomNumber)
                 {
                     case 01: // USA-232
                         return new DateTime(2011, 07, 16);
@@ -622,21 +407,18 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
-
         /// <summary>
         /// Returns the latest date when a satellite with this PRN was placed into service.
         /// </summary>
         [Category("Statistics")]
         [Description("Returns the latest date when a satellite with this PRN was placed into service.")]
         [Browsable(true)]
-#endif
         public DateTime CommissionDate
         {
             get
             {
                 // Data was compiled from the US Military: ftp:// tycho.usno.navy.mil/pub/gps/gpstd.txt
-                switch (_pseudorandomNumber)
+                switch (PseudorandomNumber)
                 {
                     case 01:
                         return new DateTime(2011, 10, 14);
@@ -709,21 +491,18 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
-
         /// <summary>
         /// Returns the latest date when a satellite with this PRN was removed from service.
         /// </summary>
         [Category("Statistics")]
         [Description("Returns the latest date when a satellite with this PRN was removed from service.")]
         [Browsable(true)]
-#endif
         public DateTime DecommissionDate
         {
             get
             {
                 // Data was compiled from the US Military: ftp:// tycho.usno.navy.mil/pub/gps/gpsb2.txt
-                switch (_pseudorandomNumber)
+                switch (PseudorandomNumber)
                 {
                     case 01:
                         return new DateTime(2008, 03, 17);
@@ -737,7 +516,7 @@ namespace DotSpatial.Positioning
                     case 05:
                         return new DateTime(2013, 05, 01);
                     case 06:
-                        // Unknown
+                    // Unknown
                     case 07:
                         return new DateTime(2007, 12, 20);
                     case 08:
@@ -807,8 +586,6 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
-
         /// <summary>
         /// Returns the friendly name of the current satellite with this PRN.
         /// </summary>
@@ -816,16 +593,15 @@ namespace DotSpatial.Positioning
         [Description("Returns the friendly name of the current satellite with this PRN.")]
         [Browsable(true)]
         [ParenthesizePropertyName(true)]
-#endif
         public string Name
         {
             get
             {
                 // Data was compiled from Wikipedia: https://en.wikipedia.org/wiki/List_of_GPS_satellites
-                switch (_pseudorandomNumber)
+                switch (PseudorandomNumber)
                 {
                     #region Standard NAVSTAR satellites
-                    
+
                     case 01:
                         return "USA-232";
                     case 02:
@@ -953,7 +729,7 @@ namespace DotSpatial.Positioning
             get
             {
                 // Data was compiled from Wikipedia: https://en.wikipedia.org/wiki/List_of_GPS_satellites
-                switch (_pseudorandomNumber)
+                switch (PseudorandomNumber)
                 {
                     case 01:
                         return new[]
@@ -1194,7 +970,7 @@ namespace DotSpatial.Positioning
                         };
                 }
 
-                return default(string[]);
+                return default;
             }
         }
 
@@ -1206,7 +982,7 @@ namespace DotSpatial.Positioning
         /// REturns the string equivalent of this object using the current culture
         /// </summary>
         /// <param name="format">The format.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format)
         {
             return ToString(format, CultureInfo.CurrentCulture);
@@ -1217,15 +993,13 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">Another object to compare to.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is Satellite)
-                return Equals((Satellite)obj);
-            return false;
+            return obj is Satellite satellite && Equals(satellite);
         }
 
         /// <summary>
@@ -1234,13 +1008,13 @@ namespace DotSpatial.Positioning
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
         {
-            return _pseudorandomNumber;
+            return PseudorandomNumber;
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("g", CultureInfo.CurrentCulture);
@@ -1271,7 +1045,7 @@ namespace DotSpatial.Positioning
         /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(Satellite other)
         {
-            return _pseudorandomNumber.Equals(other.PseudorandomNumber);
+            return PseudorandomNumber.Equals(other.PseudorandomNumber);
         }
 
         #endregion IEquatable<Satellite> Members
@@ -1279,19 +1053,21 @@ namespace DotSpatial.Positioning
         #region IFormattable Members
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
-            return Name + " (" + _pseudorandomNumber.ToString(format, formatProvider) + "): "
+            return Name + " (" + PseudorandomNumber.ToString(format, formatProvider) + "): "
                         + _azimuth.ToString(format, formatProvider) + culture.TextInfo.ListSeparator + " "
                         + _elevation.ToString(format, formatProvider) + culture.TextInfo.ListSeparator + " "
                         + _signalToNoiseRatio.ToString(format, formatProvider);
@@ -1306,23 +1082,90 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns>A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings:
-        /// Value
-        /// Meaning
-        /// Less than zero
-        /// This object is less than the <paramref name="other"/> parameter.
-        /// Zero
-        /// This object is equal to <paramref name="other"/>.
-        /// Greater than zero
-        /// This object is greater than <paramref name="other"/>.</returns>
+        /// Value - Meaning
+        /// Less than zero - This object is less than the <paramref name="other"/> parameter.
+        /// Zero - This object is equal to <paramref name="other"/>.
+        /// Greater than zero - This object is greater than <paramref name="other"/>.</returns>
         public int CompareTo(Satellite other)
         {
             // Fixed satellites come first, then non-fixed satellites.
             // Second, satellites are sorted by signal, strongest signal first.
             if (_isFixed && !other.IsFixed)
+            {
                 return 1;
+            }
+
             if (!_isFixed && other.IsFixed)
+            {
                 return -1;
+            }
+
             return other.SignalToNoiseRatio.CompareTo(_signalToNoiseRatio);
+        }
+
+        /// <summary>
+        /// Compares the left with the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>True, if both are equal.</returns>
+        public static bool operator ==(Satellite left, Satellite right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Compares the left with the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>True, if both are not equal.</returns>
+        public static bool operator !=(Satellite left, Satellite right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Compares the left with the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>True, if the left is smaller than the right object.</returns>
+        public static bool operator <(Satellite left, Satellite right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+        /// <summary>
+        /// Compares the left with the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>True, if the left is smaller than or the same as the right object.</returns>
+        public static bool operator <=(Satellite left, Satellite right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
+
+        /// <summary>
+        /// Compares the left with the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>True, if the left is larger than the right object.</returns>
+        public static bool operator >(Satellite left, Satellite right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+
+        /// <summary>
+        /// Compares the left with the right object.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>True, if the left is larger than or the same as the right object.</returns>
+        public static bool operator >=(Satellite left, Satellite right)
+        {
+            return left.CompareTo(right) >= 0;
         }
 
         #endregion IComparable<Satellite> Members
@@ -1372,10 +1215,6 @@ namespace DotSpatial.Positioning
     /// has changed.</remarks>
     public sealed class SatelliteEventArgs : EventArgs
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly Satellite _satellite;
 
         /// <summary>
         /// Creates a new instance.
@@ -1383,20 +1222,14 @@ namespace DotSpatial.Positioning
         /// <param name="satellite">The satellite.</param>
         public SatelliteEventArgs(Satellite satellite)
         {
-            _satellite = satellite;
+            Satellite = satellite;
         }
 
         /// <summary>
         /// Indicates which satellite is the target of the event.
         /// </summary>
         /// <value>A <strong>Satellite</strong> object containing modified information.</value>
-        public Satellite Satellite
-        {
-            get
-            {
-                return _satellite;
-            }
-        }
+        public Satellite Satellite { get; }
     }
 
     /// <summary>
@@ -1404,10 +1237,6 @@ namespace DotSpatial.Positioning
     /// </summary>
     public sealed class SatelliteListEventArgs : EventArgs
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly IList<Satellite> _satellites;
 
         /// <summary>
         /// Creates a new instance.
@@ -1415,20 +1244,14 @@ namespace DotSpatial.Positioning
         /// <param name="satellites">The satellites.</param>
         public SatelliteListEventArgs(IList<Satellite> satellites)
         {
-            _satellites = satellites;
+            Satellites = satellites;
         }
 
         /// <summary>
         /// Indicates which satellites are the target of the event.
         /// </summary>
         /// <value>A list of <strong>Satellite</strong> objects.</value>
-        public IList<Satellite> Satellites
-        {
-            get
-            {
-                return _satellites;
-            }
-        }
+        public IList<Satellite> Satellites { get; }
     }
 
     /// <summary>

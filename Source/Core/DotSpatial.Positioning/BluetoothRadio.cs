@@ -1,20 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
-#if !PocketPC
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -32,31 +17,6 @@ namespace DotSpatial.Positioning
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public sealed class BluetoothRadio : IEquatable<BluetoothRadio>
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private IntPtr _handle;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly string _name;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly DeviceClass _class;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly DeviceClass _minorClass;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly ServiceClass _serviceClass;
-
-        /// <summary>
-        ///
-        /// </summary>
-        private static readonly BluetoothRadio _current;
 
         #region Constructors
 
@@ -97,7 +57,9 @@ namespace DotSpatial.Positioning
 
                 // If we have a radio, turn it into an object
                 if (phRadio != IntPtr.Zero)
-                    _current = new BluetoothRadio(phRadio);
+                {
+                    Current = new BluetoothRadio(phRadio);
+                }
             }
             catch (Win32Exception ex)
             {
@@ -114,20 +76,22 @@ namespace DotSpatial.Positioning
         [SecurityCritical]
         internal BluetoothRadio(IntPtr handle)
         {
-            _handle = handle;
+            Handle = handle;
 
             NativeMethods2.BluetoothRadioInfo info = new() { ByteSize = 520 };
 
             // Get information for this radio
-            int errorCode = NativeMethods2.BluetoothGetRadioInfo(_handle, ref info);
+            int errorCode = NativeMethods2.BluetoothGetRadioInfo(Handle, ref info);
             if (errorCode != 0)
+            {
                 throw new Win32Exception(Marshal.GetLastWin32Error());
+            }
 
             // Load up information
-            _name = info.Name;
-            _class = (DeviceClass)(info.DeviceClass & 0x1F00);
-            _minorClass = (DeviceClass)(info.DeviceClass & 0xFC);
-            _serviceClass = (ServiceClass)(info.DeviceClass & 0xFFE000);
+            Name = info.Name;
+            Class = (DeviceClass)(info.DeviceClass & 0x1F00);
+            MinorClass = (DeviceClass)(info.DeviceClass & 0xFC);
+            ServiceClass = (ServiceClass)(info.DeviceClass & 0xFFE000);
         }
 
         #endregion Constructors
@@ -137,10 +101,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns the current Bluetooth radio if one is installed.
         /// </summary>
-        public static BluetoothRadio Current
-        {
-            get { return _current; }
-        }
+        public static BluetoothRadio Current { get; private set; }
 
         #endregion Static Properties
 
@@ -149,51 +110,27 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Gets the handle.
         /// </summary>
-        internal IntPtr Handle
-        {
-            get { return _handle; }
-        }
+        internal IntPtr Handle { get; }
 
         /// <summary>
         /// Returns the name of the radio.
         /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; }
 
         /// <summary>
         /// Returns the primary purpose of the device.
         /// </summary>
-        public DeviceClass Class
-        {
-            get
-            {
-                return _class;
-            }
-        }
+        public DeviceClass Class { get; }
 
         /// <summary>
         /// Returns a sub-category describing the purpose of the device.
         /// </summary>
-        public DeviceClass MinorClass
-        {
-            get
-            {
-                return _minorClass;
-            }
-        }
+        public DeviceClass MinorClass { get; }
 
         /// <summary>
         /// Returns the major type of device.
         /// </summary>
-        public ServiceClass ServiceClass
-        {
-            get
-            {
-                return _serviceClass;
-            }
-        }
+        public ServiceClass ServiceClass { get; }
 
         /// <summary>
         /// Controls whether the radio can accept incoming connections.
@@ -202,7 +139,7 @@ namespace DotSpatial.Positioning
         [SecurityCritical]
         public bool GetIsConnectable()
         {
-            return NativeMethods2.BluetoothIsConnectable(_handle);
+            return NativeMethods2.BluetoothIsConnectable(Handle);
         }
 
         /// <summary>
@@ -212,7 +149,7 @@ namespace DotSpatial.Positioning
         [SecurityCritical]
         public void SetIsConnectable(bool value)
         {
-            NativeMethods2.BluetoothEnableIncomingConnections(_handle, value);
+            NativeMethods2.BluetoothEnableIncomingConnections(Handle, value);
         }
 
         ///// <summary>
@@ -235,17 +172,18 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(obj, null))
+            if (obj is null)
+            {
                 return false;
-            if (obj is BluetoothRadio)
-                return Equals((BluetoothRadio)obj);
-            return false;
+            }
+
+            return obj is BluetoothRadio radio && Equals(radio);
         }
 
         /// <summary>
@@ -254,16 +192,16 @@ namespace DotSpatial.Positioning
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
         {
-            return _handle.GetHashCode();
+            return Handle.GetHashCode();
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
-            return _name;
+            return Name;
         }
 
         #endregion Overrides
@@ -277,11 +215,9 @@ namespace DotSpatial.Positioning
         /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(BluetoothRadio other)
         {
-            return _handle.Equals(other.Handle);
+            return Handle.Equals(other.Handle);
         }
 
         #endregion IEquatable<BluetoothRadio> Members
     }
 }
-
-#endif

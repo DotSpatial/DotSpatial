@@ -1,20 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// | VladimirArias (Colombia) | 02/03/2014 | Added hdt nmea sentence for heading orientation
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -22,17 +7,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Security;
 using System.Threading;
-#if !PocketPC
-
-using System.Runtime.ConstrainedExecution;
-using System.Runtime.CompilerServices;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC
-
     /// <summary>
     /// Represents a base class for designing a GPS data interpreter.
     /// </summary>
@@ -47,8 +24,6 @@ namespace DotSpatial.Positioning
     /// provide functionality to read the next packet of data from the underlying stream.
     /// All raw GPS data must be provided in the form of a <strong>Stream</strong> object,
     /// and the method should read and process only a single packet of data.</para></remarks>
-    [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-#endif
     public abstract class Interpreter : Component
     {
         #region Private variables
@@ -57,11 +32,9 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
-        private DateTime _utcDateTime;
         /// <summary>
         ///
         /// </summary>
-        private DateTime _dateTime;
         /// <summary>
         ///
         /// </summary>
@@ -98,26 +71,12 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private FixStatus _fixStatus;
-        /// <summary>
-        ///
-        /// </summary>
-        private FixMode _fixMode;
+
         /// <summary>
         ///
         /// </summary>
         private FixMethod _fixMethod;
-        /// <summary>
-        ///
-        /// </summary>
-        private FixQuality _fixQuality;
-        /// <summary>
-        ///
-        /// </summary>
-        private int _fixedSatelliteCount;
-        /// <summary>
-        ///
-        /// </summary>
-        private bool _isFixRequired;
+
         /// <summary>
         ///
         /// </summary>
@@ -126,14 +85,7 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private DilutionOfPrecision _maximumVerticalDop = DilutionOfPrecision.Maximum;
-        /// <summary>
-        ///
-        /// </summary>
-        private DilutionOfPrecision _horizontalDop;
-        /// <summary>
-        ///
-        /// </summary>
-        private DilutionOfPrecision _verticalDop;
+
         /// <summary>
         ///
         /// </summary>
@@ -143,33 +95,11 @@ namespace DotSpatial.Positioning
         /// </summary>
         private List<Satellite> _satellites = new(16);
 
-        // Filtering
-        /// <summary>
-        ///
-        /// </summary>
-        private PrecisionFilter _filter = PrecisionFilter.Default;
-        /// <summary>
-        ///
-        /// </summary>
-        private bool _isFilterEnabled = true;
-
-        // Engine management
-        /// <summary>
-        ///
-        /// </summary>
-        private bool _isRunning;
-        /// <summary>
-        ///
-        /// </summary>
-        private Device _device;
-#if !PocketPC
         /// <summary>
         ///
         /// </summary>
         private ThreadPriority _threadPriority = ThreadPriority.Normal;
-#else
-        private ThreadPriority _ThreadPriority = ThreadPriority.BelowNormal;
-#endif
+
         /// <summary>
         ///
         /// </summary>
@@ -186,25 +116,6 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private int _reconnectionAttemptCount;
-        /// <summary>
-        ///
-        /// </summary>
-        private Stream _recordingStream;
-
-        /// <summary>
-        ///
-        /// </summary>
-        private bool _isDisposed;
-        /// <summary>
-        ///
-        /// </summary>
-        private bool _allowAutomaticReconnection = true;
-
-#if PocketPC
-        private bool _IsParsingThreadAlive;
-#endif
-
-#if !PocketPC
 
         #region Event stacking
 
@@ -221,8 +132,6 @@ namespace DotSpatial.Positioning
         private IAsyncResult _positionChangedAsyncResult;
 
         #endregion Event stacking
-
-#endif
 
         #endregion Private variables
 
@@ -385,8 +294,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         protected virtual void OnStarting()
         {
-            if (Starting != null)
-                Starting(this, new DeviceEventArgs(_device));
+            Starting?.Invoke(this, new DeviceEventArgs(Device));
         }
 
         /// <summary>
@@ -394,8 +302,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         protected virtual void OnStarted()
         {
-            if (Started != null)
-                Started(this, EventArgs.Empty);
+            Started?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -403,8 +310,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         protected virtual void OnStopping()
         {
-            if (Stopping != null)
-                Stopping(this, EventArgs.Empty);
+            Stopping?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -412,8 +318,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         protected virtual void OnStopped()
         {
-            if (Stopped != null)
-                Stopped(this, EventArgs.Empty);
+            Stopped?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -422,8 +327,7 @@ namespace DotSpatial.Positioning
         /// <param name="ex">An <strong>Exception</strong> which further explains why the connection was lost.</param>
         protected virtual void OnConnectionLost(Exception ex)
         {
-            if (ConnectionLost != null)
-                ConnectionLost(this, new ExceptionEventArgs(ex));
+            ConnectionLost?.Invoke(this, new ExceptionEventArgs(ex));
         }
 
         /// <summary>
@@ -431,8 +335,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         protected virtual void OnPaused()
         {
-            if (Paused != null)
-                Paused(this, EventArgs.Empty);
+            Paused?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -440,8 +343,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         protected virtual void OnResumed()
         {
-            if (Resumed != null)
-                Resumed(this, EventArgs.Empty);
+            Resumed?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -450,8 +352,7 @@ namespace DotSpatial.Positioning
         /// <param name="ex">The ex.</param>
         protected virtual void OnExceptionOccurred(Exception ex)
         {
-            if (ExceptionOccurred != null)
-                ExceptionOccurred(this, new ExceptionEventArgs(ex));
+            ExceptionOccurred?.Invoke(this, new ExceptionEventArgs(ex));
         }
 
         #endregion Events
@@ -464,15 +365,14 @@ namespace DotSpatial.Positioning
         /// <value>The read timeout.</value>
         public static TimeSpan ReadTimeout
         {
-            get
-            {
-                return _readTimeout;
-            }
+            get => _readTimeout;
             set
             {
                 // Disallow any value zero or less
                 if (_readTimeout.TotalMilliseconds <= 0)
+                {
                     throw new ArgumentOutOfRangeException("ReadTimeout", "The read timeout of a GPS interpreter must be greater than zero.  A value of about five seconds is typical.");
+                }
 
                 // Set the new value
                 _readTimeout = value;
@@ -488,14 +388,13 @@ namespace DotSpatial.Positioning
         /// success whenever possible, but in the event of a deadlock, this property control how much time to allow before giving up.</remarks>
         public static TimeSpan CommandTimeout
         {
-            get
-            {
-                return _commandTimeout;
-            }
+            get => _commandTimeout;
             set
             {
                 if (_commandTimeout.TotalSeconds < 1)
+                {
                     throw new ArgumentOutOfRangeException("CommandTimeout", "The command timeout of a GPS interpreter cannot be less than one second.  A value of about ten seconds is recommended.");
+                }
 
                 _commandTimeout = value;
             }
@@ -505,8 +404,6 @@ namespace DotSpatial.Positioning
 
         #region Public Properties
 
-#if !PocketPC
-
         /// <summary>
         /// Returns the device providing raw GPS data to the interpreter.
         /// </summary>
@@ -515,16 +412,7 @@ namespace DotSpatial.Positioning
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Always)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-#endif
-        public Device Device
-        {
-            get
-            {
-                return _device;
-            }
-        }
-
-#if !PocketPC
+        public Device Device { get; private set; }
 
         /// <summary>
         /// Controls the priority of the thread which processes GPS data.
@@ -536,31 +424,21 @@ namespace DotSpatial.Positioning
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [DefaultValue(ThreadPriority.Normal)]
-#endif
         public ThreadPriority ThreadPriority
         {
-            get
-            {
-                return _threadPriority;
-            }
+            get => _threadPriority;
             set
             {
                 // Set the new value
                 _threadPriority = value;
 
                 // If the parsing thread is alive, update it
-                if (_parsingThread != null
-#if !PocketPC
- && _parsingThread.IsAlive
-#else
-                    && _IsParsingThreadAlive
-#endif
-)
+                if (_parsingThread != null && _parsingThread.IsAlive)
+                {
                     _parsingThread.Priority = _threadPriority;
+                }
             }
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Returns the GPS-derived date and time, adjusted to the local time zone.
@@ -569,13 +447,7 @@ namespace DotSpatial.Positioning
         [Description("Returns the GPS-derived date and time, adjusted to the local time zone.")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-#endif
-        public DateTime DateTime
-        {
-            get { return _dateTime; }
-        }
-
-#if !PocketPC
+        public DateTime DateTime { get; private set; }
 
         /// <summary>
         /// Returns the GPS-derived date and time in UTC (GMT-0).
@@ -584,13 +456,7 @@ namespace DotSpatial.Positioning
         [Description("Returns the GPS-derived date and time in UTC (GMT-0).")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-#endif
-        public DateTime UtcDateTime
-        {
-            get { return _utcDateTime; }
-        }
-
-#if !PocketPC
+        public DateTime UtcDateTime { get; private set; }
 
         /// <summary>
         /// Returns the current estimated precision as it relates to latitude and longitude.
@@ -602,13 +468,7 @@ namespace DotSpatial.Positioning
         [Description("Returns the current estimated precision as it relates to latitude and longitude.")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-#endif
-        public DilutionOfPrecision HorizontalDilutionOfPrecision
-        {
-            get { return _horizontalDop; }
-        }
-
-#if !PocketPC
+        public DilutionOfPrecision HorizontalDilutionOfPrecision { get; private set; }
 
         /// <summary>
         /// Returns the current estimated precision as it relates to altitude.
@@ -620,13 +480,7 @@ namespace DotSpatial.Positioning
         [Description("Returns the current estimated precision as it relates to altitude.")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-#endif
-        public DilutionOfPrecision VerticalDilutionOfPrecision
-        {
-            get { return _verticalDop; }
-        }
-
-#if !PocketPC
+        public DilutionOfPrecision VerticalDilutionOfPrecision { get; private set; }
 
         /// <summary>
         /// Returns the kind of fix acquired by the GPS device.
@@ -635,13 +489,7 @@ namespace DotSpatial.Positioning
         [Description("Returns the kind of fix acquired by the GPS device.")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-#endif
-        public FixMode FixMode
-        {
-            get { return _fixMode; }
-        }
-
-#if !PocketPC
+        public FixMode FixMode { get; private set; }
 
         /// <summary>
         /// Returns the number of satellites being used to calculate the current location.
@@ -650,13 +498,7 @@ namespace DotSpatial.Positioning
         [Description("Returns the number of satellites being used to calculate the current location.")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-#endif
-        public int FixedSatelliteCount
-        {
-            get { return _fixedSatelliteCount; }
-        }
-
-#if !PocketPC
+        public int FixedSatelliteCount { get; private set; }
 
         /// <summary>
         /// Returns the quality of the fix and what kinds of technologies are involved.
@@ -665,13 +507,7 @@ namespace DotSpatial.Positioning
         [Description("Returns the quality of the fix and what kinds of technologies are involved.")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-#endif
-        public FixQuality FixQuality
-        {
-            get { return _fixQuality; }
-        }
-
-#if !PocketPC
+        public FixQuality FixQuality { get; private set; }
 
         /// <summary>
         /// Controls whether GPS data is ignored until a fix is acquired.
@@ -683,14 +519,7 @@ namespace DotSpatial.Positioning
         [EditorBrowsable(EditorBrowsableState.Always)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [DefaultValue(false)]
-#endif
-        public bool IsFixRequired
-        {
-            get { return _isFixRequired; }
-            set { _isFixRequired = value; }
-        }
-
-#if !PocketPC
+        public bool IsFixRequired { get; set; }
 
         /// <summary>
         /// Returns whether a fix is currently acquired by the GPS device.
@@ -699,14 +528,8 @@ namespace DotSpatial.Positioning
         [Description("Returns whether a fix is currently acquired by the GPS device.")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-#endif
 
-        public bool IsFixed
-        {
-            get { return _fixStatus == FixStatus.Fix; }
-        }
-
-#if !PocketPC
+        public bool IsFixed => _fixStatus == FixStatus.Fix;
 
         /// <summary>
         /// Returns the difference between magnetic North and True North.
@@ -715,13 +538,7 @@ namespace DotSpatial.Positioning
         [Description("Returns the difference between magnetic North and True North.")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-#endif
-        public Longitude MagneticVariation
-        {
-            get { return _magneticVariation; }
-        }
-
-#if !PocketPC
+        public Longitude MagneticVariation => _magneticVariation;
 
         /// <summary>
         /// Returns the current location on Earth's surface.
@@ -730,11 +547,7 @@ namespace DotSpatial.Positioning
         [Description("Returns the current location on Earth's surface.")]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-#endif
-        public Position Position
-        {
-            get { return _position; }
-        }
+        public Position Position => _position;
 
         /// <summary>
         /// Gets a value indicating whether this instance is running.
@@ -742,13 +555,7 @@ namespace DotSpatial.Positioning
         /// <value>
         /// 	<c>true</c> if this instance is running; otherwise, <c>false</c>.
         /// </value>
-        public bool IsRunning
-        {
-            get
-            {
-                return _isRunning;
-            }
-        }
+        public bool IsRunning { get; private set; }
 
         /// <summary>
         /// Returns the average precision tolerance based on the fix quality reported
@@ -757,12 +564,7 @@ namespace DotSpatial.Positioning
         /// <remarks>This property returns the estimated error attributed to the device. To get
         /// a total error estimation, add the Horizontal or the Mean DOP to the
         /// FixPrecisionEstimate.</remarks>
-        public Distance FixPrecisionEstimate
-        {
-            get { return Device.PrecisionEstimate(_fixQuality); }
-        }
-
-#if !PocketPC
+        public Distance FixPrecisionEstimate => Device.PrecisionEstimate(FixQuality);
 
         /// <summary>
         /// Returns the current rate of travel.
@@ -772,13 +574,7 @@ namespace DotSpatial.Positioning
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Always)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-#endif
-        public Speed Speed
-        {
-            get { return _speed; }
-        }
-
-#if !PocketPC
+        public Speed Speed => _speed;
 
         /// <summary>
         /// Returns the current distance above sea level.
@@ -788,13 +584,7 @@ namespace DotSpatial.Positioning
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Always)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-#endif
-        public Distance Altitude
-        {
-            get { return _altitude; }
-        }
-
-#if !PocketPC
+        public Distance Altitude => _altitude;
 
         /// <summary>
         /// Gets the current direction of travel as an Azimuth
@@ -804,18 +594,12 @@ namespace DotSpatial.Positioning
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Always)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-#endif
-        public Azimuth Bearing
-        {
-            get { return _bearing; }
-        }
-        
-        public Azimuth Heading
-        {
-            get { return _heading; }
-        }
+        public Azimuth Bearing => _bearing;
 
-#if !PocketPC
+        /// <summary>
+        /// Returns the heading.
+        /// </summary>
+        public Azimuth Heading => _heading;
 
         /// <summary>
         /// Controls the largest amount of precision error allowed before GPS data is ignored.
@@ -833,26 +617,24 @@ namespace DotSpatial.Positioning
         [EditorBrowsable(EditorBrowsableState.Always)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [DefaultValue(typeof(DilutionOfPrecision), "Maximum")]
-#endif
         public DilutionOfPrecision MaximumHorizontalDilutionOfPrecision
         {
-            get
-            {
-                return _maximumHorizontalDop;
-            }
+            get => _maximumHorizontalDop;
             set
             {
                 if (_maximumHorizontalDop.Equals(value))
+                {
                     return;
+                }
 
-                if (value.Value <= 0.0f || value.Value > 50.0f)
+                if (value.Value is <= 0.0f or > 50.0f)
+                {
                     throw new ArgumentOutOfRangeException("MaximumHorizontalDilutionOfPrecision", "The maximum allowed horizontal Dilution of Precision must be a value between 1 and 50.");
+                }
 
                 _maximumHorizontalDop = value;
             }
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Controls the maximum number of consecutive reconnection retries allowed.
@@ -864,23 +646,19 @@ namespace DotSpatial.Positioning
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [DefaultValue(-1)]
-#endif
         public int MaximumReconnectionAttempts
         {
-            get
-            {
-                return _maximumReconnectionAttempts;
-            }
+            get => _maximumReconnectionAttempts;
             set
             {
                 if (value < -1)
+                {
                     throw new ArgumentOutOfRangeException("MaximumReconnectionAttempts", "The maximum reconnection attempts for an interpreter must be -1 for infinite retries, or greater than zero for a specific amount.");
+                }
 
                 _maximumReconnectionAttempts = value;
             }
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Controls the largest amount of precision error allowed before GPS data is ignored.
@@ -898,26 +676,24 @@ namespace DotSpatial.Positioning
         [EditorBrowsable(EditorBrowsableState.Always)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [DefaultValue(typeof(DilutionOfPrecision), "Maximum")]
-#endif
         public DilutionOfPrecision MaximumVerticalDilutionOfPrecision
         {
-            get
-            {
-                return _maximumVerticalDop;
-            }
+            get => _maximumVerticalDop;
             set
             {
                 if (_maximumVerticalDop.Equals(value))
+                {
                     return;
+                }
 
-                if (value.Value <= 0.0f || value.Value > 50.0f)
+                if (value.Value is <= 0.0f or > 50.0f)
+                {
                     throw new ArgumentOutOfRangeException("MaximumVerticalDilutionOfPrecision", "The maximum allowed vertical Dilution of Precision must be a value between 1 and 50.");
+                }
 
                 _maximumVerticalDop = value;
             }
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Controls whether real-time GPS data is made more precise using a filter.
@@ -929,14 +705,7 @@ namespace DotSpatial.Positioning
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [DefaultValue(true)]
-#endif
-        public bool IsFilterEnabled
-        {
-            get { return _isFilterEnabled; }
-            set { _isFilterEnabled = value; }
-        }
-
-#if !PocketPC
+        public bool IsFilterEnabled { get; set; } = true;
 
         /// <summary>
         /// Controls the technology used to reduce GPS precision error.
@@ -947,14 +716,7 @@ namespace DotSpatial.Positioning
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-#endif
-        public PrecisionFilter Filter
-        {
-            get { return _filter; }
-            set { _filter = value; }
-        }
-
-#if !PocketPC
+        public PrecisionFilter Filter { get; set; } = PrecisionFilter.Default;
 
         /// <summary>
         /// Controls whether the interpreter will try to automatically attempt to reconnect anytime a connection is lost.
@@ -972,14 +734,7 @@ namespace DotSpatial.Positioning
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [DefaultValue(true)]
-#endif
-        public bool AllowAutomaticReconnection
-        {
-            get { return _allowAutomaticReconnection; }
-            set { _allowAutomaticReconnection = value; }
-        }
-
-#if !PocketPC
+        public bool AllowAutomaticReconnection { get; set; } = true;
 
         /// <summary>
         /// Returns a list of known GPS satellites.
@@ -990,27 +745,17 @@ namespace DotSpatial.Positioning
         [EditorBrowsable(EditorBrowsableState.Never)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
-#endif
-        public IList<Satellite> Satellites
-        {
-            get { return _satellites; }
-        }
+        public IList<Satellite> Satellites => _satellites;
 
         /// <summary>
         /// Returns whether resources in this object has been shut down.
         /// </summary>
-        public bool IsDisposed
-        {
-            get { return _isDisposed; }
-        }
+        public bool IsDisposed { get; private set; }
 
         /// <summary>
         /// Returns the stream used to output data received from the GPS device.
         /// </summary>
-        public Stream RecordingStream
-        {
-            get { return _recordingStream; }
-        }
+        public Stream RecordingStream { get; private set; }
 
         #endregion Public Properties
 
@@ -1024,27 +769,27 @@ namespace DotSpatial.Positioning
         public void Start()
         {
             // If we're disposed, complain
-            if (_isDisposed)
+            if (IsDisposed)
+            {
                 throw new ObjectDisposedException("The Interpreter cannot be started because it has been disposed.");
+            }
 
             // Are we already running?
-            if (_isRunning)
+            if (IsRunning)
+            {
                 return;
+            }
 
             // Prevent state changes while the interpreter is started
-#if !PocketPC
             if (Monitor.TryEnter(SyncRoot, _commandTimeout))
-#else
-            if (Monitor.TryEnter(SyncRoot))
-#endif
             {
                 try
                 {
                     // Set the stream
-                    _device = Devices.Any;
+                    Device = Devices.Any;
 
                     // Is the stream null?
-                    if (_device == null)
+                    if (Device == null)
                     {
                         // And report the problem
                         throw new InvalidOperationException("After performing a search, no GPS devices were found.");
@@ -1057,23 +802,17 @@ namespace DotSpatial.Positioning
                     OnDeviceChanged();
 
                     // Indicate that we're running
-                    _isRunning = true;
+                    IsRunning = true;
 
                     // If the thread isn't alive, start it now
-                    if (_parsingThread == null
-#if !PocketPC
- || !_parsingThread.IsAlive
-#else
-                        || !_IsParsingThreadAlive
-#endif
-)
+                    if (_parsingThread == null || !_parsingThread.IsAlive)
                     {
                         _parsingThread = new Thread(ParsingThreadProc)
-                                             {
-                                                 IsBackground = true,
-                                                 Priority = _threadPriority,
-                                                 Name = "GPS.NET Parsing Thread (http://dotspatial.codeplex.com)"
-                                             };
+                        {
+                            IsBackground = true,
+                            Priority = _threadPriority,
+                            Name = "GPS.NET Parsing Thread (http://dotspatial.codeplex.com)"
+                        };
                         _parsingThread.Start();
 
                         // And signal it
@@ -1125,49 +864,43 @@ namespace DotSpatial.Positioning
         public void Start(Device device)
         {
             // If we're disposed, complain
-            if (_isDisposed)
+            if (IsDisposed)
+            {
                 throw new ObjectDisposedException("The Interpreter cannot be started because it has been disposed.");
+            }
 
             // Prevent state changes while the interpreter is started
-#if !PocketPC
             if (Monitor.TryEnter(SyncRoot, _commandTimeout))
-#else
-            if (Monitor.TryEnter(SyncRoot))
-#endif
             {
                 try
                 {
                     // Set the device
-                    _device = device;
+                    Device = device;
 
                     // Signal that we're starting
                     OnStarting();
 
                     // If it's not open, open it now
-                    if (!_device.IsOpen)
-                        _device.Open();
+                    if (!Device.IsOpen)
+                    {
+                        Device.Open();
+                    }
 
                     // Indicate that we're running
-                    _isRunning = true;
+                    IsRunning = true;
 
                     // Signal that the stream has changed
                     OnDeviceChanged();
 
                     // If the thread isn't alive, start it now
-                    if (_parsingThread == null
-#if !PocketPC
- || !_parsingThread.IsAlive
-#else
-                        || !_IsParsingThreadAlive
-#endif
-)
+                    if (_parsingThread == null || !_parsingThread.IsAlive)
                     {
                         _parsingThread = new Thread(ParsingThreadProc)
-                                             {
-                                                 IsBackground = true,
-                                                 Priority = _threadPriority,
-                                                 Name = "GPS.NET Parsing Thread (http://dotspatial.codeplex.com)"
-                                             };
+                        {
+                            IsBackground = true,
+                            Priority = _threadPriority,
+                            Name = "GPS.NET Parsing Thread (http://dotspatial.codeplex.com)"
+                        };
                         _parsingThread.Start();
 
                         // And signal the start
@@ -1185,7 +918,7 @@ namespace DotSpatial.Positioning
                 catch (Exception ex)
                 {
                     // Close the device
-                    _device.Close();
+                    Device.Close();
 
                     // Show that we're stopped
                     OnStopped();
@@ -1216,14 +949,10 @@ namespace DotSpatial.Positioning
         public void StartRecording(Stream output)
         {
             // Prevent state changes while the interpreter is started
-#if !PocketPC
             if (Monitor.TryEnter(RecordingSyncRoot, _commandTimeout))
-#else
-            if (Monitor.TryEnter(RecordingSyncRoot))
-#endif
             {
                 // Set the recording stream
-                _recordingStream = output;
+                RecordingStream = output;
 
                 // And exit the context
                 Monitor.Exit(RecordingSyncRoot);
@@ -1236,14 +965,10 @@ namespace DotSpatial.Positioning
         public void StopRecording()
         {
             // Prevent state changes while the interpreter is started
-#if !PocketPC
             if (Monitor.TryEnter(RecordingSyncRoot, _commandTimeout))
-#else
-            if (Monitor.TryEnter(RecordingSyncRoot))
-#endif
             {
                 // Set the recording stream
-                _recordingStream = null;
+                RecordingStream = null;
 
                 // And exit the context
                 Monitor.Exit(RecordingSyncRoot);
@@ -1259,23 +984,23 @@ namespace DotSpatial.Positioning
         public void Stop()
         {
             // If we're disposed, complain
-            if (_isDisposed)
+            if (IsDisposed)
+            {
                 throw new ObjectDisposedException("The Interpreter cannot be stopped because it has been disposed.");
+            }
 
-#if !PocketPC
             if (Monitor.TryEnter(SyncRoot, _commandTimeout))
-#else
-            if (Monitor.TryEnter(SyncRoot))
-#endif
             {
                 try
                 {
                     // Are we already stopped?
-                    if (!_isRunning)
+                    if (!IsRunning)
+                    {
                         return;
+                    }
 
                     // Signal that we're no longer running
-                    _isRunning = false;
+                    IsRunning = false;
 
                     // Signal that a stop is underway
                     OnStopping();
@@ -1284,20 +1009,13 @@ namespace DotSpatial.Positioning
                     _pausedWaitHandle.Set();
 
                     // Signal the thread to stop. If it takes too long, exit
-                    if (_parsingThread != null
-#if !PocketPC
- && _parsingThread.IsAlive
-                        && !_parsingThread.Join(_commandTimeout))
-#else
-                        && _IsParsingThreadAlive
-                        && !_ParsingThread.Join((int)_CommandTimeout.TotalMilliseconds))
-#endif
+                    if (_parsingThread != null && _parsingThread.IsAlive && !_parsingThread.Join(_commandTimeout))
                     {
                         _parsingThread.Abort();
                     }
 
                     // Close the connection
-                    _device.Close();
+                    Device.Close();
 
                     // Notify that we've stopped
                     OnStopped();
@@ -1329,14 +1047,12 @@ namespace DotSpatial.Positioning
         public void Pause()
         {
             // If we're disposed, complain
-            if (_isDisposed)
+            if (IsDisposed)
+            {
                 throw new ObjectDisposedException("The interpreter cannot be paused because it has been disposed.");
+            }
 
-#if !PocketPC
             if (Monitor.TryEnter(SyncRoot, _commandTimeout))
-#else
-            if (Monitor.TryEnter(SyncRoot))
-#endif
             {
                 try
                 {
@@ -1369,14 +1085,12 @@ namespace DotSpatial.Positioning
         public void Resume()
         {
             // If we're disposed, complain
-            if (_isDisposed)
+            if (IsDisposed)
+            {
                 throw new ObjectDisposedException("The interpreter cannot be resumed because it has been disposed.");
+            }
 
-#if !PocketPC
             if (Monitor.TryEnter(SyncRoot, _commandTimeout))
-#else
-            if (Monitor.TryEnter(SyncRoot))
-#endif
             {
                 try
                 {
@@ -1425,14 +1139,16 @@ namespace DotSpatial.Positioning
             _bearing = Azimuth.Invalid;
             _heading = Azimuth.Invalid;
             _fixStatus = FixStatus.Unknown;
-            _horizontalDop = DilutionOfPrecision.Maximum;
+            HorizontalDilutionOfPrecision = DilutionOfPrecision.Maximum;
             _magneticVariation = Longitude.Invalid;
             _position = Position.Invalid;
             _speed = Speed.Invalid;
             _meanDop = DilutionOfPrecision.Invalid;
-            _verticalDop = DilutionOfPrecision.Invalid;
+            VerticalDilutionOfPrecision = DilutionOfPrecision.Invalid;
             if (_satellites != null)
+            {
                 _satellites.Clear();
+            }
         }
 
         /// <summary>
@@ -1443,12 +1159,14 @@ namespace DotSpatial.Positioning
         protected void SetDateTimes(DateTime value)
         {
             // If the new value is the same or it's invalid, ignore it
-            if (value == _utcDateTime || value == DateTime.MinValue)
+            if (value == UtcDateTime || value == DateTime.MinValue)
+            {
                 return;
+            }
 
             // Yes. Set the new value
-            _utcDateTime = value;
-            _dateTime = _utcDateTime.ToLocalTime();
+            UtcDateTime = value;
+            DateTime = UtcDateTime.ToLocalTime();
 
             // Are we updating the system clock?
             bool systemClockUpdated = false;
@@ -1456,20 +1174,19 @@ namespace DotSpatial.Positioning
             {
                 // Yes. Only update the system clock if it's at least 1 second off;
                 // otherwise, we'll end up updating the clock several times each second
-                if (DateTime.UtcNow.Subtract(_utcDateTime).Duration().TotalSeconds > 1)
+                if (DateTime.UtcNow.Subtract(UtcDateTime).Duration().TotalSeconds > 1)
                 {
                     // Notice: Setting the system clock to UTC will still respect local time zone and DST settings
-                    NativeMethods2.SystemTime time = NativeMethods2.SystemTime.FromDateTime(_utcDateTime);
+                    NativeMethods2.SystemTime time = NativeMethods2.SystemTime.FromDateTime(UtcDateTime);
                     NativeMethods2.SetSystemTime(ref time);
                     systemClockUpdated = true;
                 }
             }
 
             // Raise the events
-            if (UtcDateTimeChanged != null)
-                UtcDateTimeChanged(this, new DateTimeEventArgs(UtcDateTime, systemClockUpdated));
-            if (DateTimeChanged != null)
-                DateTimeChanged(this, new DateTimeEventArgs(DateTime, systemClockUpdated));
+            UtcDateTimeChanged?.Invoke(this, new DateTimeEventArgs(UtcDateTime, systemClockUpdated));
+
+            DateTimeChanged?.Invoke(this, new DateTimeEventArgs(DateTime, systemClockUpdated));
         }
 
         /// <summary>
@@ -1479,15 +1196,16 @@ namespace DotSpatial.Positioning
         protected virtual void SetFixQuality(FixQuality value)
         {
             // If the new value is the same or it's invalid, ignore it
-            if (value == _fixQuality || value == FixQuality.Unknown)
+            if (value == FixQuality || value == FixQuality.Unknown)
+            {
                 return;
+            }
 
             // Set the new value
-            _fixQuality = value;
+            FixQuality = value;
 
             // And notify
-            if (FixQualityChanged != null)
-                FixQualityChanged(this, new FixQualityEventArgs(_fixQuality));
+            FixQualityChanged?.Invoke(this, new FixQualityEventArgs(FixQuality));
         }
 
         /// <summary>
@@ -1497,15 +1215,16 @@ namespace DotSpatial.Positioning
         protected virtual void SetFixMode(FixMode value)
         {
             // If the new value is the same or it's invalid, ignore it
-            if (value == _fixMode || value == FixMode.Unknown)
+            if (value == FixMode || value == FixMode.Unknown)
+            {
                 return;
+            }
 
             // Set the new value
-            _fixMode = value;
+            FixMode = value;
 
             // And notify
-            if (FixModeChanged != null)
-                FixModeChanged(this, new FixModeEventArgs(_fixMode));
+            FixModeChanged?.Invoke(this, new FixModeEventArgs(FixMode));
         }
 
         /// <summary>
@@ -1516,14 +1235,15 @@ namespace DotSpatial.Positioning
         {
             // If the new value is the same or it's invalid, ignore it
             if (value == _fixMethod || value == FixMethod.Unknown)
+            {
                 return;
+            }
 
             // Set the new value
             _fixMethod = value;
 
             // And notify
-            if (FixMethodChanged != null)
-                FixMethodChanged(this, new FixMethodEventArgs(_fixMethod));
+            FixMethodChanged?.Invoke(this, new FixMethodEventArgs(_fixMethod));
         }
 
         /// <summary>
@@ -1533,15 +1253,16 @@ namespace DotSpatial.Positioning
         protected virtual void SetHorizontalDilutionOfPrecision(DilutionOfPrecision value)
         {
             // If the new value is the same or it's invalid, ignore it
-            if (_horizontalDop.Equals(value) || value.IsInvalid)
+            if (HorizontalDilutionOfPrecision.Equals(value) || value.IsInvalid)
+            {
                 return;
+            }
 
             // Yes.  Update the value
-            _horizontalDop = value;
+            HorizontalDilutionOfPrecision = value;
 
             // And notify of the change
-            if (HorizontalDilutionOfPrecisionChanged != null)
-                HorizontalDilutionOfPrecisionChanged(this, new DilutionOfPrecisionEventArgs(_horizontalDop));
+            HorizontalDilutionOfPrecisionChanged?.Invoke(this, new DilutionOfPrecisionEventArgs(HorizontalDilutionOfPrecision));
         }
 
         /// <summary>
@@ -1551,15 +1272,16 @@ namespace DotSpatial.Positioning
         protected virtual void SetVerticalDilutionOfPrecision(DilutionOfPrecision value)
         {
             // If the new value is the same or it's invalid, ignore it
-            if (_verticalDop.Equals(value) || value.IsInvalid)
+            if (VerticalDilutionOfPrecision.Equals(value) || value.IsInvalid)
+            {
                 return;
+            }
 
             // Yes.  Update the value
-            _verticalDop = value;
+            VerticalDilutionOfPrecision = value;
 
             // And notify of the change
-            if (VerticalDilutionOfPrecisionChanged != null)
-                VerticalDilutionOfPrecisionChanged(this, new DilutionOfPrecisionEventArgs(_verticalDop));
+            VerticalDilutionOfPrecisionChanged?.Invoke(this, new DilutionOfPrecisionEventArgs(VerticalDilutionOfPrecision));
         }
 
         /// <summary>
@@ -1570,14 +1292,15 @@ namespace DotSpatial.Positioning
         {
             // If the new value is the same or it's invalid, ignore it
             if (_meanDop.Equals(value) || value.IsInvalid)
+            {
                 return;
+            }
 
             // Yes.  Update the value
             _meanDop = value;
 
             // And notify of the change
-            if (MeanDilutionOfPrecisionChanged != null)
-                MeanDilutionOfPrecisionChanged(this, new DilutionOfPrecisionEventArgs(_meanDop));
+            MeanDilutionOfPrecisionChanged?.Invoke(this, new DilutionOfPrecisionEventArgs(_meanDop));
         }
 
         /// <summary>
@@ -1588,27 +1311,27 @@ namespace DotSpatial.Positioning
         {
             // If the new value is the same or it's invalid, ignore it
             if (value == _fixStatus || value == FixStatus.Unknown)
+            {
                 return;
+            }
 
             // Set the new status
             _fixStatus = value;
 
-            DeviceEventArgs e = new(_device);
+            DeviceEventArgs e = new(Device);
 
             // Is a fix acquired or lost?
             if (_fixStatus == FixStatus.Fix)
             {
                 // Acquired.
-                if (FixAcquired != null)
-                    FixAcquired(this, e);
+                FixAcquired?.Invoke(this, e);
 
                 Devices.RaiseFixAcquired(e);
             }
             else
             {
                 // Lost.
-                if (FixLost != null)
-                    FixLost(this, e);
+                FixLost?.Invoke(this, e);
 
                 Devices.RaiseFixLost(e);
             }
@@ -1622,14 +1345,15 @@ namespace DotSpatial.Positioning
         {
             // If the new value is the same or it's invalid, ignore it
             if (_magneticVariation.Equals(value) || value.IsInvalid)
+            {
                 return;
+            }
 
             // Yes.  Set the new value
             _magneticVariation = value;
 
             // And notify of the change
-            if (MagneticVariationAvailable != null)
-                MagneticVariationAvailable(this, new LongitudeEventArgs(_magneticVariation));
+            MagneticVariationAvailable?.Invoke(this, new LongitudeEventArgs(_magneticVariation));
         }
 
         /// <summary>
@@ -1640,33 +1364,36 @@ namespace DotSpatial.Positioning
         {
             // If the new value is invalid, ignore it
             if (value.IsInvalid)
+            {
                 return;
+            }
 
             // Change the devices class
             Devices.Position = _position;
 
             // Notify of the value, even if it hasn't changed
-            if (PositionReceived != null)
-                PositionReceived(this, new PositionEventArgs(_position));
+            PositionReceived?.Invoke(this, new PositionEventArgs(_position));
 
             // Has the value actually changed?  If not, skip it
             if (_position.Equals(value))
+            {
                 return;
+            }
 
             #region Kalman Filtered Miller Genuine Draft
 
             // Are we using a filter?
-            if (_isFilterEnabled)
+            if (IsFilterEnabled)
             {
-                if (!_filter.IsInitialized)
+                if (!Filter.IsInitialized)
                 {
-                    _filter.Initialize(value);
+                    Filter.Initialize(value);
                     _position = value;
                 }
                 else
                 {
                     // Do we have enough information to apply a filter?
-                    double fail = FixPrecisionEstimate.Value * _horizontalDop.Value * _verticalDop.Value;
+                    double fail = FixPrecisionEstimate.Value * HorizontalDilutionOfPrecision.Value * VerticalDilutionOfPrecision.Value;
                     if (fail == 0 || double.IsNaN(fail) || double.IsInfinity(fail))
                     {
                         // Nope. So just use the raw value
@@ -1675,11 +1402,11 @@ namespace DotSpatial.Positioning
                     else
                     {
                         // Yep. So apply the filter
-                        _position = _filter.Filter(
+                        _position = Filter.Filter(
                             value,
                             FixPrecisionEstimate,
-                            _horizontalDop,
-                            _verticalDop,
+                            HorizontalDilutionOfPrecision,
+                            VerticalDilutionOfPrecision,
                             _bearing,
                             _speed);
                     }
@@ -1693,10 +1420,6 @@ namespace DotSpatial.Positioning
 
             #endregion Kalman Filtered Miller Genuine Draft
 
-#if PocketPC
-            if (PositionChanged != null)
-                PositionChanged(this, new PositionEventArgs(_Position));
-#else
             if (
                 // Are they hooked into the event?
                 PositionChanged != null
@@ -1707,7 +1430,9 @@ namespace DotSpatial.Positioning
                 {
                     // Does the call need to be completed?
                     if (_positionChangedAsyncResult != null)
+                    {
                         PositionChanged.EndInvoke(_positionChangedAsyncResult);
+                    }
                 }
                 finally
                 {
@@ -1715,7 +1440,6 @@ namespace DotSpatial.Positioning
                     _positionChangedAsyncResult = PositionChanged.BeginInvoke(this, new PositionEventArgs(_position), null, null);
                 }
             }
-#endif
         }
 
         /// <summary>
@@ -1726,27 +1450,29 @@ namespace DotSpatial.Positioning
         {
             // If the new value is invalid, ignore it
             if (value.IsInvalid)
+            {
                 return;
+            }
 
             // Notify of the receipt
-            if (BearingReceived != null)
-                BearingReceived(this, new AzimuthEventArgs(_bearing));
+            BearingReceived?.Invoke(this, new AzimuthEventArgs(_bearing));
 
             // Change the devices class
             Devices.Bearing = _bearing;
 
             // If the value hasn't changed, skip
             if (_bearing.Equals(value))
+            {
                 return;
+            }
 
             // Yes. Set the new value
             _bearing = value;
 
             // Notify of the change
-            if (BearingChanged != null)
-                BearingChanged(this, new AzimuthEventArgs(_bearing));
+            BearingChanged?.Invoke(this, new AzimuthEventArgs(_bearing));
         }
-        
+
         /// <summary>
         /// Updates the current direction of heading.
         /// </summary>
@@ -1755,25 +1481,27 @@ namespace DotSpatial.Positioning
         {
             // If the new value is invalid, ignore it
             if (value.IsInvalid)
+            {
                 return;
+            }
 
             // Notify of the receipt
-            if (HeadingReceived != null)
-                HeadingReceived(this, new AzimuthEventArgs(_heading));
+            HeadingReceived?.Invoke(this, new AzimuthEventArgs(_heading));
 
             // Change the devices class
             Devices.Heading = _heading;
 
             // If the value hasn't changed, skip
             if (_heading.Equals(value))
+            {
                 return;
+            }
 
             // Yes. Set the new value
             _heading = value;
 
             // Notify of the change
-            if (HeadingChanged != null)
-                HeadingChanged(this, new AzimuthEventArgs(_heading));
+            HeadingChanged?.Invoke(this, new AzimuthEventArgs(_heading));
         }
 
         /// <summary>
@@ -1791,12 +1519,13 @@ namespace DotSpatial.Positioning
             {
                 Satellite satellite = value[index];
                 if (!_satellites.Contains(satellite))
+                {
                     _satellites.Add(satellite);
+                }
             }
 
             // Notify of the change
-            if (SatellitesChanged != null)
-                SatellitesChanged(this, new SatelliteListEventArgs(_satellites));
+            SatellitesChanged?.Invoke(this, new SatelliteListEventArgs(_satellites));
         }
 
         /// <summary>
@@ -1805,7 +1534,7 @@ namespace DotSpatial.Positioning
         /// <param name="value">The value.</param>
         protected virtual void SetFixedSatelliteCount(int value)
         {
-            _fixedSatelliteCount = value;
+            FixedSatelliteCount = value;
         }
 
         /// <summary>
@@ -1855,8 +1584,7 @@ namespace DotSpatial.Positioning
             // Notify of the change
             if (hasChanged)
             {
-                if (SatellitesChanged != null)
-                    SatellitesChanged(this, new SatelliteListEventArgs(_satellites));
+                SatellitesChanged?.Invoke(this, new SatelliteListEventArgs(_satellites));
             }
         }
 
@@ -1868,25 +1596,27 @@ namespace DotSpatial.Positioning
         {
             // Is the new value invalid?
             if (value.IsInvalid)
+            {
                 return;
+            }
 
             // Notify of the receipt
-            if (SpeedReceived != null)
-                SpeedReceived(this, new SpeedEventArgs(_speed));
+            SpeedReceived?.Invoke(this, new SpeedEventArgs(_speed));
 
             // Change the devices class
             Devices.Speed = _speed;
 
             // Has anything changed?
             if (_speed.Equals(value))
+            {
                 return;
+            }
 
             // Yes. Set the new value
             _speed = value;
 
             // Notify of the change
-            if (SpeedChanged != null)
-                SpeedChanged(this, new SpeedEventArgs(_speed));
+            SpeedChanged?.Invoke(this, new SpeedEventArgs(_speed));
         }
 
         /// <summary>
@@ -1897,14 +1627,15 @@ namespace DotSpatial.Positioning
         {
             // If the value is the same or invalid, ignore it
             if (value.IsInvalid || _geoidalSeparation.Equals(value))
+            {
                 return;
+            }
 
             // Yes. Set the new value
             _geoidalSeparation = value;
 
             // Notify of the change
-            if (GeoidalSeparationChanged != null)
-                GeoidalSeparationChanged(this, new DistanceEventArgs(_geoidalSeparation));
+            GeoidalSeparationChanged?.Invoke(this, new DistanceEventArgs(_geoidalSeparation));
         }
 
         /// <summary>
@@ -1915,25 +1646,27 @@ namespace DotSpatial.Positioning
         {
             // Is the new value invalid?
             if (value.IsInvalid)
+            {
                 return;
+            }
 
             // Notify of the receipt
-            if (AltitudeReceived != null)
-                AltitudeReceived(this, new DistanceEventArgs(_altitude));
+            AltitudeReceived?.Invoke(this, new DistanceEventArgs(_altitude));
 
             // Change the devices class
             Devices.Altitude = _altitude;
 
             // Has anything changed?
             if (_altitude.Equals(value))
+            {
                 return;
+            }
 
             // Yes. Set the new value
             _altitude = value;
 
             // Notify of the change
-            if (AltitudeChanged != null)
-                AltitudeChanged(this, new DistanceEventArgs(_altitude));
+            AltitudeChanged?.Invoke(this, new DistanceEventArgs(_altitude));
         }
 
         /// <summary>
@@ -1943,19 +1676,19 @@ namespace DotSpatial.Positioning
         protected virtual void SetAltitudeAboveEllipsoid(Distance value)
         {
             // Notify of the receipt
-            if (AltitudeAboveEllipsoidReceived != null)
-                AltitudeAboveEllipsoidReceived(this, new DistanceEventArgs(_altitudeAboveEllipsoid));
+            AltitudeAboveEllipsoidReceived?.Invoke(this, new DistanceEventArgs(_altitudeAboveEllipsoid));
 
             // Has anything changed?
             if (_altitudeAboveEllipsoid.Equals(value))
+            {
                 return;
+            }
 
             // Yes. Set the new value
             _altitudeAboveEllipsoid = value;
 
             // Notify of the change
-            if (AltitudeAboveEllipsoidChanged != null)
-                AltitudeAboveEllipsoidChanged(this, new DistanceEventArgs(_altitudeAboveEllipsoid));
+            AltitudeAboveEllipsoidChanged?.Invoke(this, new DistanceEventArgs(_altitudeAboveEllipsoid));
         }
 
         #endregion Protected Methods
@@ -1984,46 +1717,35 @@ namespace DotSpatial.Positioning
         protected override void Dispose(bool disposing)
         {
             // Are we already disposed?
-            if (_isDisposed)
+            if (IsDisposed)
+            {
                 return;
+            }
 
             // We're disposed
-            _isDisposed = true;
+            IsDisposed = true;
 
             // It's critical that these finalizers get run
-#if !PocketPC
-            RuntimeHelpers.PrepareConstrainedRegions();
-#endif
             try
             {
                 // Resume if we're paused
-                if (_pausedWaitHandle != null
-#if PocketPC
-                    && _PausedWaitHandle.Handle.ToInt32() != -1
-#else
- && !_pausedWaitHandle.SafeWaitHandle.IsClosed
-#endif
-)
+                if (_pausedWaitHandle != null && !_pausedWaitHandle.SafeWaitHandle.IsClosed)
                 {
                     _pausedWaitHandle.Set();
                     _pausedWaitHandle.Close();
                 }
 
                 // Close the parsing thread
-                if (_parsingThread != null
-#if PocketPC
-                    && _IsParsingThreadAlive
-#else
- && _parsingThread.IsAlive
-#endif
-)
+                if (_parsingThread != null && _parsingThread.IsAlive)
                 {
                     _parsingThread.Abort();
                 }
 
                 // Close the stream
-                if (_device != null)
-                    _device.Close();
+                if (Device != null)
+                {
+                    Device.Close();
+                }
             }
             finally
             {
@@ -2032,11 +1754,11 @@ namespace DotSpatial.Positioning
                 {
                     #region Dispose of managed resources
 
-                    _recordingStream = null;
+                    RecordingStream = null;
                     _parsingThread = null;
                     _pausedWaitHandle = null;
-                    _device = null;
-                    _filter = null;
+                    Device = null;
+                    Filter = null;
 
                     // Clear out the satellites
                     if (_satellites != null)
@@ -2076,10 +1798,10 @@ namespace DotSpatial.Positioning
                 }
 
                 // Are we running?
-                if (_isRunning)
+                if (IsRunning)
                 {
                     OnStopped();
-                    _isRunning = false;
+                    IsRunning = false;
                 }
 
                 // Continue disposing of the component
@@ -2096,15 +1818,8 @@ namespace DotSpatial.Positioning
         /// </summary>
         private void ParsingThreadProc()
         {
-#if PocketPC
-            try
-            {
-                // Indicate that the parsing thread is active
-                _IsParsingThreadAlive = true;
-#endif
-
             // Loop while we're allowed
-            while (!_isDisposed && _isRunning)
+            while (!IsDisposed && IsRunning)
             {
                 try
                 {
@@ -2112,20 +1827,23 @@ namespace DotSpatial.Positioning
                     _pausedWaitHandle.WaitOne();
 
                     // Do we have any stream?
-                    if (_device == null || !_device.IsOpen)
+                    if (Device == null || !Device.IsOpen)
                     {
                         /* No.  This most likely occurs when an attempt to recover a connection just failed.
                          * In that situation, we just try again to make a connection.
                          */
 
                         // Try to find another device (or the same device)
-                        _device = Devices.Any;
+                        Device = Devices.Any;
 
                         // If it's null then wait a while and try again
-                        if (_device == null)
+                        if (Device == null)
                         {
                             if (QueryReconnectAllowed())
+                            {
                                 continue;
+                            }
+
                             return;
                         }
 
@@ -2166,7 +1884,10 @@ namespace DotSpatial.Positioning
 
                     // Are we automatically reconnecting?
                     if (QueryReconnectAllowed())
+                    {
                         continue;
+                    }
+
                     return;
                 }
                 catch (UnauthorizedAccessException ex)
@@ -2183,7 +1904,10 @@ namespace DotSpatial.Positioning
 
                     // Are we automatically reconnecting?
                     if (QueryReconnectAllowed())
+                    {
                         continue;
+                    }
+
                     return;
                 }
                 catch (Exception ex)
@@ -2192,17 +1916,6 @@ namespace DotSpatial.Positioning
                     OnExceptionOccurred(ex);
                 }
             }
-
-#if PocketPC
-            }
-            catch
-            { }
-            finally
-            {
-                // Indicate that the parsing thread is no longer active
-                _IsParsingThreadAlive = false;
-            }
-#endif
         }
 
         /// <summary>
@@ -2214,8 +1927,10 @@ namespace DotSpatial.Positioning
             OnStopping();
 
             // Dispose of this connection
-            if (_device != null)
-                _device.Reset();
+            if (Device != null)
+            {
+                Device.Reset();
+            }
 
             // Signal the stop
             OnStopped();
@@ -2230,7 +1945,7 @@ namespace DotSpatial.Positioning
         private bool QueryReconnectAllowed()
         {
             // Are we automatically reconnecting?
-            if (_allowAutomaticReconnection)
+            if (AllowAutomaticReconnection)
             {
                 // Determine if we've exceeded the maximum reconnects
                 if (_maximumReconnectionAttempts == -1

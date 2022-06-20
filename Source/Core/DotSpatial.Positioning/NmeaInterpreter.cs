@@ -1,20 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// | VladimirArias (Colombia) | 02/03/2014 | Added hdt nmea sentence for heading orientation
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Security;
@@ -103,11 +88,15 @@ namespace DotSpatial.Positioning
 
             // Is this a fix method message?
             if (sentence is IFixMethodSentence fixMethodSentence)
+            {
                 SetFixMethod(fixMethodSentence.FixMethod);
+            }
 
             // Is this a fix quality message?
             if (sentence is IFixQualitySentence fixQualitySentence)
+            {
                 SetFixQuality(fixQualitySentence.FixQuality);
+            }
 
             #region Process common GPS information
 
@@ -116,28 +105,38 @@ namespace DotSpatial.Positioning
             {
                 // Does this sentence support the UTC date and time?
                 if (sentence is IUtcDateTimeSentence dateTimeSentence)
+                {
                     SetDateTimes(dateTimeSentence.UtcDateTime);
+                }
 
                 /* Some NMEA sentences provide UTC time information, but no date!  To make this work,
                  * we must combine the time report with the current UTC date.
                  */
                 if (sentence is IUtcTimeSentence timeSentence && !timeSentence.UtcTime.Equals(TimeSpan.MinValue) && !timeSentence.UtcTime.Equals(TimeSpan.Zero))
+                {
                     SetDateTimes(new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day,
                                         timeSentence.UtcTime.Hours, timeSentence.UtcTime.Minutes, timeSentence.UtcTime.Seconds, timeSentence.UtcTime.Milliseconds,
                                         DateTimeKind.Utc));
+                }
             }
 
             // Does this sentence support horizontal DOP?
             if (sentence is IHorizontalDilutionOfPrecisionSentence hdopSentence)
+            {
                 SetHorizontalDilutionOfPrecision(hdopSentence.HorizontalDilutionOfPrecision);
+            }
 
             // Does the sentence support vertical DOP?
             if (sentence is IVerticalDilutionOfPrecisionSentence vdopSentence)
+            {
                 SetVerticalDilutionOfPrecision(vdopSentence.VerticalDilutionOfPrecision);
+            }
 
             // Does the sentence support mean DOP?
             if (sentence is IPositionDilutionOfPrecisionSentence mdopSentence)
+            {
                 SetMeanDilutionOfPrecision(mdopSentence.PositionDilutionOfPrecision);
+            }
 
             #endregion Process common GPS information
 
@@ -148,22 +147,30 @@ namespace DotSpatial.Positioning
                 if (HorizontalDilutionOfPrecision.Value <= MaximumHorizontalDilutionOfPrecision.Value)
                 {
                     #region Process real-time positional data
-                    
+
                     // Does this sentence support lat/long info?
                     if (sentence is IPositionSentence positionSentence)
+                    {
                         SetPosition(positionSentence.Position);
+                    }
 
                     // Does this sentence support bearing?
                     if (sentence is IBearingSentence bearingSentence)
+                    {
                         SetBearing(bearingSentence.Bearing);
+                    }
 
                     // Does this sentence support heading?
                     if (sentence is IHeadingSentence headingSentence)
+                    {
                         SetHeading(headingSentence.Heading);
+                    }
 
                     // Does this sentence support speed?
                     if (sentence is ISpeedSentence speedSentence)
+                    {
                         SetSpeed(speedSentence.Speed);
+                    }
 
                     #endregion Process real-time positional data
                 }
@@ -172,18 +179,24 @@ namespace DotSpatial.Positioning
                 if (VerticalDilutionOfPrecision.Value <= MaximumVerticalDilutionOfPrecision.Value)
                 {
                     #region Process altitude data
-                    
+
                     // Does this sentence support altitude?
                     if (sentence is IAltitudeSentence altitudeSentence)
+                    {
                         SetAltitude(altitudeSentence.Altitude);
+                    }
 
                     // Does this sentence support altitude?
                     if (sentence is IAltitudeAboveEllipsoidSentence altitudeAboveEllipsoidSentence)
+                    {
                         SetAltitude(altitudeAboveEllipsoidSentence.AltitudeAboveEllipsoid);
+                    }
 
                     // Does this sentence support geoidal separation?
                     if (sentence is IGeoidalSeparationSentence geoidSeparationSentence)
+                    {
                         SetGeoidalSeparation(geoidSeparationSentence.GeoidalSeparation);
+                    }
 
                     #endregion Process altitude data
                 }
@@ -193,15 +206,21 @@ namespace DotSpatial.Positioning
 
             // Is this a fix mode sentence?
             if (sentence is IFixModeSentence fixModeSentence)
+            {
                 SetFixMode(fixModeSentence.FixMode);
+            }
 
             // Does this sentence have fix status?
             if (sentence is IFixStatusSentence fixedSentence)
+            {
                 SetFixStatus(fixedSentence.FixStatus);
+            }
 
             // Does this sentence support magnetic variation?
             if (sentence is IMagneticVariationSentence magVarSentence)
+            {
                 SetMagneticVariation(magVarSentence.MagneticVariation);
+            }
 
             // Process satellite data
             if (sentence is ISatelliteCollectionSentence satelliteSentence)
@@ -215,7 +234,9 @@ namespace DotSpatial.Positioning
 
             // Fixed satellite count
             if (sentence is IFixedSatelliteCountSentence fixedCountSentence)
+            {
                 SetFixedSatelliteCount(fixedCountSentence.FixedSatelliteCount);
+            }
 
             // Process fixed satellites
             if (sentence is IFixedSatellitesSentence fixedSatellitesSentence)
@@ -249,7 +270,9 @@ namespace DotSpatial.Positioning
 
             // If we have a sentence, the device is NMEA!  Flag it if needed.
             if (Device != null && !Device.IsGpsDevice)
+            {
                 Device.SetIsGpsDevice(true);
+            }
 
             /* The NmeaInterpreter in GPS.NET 3.0 uses a slimmed-down architecture to reduce
              * the memory and CPU footprint of processing NMEA data.

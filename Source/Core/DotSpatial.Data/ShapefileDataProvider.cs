@@ -56,30 +56,26 @@ namespace DotSpatial.Data
         /// <returns>An IRaster.</returns>
         public virtual IFeatureSet CreateNew(string fileName, FeatureType featureType, bool inRam, IProgressHandler progressHandler)
         {
-            switch (featureType)
+            return featureType switch
             {
-                case FeatureType.Point:
-                    return new PointShapefile
-                           {
-                               Filename = fileName
-                           };
-                case FeatureType.Line:
-                    return new LineShapefile
-                           {
-                               Filename = fileName
-                           };
-                case FeatureType.Polygon:
-                    return new PolygonShapefile
-                           {
-                               Filename = fileName
-                           };
-                case FeatureType.MultiPoint:
-                    return new MultiPointShapefile
-                           {
-                               Filename = fileName
-                           };
-                default: return null;
-            }
+                FeatureType.Point => new PointShapefile
+                {
+                    Filename = fileName
+                },
+                FeatureType.Line => new LineShapefile
+                {
+                    Filename = fileName
+                },
+                FeatureType.Polygon => new PolygonShapefile
+                {
+                    Filename = fileName
+                },
+                FeatureType.MultiPoint => new MultiPointShapefile
+                {
+                    Filename = fileName
+                },
+                _ => null,
+            };
         }
 
         /// <summary>

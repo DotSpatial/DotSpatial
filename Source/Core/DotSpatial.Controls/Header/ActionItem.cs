@@ -68,7 +68,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_caption == value) return;
                 _caption = value;
-                OnPropertyChanged("Caption");
+                OnPropertyChanged(nameof(Caption));
             }
         }
 
@@ -89,7 +89,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_enabled == value) return;
                 _enabled = value;
-                OnPropertyChanged("Enabled");
+                OnPropertyChanged(nameof(Enabled));
             }
         }
 
@@ -108,7 +108,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_toolTipText == value) return;
                 _toolTipText = value;
-                OnPropertyChanged("ToolTipText");
+                OnPropertyChanged(nameof(ToolTipText));
             }
         }
 
@@ -129,7 +129,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_visible == value) return;
                 _visible = value;
-                OnPropertyChanged("Visible");
+                OnPropertyChanged(nameof(Visible));
             }
         }
 

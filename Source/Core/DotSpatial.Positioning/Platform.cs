@@ -1,19 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 namespace DotSpatial.Positioning
 {
@@ -74,6 +60,10 @@ namespace DotSpatial.Positioning
         /// </summary>
         DesktopFramework40 = 7,
         /// <summary>
+        /// .NET framework version 6.0 (Visual Studio 2022) is being used.
+        /// </summary>
+        DesktopFramework60 = 8,
+        /// <summary>
         /// .NET Compact Framework version 1.0 (Visual Studio 2003) is being used.
         /// </summary>
         CompactFramework10 = 4,
@@ -88,23 +78,6 @@ namespace DotSpatial.Positioning
     /// </summary>
     public static class Platform
     {
-        #region Private variables
-
-        /// <summary>
-        ///
-        /// </summary>
-        private static readonly HostPlatformID _hostPlatformID;
-#if Framework40
-        /// <summary>
-        ///
-        /// </summary>
-        private const DotNetFrameworkID DOT_NET_FRAMEWORK_ID = DotNetFrameworkID.DesktopFramework40;
-#elif Framework30
-        private const DotNetFrameworkID DOT_NET_FRAMEWORK_ID = DotNetFrameworkID.DesktopFramework30;
-#endif
-
-        #endregion Private variables
-
         #region Constructors
 
         /// <summary>
@@ -112,39 +85,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         static Platform()
         {
-#if !PocketPC
-            _hostPlatformID = HostPlatformID.Desktop;
-#else
-            // Are we running on "Deploy to My Computer" ?
-            if (Environment.OSVersion.Platform == PlatformID.WinCE)
-            {
-                // Determine the platform
-                StringBuilder sb = new System.Text.StringBuilder(128);
-
-                // SPI_GETPLATFORMTYPE
-                bool success = NativeMethods.GetSystemParameterString(257, (UInt32)(sb.Capacity * System.Runtime.InteropServices.Marshal.SizeOf(typeof(char))), sb, false);
-
-                // compare strings as lowercase
-                string str = sb.ToString().ToLower();
-                switch (str)
-                {
-                    case "smartphone":
-                        _HostPlatformID = HostPlatformID.Smartphone;
-                        break;
-                    case "pocketpc":
-                        _HostPlatformID = HostPlatformID.PocketPC;
-                        break;
-                    default:
-                        _HostPlatformID = HostPlatformID.WindowsCE;
-                        break;
-                }
-            }
-            else
-            {
-                // Deploy to My Computer runs on the desktop
-                _HostPlatformID = HostPlatformID.Desktop;
-            }
-#endif
+            HostPlatformID = HostPlatformID.Desktop;
         }
 
         #endregion Constructors
@@ -158,23 +99,11 @@ namespace DotSpatial.Positioning
         /// For example, thread priorities are more sensitive on the Smartphone platform than the
         /// PocketPC platform.  This can also be used to determine correct locations of system folders
         /// and installed system software such as Bluetooth stacks.</remarks>
-        public static HostPlatformID HostPlatformID
-        {
-            get
-            {
-                return _hostPlatformID;
-            }
-        }
+        public static HostPlatformID HostPlatformID { get; private set; }
 
         /// <summary>
         /// Returns the current version of the .NET Framework currently in use.
         /// </summary>
-        public static DotNetFrameworkID DotNetFrameworkID
-        {
-            get
-            {
-                return DOT_NET_FRAMEWORK_ID;
-            }
-        }
+        public static DotNetFrameworkID DotNetFrameworkID => DotNetFrameworkID.DesktopFramework60;
     }
 }

@@ -510,30 +510,18 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             var position = GetValue(ref style, "p:");
             int num = (int)GetNumber(position, 5);
 
-            switch (num)
+            return num switch
             {
-                case 1:
-                case 10:
-                    return ContentAlignment.BottomLeft;
-                case 2:
-                case 11:
-                    return ContentAlignment.BottomCenter;
-                case 3:
-                case 12:
-                    return ContentAlignment.BottomRight;
-                case 4:
-                    return ContentAlignment.MiddleLeft;
-                case 6:
-                    return ContentAlignment.MiddleRight;
-                case 7:
-                    return ContentAlignment.TopLeft;
-                case 8:
-                    return ContentAlignment.TopCenter;
-                case 9:
-                    return ContentAlignment.TopRight;
-                default:
-                    return ContentAlignment.MiddleCenter;
-            }
+                1 or 10 => ContentAlignment.BottomLeft,
+                2 or 11 => ContentAlignment.BottomCenter,
+                3 or 12 => ContentAlignment.BottomRight,
+                4 => ContentAlignment.MiddleLeft,
+                6 => ContentAlignment.MiddleRight,
+                7 => ContentAlignment.TopLeft,
+                8 => ContentAlignment.TopCenter,
+                9 => ContentAlignment.TopRight,
+                _ => ContentAlignment.MiddleCenter,
+            };
         }
 
         /// <summary>
@@ -854,29 +842,15 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <returns>The type that corresponds to the given ogrType.</returns>
         private static Type TranslateOgrType(FieldType ogrType)
         {
-            switch (ogrType)
+            return ogrType switch
             {
-                case FieldType.OFTInteger:
-                    return typeof(int);
-
-                case FieldType.OFTReal:
-                    return typeof(double);
-
-                case FieldType.OFTWideString:
-                case FieldType.OFTString:
-                    return typeof(string);
-
-                case FieldType.OFTBinary:
-                    return typeof(byte[]);
-
-                case FieldType.OFTDate:
-                case FieldType.OFTTime:
-                case FieldType.OFTDateTime:
-                    return typeof(DateTime);
-
-                default:
-                    throw new NotSupportedException("Type not supported: " + ogrType);
-            }
+                FieldType.OFTInteger => typeof(int),
+                FieldType.OFTReal => typeof(double),
+                FieldType.OFTWideString or FieldType.OFTString => typeof(string),
+                FieldType.OFTBinary => typeof(byte[]),
+                FieldType.OFTDate or FieldType.OFTTime or FieldType.OFTDateTime => typeof(DateTime),
+                _ => throw new NotSupportedException("Type not supported: " + ogrType),
+            };
         }
 
         /// <summary>

@@ -1,22 +1,9 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -24,17 +11,9 @@ using System.Security;
 using System.Text;
 using System.Threading;
 using Microsoft.Win32;
-#if !PocketPC
-
-using System.ComponentModel;
-using System.Runtime.ConstrainedExecution;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC
-
     /// <summary>
     /// Represents a serial (RS-232) device.
     /// </summary>
@@ -50,9 +29,6 @@ namespace DotSpatial.Positioning
     /// unrecognizable.</para>
     ///   <para>Other settings for serial ports are the data bits, stop bits, and parity.  In the context of GPS, a vast majority of GPS
     /// devices use eight data bits, one stop bit, and no parity.  these settings are used if no settings are explicitly provided.</para></remarks>
-    [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-    //[RegistryPermission(SecurityAction.LinkDemand, ViewAndModify = @"HKEY_LOCAL_MACHINE\SOFTWARE\DotSpatial.Positioning\GPS.NET\3.0\Devices\Bluetooth")]
-#endif
     public class SerialDevice : Device, IEquatable<SerialDevice>
     {
         /// <summary>
@@ -67,15 +43,6 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private string _name;
-
-        /// <summary>
-        ///
-        /// </summary>
-        private static int _maximumAllowedFailures = 100;
-        /// <summary>
-        ///
-        /// </summary>
-        private static readonly IList<int> _detectionBaudRates = new List<int>(new[] { 115200, 57600, 38400, 19200, 9600, 4800 });
 
         #region Constants
 
@@ -124,8 +91,6 @@ namespace DotSpatial.Positioning
 
         #region Public Properties
 
-#if !PocketPC
-
         /// <summary>
         /// Returns the name of the port used to open a connection.
         /// </summary>
@@ -134,20 +99,11 @@ namespace DotSpatial.Positioning
         [Description("Returns the name of the port used to open a connection.")]
         [Browsable(true)]
         [ParenthesizePropertyName(true)]
-#endif
         public virtual string Port
         {
-            get
-            {
-                return _port.PortName;
-            }
-            set
-            {
-                _port.PortName = value;
-            }
+            get => _port.PortName;
+            set => _port.PortName = value;
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Returns the numeric portion of the port name.
@@ -155,7 +111,6 @@ namespace DotSpatial.Positioning
         [Category("Data")]
         [Description("Returns the numeric portion of the port name.")]
         [Browsable(true)]
-#endif
         public int PortNumber
         {
             get
@@ -166,7 +121,9 @@ namespace DotSpatial.Positioning
                 foreach (char character in _port.PortName)
                 {
                     if (char.IsNumber(character))
+                    {
                         numericPortion.Append(character);
+                    }
                 }
 
                 // Did we find any numeric digits?
@@ -181,8 +138,6 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
-
         /// <summary>
         /// Controls the speed of communications for this device.
         /// </summary>
@@ -193,17 +148,10 @@ namespace DotSpatial.Positioning
         [Category("Data")]
         [Description("Controls the speed of communications for this device.")]
         [Browsable(true)]
-#endif
         public int BaudRate
         {
-            get
-            {
-                return _port.BaudRate;
-            }
-            set
-            {
-                _port.BaudRate = value;
-            }
+            get => _port.BaudRate;
+            set => _port.BaudRate = value;
         }
 
         #endregion Public Properties
@@ -214,13 +162,7 @@ namespace DotSpatial.Positioning
         /// Returns a natural language name for the device.
         /// </summary>
         /// <inheritdocs/>
-        public override string Name
-        {
-            get
-            {
-                return _name;
-            }
-        }
+        public override string Name => _name;
 
         /// <summary>
         /// Controls whether the device can be queried for GPS data.
@@ -229,14 +171,8 @@ namespace DotSpatial.Positioning
         /// <inheritdocs/>
         public override bool AllowConnections
         {
-            get
-            {
-                return base.AllowConnections && Devices.AllowSerialConnections;
-            }
-            set
-            {
-                base.AllowConnections = value;
-            }
+            get => base.AllowConnections && Devices.AllowSerialConnections;
+            set => base.AllowConnections = value;
         }
 
         /// <summary>
@@ -248,27 +184,28 @@ namespace DotSpatial.Positioning
             // Clear out the stream
             base.Reset();
 
-#if !PocketPC
             // Clone the port
             SerialPort clone = new(_port.PortName, _port.BaudRate, _port.Parity, _port.DataBits, _port.StopBits)
-                                   {
-                                       ReadTimeout = _port.ReadTimeout,
-                                       WriteTimeout = _port.WriteTimeout,
-                                       NewLine = _port.NewLine,
-                                       WriteBufferSize = _port.WriteBufferSize,
-                                       ReadBufferSize = _port.ReadBufferSize,
-                                       ReceivedBytesThreshold = _port.ReceivedBytesThreshold,
-                                       Encoding = _port.Encoding
-                                   };
+            {
+                ReadTimeout = _port.ReadTimeout,
+                WriteTimeout = _port.WriteTimeout,
+                NewLine = _port.NewLine,
+                WriteBufferSize = _port.WriteBufferSize,
+                ReadBufferSize = _port.ReadBufferSize,
+                ReceivedBytesThreshold = _port.ReceivedBytesThreshold,
+                Encoding = _port.Encoding
+            };
 
             // Close and dispose the current reference
             if (_port.IsOpen)
+            {
                 _port.Close();
+            }
+
             _port.Dispose();
 
             // Use this new reference.
             _port = clone;
-#endif
         }
 
         /// <summary>
@@ -282,11 +219,10 @@ namespace DotSpatial.Positioning
         {
             // Open the port if it's not already open
             if (!_port.IsOpen)
-#if !PocketPC
+            {
                 _port.Open();
-#else
-                _Port.Open(access, sharing);
-#endif
+            }
+
             return _port.BaseStream;
         }
 
@@ -322,15 +258,6 @@ namespace DotSpatial.Positioning
                 return false;
             }
 
-#if PocketPC
-            // What kind is this?
-            if (!Devices.AllowInfraredConnections && Name.IndexOf("Infrared") != -1)
-            {
-                Devices.OnDeviceDetectionAttemptFailed(
-                    new DeviceDetectionException(this, Name + " will not be tested because infrared devices are currently excluded."));
-                return false;
-            }
-#endif
             // Is it a Bluetooth serial port?
             if (!Devices.AllowBluetoothConnections
                 && Name.IndexOf("Bluetooth", StringComparison.OrdinalIgnoreCase) != -1)
@@ -398,15 +325,15 @@ namespace DotSpatial.Positioning
             {
                 Debug.WriteLine(Name + " could not be opened due to the following error: " + ex, Devices.DEBUG_CATEGORY);
 
-                if (Name.IndexOf("Bluetooth", StringComparison.OrdinalIgnoreCase) == -1)
-                    // UnauthorizedAccessException (can happen if multiple apps open the same port),
-                    // if the device is actually a USB-mapped-to-serial
+                if (!Name.Contains("Bluetooth", StringComparison.OrdinalIgnoreCase))
+                {
+                    // UnauthorizedAccessException (can happen if multiple apps open the same port), if the device is actually a USB-mapped-to-serial
                     Devices.OnDeviceDetectionAttemptFailed(new DeviceDetectionException(this, ex));
+                }
                 else
                 {
                     // Security may have denied the connection
-                    Devices.OnDeviceDetectionAttemptFailed(
-                    new DeviceDetectionException(this, "A security PIN entered for " + Name + " was incorrect.  The device should be re-paired in the Bluetooth Manager.", ex));
+                    Devices.OnDeviceDetectionAttemptFailed(new DeviceDetectionException(this, "A security PIN entered for " + Name + " was incorrect.  The device should be re-paired in the Bluetooth Manager.", ex));
                 }
 
                 return false;
@@ -414,8 +341,7 @@ namespace DotSpatial.Positioning
             catch (Exception ex)
             {
                 Debug.WriteLine(Name + " could not be opened due to the following error: " + ex, Devices.DEBUG_CATEGORY);
-                Devices.OnDeviceDetectionAttemptFailed(
-                    new DeviceDetectionException(this, ex));
+                Devices.OnDeviceDetectionAttemptFailed(new DeviceDetectionException(this, ex));
                 return false;
             }
 
@@ -427,7 +353,7 @@ namespace DotSpatial.Positioning
              * speed.
              */
 
-            List<int> baudRatesToTest = new(_detectionBaudRates);
+            List<int> baudRatesToTest = new(DetectionBaudRates);
 
             // Do we have the last known rate?
             if (_lastSuccessfulBaudRate != 0)
@@ -468,23 +394,10 @@ namespace DotSpatial.Positioning
                         {
                             break;
                         }
+
                         bytesRead += read;
                     }
                 }
-#if PocketPC
-                catch (IOException ex)
-                {
-                    /* The Samsung Omina is reporting an IOException.  Internally, the InnerException
-                     * is a TimeoutException.
-                     */
-
-                    // No data was read whatsoever.  We'd at least get garbage if there was a device, right?
-                    // Immediately return false.
-                    Devices.OnDeviceDetectionAttemptFailed(
-                        new DeviceDetectionException(this, Name + " returned no data after the timeout expired.", ex));
-                    return false;
-                }
-#endif
                 catch (InvalidOperationException ex)
                 {
                     // The port is not open!  Probably closed?
@@ -517,10 +430,12 @@ namespace DotSpatial.Positioning
                     // Get the byte
                     byte testByte = buffer[count];
                     if (testByte == 0)
+                    {
                         continue;
+                    }
 
                     // Is this byte outside of the range of ASCII characters?
-                    if (testByte < 10 || testByte > 125)
+                    if (testByte is < 10 or > 125)
                     {
                         // Yes.  Flag this as unlikely to be ASCII (or NMEA)
                         contiguousAsciiCharacters = 0;
@@ -539,12 +454,12 @@ namespace DotSpatial.Positioning
 
                 // If we don't have a good set of ASCII, try another baud rate
                 if (contiguousAsciiCharacters < 10)
+                {
                     continue;
+                }
 
-#if !PocketPC
                 // This is a good sign that we have NMEA.  Bump up our thread priority
                 Thread.CurrentThread.Priority = ThreadPriority.AboveNormal;
-#endif
 
                 // We have ASCII.  Try up to 10 times to get a full sentences.
                 for (int count = 0; count < 10; count++)
@@ -614,7 +529,9 @@ namespace DotSpatial.Positioning
                 if (_port != null)
                 {
                     if (_port.IsOpen)
+                    {
                         _port.Close();
+                    }
 
                     _port.Dispose();
                     _port = null;
@@ -631,7 +548,9 @@ namespace DotSpatial.Positioning
         {
             // If we don't have a port name, then we can't get the registry key
             if (_port == null)
+            {
                 return;
+            }
 
             // Save device stats
             RegistryKey deviceKey = null;
@@ -642,8 +561,10 @@ namespace DotSpatial.Positioning
                 if (deviceKey != null)
                 {
                     // Set the friendly name
-                    if (!String.IsNullOrEmpty(_name))
+                    if (!string.IsNullOrEmpty(_name))
+                    {
                         deviceKey.SetValue(DEFAULT_REGISTRY_VALUE_NAME, _name);
+                    }
 
                     // Update the baud rate and etc.
                     deviceKey.SetValue("Baud Rate", _port.BaudRate);
@@ -656,7 +577,9 @@ namespace DotSpatial.Positioning
 
                     // Remember the baud rate if it's not zero
                     if (_lastSuccessfulBaudRate != 0)
+                    {
                         deviceKey.SetValue("Last Successful Baud Rate", _lastSuccessfulBaudRate);
+                    }
                 }
             }
             catch (UnauthorizedAccessException)
@@ -664,7 +587,9 @@ namespace DotSpatial.Positioning
             finally
             {
                 if (deviceKey != null)
+                {
                     deviceKey.Close();
+                }
             }
         }
 
@@ -675,7 +600,9 @@ namespace DotSpatial.Positioning
         {
             // If we don't have a port name, then we can't get the registry key
             if (_port == null)
+            {
                 return;
+            }
 
             try
             {
@@ -697,17 +624,21 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Reads information about this device from the registry.
         /// </summary>
-        protected override sealed void OnCacheRead()
+        protected sealed override void OnCacheRead()
         {
             // If we don't have a port name, then we can't get the registry key
             if (_port == null)
+            {
                 return;
+            }
 
             // Save device stats
             RegistryKey deviceKey = Registry.LocalMachine.OpenSubKey(ROOT_KEY_NAME + Port, false);
 
             if (deviceKey == null)
+            {
                 return;
+            }
 
             // Update the baud rate and etc.
             foreach (string name in deviceKey.GetValueNames())
@@ -751,13 +682,7 @@ namespace DotSpatial.Positioning
         /// tested during detection.</para>
         ///   <para>Advanced GPS developers can improve performance by trimming this list down to baud rates which will actually
         /// be used.</para></remarks>
-        public static IList<int> DetectionBaudRates
-        {
-            get
-            {
-                return _detectionBaudRates;
-            }
-        }
+        public static IList<int> DetectionBaudRates { get; } = new List<int>(new[] { 115200, 57600, 38400, 19200, 9600, 4800 });
 
         /// <summary>
         /// Controls the maximum allowed detection failures before a device is excluded from detection.
@@ -767,17 +692,7 @@ namespace DotSpatial.Positioning
         /// could return a bar code scanner, an infrared port, or the neighbor's computer.  This property controls how many times a device will be
         /// tested before it is no longer included for searches.  If a device's failure count goes beyond this number, attempts
         /// will no longer be made to connect to the device.</remarks>
-        public static int MaximumAllowedFailures
-        {
-            get
-            {
-                return _maximumAllowedFailures;
-            }
-            set
-            {
-                _maximumAllowedFailures = value;
-            }
-        }
+        public static int MaximumAllowedFailures { get; set; } = 100;
 
         /// <summary>
         /// Clears the cache.
@@ -877,8 +792,12 @@ namespace DotSpatial.Positioning
                 // Does this Bluetooth device have a serial port?
                 SerialDevice virtualDevice = device.VirtualSerialPort;
                 if (virtualDevice != null)
+                {
                     if (!devices.Contains(virtualDevice))
+                    {
                         devices.Add(virtualDevice);
+                    }
+                }
             }
         }
 
@@ -888,7 +807,6 @@ namespace DotSpatial.Positioning
         /// <param name="devices">The list to which the devices are added.</param>
         private static void LoadWindowsDevices(IList<SerialDevice> devices)
         {
-#if !PocketPC
             // Open HKLM\HARDWARE\DEVICEMAP\SERIALCOMM
             RegistryKey portsKey = Registry.LocalMachine.OpenSubKey(@"HARDWARE\DEVICEMAP\SERIALCOMM", false);
             if (portsKey != null)
@@ -924,9 +842,9 @@ namespace DotSpatial.Positioning
                     // Convert the ASCII bytes to a string
                     portName =
                         Encoding.ASCII.GetString(
-                        // Convert the registry value to ASCII bytes
+                            // Convert the registry value to ASCII bytes
                             Encoding.ASCII.GetBytes(portName))
-                        // Lastly, remove "?" characters
+                            // Lastly, remove "?" characters
                             .Replace("?", string.Empty);
 
                     // Lastly, append a colon
@@ -937,7 +855,9 @@ namespace DotSpatial.Positioning
 
                     // Add it to the results
                     if (!devices.Contains(device))
+                    {
                         devices.Add(device);
+                    }
                 }
 
                 // Finally, clean up
@@ -945,343 +865,6 @@ namespace DotSpatial.Positioning
 
                 #endregion Pass #1: Analysis of actual ports
             }
-#else
-
-            #region WIDCOMM Bluetooth via Serial
-
-                // Look for automatic connections
-                RegistryKey devicesKey = Registry.LocalMachine.OpenSubKey(@"Software\WIDCOMM\BtConfig\AutoConnect", false);
-                if (devicesKey != null)
-                {
-                    // Get the subkey
-                    string[] subKeys = devicesKey.GetSubKeyNames();
-                    foreach (string key in subKeys)
-                    {
-                        RegistryKey autoConnectKey = devicesKey.OpenSubKey(key, false);
-
-                        // Look for values
-                        string devicePort = "COM" + Convert.ToInt32(key).ToString() + ":";
-                        byte[] bytes = (byte[])autoConnectKey.GetValue("BDName");
-                        string friendlyName = System.Text.ASCIIEncoding.ASCII.GetString(bytes, 0, bytes.Length).Replace("\0", string.Empty);
-
-                        // Make a new device.  Since it's Bluetooth, we can use a high baud rate (really ANY baud rate)
-                        SerialDevice newDevice = new SerialDevice(devicePort, 115200);
-
-                        // Add it if it's not already there
-                        if (!devices.Contains(newDevice))
-                        {
-                            // Set it's in-English name
-                            newDevice.SetName(friendlyName);
-
-                            // Append it
-                            devices.Add(newDevice);
-                        }
-
-                        //// Does it already exist?
-                        // exists = false;
-                        // for (int index2 = 0; index2 < devices.Count; index2++)
-                        //{
-                        //    // Look for a serial device with the same port (COM2: etc.)
-                        //    SerialDevice existing = devices[index2];
-                        //    if (existing.Port.Equals(devicePort))
-                        //    {
-                        //        exists = true;
-                        //        break;
-                        //    }
-                        //}
-
-                        //// Does it already exist?  If not, add it
-                        // if (!exists)
-                        //{
-                        //    // Append to the collection
-                        //    devices.Add(newDevice);
-                        //}
-
-                        autoConnectKey.Close();
-                    }
-                    devicesKey.Close();
-                }
-
-                // Look for a virtual serial port for Bluetooth devices
-                devicesKey = Registry.LocalMachine.OpenSubKey(@"Software\WIDCOMM\Connections", false);
-                if (devicesKey != null)
-                {
-                    // Each subkey is a device
-                    string[] deviceKeys = devicesKey.GetSubKeyNames();
-                    for (int index = 0; index < deviceKeys.Length; index++)
-                    {
-                        // Open the sub-key
-                        RegistryKey virtualSerialDeviceKey = devicesKey.OpenSubKey(deviceKeys[index], false);
-                        if (virtualSerialDeviceKey != null)
-                        {
-                            // Now... get the name and COM port number
-                            string friendlyName = Convert.ToString(virtualSerialDeviceKey.GetValue("BDName"));
-                            string devicePort = "COM" + Convert.ToString(virtualSerialDeviceKey.GetValue("ComPortNumber")) + ":";
-
-                            // Make a new device.  Since it's Bluetooth, we can use a high baud rate (really ANY baud rate)
-                            SerialDevice newDevice = new SerialDevice(devicePort, 115200);
-
-                            // Add it if it's not already there
-                            if (!devices.Contains(newDevice))
-                            {
-                                // Set it's in-English name
-                                newDevice.SetName(friendlyName);
-
-                                // Append it
-                                devices.Add(newDevice);
-                            }
-
-                            //// Does it already exist?
-                            // exists = false;
-                            // for (int index2 = 0; index2 < devices.Count; index2++)
-                            //{
-                            //    // Look for a serial device with the same port (COM2: etc.)
-                            //    SerialDevice existing = devices[index2];
-                            //    if (existing.Port.Equals(devicePort))
-                            //    {
-                            //        exists = true;
-                            //        break;
-                            //    }
-                            //}
-
-                            //// Does it already exist?  If not, add it
-                            // if (!exists)
-                            //{
-                            //    // Make a new device.  Since it's Bluetooth, we can use a high baud rate (really ANY baud rate)
-                            //    SerialDevice newDevice = new SerialDevice(devicePort, 115200);
-
-                            //    // Set it's in-English name
-                            //    newDevice.SetName(friendlyName);
-
-                            //    // Append to the collection
-                            //    devices.Add(newDevice);
-                            //}
-
-                            virtualSerialDeviceKey.Close();
-                        }
-                    }
-                    devicesKey.Close();
-                }
-
-            #endregion WIDCOMM Bluetooth via Serial
-
-            #region Analyze HKLM\Drivers\BuiltIn
-
-                // Look in the list of active devices for the port
-                devicesKey = Registry.LocalMachine.OpenSubKey(@"Drivers\BuiltIn", false);
-                if (devicesKey != null)
-                {
-                    // Get all the drivers
-                    string[] subKeys = devicesKey.GetSubKeyNames();
-
-                    // Now analyze each one for a match
-                    for (int index = 0; index < subKeys.Length; index++)
-                    {
-                        RegistryKey subKey = null;
-                        try
-                        {
-                            subKey = devicesKey.OpenSubKey(subKeys[index], false);
-                            if (subKey != null)
-                            {
-                                // Now, look for a name value match
-                                string devicePort = Convert.ToString(subKey.GetValue("Prefix"))
-                                    + Convert.ToString(subKey.GetValue("Index")) + ":";
-
-                                // If it doesn't start with "COM" then skip it
-                                if (!devicePort.StartsWith("COM", StringComparison.InvariantCultureIgnoreCase))
-                                    continue;
-
-                                // Skip the GPS Intermediate Driver public port
-                                if (GpsIntermediateDriver.IsSupported
-                                    && GpsIntermediateDriver.Current.Port.Equals(devicePort))
-                                    continue;
-
-                                // Find a friendly name
-                                string friendlyName = Convert.ToString(subKey.GetValue("FriendlyName"));
-
-                                // Is it an array?
-                                if (friendlyName.IndexOf("[]") != -1)
-                                    friendlyName = ((string[])subKey.GetValue("FriendlyName"))[0];
-
-                                if (string.IsNullOrEmpty(friendlyName))
-                                {
-                                    // Try harder to get a friendly name
-                                    string dll = Convert.ToString(subKey.GetValue("Dll"));
-                                    if (dll.Equals("IRCOMM.DLL", StringComparison.InvariantCultureIgnoreCase))
-                                    {
-                                        friendlyName = "Infrared Port on " + devicePort;
-                                    }
-                                    else if (dll.Equals("RILGSM.dll", StringComparison.InvariantCultureIgnoreCase))
-                                    {
-                                        /* I have no idea what the an RIL driver is, but it doesn't have anything to do with GPS.
-                                         * Some COM ports actually cause problems if you open them.  So, this port will be excluded.
-                                         */
-                                        continue;
-                                    }
-                                    else
-                                    {
-                                        friendlyName = devicePort;
-                                    }
-                                }
-
-                                // Make a new device.  Since it's Bluetooth, we can use a high baud rate (really ANY baud rate)
-                                SerialDevice newDevice = new SerialDevice(devicePort);
-
-                                // Add it if it's not already there
-                                if (!devices.Contains(newDevice))
-                                {
-                                    // Set it's in-English name
-                                    newDevice.SetName(friendlyName);
-
-                                    // Append it
-                                    devices.Add(newDevice);
-                                }
-
-                                //// Add the port
-                                // exists = false;
-                                // for (int index2 = 0; index2 < devices.Count; index2++)
-                                //{
-                                //    // Look for a serial device with the same port (COM2: etc.)
-                                //    SerialDevice existing = devices[index2];
-                                //    if (existing.Port.Equals(devicePort))
-                                //    {
-                                //        exists = true;
-                                //        break;
-                                //    }
-                                //}
-
-                                //// Does it already exist?  If not, add it
-                                // if (!exists)
-                                //{
-                                //    // Make a new device
-                                //    SerialDevice newDevice = new SerialDevice(devicePort);
-
-                                //    // Set it's in-English name
-                                //    newDevice.SetName(friendlyName);
-
-                                //    // Append to the collection
-                                //    devices.Add(newDevice);
-                                //}
-                            }
-                        }
-                        catch { }
-                        finally
-                        {
-                            if (subKey != null)
-                                subKey.Close();
-                        }
-                    }
-
-                    // Finally, close the key
-                    devicesKey.Close();
-                }
-
-            #endregion Analyze HKLM\Drivers\BuiltIn
-
-            #region Examine HKLM\Drivers\Active
-
-                // Look in the list of active devices for the port
-                devicesKey = Registry.LocalMachine.OpenSubKey(@"Drivers\Active", false);
-                if (devicesKey != null)
-                {
-                    // Get all the drivers
-                    string[] subKeys = devicesKey.GetSubKeyNames();
-
-                    // Now analyze each one for a match
-                    for (int index = 0; index < subKeys.Length; index++)
-                    {
-                        RegistryKey subKey = null;
-                        try
-                        {
-                            subKey = devicesKey.OpenSubKey(subKeys[index], false);
-                            if (subKey != null)
-                            {
-                                // Now, look for a name value match
-                                string devicePort = Convert.ToString(subKey.GetValue("Name"));
-
-                                // If it doesn't start with "COM" then skip it
-                                if (!devicePort.StartsWith("COM", StringComparison.InvariantCultureIgnoreCase))
-                                    continue;
-
-                                // Skip the GPS Intermediate Driver public port
-                                if (GpsIntermediateDriver.IsSupported
-                                    && GpsIntermediateDriver.Current.Port.Equals(devicePort))
-                                    continue;
-
-                                // Find a friendly name
-                                string friendlyName = Convert.ToString(subKey.GetValue("Key"));
-                                if (friendlyName.IndexOf("PCMCIA") != -1)
-                                    friendlyName = "CompactFlash® Device on " + devicePort;
-                                else if (friendlyName.IndexOf("USB") != -1)
-                                    friendlyName = "USB Device on " + devicePort;
-                                else if (friendlyName.IndexOf("Bluetooth") != -1)
-                                    friendlyName = "Bluetooth Virtual Serial Port on " + devicePort;
-                                else if (friendlyName.IndexOf("VirtCOM") != -1)
-                                {
-                                    /* This is the Radio Interface Layer (http://msdn.microsoft.com/en-us/library/ms890075.aspx), and
-                                     * has nothing to do with GPS.
-                                     */
-                                    continue;
-                                }
-                                else if (friendlyName.IndexOf("IrCOMM") != -1 || friendlyName.IndexOf("IrDA") != -1)
-                                    friendlyName = "Infrared Port on " + devicePort;
-                                else
-                                    friendlyName = devicePort;
-
-                                // Is this an expansion slot?
-                                if (subKeys[index].Equals("ExpSlot", StringComparison.InvariantCultureIgnoreCase))
-                                    friendlyName += " (Expansion Slot)";
-
-                                // Make a new device.  Since it's Bluetooth, we can use a high baud rate (really ANY baud rate)
-                                SerialDevice newDevice = new SerialDevice(devicePort);
-
-                                // Add it if it's not already there
-                                if (!devices.Contains(newDevice))
-                                {
-                                    // Set it's in-English name
-                                    newDevice.SetName(friendlyName);
-
-                                    // Append it
-                                    devices.Add(newDevice);
-                                }
-
-                                //// Add the port
-                                // exists = false;
-                                // for (int index2 = 0; index2 < devices.Count; index2++)
-                                //{
-                                //    // Look for a serial device with the same port (COM2: etc.)
-                                //    SerialDevice existing = devices[index2];
-                                //    if (existing.Port.Equals(devicePort))
-                                //    {
-                                //        exists = true;
-                                //        break;
-                                //    }
-                                //}
-
-                                //// Does it already exist?  If not, add it
-                                // if (!exists)
-                                //{
-                                //    SerialDevice newDevice = new SerialDevice(devicePort);
-                                //    newDevice.SetName(friendlyName);
-                                //    devices.Add(newDevice);
-                                //}
-                            }
-                        }
-                        catch { }
-                        finally
-                        {
-                            if (subKey != null)
-                                subKey.Close();
-                        }
-                    }
-
-                    // Finally, close the key
-                    devicesKey.Close();
-                }
-
-            #endregion Examine HKLM\Drivers\Active
-
-#endif
         }
 
         #endregion Private Methods
@@ -1295,9 +878,26 @@ namespace DotSpatial.Positioning
         /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(SerialDevice other)
         {
-            if (ReferenceEquals(other, null))
-                return false;
-            return Port.Equals(other.Port, StringComparison.OrdinalIgnoreCase);
+            return other is not null && Port.Equals(other.Port, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="obj">An object to compare with this object.</param>
+        /// <returns>true if the current object is equal to the <paramref name="obj"/> parameter; otherwise, false.</returns>
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as SerialDevice);
+        }
+
+        /// <summary>
+        /// Gets the hash code.
+        /// </summary>
+        /// <returns>The hash code.</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         #endregion IEquatable<SerialDevice> Members

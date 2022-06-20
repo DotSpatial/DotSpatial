@@ -1,35 +1,15 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using DotSpatial.Positioning;
-#if !PocketPC || DesignTime
-
-using System.ComponentModel;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents a highly-precise two-dimensional size.
     /// </summary>
@@ -39,7 +19,6 @@ namespace DotSpatial.Positioning
     ///   <para>Instances of this structure are guaranteed to be thread-safe because it is
     /// immutable (its properties can only be modified via constructors).</para></remarks>
     [TypeConverter("DotSpatial.Positioning.Design.SizeDConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct SizeD : IFormattable, IEquatable<SizeD>, IXmlSerializable
     {
         /// <summary>
@@ -60,15 +39,15 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Represents an infinite size.
         /// </summary>
-        public static readonly SizeD Infinity = new(Double.PositiveInfinity, Double.PositiveInfinity);
+        public static readonly SizeD Infinity = new(double.PositiveInfinity, double.PositiveInfinity);
         /// <summary>
         /// Represents the smallest possible size.
         /// </summary>
-        public static readonly SizeD Minimum = new(Double.MinValue, Double.MinValue);
+        public static readonly SizeD Minimum = new(double.MinValue, double.MinValue);
         /// <summary>
         /// Represents the largest possible size.
         /// </summary>
-        public static readonly SizeD Maximum = new(Double.MaxValue, Double.MaxValue);
+        public static readonly SizeD Maximum = new(double.MaxValue, double.MaxValue);
 
         #endregion Fields
 
@@ -125,7 +104,9 @@ namespace DotSpatial.Positioning
 
             // There should be two values
             if (values.Length != 2)
+            {
                 throw new FormatException(Resources.SizeD_InvalidFormat);
+            }
 
             // PArse it out
             _width = double.Parse(values[0].Trim(), culture);
@@ -139,8 +120,8 @@ namespace DotSpatial.Positioning
         public SizeD(XmlReader reader)
         {
             // Initialize all fields
-            _width = Double.NaN;
-            _height = Double.NaN;
+            _width = double.NaN;
+            _height = double.NaN;
 
             // Deserialize the object from XML
             ReadXml(reader);
@@ -153,46 +134,22 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns the horizontal size.
         /// </summary>
-        public double Width
-        {
-            get
-            {
-                return _width;
-            }
-        }
+        public double Width => _width;
 
         /// <summary>
         /// Returns the vertical size.
         /// </summary>
-        public double Height
-        {
-            get
-            {
-                return _height;
-            }
-        }
+        public double Height => _height;
 
         /// <summary>
         /// Returns the ratio width to height.
         /// </summary>
-        public double AspectRatio
-        {
-            get
-            {
-                return _width / _height;
-            }
-        }
+        public double AspectRatio => _width / _height;
 
         /// <summary>
         /// Indicates if the instance has any value.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return (_width == 0 && _height == 0);
-            }
-        }
+        public bool IsEmpty => (_width == 0 && _height == 0);
 
         #endregion Public Properties
 
@@ -218,7 +175,10 @@ namespace DotSpatial.Positioning
         {
             double currentAspect = AspectRatio;
             // Do the values already match?
-            if (currentAspect == aspectRatio) return this;
+            if (currentAspect == aspectRatio)
+            {
+                return this;
+            }
             // Is the new ratio higher or lower?
             if (aspectRatio > currentAspect)
             {
@@ -242,10 +202,10 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format)
         {
             return ToString(format, CultureInfo.CurrentCulture);
@@ -263,8 +223,11 @@ namespace DotSpatial.Positioning
         public override bool Equals(object obj)
         {
             // Only compare similar objects
-            if (obj is SizeD)
-                return Equals((SizeD)obj);
+            if (obj is SizeD d)
+            {
+                return Equals(d);
+            }
+
             return false;
         }
 
@@ -278,9 +241,9 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("G", CultureInfo.CurrentCulture);
@@ -440,17 +403,19 @@ namespace DotSpatial.Positioning
         #region IFormattable Members
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             return Width.ToString(format, culture)
                 + culture.TextInfo.ListSeparator + " "

@@ -110,25 +110,17 @@ namespace DotSpatial.Data.Forms
         {
             get
             {
-                switch (_itemType)
+                return _itemType switch
                 {
-                    case ItemType.Custom:
-                        return CustomImage;
-                    case ItemType.Folder:
-                        return DialogImages.FolderOpen;
-                    case ItemType.Image:
-                        return DialogImages.FileImage;
-                    case ItemType.Line:
-                        return DialogImages.FileLine;
-                    case ItemType.Point:
-                        return DialogImages.FilePoint;
-                    case ItemType.Polygon:
-                        return DialogImages.FilePolygon;
-                    case ItemType.Raster:
-                        return DialogImages.FileGrid;
-                }
-
-                return CustomImage;
+                    ItemType.Custom => CustomImage,
+                    ItemType.Folder => DialogImages.FolderOpen,
+                    ItemType.Image => DialogImages.FileImage,
+                    ItemType.Line => DialogImages.FileLine,
+                    ItemType.Point => DialogImages.FilePoint,
+                    ItemType.Polygon => DialogImages.FilePolygon,
+                    ItemType.Raster => DialogImages.FileGrid,
+                    _ => CustomImage,
+                };
             }
         }
 

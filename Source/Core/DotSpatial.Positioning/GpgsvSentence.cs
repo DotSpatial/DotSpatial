@@ -1,19 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
@@ -149,15 +135,21 @@ namespace DotSpatial.Positioning
 
             // Get the total message count
             if (wordCount > 0 && words[0].Length != 0)
+            {
                 TotalMessageCount = int.Parse(words[0], NmeaCultureInfo);
+            }
 
             // Get the current message number
             if (wordCount > 1 && words[1].Length != 0)
+            {
                 CurrentMessageNumber = int.Parse(words[1], NmeaCultureInfo);
+            }
 
             // Get the total message count
             if (wordCount > 2 && words[2].Length != 0)
+            {
                 SatellitesInView = int.Parse(words[2], NmeaCultureInfo);
+            }
 
             // Make a new list of satellites
             Satellites = new List<Satellite>();
@@ -168,10 +160,14 @@ namespace DotSpatial.Positioning
                 int currentWordIndex = index * 4 + 3;
                 // Are we past the length of words?
                 if (currentWordIndex > wordCount - 1)
+                {
                     break;
+                }
                 // No.  Get the unique code for the satellite
                 if (words[currentWordIndex].Length == 0)
+                {
                     continue;
+                }
 
                 int pseudorandomNumber = int.Parse(words[currentWordIndex], NmeaCultureInfo);
                 Elevation newElevation;
@@ -180,21 +176,33 @@ namespace DotSpatial.Positioning
 
                 // Update the elevation
                 if (wordCount > currentWordIndex + 1 && words[currentWordIndex + 1].Length != 0)
+                {
                     newElevation = Elevation.Parse(words[currentWordIndex + 1], NmeaCultureInfo);
+                }
                 else
+                {
                     newElevation = Elevation.Empty;
+                }
 
                 // Update the azimuth
                 if (wordCount > currentWordIndex + 2 && words[currentWordIndex + 2].Length != 0)
+                {
                     newAzimuth = Azimuth.Parse(words[currentWordIndex + 2], NmeaCultureInfo);
+                }
                 else
+                {
                     newAzimuth = Azimuth.Empty;
+                }
 
                 // Update the signal strength
                 if (wordCount > currentWordIndex + 3 && words[currentWordIndex + 3].Length != 0)
+                {
                     newSignalToNoiseRatio = SignalToNoiseRatio.Parse(words[currentWordIndex + 3], NmeaCultureInfo);
+                }
                 else
+                {
                     newSignalToNoiseRatio = SignalToNoiseRatio.Empty;
+                }
 
                 // Add the satellite to the collection
                 Satellites.Add(new Satellite(pseudorandomNumber, newAzimuth, newElevation, newSignalToNoiseRatio, false));
@@ -226,7 +234,9 @@ namespace DotSpatial.Positioning
                     int satelliteIndex = (index - 1) * 4 + count;
                     // Stop if were at the end of the collection
                     if (satelliteIndex >= satellites.Count)
+                    {
                         break;
+                    }
                     // Copy the satellite in
                     messageSatellites.Add(satellites[satelliteIndex]);
                 }

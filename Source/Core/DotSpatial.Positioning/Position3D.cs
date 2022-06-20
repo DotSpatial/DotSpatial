@@ -1,19 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Globalization;
@@ -181,26 +167,17 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns the location's distance above sea level.
         /// </summary>
-        public Distance Altitude
-        {
-            get { return _altitude; }
-        }
+        public Distance Altitude => _altitude;
 
         /// <summary>
         /// Gets the latitude.
         /// </summary>
-        public Latitude Latitude
-        {
-            get { return _position.Latitude; }
-        }
+        public Latitude Latitude => _position.Latitude;
 
         /// <summary>
         /// Gets the longitude.
         /// </summary>
-        public Longitude Longitude
-        {
-            get { return _position.Longitude; }
-        }
+        public Longitude Longitude => _position.Longitude;
 
         #endregion Public Properties
 
@@ -352,13 +329,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns whether the latitude, longitude and altitude are zero.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _altitude.IsEmpty && _position.IsEmpty;
-            }
-        }
+        public bool IsEmpty => _altitude.IsEmpty && _position.IsEmpty;
 
         #region Overrides
 
@@ -372,14 +343,17 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">Another object to compare to.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
             if (obj is Position3D)
+            {
                 return Equals((Position3D)obj);
+            }
+
             return false;
         }
 
@@ -398,7 +372,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.Position3D"/> to <see cref="System.String"/>.
+        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.Position3D"/> to <see cref="string"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -470,7 +444,9 @@ namespace DotSpatial.Positioning
             // Move to the <gml:pos> or <gml:coord> element
             if (!reader.IsStartElement("pos", Xml.GML_XML_NAMESPACE)
                 && !reader.IsStartElement("coord", Xml.GML_XML_NAMESPACE))
+            {
                 reader.ReadStartElement();
+            }
 
             switch (reader.LocalName.ToLower(CultureInfo.InvariantCulture))
             {
@@ -482,11 +458,15 @@ namespace DotSpatial.Positioning
 
                     // Deserialize the latitude
                     if (values.Length >= 2)
+                    {
                         latitude = new Latitude(values[1], CultureInfo.InvariantCulture);
+                    }
 
                     // Deserialize the altitude
                     if (values.Length == 3)
+                    {
                         _altitude = Distance.FromMeters(double.Parse(values[2], CultureInfo.InvariantCulture));
+                    }
 
                     // Make the position
                     _position = new Position(latitude, longitude);
@@ -514,7 +494,9 @@ namespace DotSpatial.Positioning
 
                         // If we're at an end element, stop
                         if (reader.NodeType == XmlNodeType.EndElement)
+                        {
                             break;
+                        }
                     }
 
                     // Make the position
@@ -570,13 +552,15 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             // Output as latitude and longitude
             return _position.ToString(format, culture)

@@ -129,18 +129,17 @@ namespace DotSpatial.Data
         {
             get
             {
-                switch (Format)
+                return Format switch
                 {
-                    case NumberFormat.Currency: return "C";
-                    case NumberFormat.Exponential: return "E";
-                    case NumberFormat.FixedPoint: return "F";
-                    case NumberFormat.General: return "G";
-                    case NumberFormat.Number: return "N";
-                    case NumberFormat.Percent: return "P";
-                    case NumberFormat.Unspecified: return "G";
-                }
-
-                return "G";
+                    NumberFormat.Currency => "C",
+                    NumberFormat.Exponential => "E",
+                    NumberFormat.FixedPoint => "F",
+                    NumberFormat.General => "G",
+                    NumberFormat.Number => "N",
+                    NumberFormat.Percent => "P",
+                    NumberFormat.Unspecified => "G",
+                    _ => "G",
+                };
             }
         }
 

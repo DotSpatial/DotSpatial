@@ -58,7 +58,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_caption == value) return;
                 _caption = value;
-                OnPropertyChanged("Caption");
+                OnPropertyChanged(nameof(Caption));
             }
         }
 
@@ -77,7 +77,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_key == value) return;
                 _key = value;
-                OnPropertyChanged("Key");
+                OnPropertyChanged(nameof(Key));
             }
         }
 
@@ -96,7 +96,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_width == value) return;
                 _width = value;
-                OnPropertyChanged("Width");
+                OnPropertyChanged(nameof(Width));
             }
         }
 

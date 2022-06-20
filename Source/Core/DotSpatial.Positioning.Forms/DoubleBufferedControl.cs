@@ -1959,21 +1959,15 @@ namespace DotSpatial.Positioning.Forms
             int iMid = Convert.ToInt32(fMid * 255);
             int iMin = Convert.ToInt32(fMin * 255);
 
-            switch (iSextant)
+            return iSextant switch
             {
-                case 1:
-                    return Color.FromArgb(a, iMid, iMax, iMin);
-                case 2:
-                    return Color.FromArgb(a, iMin, iMax, iMid);
-                case 3:
-                    return Color.FromArgb(a, iMin, iMid, iMax);
-                case 4:
-                    return Color.FromArgb(a, iMid, iMin, iMax);
-                case 5:
-                    return Color.FromArgb(a, iMax, iMin, iMid);
-                default:
-                    return Color.FromArgb(a, iMax, iMid, iMin);
-            }
+                1 => Color.FromArgb(a, iMid, iMax, iMin),
+                2 => Color.FromArgb(a, iMin, iMax, iMid),
+                3 => Color.FromArgb(a, iMin, iMid, iMax),
+                4 => Color.FromArgb(a, iMid, iMin, iMax),
+                5 => Color.FromArgb(a, iMax, iMin, iMid),
+                _ => Color.FromArgb(a, iMax, iMid, iMin),
+            };
         }
 
 #endif

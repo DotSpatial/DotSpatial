@@ -42,18 +42,12 @@ namespace DotSpatial.Data
             _numParts = -1; // default to relying on the parts list instead of the cached value.
             _numPoints = -1; // rely on accumulation from parts instead of a solid number
 
-            switch (coordType)
+            _extent = coordType switch
             {
-                case CoordinateType.Z:
-                    _extent = new ExtentMz();
-                    break;
-                case CoordinateType.M:
-                    _extent = new ExtentM();
-                    break;
-                default:
-                    _extent = new Extent();
-                    break;
-            }
+                CoordinateType.Z => new ExtentMz(),
+                CoordinateType.M => new ExtentM(),
+                _ => new Extent(),
+            };
         }
 
         /// <summary>

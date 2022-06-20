@@ -1,33 +1,13 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
-#if !PocketPC || DesignTime
-
 using System.ComponentModel;
 using System.Linq;
 
-#endif
-
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
-
     /// <summary>
     /// Represents a coordinate system based on interpretations of the Earth's shape and size.
     /// </summary>
@@ -51,25 +31,8 @@ namespace DotSpatial.Positioning
     ///   <para>Instances of this class are guaranteed to be thread-safe because the class is
     /// immutable (its properties can only be set via constructors).</para></remarks>
     [TypeConverter(typeof(ExpandableObjectConverter))]
-#endif
     public sealed class Datum : IEquatable<Datum>
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly int _epsgNumber = 32767;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly Longitude _primeMeridian;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly Ellipsoid _ellipsoid;
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly string _name;
 
         /// <summary>
         ///
@@ -1915,9 +1878,9 @@ namespace DotSpatial.Positioning
         /// <param name="ellipsoid">The ellipsoid.</param>
         public Datum(string name, Ellipsoid ellipsoid)
         {
-            _ellipsoid = ellipsoid;
-            _name = name;
-            _primeMeridian = Longitude.Empty;
+            Ellipsoid = ellipsoid;
+            Name = name;
+            PrimeMeridian = Longitude.Empty;
 
             SanityCheck();
 
@@ -1933,10 +1896,10 @@ namespace DotSpatial.Positioning
         /// <param name="name">The name.</param>
         internal Datum(int epsgNumber, Ellipsoid ellipsoid, string name)
         {
-            _epsgNumber = epsgNumber;
-            _ellipsoid = ellipsoid;
-            _name = name;
-            _primeMeridian = Longitude.Empty;
+            EpsgNumber = epsgNumber;
+            Ellipsoid = ellipsoid;
+            Name = name;
+            PrimeMeridian = Longitude.Empty;
 
             SanityCheck();
 
@@ -1953,10 +1916,10 @@ namespace DotSpatial.Positioning
         /// <param name="name">The name.</param>
         internal Datum(int epsgNumber, Ellipsoid ellipsoid, double meridian, string name)
         {
-            _epsgNumber = epsgNumber;
-            _ellipsoid = ellipsoid;
-            _name = name;
-            _primeMeridian = new Longitude(meridian);
+            EpsgNumber = epsgNumber;
+            Ellipsoid = ellipsoid;
+            Name = name;
+            PrimeMeridian = new Longitude(meridian);
 
             SanityCheck();
 
@@ -1969,8 +1932,10 @@ namespace DotSpatial.Positioning
         /// </summary>
         private void SanityCheck()
         {
-            if (_ellipsoid == null)
+            if (Ellipsoid == null)
+            {
                 throw new ArgumentException("Datum construction failed. Ellipsoid is null or invalid");
+            }
         }
 
         #endregion Constructors
@@ -1980,22 +1945,13 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns the name of the datum.
         /// </summary>
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-        }
+        public string Name { get; }
 
         /// <summary>
         /// European Petroleum Survey Group number for this datum. The ESPG standards are now maintained by OGP
         /// (International Association of Oil and Gas Producers).
         /// </summary>
-        public int EpsgNumber
-        {
-            get { return _epsgNumber; }
-        }
+        public int EpsgNumber { get; } = 32767;
 
         /// <summary>
         /// Returns the interpretation of Earth's shape associated with a datum.
@@ -2026,47 +1982,36 @@ namespace DotSpatial.Positioning
         /// <seealso cref="Ellipsoid">Ellipsoid Class</seealso>
         /// <remarks>Each datum is associated with an ellipsoid, which is an interpretation of Earth's shape and
         /// size.</remarks>
-        public Ellipsoid Ellipsoid
-        {
-            get
-            {
-                return _ellipsoid;
-            }
-        }
+        public Ellipsoid Ellipsoid { get; }
 
         /// <summary>
         /// Returns the prime meridian associated with this Datum.
         /// </summary>
         /// <remarks>Most datums use Greenwich as the prime meridian. However, several systems offset coordinates
         /// using a local meridian. This value reflects that usage.</remarks>
-        public Longitude PrimeMeridian
-        {
-            get { return _primeMeridian; }
-        }
+        public Longitude PrimeMeridian { get; }
 
         #endregion Public Members
 
         #region Overrides
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
-            return _name;
+            return Name;
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is Datum)
-                return Equals((Datum)obj);
-            return false;
+            return obj is Datum datum && Equals(datum);
         }
 
         /// <summary>
@@ -2075,7 +2020,7 @@ namespace DotSpatial.Positioning
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
         {
-            return _ellipsoid.GetHashCode() ^ _name.GetHashCode();
+            return Ellipsoid.GetHashCode() ^ Name.GetHashCode();
         }
 
         #endregion Overrides
@@ -2093,7 +2038,9 @@ namespace DotSpatial.Positioning
             foreach (Datum item in _datums)
             {
                 if (item.Name == name)
+                {
                     return item;
+                }
             }
             // Search the EPSG objects
             return _epsgDatums.Select((t, index) => _datums[index]).FirstOrDefault(item => item.Name == name);
@@ -2121,8 +2068,8 @@ namespace DotSpatial.Positioning
         /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(Datum other)
         {
-            return _ellipsoid.Equals(other.Ellipsoid)
-                && _primeMeridian.Equals(other.PrimeMeridian);
+            return Ellipsoid.Equals(other.Ellipsoid)
+                && PrimeMeridian.Equals(other.PrimeMeridian);
         }
 
         #endregion IEquatable<Datum> Members

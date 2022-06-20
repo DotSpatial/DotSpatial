@@ -67,19 +67,12 @@ namespace DotSpatial.Data
             IndexMode = true;
             Header = new ShapefileHeader(Filename);
 
-            switch (Header.ShapeType)
+            CoordinateType = Header.ShapeType switch
             {
-                case ShapeType.PointM:
-                    CoordinateType = CoordinateType.M;
-                    break;
-                case ShapeType.PointZ:
-                    CoordinateType = CoordinateType.Z;
-                    break;
-                default:
-                    CoordinateType = CoordinateType.Regular;
-                    break;
-            }
-
+                ShapeType.PointM => CoordinateType.M,
+                ShapeType.PointZ => CoordinateType.Z,
+                _ => CoordinateType.Regular,
+            };
             Extent = Header.ToExtent();
             Name = Path.GetFileNameWithoutExtension(fileName);
             Attributes.Open(Filename);

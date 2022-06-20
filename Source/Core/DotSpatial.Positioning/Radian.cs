@@ -1,34 +1,15 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-#if !PocketPC || DesignTime
-
-using System.ComponentModel;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents a unit of angular measurement used during trigonometric
     /// equations.
@@ -40,17 +21,9 @@ namespace DotSpatial.Positioning
     ///   <para>Instances of this class are guaranteed to be thread-safe because the class is
     /// immutable (its properties can only be changed during constructors).</para></remarks>
     [TypeConverter("DotSpatial.Positioning.Design.RadianConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct Radian : IFormattable, IEquatable<Radian>, IComparable<Radian>, IXmlSerializable
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private double _value;
-
         #region Constants
-
-        // Public?
 
         /// <summary>
         ///
@@ -82,7 +55,7 @@ namespace DotSpatial.Positioning
         /// value is already known.</remarks>
         public Radian(double value)
         {
-            _value = value;
+            Value = value;
         }
 
         /// <summary>
@@ -91,7 +64,7 @@ namespace DotSpatial.Positioning
         /// <param name="value">The value.</param>
         public Radian(int value)
         {
-            _value = value;
+            Value = value;
         }
 
         /// <summary>
@@ -109,7 +82,7 @@ namespace DotSpatial.Positioning
         /// <param name="culture">The culture.</param>
         public Radian(string value, CultureInfo culture)
         {
-            _value = double.Parse(value, culture);
+            Value = double.Parse(value, culture);
         }
 
         /// <summary>
@@ -119,7 +92,7 @@ namespace DotSpatial.Positioning
         public Radian(XmlReader reader)
         {
             // Initialize all fields
-            _value = Double.NaN;
+            Value = double.NaN;
 
             // Deserialize the object from XML
             ReadXml(reader);
@@ -137,13 +110,7 @@ namespace DotSpatial.Positioning
         /// radians.</value>
         /// <remarks>This property stores the numeric radian measurement. A radian can be converted into a degree
         /// measurements via the <see cref="Radian.ToAngle(Radian)">ToAngle</see> method.</remarks>
-        public double Value
-        {
-            get
-            {
-                return _value;
-            }
-        }
+        public double Value { get; private set; }
 
         #endregion Public Properties
 
@@ -155,7 +122,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian Cosine()
         {
-            return new Radian(Math.Cos(_value));
+            return new Radian(Math.Cos(Value));
         }
 
         /// <summary>
@@ -164,7 +131,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian Sine()
         {
-            return new Radian(Math.Sin(_value));
+            return new Radian(Math.Sin(Value));
         }
 
         /// <summary>
@@ -173,7 +140,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian Tangent()
         {
-            return new Radian(Math.Tan(_value));
+            return new Radian(Math.Tan(Value));
         }
 
         /// <summary>
@@ -182,7 +149,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian SquareRoot()
         {
-            return new Radian(Math.Sqrt(_value));
+            return new Radian(Math.Sqrt(Value));
         }
 
         /// <summary>
@@ -191,7 +158,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian AbsoluteValue()
         {
-            return new Radian(Math.Abs(_value));
+            return new Radian(Math.Abs(Value));
         }
 
         /// <summary>
@@ -200,7 +167,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian ArcCosine()
         {
-            return new Radian(Math.Acos(_value));
+            return new Radian(Math.Acos(Value));
         }
 
         /// <summary>
@@ -209,7 +176,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian ArcSine()
         {
-            return new Radian(Math.Asin(_value));
+            return new Radian(Math.Asin(Value));
         }
 
         /// <summary>
@@ -218,10 +185,8 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian ArcTangent()
         {
-            return new Radian(Math.Atan(_value));
+            return new Radian(Math.Atan(Value));
         }
-
-#if !PocketPC
 
         /// <summary>
         /// Logarithms the specified new base.
@@ -230,10 +195,8 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian Logarithm(double newBase)
         {
-            return new Radian(Math.Log(_value, newBase));
+            return new Radian(Math.Log(Value, newBase));
         }
-
-#endif
 
         /// <summary>
         /// Logarithms the base10.
@@ -241,7 +204,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian LogarithmBase10()
         {
-            return new Radian(Math.Log10(_value));
+            return new Radian(Math.Log10(Value));
         }
 
         /// <summary>
@@ -252,7 +215,7 @@ namespace DotSpatial.Positioning
         /// longitude after a trigonometric formula has completed.</remarks>
         public double ToDegrees()
         {
-            return _value / RADIANS_PER_DEGREE;
+            return Value / RADIANS_PER_DEGREE;
         }
 
         /// <summary>
@@ -289,7 +252,7 @@ namespace DotSpatial.Positioning
         /// format.
         /// </summary>
         /// <param name="format">The format.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format)
         {
             return ToString(format, CultureInfo.CurrentCulture);
@@ -300,16 +263,14 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">Another object to compare to.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
             // Compare only with objects of the same type
-            if (obj is Radian)
-                return Equals((Radian)obj);
-            return false;
+            return obj is Radian radian && Equals(radian);
         }
 
         /// <summary>
@@ -318,13 +279,13 @@ namespace DotSpatial.Positioning
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
         {
-            return _value.GetHashCode();
+            return Value.GetHashCode();
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("g", CultureInfo.CurrentCulture); // Always support "g" as a default format
@@ -639,7 +600,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian Add(double value)
         {
-            return new Radian(_value + value);
+            return new Radian(Value + value);
         }
 
         /// <summary>
@@ -659,7 +620,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian Subtract(double value)
         {
-            return new Radian(_value - value);
+            return new Radian(Value - value);
         }
 
         /// <summary>
@@ -679,7 +640,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian Multiply(double value)
         {
-            return new Radian(_value * value);
+            return new Radian(Value * value);
         }
 
         /// <summary>
@@ -699,7 +660,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian Divide(double value)
         {
-            return new Radian(_value / value);
+            return new Radian(Value / value);
         }
 
         /// <summary>
@@ -708,7 +669,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian Increment()
         {
-            return new Radian(_value + 1.0);
+            return new Radian(Value + 1.0);
         }
 
         /// <summary>
@@ -717,7 +678,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Radian Decrement()
         {
-            return new Radian(_value - 1.0);
+            return new Radian(Value - 1.0);
         }
 
         /// <summary>
@@ -727,7 +688,7 @@ namespace DotSpatial.Positioning
         /// <returns><c>true</c> if [is less than] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsLessThan(Radian value)
         {
-            return _value < value.Value;
+            return Value < value.Value;
         }
 
         /// <summary>
@@ -737,7 +698,7 @@ namespace DotSpatial.Positioning
         /// <returns><c>true</c> if [is less than] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsLessThan(double value)
         {
-            return _value < value;
+            return Value < value;
         }
 
         /// <summary>
@@ -747,7 +708,7 @@ namespace DotSpatial.Positioning
         /// <returns><c>true</c> if [is less than or equal to] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsLessThanOrEqualTo(Radian value)
         {
-            return _value <= value.Value;
+            return Value <= value.Value;
         }
 
         /// <summary>
@@ -757,7 +718,7 @@ namespace DotSpatial.Positioning
         /// <returns><c>true</c> if [is less than or equal to] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsLessThanOrEqualTo(double value)
         {
-            return _value <= value;
+            return Value <= value;
         }
 
         /// <summary>
@@ -767,7 +728,7 @@ namespace DotSpatial.Positioning
         /// <returns><c>true</c> if [is greater than] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsGreaterThan(Radian value)
         {
-            return _value > value.Value;
+            return Value > value.Value;
         }
 
         /// <summary>
@@ -777,7 +738,7 @@ namespace DotSpatial.Positioning
         /// <returns><c>true</c> if [is greater than] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsGreaterThan(double value)
         {
-            return _value > value;
+            return Value > value;
         }
 
         /// <summary>
@@ -787,7 +748,7 @@ namespace DotSpatial.Positioning
         /// <returns><c>true</c> if [is greater than or equal to] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsGreaterThanOrEqualTo(Radian value)
         {
-            return _value >= value.Value;
+            return Value >= value.Value;
         }
 
         /// <summary>
@@ -797,7 +758,7 @@ namespace DotSpatial.Positioning
         /// <returns><c>true</c> if [is greater than or equal to] [the specified value]; otherwise, <c>false</c>.</returns>
         public bool IsGreaterThanOrEqualTo(double value)
         {
-            return _value >= value;
+            return Value >= value;
         }
 
         #endregion Operators
@@ -805,7 +766,7 @@ namespace DotSpatial.Positioning
         #region Conversions
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.Radian"/> to <see cref="System.Double"/>.
+        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.Radian"/> to <see cref="double"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -855,7 +816,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="System.Double"/> to <see cref="DotSpatial.Positioning.Radian"/>.
+        /// Performs an explicit conversion from <see cref="double"/> to <see cref="DotSpatial.Positioning.Radian"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -865,7 +826,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="System.String"/> to <see cref="DotSpatial.Positioning.Radian"/>.
+        /// Performs an explicit conversion from <see cref="string"/> to <see cref="DotSpatial.Positioning.Radian"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -885,7 +846,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public bool Equals(Radian value)
         {
-            return _value.Equals(value.Value);
+            return Value.Equals(value.Value);
         }
 
         /// <summary>
@@ -896,7 +857,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public bool Equals(Radian value, int decimals)
         {
-            return Math.Round(_value, decimals) == Math.Round(value.Value, decimals);
+            return Math.Round(Value, decimals) == Math.Round(value.Value, decimals);
         }
 
         #endregion IEquatable<Radian> Members
@@ -910,7 +871,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public int CompareTo(Radian value)
         {
-            return _value.CompareTo(value.Value);
+            return Value.CompareTo(value.Value);
         }
 
         #endregion IComparable<Radian> Members
@@ -923,10 +884,10 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            return _value.ToString(format, formatProvider);
+            return Value.ToString(format, formatProvider);
         }
 
         #endregion IFormattable Members
@@ -948,7 +909,7 @@ namespace DotSpatial.Positioning
         /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteString(_value.ToString("G17", CultureInfo.InvariantCulture));
+            writer.WriteString(Value.ToString("G17", CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -957,7 +918,7 @@ namespace DotSpatial.Positioning
         /// <param name="reader">The <see cref="T:System.Xml.XmlReader"/> stream from which the object is deserialized.</param>
         public void ReadXml(XmlReader reader)
         {
-            _value = reader.NodeType == XmlNodeType.Text ? reader.ReadContentAsDouble() : reader.ReadElementContentAsDouble();
+            Value = reader.NodeType == XmlNodeType.Text ? reader.ReadContentAsDouble() : reader.ReadElementContentAsDouble();
         }
 
         #endregion IXmlSerializable Members

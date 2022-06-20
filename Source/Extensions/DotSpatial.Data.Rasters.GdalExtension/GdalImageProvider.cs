@@ -67,24 +67,13 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             Driver d = GetDriverByExtension(fileName);
             if (d == null) return null;
-
-            Dataset ds;
-            switch (bandType)
+            Dataset ds = bandType switch
             {
-                case ImageBandType.ARGB:
-                    ds = d.Create(fileName, width, height, 4, DataType.GDT_Byte, new string[] { });
-                    break;
-                case ImageBandType.RGB:
-                    ds = d.Create(fileName, width, height, 3, DataType.GDT_Byte, new string[] { });
-                    break;
-                case ImageBandType.PalletCoded:
-                    ds = d.Create(fileName, width, height, 1, DataType.GDT_Byte, new string[] { });
-                    break;
-                default:
-                    ds = d.Create(fileName, width, height, 1, DataType.GDT_Byte, new string[] { });
-                    break;
-            }
-
+                ImageBandType.ARGB => d.Create(fileName, width, height, 4, DataType.GDT_Byte, new string[] { }),
+                ImageBandType.RGB => d.Create(fileName, width, height, 3, DataType.GDT_Byte, new string[] { }),
+                ImageBandType.PalletCoded => d.Create(fileName, width, height, 1, DataType.GDT_Byte, new string[] { }),
+                _ => d.Create(fileName, width, height, 1, DataType.GDT_Byte, new string[] { }),
+            };
             return new GdalImage(fileName, ds, bandType);
         }
 

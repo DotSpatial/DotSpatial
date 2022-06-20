@@ -1,34 +1,15 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-#if !PocketPC || DesignTime
-
-using System.ComponentModel;
-
-#endif
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents a rectangular shape on Earth's surface.
     /// </summary>
@@ -40,7 +21,6 @@ namespace DotSpatial.Positioning
     ///   <para>Instances of this class are guaranteed to be thread-safe because the class is
     /// immutable (it's properties can only be set via constructors).</para></remarks>
     [TypeConverter("DotSpatial.Positioning.Design.GeographicRectangleConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct GeographicRectangle : IFormattable, IEquatable<GeographicRectangle>, IXmlSerializable
     {
         /// <summary>
@@ -258,7 +238,9 @@ namespace DotSpatial.Positioning
 
             // Default to the current culture
             if (culture == null)
+            {
                 culture = CultureInfo.CurrentCulture;
+            }
 
             // Split the string into words
             string[] values = value.Split(culture.TextInfo.ListSeparator.ToCharArray());
@@ -280,16 +262,13 @@ namespace DotSpatial.Positioning
 
                     foreach (string word in values)
                     {
-#if Framework20
                         if (word.IndexOf("W", StringComparison.InvariantCultureIgnoreCase) != -1
                             || word.IndexOf("E", StringComparison.InvariantCultureIgnoreCase) != -1)
-#else
-							if (word.IndexOf("W") != -1
-								|| word.IndexOf("E") != -1)
-#endif
                         {
                             if (isLeftHandled && isRightHandled)
+                            {
                                 throw new FormatException("A GeographicRectangle object could not be converted from a string because more than two longitude values were encountered.  Only two are allowed.");
+                            }
 
                             // Longitude.  Is the left handled?
                             if (isLeftHandled)
@@ -305,16 +284,13 @@ namespace DotSpatial.Positioning
                                 isLeftHandled = true;
                             }
                         }
-#if Framework20
                         else if (word.IndexOf("N", StringComparison.InvariantCultureIgnoreCase) != -1
                                  || word.IndexOf("S", StringComparison.InvariantCultureIgnoreCase) != -1)
-#else
-							else if (word.IndexOf("N") != -1
-								|| word.IndexOf("S") != -1)
-#endif
                         {
                             if (isTopHandled && isBottomHandled)
+                            {
                                 throw new FormatException("A GeographicRectangle object could not be converted from a string because more than two latitude values were encountered.  Only two are allowed.");
+                            }
 
                             // Longitude.  Is the left handled?
                             if (isTopHandled)
@@ -464,60 +440,30 @@ namespace DotSpatial.Positioning
         /// Returns the southern-most side of the rectangle.
         /// </summary>
         /// <value>A <see cref="Latitude"></see> object marking the southern-most latitude.</value>
-        public Latitude Top
-        {
-            get
-            {
-                return _top;
-            }
-        }
+        public Latitude Top => _top;
 
         /// <summary>
         /// Returns the southern-most latitude of the rectangle.
         /// </summary>
         /// <value>A <see cref="Latitude"></see> object marking the southern-most latitude.</value>
-        public Latitude Bottom
-        {
-            get
-            {
-                return _bottom;
-            }
-        }
+        public Latitude Bottom => _bottom;
 
         /// <summary>
         /// Returns the western-most side of the rectangle.
         /// </summary>
         /// <value>A <strong>Longitude</strong> indicating the left side of the rectangle.</value>
-        public Longitude Left
-        {
-            get
-            {
-                return _left;
-            }
-        }
+        public Longitude Left => _left;
 
         /// <summary>
         /// Returns the eastern-most side of the rectangle.
         /// </summary>
         /// <value>A <strong>Longitude</strong> indicating the right side of the rectangle.</value>
-        public Longitude Right
-        {
-            get
-            {
-                return _right;
-            }
-        }
+        public Longitude Right => _right;
 
         /// <summary>
         /// Returns the geographic center of the rectangle.
         /// </summary>
-        public Position Center
-        {
-            get
-            {
-                return _center;
-            }
-        }
+        public Position Center => _center;
 
         /// <summary>
         /// Returns the aspect ratio of the rectangle.
@@ -526,13 +472,7 @@ namespace DotSpatial.Positioning
         /// property gives an indication of the GeographicRectangle's shape.  An aspect ratio of one indicates
         /// a square, whereas an aspect ratio of two indicates a GeographicRectangle which is twice as wide as
         /// it is high.</remarks>
-        public float AspectRatio
-        {
-            get
-            {
-                return Convert.ToSingle(WidthDegrees.DecimalDegrees / HeightDegrees.DecimalDegrees);
-            }
-        }
+        public float AspectRatio => Convert.ToSingle(WidthDegrees.DecimalDegrees / HeightDegrees.DecimalDegrees);
 
         /// <summary>
         /// Indicates if the rectangle has any value.
@@ -541,170 +481,82 @@ namespace DotSpatial.Positioning
         /// Island is about to crash into the Pacific Ocean just off the coast of Nicaragua but
         /// there will be no casualties because everyone was warned plenty of time in
         /// advance.</value>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _top.IsEmpty && _bottom.IsEmpty && _left.IsEmpty && _right.IsEmpty;
-            }
-        }
+        public bool IsEmpty => _top.IsEmpty && _bottom.IsEmpty && _left.IsEmpty && _right.IsEmpty;
 
         /// <summary>
         /// Returns the rectangle's hypotenuse.
         /// </summary>
         /// <remarks>The hypotenuse of a rectangle is a line connecting its northwest corner with its southeast corner.</remarks>
-        public Segment Hypotenuse
-        {
-            get
-            {
-                return new Segment(Northwest, Southeast);
-            }
-        }
+        public Segment Hypotenuse => new(Northwest, Southeast);
 
         /// <summary>
         /// Returns the distance from the left to the right at the rectangle's middle latitude.
         /// </summary>
-        public Distance Width
-        {
-            get
-            {
+        public Distance Width =>
                 // Return the calculated distance
-                return WestCenter.DistanceTo(EastCenter).ToLocalUnitType();
-            }
-        }
+                WestCenter.DistanceTo(EastCenter).ToLocalUnitType();
 
         /// <summary>
         /// Returns the distance from the top to the bottom at the rectangle's middle longitude.
         /// </summary>
-        public Distance Height
-        {
-            get
-            {
+        public Distance Height =>
                 // Return the calculated distance
-                return NorthCenter.DistanceTo(SouthCenter).ToLocalUnitType();
-            }
-        }
+                NorthCenter.DistanceTo(SouthCenter).ToLocalUnitType();
 
         /// <summary>
         /// Gets the height degrees.
         /// </summary>
-        public Latitude HeightDegrees
-        {
-            get
-            {
-                return _top.Subtract(_bottom);
-            }
-        }
+        public Latitude HeightDegrees => _top.Subtract(_bottom);
 
         /// <summary>
         /// Gets the width degrees.
         /// </summary>
-        public Longitude WidthDegrees
-        {
-            get
-            {
-                return _right.Subtract(_left);
-            }
-        }
+        public Longitude WidthDegrees => _right.Subtract(_left);
 
         /// <summary>
         /// Returns the width and height of the rectangle.
         /// </summary>
-        public GeographicSize Size
-        {
-            get
-            {
-                return new GeographicSize(Width, Height);
-            }
-        }
+        public GeographicSize Size => new(Width, Height);
 
         /// <summary>
         /// Returns the northwestern corner of the rectangle.
         /// </summary>
-        public Position Northwest
-        {
-            get
-            {
-                return new Position(_left, _top);
-            }
-        }
+        public Position Northwest => new(_left, _top);
 
         /// <summary>
         /// Returns a point on the northern side, centered horizontally.
         /// </summary>
-        public Position NorthCenter
-        {
-            get
-            {
-                return new Position(_center.Longitude, _top);
-            }
-        }
+        public Position NorthCenter => new(_center.Longitude, _top);
 
         /// <summary>
         /// Returns a point on the southern side, centered horizontally.
         /// </summary>
-        public Position SouthCenter
-        {
-            get
-            {
-                return new Position(_center.Longitude, _bottom);
-            }
-        }
+        public Position SouthCenter => new(_center.Longitude, _bottom);
 
         /// <summary>
         /// Returns a point on the western side, centered vertically.
         /// </summary>
-        public Position WestCenter
-        {
-            get
-            {
-                return new Position(_left, Center.Latitude);
-            }
-        }
+        public Position WestCenter => new(_left, Center.Latitude);
 
         /// <summary>
         /// Returns a point on the eastern side, centered vertically.
         /// </summary>
-        public Position EastCenter
-        {
-            get
-            {
-                return new Position(_right, Center.Latitude);
-            }
-        }
+        public Position EastCenter => new(_right, Center.Latitude);
 
         /// <summary>
         /// Returns the northeastern corner of the rectangle.
         /// </summary>
-        public Position Northeast
-        {
-            get
-            {
-                return new Position(_right, _top);
-            }
-        }
+        public Position Northeast => new(_right, _top);
 
         /// <summary>
         /// Returns the southwestern corner of the rectangle.
         /// </summary>
-        public Position Southwest
-        {
-            get
-            {
-                return new Position(_left, _bottom);
-            }
-        }
+        public Position Southwest => new(_left, _bottom);
 
         /// <summary>
         /// Returns the southeastern corner of the rectangle.
         /// </summary>
-        public Position Southeast
-        {
-            get
-            {
-                return new Position(_right, _bottom);
-            }
-        }
+        public Position Southeast => new(_right, _bottom);
 
         #endregion Public Properties
 
@@ -869,7 +721,10 @@ namespace DotSpatial.Positioning
         public GeographicRectangle UnionWith(Position position)
         {
             // Does the box already contain the position?  If so, do nothing
-            if (IsEnclosing(position)) return this;
+            if (IsEnclosing(position))
+            {
+                return this;
+            }
             // Return the expanded box
             return new GeographicRectangle(
                 _top.DecimalDegrees > position.Latitude.DecimalDegrees ? _top : position.Latitude,
@@ -1005,6 +860,7 @@ namespace DotSpatial.Positioning
                 // Return the result
                 return new GeographicRectangle(topSide, leftSide, bottomSide, rightSide);
             }
+
             if (rectangle.Right >= _left && rectangle.Right <= _right)
             {
                 // The rectangle overlaps the current instance on its right side
@@ -1079,7 +935,9 @@ namespace DotSpatial.Positioning
             // because there's no *intersection* (only an overlap).
             if (rectangle.Left > _left && rectangle.Right < _right
                 && rectangle.Top < _top && rectangle.Bottom > _bottom)
+            {
                 return false;
+            }
 
             // Test that one or more sides are within.
             return
@@ -1215,10 +1073,10 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format)
         {
             return ToString(format, CultureInfo.CurrentCulture);
@@ -1229,14 +1087,17 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">Another object to compare to.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is GeographicRectangle)
-                return Equals((GeographicRectangle)obj);
+            if (obj is GeographicRectangle rectangle)
+            {
+                return Equals(rectangle);
+            }
+
             return false;
         }
 
@@ -1250,9 +1111,9 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("G", CultureInfo.CurrentCulture);
@@ -1298,7 +1159,9 @@ namespace DotSpatial.Positioning
         public static GeographicRectangle FromArray(Position[] positions)
         {
             if (positions == null || positions.Length == 0)
+            {
                 return Empty;
+            }
 
             // Calculate the new bounds
             Latitude top = positions[0].Latitude;
@@ -1313,13 +1176,22 @@ namespace DotSpatial.Positioning
                 Position item = positions[index];
 
                 if (item.Longitude < left)
+                {
                     left = item.Longitude;
+                }
                 else if (item.Longitude > right)
+                {
                     right = item.Longitude;
+                }
+
                 if (item.Latitude > top)
+                {
                     top = item.Latitude;
+                }
                 else if (item.Latitude < bottom)
+                {
                     bottom = item.Latitude;
+                }
             }
 
             // Build a new rectangle
@@ -1354,7 +1226,7 @@ namespace DotSpatial.Positioning
         #region Conversions
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="System.String"/> to <see cref="DotSpatial.Positioning.GeographicRectangle"/>.
+        /// Performs an explicit conversion from <see cref="string"/> to <see cref="DotSpatial.Positioning.GeographicRectangle"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -1364,7 +1236,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.GeographicRectangle"/> to <see cref="System.String"/>.
+        /// Performs an explicit conversion from <see cref="DotSpatial.Positioning.GeographicRectangle"/> to <see cref="string"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -1391,22 +1263,46 @@ namespace DotSpatial.Positioning
                 && _bottom.DecimalDegrees.Equals(other.Bottom.DecimalDegrees);
         }
 
+        /// <summary>
+        ///  Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns></returns>
+        public static bool operator ==(GeographicRectangle left, GeographicRectangle right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        ///  Indicates whether the current object is not equal to another object of the same type.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns></returns>
+        public static bool operator !=(GeographicRectangle left, GeographicRectangle right)
+        {
+            return !(left == right);
+        }
+
         #endregion IEquatable<GeographicRectangle>
 
         #region IFormattable Members
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             return _top.ToString(format, culture)
                 + culture.TextInfo.ListSeparator + " " + _left.ToString(format, culture)
@@ -1503,7 +1399,9 @@ namespace DotSpatial.Positioning
                 && !reader.IsStartElement("Envelope", Xml.GML_XML_NAMESPACE)
                 && !reader.IsStartElement("boundedBy", Xml.GML_XML_NAMESPACE)
                 && !reader.IsStartElement("Box", Xml.GML_XML_NAMESPACE))
+            {
                 reader.ReadStartElement();
+            }
 
             switch (reader.LocalName.ToLower(CultureInfo.InvariantCulture))
             {
@@ -1525,9 +1423,14 @@ namespace DotSpatial.Positioning
                             case "pos":
                                 // There is probably one or two <gml:pos> objects
                                 if (southWest.IsInvalid)
+                                {
                                     southWest = new Position(reader);
+                                }
                                 else
+                                {
                                     northEast = new Position(reader);
+                                }
+
                                 break;
                             case "lowercorner":
                                 // Read the position

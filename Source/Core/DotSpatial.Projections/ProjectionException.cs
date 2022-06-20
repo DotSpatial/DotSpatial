@@ -56,102 +56,56 @@ namespace DotSpatial.Projections
         public static string GetMessage(int projectionCode)
         {
             int val = Math.Abs(projectionCode);
-            switch (val)
+            return val switch
             {
-                case 1:
-                    return ProjectionMessages.Err1_NoArguments;
-                case 2:
-                    return ProjectionMessages.Err2_NoOptions;
-                case 3:
-                    return ProjectionMessages.Err3_NoColon;
-                case 4:
-                    return ProjectionMessages.Err4_NotNamed;
-                case 5:
-                    return ProjectionMessages.Err5_UknownProjection;
-                case 6:
-                    return ProjectionMessages.Err6_EffectiveEccentricity1;
-                case 7:
-                    return ProjectionMessages.Err7_UknownUnitID;
-                case 8:
-                    return ProjectionMessages.Err8_Invalidboolean;
-                case 9:
-                    return ProjectionMessages.Err9_UknownEllipse;
-                case 10:
-                    return ProjectionMessages.Err10_ZeroRecFlattening;
-                case 11:
-                    return ProjectionMessages.Err11_LatitudeOutOfBounds;
-                case 12:
-                    return ProjectionMessages.Err12_ESquareNegative;
-                case 13:
-                    return ProjectionMessages.Err13_NoMajorRadius;
-                case 14:
-                    return ProjectionMessages.Err14_LatLonOutOfBounds;
-                case 15:
-                    return ProjectionMessages.Err15_InvalidXY;
-                case 16:
-                    return ProjectionMessages.Err16_ImproperDMS;
-                case 17:
-                    return ProjectionMessages.Err17_NonConvergentRMeridDist;
-                case 18:
-                    return ProjectionMessages.Err18_NonConvergentRPhi2;
-                case 19:
-                    return ProjectionMessages.Err19_TrigException;
-                case 20:
-                    return ProjectionMessages.Err20_ToleranceConditionError;
-                case 21:
-                    return ProjectionMessages.Err21_ConicLatitudeError;
-                case 22:
-                    return ProjectionMessages.Err22_Lat1TooLarge;
-                case 23:
-                    return ProjectionMessages.Err23_Lat1TooSmall;
-                case 24:
-                    return ProjectionMessages.Err24_Lat_tsTooLarge;
-                case 25:
-                    return ProjectionMessages.Err25_NoControlPtSeparation;
-                case 26:
-                    return ProjectionMessages.Err26_ProjectionNotRotated;
-                case 27:
-                    return ProjectionMessages.Err27_WorMTooSmall;
-                case 28:
-                    return ProjectionMessages.Err28_LsatOutOfBounds;
-                case 29:
-                    return ProjectionMessages.Err29_PathNotInRange;
-                case 30:
-                    return ProjectionMessages.Err30_HTooSmall;
-                case 31:
-                    return ProjectionMessages.Err31_KTooSmall;
-                case 32:
-                    return ProjectionMessages.Err32_LatOutOfBounds;
-                case 33:
-                    return ProjectionMessages.Err33_InvalidLatitudes;
-                case 34:
-                    return ProjectionMessages.Err34_EllipticalRequired;
-                case 35:
-                    return ProjectionMessages.Err35_InvalidUTMZone;
-                case 36:
-                    return ProjectionMessages.Err36_TchebyException;
-                case 37:
-                    return ProjectionMessages.Err37_ProjNotFound;
-                case 38:
-                    return ProjectionMessages.Err38_CorrectionNotFound;
-                case 39:
-                    return ProjectionMessages.Err39_NorMnotSpecified;
-                case 40:
-                    return ProjectionMessages.Err40_InvalidN;
-                case 41:
-                    return ProjectionMessages.Err41_Lat1OrLat2Missing;
-                case 42:
-                    return ProjectionMessages.Err42_Lat1EqualsLat2;
-                case 43:
-                    return ProjectionMessages.Err43_MeanLatError;
-                case 44:
-                    return ProjectionMessages.Err44_CoordinateUnreadable;
-                case 45:
-                    return ProjectionMessages.Err45_GeocentricMissingZ;
-                case 46:
-                    return ProjectionMessages.Err46_UknownPMID;
-            }
-            return "Unspecified";
+                1 => ProjectionMessages.Err1_NoArguments,
+                2 => ProjectionMessages.Err2_NoOptions,
+                3 => ProjectionMessages.Err3_NoColon,
+                4 => ProjectionMessages.Err4_NotNamed,
+                5 => ProjectionMessages.Err5_UknownProjection,
+                6 => ProjectionMessages.Err6_EffectiveEccentricity1,
+                7 => ProjectionMessages.Err7_UknownUnitID,
+                8 => ProjectionMessages.Err8_Invalidboolean,
+                9 => ProjectionMessages.Err9_UknownEllipse,
+                10 => ProjectionMessages.Err10_ZeroRecFlattening,
+                11 => ProjectionMessages.Err11_LatitudeOutOfBounds,
+                12 => ProjectionMessages.Err12_ESquareNegative,
+                13 => ProjectionMessages.Err13_NoMajorRadius,
+                14 => ProjectionMessages.Err14_LatLonOutOfBounds,
+                15 => ProjectionMessages.Err15_InvalidXY,
+                16 => ProjectionMessages.Err16_ImproperDMS,
+                17 => ProjectionMessages.Err17_NonConvergentRMeridDist,
+                18 => ProjectionMessages.Err18_NonConvergentRPhi2,
+                19 => ProjectionMessages.Err19_TrigException,
+                20 => ProjectionMessages.Err20_ToleranceConditionError,
+                21 => ProjectionMessages.Err21_ConicLatitudeError,
+                22 => ProjectionMessages.Err22_Lat1TooLarge,
+                23 => ProjectionMessages.Err23_Lat1TooSmall,
+                24 => ProjectionMessages.Err24_Lat_tsTooLarge,
+                25 => ProjectionMessages.Err25_NoControlPtSeparation,
+                26 => ProjectionMessages.Err26_ProjectionNotRotated,
+                27 => ProjectionMessages.Err27_WorMTooSmall,
+                28 => ProjectionMessages.Err28_LsatOutOfBounds,
+                29 => ProjectionMessages.Err29_PathNotInRange,
+                30 => ProjectionMessages.Err30_HTooSmall,
+                31 => ProjectionMessages.Err31_KTooSmall,
+                32 => ProjectionMessages.Err32_LatOutOfBounds,
+                33 => ProjectionMessages.Err33_InvalidLatitudes,
+                34 => ProjectionMessages.Err34_EllipticalRequired,
+                35 => ProjectionMessages.Err35_InvalidUTMZone,
+                36 => ProjectionMessages.Err36_TchebyException,
+                37 => ProjectionMessages.Err37_ProjNotFound,
+                38 => ProjectionMessages.Err38_CorrectionNotFound,
+                39 => ProjectionMessages.Err39_NorMnotSpecified,
+                40 => ProjectionMessages.Err40_InvalidN,
+                41 => ProjectionMessages.Err41_Lat1OrLat2Missing,
+                42 => ProjectionMessages.Err42_Lat1EqualsLat2,
+                43 => ProjectionMessages.Err43_MeanLatError,
+                44 => ProjectionMessages.Err44_CoordinateUnreadable,
+                45 => ProjectionMessages.Err45_GeocentricMissingZ,
+                46 => ProjectionMessages.Err46_UknownPMID,
+                _ => "Unspecified",
+            };
         }
     }
 }

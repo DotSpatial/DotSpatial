@@ -225,19 +225,12 @@ namespace DotSpatial.Symbology
         protected void CreateBreakCategories()
         {
             var count = EditorSettings.NumBreaks;
-            switch (EditorSettings.IntervalMethod)
+            Breaks = EditorSettings.IntervalMethod switch
             {
-                case IntervalMethod.EqualFrequency:
-                    Breaks = GetQuantileBreaks(count);
-                    break;
-                case IntervalMethod.NaturalBreaks:
-                    Breaks = GetNaturalBreaks(count);
-                    break;
-                default:
-                    Breaks = GetEqualBreaks(count);
-                    break;
-            }
-
+                IntervalMethod.EqualFrequency => GetQuantileBreaks(count),
+                IntervalMethod.NaturalBreaks => GetNaturalBreaks(count),
+                _ => GetEqualBreaks(count),
+            };
             ApplyBreakSnapping();
             SetBreakNames(Breaks);
             var colorRamp = GetColorSet(count);

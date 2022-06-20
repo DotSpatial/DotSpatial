@@ -31,24 +31,14 @@ namespace DotSpatial.Data.Forms
             if (df == DataFormat.Vector)
             {
                 FeatureType ft = defDm.GetFeatureType(path);
-                switch (ft)
+                ItemType = ft switch
                 {
-                    case FeatureType.Polygon:
-                        ItemType = ItemType.Polygon;
-                        break;
-                    case FeatureType.Line:
-                        ItemType = ItemType.Line;
-                        break;
-                    case FeatureType.Point:
-                        ItemType = ItemType.Point;
-                        break;
-                    case FeatureType.MultiPoint:
-                        ItemType = ItemType.Point;
-                        break;
-                    default:
-                        ItemType = ItemType.Custom;
-                        break;
-                }
+                    FeatureType.Polygon => ItemType.Polygon,
+                    FeatureType.Line => ItemType.Line,
+                    FeatureType.Point => ItemType.Point,
+                    FeatureType.MultiPoint => ItemType.Point,
+                    _ => ItemType.Custom,
+                };
             }
 
             if (df == DataFormat.Raster)

@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -21,7 +7,6 @@ using System.Globalization;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents a number as a fraction of one hundred.
     /// </summary>
@@ -56,13 +41,8 @@ namespace DotSpatial.Positioning
     /// time a value is parsed from a <strong>String</strong> or output as a String using
     /// the <strong>ToString</strong> method.</para></remarks>
     [TypeConverter("DotSpatial.Positioning.Design.PercentConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=2.0.0.0, PublicKeyToken=d77afaeb30e3236a")]
-#endif
     public struct Percent : IFormattable, IComparable<Percent>, IEquatable<Percent>
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly float _value;
 
         #region Fields
 
@@ -141,7 +121,7 @@ namespace DotSpatial.Positioning
         /// <param name="value">The value.</param>
         public Percent(float value)
         {
-            _value = value;
+            Value = value;
         }
 
         /// <summary>
@@ -166,7 +146,7 @@ namespace DotSpatial.Positioning
             /* Parse the value as a float, then divide by 100.  In other words,
              * "15%" will become 0.15f
              */
-            _value = float.Parse(value, NumberStyles.Any, culture.NumberFormat) * 0.01f;
+            Value = float.Parse(value, NumberStyles.Any, culture.NumberFormat) * 0.01f;
         }
 
         #endregion Constructors
@@ -180,24 +160,12 @@ namespace DotSpatial.Positioning
         /// percentage.  In other words, if the percentage is "15%" then the <strong>Value</strong>
         /// property will return <strong>0.15</strong>, and a percentage of "100%" means a
         /// <strong>Value</strong> of <strong>1.0</strong>.</remarks>
-        public float Value
-        {
-            get
-            {
-                return _value;
-            }
-        }
+        public float Value { get; }
 
         /// <summary>
         /// Returns whether the value equals zero.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _value.Equals(0);
-            }
-        }
+        public bool IsEmpty => Value.Equals(0);
 
         #endregion Public Properties
 
@@ -210,7 +178,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public double PercentageOf(double value)
         {
-            return value * _value;
+            return value * Value;
         }
 
         /// <summary>
@@ -220,7 +188,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public float PercentageOf(float value)
         {
-            return value * _value;
+            return value * Value;
         }
 
         /// <summary>
@@ -230,7 +198,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public float PercentageOf(int value)
         {
-            return value * _value;
+            return value * Value;
         }
 
         #endregion Public Methods
@@ -238,18 +206,18 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">Another object to compare to.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(obj, null))
+            if (obj is null)
+            {
                 return false;
-            if (!(obj is Percent))
-                return false;
+            }
 
-            return ((Percent)obj).Value.Equals(_value);
+            return obj is Percent percent && percent.Value.Equals(Value);
         }
 
         /// <summary>
@@ -258,13 +226,13 @@ namespace DotSpatial.Positioning
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
         {
-            return _value.GetHashCode();
+            return Value.GetHashCode();
         }
 
         /// <summary>
         /// Returns the percentage formatted as a <strong>String</strong>.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("P", CultureInfo.CurrentCulture);
@@ -358,7 +326,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Percent Multiply(double value)
         {
-            return new Percent(Convert.ToSingle(_value * value));
+            return new Percent(Convert.ToSingle(Value * value));
         }
 
         /// <summary>
@@ -368,7 +336,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Percent Multiply(float value)
         {
-            return new Percent(_value * value);
+            return new Percent(Value * value);
         }
 
         /// <summary>
@@ -378,7 +346,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public Percent Multiply(int value)
         {
-            return new Percent(_value * value);
+            return new Percent(Value * value);
         }
 
         #endregion Operators
@@ -416,7 +384,7 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="System.String"/> to <see cref="DotSpatial.Positioning.Percent"/>.
+        /// Performs an explicit conversion from <see cref="string"/> to <see cref="DotSpatial.Positioning.Percent"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -434,10 +402,10 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            return _value.ToString(format, formatProvider).Replace(" ", string.Empty);
+            return Value.ToString(format, formatProvider).Replace(" ", string.Empty);
         }
 
         #endregion IFormattable Members
@@ -451,7 +419,7 @@ namespace DotSpatial.Positioning
         /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(Percent other)
         {
-            return _value.Equals(other.Value);
+            return Value.Equals(other.Value);
         }
 
         #endregion IEquatable<Percent> Members
@@ -473,7 +441,7 @@ namespace DotSpatial.Positioning
         /// This object is greater than <paramref name="other"/>.</returns>
         public int CompareTo(Percent other)
         {
-            return _value.CompareTo(other.Value);
+            return Value.CompareTo(other.Value);
         }
 
         #endregion IComparable<Percent> Members

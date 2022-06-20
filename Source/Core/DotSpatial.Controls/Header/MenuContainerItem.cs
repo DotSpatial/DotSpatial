@@ -66,7 +66,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_largeImage == value) return;
                 _largeImage = value;
-                OnPropertyChanged("LargeImage");
+                OnPropertyChanged(nameof(LargeImage));
             }
         }
 

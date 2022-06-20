@@ -74,19 +74,12 @@ namespace DotSpatial.Data
             FeatureType = FeatureType.MultiPoint;
             Header = new ShapefileHeader(Filename);
 
-            switch (Header.ShapeType)
+            CoordinateType = Header.ShapeType switch
             {
-                case ShapeType.MultiPointM:
-                    CoordinateType = CoordinateType.M;
-                    break;
-                case ShapeType.MultiPointZ:
-                    CoordinateType = CoordinateType.Z;
-                    break;
-                default:
-                    CoordinateType = CoordinateType.Regular;
-                    break;
-            }
-
+                ShapeType.MultiPointM => CoordinateType.M,
+                ShapeType.MultiPointZ => CoordinateType.Z,
+                _ => CoordinateType.Regular,
+            };
             Extent = Header.ToExtent();
             Name = Path.GetFileNameWithoutExtension(fileName);
             Attributes.Open(Filename);

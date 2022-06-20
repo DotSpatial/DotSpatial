@@ -1,19 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -21,7 +7,6 @@ using System.Globalization;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
     /// <summary>
     /// Represents a measurement of the strength of a received radio signal.
     /// </summary>
@@ -34,13 +19,8 @@ namespace DotSpatial.Positioning
     /// class to report on the quality of GPS satellite signals.  When three or more
     /// satellite SNR's are strong, the device is able to obtain a fix on the current location.</remarks>
     [TypeConverter("DotSpatial.Positioning.Design.SignalToNoiseRatioConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
-#endif
     public struct SignalToNoiseRatio : IFormattable, IComparable<SignalToNoiseRatio>, IEquatable<SignalToNoiseRatio>, IEquatable<SignalToNoiseRatioRating>
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly int _value;
 
         #region Fields
 
@@ -74,7 +54,7 @@ namespace DotSpatial.Positioning
         /// <param name="value">The value.</param>
         public SignalToNoiseRatio(int value)
         {
-            _value = value > 50 ? 50 : value;
+            Value = value > 50 ? 50 : value;
         }
 
         /// <summary>
@@ -97,12 +77,14 @@ namespace DotSpatial.Positioning
 
             // If there's a rating in there, get rid of it
             if (value.IndexOf("(", StringComparison.OrdinalIgnoreCase) != -1)
-                value = value.Substring(0, value.IndexOf("(", StringComparison.OrdinalIgnoreCase) - 1).Trim();
+            {
+                value = value[..(value.IndexOf("(", StringComparison.OrdinalIgnoreCase) - 1)].Trim();
+            }
 
             // The remaining text should be a number
-            _value = int.Parse(value, culture);
+            Value = int.Parse(value, culture);
 
-            _value = _value > 50 ? 50 : _value;
+            Value = Value > 50 ? 50 : Value;
         }
 
         #endregion Constructors
@@ -119,24 +101,12 @@ namespace DotSpatial.Positioning
         /// must be at about 30 or greater for a satellite to be able to maintain a fix for long.
         /// In the <see cref="Satellite">Satellite</see> class, this property is updated automatically as new information is
         /// received from the GPS device.</remarks>
-        public int Value
-        {
-            get
-            {
-                return _value;
-            }
-        }
+        public int Value { get; }
 
         /// <summary>
         /// Indicates if the value is zero.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _value == 0;
-            }
-        }
+        public bool IsEmpty => Value == 0;
 
         /// <summary>
         /// Returns a subjective rating of the signal strength.
@@ -149,22 +119,26 @@ namespace DotSpatial.Positioning
         {
             get
             {
-                if (_value > 0)
+                if (Value > 0)
                 {
-                    if (_value <= 15)
+                    if (Value <= 15)
                     {
                         return SignalToNoiseRatioRating.Poor;
                     }
-                    if (_value <= 30)
+
+                    if (Value <= 30)
                     {
                         return SignalToNoiseRatioRating.Moderate;
                     }
-                    if (_value <= 40)
+
+                    if (Value <= 40)
                     {
                         return SignalToNoiseRatioRating.Good;
                     }
+
                     return SignalToNoiseRatioRating.Excellent;
                 }
+
                 return SignalToNoiseRatioRating.None;
             }
         }
@@ -174,10 +148,10 @@ namespace DotSpatial.Positioning
         #region Public Methods
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         /// <overloads>Outputs the current instance as a formatted string.</overloads>
         public string ToString(string format)
         {
@@ -189,16 +163,22 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">Another object to compare to.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is SignalToNoiseRatio)
-                return Equals((SignalToNoiseRatio)obj);
-            if (obj is SignalToNoiseRatioRating)
-                return Equals((SignalToNoiseRatioRating)obj);
+            if (obj is SignalToNoiseRatio ratio)
+            {
+                return Equals(ratio);
+            }
+
+            if (obj is SignalToNoiseRatioRating rating)
+            {
+                return Equals(rating);
+            }
+
             return false;
         }
 
@@ -208,13 +188,13 @@ namespace DotSpatial.Positioning
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
         {
-            return _value.GetHashCode();
+            return Value.GetHashCode();
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return ToString("g", CultureInfo.CurrentCulture);
@@ -266,7 +246,7 @@ namespace DotSpatial.Positioning
         /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(SignalToNoiseRatio other)
         {
-            return _value == other.Value;
+            return Value == other.Value;
         }
 
         #endregion IEquatable<SignalToNoiseRatio> Members
@@ -293,27 +273,33 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             CultureInfo culture = formatProvider as CultureInfo ?? CultureInfo.CurrentCulture;
 
             if (string.IsNullOrEmpty(format))
+            {
                 format = "G";
+            }
 
             // IF the format is "G", use the default
             if (format.Equals("G", StringComparison.OrdinalIgnoreCase))
+            {
                 format = "0 dB (r)";
+            }
 
             // Convert the string to lower-case
             format = format.ToUpper(CultureInfo.InvariantCulture);
 
             // Replace "r" with the rating
             if (format.IndexOf("R", StringComparison.Ordinal) != -1)
+            {
                 format = format.Replace("R", Rating.ToString());
+            }
 
             // And return the formatted value
-            return _value.ToString(format, culture);
+            return Value.ToString(format, culture);
         }
 
         #endregion IFormattable Members
@@ -325,41 +311,80 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns>A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings:
-        /// Value
-        /// Meaning
-        /// Less than zero
-        /// This object is less than the <paramref name="other"/> parameter.
-        /// Zero
-        /// This object is equal to <paramref name="other"/>.
-        /// Greater than zero
-        /// This object is greater than <paramref name="other"/>.</returns>
+        /// Value - Meaning
+        /// Less than zero - This object is less than the <paramref name="other"/> parameter.
+        /// Zero - This object is equal to <paramref name="other"/>.
+        /// Greater than zero - This object is greater than <paramref name="other"/>.</returns>
         public int CompareTo(SignalToNoiseRatio other)
         {
-            return _value.CompareTo(other.Value);
+            return Value.CompareTo(other.Value);
+        }
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>Returns true im both are equal.</returns>
+        public static bool operator ==(SignalToNoiseRatio left, SignalToNoiseRatio right)
+        {
+            return left.Equals(right);
+        }
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>Returns true im both are not equal.</returns>
+        public static bool operator !=(SignalToNoiseRatio left, SignalToNoiseRatio right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>Returns true im left is less than right.</returns>
+        public static bool operator <(SignalToNoiseRatio left, SignalToNoiseRatio right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>Returns true im left is less or the same as right.</returns>
+        public static bool operator <=(SignalToNoiseRatio left, SignalToNoiseRatio right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>Returns true im left is more than right.</returns>
+        public static bool operator >(SignalToNoiseRatio left, SignalToNoiseRatio right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="left">The left object to compare.</param>
+        /// <param name="right">The right object to compare.</param>
+        /// <returns>Returns true im left is more or the same as right.</returns>
+        public static bool operator >=(SignalToNoiseRatio left, SignalToNoiseRatio right)
+        {
+            return left.CompareTo(right) >= 0;
         }
 
         #endregion IComparable<SignalToNoiseRatio> Members
-
-        #region Unused Code (Commented Out)
-
-        /* FxCop says this is unused
-             *
-        internal void SetValue(int value)
-        {
-            if (_Value == value)
-                return;
-            if (value < 0 || value > 100)
-#if PocketPC
-				throw new ArgumentOutOfRangeException("Signal-to-noise ratio must be between 0 and 100.");
-#else
-                throw new ArgumentOutOfRangeException("value", value, "Signal-to-noise ratio must be between 0 and 100.");
-#endif
-            else
-                _Value = value;
-        }
-             */
-
-        #endregion Unused Code (Commented Out)
     }
 
     /// <summary>
@@ -387,10 +412,6 @@ namespace DotSpatial.Positioning
     /// </summary>
     public sealed class SignalToNoiseRatioEventArgs : EventArgs
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private readonly SignalToNoiseRatio _signalToNoiseRatio;
 
         /// <summary>
         /// Creates a new instance of the event args
@@ -398,18 +419,12 @@ namespace DotSpatial.Positioning
         /// <param name="signalToNoiseRatio">The signal to noise ratio.</param>
         public SignalToNoiseRatioEventArgs(SignalToNoiseRatio signalToNoiseRatio)
         {
-            _signalToNoiseRatio = signalToNoiseRatio;
+            SignalToNoiseRatio = signalToNoiseRatio;
         }
 
         /// <summary>
         /// The signal to noise ratio
         /// </summary>
-        public SignalToNoiseRatio SignalToNoiseRatio
-        {
-            get
-            {
-                return _signalToNoiseRatio;
-            }
-        }
+        public SignalToNoiseRatio SignalToNoiseRatio { get; }
     }
 }

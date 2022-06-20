@@ -158,43 +158,20 @@ namespace DotSpatial.Data
             Height = height;
             _myImage = new Bitmap(width, height);
             string ext = Path.GetExtension(fileName);
-            ImageFormat imageFormat;
-            switch (ext)
+            ImageFormat imageFormat = ext switch
             {
-                case ".bmp":
-                    imageFormat = ImageFormat.Bmp;
-                    break;
-                case ".emf":
-                    imageFormat = ImageFormat.Emf;
-                    break;
-                case ".exf":
-                    imageFormat = ImageFormat.Exif;
-                    break;
-                case ".gif":
-                    imageFormat = ImageFormat.Gif;
-                    break;
-                case ".ico":
-                    imageFormat = ImageFormat.Icon;
-                    break;
-                case ".jpg":
-                    imageFormat = ImageFormat.Jpeg;
-                    break;
-                case ".mbp":
-                    imageFormat = ImageFormat.MemoryBmp;
-                    break;
-                case ".png":
-                    imageFormat = ImageFormat.Png;
-                    break;
-                case ".tif":
-                    imageFormat = ImageFormat.Tiff;
-                    break;
-                case ".wmf":
-                    imageFormat = ImageFormat.Wmf;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(fileName), DataStrings.FileTypeNotSupported);
-            }
-
+                ".bmp" => ImageFormat.Bmp,
+                ".emf" => ImageFormat.Emf,
+                ".exf" => ImageFormat.Exif,
+                ".gif" => ImageFormat.Gif,
+                ".ico" => ImageFormat.Icon,
+                ".jpg" => ImageFormat.Jpeg,
+                ".mbp" => ImageFormat.MemoryBmp,
+                ".png" => ImageFormat.Png,
+                ".tif" => ImageFormat.Tiff,
+                ".wmf" => ImageFormat.Wmf,
+                _ => throw new ArgumentOutOfRangeException(nameof(fileName), DataStrings.FileTypeNotSupported),
+            };
             _myImage.Save(fileName, imageFormat);
 
             NumBands = 4;
@@ -378,22 +355,13 @@ namespace DotSpatial.Data
         private BitmapData GetLockedBits()
         {
             Rectangle bnds = new(0, 0, Width, Height);
-            PixelFormat pixelFormat;
-            switch (NumBands)
+            var pixelFormat = NumBands switch
             {
-                case 4:
-                    pixelFormat = PixelFormat.Format32bppArgb;
-                    break;
-                case 3:
-                    pixelFormat = PixelFormat.Format24bppRgb;
-                    break;
-                case 1:
-                    pixelFormat = PixelFormat.Format16bppGrayScale;
-                    break;
-                default:
-                    throw new ApplicationException("The specified number of bands is not supported.");
-            }
-
+                4 => PixelFormat.Format32bppArgb,
+                3 => PixelFormat.Format24bppRgb,
+                1 => PixelFormat.Format16bppGrayScale,
+                _ => throw new ApplicationException("The specified number of bands is not supported."),
+            };
             return _myImage.LockBits(bnds, ImageLockMode.ReadWrite, pixelFormat);
         }
 

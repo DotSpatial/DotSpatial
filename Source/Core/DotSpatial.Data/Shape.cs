@@ -65,26 +65,14 @@ namespace DotSpatial.Data
         {
             if (featureType == FeatureType.Unspecified)
             {
-                switch (geometry.OgcGeometryType)
+                featureType = geometry.OgcGeometryType switch
                 {
-                    case OgcGeometryType.Point:
-                        featureType = FeatureType.Point;
-                        break;
-                    case OgcGeometryType.LineString:
-                    case OgcGeometryType.MultiLineString:
-                        featureType = FeatureType.Line;
-                        break;
-                    case OgcGeometryType.Polygon:
-                    case OgcGeometryType.MultiPolygon:
-                        featureType = FeatureType.Polygon;
-                        break;
-                    case OgcGeometryType.MultiPoint:
-                        featureType = FeatureType.MultiPoint;
-                        break;
-                    default:
-                        featureType = FeatureType.Unspecified;
-                        break;
-                }
+                    OgcGeometryType.Point => FeatureType.Point,
+                    OgcGeometryType.LineString or OgcGeometryType.MultiLineString => FeatureType.Line,
+                    OgcGeometryType.Polygon or OgcGeometryType.MultiPolygon => FeatureType.Polygon,
+                    OgcGeometryType.MultiPoint => FeatureType.MultiPoint,
+                    _ => FeatureType.Unspecified,
+                };
             }
 
             if (Equals(geometry, null)) throw new ArgumentNullException(nameof(geometry));

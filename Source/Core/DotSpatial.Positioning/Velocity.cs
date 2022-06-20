@@ -1,19 +1,5 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Globalization;
@@ -143,40 +129,22 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Gets the objects rate of travel.
         /// </summary>
-        public Speed Speed
-        {
-            get { return _speed; }
-        }
+        public Speed Speed => _speed;
 
         /// <summary>
         /// Gets the objects direction of travel.
         /// </summary>
-        public Azimuth Bearing
-        {
-            get { return _bearing; }
-        }
+        public Azimuth Bearing => _bearing;
 
         /// <summary>
         /// Indicates whether the speed and bearing are both zero.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _speed.IsEmpty && _bearing.IsEmpty;
-            }
-        }
+        public bool IsEmpty => _speed.IsEmpty && _bearing.IsEmpty;
 
         /// <summary>
         /// Indicates whether the speed or bearing is invalid or unspecified.
         /// </summary>
-        public bool IsInvalid
-        {
-            get
-            {
-                return _speed.IsInvalid || _bearing.IsInvalid;
-            }
-        }
+        public bool IsInvalid => _speed.IsInvalid || _bearing.IsInvalid;
 
         #endregion Public Properties
 
@@ -218,14 +186,17 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">Another object to compare to.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
             if (obj is Velocity)
+            {
                 return Equals((Velocity)obj);
+            }
+
             return false;
         }
 
@@ -274,12 +245,15 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="format">The format to use.-or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation.</param>
         /// <param name="formatProvider">The provider to use to format the value.-or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             CultureInfo culture = (CultureInfo)formatProvider ?? CultureInfo.CurrentCulture;
 
-            if (string.IsNullOrEmpty(format)) format = "G";
+            if (string.IsNullOrEmpty(format))
+            {
+                format = "G";
+            }
 
             // Output as speed and bearing
             return _speed.ToString(format, culture)
@@ -323,7 +297,9 @@ namespace DotSpatial.Positioning
         {
             // Move to the <Speed> element
             if (!reader.IsStartElement("Speed"))
+            {
                 reader.ReadToDescendant("Speed");
+            }
 
             _speed.ReadXml(reader);
             _bearing.ReadXml(reader);

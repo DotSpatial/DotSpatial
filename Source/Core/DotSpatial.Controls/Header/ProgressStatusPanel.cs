@@ -30,7 +30,7 @@ namespace DotSpatial.Controls.Header
             {
                 if (_percent == value) return;
                 _percent = value;
-                OnPropertyChanged("Percent");
+                OnPropertyChanged(nameof(Percent));
             }
         }
 

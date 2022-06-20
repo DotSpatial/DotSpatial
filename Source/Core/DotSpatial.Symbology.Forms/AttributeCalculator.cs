@@ -722,245 +722,87 @@ namespace DotSpatial.Symbology.Forms
         private static int GetTokenNo(string subExp)
         {
             subExp = subExp.Trim();
-            int tok;
-            switch (subExp.ToLower())
+            var tok = subExp.ToLower() switch
             {
-                case "+":
-                    tok = 0;
-                    break;
-                case "-":
-                    tok = 1;
-                    break;
-                case "*":
-                    tok = 2;
-                    break;
-                case "/":
-                    tok = 3;
-                    break;
-                case "%":
-                    tok = 4;
-                    break;
-
+                "+" => 0,
+                "-" => 1,
+                "*" => 2,
+                "/" => 3,
+                "%" => 4,
                 // case ("\") : tok=5;
                 // break;
-                case "^":
-                    tok = 6;
-                    break;
-                case "abs(":
-                    tok = 7;
-                    break;
-                case "atan(":
-                    tok = 8;
-                    break;
-                case "cos(":
-                    tok = 9;
-                    break;
-                case "sin(":
-                    tok = 10;
-                    break;
-                case "exp(":
-                    tok = 11;
-                    break;
-
+                "^" => 6,
+                "abs(" => 7,
+                "atan(" => 8,
+                "cos(" => 9,
+                "sin(" => 10,
+                "exp(" => 11,
                 // case ("exp(") : tok=12;
                 //    break;
-                case "fix(":
-                    tok = 13;
-                    break;
-                case "int(":
-                    tok = 14;
-                    break;
-                case "dec(":
-                    tok = 67;
-                    break;
-                case "ln(":
-                    tok = 15;
-                    break;
-                case "log(":
-                    tok = 16;
-                    break;
-                case "rnd(":
-                    tok = 17;
-                    break;
-                case "sgn(":
-                    tok = 18;
-                    break;
-                case "sqr(":
-                    tok = 19;
-                    break;
-                case "cbr(":
-                    tok = 65;
-                    break;
-                case "tan(":
-                    tok = 20;
-                    break;
-                case "acos(":
-                    tok = 21;
-                    break;
-                case "asin(":
-                    tok = 22;
-                    break;
-                case "cosh(":
-                    tok = 23;
-                    break;
-                case "sinh(":
-                    tok = 24;
-                    break;
-                case "tanh(":
-                    tok = 25;
-                    break;
-                case "acosh(":
-                    tok = 26;
-                    break;
-                case "asinh(":
-                    tok = 27;
-                    break;
-                case "atanh(":
-                    tok = 28;
-                    break;
-                case "root(":
-                    tok = 66;
-                    break;
-                case "mod(":
-                    tok = 29;
-                    break;
-                case "!":
-                case "fact(":
-                    tok = 30;
-                    break;
-                case "comb(":
-                    tok = 31;
-                    break;
-                case "min(":
-                    tok = 32;
-                    break;
-                case "max(":
-                    tok = 33;
-                    break;
-                case "gcd(":
-                case "mcd(":
-                    tok = 34;
-                    break;
-                case "mcm(":
-                case "lcm(":
-                    tok = 35;
-                    break;
-                case ">":
-                    tok = 36;
-                    break;
-                case ">=":
-                case "=>":
-                    tok = 37;
-                    break;
-                case "<":
-                    tok = 38;
-                    break;
-                case "<=":
-                case "=<":
-                    tok = 39;
-                    break;
-                case "=":
-                    tok = 40;
-                    break;
-                case "<>":
-                    tok = 41;
-                    break;
-                case "and":
-                    tok = 42;
-                    break;
-                case "or":
-                    tok = 43;
-                    break;
-                case "not":
-                    tok = 44;
-                    break;
-                case "xor":
-                    tok = 45;
-                    break;
-                case "nand":
-                    tok = 72;
-                    break;
-                case "nor":
-                    tok = 73;
-                    break;
-                case "nxor":
-                    tok = 74;
-                    break;
-                case "erf(":
-                    tok = 46;
-                    break;
-                case "gamma(":
-                    tok = 47;
-                    break;
-                case "gammaln(":
-                    tok = 48;
-                    break;
-                case "digamma(":
-                    tok = 49;
-                    break;
-                case "beta(":
-                    tok = 50;
-                    break;
-                case "zeta(":
-                    tok = 51;
-                    break;
-                case "ei(":
-                    tok = 52;
-                    break;
-                case "csc(":
-                    tok = 53;
-                    break;
-                case "sec(":
-                    tok = 54;
-                    break;
-                case "cot(":
-                    tok = 55;
-                    break;
-                case "acsc(":
-                    tok = 56;
-                    break;
-                case "asec(":
-                    tok = 57;
-                    break;
-                case "acot(":
-                    tok = 58;
-                    break;
-                case "csch(":
-                    tok = 59;
-                    break;
-                case "sech(":
-                    tok = 60;
-                    break;
-                case "coth(":
-                    tok = 61;
-                    break;
-                case "acsch(":
-                    tok = 62;
-                    break;
-                case "asech(":
-                    tok = 63;
-                    break;
-                case "acoth(":
-                    tok = 64;
-                    break;
-                case "rad(":
-                    tok = 68;
-                    break;
-                case "deg(":
-                    tok = 69;
-                    break;
-                case "grad(":
-                    tok = 71;
-                    break;
-                case "round(":
-                    tok = 70;
-                    break;
-
-                default:
-                    tok = -1;
-                    break;
-            }
-
+                "fix(" => 13,
+                "int(" => 14,
+                "dec(" => 67,
+                "ln(" => 15,
+                "log(" => 16,
+                "rnd(" => 17,
+                "sgn(" => 18,
+                "sqr(" => 19,
+                "cbr(" => 65,
+                "tan(" => 20,
+                "acos(" => 21,
+                "asin(" => 22,
+                "cosh(" => 23,
+                "sinh(" => 24,
+                "tanh(" => 25,
+                "acosh(" => 26,
+                "asinh(" => 27,
+                "atanh(" => 28,
+                "root(" => 66,
+                "mod(" => 29,
+                "!" or "fact(" => 30,
+                "comb(" => 31,
+                "min(" => 32,
+                "max(" => 33,
+                "gcd(" or "mcd(" => 34,
+                "mcm(" or "lcm(" => 35,
+                ">" => 36,
+                ">=" or "=>" => 37,
+                "<" => 38,
+                "<=" or "=<" => 39,
+                "=" => 40,
+                "<>" => 41,
+                "and" => 42,
+                "or" => 43,
+                "not" => 44,
+                "xor" => 45,
+                "nand" => 72,
+                "nor" => 73,
+                "nxor" => 74,
+                "erf(" => 46,
+                "gamma(" => 47,
+                "gammaln(" => 48,
+                "digamma(" => 49,
+                "beta(" => 50,
+                "zeta(" => 51,
+                "ei(" => 52,
+                "csc(" => 53,
+                "sec(" => 54,
+                "cot(" => 55,
+                "acsc(" => 56,
+                "asec(" => 57,
+                "acot(" => 58,
+                "csch(" => 59,
+                "sech(" => 60,
+                "coth(" => 61,
+                "acsch(" => 62,
+                "asech(" => 63,
+                "acoth(" => 64,
+                "rad(" => 68,
+                "deg(" => 69,
+                "grad(" => 71,
+                "round(" => 70,
+                _ => -1,
+            };
             return tok;
         }
 

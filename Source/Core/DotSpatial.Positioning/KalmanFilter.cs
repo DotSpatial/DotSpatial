@@ -1,19 +1,6 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-//
-// The Original Code is from http://gps3.codeplex.com/ version 3.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
-// | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
+
 /* Source...
  *
 % KALMANF - updates a system state vector estimate based upon an
@@ -218,19 +205,10 @@ namespace DotSpatial.Positioning
     /// </summary>
     internal struct KalmanSystemState
     {
-        // Observations applied
-        /// <summary>
-        ///
-        /// </summary>
-        private int _interval;
         /// <summary>
         ///
         /// </summary>
         private DateTime _lastObservation;
-        /// <summary>
-        ///
-        /// </summary>
-        private TimeSpan _delay;
 
         // GPS Observation
         /// <summary>
@@ -378,72 +356,56 @@ namespace DotSpatial.Positioning
                           0, hCovariance, 0,
                           0, 0, vCovariance);
 
-            _interval = 0;
+            IntervalCount = 0;
 
             _errorState = Math.Sqrt(Math.Pow(hCovariance, 2) + Math.Pow(vCovariance, 2));
 
-            _delay = TimeSpan.MaxValue;
+            Delay = TimeSpan.MaxValue;
             _lastObservation = DateTime.MinValue;
 
             if (!gpsPosition.IsEmpty)
+            {
                 Initialize(gpsPosition);
+            }
         }
 
         /// <summary>
         /// Gets the delay.
         /// </summary>
-        public TimeSpan Delay
-        {
-            get { return _delay; }
-        }
+        public TimeSpan Delay { get; private set; }
 
         /// <summary>
         /// Gets the current error.
         /// </summary>
         public Distance CurrentError
         {
-            get
-            {
-                return Distance.FromMeters(
+            get => Distance.FromMeters(
                     Math.Sqrt(
                         Math.Pow(_p.Elements[0], 2) +
                         Math.Pow(_p.Elements[4], 2) +
                         Math.Pow(_p.Elements[8], 2)
                         ));
-            }
         }
 
         /// <summary>
         /// Gets the state of the error.
         /// </summary>
-        public Distance ErrorState
-        {
-            get { return Distance.FromMeters(_errorState); }
-        }
+        public Distance ErrorState => Distance.FromMeters(_errorState);
 
         /// <summary>
         /// Gets the device error.
         /// </summary>
-        public Distance DeviceError
-        {
-            get { return Distance.FromMeters(_deviceError); }
-        }
+        public Distance DeviceError => Distance.FromMeters(_deviceError);
 
         /// <summary>
         /// Gets the horizontal dilution of precision.
         /// </summary>
-        public DilutionOfPrecision HorizontalDilutionOfPrecision
-        {
-            get { return new DilutionOfPrecision((float)_horizontalDOP); }
-        }
+        public DilutionOfPrecision HorizontalDilutionOfPrecision => new((float)_horizontalDOP);
 
         /// <summary>
         /// Gets the vertical dilution of precision.
         /// </summary>
-        public DilutionOfPrecision VerticalDilutionOfPrecision
-        {
-            get { return new DilutionOfPrecision((float)_verticalDOP); }
-        }
+        public DilutionOfPrecision VerticalDilutionOfPrecision => new((float)_verticalDOP);
 
         /// <summary>
         /// The position reported by the GPS device
@@ -457,7 +419,7 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Determines if the Kalman state has an initial observation
         /// </summary>
-        public bool IsInitialized { get { return !_x.IsInvalid; } }
+        public bool IsInitialized => !_x.IsInvalid;
 
         /// <summary>
         /// Returns the number of intervals that have been applied to the Kalman state
@@ -465,7 +427,7 @@ namespace DotSpatial.Positioning
         /// <remarks>The number of intervals is the number of observations accumulated in the state
         /// interval. The greater the number of observations, the more precise the filter
         /// becomes.</remarks>
-        public int IntervalCount { get { return _interval; } }
+        public int IntervalCount { get; private set; }
 
         /// <summary>
         /// The corrected position
@@ -493,7 +455,7 @@ namespace DotSpatial.Positioning
             _p = hi * _r * SquareMatrix3D.Invert(SquareMatrix3D.Transpose(_h));
 
             _lastObservation = DateTime.Now;
-            _delay = TimeSpan.Zero;
+            Delay = TimeSpan.Zero;
         }
 
         /// <summary>
@@ -548,7 +510,7 @@ namespace DotSpatial.Positioning
 
             // Get the translation of the last correction
             CartesianPoint subX = _x.ToPosition3D(_ellipsoid)
-                .TranslateTo(bearing, speed.ToDistance(_delay), _ellipsoid)
+                .TranslateTo(bearing, speed.ToDistance(Delay), _ellipsoid)
                 .ToCartesianPoint();
 
             // Get the vector of the translation and the last observation
@@ -617,14 +579,14 @@ namespace DotSpatial.Positioning
             #endregion Observational correction
 
             // Bump the state count
-            _interval++;
+            IntervalCount++;
 
             // Calculate the average error for the system stste.
             _errorState = (_errorState + Math.Sqrt(Math.Pow(hCovariance, 2) + Math.Pow(vCovariance, 2))) * .5f;
 
             // Calculate the interval between samples
             DateTime now = DateTime.Now;
-            _delay = now.Subtract(_lastObservation);
+            Delay = now.Subtract(_lastObservation);
             _lastObservation = now;
         }
     }
@@ -689,52 +651,34 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// The filtered location
         /// </summary>
-        public override Position3D FilteredLocation
-        {
-            get { return _currentState.CorrectedLocation(); }
-        }
+        public override Position3D FilteredLocation => _currentState.CorrectedLocation();
 
         /// <summary>
         /// The observed location
         /// </summary>
-        public override Position3D ObservedLocation
-        {
-            get { return _currentState.ObservedLocation(); }
-        }
+        public override Position3D ObservedLocation => _currentState.ObservedLocation();
 
         /// <summary>
         /// Represents the latency between the current observation and the filter state
         /// </summary>
-        public override TimeSpan Delay
-        {
-            get { return _currentState.Delay; }
-        }
+        public override TimeSpan Delay => _currentState.Delay;
 
         /// <summary>
         /// Returns a value indicationg whether or not the filter has been initialized.
         /// </summary>
-        public override bool IsInitialized
-        {
-            get { return _currentState.IsInitialized; }
-        }
+        public override bool IsInitialized => _currentState.IsInitialized;
 
         /// <summary>
         /// Returns the DilutionOfPrecision used in the most recent
         /// Kalman filter calculation.
         /// </summary>
-        public DilutionOfPrecision CurrentMeanDilutionOfPrecision
-        {
-            get { return _currentState.HorizontalDilutionOfPrecision; }
-        }
+        public DilutionOfPrecision CurrentMeanDilutionOfPrecision => _currentState.HorizontalDilutionOfPrecision;
 
         /// <summary>
         /// Returns the device error margin used in the most recent
         /// Kalman filter calculation.
         /// </summary>
-        public Distance CurrentDeviceError
-        {
-            get { return _currentState.DeviceError; }
-        }
+        public Distance CurrentDeviceError => _currentState.DeviceError;
 
         /// <summary>
         /// Retrns the of position samples that have been evaluated by
@@ -743,10 +687,7 @@ namespace DotSpatial.Positioning
         /// <remarks>The results of a Kalman filter are cumulative. Each
         /// position processed changes the state of the filter, thus making
         /// the results more accurate with each subsequent position.</remarks>
-        public int CurrentStateSampleCount
-        {
-            get { return _currentState.IntervalCount; }
-        }
+        public int CurrentStateSampleCount => _currentState.IntervalCount;
 
         /// <summary>
         /// Returns the accumulated average error accounted for the Kalman system.
@@ -754,10 +695,7 @@ namespace DotSpatial.Positioning
         /// <remarks>The results of a Kalman filter are cumulative. Each
         /// position processed changes the state of the filter, thus making
         /// the results more accurate with each subsequent position.</remarks>
-        public Distance ErrorState
-        {
-            get { return _currentState.ErrorState; }
-        }
+        public Distance ErrorState => _currentState.ErrorState;
 
         /// <summary>
         /// Returns the current precision estimate for the Kalman state
@@ -765,10 +703,7 @@ namespace DotSpatial.Positioning
         /// <remarks>The results of a Kalman filter are cumulative. Each
         /// position processed changes the state of the filter, thus making
         /// the results more accurate with each subsequent position.</remarks>
-        public Distance CurrentErrorEstimate
-        {
-            get { return _currentState.CurrentError; }
-        }
+        public Distance CurrentErrorEstimate => _currentState.CurrentError;
 
         #endregion Public Properties
 
