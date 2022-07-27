@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing.Design;
 using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
@@ -52,7 +51,7 @@ namespace DotSpatial.Symbology
         /// Gets the UITypeEditor to use for editing this FeatureScheme.
         /// </summary>
         /// <returns>The UITypeEditor.</returns>
-        UITypeEditor PropertyEditor { get; }
+        //UITypeEditor PropertyEditor { get; }
 
         #endregion
 
