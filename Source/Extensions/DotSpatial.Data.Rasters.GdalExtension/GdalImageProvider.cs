@@ -199,7 +199,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 int numBlocks = (int)Math.Ceiling(gs.Bounds.NumRows / (double)blockHeight);
                 ProgressMeter pm = new(ProgressHandler, "Copying Data To Pyramids", numBlocks * 2);
 
-                Application.DoEvents();
+                //Application.DoEvents();//Removed for .netstandard
                 for (int j = 0; j < numBlocks; j++)
                 {
                     int h = blockHeight;
