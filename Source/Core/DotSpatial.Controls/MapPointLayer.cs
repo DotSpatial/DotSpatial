@@ -9,6 +9,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
+using DotSpatial.Serialization;
 using DotSpatial.Symbology;
 using NetTopologySuite.Geometries;
 
@@ -19,6 +20,26 @@ namespace DotSpatial.Controls
     /// </summary>
     public class MapPointLayer : PointLayer, IMapPointLayer
     {
+        #region Fields
+
+        /// <summary>
+        /// The _prevent collisions.
+        /// </summary>
+        private bool _preventCollisions;
+
+        /// <summary>
+        /// The _collision width.
+        /// </summary>
+        private int _collisionWidth;
+
+        /// <summary>
+        /// The cache indicating whether the space has been drawn by any point.
+        /// The high bytes of the key indicates the x-screen coordinate, the low bytes indicate the y-screen coordinate
+        /// </summary>
+        private HashSet<ulong> _pointRenderCache = new HashSet<ulong>();
+
+        #endregion
+
         #region  Constructors
 
         /// <summary>
@@ -130,6 +151,57 @@ namespace DotSpatial.Controls
             set
             {
                 base.LabelLayer = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to prevent collision.
+        /// The point layer in the map will only draw points that are not in the space which have been drawn by other points.
+        /// This should increase drawing speed for layers that have a large number of points.
+        /// </summary>
+        [Category("Behavior")]
+        [Description("Gets or sets whether to prevent collision.")]
+        [Serialize("PreventCollisions")]
+        public bool PreventCollisions
+        {
+            get
+            {
+                return _preventCollisions;
+            }
+
+            set
+            {
+                if (value == _preventCollisions)
+                    return;
+
+                _preventCollisions = value;
+                OnInvalidate(this, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating the width of collision space. The default is 1.
+        /// Only one point will be drawn within the collision space (a grid with size CollisionWidth * CollisionWidth)
+        /// This is useful if we have only enabled PreventCollisions.
+        /// </summary>
+        [Category("Behavior")]
+        [Description("Gets or sets the width of collision space.")]
+        [Serialize("CollisionWidth")]
+        public int CollisionWidth
+        {
+            get
+            {
+                return _collisionWidth;
+            }
+
+            set
+            {
+                if (value == _collisionWidth || _collisionWidth <= 0)
+                    return;
+
+                _collisionWidth = value;
+                if (PreventCollisions)
+                    OnInvalidate(this, EventArgs.Empty);
             }
         }
 
@@ -252,6 +324,9 @@ namespace DotSpatial.Controls
         /// <param name="selected">Indicates whether to draw the normal colored features or the selection colored features.</param>
         public virtual void DrawFeatures(MapArgs args, List<int> indices, List<Rectangle> clipRectangles, bool useChunks, bool selected)
         {
+            if (PreventCollisions)
+                _pointRenderCache.Clear();
+
             if (!useChunks)
             {
                 DrawFeatures(args, indices, selected);
@@ -407,6 +482,8 @@ namespace DotSpatial.Controls
 
         private void Configure()
         {
+            _preventCollisions = false;
+            _collisionWidth = 1;
             ChunkSize = 50000;
         }
 
@@ -533,11 +610,27 @@ namespace DotSpatial.Controls
         {
             var x = Convert.ToInt32((ptX - e.MinX) * e.Dx);
             var y = Convert.ToInt32((e.MaxY - ptY) * e.Dy);
+            if (PreventCollisions && Collides(x, y))
+                return;
+
             double scaleSize = ps.GetScale(e);
             Matrix shift = origTransform.Clone();
             shift.Translate(x, y);
             g.Transform = shift;
             ps.Draw(g, scaleSize);
+        }
+
+        /// <summary>
+        /// Checks whether the position which has been drawn by other points.
+        /// Any space with grid size (CollisionWidth * CollisionWidth) should only draw one point.
+        /// </summary>
+        /// <param name="x">X-Screen coordinate of the point.</param>
+        /// <param name="y">Y-Screen coordinate of the point.</param>
+        /// <returns>Boolean, true if the point collides with a grid that has already been drawn by other point</returns>
+        private bool Collides(int x, int y)
+        {
+            ulong key = (((ulong)(uint)(x / CollisionWidth)) << 32) | (uint)(y / CollisionWidth);
+            return !_pointRenderCache.Add(key);
         }
 
         #endregion
