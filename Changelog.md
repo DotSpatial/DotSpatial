@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ## Fixed
 - Fixed angle calculation for second and third quadrant (#1405) 
+- Fixed labeler will throw an exception when NaN coordinates in features
 
 ## V3.0.1
 
