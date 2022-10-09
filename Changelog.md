@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## V4.0
 
+### Added
+- Screen referenced labels can be used in map snapshot
+
 ### Changed
 - Switched to VS2022
 - Switched to .Net 6
