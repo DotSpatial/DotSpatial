@@ -667,9 +667,14 @@ namespace DotSpatial.Controls
                 {
                     var ls = GetSegment(ls1, symb);
                     if (ls == null) return 0;
+
                     if (symb.LineOrientation == LineOrientation.Parallel)
-                        return ToSingle(-ls.Angle);
-                    return ToSingle(-ls.Angle - 90);
+                        //NTS value for Angle is in radians so must convert to degrees
+                        return ToSingle(-ls.Angle * (180.0 / Math.PI));
+
+                    //convert Angle to degrees and then adjust value by +90° to make it perpendicular.
+                    //an adjusment value of -90° would tend to make the label "upside down" for most projections.
+                    return ToSingle((-ls.Angle * (180.0 / Math.PI)) + 90.0);
                 }
             }
 

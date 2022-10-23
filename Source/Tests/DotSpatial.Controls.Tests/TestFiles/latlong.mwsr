@@ -1,0 +1,13 @@
+<SFRendering>
+  <Layer Name="Dense Graticule" GroupName="Data Layers" Type="2" Path="Shapefiles\latlong.shp" Tag="" LegendPicture="" Visible="False" LabelsVisible="True" Expanded="False">
+    <Image Type="">
+    </Image>
+    <ShapeFileProperties Color="9781770" DrawFill="True" TransparencyPercent="1" FillStipple="0" LineOrPointSize="1" LineStipple="0" OutLineColor="9781770" PointType="0" CustomLineStipple="0" UseTransparency="False" TransparencyColor="0">
+      <CustomPointType>
+        <Image Type="">
+        </Image>
+      </CustomPointType>
+    </ShapeFileProperties>
+    <DynamicVisibility UseDynamicVisibility="False" xMin="0" yMin="0" xMax="0" yMax="0" />
+  </Layer>
+</SFRendering>

@@ -1,0 +1,87 @@
+/3.1
+(ODB.1
+	FirstRootClassName:	"Legend"
+	Roots:	2
+	Version:	31
+)
+
+(Legend.2
+	SymType:	0x01
+	LegType:	0x01
+	ClassType:	0x03
+	Symbols:	3
+	Class:	6
+	StdDevs:	1.00000000000000
+	NullSym:	7
+	NullValues:	9
+	StatValues:	10
+	Precision:	-3
+)
+
+(SymList.3
+	Child:	4
+)
+
+(BLnSym.4
+	Color:	5
+	Width:	0.10000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+)
+
+(TClr.5
+	Red:	0x7878
+	Green:	0x7878
+	Blue:	0x7878
+)
+
+(LClass.6
+	IsText:	1
+	Precision:	-3
+)
+
+(BLnSym.7
+	Color:	8
+	Width:	0.10000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+	Pattern:	0.00000000000000
+)
+
+(TClr.8
+	Name:	"Transparent"
+)
+
+(NameDict.9
+)
+
+(NameDict.10
+)
+
