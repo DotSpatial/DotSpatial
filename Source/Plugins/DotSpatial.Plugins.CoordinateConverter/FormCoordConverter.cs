@@ -19,25 +19,111 @@ namespace DotSpatial.Plugins.CoordinateConverter
     {
         AppManager appManager;
 
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormCoordConverter"/> class.
+        /// </summary>
         public FormCoordConverter()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormCoordConverter"/> class.
+        /// </summary>
         public FormCoordConverter(AppManager app)
         {
             InitializeComponent();
             appManager = app;
         }
 
-        private void FormCoordConverter_Load(object sender, EventArgs e)
-        {
+        #endregion
 
+        #region Properties
+
+        public double Xsource { get; set; }
+        public double Ysource { get; set; }
+        public double Zsource { get; set; }
+        public ProjectionInfo ProjSource { get; set; } = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlaska1FIPS5001;
+        public double Xtarget { get; set; }
+        public double Ytarget { get; set; }
+        public double Ztarget { get; set; }
+        public ProjectionInfo ProjTarget { get; set; } = KnownCoordinateSystems.Geographic.NorthAmerica.NorthAmericanDatum1927;
+
+        #endregion
+
+        #region Methods
+
+        private void txtSourceX_TextChanged(object sender, EventArgs e)
+        {
+            ClearTarget();
+        }
+
+        private void txtSourceY_TextChanged(object sender, EventArgs e)
+        {
+            ClearTarget();
+        }
+
+        private void txtSourceZ_TextChanged(object sender, EventArgs e)
+        {
+            ClearTarget();
+        }
+
+        private void ClearTarget()
+        {
+            Xtarget = double.NaN;
+            Ytarget = double.NaN;
+            Ztarget = double.NaN;
+
+            txtTargetX.Text = String.Empty;
+            txtTargetY.Text = String.Empty;
+            txtTargetZ.Text = String.Empty;
         }
 
         private void btnConvert_Click(object sender, EventArgs e)
         {
+            try
+            {
+                //check and assign vars
+                bool isok = Double.TryParse(txtSourceX.Text, out double resX);
+                if (isok)
+                    Xsource = resX;
+                else
+                    MessageBox.Show("Invalid x input", "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                isok = Double.TryParse(txtSourceY.Text, out double resY);
+                if (isok)
+                    Ysource = resY;
+                else
+                    MessageBox.Show("Invalid y input", "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                isok = Double.TryParse(txtSourceZ.Text, out double resZ);
+                if (isok)
+                    Zsource = resZ;
+                else
+                    MessageBox.Show("Invalid z input", "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                //create array of the source coordinates
+                double[] xy = { Xsource, Ysource };
+                double[] z = { Zsource };
+
+                //reproject the coordinates from the source projection to target projection
+                Reproject.ReprojectPoints(xy, z, ProjSource, ProjTarget, 0, 1);
+
+                //assign reprojected coordinates from the result to the target
+                Xtarget = xy[0];
+                Ytarget = xy[1];
+                Ztarget = z[0];
+
+                txtTargetX.Text = Xtarget.ToString();
+                txtTargetY.Text = Ytarget.ToString();
+                txtTargetZ.Text = Ztarget.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -45,69 +131,13 @@ namespace DotSpatial.Plugins.CoordinateConverter
             this.Close();
         }
 
-
-        //''' <summary>
-        //''' this routine converts extents from a source projection to WGS84 returns an Extents object.
-        //''' </summary>
-        //''' <param name="coordBl">bottom left coordinate object</param>
-        //''' <param name="coordUr">upper right coordinate object</param>
-        //''' <param name="sourceProj">the source projection</param>
-        //''' <returns>reprojected extents</returns>
-        //''' <remarks></remarks>
-        //Public Function ConvertExtentsToWgs84(ByVal coordBl As Coordinate, ByVal coordUr As Coordinate, ByVal sourceProj As ProjectionInfo) As Extent
-        //    'create arrays of the input coordinates
-        //    Dim xy() As Double = { coordBl.X, coordBl.Y, coordUr.X, coordUr.Y }
-        //    Dim z() As Double = { coordBl.Z, coordUr.Z }
-
-        //    'now we reproject the coordinates from the source projection to WGS84
-        //    Reproject.ReprojectPoints(xy, z, sourceProj, prjWgs84, 0, 2)
-
-        //    'create reprojected coordinates for ease of use
-        //    Dim blRpj As New Coordinate(xy(0), xy(1), z(0))
-        //    Dim urRpj As New Coordinate(xy(2), xy(3), z(1))
-
-        //    'create new extents with the reprojected coordinates and return as an object
-        //    Dim ext As Extent = New Extent(blRpj.X, blRpj.Y, urRpj.X, urRpj.Y)
-        //    Return ext
-        //End Function
-
-
-        /////''' <summary>
-        /////''' this routine converts extents from a source projection to WGS84 returns an Extents object.
-        /////''' </summary>
-        /////''' <param name="coordBl">bottom left coordinate object</param>
-        /////''' <param name="coordUr">upper right coordinate object</param>
-        /////''' <param name="sourceProj">the source projection</param>
-        /////''' <returns>reprojected extents</returns>
-        //////''' <remarks></remarks>
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        private void ConvertCoordinates(double xSource, double ySource, double zSource, ProjectionInfo projSource, double xTarget, double yTarget, double zTarget, ProjectionInfo projTarget)
+        private void FormCoordConverter_Load(object sender, EventArgs e)
         {
-
+            txtSourceX.Text = "0";
+            txtSourceY.Text = "0";
+            txtSourceZ.Text = "0";
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        #endregion
     }
 }

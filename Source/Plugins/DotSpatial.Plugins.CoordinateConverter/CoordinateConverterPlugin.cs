@@ -20,7 +20,7 @@ namespace DotSpatial.Plugins.CoordinateConverter
     {
         public override void Activate()
         {
-            App.HeaderControl.Add(new SimpleActionItem(HeaderControl.HomeRootItemKey, "Coordinate Converter_", ButtonClick)
+            App.HeaderControl.Add(new SimpleActionItem(HeaderControl.HomeRootItemKey, "Coordinate Converter", ButtonClick)
                                     {
                                         GroupCaption = "Map Tool",
                                         SmallImage = Resources.cc_16x16,
