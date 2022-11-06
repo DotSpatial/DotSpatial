@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## V4.0
 
+### Added
+- A plug-in that converts coordinates from one projection to another. 
+
 ### Changed
 - Switched to VS2022
 - Switched to .Net 6
