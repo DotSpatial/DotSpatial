@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## V4.0
 
 ### Added
-- A plug-in that converts coordinates from one projection to another. 
+- A plug-in that converts coordinates from one projection to another (#1469)
 
 ### Changed
 - Switched to VS2022
