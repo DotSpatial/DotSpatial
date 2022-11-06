@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Projections;
+using DotSpatial.Projections.Forms;
 
 namespace DotSpatial.Plugins.CoordinateConverter
 {
@@ -66,6 +67,16 @@ namespace DotSpatial.Plugins.CoordinateConverter
         }
 
         private void txtSourceZ_TextChanged(object sender, EventArgs e)
+        {
+            ClearTarget();
+        }
+
+        private void lblSourceProj_TextChanged(object sender, EventArgs e)
+        {
+            ClearTarget();
+        }
+
+        private void lblTargetProj_TextChanged(object sender, EventArgs e)
         {
             ClearTarget();
         }
@@ -133,11 +144,76 @@ namespace DotSpatial.Plugins.CoordinateConverter
 
         private void FormCoordConverter_Load(object sender, EventArgs e)
         {
+            lblSourceProj.Text = ProjSource.Name;
             txtSourceX.Text = "0";
             txtSourceY.Text = "0";
             txtSourceZ.Text = "0";
+
+            ToolTip tp0 = new();
+            tp0.IsBalloon = true;
+            tp0.Active = true;
+            tp0.SetToolTip(btnChangeSourceProj, "Change the source projection");
+
+            lblTargetProj.Text = ProjTarget.Name;
+
+            ToolTip tp1 = new();
+            tp1.IsBalloon = true;
+            tp1.Active = true;
+            tp1.SetToolTip(btnChangeTargetProj, "Change the target projection");
         }
 
         #endregion
+
+        private void btnChangeSourceProj_Click(object sender, EventArgs e)
+        {
+            using var pf = new ProjectionSelectDialog();
+            pf.SelectedCoordinateSystem = ProjSource;
+            pf.ChangesApplied += PfSourceOnChangesApplied;
+            pf.ShowDialog(this);
+            pf.ChangesApplied -= PfSourceOnChangesApplied;
+        }
+
+        private void PfSourceOnChangesApplied(object sender, EventArgs eventArgs)
+        {
+            var pf = (ProjectionSelectDialog)sender;
+            ProjSource = pf.SelectedCoordinateSystem;
+            lblSourceProj.Text = ProjSource.Name;
+        }
+
+        private void btnChangeTargetProj_Click(object sender, EventArgs e)
+        {
+            using var pf = new ProjectionSelectDialog();
+            pf.SelectedCoordinateSystem = ProjTarget;
+            pf.ChangesApplied += PfTargetOnChangesApplied;
+            pf.ShowDialog(this);
+            pf.ChangesApplied -= PfTargetOnChangesApplied;
+        }
+
+        private void PfTargetOnChangesApplied(object sender, EventArgs eventArgs)
+        {
+            var pf = (ProjectionSelectDialog)sender;
+            ProjTarget = pf.SelectedCoordinateSystem;
+            lblTargetProj.Text = ProjTarget.Name;
+        }
+
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            //gather all the data
+            StringBuilder sb = new();
+            sb.AppendFormat("Source: {0}\r\nProj4:{1}", ProjSource.Name, ProjSource.ToProj4String());
+            sb.AppendLine();
+            sb.AppendFormat("X={0} Y={1} Z={2}", txtSourceX.Text, txtSourceY.Text, txtSourceZ.Text);
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendFormat("Target: {0}\r\nProj4:{1}", ProjTarget.Name, ProjTarget.ToProj4String());
+            sb.AppendLine();
+            sb.AppendFormat("X={0} Y={1} Z={2}", txtTargetX.Text, txtTargetY.Text, txtTargetZ.Text);
+
+            //add it to the clipboard
+            Clipboard.SetText(sb.ToString(), TextDataFormat.Text);
+
+            //confirmation message
+            MessageBox.Show("Data has been copied to the clipboard.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 }

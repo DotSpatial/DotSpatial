@@ -20,6 +20,7 @@
       <Private>False</Private>
       <CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj" />
     <ProjectReference Include="..\..\Core\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
       <Private>False</Private>
