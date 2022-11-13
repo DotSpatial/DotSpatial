@@ -82,7 +82,7 @@ namespace DotSpatial.Controls
             if (!doReloadSource)
             {
                 //***********************************************************************************************
-                //default is to NOT reload the source
+                //default is to NOT reload the source. the DataSet will be reprojected as-is.
                 //***********************************************************************************************
                 foreach (var layer in mapFrame.GetAllLayers())
                 {
@@ -112,7 +112,7 @@ namespace DotSpatial.Controls
             else
             {
                 //***********************************************************************************************
-                //reload the source
+                //reload the source into the DataSet and then reproject it.
                 //***********************************************************************************************
                 foreach (var layer in mapFrame.GetAllLayers())
                 {

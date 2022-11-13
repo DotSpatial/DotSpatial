@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?><MD_Metadata xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:xalan="http://xml.apache.org/xalan" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.isotc211.org/2005/gmd">
+    <characterSet>
+        <MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8" codeSpace="ISOTC211/19115">utf8</MD_CharacterSetCode>
+    </characterSet>
+    <hierarchyLevel>
+        <MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset" codeSpace="ISOTC211/19115">dataset</MD_ScopeCode>
+    </hierarchyLevel>
+    <hierarchyLevelName>
+        <gco:CharacterString>dataset</gco:CharacterString>
+    </hierarchyLevelName>
+    <contact gco:nilReason="missing"/>
+    <dateStamp gco:nilReason="missing"/>
+    <metadataStandardName>
+        <gco:CharacterString>ISO 19139 Geographic Information - Metadata - Implementation Specification</gco:CharacterString>
+    </metadataStandardName>
+    <metadataStandardVersion>
+        <gco:CharacterString>2007</gco:CharacterString>
+    </metadataStandardVersion>
+    <identificationInfo>
+        <MD_DataIdentification>
+            <citation>
+                <CI_Citation>
+                    <title>
+                        <gco:CharacterString>Map</gco:CharacterString>
+                    </title>
+                    <date gco:nilReason="missing"/>
+                </CI_Citation>
+            </citation>
+            <abstract>
+                <gco:CharacterString>The Airspace Boundary data is provided as a vector geospatial-enabled file format. Airspace Boundary data is published every eight weeks by the U.S. Department of Transportation, Federal Aviation Administration-Aeronautical Information Services. Current Effective Date: 0901Z 03 Nov 2022 to 0901Z 29 Dec 2022</gco:CharacterString>
+            </abstract>
+            <purpose>
+                <gco:CharacterString>Airspace Boundaries shown on the United States, Puerto Rico, and Virgin Islands’ aeronautical charts.</gco:CharacterString>
+            </purpose>
+            <credit>
+                <gco:CharacterString>Federal Aviation Administration, Air Traffic Organization, Mission Support Services, Aeronautical Information Services.</gco:CharacterString>
+            </credit>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FAA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ARTCC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>CTA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FIR</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ADIZ</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>class airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>high chart</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>low chart</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FAA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ARTCC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>CTA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FIR</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ADIZ</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>class airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>high chart</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>low chart</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FAA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ARTCC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>CTA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FIR</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ADIZ</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>class airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>high chart</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>low chart</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FAA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ARTCC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>CTA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FIR</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ADIZ</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>class airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>high chart</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>low chart</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FAA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ARTCC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>CTA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FIR</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ADIZ</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>class airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>high chart</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>low chart</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FAA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ARTCC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>CTA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FIR</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ADIZ</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>class airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>high chart</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>low chart</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FAA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ARTCC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>CTA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FIR</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ADIZ</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>class airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>high chart</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>low chart</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FAA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ARTCC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>CTA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FIR</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ADIZ</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>class airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>high chart</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>low chart</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FAA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ARTCC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>CTA</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>FIR</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ADIZ</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>class airspace</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>high chart</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>low chart</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <resourceConstraints>
+                <MD_Constraints>
+                    <useLimitation>
+                        <gco:CharacterString>The data provided is for public use. A limited number of Non-US Landing Facilities are included in this file. Some of these, in particular the Canadian facilities, are included to facilitate cartographic requirements in border regions. These records are not guaranteed to be complete and are not inclusive of all Canadian facilities. This airport data should not be considered official source for non-US facilities. Please contact the appropriate authority for more accurate and updated non-US airports data.</gco:CharacterString>
+                    </useLimitation>
+                </MD_Constraints>
+            </resourceConstraints>
+            <language gco:nilReason="missing"/>
+            <characterSet>
+                <MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8" codeSpace="ISOTC211/19115">utf8</MD_CharacterSetCode>
+            </characterSet>
+        </MD_DataIdentification>
+    </identificationInfo>
+</MD_Metadata>
