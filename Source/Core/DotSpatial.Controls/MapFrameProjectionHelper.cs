@@ -112,7 +112,7 @@ namespace DotSpatial.Controls
             else
             {
                 //***********************************************************************************************
-                //reload then source
+                //reload the source
                 //***********************************************************************************************
                 foreach (var layer in mapFrame.GetAllLayers())
                 {
@@ -139,19 +139,19 @@ namespace DotSpatial.Controls
                             // the layer has a source file so reload it into the layer. reload the data depending on the layer type.
                             if (layer is IMapFeatureLayer)
                             {
-                                IFeatureSet fs = DotSpatial.Data.FeatureSet.OpenFile(fileName);
+                                IFeatureSet fs = FeatureSet.OpenFile(fileName);
                                 IMapFeatureLayer lyrFeat = (IMapFeatureLayer)layer;
                                 lyrFeat.DataSet = fs;
                             }
                             else if (layer is IMapRasterLayer)
                             {
-                                IRaster rs = DotSpatial.Data.Raster.OpenFile(fileName);
+                                IRaster rs = Raster.OpenFile(fileName);
                                 IMapRasterLayer lyrRst = (MapRasterLayer)layer;
                                 lyrRst.DataSet = rs;
                             }
                             else if (layer is IMapImageLayer)
                             {
-                                IImageData img = DotSpatial.Data.ImageData.Open(fileName);
+                                IImageData img = ImageData.Open(fileName);
                                 IMapImageLayer lyrImg = (IMapImageLayer)layer;
                                 lyrImg.Image = img;
                             }
