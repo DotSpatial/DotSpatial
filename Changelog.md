@@ -1,21 +1,27 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+### Changed
+
+### Fixed
+
 ## V4.0
 
 ### Changed
 - Switched to VS2022
 - Switched to .Net 6
 
-## Fixed
+### Fixed
 - Fixed angle calculation for second and third quadrant (#1405) 
 
 ## V3.0.1
 
 ### Added
 - Label Setup dialog can now accept any font size (#1434)
-
-### Changed
 
 ### Fixed
 - Error when using wildcards in Symbology FilterExpression (#1160)
