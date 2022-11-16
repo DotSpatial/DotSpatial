@@ -1,13 +1,21 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+### Changed
+
+### Fixed
+
 ## V4.0
 
 ### Changed
 - Switched to VS2022
 - Switched to .Net 6
 
-## Fixed
+### Fixed
 - Fixed angle calculation for second and third quadrant (#1405) 
 
 ## V3.0.1
@@ -15,8 +23,6 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Label Setup dialog can now accept any font size (#1434)
 - Added an overload to the ReprojectMapFrame method to reproject the map frame without losing the original vertices by reloading the data from the source (#1470)
-
-### Changed
 
 ### Fixed
 - Error when using wildcards in Symbology FilterExpression (#1160)
