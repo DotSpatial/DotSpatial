@@ -1,10 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## V4.0
+## [Unreleased]
 
 ### Added
 - Screen referenced labels can be used in map snapshot
+
+### Changed
+
+### Fixed
+
+## V4.0
 
 ### Changed
 - Switched to VS2022
