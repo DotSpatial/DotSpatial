@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Screen referenced labels can be used in map snapshot
 
 ### Changed
 

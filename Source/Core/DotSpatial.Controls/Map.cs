@@ -262,7 +262,8 @@ namespace DotSpatial.Controls
                 {
                     foreach (var f in MapFunctions)
                     {
-                        if ((f.YieldStyle & YieldStyles.AlwaysOn) != YieldStyles.AlwaysOn) f.Deactivate();
+                        if ((f.YieldStyle & YieldStyles.AlwaysOn) != YieldStyles.AlwaysOn)
+                            f.Deactivate();
                     }
                 }
                 else
@@ -298,8 +299,10 @@ namespace DotSpatial.Controls
 
             set
             {
-                if (value) _isBusyIndex++;
-                else _isBusyIndex--;
+                if (value)
+                    _isBusyIndex++;
+                else
+                    _isBusyIndex--;
                 if (_isBusyIndex <= 0)
                 {
                     _isBusyIndex = 0;
@@ -450,13 +453,15 @@ namespace DotSpatial.Controls
         {
             get
             {
-                if (_geoMapFrame != null) return MapFrame.ProjectionModeDefine;
+                if (_geoMapFrame != null)
+                    return MapFrame.ProjectionModeDefine;
                 return ActionMode.Never;
             }
 
             set
             {
-                if (_geoMapFrame != null) _geoMapFrame.ProjectionModeDefine = value;
+                if (_geoMapFrame != null)
+                    _geoMapFrame.ProjectionModeDefine = value;
             }
         }
 
@@ -468,13 +473,15 @@ namespace DotSpatial.Controls
         {
             get
             {
-                if (_geoMapFrame != null) return MapFrame.ProjectionModeReproject;
+                if (_geoMapFrame != null)
+                    return MapFrame.ProjectionModeReproject;
                 return ActionMode.Never;
             }
 
             set
             {
-                if (_geoMapFrame != null) _geoMapFrame.ProjectionModeReproject = value;
+                if (_geoMapFrame != null)
+                    _geoMapFrame.ProjectionModeReproject = value;
             }
         }
 
@@ -497,7 +504,8 @@ namespace DotSpatial.Controls
 
             set
             {
-                if (MapFrame == null) return;
+                if (MapFrame == null)
+                    return;
                 MapFrame.SelectionEnabled = value;
             }
         }
@@ -555,9 +563,11 @@ namespace DotSpatial.Controls
 
             foreach (var f in MapFunctions)
             {
-                if ((f.YieldStyle & YieldStyles.AlwaysOn) == YieldStyles.AlwaysOn) continue; // ignore "Always On" functions
+                if ((f.YieldStyle & YieldStyles.AlwaysOn) == YieldStyles.AlwaysOn)
+                    continue; // ignore "Always On" functions
                 int test = (int)(f.YieldStyle & function.YieldStyle);
-                if (test > 0) f.Deactivate(); // any overlap of behavior leads to deactivation
+                if (test > 0)
+                    f.Deactivate(); // any overlap of behavior leads to deactivation
             }
 
             function.Activate();
@@ -716,7 +726,8 @@ namespace DotSpatial.Controls
         public bool ClearSelection(out Envelope affectedArea, bool force)
         {
             affectedArea = new Envelope();
-            if (MapFrame == null) return false;
+            if (MapFrame == null)
+                return false;
             return MapFrame.ClearSelection(out affectedArea, force);
         }
 
@@ -800,9 +811,11 @@ namespace DotSpatial.Controls
             const double Eps = 1e-7;
             var maxExtent = Extent.Width < Eps || Extent.Height < Eps ? new Extent(Extent.MinX - Eps, Extent.MinY - Eps, Extent.MaxX + Eps, Extent.MaxY + Eps) : Extent;
 
-            if (ExtendBuffer) maxExtent.ExpandBy(maxExtent.Width, maxExtent.Height);
+            if (ExtendBuffer)
+                maxExtent.ExpandBy(maxExtent.Width, maxExtent.Height);
 
-            if (expand) maxExtent.ExpandBy(maxExtent.Width / 10, maxExtent.Height / 10); // work item #84 (Expand target envelope by 10%)
+            if (expand)
+                maxExtent.ExpandBy(maxExtent.Width / 10, maxExtent.Height / 10); // work item #84 (Expand target envelope by 10%)
 
             return maxExtent;
         }
@@ -846,7 +859,8 @@ namespace DotSpatial.Controls
         public bool InvertSelection(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = new Envelope();
-            if (MapFrame == null) return false;
+            if (MapFrame == null)
+                return false;
             return MapFrame.InvertSelection(tolerant, strict, mode, out affectedArea);
         }
 
@@ -1070,6 +1084,92 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Captures an image of whatever the contents of the back buffer would be at the size of the screen.
+        /// Since the DotSpatial framework currently does not provide a mechanism for screen referenced labels
+        /// the best we can do in the meantime is to allow the developer to pass in Label objects that are controls
+        /// placed on top of the map.
+        /// </summary>
+        /// <param name="labelList">a list of Label controls</param>
+        /// <returns>A bitmap with the snap shot plus embedded string text.</returns>
+        public Bitmap SnapShot(List<Label> labelList)
+        {
+            Bitmap bmp = SnapShot();
+
+            // inject the labels into the bitmap
+            if (labelList != null && labelList.Count > 0)
+            {
+                using (Graphics gr = Graphics.FromImage(bmp))
+                {
+                    gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                    // cycle through each label in the list
+                    foreach (Label lbl in labelList)
+                    {
+                        // the label has to be visible and it must contain text
+                        if (lbl != null && lbl.Visible && !string.IsNullOrWhiteSpace(lbl.Text))
+                        {
+                            // convert top left of label to screen coords
+                            Point ptScr = lbl.PointToScreen(new Point(0, 0));
+
+                            // take the screen point and determine where that point is on the map control
+                            Point ptMap = PointToClient(ptScr);
+
+                            // get the label rectangle
+                            Rectangle rct = lbl.ClientRectangle;
+
+                            // setup the background rectangle
+                            if (lbl.BackColor != Color.Transparent)
+                            {
+                                // get the label backcolor
+                                Brush brshBak = new SolidBrush(lbl.BackColor);
+
+                                // to create the back area in graphics we can use the rectangle dimensions but we
+                                // need to use proper location
+                                gr.FillRectangle(brshBak, ptMap.X, ptMap.Y, rct.Width, rct.Height);
+                            }
+
+                            // setup the background border
+                            if (lbl.BorderStyle != BorderStyle.None)
+                            {
+                                // get the label border color (assumed to be black)
+                                Pen penBdr = new Pen(Color.Black, 1);
+
+                                // to create the back border in graphics we can use the rectangle dimensions but we
+                                // need to use proper location
+                                gr.DrawRectangle(penBdr, ptMap.X, ptMap.Y, rct.Width, rct.Height);
+                            }
+
+                            // set up the text part
+                            string txt = lbl.Text;
+                            Font fnt = lbl.Font;
+                            SolidBrush brsh = new SolidBrush(lbl.ForeColor);
+
+                            // draw the text string directly on the bitmap
+                            gr.DrawString(txt, fnt, brsh, ptMap);
+                        }
+                    }
+                }
+            }
+
+            // return the modified bitmap
+            return bmp;
+        }
+
+        /// <summary>
+        /// Captures an image of whatever the contents of the back buffer would be at the size of the screen.
+        /// Since the DotSpatial framework currently does not provide a mechanism for screen referenced labels
+        /// the best we can do in the meantime is to allow the developer to pass in Label objects that are controls
+        /// placed on top of the map.
+        /// </summary>
+        /// <param name="lbl">a Label control</param>
+        /// <returns>A bitmap with the snap shot plus embedded string text.</returns>
+        public Bitmap SnapShot(Label lbl)
+        {
+            List<Label> labelList = new List<Label>() { lbl };
+            return SnapShot(labelList);
+        }
+
+        /// <summary>
         /// Adds any members found in the specified region to the selected state as long as SelectionEnabled is set to true.
         /// </summary>
         /// <param name="tolerant">The geographic region where selection occurs that is tolerant for point or linestrings.</param>
@@ -1080,7 +1180,8 @@ namespace DotSpatial.Controls
         public bool UnSelect(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = new Envelope();
-            if (MapFrame == null) return false;
+            if (MapFrame == null)
+                return false;
             return MapFrame.UnSelect(tolerant, strict, mode, out affectedArea);
         }
 
@@ -1192,7 +1293,8 @@ namespace DotSpatial.Controls
         /// <param name="mapFrame">MapFrame the event handlers get removed from.</param>
         protected virtual void OnExcludeMapFrame(IMapFrame mapFrame)
         {
-            if (mapFrame == null) return;
+            if (mapFrame == null)
+                return;
             mapFrame.UpdateMap -= MapFrameUpdateMap;
             mapFrame.ScreenUpdated -= MapFrameScreenUpdated;
             mapFrame.ItemChanged -= MapFrameItemChanged;
@@ -1279,7 +1381,8 @@ namespace DotSpatial.Controls
             foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
                 tool.DoMouseDoubleClick(args);
-                if (args.Handled) break;
+                if (args.Handled)
+                    break;
             }
 
             base.OnMouseDoubleClick(e);
@@ -1295,7 +1398,8 @@ namespace DotSpatial.Controls
             foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
                 tool.DoMouseDown(args);
-                if (args.Handled) break;
+                if (args.Handled)
+                    break;
             }
 
             base.OnMouseDown(e);
@@ -1311,7 +1415,8 @@ namespace DotSpatial.Controls
             foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
                 tool.DoMouseMove(args);
-                if (args.Handled) break;
+                if (args.Handled)
+                    break;
             }
 
             GeoMouseMove?.Invoke(this, args);
@@ -1329,7 +1434,8 @@ namespace DotSpatial.Controls
             foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
                 tool.DoMouseUp(args);
-                if (args.Handled) break;
+                if (args.Handled)
+                    break;
             }
 
             base.OnMouseUp(e);
@@ -1345,7 +1451,8 @@ namespace DotSpatial.Controls
             foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
                 tool.DoMouseWheel(args);
-                if (args.Handled) break;
+                if (args.Handled)
+                    break;
             }
 
             base.OnMouseWheel(e);
@@ -1357,14 +1464,17 @@ namespace DotSpatial.Controls
         /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (_geoMapFrame.IsPanning) return;
+            if (_geoMapFrame.IsPanning)
+                return;
 
             var clip = e.ClipRectangle;
-            if (clip.IsEmpty) clip = ClientRectangle;
+            if (clip.IsEmpty)
+                clip = ClientRectangle;
 
             // if the area to paint is too small, there's nothing to paint.
             // Added to fix http://dotspatial.codeplex.com/workitem/320
-            if (clip.Width < 1 || clip.Height < 1) return;
+            if (clip.Width < 1 || clip.Height < 1)
+                return;
 
             using var stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb);
             using var g = Graphics.FromImage(stencil);
@@ -1436,7 +1546,8 @@ namespace DotSpatial.Controls
             double minExt = 1e-7;
             double maxExt = 1e+9; // if we can zoom out farther than the maps extent we don't zoom out farther than this
             var maxExtent = GetMaxExtent(true);
-            if (Math.Max(maxExtent.Height, maxExtent.Width) > maxExt) maxExt = Math.Max(maxExtent.Height, maxExtent.Width); // make sure maxExtent isn't bigger than maxExt
+            if (Math.Max(maxExtent.Height, maxExtent.Width) > maxExt)
+                maxExt = Math.Max(maxExtent.Height, maxExtent.Width); // make sure maxExtent isn't bigger than maxExt
 
             if (!ZoomOutFartherThanMaxExtent && (maxExtent.Width != 0 && maxExtent.Height != 0) && (ViewExtents.Width > (maxExtent.Width + 1)) && (ViewExtents.Height > (maxExtent.Height + 1)))
             {
@@ -1531,7 +1642,8 @@ namespace DotSpatial.Controls
             foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
                 tool.DoKeyDown(e);
-                if (e.Handled) break;
+                if (e.Handled)
+                    break;
             }
         }
 
@@ -1540,7 +1652,8 @@ namespace DotSpatial.Controls
             foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
                 tool.DoKeyUp(e);
-                if (e.Handled) break;
+                if (e.Handled)
+                    break;
             }
         }
 
@@ -1599,8 +1712,10 @@ namespace DotSpatial.Controls
                 var newView = new Rectangle(_geoMapFrame.View.X, _geoMapFrame.View.Y, _geoMapFrame.View.Width + diff.X, _geoMapFrame.View.Height + diff.Y);
 
                 // Check for minimal size of view.
-                if (newView.Width < 5) newView.Width = 5;
-                if (newView.Height < 5) newView.Height = 5;
+                if (newView.Width < 5)
+                    newView.Width = 5;
+                if (newView.Height < 5)
+                    newView.Height = 5;
 
                 _geoMapFrame.View = newView;
                 _geoMapFrame.ResetExtents();
