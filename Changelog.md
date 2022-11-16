@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- Added a coordinate system type field to ProjectionInfo
+
+### Changed
+
+### Fixed
+
 ## V4.0
 
 ### Changed

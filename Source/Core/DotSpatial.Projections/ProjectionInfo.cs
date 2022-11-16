@@ -90,6 +90,11 @@ namespace DotSpatial.Projections
         public double? CentralMeridian { get; set; }
 
         /// <summary>
+        ///   The coordinate system type: Projected, geographic, geocentric, etc.
+        /// </summary>
+        public CoordinateSystemType CoordinateSystemType { get; set; } = CoordinateSystemType.Unknown;
+
+        /// <summary>
         ///   The false easting for this coordinate system
         /// </summary>
         public double? FalseEasting { get; set; }
@@ -973,6 +978,9 @@ namespace DotSpatial.Projections
         /// </summary>
         private void ParseProj4String(string proj4String)
         {
+            // default coordinate system is unknown
+            CoordinateSystemType = CoordinateSystemType.Unknown;
+
             if (string.IsNullOrEmpty(proj4String))
             {
                 return;
@@ -1096,6 +1104,18 @@ namespace DotSpatial.Projections
 
                     case "proj":
 
+                        //check for coordinate system type. A data set's coordinate system is identified by the PROJCS keyword if the data
+                        //are in projected coordinates, by GEOGCS if in geographic coordinates, or by GEOCCS if in geocentric coordinates. 
+                        //https://www.earthdatascience.org/courses/earth-analytics/spatial-data-r/understand-epsg-wkt-and-other-crs-definition-file-types/
+                        if (value == "longlat")
+                        {
+                            CoordinateSystemType = CoordinateSystemType.Geographic;
+                        }
+                        else
+                        {
+                            CoordinateSystemType = CoordinateSystemType.Projected;
+                        }
+
                         if (value == "longlat")
                         {
                             IsLatLon = true;
@@ -1216,9 +1236,29 @@ namespace DotSpatial.Projections
         /// </returns>
         public bool TryParseEsriString(string esriString)
         {
-            if (esriString == null)
+            // default coordinate system is unknown
+            CoordinateSystemType = CoordinateSystemType.Unknown;
+
+            // checked for invalid input
+            if (string.IsNullOrWhiteSpace(esriString))
             {
                 return false;
+            }
+
+            //check for coordinate system type. A data set's coordinate system is identified by the PROJCS keyword if the data
+            //are in projected coordinates, by GEOGCS if in geographic coordinates, or by GEOCCS if in geocentric coordinates. 
+            //https://webhelp.esri.com/arcims/9.3/General/topics/config_projection.htm
+            if (esriString.StartsWith("PROJCS"))
+            {
+                CoordinateSystemType = CoordinateSystemType.Projected;
+            }
+            else if (esriString.StartsWith("GEOGCS"))
+            {
+                CoordinateSystemType = CoordinateSystemType.Geographic;
+            }
+            else if (esriString.StartsWith("GEOCCS"))
+            {
+                CoordinateSystemType = CoordinateSystemType.Geocentric;
             }
 
             if (!esriString.Contains("GEOGCS"))
