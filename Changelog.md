@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 ### Fixed
+- LineOrientation fix for Parallel/Perpendicular labels (#1466)
 
 ## V4.0
 
@@ -17,7 +18,6 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Fixed angle calculation for second and third quadrant (#1405) 
-- LineOrientation fix for Parallel/Perpendicular labels (#1466)
 
 ## V3.0.1
 
