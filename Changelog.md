@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Added an overload to the ReprojectMapFrame method to reproject the map frame without losing the original vertices by reloading the data from the source (#1470)
 
 ### Changed
 
@@ -22,7 +23,6 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Label Setup dialog can now accept any font size (#1434)
-- Added an overload to the ReprojectMapFrame method to reproject the map frame without losing the original vertices by reloading the data from the source (#1470)
 
 ### Fixed
 - Error when using wildcards in Symbology FilterExpression (#1160)
