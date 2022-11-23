@@ -1,6 +1,6 @@
 # What is DotSpatial?
 
-DotSpatial is a geographic information system library written for .NET Framework.
+DotSpatial is a geographic information system library written for .NET Framework (V1-V3) and .NET Core (V4+).
 It allows developers to incorporate spatial data, analysis and mapping functionality into their applications or to contribute GIS extensions to the community.
 
 DotSpatial provides a map control for .NET and several GIS capabilities including:
@@ -15,10 +15,10 @@ DotSpatial provides a map control for .NET and several GIS capabilities includin
 
 ### Questions & Documentation
 
-Please use the [discussion list](https://dotspatial.codeplex.com/discussions) to post any discussions related to the development or use of DotSpatial libraries. This is a great place to discuss potential features and to ask questions about how to use the libraries.
+Please use the [discussion list](https://github.com/DotSpatial/DotSpatial/discussions) to post any discussions related to the development or use of DotSpatial libraries. This is a great place to discuss potential features and to ask questions about how to use the libraries.
 
 Documentation and code samples:
-* [documentation page](https://dotspatial.codeplex.com/documentation) 
+* [documentation page](https://github.com/DotSpatial/DotSpatial/wiki) 
 * [chm file with API documentation](https://github.com/DotSpatial/DotSpatial/tree/master/Source/Documentation/DotSpatial.chm)
 * [examples folder](https://github.com/DotSpatial/DotSpatial/tree/master/Source/Examples).
 
