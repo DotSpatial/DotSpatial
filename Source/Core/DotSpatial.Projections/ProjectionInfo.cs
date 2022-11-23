@@ -95,6 +95,15 @@ namespace DotSpatial.Projections
         public CoordinateSystemType CoordinateSystemType { get; set; } = CoordinateSystemType.Unknown;
 
         /// <summary>
+        ///   The input coordinate system string.
+        /// </summary>
+        /// <remarks>
+        ///   Because the input string is converted to a class and then output as a string with seperate logic, the two could
+        ///   be different. This property will save the actual input string.
+        /// </remarks>
+        public string CoordinateSystemInputString { get; set; }
+
+        /// <summary>
         ///   The false easting for this coordinate system
         /// </summary>
         public double? FalseEasting { get; set; }
@@ -225,7 +234,6 @@ namespace DotSpatial.Projections
         ///   Gets or sets the integer zone parameter if it is specified.
         /// </summary>
         public int? Zone { get; set; }
-
 
         // ReSharper disable InconsistentNaming
         /// <summary>
@@ -981,6 +989,9 @@ namespace DotSpatial.Projections
             // default coordinate system is unknown
             CoordinateSystemType = CoordinateSystemType.Unknown;
 
+            //save the input string
+            CoordinateSystemInputString = proj4String;
+
             if (string.IsNullOrEmpty(proj4String))
             {
                 return;
@@ -1109,11 +1120,11 @@ namespace DotSpatial.Projections
                         //https://www.earthdatascience.org/courses/earth-analytics/spatial-data-r/understand-epsg-wkt-and-other-crs-definition-file-types/
                         if (value == "longlat")
                         {
-                            CoordinateSystemType = CoordinateSystemType.Geographic;
+                            CoordinateSystemType  = CoordinateSystemType.Geographic;
                         }
                         else
                         {
-                            CoordinateSystemType = CoordinateSystemType.Projected;
+                            CoordinateSystemType  = CoordinateSystemType.Projected;
                         }
 
                         if (value == "longlat")
@@ -1237,7 +1248,10 @@ namespace DotSpatial.Projections
         public bool TryParseEsriString(string esriString)
         {
             // default coordinate system is unknown
-            CoordinateSystemType = CoordinateSystemType.Unknown;
+            CoordinateSystemType  = CoordinateSystemType.Unknown;
+
+            //save the input string
+            CoordinateSystemInputString = esriString;
 
             // checked for invalid input
             if (string.IsNullOrWhiteSpace(esriString))
