@@ -98,7 +98,7 @@ namespace DotSpatial.Projections
         ///   The input coordinate system string.
         /// </summary>
         /// <remarks>
-        ///   Because the input string is converted to a class and then output as a string with seperate logic, the two could
+        ///   Because the input string is converted to a class and then output as a string with separate logic, the two could
         ///   be different. This property will save the actual input string.
         /// </remarks>
         public string CoordinateSystemInputString { get; set; }
