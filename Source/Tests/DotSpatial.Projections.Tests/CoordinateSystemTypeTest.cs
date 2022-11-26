@@ -61,6 +61,7 @@ namespace DotSpatial.Projections.Tests
                 //**********************************************************************
                 ProjectionInfo projSourceA = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlaska1FIPS5001;
                 //ProjectionInfo projSourceA = ProjectionInfo.FromProj4String("+proj=omerc +lat_0=57 +lonc=-133.6666666666667 +alpha=-36.86989764583333 +k=0.9999 +x_0=5000000.000000102 +y_0=-5000000.000000102 +ellps=clrk66 +datum=NAD27 +to_meter=0.3048006096012192 +no_defs");
+                //ProjectionInfo projSourceA = ProjectionInfo.FromEpsgCode(26731);
                 ProjectionInfo projTarget = KnownCoordinateSystems.Geographic.NorthAmerica.NorthAmericanDatum1927;
                 System.Diagnostics.Debug.Print("source:{0}", projSourceA.ToProj4String());
                 System.Diagnostics.Debug.Print("target:{0}", projTarget.ToProj4String());
