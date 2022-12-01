@@ -1120,16 +1120,12 @@ namespace DotSpatial.Projections
                         //https://www.earthdatascience.org/courses/earth-analytics/spatial-data-r/understand-epsg-wkt-and-other-crs-definition-file-types/
                         if (value == "longlat")
                         {
+                            IsLatLon = true;
                             CoordinateSystemType  = CoordinateSystemType.Geographic;
                         }
                         else
                         {
                             CoordinateSystemType  = CoordinateSystemType.Projected;
-                        }
-
-                        if (value == "longlat")
-                        {
-                            IsLatLon = true;
                         }
 
                         Transform = tmercIsUtm
