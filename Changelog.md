@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Added a coordinate system type field to ProjectionInfo (#1473)
 
 ### Changed
 
