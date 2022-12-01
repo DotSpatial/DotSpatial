@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See License.txt file in the project root for full license information.
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
@@ -98,8 +99,26 @@ namespace DotSpatial.Tools
             int noOfCol = Convert.ToInt32(Math.Abs(envelope.Width / smallestCellRaster.CellWidth));
             int noOfRow = Convert.ToInt32(Math.Abs(envelope.Height / smallestCellRaster.CellHeight));
 
-            // create output raster
-            output = Raster.CreateRaster(output.Filename, string.Empty, noOfCol, noOfRow, 1, typeof(int), new[] { string.Empty });
+            // Determine what dataType the output will be. This ESRI source https://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/what-is-raster-data.htm
+            // says that for a raster "Cell values can be either positive or negative, integer, or floating point. Integer values are best used to represent categorical (discrete)
+            // data and floating-point values to represent continuous surfaces". this defintion will make us conclude that output type should depend on the type of the two input
+            // rasters. i.e If either inputs is of type float then the type of the output should be float. If both are of type int then the output should be int. Similarly, if the
+            // type of one of the rasters is double and the other is of type float then type of output should be double, and so on.
+            Type outType = typeof(int); //default is integer
+            if (input1.DataType == input2.DataType)
+            {
+                // if both types are the same then make the output type equal the type of the first raster
+                outType = input1.DataType;
+            }
+            else if (true)
+            {
+                // otherwise determine which type is the minimum covariant type for best fit
+                outType = GetClosestType(input1.DataType, input2.DataType);
+            }
+
+            // create output raster of type that can hold the data type of both input rasters
+            //output = Raster.CreateRaster(output.Filename, string.Empty, noOfCol, noOfRow, 1, typeof(int), new[] { string.Empty });
+            output = Raster.CreateRaster(output.Filename, string.Empty, noOfCol, noOfRow, 1, outType, new[] { string.Empty });
             RasterBounds bound = new(noOfRow, noOfCol, envelope);
             output.Bounds = bound;
 
@@ -208,6 +227,27 @@ namespace DotSpatial.Tools
             Extent e2 = input2.Bounds.Extent;
             e1.ExpandToInclude(e2);
             return e1;
+        }
+
+        /// <summary>
+        /// Determine the minimum covariant type for best fit between two types.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        private static Type GetClosestType(Type a, Type b)
+        {
+            var t = a;
+
+            while (a != null)
+            {
+                if (a.IsAssignableFrom(b))
+                    return a;
+
+                a = a.BaseType;
+            }
+
+            return null;
         }
 
         #endregion
