@@ -1901,7 +1901,7 @@ namespace DotSpatial.Data
                 int nullPoint = name.IndexOf((char)0);
                 if (nullPoint != -1)
                 {
-                    name = name[..nullPoint];
+                    name = name.Substring(0, nullPoint);
                 }
 
                 // read the field type
