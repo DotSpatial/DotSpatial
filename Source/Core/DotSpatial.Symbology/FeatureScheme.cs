@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Design;
 using System.Globalization;
 using System.Linq;
 using DotSpatial.Data;
@@ -127,9 +126,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the UITypeEditor to use for editing this FeatureScheme.
         /// </summary>
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public UITypeEditor PropertyEditor { get; protected set; }
+        //[Browsable(false)]
+        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        //public UITypeEditor PropertyEditor { get; protected set; }
 
         #endregion
 

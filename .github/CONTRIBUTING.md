@@ -16,7 +16,7 @@ Note that your contributions must be your own work and licensed under the same t
 ## Reporting bugs
 
 First, search the issue tracker to see if the bug is already there.
-Please use the [discussion forums](http://dotspatial.codeplex.com/discussions) if you are unsure whether it is a bug in the library or a problem in your code.
+Please use the [discussion forums](https://github.com/DotSpatial/DotSpatial/discussions) if you are unsure whether it is a bug in the library or a problem in your code.
 When you are sure, please add defects in the issue tracker.
 
 Please use markdown to format your code blocks with [syntax highlighting](https://help.github.com/articles/github-flavored-markdown/#syntax-highlighting) to make it easier for everyone to read. 
@@ -34,7 +34,7 @@ A bug report should include:
 
 ## Suggesting new features
 
-Please use the [discussion forums](http://dotspatial.codeplex.com/discussions) or add it directly in the issue tracker in the same way as bug reports.
+Please use the [discussion forums](https://github.com/DotSpatial/DotSpatial/discussions) or add it directly in the [issue tracker](https://github.com/DotSpatial/DotSpatial/issues) in the same way as bug reports.
 
 
 ## Create your own fork
