@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Added a coordinate system type field to ProjectionInfo (#1473)
 
 ### Changed
+ - Change the code in "GenerateCentroid.cs" (#1465)
 
 ### Fixed
 
