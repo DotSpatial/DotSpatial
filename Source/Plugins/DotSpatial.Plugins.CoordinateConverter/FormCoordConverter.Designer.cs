@@ -1,6 +1,8 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
 // Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
+using System.Windows.Forms;
+
 namespace DotSpatial.Plugins.CoordinateConverter
 {
     partial class FormCoordConverter
@@ -61,7 +63,7 @@ namespace DotSpatial.Plugins.CoordinateConverter
             this.txtSourceX.Size = new System.Drawing.Size(140, 23);
             this.txtSourceX.TabIndex = 4;
             this.txtSourceX.Text = "0";
-            this.txtSourceX.TextChanged += new System.EventHandler(this.txtSourceX_TextChanged);
+            this.txtSourceX.TextChanged += new System.EventHandler(this.TxtSourceX_TextChanged);
             // 
             // txtSourceY
             // 
@@ -70,7 +72,7 @@ namespace DotSpatial.Plugins.CoordinateConverter
             this.txtSourceY.Size = new System.Drawing.Size(140, 23);
             this.txtSourceY.TabIndex = 6;
             this.txtSourceY.Text = "0";
-            this.txtSourceY.TextChanged += new System.EventHandler(this.txtSourceY_TextChanged);
+            this.txtSourceY.TextChanged += new System.EventHandler(this.TxtSourceY_TextChanged);
             // 
             // txtSourceZ
             // 
@@ -79,7 +81,7 @@ namespace DotSpatial.Plugins.CoordinateConverter
             this.txtSourceZ.Size = new System.Drawing.Size(140, 23);
             this.txtSourceZ.TabIndex = 8;
             this.txtSourceZ.Text = "0";
-            this.txtSourceZ.TextChanged += new System.EventHandler(this.txtSourceZ_TextChanged);
+            this.txtSourceZ.TextChanged += new System.EventHandler(this.TxtSourceZ_TextChanged);
             // 
             // txtTargetX
             // 
@@ -113,7 +115,7 @@ namespace DotSpatial.Plugins.CoordinateConverter
             this.btnConvert.TabIndex = 19;
             this.btnConvert.Text = "&Convert";
             this.btnConvert.UseVisualStyleBackColor = true;
-            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
+            this.btnConvert.Click += new System.EventHandler(this.BtnConvert_Click);
             // 
             // btnClose
             // 
@@ -123,7 +125,7 @@ namespace DotSpatial.Plugins.CoordinateConverter
             this.btnClose.TabIndex = 20;
             this.btnClose.Text = "Clos&e";
             this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.btnClose.Click += new System.EventHandler(this.BtnClose_Click);
             // 
             // label1
             // 
@@ -205,7 +207,7 @@ namespace DotSpatial.Plugins.CoordinateConverter
             this.lblSourceProj.Size = new System.Drawing.Size(22, 15);
             this.lblSourceProj.TabIndex = 1;
             this.lblSourceProj.Text = "---";
-            this.lblSourceProj.TextChanged += new System.EventHandler(this.lblSourceProj_TextChanged);
+            this.lblSourceProj.TextChanged += new System.EventHandler(this.LblSourceProj_TextChanged);
             // 
             // btnChangeSourceProj
             // 
@@ -215,7 +217,7 @@ namespace DotSpatial.Plugins.CoordinateConverter
             this.btnChangeSourceProj.TabIndex = 2;
             this.btnChangeSourceProj.Text = "...";
             this.btnChangeSourceProj.UseVisualStyleBackColor = true;
-            this.btnChangeSourceProj.Click += new System.EventHandler(this.btnChangeSourceProj_Click);
+            this.btnChangeSourceProj.Click += new System.EventHandler(this.BtnChangeSourceProj_Click);
             // 
             // btnChangeTargetProj
             // 
@@ -225,7 +227,7 @@ namespace DotSpatial.Plugins.CoordinateConverter
             this.btnChangeTargetProj.TabIndex = 11;
             this.btnChangeTargetProj.Text = "...";
             this.btnChangeTargetProj.UseVisualStyleBackColor = true;
-            this.btnChangeTargetProj.Click += new System.EventHandler(this.btnChangeTargetProj_Click);
+            this.btnChangeTargetProj.Click += new System.EventHandler(this.BtnChangeTargetProj_Click);
             // 
             // lblTargetProj
             // 
@@ -235,7 +237,7 @@ namespace DotSpatial.Plugins.CoordinateConverter
             this.lblTargetProj.Size = new System.Drawing.Size(22, 15);
             this.lblTargetProj.TabIndex = 10;
             this.lblTargetProj.Text = "---";
-            this.lblTargetProj.TextChanged += new System.EventHandler(this.lblTargetProj_TextChanged);
+            this.lblTargetProj.TextChanged += new System.EventHandler(this.LblTargetProj_TextChanged);
             // 
             // btnCopy
             // 
@@ -245,7 +247,7 @@ namespace DotSpatial.Plugins.CoordinateConverter
             this.btnCopy.TabIndex = 18;
             this.btnCopy.Text = "Copy to Clip&board";
             this.btnCopy.UseVisualStyleBackColor = true;
-            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+            this.btnCopy.Click += new System.EventHandler(this.BtnCopy_Click);
             // 
             // FormCoordConverter
             // 

@@ -2,24 +2,18 @@
 // Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using DotSpatial.Controls;
 using DotSpatial.Projections;
 using DotSpatial.Projections.Forms;
 
 namespace DotSpatial.Plugins.CoordinateConverter
 {
+    /// <summary>
+    /// A form to convert a coordinate from one coordinate system to another.
+    /// </summary>
     public partial class FormCoordConverter : Form
     {
-        AppManager appManager;
-
         #region Constructors
 
         /// <summary>
@@ -30,53 +24,44 @@ namespace DotSpatial.Plugins.CoordinateConverter
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FormCoordConverter"/> class.
-        /// </summary>
-        public FormCoordConverter(AppManager app)
-        {
-            InitializeComponent();
-            appManager = app;
-        }
-
         #endregion
 
         #region Properties
 
-        public double Xsource { get; set; }
-        public double Ysource { get; set; }
-        public double Zsource { get; set; }
-        public ProjectionInfo ProjSource { get; set; } = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlaska1FIPS5001;
-        public double Xtarget { get; set; }
-        public double Ytarget { get; set; }
-        public double Ztarget { get; set; }
-        public ProjectionInfo ProjTarget { get; set; } = KnownCoordinateSystems.Geographic.NorthAmerica.NorthAmericanDatum1927;
+        private double Xsource { get; set; }
+        private double Ysource { get; set; }
+        private double Zsource { get; set; }
+        private ProjectionInfo ProjSource { get; set; } = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlaska1FIPS5001;
+        private double Xtarget { get; set; }
+        private double Ytarget { get; set; }
+        private double Ztarget { get; set; }
+        private ProjectionInfo ProjTarget { get; set; } = KnownCoordinateSystems.Geographic.NorthAmerica.NorthAmericanDatum1927;
 
         #endregion
 
         #region Methods
 
-        private void txtSourceX_TextChanged(object sender, EventArgs e)
+        private void TxtSourceX_TextChanged(object sender, EventArgs e)
         {
             ClearTarget();
         }
 
-        private void txtSourceY_TextChanged(object sender, EventArgs e)
+        private void TxtSourceY_TextChanged(object sender, EventArgs e)
         {
             ClearTarget();
         }
 
-        private void txtSourceZ_TextChanged(object sender, EventArgs e)
+        private void TxtSourceZ_TextChanged(object sender, EventArgs e)
         {
             ClearTarget();
         }
 
-        private void lblSourceProj_TextChanged(object sender, EventArgs e)
+        private void LblSourceProj_TextChanged(object sender, EventArgs e)
         {
             ClearTarget();
         }
 
-        private void lblTargetProj_TextChanged(object sender, EventArgs e)
+        private void LblTargetProj_TextChanged(object sender, EventArgs e)
         {
             ClearTarget();
         }
@@ -87,33 +72,42 @@ namespace DotSpatial.Plugins.CoordinateConverter
             Ytarget = double.NaN;
             Ztarget = double.NaN;
 
-            txtTargetX.Text = String.Empty;
-            txtTargetY.Text = String.Empty;
-            txtTargetZ.Text = String.Empty;
+            txtTargetX.Text = string.Empty;
+            txtTargetY.Text = string.Empty;
+            txtTargetZ.Text = string.Empty;
         }
 
-        private void btnConvert_Click(object sender, EventArgs e)
+        private void BtnConvert_Click(object sender, EventArgs e)
         {
             try
             {
                 //check and assign vars
-                bool isok = Double.TryParse(txtSourceX.Text, out double resX);
-                if (isok)
+                if (double.TryParse(txtSourceX.Text, out double resX))
+                {
                     Xsource = resX;
+                }
                 else
+                {
                     MessageBox.Show("Invalid x input", "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
-                isok = Double.TryParse(txtSourceY.Text, out double resY);
-                if (isok)
+                if (double.TryParse(txtSourceY.Text, out double resY))
+                {
                     Ysource = resY;
+                }
                 else
+                {
                     MessageBox.Show("Invalid y input", "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
-                isok = Double.TryParse(txtSourceZ.Text, out double resZ);
-                if (isok)
+                if (double.TryParse(txtSourceZ.Text, out double resZ))
+                {
                     Zsource = resZ;
+                }
                 else
+                {
                     MessageBox.Show("Invalid z input", "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
                 //create array of the source coordinates
                 double[] xy = { Xsource, Ysource };
@@ -137,9 +131,9 @@ namespace DotSpatial.Plugins.CoordinateConverter
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void BtnClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void FormCoordConverter_Load(object sender, EventArgs e)
@@ -149,24 +143,28 @@ namespace DotSpatial.Plugins.CoordinateConverter
             txtSourceY.Text = "0";
             txtSourceZ.Text = "0";
 
-            ToolTip tp0 = new();
-            tp0.IsBalloon = true;
-            tp0.Active = true;
+            ToolTip tp0 = new()
+            {
+                IsBalloon = true,
+                Active = true
+            };
             tp0.SetToolTip(btnChangeSourceProj, "Change the source projection");
 
             lblTargetProj.Text = ProjTarget.Name;
 
-            ToolTip tp1 = new();
-            tp1.IsBalloon = true;
-            tp1.Active = true;
+            ToolTip tp1 = new()
+            {
+                IsBalloon = true,
+                Active = true
+            };
             tp1.SetToolTip(btnChangeTargetProj, "Change the target projection");
         }
 
         #endregion
 
-        private void btnChangeSourceProj_Click(object sender, EventArgs e)
+        private void BtnChangeSourceProj_Click(object sender, EventArgs e)
         {
-            using var pf = new ProjectionSelectDialog();
+            using ProjectionSelectDialog pf = new();
             pf.SelectedCoordinateSystem = ProjSource;
             pf.ChangesApplied += PfSourceOnChangesApplied;
             pf.ShowDialog(this);
@@ -175,14 +173,14 @@ namespace DotSpatial.Plugins.CoordinateConverter
 
         private void PfSourceOnChangesApplied(object sender, EventArgs eventArgs)
         {
-            var pf = (ProjectionSelectDialog)sender;
+            ProjectionSelectDialog pf = (ProjectionSelectDialog)sender;
             ProjSource = pf.SelectedCoordinateSystem;
             lblSourceProj.Text = ProjSource.Name;
         }
 
-        private void btnChangeTargetProj_Click(object sender, EventArgs e)
+        private void BtnChangeTargetProj_Click(object sender, EventArgs e)
         {
-            using var pf = new ProjectionSelectDialog();
+            using ProjectionSelectDialog pf = new();
             pf.SelectedCoordinateSystem = ProjTarget;
             pf.ChangesApplied += PfTargetOnChangesApplied;
             pf.ShowDialog(this);
@@ -191,12 +189,12 @@ namespace DotSpatial.Plugins.CoordinateConverter
 
         private void PfTargetOnChangesApplied(object sender, EventArgs eventArgs)
         {
-            var pf = (ProjectionSelectDialog)sender;
+            ProjectionSelectDialog pf = (ProjectionSelectDialog)sender;
             ProjTarget = pf.SelectedCoordinateSystem;
             lblTargetProj.Text = ProjTarget.Name;
         }
 
-        private void btnCopy_Click(object sender, EventArgs e)
+        private void BtnCopy_Click(object sender, EventArgs e)
         {
             //gather all the data
             StringBuilder sb = new();
