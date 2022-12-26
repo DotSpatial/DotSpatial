@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
  - Change the code in "GenerateCentroid.cs" (#1465)
 
 ### Fixed
+- Merge grid update (#1482)
 
 ## V4.0
 
