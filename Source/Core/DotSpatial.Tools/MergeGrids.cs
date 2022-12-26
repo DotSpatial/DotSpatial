@@ -78,6 +78,8 @@ namespace DotSpatial.Tools
         /// <summary>
         /// Executes the Merge Grid Operation tool programmatically
         /// Ping deleted static for external testing 01/2010.
+        /// The term 'Merge' here is equivalent to taking the non-empty value from each cell location. If both rasters have values
+        /// for a location, then the first raster wins. You can think of theis routine as filling in holes in raster1 from raster2.
         /// </summary>
         /// <param name="input1">The first input raster.</param>
         /// <param name="input2">The second input raster.</param>
