@@ -4,8 +4,11 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- A plug-in that converts coordinates from one projection to another (#1469)
+- Added a coordinate system type field to ProjectionInfo (#1473)
 
 ### Changed
+ - Change the code in "GenerateCentroid.cs" (#1465)
 
 ### Fixed
 
@@ -208,3 +211,5 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Bug in AzimuthalEquidistant class (#1342)
 - Bug in moving legend items (#1368)
 - Bug in ExtentExt.Reproportion discussed in #1351 (#1370)
+- False polygon outlines are drawn at map boundary when not in edit mode (#1474)
+- Non UI Projects as .netstandard2.0 libraries (#1479 )

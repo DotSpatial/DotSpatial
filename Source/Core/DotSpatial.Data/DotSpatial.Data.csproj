@@ -1,15 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <Description>GIS Data objects for DotSpatial.</Description>
+      <LangVersion>9.0</LangVersion>
+      <TargetFramework>netstandard2.0</TargetFramework>
+      <Description>GIS Data objects for DotSpatial.</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NetTopologySuite" Version="2.4.0" />
     <PackageReference Include="System.ComponentModel.Composition" Version="6.0.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Data.OleDb" Version="6.0.0" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
