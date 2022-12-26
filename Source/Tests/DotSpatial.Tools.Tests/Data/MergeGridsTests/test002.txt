@@ -1,0 +1,27 @@
+typ1=System.Int16 typ2=System.Int64 outFileTyp=Ascii
+rstFileType=Ascii
+  supports System.Int16
+  supports System.Single
+==>checking typ1=System.Int16 and typ2=System.Int64 against suppTyp=System.Int16
+  CanConvert: typFrom=System.Int16 typTo=System.Int16
+    valFromMin=-32768
+    valFromMax=32767
+    valToMin=-32768
+    valToMax=32767
+  CanConvert: typFrom=System.Int64 typTo=System.Int16
+    valFromMin=-9223372036854775808
+    valFromMax=9223372036854775807
+    ex:Value was either too large or too small for an Int16.
+==>checking typ1=System.Int16 and typ2=System.Int64 against suppTyp=System.Single
+  CanConvert: typFrom=System.Int16 typTo=System.Single
+    valFromMin=-32768
+    valFromMax=32767
+    valToMin=-32768
+    valToMax=32767
+  CanConvert: typFrom=System.Int64 typTo=System.Single
+    valFromMin=-9223372036854775808
+    valFromMax=9223372036854775807
+    valToMin=-9.223372E+18
+    valToMax=9.223372E+18
+System.Int16 and System.Int64 can convert to System.Single
+typ1=System.Int16 typ2=System.Int64 outTyp=System.Single
