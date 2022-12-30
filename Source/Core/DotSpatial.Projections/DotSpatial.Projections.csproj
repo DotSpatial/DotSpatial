@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0</TargetFrameworks>
-		<OutputPath>$(ProjectDir)..\..\bin\$(Configuration)\$(TargetFramework)\</OutputPath>
+		<OutputPath>$(ProjectDir)..\..\bin\$(Configuration)\</OutputPath>
 		<LangVersion>10.0</LangVersion>
 	</PropertyGroup>
 
@@ -60,8 +60,8 @@
 		</EmbeddedResource>
 	</ItemGroup>
 
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(TargetFramework)'=='net6.0'">
+	<!--<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(TargetFramework)'=='net6.0'">
 		<Exec Command="xcopy /y ..\..\bin\$(Configuration)\$(TargetFramework)\*.* ..\..\bin\$(Configuration)\" />
-	</Target>
+	</Target>-->
 
 </Project>
