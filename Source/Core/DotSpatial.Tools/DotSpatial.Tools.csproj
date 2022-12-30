@@ -1,45 +1,67 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
-    <Description>A set of tools used for geoprocessing operations.</Description>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<OutputPath>$(ProjectDir)..\..\bin\$(Configuration)\Tools\</OutputPath>
+		<disabletransitiveprojectreferences>true</disabletransitiveprojectreferences>
+		<UseWindowsForms>true</UseWindowsForms>
+		<Description>A set of tools used for geoprocessing operations.</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="NetTopologySuite" Version="2.4.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="NetTopologySuite" Version="2.4.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DotSpatial.Analysis\DotSpatial.Analysis.csproj" />
-    <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj" />
-    <ProjectReference Include="..\DotSpatial.Extensions\DotSpatial.Extensions.csproj" />
-    <ProjectReference Include="..\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj" />
-    <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\DotSpatial.Analysis\DotSpatial.Analysis.csproj" >
+			<Private>False</Private>
+			<CopyLocal>False</CopyLocal>
+			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
+		</ProjectReference>
+		<ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj" >
+			<Private>False</Private>
+			<CopyLocal>False</CopyLocal>
+			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
+		</ProjectReference>
+		<ProjectReference Include="..\DotSpatial.Extensions\DotSpatial.Extensions.csproj" >
+			<Private>False</Private>
+			<CopyLocal>False</CopyLocal>
+			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
+		</ProjectReference>
+		<ProjectReference Include="..\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj">
+			<Private>False</Private>
+			<CopyLocal>False</CopyLocal>
+			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
+		</ProjectReference>
+		<ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj" >
+			<Private>False</Private>
+			<CopyLocal>False</CopyLocal>
+			<CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
+		</ProjectReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="BitmapResources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>BitmapResources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="TextStrings.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TextStrings.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="BitmapResources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>BitmapResources.resx</DependentUpon>
+		</Compile>
+		<Compile Update="TextStrings.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>TextStrings.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="BitmapResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>BitmapResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="TextStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>TextStrings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="BitmapResources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>BitmapResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="TextStrings.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>TextStrings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
 
 </Project>
