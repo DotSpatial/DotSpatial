@@ -1,0 +1,853 @@
+﻿{
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Dependency Analysis",
+          "semanticVersion": "0.4.355802",
+          "informationUri": "https://docs.microsoft.com/en-us/dotnet/core/porting/upgrade-assistant-overview",
+          "rules": [
+            {
+              "id": "UA103",
+              "name": "ReferenceToBeDeleted",
+              "fullDescription": {
+                "text": "References that need to be deleted in order to upgrade the project to chosen TFM"
+              },
+              "helpUri": "https://docs.microsoft.com/en-us/dotnet/core/porting/upgrade-assistant-overview"
+            },
+            {
+              "id": "UA105",
+              "name": "PackageToBeDeleted",
+              "fullDescription": {
+                "text": "Packages that need to be deleted in order to upgrade the project to chosen TFM"
+              },
+              "helpUri": "https://docs.microsoft.com/en-us/dotnet/core/porting/upgrade-assistant-overview"
+            },
+            {
+              "id": "UA106",
+              "name": "PackageToBeAdded",
+              "fullDescription": {
+                "text": "Packages that need to be added in order to upgrade the project to chosen TFM"
+              },
+              "helpUri": "https://docs.microsoft.com/en-us/dotnet/core/porting/upgrade-assistant-overview"
+            },
+            {
+              "id": "UA108",
+              "name": "FrameworkReferenceToBeAdded",
+              "fullDescription": {
+                "text": "Framework Reference that need to be added in order to upgrade the project to chosen TFM"
+              },
+              "helpUri": "https://docs.microsoft.com/en-us/dotnet/core/porting/upgrade-assistant-overview"
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "UA103",
+          "message": {
+            "text": "Reference to System.Web.ApplicationServices needs to be deleted."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/Examples/DemoWEB/DemoWEB.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA103",
+          "message": {
+            "text": "Reference to System.Web.DynamicData needs to be deleted."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/Examples/DemoWEB/DemoWEB.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA103",
+          "message": {
+            "text": "Reference to System.Web.Entity needs to be deleted."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/Examples/DemoWEB/DemoWEB.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA103",
+          "message": {
+            "text": "Reference to System.Web needs to be deleted."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/Examples/DemoWEB/DemoWEB.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA103",
+          "message": {
+            "text": "Reference to System.Configuration needs to be deleted."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/Examples/DemoWEB/DemoWEB.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA103",
+          "message": {
+            "text": "Reference to System.Web.Services needs to be deleted."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/Examples/DemoWEB/DemoWEB.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA105",
+          "message": {
+            "text": "Package DotSpatial.GeoAPI, Version=1.7.4.2 needs to be deleted."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/Examples/DemoWEB/DemoWEB.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA106",
+          "message": {
+            "text": "Package System.Configuration.ConfigurationManager, Version=5.0.0 needs to be added."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/Examples/DemoWEB/DemoWEB.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA106",
+          "message": {
+            "text": "Package DotSpatial.GeoAPI, Version=1.7.4.3 needs to be added."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/Examples/DemoWEB/DemoWEB.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA106",
+          "message": {
+            "text": "Package Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.4.355802 needs to be added."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/Examples/DemoWEB/DemoWEB.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA108",
+          "message": {
+            "text": "Framework Reference to Microsoft.AspNetCore.App needs to be added."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/Examples/DemoWEB/DemoWEB.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA103",
+          "message": {
+            "text": "Reference to System.Web needs to be deleted."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/DotSpatial.WebControls.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA105",
+          "message": {
+            "text": "Package DotSpatial.GeoAPI, Version=1.7.4.2 needs to be deleted."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/DotSpatial.WebControls.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA106",
+          "message": {
+            "text": "Package DotSpatial.GeoAPI, Version=1.7.4.3 needs to be added."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/DotSpatial.WebControls.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA106",
+          "message": {
+            "text": "Package Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.4.355802 needs to be added."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/DotSpatial.WebControls.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA108",
+          "message": {
+            "text": "Framework Reference to Microsoft.AspNetCore.App needs to be added."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/DotSpatial.WebControls.csproj"
+                },
+                "region": {}
+              }
+            }
+          ]
+        }
+      ],
+      "columnKind": "utf16CodeUnits"
+    },
+    {
+      "tool": {
+        "driver": {
+          "name": "API Upgradability",
+          "semanticVersion": "0.4.355802",
+          "informationUri": "https://docs.microsoft.com/en-us/dotnet/core/porting/upgrade-assistant-overview",
+          "rules": [
+            {
+              "id": "UA0005",
+              "name": "Do not use HttpContext.Current",
+              "fullDescription": {
+                "text": "Do not use HttpContext.Current"
+              },
+              "helpUri": "about:blank"
+            },
+            {
+              "id": "UA0013_A",
+              "name": "Replace usage of System.Web.IHttpModule, System.Web.IHttpHandler",
+              "fullDescription": {
+                "text": "Replace usage of System.Web.IHttpModule, System.Web.IHttpHandler"
+              },
+              "helpUri": "about:blank"
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/Examples/DemoWEB/ImageHandler.ashx.cs"
+                },
+                "region": {
+                  "startLine": 22
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0013_A",
+          "message": {
+            "text": "HTTP modules and HTTP handlers should be rewritten as middleware in ASP.NET Core. https://docs.microsoft.com/aspnet/core/migration/http-modulesIHttpModule"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/Examples/DemoWEB/ImageHandler.ashx.cs"
+                },
+                "region": {
+                  "startLine": 11
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 111
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 136
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 115
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 132
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 221
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 227
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 310
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 234
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 238
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 243
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 249
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 315
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 322
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 331
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 337
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 342
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 429
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 453
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 612
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 493
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 577
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 706
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebMap.cs"
+                },
+                "region": {
+                  "startLine": 1066
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebToolBar.cs"
+                },
+                "region": {
+                  "startLine": 197
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebToolBar.cs"
+                },
+                "region": {
+                  "startLine": 208
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "UA0005",
+          "message": {
+            "text": "HttpContext does not have a Current property; get the context from a controller or use HttpContextAccessor instead"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/DarkPax/Documents/GitHub/DotSpatial/Source/DotSpatial.WebControls/WebLegend.cs"
+                },
+                "region": {
+                  "startLine": 139
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "columnKind": "utf16CodeUnits"
+    },
+    {
+      "tool": {
+        "driver": {
+          "name": "Component Analysis",
+          "semanticVersion": "0.4.355802",
+          "informationUri": "https://docs.microsoft.com/en-us/dotnet/core/porting/upgrade-assistant-overview"
+        }
+      },
+      "results": [],
+      "columnKind": "utf16CodeUnits"
+    }
+  ]
+}

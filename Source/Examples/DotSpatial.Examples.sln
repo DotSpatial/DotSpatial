@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DummyHeaderControl", "Dummy
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSnippets", "CodeSnippets\CodeSnippets.csproj", "{37F844C7-7372-4AF4-B19B-1FF6189E851F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoWEB", "DemoWEB\DemoWEB.csproj", "{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{37F844C7-7372-4AF4-B19B-1FF6189E851F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37F844C7-7372-4AF4-B19B-1FF6189E851F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37F844C7-7372-4AF4-B19B-1FF6189E851F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
