@@ -241,6 +241,12 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
             return normalSymbol;
         }
 
+        //todo: this is a new for this class
+        public void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
+        {
+            throw new NotImplementedException();
+        }
+
         //private void DrawPoints(MapArgs e, Extent bBox)
         //{
         //    Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);

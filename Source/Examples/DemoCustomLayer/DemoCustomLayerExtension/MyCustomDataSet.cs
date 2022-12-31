@@ -102,17 +102,18 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
             }
         }
 
-        public SpaceTimeSupport SpaceTimeSupport
-        {
-            get
-            {
-                return SpaceTimeSupport.Spatial;
-            }
-            set
-            {
-                //throw new NotImplementedException();
-            }
-        }
+        //todo: where does SpaceTimeSupport come from ???
+        //public SpaceTimeSupport SpaceTimeSupport
+        //{
+        //    get
+        //    {
+        //        return SpaceTimeSupport.Spatial;
+        //    }
+        //    set
+        //    {
+        //        //throw new NotImplementedException();
+        //    }
+        //}
 
         public string TypeName
         {

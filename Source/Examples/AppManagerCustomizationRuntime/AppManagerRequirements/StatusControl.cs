@@ -84,6 +84,18 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
             statusStrip.Items.RemoveByKey(panel.Key);
         }
 
+        // todo: new for this class
+        public void Progress(int percent, string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        // todo: new for this class
+        public void Reset()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

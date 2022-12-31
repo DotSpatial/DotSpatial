@@ -1,22 +1,22 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppManagerCustomizationDesignTime", "AppManagerCustomizationDesignTime\AppManagerCustomizationDesignTime.csproj", "{E9CD3F46-B385-4BF8-9D09-D439514E5137}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppManagerCustomizationDesignTime", "AppManagerCustomizationDesignTime\AppManagerCustomizationDesignTime.csproj", "{E9CD3F46-B385-4BF8-9D09-D439514E5137}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppManagerCustomizationRuntime", "AppManagerCustomizationRuntime\AppManagerCustomizationRuntime.csproj", "{C1664C14-FB90-48FC-9B0E-0F75E470ACCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppManagerCustomizationRuntime", "AppManagerCustomizationRuntime\AppManagerCustomizationRuntime.csproj", "{C1664C14-FB90-48FC-9B0E-0F75E470ACCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGPS", "DemoGPS\C#\DemoGPS.csproj", "{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoGPS", "DemoGPS\C#\DemoGPS.csproj", "{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoCustomLayer", "DemoCustomLayer\DemoCustomLayer.csproj", "{1405457A-EFF6-4994-A6C5-88928504FD02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCustomLayer", "DemoCustomLayer\DemoCustomLayer.csproj", "{1405457A-EFF6-4994-A6C5-88928504FD02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoPlugin", "DemoPlugin\DemoPlugin.csproj", "{467F0628-2B9A-4AFB-815A-FA3CB8F4F18C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoPlugin", "DemoPlugin\DemoPlugin.csproj", "{467F0628-2B9A-4AFB-815A-FA3CB8F4F18C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleApp", "SimpleApp\SimpleApp.csproj", "{AE2B37D2-031B-401C-A257-84C05876BB7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleApp", "SimpleApp\SimpleApp.csproj", "{AE2B37D2-031B-401C-A257-84C05876BB7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyHeaderControl", "DummyHeaderControl\DummyHeaderControl.csproj", "{6AB60B40-E91A-4459-9837-FB0D509F091A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DummyHeaderControl", "DummyHeaderControl\DummyHeaderControl.csproj", "{6AB60B40-E91A-4459-9837-FB0D509F091A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeSnippets", "CodeSnippets\CodeSnippets.csproj", "{37F844C7-7372-4AF4-B19B-1FF6189E851F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSnippets", "CodeSnippets\CodeSnippets.csproj", "{37F844C7-7372-4AF4-B19B-1FF6189E851F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,5 +59,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6B182FE4-4087-43BD-B104-A82564A963FB}
 	EndGlobalSection
 EndGlobal

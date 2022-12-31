@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPS Diagnostics (CSharp)", "GPS Diagnostics (CSharp).csproj", "{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning", "..\..\..\DotSpatial.Positioning\DotSpatial.Positioning\DotSpatial.Positioning.csproj", "{26E18588-B04D-4987-BF36-8206A7E36FF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning.Forms", "..\..\..\DotSpatial.Positioning\DotSpatial.Positioning.Forms\DotSpatial.Positioning.Forms.csproj", "{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning.Design", "..\..\..\DotSpatial.Positioning\DotSpatial.Positioning.Design\DotSpatial.Positioning.Design.csproj", "{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Debug|x86.ActiveCfg = Debug|x86
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Debug|x86.Build.0 = Debug|x86
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|x86.ActiveCfg = Release|x86
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|x86.Build.0 = Release|x86
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Debug|x86.ActiveCfg = Debug|x86
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Debug|x86.Build.0 = Debug|x86
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Release|x86.ActiveCfg = Release|x86
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Release|x86.Build.0 = Release|x86
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Debug|x86.ActiveCfg = Debug|x86
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Debug|x86.Build.0 = Debug|x86
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Release|x86.ActiveCfg = Release|x86
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Release|x86.Build.0 = Release|x86
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Debug|x86.ActiveCfg = Debug|x86
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Debug|x86.Build.0 = Debug|x86
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Release|x86.ActiveCfg = Release|x86
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

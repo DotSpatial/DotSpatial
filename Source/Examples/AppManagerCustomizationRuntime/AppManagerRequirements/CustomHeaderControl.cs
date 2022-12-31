@@ -15,7 +15,7 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
     [Export(typeof(IHeaderControl))]
     internal class CustomHeaderControl : HeaderControl, IPartImportsSatisfiedNotification
     {
-        private MainMenu _mainmenu;
+        private MenuStrip _menustrip;
         private FlowLayoutPanel _container;
 
         [Import("Shell", typeof(ContainerControl))]
@@ -26,10 +26,10 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
         /// </summary>
         public void OnImportsSatisfied()
         {
-            _mainmenu = new MainMenu();
+            _menustrip = new MenuStrip();
 
             var form = (Form)Shell;
-            form.Menu = _mainmenu;
+            form.MainMenuStrip = _menustrip;
 
             _container = new FlowLayoutPanel
             {
@@ -51,26 +51,30 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
 
         public override object Add(SimpleActionItem item)
         {
-            var menu = new IconMenuItem(item.Caption, item.SmallImage, (sender, e) => item.OnClick(e))
-            {Name = item.Key, Enabled = item.Enabled, Visible = item.Visible,};
-            item.PropertyChanged += SimpleActionItemPropertyChanged;
+            //todo: where does IconMenuItem come from ???
+            //var menu = new IconMenuItem(item.Caption, item.SmallImage, (sender, e) => item.OnClick(e))
+            //{Name = item.Key, Enabled = item.Enabled, Visible = item.Visible,};
+            //item.PropertyChanged += SimpleActionItemPropertyChanged;
 
-            EnsureNonNullRoot(item);
+            //EnsureNonNullRoot(item);
 
-            MenuItem root;
-            if (item.MenuContainerKey == null)
-            {
-                root = !_mainmenu.MenuItems.ContainsKey(item.RootKey)
-                    ? _mainmenu.MenuItems[_mainmenu.MenuItems.Add(new MenuItem(item.RootKey) {Name = item.RootKey})]
-                    : _mainmenu.MenuItems.Find(item.RootKey, true)[0];
-            }
-            else
-            {
-                root = _mainmenu.MenuItems.Find(item.MenuContainerKey, true)[0];
-            }
+            //ToolStripMenuItem root;
+            //if (item.MenuContainerKey == null)
+            //{
+            //    root = !_menustrip.Items.ContainsKey(item.RootKey)
+            //         ? _menustrip.Items[_menustrip.Items.Add(new ToolStripMenuItem(item.RootKey) { Name = item.RootKey })]
+            //         : _menustrip.Items.Find(item.RootKey, true)[0];
+            //}
+            //else
+            //{
+            //    root = _menustrip.Items.Find(item.MenuContainerKey, true)[0];
+            //}
 
-            root.MenuItems.Add(menu);
-            return menu;
+            //root.MenuItems.Add(menu);
+            //return menu;
+
+            // place holder until we figure out what namespace the IconMenuItem type comes from. 
+            return null;
         }
 
         /// <summary>
@@ -78,7 +82,7 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
         /// </summary>
         private void EnsureExtensionsTabExists()
         {
-            var exists = _mainmenu.MenuItems.ContainsKey(ExtensionsRootKey);
+            var exists = _menustrip.Items.ContainsKey(ExtensionsRootKey);
             if (!exists)
             {
                 Add(new RootItem(ExtensionsRootKey, "Extensions"));
@@ -101,7 +105,7 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
 
         public override object Add(MenuContainerItem item)
         {
-            var submenu = new MenuItem
+            var submenu = new ToolStripMenuItem
             {
                 Name = item.Key,
                 Visible = item.Visible,
@@ -109,30 +113,32 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
             };
 
             item.PropertyChanged += RootItemPropertyChanged;
-            var root = _mainmenu.MenuItems.Find(item.RootKey, true)[0];
-            root.MenuItems.Add(submenu);
+            var root = _menustrip.Items.Find(item.RootKey, true)[0];
+            //root.MenuItems.Add(submenu); //todo: add to the array  ???
             return submenu;
         }
 
         public override object Add(RootItem item)
         {
-            if (!_mainmenu.MenuItems.ContainsKey(item.Key))
+            if (!_menustrip.Items.ContainsKey(item.Key))
             {
-                var submenu = new MenuItem
+                var submenu = new ToolStripMenuItem
                 {
                     Name = item.Key,
                     Visible = item.Visible,
                     Text = item.Caption,
-                    MergeOrder = item.SortOrder
+                    //MergeOrder = item.SortOrder,
+                    MergeIndex = item.SortOrder
                 };
                 item.PropertyChanged += RootItemPropertyChanged;
-                _mainmenu.MenuItems.Add(submenu);
+                _menustrip.Items.Add(submenu);
                 return submenu;
             }
 
-            var root = _mainmenu.MenuItems.Find(item.Key, true)[0];
+            var root = _menustrip.Items.Find(item.Key, true)[0];
             root.Text = item.Caption;
-            root.MergeOrder = item.SortOrder;
+            //root.MergeOrder = item.SortOrder;
+            root.MergeIndex = item.SortOrder;
             return root;
         }
 
@@ -188,9 +194,9 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
             return item;
         }
 
-        private MenuItem GetMenuItem(string key)
+        private ToolStripItem GetMenuItem(string key)
         {
-            var item = _mainmenu.MenuItems.Find(key, true).FirstOrDefault();
+            var item = _menustrip.Items.Find(key, true).FirstOrDefault();
             return item;
         }
 
