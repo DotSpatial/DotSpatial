@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
  - Change the code in "GenerateCentroid.cs" (#1465)
+ - Upgraded Examples to .NET Core 6 projects (#1485)
 
 ### Fixed
 
