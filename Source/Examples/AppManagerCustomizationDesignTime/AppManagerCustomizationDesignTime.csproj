@@ -1,39 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>DotSpatial.Examples.AppManagerCustomizationDesignTime</RootNamespace>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>disable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="DotSpatial.Controls" Version="4.0.656" />
-    <PackageReference Include="DotSpatial.Data" Version="4.0.656" />
-    <PackageReference Include="DotSpatial.Data.Forms" Version="4.0.656" />
-    <PackageReference Include="DotSpatial.GeoAPI" Version="1.7.4.3" />
-    <PackageReference Include="DotSpatial.Modeling.Forms" Version="4.0.656" />
-    <PackageReference Include="DotSpatial.NetTopologySuite" Version="1.14.4" />
-    <PackageReference Include="DotSpatial.Projections.Forms" Version="4.0.656" />
-    <PackageReference Include="DotSpatial.Symbology" Version="4.0.656" />
-    <PackageReference Include="DotSpatial.Symbology.Forms" Version="4.0.656" />
-    <PackageReference Include="DotSpatial.Topology" Version="1.9" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.ComponentModel.Composition" Version="7.0.0" />
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.355802">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="DotSpatial.Extensions" Version="4.0.656" />
-    <PackageReference Include="DotSpatial.NTSExtension" Version="4.0.656" />
-    <PackageReference Include="DotSpatial.Projections" Version="4.0.656" />
-    <PackageReference Include="DotSpatial.Serialization" Version="4.0.656" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

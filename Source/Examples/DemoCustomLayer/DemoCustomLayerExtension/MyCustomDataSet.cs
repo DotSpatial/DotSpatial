@@ -1,53 +1,58 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
+
+using System;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 
 namespace DemoCustomLayer.DemoCustomLayerExtension
 {
+    /// <summary>
+    /// Shows how to create a custom dataset.
+    /// </summary>
     public class MyCustomDataSet : IDataSet
     {
         #region IDataSet Members
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void Close()
         {
-            //throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public Extent Extent
         {
-            get
-            {
-                return new Extent(-20000000,-10000000, 20000000, 10000000);
-            }
+            get => new(-20000000, -10000000, 20000000, 10000000);
             set
             {
-                //throw new NotImplementedException();
             }
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public string Filename
         {
-            get
-            {
-                return null;
-            }
+            get => null;
 
             set
             {
-               // throw new NotImplementedException();
             }
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public string FilePath
         {
-            get
-            {
-                return null;
-            }
+            get => null;
 
             set
             {
-              // throw new NotImplementedException();
             }
         }
 
@@ -57,10 +62,10 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
         /// </summary>
         /// <param name="boundingBox">the view extent</param>
         /// <returns>array of the points in [x y x y ... order]</returns>
-        public double[] GetPointArray(Extent boundingBox)
+        public static double[] GetPointArray(Extent boundingBox)
         {
             double[] pointArray = new double[1000];
-            Random rnd = new Random();
+            Random rnd = new();
             double xMin = boundingBox.MinX;
             double yMin = boundingBox.MinY;
 
@@ -69,128 +74,117 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
                 double randomX = xMin + rnd.NextDouble() * boundingBox.Width;
                 double randomY = yMin + rnd.NextDouble() * boundingBox.Height;
                 pointArray[i] = randomX;
-                i = i + 1;
+                i++;
                 pointArray[i] = randomY;
             }
+
             return pointArray;
         }
 
-        public bool IsDisposed
-        {
-            get { return false; }
-        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public bool IsDisposed => false;
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public string Name
         {
-            get
-            {
-                return "MyCustomDataSet";
-            }
+            get => "MyCustomDataSet";
             set
             {
             }
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public IProgressHandler ProgressHandler
         {
-            get
-            {
-                return null;
-            }
+            get => null;
             set
             {
             }
         }
 
-        //todo: where does SpaceTimeSupport come from ???
-        //public SpaceTimeSupport SpaceTimeSupport
-        //{
-        //    get
-        //    {
-        //        return SpaceTimeSupport.Spatial;
-        //    }
-        //    set
-        //    {
-        //        //throw new NotImplementedException();
-        //    }
-        //}
-
-        public string TypeName
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public static string TypeName
         {
-            get
-            {
-                return "MyCustomDataSet";
-            }
+            get => "MyCustomDataSet";
             set
             {
-                //throw new NotImplementedException();
             }
         }
 
         #endregion
 
-        #region IDisposable Members
-
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void Dispose()
         {
-            //throw new NotImplementedException();
         }
-
-        #endregion
 
         #region IDisposeLock Members
 
-        public bool IsDisposeLocked
-        {
-            get { throw new NotImplementedException(); }
-        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public bool IsDisposeLocked => throw new NotImplementedException();
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void LockDispose()
         {
-            //throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void UnlockDispose()
         {
-            //throw new NotImplementedException();
         }
 
         #endregion
 
         #region IReproject Members
 
-        public bool CanReproject
-        {
-            get { return false; }
-        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public bool CanReproject => false;
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public ProjectionInfo Projection
         {
-            get
-            {
-                return KnownCoordinateSystems.Projected.World.WebMercator;
-            }
+            get => KnownCoordinateSystems.Projected.World.WebMercator;
             set
             {
-                //throw new NotImplementedException();
             }
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public string ProjectionString
         {
-            get
-            {
-                return Projection.ToString();
-            }
+            get => Projection.ToString();
             set
             {
-                //throw new NotImplementedException();
             }
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void Reproject(ProjectionInfo targetProjection)
         {
-            //throw new NotImplementedException();
         }
 
         #endregion

@@ -1,26 +1,5 @@
-﻿// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.dll
-// Description:  A library for managing GPS connections.
-// ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is from http://geoframework.codeplex.com/ version 2.0
-//
-// The Initial Developer of this original code is Jon Pearson. Submitted Oct. 21, 2010 by Ben Tombs (tidyup)
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -------------------------------------------------------------------------------------------------------
-// |    Developer             |    Date    |                             Comments
-// |--------------------------|------------|--------------------------------------------------------------
-// | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
-// | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
-// ********************************************************************************************************
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.ComponentModel;
@@ -85,6 +64,7 @@ namespace Demo.GPS
                                                           item.ImageIndex = 0;
                                                       }
                                                   }
+
                                                   devicesListView.Refresh();
                                               }));
         }
@@ -123,6 +103,7 @@ namespace Demo.GPS
                                                           item.ImageIndex = 1;
                                                       }
                                                   }
+
                                                   devicesListView.Refresh();
                                               }));
         }
@@ -142,7 +123,7 @@ namespace Demo.GPS
                                                       }
                                                   }
 
-                                                  ListViewItem item = new ListViewItem { Text = e.Device.Name, ImageIndex = 2, Tag = e.Device };
+                                                  ListViewItem item = new() { Text = e.Device.Name, ImageIndex = 2, Tag = e.Device };
                                                   item.SubItems.Add(new ListViewItem.ListViewSubItem(item, "Detecting..."));
                                                   devicesListView.Items.Add(item);
                                                   devicesListView.Refresh();
@@ -270,7 +251,7 @@ namespace Demo.GPS
                                                       // If no existing satellite was found, then add a new one
                                                       if (isSatelliteNew)
                                                       {
-                                                          ListViewItem newItem = new ListViewItem(satellite.PseudorandomNumber.ToString());
+                                                          ListViewItem newItem = new(satellite.PseudorandomNumber.ToString());
                                                           newItem.SubItems.Add(satellite.Name);
                                                           newItem.SubItems.Add(satellite.Azimuth.ToString());
                                                           newItem.SubItems.Add(satellite.Elevation.ToString());
@@ -305,7 +286,9 @@ namespace Demo.GPS
             BeginInvoke(new MethodInvoker(delegate
                                               {
                                                   if (sentenceListBox.Items.Count >= 100)
+                                                  {
                                                       sentenceListBox.Items.RemoveAt(0);
+                                                  }
 
                                                   sentenceListBox.Items.Add(e.Sentence.ToString());
                                                   sentenceListBox.SelectedIndex = sentenceListBox.Items.Count - 1;
