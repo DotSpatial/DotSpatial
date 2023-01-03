@@ -1,10 +1,8 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
-// Licensed under the MIT license. See License.txt file in the project root for full license information.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
@@ -79,14 +77,16 @@ namespace DotSpatial.Tools
         /// Executes the Merge Grid Operation tool programmatically
         /// Ping deleted static for external testing 01/2010.
         /// The term 'Merge' here is equivalent to taking the non-empty value from each cell location. If both rasters have values
-        /// for a location, then the first raster wins. You can think of theis routine as filling in holes in raster1 from raster2.
+        /// for a location, then the first raster wins. You can think of this routine as filling in holes in raster1 from raster2.
         /// </summary>
         /// <param name="input1">The first input raster.</param>
         /// <param name="input2">The second input raster.</param>
         /// <param name="output">The output raster.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>Boolean, true if the merge is successful.</returns>
+#pragma warning disable CA1822 // Member als statisch markieren
         public bool Execute(IRaster input1, IRaster input2, IRaster output, ICancelProgressHandler cancelProgressHandler)
+#pragma warning restore CA1822 // Member als statisch markieren
         {
             // Validates the input and output data
             if (input1 == null || input2 == null || output == null)
@@ -105,39 +105,39 @@ namespace DotSpatial.Tools
 
             // Determine what dataType the output will be. This ESRI source https://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/what-is-raster-data.htm
             // says that for a raster "Cell values can be either positive or negative, integer, or floating point. Integer values are best used to represent categorical (discrete)
-            // data and floating-point values to represent continuous surfaces". this defintion will make us conclude that output type should depend on the type of the two input
+            // data and floating-point values to represent continuous surfaces". This defintion will make us conclude that output type should depend on the type of the two input
             // rasters. i.e If either inputs is of type float then the type of the output should be float. If both are of type int then the output should be int. Similarly, if the
-            // type of one of the rasters is double and the other is of type float then type of output should be double, and so on. the routine GetOutputType will attempt to
+            // type of one of the rasters is double and the other is of type float then type of output should be double, and so on. The routine GetOutputType will attempt to
             // determine which type is the best fit for both data types. ESRI has a list of various raster types here: https://pro.arcgis.com/en/pro-app/latest/help/data/imagery/supported-raster-dataset-file-formats.htm
             // todo: it would also make sense to allow the user to input an output type. an idea is to add a parameter to the Execute for OutDataType and if its null then that
-            // would be cnosidered an auto-determine, otherwise use what was passed in.
+            // would be considered an auto-determine, otherwise use what was passed in.
             Type outType = GetOutputType(input1.DataType, input2.DataType, output.FileType);
 
             if (outType == null)
+            {
                 outType = typeof(int);
+            }
 
             // determine if the output type is a floating point type
             bool isOutTypFloatPnt = IsFloatingPoint(outType);
 
-            // create output raster of type that can hold the data type of both input rasters and also abide by the raster
-            // type possibilities.
+            // Create output raster of type that can hold the data type of both input rasters and also abide by the raster type possibilities.
             output = Raster.CreateRaster(output.Filename, string.Empty, noOfCol, noOfRow, 1, outType, new[] { string.Empty });
-            RasterBounds bound = new(noOfRow, noOfCol, envelope);
-            output.Bounds = bound;
-
+            output.Bounds = new RasterBounds(noOfRow, noOfCol, envelope);
             output.NoDataValue = input1.NoDataValue;
 
             int previous = 0;
             int max = output.Bounds.NumRows + 1;
+
             for (int i = 0; i < output.Bounds.NumRows; i++)
             {
                 for (int j = 0; j < output.Bounds.NumColumns; j++)
                 {
-                    // get cell value from the first raster. currently the cell value is defined as a double. at some point it should
-                    // probably be the same type as the raster type.
+                    // Get the cell value from the first raster. Currently the cell value is defined as a double. At some point it should probably be the same type as the raster type.
                     Coordinate cellCenter = output.CellToProj(i, j);
-                    var v1 = input1.ProjToCell(cellCenter);
+                    RcIndex v1 = input1.ProjToCell(cellCenter);
                     double val1;
+
                     if (v1.Row <= input1.EndRow && v1.Column <= input1.EndColumn && v1.Row > -1 && v1.Column > -1)
                     {
                         val1 = input1.Value[v1.Row, v1.Column];
@@ -147,10 +147,10 @@ namespace DotSpatial.Tools
                         val1 = input1.NoDataValue;
                     }
 
-                    // get cell value from the second raster. currently the cell value is defined as a double. at some point it should
-                    // probably be the same type as the raster type.
-                    var v2 = input2.ProjToCell(cellCenter);
+                    // Get the cell value from the second raster. Currently the cell value is defined as a double. At some point it should probably be the same type as the raster type.
+                    RcIndex v2 = input2.ProjToCell(cellCenter);
                     double val2;
+
                     if (v2.Row <= input2.EndRow && v2.Column <= input2.EndColumn && v2.Row > -1 && v2.Column > -1)
                     {
                         val2 = input2.Value[v2.Row, v2.Column];
@@ -160,9 +160,9 @@ namespace DotSpatial.Tools
                         val2 = input2.NoDataValue;
                     }
 
-                    // determine the resultant cell value. currently the resultant value is AWLAYS a double. maybe at some point we
-                    // possibly need a value type equal to the raster output type.
+                    // Determine the resultant cell value. Currently the resultant value is ALWAYS a double. Maybe at some point we possibly need a value type equal to the raster output type.
                     double valRes;
+
                     if (val1 == input1.NoDataValue && val2 == input2.NoDataValue)
                     {
                         valRes = output.NoDataValue;
@@ -180,8 +180,8 @@ namespace DotSpatial.Tools
                         valRes = val1;
                     }
 
-                    // assign the resulant value to the output cell. it is the final value assignment. we must check if a non-finite value
-                    // is being assigned to a type other than float or double. in other words, we cant assign a NaN to an Integer type.
+                    // Assign the resulant value to the output cell. It is the final value assignment. We must check if a non-finite value
+                    // is being assigned to a type other than float or double. In other words, we can't assign a NaN to an Integer type.
                     if (double.IsFinite(valRes))
                     {
                         // value is finite so any type can hold it
@@ -189,15 +189,15 @@ namespace DotSpatial.Tools
                     }
                     else
                     {
-                        // value is not finite so determine if the output type can hold it. if it can then assign the value to the output
-                        // cell. if not then throw an exception.
+                        // Value is not finite so determine if the output type can hold it. If it can then assign the value to the output
+                        // cell. If not then throw an exception.
                         if (isOutTypFloatPnt)
                         {
                             output.Value[i, j] = valRes;
                         }
                         else
                         {
-                            string msg = String.Format("The raster output type of {0} can not hold a non-finite value of {1} at row={2}, col={3}.", outType, valRes, i, j);
+                            string msg = string.Format("The raster output type of {0} can not hold a non-finite value of {1} at row={2}, col={3}.", outType, valRes, i, j);
                             throw new NotFiniteNumberException(msg);
                         }
                     }
@@ -210,7 +210,7 @@ namespace DotSpatial.Tools
 
                 int current = Convert.ToInt32(Math.Round(i * 100D / max));
 
-                // only update when increment in persentage
+                // only update when increment in percentage
                 if (current > previous)
                 {
                     cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
@@ -219,7 +219,6 @@ namespace DotSpatial.Tools
                 previous = current;
             }
 
-            // output = Temp;
             output.Save();
             return true;
         }
@@ -278,21 +277,19 @@ namespace DotSpatial.Tools
             }
             else
             {
-                // the input types can be the same or they can be different but we still have to determine if the output raster file
-                // format can support the output data type.
-                var suppTypes = GetSupportedTypes(outFileTyp);
+                // The input types can be the same or they can be different but we still have to determine if the output raster file format can support the output data type.
+                List<Type> suppTypes = GetSupportedTypes(outFileTyp);
                 if (suppTypes == null || suppTypes.Count <= 0)
                 {
-                    // no supported types came back so the output raster file format is probabably a RasterFileType.Custom. in
-                    // that case we try to intelligentlly determine what output data type best fits the two input data types.
-                    var outTyp = GetClosestType(typ1, typ2);
+                    // No supported types came back so the output raster file format is probabably a RasterFileType.Custom.
+                    // In that case we try to intelligently determine what output data type best fits the two input data types.
+                    Type outTyp = GetClosestType(typ1, typ2);
                     return outTyp;
                 }
                 else
                 {
-                    // we have supported types so the task now is to determine which of the supported types can hold the two input
-                    // data types.
-                    var outTyp = GetClosestType(typ1, typ2, suppTypes);
+                    // We have supported types so the task now is to determine which of the supported types can hold the two input data types.
+                    Type outTyp = GetClosestType(typ1, typ2, suppTypes);
                     return outTyp;
                 }
             }
@@ -305,7 +302,7 @@ namespace DotSpatial.Tools
         /// <returns>A list of <see cref="Type"/>.</returns>
         private static List<Type> GetSupportedTypes(RasterFileType rstFileType)
         {
-            var suppTypes = new List<Type>();
+            List<Type> suppTypes = new();
 
             // get the supported data types for a raster file format
             switch (rstFileType)
@@ -337,8 +334,7 @@ namespace DotSpatial.Tools
                     suppTypes.Add(typeof(byte));
                     break;
                 case RasterFileType.Esri:
-                    // the ESRI site only says it is integer or floating point. since its an older format 
-                    // im gonna guess its the same as the ASCII types
+                    // The ESRI site only says it is integer or floating point. Since its an older format I'm gonna guess its the same as the ASCII types.
                     suppTypes.Add(typeof(short));
                     suppTypes.Add(typeof(float));
                     break;
@@ -424,8 +420,8 @@ namespace DotSpatial.Tools
         /// </returns>
         private static Type GetClosestType(Type typ1, Type typ2, List<Type> suppTypes)
         {
-            // we have a list of supported types so we knbow the result has to be one of these types. so cycle through all the
-            // supported types and determine if both input types can be stored. if they can then we have a result.
+            // We have a list of supported types so we know the result has to be one of these types. So we cycle through all the
+            // supported types and determine if both input types can be stored. If they can then we have a result.
             foreach (Type suppTyp in suppTypes)
             {
                 if (CanConvertRange(typ1, suppTyp) && CanConvertRange(typ2, suppTyp))
@@ -454,16 +450,16 @@ namespace DotSpatial.Tools
                 }
 
                 // value types must have a min and a max value so get them from typFrom.
-                var valFromMin = typFrom.GetField("MinValue").GetValue(null);
-                var valFromMax = typFrom.GetField("MaxValue").GetValue(null);
+                object valFromMin = typFrom.GetField("MinValue").GetValue(null);
+                object valFromMax = typFrom.GetField("MaxValue").GetValue(null);
 
                 // convert the value types to typTo. if they do not conform, then an exception will be thrown.
-                var valToMin = Convert.ChangeType(valFromMin, typTo);
-                var valToMax = Convert.ChangeType(valFromMax, typTo);
+                object valToMin = Convert.ChangeType(valFromMin, typTo);
+                object valToMax = Convert.ChangeType(valFromMax, typTo);
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -477,7 +473,7 @@ namespace DotSpatial.Tools
         /// <remarks>https://learn.microsoft.com/en-us/dotnet/api/system.valuetype?view=net-7.0</remarks>
         public static bool IsFloatingPoint(Type typ)
         {
-            return (typ is float | typ is double | typ is Decimal);
+            return typ is float | typ is double | typ is decimal;
         }
 
         #endregion
