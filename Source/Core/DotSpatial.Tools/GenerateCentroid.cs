@@ -1,7 +1,8 @@
 ﻿// Copyright (c) DotSpatial Team. All rights reserved.
-// Licensed under the MIT license. See License.txt file in the project root for full license information.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
+using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
@@ -72,26 +73,21 @@ namespace DotSpatial.Tools
         /// <param name="output">The output FeatureSet.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True, if executed successfully.</returns>
-        public bool Execute(IFeatureSet input1, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
+        public static bool Execute(IFeatureSet input1, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
-            if (input1 == null || output == null) return false;
-
-            bool multPoint = false;
-            foreach (IFeature f1 in input1.Features)
+            if (input1 == null || output == null)
             {
-                if (f1.Geometry.NumGeometries > 1)
-                {
-                    multPoint = true;
-                }
+                return false;
             }
 
-            output.FeatureType = multPoint == false ? FeatureType.Point : FeatureType.MultiPoint;
+            output.FeatureType = input1.Features.Any(f => f.Geometry.NumGeometries > 1) ? FeatureType.MultiPoint : FeatureType.Point;
 
             int previous = 0;
             int i = 0;
             int maxFeature = input1.Features.Count;
             output.CopyTableSchema(input1);
+
             foreach (IFeature f in input1.Features)
             {
                 if (cancelProgressHandler.Cancel)

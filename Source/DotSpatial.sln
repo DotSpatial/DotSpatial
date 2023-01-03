@@ -111,6 +111,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.Tools.Tests", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSpatial.NTSExtension.Tests", "Tests\DotSpatial.NTSExtension.Tests\DotSpatial.NTSExtension.Tests.csproj", "{BFFFC663-A87C-4B4A-9A94-0392DA6418CB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.CoordinateConverter", "Plugins\DotSpatial.Plugins.CoordinateConverter\DotSpatial.Plugins.CoordinateConverter.csproj", "{C609339A-6A2D-440B-83DF-C27B049B0E23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -317,6 +319,10 @@ Global
 		{BFFFC663-A87C-4B4A-9A94-0392DA6418CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFFFC663-A87C-4B4A-9A94-0392DA6418CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFFFC663-A87C-4B4A-9A94-0392DA6418CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C609339A-6A2D-440B-83DF-C27B049B0E23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C609339A-6A2D-440B-83DF-C27B049B0E23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C609339A-6A2D-440B-83DF-C27B049B0E23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C609339A-6A2D-440B-83DF-C27B049B0E23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -372,6 +378,7 @@ Global
 		{072BD3AE-A459-4233-B359-D9954F0A0621} = {92FB5F30-9D38-41D1-96D3-E0F1BE1E5120}
 		{B2BECF44-6311-4909-8E90-DEC93710D282} = {92FB5F30-9D38-41D1-96D3-E0F1BE1E5120}
 		{BFFFC663-A87C-4B4A-9A94-0392DA6418CB} = {92FB5F30-9D38-41D1-96D3-E0F1BE1E5120}
+		{C609339A-6A2D-440B-83DF-C27B049B0E23} = {43227E88-49F3-414A-993F-47069859A400}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EC5A4840-2C4C-4B30-887F-167F2A52D9E1}

@@ -1,9 +1,9 @@
 # DotSpatial
 
 For documentation and code samples see
-https://dotspatial.codeplex.com/documentation
+https://github.com/DotSpatial/DotSpatial/wiki
 For discussions, questions and suggestions use
-https://dotspatial.codeplex.com/discussions
+https://github.com/DotSpatial/DotSpatial/discussions
 
 Some sample projects there are at Examples folder.
 Use DemoMap.exe to see basic functionality of DotSpatial library.
