@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - A plug-in that converts coordinates from one projection to another (#1469)
 - Added a coordinate system type field to ProjectionInfo (#1473)
+- MapPointLayer.PreventCollisions to remove unnecessary points for drawing if they have been overlapped by other points (#1462)
 
 ### Changed
  - Change the code in "GenerateCentroid.cs" (#1465)
