@@ -13,7 +13,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Belge1972_EPSG31370
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Belge1972_EPSG31370()
         {
             // see https://dotspatial.codeplex.com/discussions/548133
@@ -27,7 +27,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Albanian1987
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Albanian1987()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Albanian1987;
@@ -36,7 +36,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for ATFParis
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ATFParis()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.ATFParis;
@@ -45,7 +45,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Belge1950Brussels
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Belge1950Brussels()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Belge1950Brussels;
@@ -54,7 +54,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Belge1972
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Belge1972()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Belge1972;
@@ -63,7 +63,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Bern1898
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Bern1898()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Bern1898;
@@ -72,7 +72,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Bern1898Bern
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Bern1898Bern()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Bern1898Bern;
@@ -81,7 +81,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Bern1938
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Bern1938()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Bern1938;
@@ -90,7 +90,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for CH1903
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void CH1903()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.CH1903;
@@ -99,7 +99,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Datum73
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Datum73()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Datum73;
@@ -108,7 +108,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for DatumLisboaBessel
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DatumLisboaBessel()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.DatumLisboaBessel;
@@ -117,7 +117,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for DatumLisboaHayford
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DatumLisboaHayford()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.DatumLisboaHayford;
@@ -126,7 +126,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for DealulPiscului1933Romania
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DealulPiscului1933Romania()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.DealulPiscului1933Romania;
@@ -135,7 +135,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for DealulPiscului1970Romania
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DealulPiscului1970Romania()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.DealulPiscului1970Romania;
@@ -144,7 +144,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for DeutscheHauptdreiecksnetz
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DeutscheHauptdreiecksnetz()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.DeutscheHauptdreiecksnetz;
@@ -163,7 +163,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Amersfoort
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Amersfoort()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Amersfoort;
@@ -172,7 +172,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Estonia1937
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Estonia1937()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Estonia1937;
@@ -181,7 +181,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Estonia1992
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Estonia1992()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Estonia1992;
@@ -190,7 +190,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Estonia1997
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Estonia1997()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Estonia1997;
@@ -200,7 +200,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for ETRF1989       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRF1989()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.ETRF1989;
@@ -210,7 +210,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for ETRS1989       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.ETRS1989;
@@ -220,7 +220,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for EUREFFIN       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void EUREFFIN()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.EUREFFIN;
@@ -230,7 +230,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for European1979       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void European1979()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.European1979;
@@ -240,7 +240,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for EuropeanDatum1950       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void EuropeanDatum1950()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.EuropeanDatum1950;
@@ -250,7 +250,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for EuropeanDatum1987       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void EuropeanDatum1987()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.EuropeanDatum1987;
@@ -260,7 +260,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Greek       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [Ignore("Verify this test")]
         public void Greek()
         {
@@ -271,7 +271,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for GreekAthens       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [Ignore("Verify this test")]
         public void GreekAthens()
         {
@@ -282,7 +282,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for GreekGeodeticRefSystem1987       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void GreekGeodeticRefSystem1987()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.GreekGeodeticRefSystem1987;
@@ -292,7 +292,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Hermannskogel       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Hermannskogel()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Hermannskogel;
@@ -302,7 +302,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Hjorsey1955       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Hjorsey1955()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Hjorsey1955;
@@ -312,7 +312,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for HungarianDatum1972       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void HungarianDatum1972()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.HungarianDatum1972;
@@ -322,7 +322,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for IRENET95       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void IRENET95()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.IRENET95;
@@ -332,7 +332,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for ISN1993       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ISN1993()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.ISN1993;
@@ -342,7 +342,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Kartastokoordinaattijarjestelma       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Kartastokoordinaattijarjestelma()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Kartastokoordinaattijarjestelma;
@@ -352,7 +352,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Lisbon       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Lisbon()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Lisbon;
@@ -362,7 +362,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for LisbonLisbon       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void LisbonLisbon()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.LisbonLisbon;
@@ -372,7 +372,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Lisbon1890       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Lisbon1890()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Lisbon1890;
@@ -382,7 +382,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Lisbon1890Lisbon       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Lisbon1890Lisbon()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Lisbon1890Lisbon;
@@ -392,7 +392,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for LKS1992       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void LKS1992()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.LKS1992;
@@ -402,7 +402,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for LKS1994       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void LKS1994()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.LKS1994;
@@ -412,7 +412,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Luxembourg1930       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Luxembourg1930()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Luxembourg1930;
@@ -422,7 +422,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Madrid1870Madrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Madrid1870Madrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Madrid1870Madrid;
@@ -432,7 +432,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for MGIFerro       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGIFerro()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.MGIFerro;
@@ -442,7 +442,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for MilitarGeographischeInstitut       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MilitarGeographischeInstitut()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.MilitarGeographischeInstitut;
@@ -452,7 +452,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for MonteMario       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MonteMario()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.MonteMario;
@@ -462,7 +462,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for MonteMarioRome       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MonteMarioRome()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.MonteMarioRome;
@@ -472,7 +472,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for NGO1948       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NGO1948()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.NGO1948;
@@ -482,7 +482,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for NGO1948Oslo       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NGO1948Oslo()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.NGO1948Oslo;
@@ -492,7 +492,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for NorddeGuerreParis       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NorddeGuerreParis()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.NorddeGuerreParis;
@@ -502,7 +502,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for NouvelleTriangulationFrancaise       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NouvelleTriangulationFrancaise()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.NouvelleTriangulationFrancaise;
@@ -512,7 +512,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for NTFParis       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NTFParis()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.NTFParis;
@@ -522,7 +522,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for OSSN1980       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void OSSN1980()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.OSSN1980;
@@ -532,7 +532,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for OSGB1936       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void OSGB1936()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.OSGB1936;
@@ -542,7 +542,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for OSGB1970SN       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void OSGB1970SN()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.OSGB1970SN;
@@ -552,7 +552,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for OSNI1952       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void OSNI1952()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.OSNI1952;
@@ -562,7 +562,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Pulkovo1942       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Pulkovo1942()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Pulkovo1942;
@@ -572,7 +572,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Pulkovo1942Adj1958       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Pulkovo1942Adj1958()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Pulkovo1942Adj1958;
@@ -582,7 +582,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Pulkovo1942Adj1983       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Pulkovo1942Adj1983()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Pulkovo1942Adj1983;
@@ -592,7 +592,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Pulkovo1995       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Pulkovo1995()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Pulkovo1995;
@@ -602,7 +602,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Qornoq       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Qornoq()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Qornoq;
@@ -612,7 +612,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for ReseauNationalBelge1950       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ReseauNationalBelge1950()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.ReseauNationalBelge1950;
@@ -622,7 +622,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for ReseauNationalBelge1972       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ReseauNationalBelge1972()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.ReseauNationalBelge1972;
@@ -632,7 +632,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Reykjavik1900       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Reykjavik1900()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Reykjavik1900;
@@ -642,7 +642,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for RGF1993       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void RGF1993()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.RGF1993;
@@ -652,7 +652,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for Roma1940       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Roma1940()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.Roma1940;
@@ -662,7 +662,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for RT1990       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void RT1990()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.RT1990;
@@ -672,7 +672,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for RT38       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void RT38()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.RT38;
@@ -682,7 +682,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for RT38Stockholm       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void RT38Stockholm()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.RT38Stockholm;
@@ -692,7 +692,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for S42Hungary       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void S42Hungary()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.S42Hungary;
@@ -702,7 +702,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for SJTSK       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SJTSK()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.SJTSK;
@@ -712,7 +712,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for SWEREF99       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SWEREF99()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.SWEREF99;
@@ -722,7 +722,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for SwissTRF1995       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SwissTRF1995()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.SwissTRF1995;
@@ -732,7 +732,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for TM65       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void TM65()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.TM65;
@@ -742,7 +742,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// <summary>
         /// Test for TM75       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void TM75()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Europe.TM75;

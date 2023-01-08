@@ -16,7 +16,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// Tests for the Europe category of Projected coordinate systems.
         /// </summary>
         /// <param name="pInfo"></param>
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("GetProjections")]
         public void EuropeProjectedTests(ProjectionInfoDesc pInfo)
         {
@@ -27,7 +27,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989LAEA       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989LAEA()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.World.WGS1984;

@@ -16,7 +16,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// Tests for the Africa category of Projected coordinate systems.
         /// </summary>
         /// <param name="pInfo"></param>
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("GetProjections")]
         public void AfricaProjectedTests(ProjectionInfoDesc pInfo)
         {

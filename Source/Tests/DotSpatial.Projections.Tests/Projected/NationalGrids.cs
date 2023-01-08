@@ -20,7 +20,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Abidjan1987TM5NW       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Abidjan1987TM5NW()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Abidjan1987TM5NW;
@@ -29,7 +29,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for AccraGhanaGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void AccraGhanaGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.AccraGhanaGrid;
@@ -39,7 +39,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for AccraTM1NW       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void AccraTM1NW()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.AccraTM1NW;
@@ -49,7 +49,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for AinelAbdAramcoLambert       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void AinelAbdAramcoLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.AinelAbdAramcoLambert;
@@ -59,7 +59,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for AmericanSamoa1962SamoaLambert       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void AmericanSamoa1962SamoaLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.AmericanSamoa1962SamoaLambert;
@@ -69,7 +69,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Anguilla1957BritishWestIndiesGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Anguilla1957BritishWestIndiesGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Anguilla1957BritishWestIndiesGrid;
@@ -79,7 +79,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Antigua1943BritishWestIndiesGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Antigua1943BritishWestIndiesGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Antigua1943BritishWestIndiesGrid;
@@ -89,7 +89,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ArgentinaZone1       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ArgentinaZone1()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ArgentinaZone1;
@@ -99,7 +99,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ArgentinaZone2       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ArgentinaZone2()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ArgentinaZone2;
@@ -109,7 +109,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ArgentinaZone3       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ArgentinaZone3()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ArgentinaZone3;
@@ -119,7 +119,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ArgentinaZone4       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ArgentinaZone4()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ArgentinaZone4;
@@ -129,7 +129,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ArgentinaZone5       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ArgentinaZone5()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ArgentinaZone5;
@@ -139,7 +139,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ArgentinaZone6       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ArgentinaZone6()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ArgentinaZone6;
@@ -149,7 +149,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ArgentinaZone7       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ArgentinaZone7()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ArgentinaZone7;
@@ -158,7 +158,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for AustriaFerroCentralZone       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void AustriaFerroCentralZone()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.AustriaFerroCentralZone;
@@ -167,7 +167,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for AustriaFerroEastZone       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void AustriaFerroEastZone()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.AustriaFerroEastZone;
@@ -176,7 +176,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for AustriaFerroWestZone       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void AustriaFerroWestZone()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.AustriaFerroWestZone;
@@ -186,7 +186,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for BahrainStateGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void BahrainStateGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.BahrainStateGrid;
@@ -196,7 +196,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Barbados1938BarbadosGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Barbados1938BarbadosGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Barbados1938BarbadosGrid;
@@ -206,7 +206,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Barbados1938BritishWestIndiesGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Barbados1938BritishWestIndiesGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Barbados1938BritishWestIndiesGrid;
@@ -216,7 +216,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for BataviaNEIEZ       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void BataviaNEIEZ()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.BataviaNEIEZ;
@@ -226,7 +226,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for BataviaTM109SE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void BataviaTM109SE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.BataviaTM109SE;
@@ -236,7 +236,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for BelgeLambert1950       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void BelgeLambert1950()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.BelgeLambert1950;
@@ -246,7 +246,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for BelgeLambert1972       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void BelgeLambert1972()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.BelgeLambert1972;
@@ -256,7 +256,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Bermuda2000NationalGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Bermuda2000NationalGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Bermuda2000NationalGrid;
@@ -266,7 +266,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Bern1898BernLV03C       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Bern1898BernLV03C()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Bern1898BernLV03C;
@@ -276,7 +276,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for BritishNationalGridOSGB36       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void BritishNationalGridOSGB36()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.BritishNationalGridOSGB36;
@@ -286,7 +286,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for CamacupaTM1130SE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void CamacupaTM1130SE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.CamacupaTM1130SE;
@@ -296,7 +296,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for CamacupaTM12SE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void CamacupaTM12SE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.CamacupaTM12SE;
@@ -306,7 +306,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for CarthageTM11NE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void CarthageTM11NE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.CarthageTM11NE;
@@ -316,7 +316,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for CentreFrance       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void CentreFrance()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.CentreFrance;
@@ -326,7 +326,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for CH1903LV03       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void CH1903LV03()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.CH1903LV03;
@@ -336,7 +336,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for CH1903LV95       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void CH1903LV95()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.CH1903LV95;
@@ -346,7 +346,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ChosMalal1914Argentina2       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ChosMalal1914Argentina2()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ChosMalal1914Argentina2;
@@ -356,7 +356,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ColombiaBogotaZone       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ColombiaBogotaZone()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ColombiaBogotaZone;
@@ -366,7 +366,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ColombiaEastZone       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ColombiaEastZone()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ColombiaEastZone;
@@ -376,7 +376,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ColombiaECentralZone       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ColombiaECentralZone()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ColombiaECentralZone;
@@ -386,7 +386,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ColombiaWestZone       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ColombiaWestZone()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ColombiaWestZone;
@@ -396,7 +396,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Corse       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Corse()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Corse;
@@ -406,7 +406,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Datum73HayfordGaussIGeoE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Datum73HayfordGaussIGeoE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Datum73HayfordGaussIGeoE;
@@ -416,7 +416,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Datum73HayfordGaussIPCC       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Datum73HayfordGaussIPCC()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Datum73HayfordGaussIPCC;
@@ -425,7 +425,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for DeirezZorLevantStereographic       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DeirezZorLevantStereographic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.DeirezZorLevantStereographic;
@@ -435,7 +435,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for DeirezZorLevantZone       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DeirezZorLevantZone()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.DeirezZorLevantZone;
@@ -445,7 +445,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for DeirezZorSyriaLambert       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DeirezZorSyriaLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.DeirezZorSyriaLambert;
@@ -455,7 +455,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for DHDN3DegreeGaussZone1       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DHDN3DegreeGaussZone1()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.DHDN3DegreeGaussZone1;
@@ -465,7 +465,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for DHDN3DegreeGaussZone2       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DHDN3DegreeGaussZone2()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.DHDN3DegreeGaussZone2;
@@ -475,7 +475,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for DHDN3DegreeGaussZone3       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DHDN3DegreeGaussZone3()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.DHDN3DegreeGaussZone3;
@@ -485,7 +485,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for DHDN3DegreeGaussZone4       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DHDN3DegreeGaussZone4()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.DHDN3DegreeGaussZone4;
@@ -495,7 +495,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for DHDN3DegreeGaussZone5       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DHDN3DegreeGaussZone5()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.DHDN3DegreeGaussZone5;
@@ -505,7 +505,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Dominica1945BritishWestIndiesGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Dominica1945BritishWestIndiesGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Dominica1945BritishWestIndiesGrid;
@@ -515,7 +515,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Douala1948AOFWest       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Douala1948AOFWest()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Douala1948AOFWest;
@@ -525,7 +525,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for DutchRD       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DutchRD()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.DutchRD;
@@ -557,7 +557,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for GeocentricAfterDatumTest       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void GeocentricAfterDatumTest()
         {
             double[] xy = new double[2];
@@ -573,7 +573,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950FranceEuroLambert       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950FranceEuroLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950FranceEuroLambert;
@@ -583,7 +583,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950TM0N       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950TM0N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950TM0N;
@@ -593,7 +593,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950TM27       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950TM27()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950TM27;
@@ -603,7 +603,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950TM30       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950TM30()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950TM30;
@@ -613,7 +613,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950TM33       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950TM33()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950TM33;
@@ -623,7 +623,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950TM36       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950TM36()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950TM36;
@@ -633,7 +633,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950TM39       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950TM39()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950TM39;
@@ -643,7 +643,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950TM42       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950TM42()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950TM42;
@@ -653,7 +653,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950TM45       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950TM45()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950TM45;
@@ -663,7 +663,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950TM5NE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950TM5NE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950TM5NE;
@@ -673,7 +673,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950Turkey10       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950Turkey10()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950Turkey10;
@@ -683,7 +683,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950Turkey11       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950Turkey11()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950Turkey11;
@@ -693,7 +693,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950Turkey12       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950Turkey12()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950Turkey12;
@@ -703,7 +703,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950Turkey13       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950Turkey13()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950Turkey13;
@@ -713,7 +713,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950Turkey14       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950Turkey14()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950Turkey14;
@@ -723,7 +723,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950Turkey15       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950Turkey15()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950Turkey15;
@@ -733,7 +733,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ED1950Turkey9       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ED1950Turkey9()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ED1950Turkey9;
@@ -743,7 +743,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for EgyptBlueBelt       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void EgyptBlueBelt()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.EgyptBlueBelt;
@@ -753,7 +753,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for EgyptExtendedPurpleBelt       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void EgyptExtendedPurpleBelt()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.EgyptExtendedPurpleBelt;
@@ -763,7 +763,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for EgyptPurpleBelt       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void EgyptPurpleBelt()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.EgyptPurpleBelt;
@@ -773,7 +773,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for EgyptRedBelt       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void EgyptRedBelt()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.EgyptRedBelt;
@@ -783,7 +783,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ELD1979Libya10       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ELD1979Libya10()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ELD1979Libya10;
@@ -793,7 +793,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ELD1979Libya11       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ELD1979Libya11()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ELD1979Libya11;
@@ -803,7 +803,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ELD1979Libya12       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ELD1979Libya12()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ELD1979Libya12;
@@ -813,7 +813,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ELD1979Libya13       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ELD1979Libya13()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ELD1979Libya13;
@@ -823,7 +823,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ELD1979Libya5       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ELD1979Libya5()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ELD1979Libya5;
@@ -833,7 +833,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ELD1979Libya6       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ELD1979Libya6()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ELD1979Libya6;
@@ -843,7 +843,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ELD1979Libya7       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ELD1979Libya7()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ELD1979Libya7;
@@ -853,7 +853,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ELD1979Libya8       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ELD1979Libya8()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ELD1979Libya8;
@@ -863,7 +863,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ELD1979Libya9       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ELD1979Libya9()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ELD1979Libya9;
@@ -873,7 +873,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ELD1979TM12NE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ELD1979TM12NE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ELD1979TM12NE;
@@ -883,7 +883,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Estonia1997EstoniaNationalGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Estonia1997EstoniaNationalGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Estonia1997EstoniaNationalGrid;
@@ -893,7 +893,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for EstonianCoordinateSystemof1992       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void EstonianCoordinateSystemof1992()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.EstonianCoordinateSystemof1992;
@@ -903,7 +903,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRF1989TMBaltic1993       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRF1989TMBaltic1993()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRF1989TMBaltic1993;
@@ -913,7 +913,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989Kp2000Bornholm       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989Kp2000Bornholm()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989Kp2000Bornholm;
@@ -923,7 +923,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989Kp2000Jutland       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989Kp2000Jutland()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989Kp2000Jutland;
@@ -933,7 +933,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989Kp2000Zealand       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989Kp2000Zealand()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989Kp2000Zealand;
@@ -943,7 +943,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989PolandCS2000Zone5       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989PolandCS2000Zone5()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989PolandCS2000Zone5;
@@ -953,7 +953,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989PolandCS2000Zone6       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989PolandCS2000Zone6()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989PolandCS2000Zone6;
@@ -963,7 +963,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989PolandCS2000Zone7       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989PolandCS2000Zone7()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989PolandCS2000Zone7;
@@ -973,7 +973,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989PolandCS2000Zone8       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989PolandCS2000Zone8()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989PolandCS2000Zone8;
@@ -983,7 +983,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989PolandCS92       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989PolandCS92()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989PolandCS92;
@@ -993,7 +993,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989TM30NE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989TM30NE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989TM30NE;
@@ -1003,7 +1003,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989TMBaltic1993       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989TMBaltic1993()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989TMBaltic1993;
@@ -1013,7 +1013,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989UWPP1992       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989UWPP1992()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989UWPP1992;
@@ -1023,7 +1023,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989UWPP2000PAS5       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989UWPP2000PAS5()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989UWPP2000PAS5;
@@ -1033,7 +1033,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989UWPP2000PAS6       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989UWPP2000PAS6()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989UWPP2000PAS6;
@@ -1043,7 +1043,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989UWPP2000PAS7       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989UWPP2000PAS7()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989UWPP2000PAS7;
@@ -1053,7 +1053,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ETRS1989UWPP2000PAS8       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ETRS1989UWPP2000PAS8()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ETRS1989UWPP2000PAS8;
@@ -1063,7 +1063,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for EUREFFINTM35FIN       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void EUREFFINTM35FIN()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.EUREFFINTM35FIN;
@@ -1073,7 +1073,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for EverestModified1969RSOMalayaMeters       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void EverestModified1969RSOMalayaMeters()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.EverestModified1969RSOMalayaMeters;
@@ -1083,7 +1083,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for FD1958Iraq       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void FD1958Iraq()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.FD1958Iraq;
@@ -1093,7 +1093,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for FinlandZone1       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void FinlandZone1()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.FinlandZone1;
@@ -1103,7 +1103,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for FinlandZone2       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void FinlandZone2()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.FinlandZone2;
@@ -1113,7 +1113,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for FinlandZone3       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void FinlandZone3()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.FinlandZone3;
@@ -1123,7 +1123,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for FinlandZone4       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void FinlandZone4()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.FinlandZone4;
@@ -1133,7 +1133,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for FranceI       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void FranceI()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.FranceI;
@@ -1143,7 +1143,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for FranceII       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void FranceII()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.FranceII;
@@ -1153,7 +1153,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for FranceIII       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void FranceIII()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.FranceIII;
@@ -1163,7 +1163,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for FranceIV       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void FranceIV()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.FranceIV;
@@ -1173,7 +1173,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for GermanyZone1       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void GermanyZone1()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.GermanyZone1;
@@ -1183,7 +1183,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for GermanyZone2       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void GermanyZone2()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.GermanyZone2;
@@ -1193,7 +1193,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for GermanyZone3       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void GermanyZone3()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.GermanyZone3;
@@ -1203,7 +1203,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for GermanyZone4       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void GermanyZone4()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.GermanyZone4;
@@ -1213,7 +1213,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for GermanyZone5       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void GermanyZone5()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.GermanyZone5;
@@ -1223,7 +1223,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for GhanaMetreGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void GhanaMetreGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.GhanaMetreGrid;
@@ -1233,7 +1233,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for GreekGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void GreekGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.GreekGrid;
@@ -1243,7 +1243,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Grenada1953BritishWestIndiesGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Grenada1953BritishWestIndiesGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Grenada1953BritishWestIndiesGrid;
@@ -1253,7 +1253,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for GuernseyGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void GuernseyGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.GuernseyGrid;
@@ -1263,7 +1263,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for GunungSegaraNEIEZ       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void GunungSegaraNEIEZ()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.GunungSegaraNEIEZ;
@@ -1273,7 +1273,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Hanoi1972GK106NE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Hanoi1972GK106NE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Hanoi1972GK106NE;
@@ -1283,7 +1283,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for HD1972EgysegesOrszagosVetuleti       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void HD1972EgysegesOrszagosVetuleti()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.HD1972EgysegesOrszagosVetuleti;
@@ -1293,7 +1293,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Helle1954JanMayenGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Helle1954JanMayenGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Helle1954JanMayenGrid;
@@ -1303,7 +1303,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for HitoXVIII1963Argentina2       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void HitoXVIII1963Argentina2()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.HitoXVIII1963Argentina2;
@@ -1313,7 +1313,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for HongKong1980Grid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void HongKong1980Grid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.HongKong1980Grid;
@@ -1323,7 +1323,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Indian1960TM106NE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Indian1960TM106NE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Indian1960TM106NE;
@@ -1333,7 +1333,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for IRENET95IrishTranverseMercator       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void IRENET95IrishTranverseMercator()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.IRENET95IrishTranverseMercator;
@@ -1343,7 +1343,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for IrishNationalGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void IrishNationalGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.IrishNationalGrid;
@@ -1353,7 +1353,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ISN1993Lambert1993       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ISN1993Lambert1993()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ISN1993Lambert1993;
@@ -1363,7 +1363,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for IsraelTMGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void IsraelTMGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.IsraelTMGrid;
@@ -1373,7 +1373,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Jamaica1875OldGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Jamaica1875OldGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Jamaica1875OldGrid;
@@ -1383,7 +1383,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for JamaicaGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void JamaicaGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.JamaicaGrid;
@@ -1393,7 +1393,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for JordanJTM       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void JordanJTM()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.JordanJTM;
@@ -1403,7 +1403,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for KandawalaCeylonBeltIndianYards1937       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void KandawalaCeylonBeltIndianYards1937()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.KandawalaCeylonBeltIndianYards1937;
@@ -1413,7 +1413,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for KandawalaCeylonBeltMeters       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void KandawalaCeylonBeltMeters()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.KandawalaCeylonBeltMeters;
@@ -1423,7 +1423,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for KertauRSOMalayaChains       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void KertauRSOMalayaChains()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.KertauRSOMalayaChains;
@@ -1433,7 +1433,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for KertauRSOMalayaMeters       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void KertauRSOMalayaMeters()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.KertauRSOMalayaMeters;
@@ -1443,7 +1443,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for KertauSingaporeGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void KertauSingaporeGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.KertauSingaporeGrid;
@@ -1453,7 +1453,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for KOCLambert       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void KOCLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.KOCLambert;
@@ -1463,7 +1463,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Korean1985KoreaCentralBelt       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Korean1985KoreaCentralBelt()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Korean1985KoreaCentralBelt;
@@ -1473,7 +1473,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Korean1985KoreaEastBelt       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Korean1985KoreaEastBelt()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Korean1985KoreaEastBelt;
@@ -1483,7 +1483,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Korean1985KoreaWestBelt       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Korean1985KoreaWestBelt()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Korean1985KoreaWestBelt;
@@ -1493,7 +1493,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for KUDAMSKTM       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void KUDAMSKTM()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.KUDAMSKTM;
@@ -1503,7 +1503,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for KuwaitOilCoLambert       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void KuwaitOilCoLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.KuwaitOilCoLambert;
@@ -1513,7 +1513,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for KuwaitUtilityKTM       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void KuwaitUtilityKTM()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.KuwaitUtilityKTM;
@@ -1523,7 +1523,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for LakeMaracaiboGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void LakeMaracaiboGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.LakeMaracaiboGrid;
@@ -1533,7 +1533,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for LakeMaracaiboGridM1       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void LakeMaracaiboGridM1()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.LakeMaracaiboGridM1;
@@ -1543,7 +1543,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for LakeMaracaiboGridM3       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void LakeMaracaiboGridM3()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.LakeMaracaiboGridM3;
@@ -1553,7 +1553,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for LakeMaracaiboLaRosaGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void LakeMaracaiboLaRosaGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.LakeMaracaiboLaRosaGrid;
@@ -1563,7 +1563,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for LietuvosKoordinaciuSistema       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void LietuvosKoordinaciuSistema()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.LietuvosKoordinaciuSistema;
@@ -1573,7 +1573,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for LisboaBesselBonne       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void LisboaBesselBonne()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.LisboaBesselBonne;
@@ -1583,7 +1583,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for LisboaHayfordGaussIGeoE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void LisboaHayfordGaussIGeoE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.LisboaHayfordGaussIGeoE;
@@ -1593,7 +1593,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for LisboaHayfordGaussIPCC       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void LisboaHayfordGaussIPCC()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.LisboaHayfordGaussIPCC;
@@ -1603,7 +1603,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Locodjo1965TM5NW       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Locodjo1965TM5NW()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Locodjo1965TM5NW;
@@ -1613,7 +1613,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Luxembourg1930Gauss       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Luxembourg1930Gauss()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Luxembourg1930Gauss;
@@ -1623,7 +1623,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Madrid1870MadridSpain       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Madrid1870MadridSpain()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Madrid1870MadridSpain;
@@ -1633,7 +1633,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MakassarNEIEZ       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MakassarNEIEZ()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MakassarNEIEZ;
@@ -1643,7 +1643,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MGI3DegreeGaussZone5       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGI3DegreeGaussZone5()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MGI3DegreeGaussZone5;
@@ -1653,7 +1653,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MGI3DegreeGaussZone6       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGI3DegreeGaussZone6()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MGI3DegreeGaussZone6;
@@ -1663,7 +1663,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MGI3DegreeGaussZone7       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGI3DegreeGaussZone7()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MGI3DegreeGaussZone7;
@@ -1673,7 +1673,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MGI3DegreeGaussZone8       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGI3DegreeGaussZone8()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MGI3DegreeGaussZone8;
@@ -1683,7 +1683,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MGIAustriaLambert       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGIAustriaLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MGIAustriaLambert;
@@ -1693,7 +1693,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MGIBalkans5       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGIBalkans5()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MGIBalkans5;
@@ -1703,7 +1703,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MGIBalkans6       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGIBalkans6()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MGIBalkans6;
@@ -1713,7 +1713,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MGIBalkans7       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGIBalkans7()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MGIBalkans7;
@@ -1723,7 +1723,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MGIBalkans8       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGIBalkans8()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MGIBalkans8;
@@ -1733,7 +1733,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MGIM28       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGIM28()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MGIM28;
@@ -1743,7 +1743,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MGIM31       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGIM31()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MGIM31;
@@ -1753,7 +1753,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MGIM34       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGIM34()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MGIM34;
@@ -1763,7 +1763,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MGISloveniaGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MGISloveniaGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MGISloveniaGrid;
@@ -1773,7 +1773,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MonteMarioItaly1       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MonteMarioItaly1()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MonteMarioItaly1;
@@ -1783,7 +1783,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MonteMarioItaly2       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MonteMarioItaly2()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MonteMarioItaly2;
@@ -1793,7 +1793,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MonteMarioRomeItaly1       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MonteMarioRomeItaly1()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MonteMarioRomeItaly1;
@@ -1803,7 +1803,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MonteMarioRomeItaly2       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MonteMarioRomeItaly2()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MonteMarioRomeItaly2;
@@ -1813,7 +1813,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Montserrat1958BritishWestIndiesGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Montserrat1958BritishWestIndiesGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Montserrat1958BritishWestIndiesGrid;
@@ -1823,7 +1823,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for MountDillonTobagoGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void MountDillonTobagoGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MountDillonTobagoGrid;
@@ -1832,7 +1832,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1927CubaNorte       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [Ignore("")] // GridShiftMissingException
         public void NAD1927CubaNorte()
         {
@@ -1842,7 +1842,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1927CubaSur       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [Ignore("")] // GridShiftMissingException
         public void NAD1927CubaSur()
         {
@@ -1852,7 +1852,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1927GuatemalaNorte       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [Ignore("")] // GridShiftMissingException
         public void NAD1927GuatemalaNorte()
         {
@@ -1862,7 +1862,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1927GuatemalaSur       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [Ignore("")] // GridShiftMissingException
         public void NAD1927GuatemalaSur()
         {
@@ -1873,7 +1873,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1927MichiganGeoRefMeters       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927MichiganGeoRefMeters()
         {
@@ -1884,7 +1884,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1927MichiganGeoRefUSfeet       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927MichiganGeoRefUSfeet()
         {
@@ -1895,7 +1895,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983HARNGuamMapGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983HARNGuamMapGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NAD1983HARNGuamMapGrid;
@@ -1905,7 +1905,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983MichiganGeoReferencedMeters       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983MichiganGeoReferencedMeters()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NAD1983MichiganGeoReferencedMeters;
@@ -1915,7 +1915,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983MichiganGeoRefMeters       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983MichiganGeoRefMeters()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NAD1983MichiganGeoRefMeters;
@@ -1925,7 +1925,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983MichiganGeoRefUSfeet       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983MichiganGeoRefUSfeet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NAD1983MichiganGeoRefUSfeet;
@@ -1935,7 +1935,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NewZealandMapGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NewZealandMapGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NewZealandMapGrid;
@@ -1945,7 +1945,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NewZealandNorthIsland       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NewZealandNorthIsland()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NewZealandNorthIsland;
@@ -1955,7 +1955,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NewZealandSouthIsland       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NewZealandSouthIsland()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NewZealandSouthIsland;
@@ -1965,7 +1965,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NigeriaEastBelt       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NigeriaEastBelt()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NigeriaEastBelt;
@@ -1975,7 +1975,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NigeriaMidBelt       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NigeriaMidBelt()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NigeriaMidBelt;
@@ -1985,7 +1985,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NigeriaWestBelt       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NigeriaWestBelt()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NigeriaWestBelt;
@@ -1995,7 +1995,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NordAlgerie       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NordAlgerie()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NordAlgerie;
@@ -2005,7 +2005,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NordAlgerieancienne       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NordAlgerieancienne()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NordAlgerieancienne;
@@ -2015,7 +2015,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NordAlgerieAnciennedegrees       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NordAlgerieAnciennedegrees()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NordAlgerieAnciennedegrees;
@@ -2025,7 +2025,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NordAlgeriedegrees       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NordAlgeriedegrees()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NordAlgeriedegrees;
@@ -2035,7 +2035,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NorddeGuerre       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NorddeGuerre()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NorddeGuerre;
@@ -2045,7 +2045,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NordFrance       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NordFrance()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NordFrance;
@@ -2054,7 +2054,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NordMaroc       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NordMaroc()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NordMaroc;
@@ -2064,7 +2064,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NordMarocdegrees       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NordMarocdegrees()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NordMarocdegrees;
@@ -2074,7 +2074,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NordTunisie       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NordTunisie()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NordTunisie;
@@ -2084,7 +2084,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NTFFranceIdegrees       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NTFFranceIdegrees()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NTFFranceIdegrees;
@@ -2094,7 +2094,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NTFFranceIIdegrees       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NTFFranceIIdegrees()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NTFFranceIIdegrees;
@@ -2104,7 +2104,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NTFFranceIIIdegrees       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NTFFranceIIIdegrees()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NTFFranceIIIdegrees;
@@ -2113,7 +2113,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NTFFranceIVdegrees       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NTFFranceIVdegrees()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NTFFranceIVdegrees;
@@ -2123,7 +2123,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ObservatorioMeteorologico1965MacauGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ObservatorioMeteorologico1965MacauGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ObservatorioMeteorologico1965MacauGrid;
@@ -2133,7 +2133,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for OSNI1952IrishNationalGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void OSNI1952IrishNationalGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.OSNI1952IrishNationalGrid;
@@ -2143,7 +2143,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Palestine1923IsraelCSGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Palestine1923IsraelCSGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Palestine1923IsraelCSGrid;
@@ -2153,7 +2153,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Palestine1923PalestineBelt       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Palestine1923PalestineBelt()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Palestine1923PalestineBelt;
@@ -2163,7 +2163,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Palestine1923PalestineGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Palestine1923PalestineGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Palestine1923PalestineGrid;
@@ -2173,7 +2173,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for PampadelCastilloArgentina2       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void PampadelCastilloArgentina2()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.PampadelCastilloArgentina2;
@@ -2183,7 +2183,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for PeruCentralZone       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void PeruCentralZone()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.PeruCentralZone;
@@ -2193,7 +2193,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for PeruEastZone       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void PeruEastZone()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.PeruEastZone;
@@ -2203,7 +2203,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for PeruWestZone       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void PeruWestZone()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.PeruWestZone;
@@ -2213,7 +2213,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for PhilippinesZoneI       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void PhilippinesZoneI()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.PhilippinesZoneI;
@@ -2223,7 +2223,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for PhilippinesZoneII       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void PhilippinesZoneII()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.PhilippinesZoneII;
@@ -2233,7 +2233,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for PhilippinesZoneIII       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void PhilippinesZoneIII()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.PhilippinesZoneIII;
@@ -2243,7 +2243,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for PhilippinesZoneIV       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void PhilippinesZoneIV()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.PhilippinesZoneIV;
@@ -2253,7 +2253,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for PhilippinesZoneV       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void PhilippinesZoneV()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.PhilippinesZoneV;
@@ -2263,7 +2263,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for PitondesNeigesTMReunion       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void PitondesNeigesTMReunion()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.PitondesNeigesTMReunion;
@@ -2273,7 +2273,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for PortugueseNationalGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void PortugueseNationalGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.PortugueseNationalGrid;
@@ -2283,7 +2283,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for PSAD1956ICNRegional       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void PSAD1956ICNRegional()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.PSAD1956ICNRegional;
@@ -2293,7 +2293,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Qatar1948QatarGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Qatar1948QatarGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Qatar1948QatarGrid;
@@ -2303,7 +2303,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for QatarNationalGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void QatarNationalGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.QatarNationalGrid;
@@ -2313,7 +2313,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for RassadiranNakhleTaqi       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void RassadiranNakhleTaqi()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.RassadiranNakhleTaqi;
@@ -2323,7 +2323,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for RGF1993Lambert93       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void RGF1993Lambert93()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.RGF1993Lambert93;
@@ -2333,7 +2333,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for RGNC1991LambertNewCaledonia       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void RGNC1991LambertNewCaledonia()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.RGNC1991LambertNewCaledonia;
@@ -2343,7 +2343,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Rijksdriehoekstelsel       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Rijksdriehoekstelsel()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Rijksdriehoekstelsel;
@@ -2353,7 +2353,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Roma1940GaussBoagaEst       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Roma1940GaussBoagaEst()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Roma1940GaussBoagaEst;
@@ -2363,7 +2363,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Roma1940GaussBoagaOvest       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Roma1940GaussBoagaOvest()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Roma1940GaussBoagaOvest;
@@ -2373,7 +2373,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for RT9025gonWest       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void RT9025gonWest()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.RT9025gonWest;
@@ -2383,7 +2383,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SAD1969BrazilPolyconic       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SAD1969BrazilPolyconic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SAD1969BrazilPolyconic;
@@ -2393,7 +2393,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Sahara       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Sahara()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Sahara;
@@ -2403,7 +2403,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Saharadegrees       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Saharadegrees()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Saharadegrees;
@@ -2413,7 +2413,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SierraLeone1924NewColonyGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SierraLeone1924NewColonyGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SierraLeone1924NewColonyGrid;
@@ -2423,7 +2423,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SierraLeone1924NewWarOfficeGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SierraLeone1924NewWarOfficeGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SierraLeone1924NewWarOfficeGrid;
@@ -2433,7 +2433,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SJTSKFerroKrovak       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SJTSKFerroKrovak()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SJTSKFerroKrovak;
@@ -2443,7 +2443,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SJTSKFerroKrovakEastNorth       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SJTSKFerroKrovakEastNorth()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SJTSKFerroKrovakEastNorth;
@@ -2453,7 +2453,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SJTSKKrovak       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SJTSKKrovak()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SJTSKKrovak;
@@ -2463,7 +2463,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SJTSKKrovakEastNorth       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SJTSKKrovakEastNorth()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SJTSKKrovakEastNorth;
@@ -2473,7 +2473,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Stereo1933       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Stereo1933()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Stereo1933;
@@ -2483,7 +2483,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Stereo1970       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Stereo1970()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Stereo1970;
@@ -2493,7 +2493,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for StKitts1955BritishWestIndiesGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void StKitts1955BritishWestIndiesGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.StKitts1955BritishWestIndiesGrid;
@@ -2503,7 +2503,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for StLucia1955BritishWestIndiesGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void StLucia1955BritishWestIndiesGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.StLucia1955BritishWestIndiesGrid;
@@ -2513,7 +2513,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for StVincent1945BritishWestIndiesGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void StVincent1945BritishWestIndiesGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.StVincent1945BritishWestIndiesGrid;
@@ -2523,7 +2523,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SudAlgerie       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SudAlgerie()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SudAlgerie;
@@ -2533,7 +2533,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SudAlgerieAncienneDegree       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SudAlgerieAncienneDegree()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SudAlgerieAncienneDegree;
@@ -2543,7 +2543,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SudAlgeriedegrees       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SudAlgeriedegrees()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SudAlgeriedegrees;
@@ -2553,7 +2553,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SudFrance       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SudFrance()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SudFrance;
@@ -2563,7 +2563,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SudMaroc       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SudMaroc()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SudMaroc;
@@ -2573,7 +2573,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SudMarocdegrees       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SudMarocdegrees()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SudMarocdegrees;
@@ -2583,7 +2583,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SudTunisie       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SudTunisie()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SudTunisie;
@@ -2593,7 +2593,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for SwedishNationalGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void SwedishNationalGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.SwedishNationalGrid;
@@ -2603,7 +2603,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Timbalai1948RSOBorneoChains       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Timbalai1948RSOBorneoChains()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Timbalai1948RSOBorneoChains;
@@ -2613,7 +2613,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Timbalai1948RSOBorneoFeet       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Timbalai1948RSOBorneoFeet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Timbalai1948RSOBorneoFeet;
@@ -2623,7 +2623,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Timbalai1948RSOBorneoMeters       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Timbalai1948RSOBorneoMeters()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Timbalai1948RSOBorneoMeters;
@@ -2633,7 +2633,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for TM75IrishGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void TM75IrishGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.TM75IrishGrid;
@@ -2643,7 +2643,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Trinidad1903TrinidadGrid       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Trinidad1903TrinidadGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Trinidad1903TrinidadGrid;
@@ -2653,7 +2653,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for Trinidad1903TrinidadGridFeetClarke       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Trinidad1903TrinidadGridFeetClarke()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Trinidad1903TrinidadGridFeetClarke;
@@ -2663,7 +2663,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for UWPP1992       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void UWPP1992()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.UWPP1992;
@@ -2673,7 +2673,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for UWPP2000pas5       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void UWPP2000pas5()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.UWPP2000pas5;
@@ -2683,7 +2683,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for UWPP2000pas6       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void UWPP2000pas6()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.UWPP2000pas6;
@@ -2693,7 +2693,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for UWPP2000pas7       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void UWPP2000pas7()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.UWPP2000pas7;
@@ -2703,7 +2703,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for UWPP2000pas8       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void UWPP2000pas8()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.UWPP2000pas8;
@@ -2713,7 +2713,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for WGS1972TM106NE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void WGS1972TM106NE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.WGS1972TM106NE;
@@ -2723,7 +2723,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for WGS1984TM116SE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void WGS1984TM116SE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.WGS1984TM116SE;
@@ -2733,7 +2733,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for WGS1984TM132SE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void WGS1984TM132SE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.WGS1984TM132SE;
@@ -2743,7 +2743,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for WGS1984TM36SE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void WGS1984TM36SE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.WGS1984TM36SE;
@@ -2753,7 +2753,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for WGS1984TM6NE       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void WGS1984TM6NE()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.WGS1984TM6NE;
@@ -2763,7 +2763,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ZanderijSurinameOldTM       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ZanderijSurinameOldTM()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ZanderijSurinameOldTM;
@@ -2773,7 +2773,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ZanderijSurinameTM       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ZanderijSurinameTM()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ZanderijSurinameTM;
@@ -2783,7 +2783,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for ZanderijTM54NW       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ZanderijTM54NW()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.ZanderijTM54NW;

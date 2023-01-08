@@ -11,7 +11,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Test for DefaultCtor       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DefaultCtor()
         {
             var target = new Meridian();
@@ -19,7 +19,7 @@ namespace DotSpatial.Projections.Tests
             Assert.AreEqual(Proj4Meridian.Greenwich.ToString(), target.Name);
         }
 
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("WellKnownMeridians")]
         public void CtorLongitudeName(Tuple<Proj4Meridian, double, int> meridian)
         {
@@ -29,7 +29,7 @@ namespace DotSpatial.Projections.Tests
             Assert.AreEqual(meridian.Item1.ToString(), target.Name);
         }
 
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("WellKnownMeridians")]
         public void CtorProj4Meridian(Tuple<Proj4Meridian, double, int> meridian)
         {
@@ -40,7 +40,7 @@ namespace DotSpatial.Projections.Tests
             Assert.AreEqual(meridian.Item1.ToString(), target.Name);
         }
 
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("WellKnownMeridians")]
         public void CtorStandardMeridianName(Tuple<Proj4Meridian, double, int> meridian)
         {
@@ -51,7 +51,7 @@ namespace DotSpatial.Projections.Tests
             Assert.AreEqual(meridian.Item1.ToString(), target.Name);
         }
 
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("WellKnownMeridians")]
         public void ReadCode(Tuple<Proj4Meridian, double, int> meridian)
         {
@@ -62,7 +62,7 @@ namespace DotSpatial.Projections.Tests
             Assert.AreEqual(meridian.Item1.ToString(), target.Name);
         }
 
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("WellKnownMeridians")]
         public void AssignMeridian(Tuple<Proj4Meridian, double, int> meridian)
         {
@@ -73,7 +73,7 @@ namespace DotSpatial.Projections.Tests
             Assert.AreEqual(meridian.Item1.ToString(), target.Name);
         }
 
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("WellKnownMeridians")]
         public void PmStringValue(Tuple<Proj4Meridian, double, int> meridian)
         {
@@ -84,7 +84,7 @@ namespace DotSpatial.Projections.Tests
         }
 
 
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("WellKnownMeridians")]
         public void PmDoubleValue(Tuple<Proj4Meridian, double, int> meridian)
         {

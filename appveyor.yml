@@ -32,10 +32,10 @@ nuget:
   project_feed: false
   
 test:
-  # all except assemblies to test
-  assemblies:
+  # all except categories to test
+  categories:
     except:
-      - DotSpatial.Projections.Tests.dll
+      - Projection
   
 after_build:
  - ps: '[System.IO.File]::WriteAllText("$env:APPVEYOR_BUILD_FOLDER\source\bin\$env:CONFIGURATION\version.txt", $env:APPVEYOR_REPO_COMMIT)'

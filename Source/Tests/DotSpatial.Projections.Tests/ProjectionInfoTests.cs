@@ -14,7 +14,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Proj4 string esri comparison test.
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void Proj4EsriComparisonTest()
         {
             ProjectionInfo infoBuiltIn = KnownCoordinateSystems.Geographic.World.WGS1984;
@@ -31,7 +31,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         ///A test for ToProj4String
         ///</summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ToProj4StringTestDoesReadMatchToString()
         {
             string proj4String = "+proj=longlat +ellps=WGS84 +no_defs ";
@@ -44,7 +44,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         ///A test for http://dotspatial.codeplex.com/workitem/188 WGS1984
         ///</summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ToEsriStringWGS1984Test()
         {
             ProjectionInfo p1 = KnownCoordinateSystems.Geographic.World.WGS1984;
@@ -63,7 +63,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         ///A test for ProjectionInfo Constructor
         ///</summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ProjectionInfoConstructorTest()
         {
             string proj4String = string.Empty;
@@ -76,7 +76,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         ///A test for ProjectionInfo Constructor
         ///</summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ProjectionInfoConstructorTest2()
         {
             string proj4String = null;
@@ -89,7 +89,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         ///A test for ProjectionInfo Constructor
         ///</summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ProjectionInfoConstructorTest1()
         {
             string proj4String = "+proj=longlat +ellps=WGS84 +no_defs ";
@@ -106,7 +106,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         ///A test for ToEsriString NorthAmericanDatum1983
         ///</summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ToEsriStringNorthAmericanDatum1983Test()
         {
             ProjectionInfo p1 = KnownCoordinateSystems.Geographic.NorthAmerica.NorthAmericanDatum1983;
@@ -126,7 +126,7 @@ namespace DotSpatial.Projections.Tests
         /// Test for Geoc_Proj4ExportImport
         /// </summary>
         /// <param name="expected">value that should be returned.</param>
-        [Test]
+        [Test, Category("Projection")]
         [TestCase(true)]
         [TestCase(false)]
         public void Over_Proj4ExportImport(bool expected)
@@ -142,7 +142,7 @@ namespace DotSpatial.Projections.Tests
         /// Test for Geoc_Proj4ExportImport
         /// </summary>
         /// <param name="expected">value that should be returned.</param>
-        [Test]
+        [Test, Category("Projection")]
         [TestCase(true)]
         [TestCase(false)]
         public void Geoc_Proj4ExportImport(bool expected)
@@ -157,7 +157,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Test for EsriCentral_ParallelParse       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void EsriCentral_ParallelParse()
         {
             // Test for https://dotspatial.codeplex.com/workitem/22934
@@ -171,7 +171,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Test for ReadProjectionFile       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [TestCase("FormattedProjectionFile")]
         [TestCase("StandardProjectionFile")]
         public void ReadProjectionFile(string resourceName)

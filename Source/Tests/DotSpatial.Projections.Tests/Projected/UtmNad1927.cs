@@ -16,7 +16,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// Tests for the UtmNad1927 category of Projected coordinate systems.
         /// </summary>
         /// <param name="pInfo"></param>
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("GetProjections")]
         [Ignore("")] // GridShiftMissingException
         public void UtmNad1927Tests(ProjectionInfoDesc pInfo)

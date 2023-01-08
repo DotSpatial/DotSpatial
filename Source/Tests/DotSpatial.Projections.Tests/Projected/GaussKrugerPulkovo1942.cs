@@ -16,7 +16,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// Tests for the GaussKrugerPulkovo1942 category of Projected coordinate systems.
         /// </summary>
         /// <param name="pInfo"></param>
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("GetProjections")]
         public void GaussKrugerPulkovo1942ProjectedTests(ProjectionInfoDesc pInfo)
         {

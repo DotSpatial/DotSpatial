@@ -9,7 +9,7 @@ namespace DotSpatial.Projections.Tests.AuthorityCodes
         /// <summary>
         /// Test for DefaultInstanceContainsProjections       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void DefaultInstanceContainsProjections()
         {
             Assert.IsNotNull(AuthorityCodeHandler.Instance["EPSG:2000"]);

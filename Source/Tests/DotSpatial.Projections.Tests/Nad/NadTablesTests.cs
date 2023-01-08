@@ -10,7 +10,7 @@ namespace DotSpatial.Projections.Tests.Nad
         /// <summary>
         /// Test for NonEmptyAfterInitialize       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NonEmptyAfterInitialize()
         {
             var target = new NadTables();

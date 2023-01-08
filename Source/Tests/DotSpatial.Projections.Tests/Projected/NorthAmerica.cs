@@ -15,7 +15,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for USAContiguousLambertConformalConic       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void USAContiguousLambertConformalConic()
         {
             //Sets up a array to contain the x and y coordinates
@@ -38,7 +38,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// Tests for the NorthAmerica category of Projected coordinate systems.
         /// </summary>
         /// <param name="pInfo"></param>
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("GetProjections")]
         public void NorthAmericaTests(ProjectionInfoDesc pInfo)
         {

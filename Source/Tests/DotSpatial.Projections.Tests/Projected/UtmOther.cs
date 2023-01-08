@@ -17,7 +17,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// Tests for the UtmOther category of Projected coordinate systems.
         /// </summary>
         /// <param name="pInfo"></param>
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("GetProjections")]
         public void UtmOtherTests(ProjectionInfoDesc pInfo)
         {

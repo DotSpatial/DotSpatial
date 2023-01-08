@@ -12,7 +12,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Test for ReprojectPointsWithOtherRanging       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void ReprojectPointsWithOtherRanging()
         {
             ProjectionInfo geographic = ProjectionInfo.FromProj4String(KnownCoordinateSystems.Geographic.World.WGS1984.ToProj4String());
@@ -120,7 +120,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Test for RT9025gonV_to_WGS84       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void RT9025gonV_to_WGS84()
         {
             // Test from https://github.com/DotSpatial/DotSpatial/issues/618
@@ -166,7 +166,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Test for EuropeanDatum1950UTMZone30N_to_WGS84       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void EuropeanDatum1950UTMZone30N_to_WGS84()
         {
             // Test from https://github.com/DotSpatial/DotSpatial/issues/623
@@ -187,7 +187,7 @@ namespace DotSpatial.Projections.Tests
         /// <param name="i">zone 1 (index 0) to zone 19 (index 18)</param>
         /// <param name="sampleCoord">longitude, latitude of the sample data for the zone</param>
         /// <param name="gsiResult">Ideal convert result confirmed by GSI official Calculation page (https://vldb.gsi.go.jp/sokuchi/surveycalc/surveycalc/bl2xyf.html)</param>
-        [Test]
+        [Test, Category("Projection")]
         [TestCase(0, new double[] { 129.51, 33.01 }, new double[] { 1108.9790, 934.3333 })]
         [TestCase(1, new double[] { 131.01, 33.01 }, new double[] { 1108.9790, 934.3333 })]
         [TestCase(2, new double[] { 132.21, 36.01 }, new double[] { 1110.3484, 3906.2093 })]
@@ -235,7 +235,7 @@ namespace DotSpatial.Projections.Tests
         /// <param name="epsgCodeFrom">source procjection projectoin EPSG code</param>
         /// <param name="xy">coordinates to convert in Austrian projection</param>
         /// <param name="expected">exprected result in WSG84</param>
-        [Test]
+        [Test, Category("Projection")]
         //http://epsg.io/31287 ->http://epsg.io/transform#s_srs=31287&t_srs=4326&x=80560.6300000&y=236779.1900000 /*Rudolfsbrunnen Innnsbruck*/
         [TestCase(31287 /*MGI / Austria Lambert*/, new double[] { 253617.12, 375762.55 }, new double[] { 11.39752, 47.264943 })]
         //http://epsg.io/31254 ->http://epsg.io/transform#s_srs=31254&t_srs=4326&x=80560.6300000&y=236779.1900000 /*Rudolfsbrunnen Innnsbruck*/
@@ -260,7 +260,7 @@ namespace DotSpatial.Projections.Tests
         /// <param name="epsgCodeTo">target procection EPSG Code</param>
         /// <param name="xy">coordinates to convert in WSG84</param>
         /// <param name="expected">exprected result in Austrian projection</param>
-        [Test]
+        [Test, Category("Projection")]
         //http://epsg.io/31287 -> http://epsg.io/transform#s_srs=31287&t_srs=4326&x=80560.6300000&y=236779.1900000  /*Rudolfsbrunnen Innnsbruck*/
         [TestCase(31287 /*MGI / Austria Lambert*/, new double[] { 11.39752, 47.264943 }, new double[] { 253617.12, 375762.55 })]
         //http://epsg.io/31254 -> http://epsg.io/transform#s_srs=31254&t_srs=4326&x=80560.6300000&y=236779.1900000 /*Rudolfsbrunnen Innnsbruck*/

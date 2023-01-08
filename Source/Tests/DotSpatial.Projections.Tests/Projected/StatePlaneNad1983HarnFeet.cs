@@ -16,7 +16,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// Tests for the StatePlaneNad1983HarnFeet category of Projected coordinate systems.
         /// </summary>
         /// <param name="pInfo"></param>
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("GetProjections")]
         public void StatePlaneNad1983HarnFeetProjectedTests(ProjectionInfoDesc pInfo)
         {

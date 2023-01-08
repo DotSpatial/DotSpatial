@@ -21,7 +21,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1927AlaskaAlbersFeet       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927AlaskaAlbersFeet()
         {
@@ -32,7 +32,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1927AlaskaAlbersMeters       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927AlaskaAlbersMeters()
         {
@@ -43,7 +43,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1927CaliforniaTealeAlbers       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927CaliforniaTealeAlbers()
         {
@@ -54,7 +54,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1927GeorgiaStatewideAlbers       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927GeorgiaStatewideAlbers()
         {
@@ -65,7 +65,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1927TexasStatewideMappingSystem       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927TexasStatewideMappingSystem()
         {
@@ -76,7 +76,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983CaliforniaTealeAlbers       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983CaliforniaTealeAlbers()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1983CaliforniaTealeAlbers;
@@ -86,7 +86,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983GeorgiaStatewideLambert       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983GeorgiaStatewideLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1983GeorgiaStatewideLambert;
@@ -97,7 +97,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983HARNOregonStatewideLambert       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983HARNOregonStatewideLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1983HARNOregonStatewideLambert;
@@ -108,7 +108,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983HARNOregonStatewideLambertFeetIntl       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983HARNOregonStatewideLambertFeetIntl()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1983HARNOregonStatewideLambertFeetIntl;
@@ -119,7 +119,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983IdahoTM       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983IdahoTM()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1983IdahoTM;
@@ -130,7 +130,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983OregonStatewideLambert       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983OregonStatewideLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1983OregonStatewideLambert;
@@ -141,7 +141,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983OregonStatewideLambertFeetIntl       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983OregonStatewideLambertFeetIntl()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1983OregonStatewideLambertFeetIntl;
@@ -152,7 +152,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983TexasCentricMappingSystemAlbers       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983TexasCentricMappingSystemAlbers()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1983TexasCentricMappingSystemAlbers;
@@ -163,7 +163,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983TexasCentricMappingSystemLambert       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983TexasCentricMappingSystemLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1983TexasCentricMappingSystemLambert;
@@ -174,7 +174,7 @@ namespace DotSpatial.Projections.Tests.Projected
         /// <summary>
         /// Test for NAD1983TexasStatewideMappingSystem       
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void NAD1983TexasStatewideMappingSystem()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1983TexasStatewideMappingSystem;

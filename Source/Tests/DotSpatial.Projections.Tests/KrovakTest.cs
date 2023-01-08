@@ -2,21 +2,19 @@
 // Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using NUnit.Framework;
-using TestClass = NUnit.Framework.TestFixtureAttribute;
-using TestMethod = NUnit.Framework.TestAttribute;
 
 namespace DotSpatial.Projections.Tests
 {
     /// <summary>
     /// Contains the tests for Krovak projections.
     /// </summary>
-    [TestClass()]
+    [TestFixture]
     public class KrovakTest
     {
         /// <summary>
         /// Test for Wgs84ToKrovakWithTransform
         /// </summary>
-        [TestMethod()]
+        [Test, Category("Projection")]
         public void Wgs84ToKrovakWithTransform()
         {
             double[] myOut = new double[2];
@@ -38,7 +36,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Test for Wgs84ToKrovak_KnownCoordSys
         /// </summary>
-        [TestMethod()]
+        [Test, Category("Projection")]
         public void Wgs84ToKrovak_KnownCoordSys()
         {
             double[] myOut = new double[2];
@@ -59,7 +57,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Test for KrovakToWgs84WithTransform
         /// </summary>
-        [TestMethod()]
+        [Test, Category("Projection")]
         public void KrovakToWgs84WithTransform()
         {
             double[] myOut = new double[2];
@@ -81,7 +79,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Test for KrovakToWgs84_KnownCoordSys
         /// </summary>
-        [TestMethod()]
+        [Test, Category("Projection")]
         public void KrovakToWgs84_KnownCoordSys()
         {
             double[] myOut = new double[2];
@@ -105,7 +103,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Test for KrovakToWgs84_EsriString
         /// </summary>
-        [TestMethod()]
+        [Test, Category("Projection")]
         public void KrovakToWgs84_EsriString()
         {
             double[] myOut = new double[2];
@@ -129,7 +127,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Test for KrovakToWgs84_EsriString_2
         /// </summary>
-        [TestMethod()]
+        [Test, Category("Projection")]
         public void KrovakToWgs84_EsriString_2()
         {
             double[] myOut = new double[2];

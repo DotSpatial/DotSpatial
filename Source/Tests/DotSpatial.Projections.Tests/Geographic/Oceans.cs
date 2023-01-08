@@ -16,7 +16,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         /// Tests for the Oceans category of Geographic coordinate systems.
         /// </summary>
         /// <param name="pInfo"></param>
-        [Test]
+        [Test, Category("Projection")]
         [TestCaseSource("GetProjections")]
         public void OceansTests(ProjectionInfoDesc pInfo)
         {
