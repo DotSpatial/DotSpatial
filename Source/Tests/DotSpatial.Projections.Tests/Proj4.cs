@@ -9,12 +9,12 @@ using NUnit.Framework;
 
 namespace DotSpatial.Projections.Tests
 {
-    internal static class FunctionLoader
+    static class FunctionLoader
     {
-        [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
+        [DllImport("Kernel32.dll")]
         private static extern IntPtr LoadLibrary(string path);
 
-        [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
+        [DllImport("Kernel32.dll")]
         private static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
 
         public static Delegate LoadFunction<T>(string dllPath, string functionName)

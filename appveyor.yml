@@ -31,12 +31,6 @@ nuget:
   account_feed: false
   project_feed: false
   
-test:
-  # all except categories to test
-  categories:
-    except:
-      - Projection
-  
 after_build:
  - ps: '[System.IO.File]::WriteAllText("$env:APPVEYOR_BUILD_FOLDER\source\bin\$env:CONFIGURATION\version.txt", $env:APPVEYOR_REPO_COMMIT)'
  - ps: dotnet pack Source\Core\DotSpatial.Analysis\DotSpatial.Analysis.csproj -p:PackageVersion=$env:nugetVersion -o ./ --no-restore --no-build
