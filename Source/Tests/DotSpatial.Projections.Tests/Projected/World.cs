@@ -17,6 +17,9 @@ namespace DotSpatial.Projections.Tests.Projected
 
         }
 
+        /// <summary>
+        /// Test for Aitoffworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void Aitoffworld()
@@ -26,6 +29,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Behrmannworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void Behrmannworld()
@@ -35,6 +41,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Bonneworld       
+        /// </summary>
         [Test]
         public void Bonneworld()
         {
@@ -43,6 +52,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for CrasterParabolicworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void CrasterParabolicworld()
@@ -52,6 +64,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Cubeworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void Cubeworld()
@@ -61,6 +76,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for CylindricalEqualAreaworld       
+        /// </summary>
         [Test]
         public void CylindricalEqualAreaworld()
         {
@@ -69,6 +87,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EckertIIIworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void EckertIIIworld()
@@ -78,6 +99,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EckertIIworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void EckertIIworld()
@@ -87,6 +111,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EckertIVworld       
+        /// </summary>
         [Test]
         public void EckertIVworld()
         {
@@ -95,6 +122,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EckertIworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void EckertIworld()
@@ -104,6 +134,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EckertVIworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void EckertVIworld()
@@ -113,6 +146,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EckertVworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void EckertVworld()
@@ -122,6 +158,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EquidistantConicworld       
+        /// </summary>
         [Test]
         public void EquidistantConicworld()
         {
@@ -130,6 +169,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EquidistantCylindricalworld       
+        /// </summary>
         [Test]
         public void EquidistantCylindricalworld()
         {
@@ -138,6 +180,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for FlatPolarQuarticworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void FlatPolarQuarticworld()
@@ -147,6 +192,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Fullerworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void Fullerworld()
@@ -156,6 +204,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for GallStereographicworld       
+        /// </summary>
         [Test]
         public void GallStereographicworld()
         {
@@ -164,6 +215,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for HammerAitoffworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void HammerAitoffworld()
@@ -173,6 +227,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Loximuthalworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void Loximuthalworld()
@@ -182,6 +239,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Mercatorworld       
+        /// </summary>
         [Test]
         public void Mercatorworld()
         {
@@ -190,6 +250,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for MillerCylindricalworld       
+        /// </summary>
         [Test]
         public void MillerCylindricalworld()
         {
@@ -198,6 +261,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Mollweideworld       
+        /// </summary>
         [Test]
         public void Mollweideworld()
         {
@@ -206,6 +272,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for PlateCarreeworld       
+        /// </summary>
         [Test]
         public void PlateCarreeworld()
         {
@@ -213,6 +282,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for PlateCarreeFromEsriString       
+        /// </summary>
         [Test]
         public void PlateCarreeFromEsriString()
         {
@@ -220,6 +292,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for Polyconicworld       
+        /// </summary>
         [Test]
         public void Polyconicworld()
         {
@@ -228,6 +303,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for QuarticAuthalicworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void QuarticAuthalicworld()
@@ -237,6 +315,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Robinsonworld       
+        /// </summary>
         [Test]
         public void Robinsonworld()
         {
@@ -245,6 +326,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Sinusoidalworld       
+        /// </summary>
         [Test]
         public void Sinusoidalworld()
         {
@@ -253,6 +337,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for TheWorldfromSpace       
+        /// </summary>
         [Test]
         public void TheWorldfromSpace()
         {
@@ -261,6 +348,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Timesworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void Timesworld()
@@ -270,6 +360,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for VanderGrintenIworld       
+        /// </summary>
         [Test]
         public void VanderGrintenIworld()
         {
@@ -278,6 +371,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for VerticalPerspectiveworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void VerticalPerspectiveworld()
@@ -287,6 +383,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WebMercator       
+        /// </summary>
         [Test]
         public void WebMercator()
         {
@@ -295,6 +394,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WinkelIIworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WinkelIIworld()
@@ -304,6 +406,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WinkelIworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WinkelIworld()
@@ -313,6 +418,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WinkelTripelNGSworld       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WinkelTripelNGSworld()

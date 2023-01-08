@@ -6,6 +6,9 @@ namespace DotSpatial.Projections.Tests.AuthorityCodes
     [TestFixture]
     internal class AuthorityCodeHandlerTests
     {
+        /// <summary>
+        /// Test for DefaultInstanceContainsProjections       
+        /// </summary>
         [Test]
         public void DefaultInstanceContainsProjections()
         {

@@ -18,6 +18,9 @@ namespace DotSpatial.Projections.Tests.Projected
 
         }
 
+        /// <summary>
+        /// Test for Aitoffsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void Aitoffsphere()
@@ -27,6 +30,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Behrmannsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void Behrmannsphere()
@@ -36,6 +42,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Bonnesphere       
+        /// </summary>
         [Test]
         public void Bonnesphere()
         {
@@ -44,6 +53,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for CrasterParabolicsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void CrasterParabolicsphere()
@@ -53,6 +65,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for CylindricalEqualAreasphere       
+        /// </summary>
         [Test]
         public void CylindricalEqualAreasphere()
         {
@@ -61,6 +76,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EckertIIIsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void EckertIIIsphere()
@@ -70,6 +88,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EckertIIsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void EckertIIsphere()
@@ -79,6 +100,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EckertIsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void EckertIsphere()
@@ -88,6 +112,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EckertIVsphere       
+        /// </summary>
         [Test]
         public void EckertIVsphere()
         {
@@ -96,6 +123,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EckertVIsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void EckertVIsphere()
@@ -105,6 +135,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EckertVsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void EckertVsphere()
@@ -114,6 +147,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EquidistantConicsphere       
+        /// </summary>
         [Test]
         public void EquidistantConicsphere()
         {
@@ -122,6 +158,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for EquidistantCylindricalsphere       
+        /// </summary>
         [Test]
         public void EquidistantCylindricalsphere()
         {
@@ -130,6 +169,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for FlatPolarQuarticsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void FlatPolarQuarticsphere()
@@ -139,6 +181,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for GallStereographicsphere       
+        /// </summary>
         [Test]
         public void GallStereographicsphere()
         {
@@ -147,6 +192,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for HammerAitoffsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void HammerAitoffsphere()
@@ -156,6 +204,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Loximuthalsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void Loximuthalsphere()
@@ -165,6 +216,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Mercatorsphere       
+        /// </summary>
         [Test]
         public void Mercatorsphere()
         {
@@ -173,6 +227,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for MillerCylindricalsphere       
+        /// </summary>
         [Test]
         public void MillerCylindricalsphere()
         {
@@ -181,6 +238,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Mollweidesphere       
+        /// </summary>
         [Test]
         public void Mollweidesphere()
         {
@@ -189,6 +249,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for PlateCarreesphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void PlateCarreesphere()
@@ -198,6 +261,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Polyconicsphere       
+        /// </summary>
         [Test]
         public void Polyconicsphere()
         {
@@ -206,6 +272,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for QuarticAuthalicsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void QuarticAuthalicsphere()
@@ -215,6 +284,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Robinsonsphere       
+        /// </summary>
         [Test]
         public void Robinsonsphere()
         {
@@ -223,6 +295,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Sinusoidalsphere       
+        /// </summary>
         [Test]
         public void Sinusoidalsphere()
         {
@@ -231,6 +306,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Timessphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void Timessphere()
@@ -240,6 +318,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for VanderGrintenIsphere       
+        /// </summary>
         [Test]
         public void VanderGrintenIsphere()
         {
@@ -248,6 +329,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for VerticalPerspectivesphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void VerticalPerspectivesphere()
@@ -257,6 +341,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WinkelIIsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WinkelIIsphere()
@@ -266,6 +353,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WinkelIsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WinkelIsphere()
@@ -275,6 +365,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WinkelTripelNGSsphere       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WinkelTripelNGSsphere()

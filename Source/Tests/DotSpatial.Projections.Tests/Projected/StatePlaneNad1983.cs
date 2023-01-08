@@ -19,6 +19,9 @@ namespace DotSpatial.Projections.Tests.Projected
             
         }
 
+        /// <summary>
+        /// Test for MichiganGeoRef2008       
+        /// </summary>
         [Test]
         public void MichiganGeoRef2008()
         {
@@ -27,6 +30,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983Maine2000CentralZone       
+        /// </summary>
         [Test]
         public void NAD1983Maine2000CentralZone()
         {
@@ -35,6 +41,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983Maine2000EastZone       
+        /// </summary>
         [Test]
         public void NAD1983Maine2000EastZone()
         {
@@ -43,6 +52,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983Maine2000WestZone       
+        /// </summary>
         [Test]
         public void NAD1983Maine2000WestZone()
         {
@@ -51,6 +63,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlabamaEastFIPS0101       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneAlabamaEastFIPS0101()
         {
@@ -59,6 +74,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlabamaWestFIPS0102       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneAlabamaWestFIPS0102()
         {
@@ -67,6 +85,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska10FIPS5010       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneAlaska10FIPS5010()
         {
@@ -75,6 +96,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska1FIPS5001       
+        /// </summary>
         [Test]
         [Ignore("Verify this test")]
         public void NAD1983StatePlaneAlaska1FIPS5001()
@@ -84,6 +108,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska2FIPS5002       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneAlaska2FIPS5002()
         {
@@ -92,6 +119,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska3FIPS5003       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneAlaska3FIPS5003()
         {
@@ -100,6 +130,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska4FIPS5004       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneAlaska4FIPS5004()
         {
@@ -108,6 +141,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska5FIPS5005       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneAlaska5FIPS5005()
         {
@@ -116,6 +152,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska6FIPS5006       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneAlaska6FIPS5006()
         {
@@ -124,6 +163,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska7FIPS5007       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneAlaska7FIPS5007()
         {
@@ -132,6 +174,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska8FIPS5008       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneAlaska8FIPS5008()
         {
@@ -140,6 +185,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska9FIPS5009       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneAlaska9FIPS5009()
         {
@@ -148,6 +196,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneArizonaCentralFIPS0202       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneArizonaCentralFIPS0202()
         {
@@ -156,6 +207,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneArizonaEastFIPS0201       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneArizonaEastFIPS0201()
         {
@@ -164,6 +218,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneArizonaWestFIPS0203       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneArizonaWestFIPS0203()
         {
@@ -172,6 +229,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneArkansasNorthFIPS0301       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneArkansasNorthFIPS0301()
         {
@@ -180,6 +240,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneArkansasSouthFIPS0302       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneArkansasSouthFIPS0302()
         {
@@ -188,6 +251,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneCaliforniaIFIPS0401       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneCaliforniaIFIPS0401()
         {
@@ -196,6 +262,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneCaliforniaIIFIPS0402       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneCaliforniaIIFIPS0402()
         {
@@ -204,6 +273,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneCaliforniaIIIFIPS0403       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneCaliforniaIIIFIPS0403()
         {
@@ -212,6 +284,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneCaliforniaIVFIPS0404       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneCaliforniaIVFIPS0404()
         {
@@ -220,6 +295,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneCaliforniaVFIPS0405       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneCaliforniaVFIPS0405()
         {
@@ -228,6 +306,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneCaliforniaVIFIPS0406       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneCaliforniaVIFIPS0406()
         {
@@ -236,6 +317,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneColoradoCentralFIPS0502       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneColoradoCentralFIPS0502()
         {
@@ -244,6 +328,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneColoradoNorthFIPS0501       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneColoradoNorthFIPS0501()
         {
@@ -252,6 +339,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneColoradoSouthFIPS0503       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneColoradoSouthFIPS0503()
         {
@@ -260,6 +350,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneConnecticutFIPS0600       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneConnecticutFIPS0600()
         {
@@ -268,6 +361,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneDelawareFIPS0700       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneDelawareFIPS0700()
         {
@@ -276,6 +372,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneFloridaEastFIPS0901       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneFloridaEastFIPS0901()
         {
@@ -284,6 +383,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneFloridaNorthFIPS0903       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneFloridaNorthFIPS0903()
         {
@@ -292,6 +394,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneFloridaWestFIPS0902       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneFloridaWestFIPS0902()
         {
@@ -300,6 +405,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneGeorgiaEastFIPS1001       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneGeorgiaEastFIPS1001()
         {
@@ -308,6 +416,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneGeorgiaWestFIPS1002       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneGeorgiaWestFIPS1002()
         {
@@ -316,6 +427,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneGuamFIPS5400       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneGuamFIPS5400()
         {
@@ -324,6 +438,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneHawaii1FIPS5101       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneHawaii1FIPS5101()
         {
@@ -332,6 +449,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneHawaii2FIPS5102       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneHawaii2FIPS5102()
         {
@@ -340,6 +460,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneHawaii3FIPS5103       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneHawaii3FIPS5103()
         {
@@ -348,6 +471,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneHawaii4FIPS5104       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneHawaii4FIPS5104()
         {
@@ -356,6 +482,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneHawaii5FIPS5105       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneHawaii5FIPS5105()
         {
@@ -364,6 +493,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneIdahoCentralFIPS1102       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneIdahoCentralFIPS1102()
         {
@@ -372,6 +504,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneIdahoEastFIPS1101       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneIdahoEastFIPS1101()
         {
@@ -380,6 +515,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneIdahoWestFIPS1103       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneIdahoWestFIPS1103()
         {
@@ -388,6 +526,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneIllinoisEastFIPS1201       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneIllinoisEastFIPS1201()
         {
@@ -396,6 +537,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneIllinoisWestFIPS1202       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneIllinoisWestFIPS1202()
         {
@@ -404,6 +548,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneIndianaEastFIPS1301       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneIndianaEastFIPS1301()
         {
@@ -412,6 +559,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneIndianaWestFIPS1302       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneIndianaWestFIPS1302()
         {
@@ -420,6 +570,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneIowaNorthFIPS1401       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneIowaNorthFIPS1401()
         {
@@ -428,6 +581,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneIowaSouthFIPS1402       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneIowaSouthFIPS1402()
         {
@@ -436,6 +592,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneKansasNorthFIPS1501       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneKansasNorthFIPS1501()
         {
@@ -444,6 +603,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneKansasSouthFIPS1502       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneKansasSouthFIPS1502()
         {
@@ -452,6 +614,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneKentuckyFIPS1600       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneKentuckyFIPS1600()
         {
@@ -460,6 +625,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneKentuckyNorthFIPS1601       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneKentuckyNorthFIPS1601()
         {
@@ -468,6 +636,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneKentuckySouthFIPS1602       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneKentuckySouthFIPS1602()
         {
@@ -476,6 +647,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneLouisianaNorthFIPS1701       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneLouisianaNorthFIPS1701()
         {
@@ -484,6 +658,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneLouisianaSouthFIPS1702       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneLouisianaSouthFIPS1702()
         {
@@ -492,6 +669,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMaineEastFIPS1801       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMaineEastFIPS1801()
         {
@@ -500,6 +680,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMaineWestFIPS1802       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMaineWestFIPS1802()
         {
@@ -508,6 +691,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMarylandFIPS1900       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMarylandFIPS1900()
         {
@@ -516,6 +702,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMassachusettsIslandFIPS2002       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMassachusettsIslandFIPS2002()
         {
@@ -524,6 +713,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMassachusettsMainlandFIPS2001       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMassachusettsMainlandFIPS2001()
         {
@@ -532,6 +724,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMichiganCentralFIPS2112       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMichiganCentralFIPS2112()
         {
@@ -540,6 +735,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMichiganNorthFIPS2111       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMichiganNorthFIPS2111()
         {
@@ -548,6 +746,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMichiganSouthFIPS2113       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMichiganSouthFIPS2113()
         {
@@ -556,6 +757,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMinnesotaCentralFIPS2202       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMinnesotaCentralFIPS2202()
         {
@@ -564,6 +768,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMinnesotaNorthFIPS2201       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMinnesotaNorthFIPS2201()
         {
@@ -572,6 +779,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMinnesotaSouthFIPS2203       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMinnesotaSouthFIPS2203()
         {
@@ -580,6 +790,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMississippiEastFIPS2301       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMississippiEastFIPS2301()
         {
@@ -588,6 +801,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMississippiWestFIPS2302       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMississippiWestFIPS2302()
         {
@@ -596,6 +812,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMissouriCentralFIPS2402       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMissouriCentralFIPS2402()
         {
@@ -604,6 +823,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMissouriEastFIPS2401       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMissouriEastFIPS2401()
         {
@@ -612,6 +834,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMissouriWestFIPS2403       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMissouriWestFIPS2403()
         {
@@ -620,6 +845,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneMontanaFIPS2500       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneMontanaFIPS2500()
         {
@@ -628,6 +856,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNebraskaFIPS2600       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNebraskaFIPS2600()
         {
@@ -636,6 +867,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNevadaCentralFIPS2702       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNevadaCentralFIPS2702()
         {
@@ -644,6 +878,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNevadaEastFIPS2701       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNevadaEastFIPS2701()
         {
@@ -652,6 +889,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNevadaWestFIPS2703       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNevadaWestFIPS2703()
         {
@@ -660,6 +900,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewHampshireFIPS2800       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNewHampshireFIPS2800()
         {
@@ -668,6 +911,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewJerseyFIPS2900       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNewJerseyFIPS2900()
         {
@@ -676,6 +922,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewMexicoCentralFIPS3002       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNewMexicoCentralFIPS3002()
         {
@@ -684,6 +933,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewMexicoEastFIPS3001       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNewMexicoEastFIPS3001()
         {
@@ -692,6 +944,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewMexicoWestFIPS3003       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNewMexicoWestFIPS3003()
         {
@@ -700,6 +955,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewYorkCentralFIPS3102       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNewYorkCentralFIPS3102()
         {
@@ -708,6 +966,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewYorkEastFIPS3101       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNewYorkEastFIPS3101()
         {
@@ -716,6 +977,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewYorkLongIslandFIPS3104       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNewYorkLongIslandFIPS3104()
         {
@@ -724,6 +988,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewYorkWestFIPS3103       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNewYorkWestFIPS3103()
         {
@@ -732,6 +999,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNorthCarolinaFIPS3200       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNorthCarolinaFIPS3200()
         {
@@ -740,6 +1010,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNorthDakotaNorthFIPS3301       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNorthDakotaNorthFIPS3301()
         {
@@ -748,6 +1021,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneNorthDakotaSouthFIPS3302       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneNorthDakotaSouthFIPS3302()
         {
@@ -756,6 +1032,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneOhioNorthFIPS3401       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneOhioNorthFIPS3401()
         {
@@ -764,6 +1043,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneOhioSouthFIPS3402       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneOhioSouthFIPS3402()
         {
@@ -772,6 +1054,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneOklahomaNorthFIPS3501       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneOklahomaNorthFIPS3501()
         {
@@ -780,6 +1065,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneOklahomaSouthFIPS3502       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneOklahomaSouthFIPS3502()
         {
@@ -788,6 +1076,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneOregonNorthFIPS3601       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneOregonNorthFIPS3601()
         {
@@ -796,6 +1087,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneOregonSouthFIPS3602       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneOregonSouthFIPS3602()
         {
@@ -804,6 +1098,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlanePennsylvaniaNorthFIPS3701       
+        /// </summary>
         [Test]
         public void NAD1983StatePlanePennsylvaniaNorthFIPS3701()
         {
@@ -812,6 +1109,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlanePennsylvaniaSouthFIPS3702       
+        /// </summary>
         [Test]
         public void NAD1983StatePlanePennsylvaniaSouthFIPS3702()
         {
@@ -820,6 +1120,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlanePuertoRicoVirginIslandsFIPS5200       
+        /// </summary>
         [Test]
         public void NAD1983StatePlanePuertoRicoVirginIslandsFIPS5200()
         {
@@ -828,6 +1131,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneRhodeIslandFIPS3800       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneRhodeIslandFIPS3800()
         {
@@ -836,6 +1142,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneSouthCarolinaFIPS3900       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneSouthCarolinaFIPS3900()
         {
@@ -844,6 +1153,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneSouthDakotaNorthFIPS4001       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneSouthDakotaNorthFIPS4001()
         {
@@ -852,6 +1164,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneSouthDakotaSouthFIPS4002       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneSouthDakotaSouthFIPS4002()
         {
@@ -860,6 +1175,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneTennesseeFIPS4100       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneTennesseeFIPS4100()
         {
@@ -868,6 +1186,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneTexasCentralFIPS4203       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneTexasCentralFIPS4203()
         {
@@ -876,6 +1197,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneTexasNorthCentralFIPS4202       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneTexasNorthCentralFIPS4202()
         {
@@ -884,6 +1208,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneTexasNorthFIPS4201       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneTexasNorthFIPS4201()
         {
@@ -892,6 +1219,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneTexasSouthCentralFIPS4204       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneTexasSouthCentralFIPS4204()
         {
@@ -900,6 +1230,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneTexasSouthFIPS4205       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneTexasSouthFIPS4205()
         {
@@ -908,6 +1241,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneUtahCentralFIPS4302       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneUtahCentralFIPS4302()
         {
@@ -916,6 +1252,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneUtahNorthFIPS4301       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneUtahNorthFIPS4301()
         {
@@ -924,6 +1263,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneUtahSouthFIPS4303       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneUtahSouthFIPS4303()
         {
@@ -932,6 +1274,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneVermontFIPS4400       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneVermontFIPS4400()
         {
@@ -940,6 +1285,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneVirginiaNorthFIPS4501       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneVirginiaNorthFIPS4501()
         {
@@ -948,6 +1296,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneVirginiaSouthFIPS4502       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneVirginiaSouthFIPS4502()
         {
@@ -956,6 +1307,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneWashingtonNorthFIPS4601       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneWashingtonNorthFIPS4601()
         {
@@ -964,6 +1318,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneWashingtonSouthFIPS4602       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneWashingtonSouthFIPS4602()
         {
@@ -972,6 +1329,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneWestVirginiaNorthFIPS4701       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneWestVirginiaNorthFIPS4701()
         {
@@ -980,6 +1340,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneWestVirginiaSouthFIPS4702       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneWestVirginiaSouthFIPS4702()
         {
@@ -988,6 +1351,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneWisconsinCentralFIPS4802       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneWisconsinCentralFIPS4802()
         {
@@ -996,6 +1362,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneWisconsinNorthFIPS4801       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneWisconsinNorthFIPS4801()
         {
@@ -1004,6 +1373,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneWisconsinSouthFIPS4803       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneWisconsinSouthFIPS4803()
         {
@@ -1012,6 +1384,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneWyomingEastCentralFIPS4902       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneWyomingEastCentralFIPS4902()
         {
@@ -1020,6 +1395,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneWyomingEastFIPS4901       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneWyomingEastFIPS4901()
         {
@@ -1028,6 +1406,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneWyomingWestCentralFIPS4903       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneWyomingWestCentralFIPS4903()
         {
@@ -1036,6 +1417,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983StatePlaneWyomingWestFIPS4904       
+        /// </summary>
         [Test]
         public void NAD1983StatePlaneWyomingWestFIPS4904()
         {

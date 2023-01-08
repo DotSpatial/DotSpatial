@@ -5,6 +5,9 @@ namespace DotSpatial.Projections.Tests
     [TestFixture]
     internal class DatumsHandlerTests
     {
+        /// <summary>
+        /// Test for NonEmptyAfterInitialize       
+        /// </summary>
         [Test]
         public void NonEmptyAfterInitialize()
         {

@@ -19,6 +19,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NorthPoleAzimuthalEquidistant       
+        /// </summary>
         [Test]
         public void NorthPoleAzimuthalEquidistant()
         {
@@ -27,6 +30,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NorthPoleGnomonic       
+        /// </summary>
         [Test]
         public void NorthPoleGnomonic()
         {
@@ -35,6 +41,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NorthPoleLambertAzimuthalEqualArea       
+        /// </summary>
         [Test]
         public void NorthPoleLambertAzimuthalEqualArea()
         {
@@ -43,6 +52,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NorthPoleOrthographic       
+        /// </summary>
         [Test]
         public void NorthPoleOrthographic()
         {
@@ -51,6 +63,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NorthPoleStereographic       
+        /// </summary>
         [Test]
         public void NorthPoleStereographic()
         {
@@ -59,6 +74,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Perroud1950TerreAdeliePolarStereographic       
+        /// </summary>
         [Test]
         [Ignore("Verify")]
         public void Perroud1950TerreAdeliePolarStereographic()
@@ -68,6 +86,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for Petrels1972TerreAdeliePolarStereographic       
+        /// </summary>
         [Test]
         [Ignore("Verify")]
         public void Petrels1972TerreAdeliePolarStereographic()
@@ -77,6 +98,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for SouthPoleAzimuthalEquidistant       
+        /// </summary>
         [Test]
         public void SouthPoleAzimuthalEquidistant()
         {
@@ -85,6 +109,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for SouthPoleGnomonic       
+        /// </summary>
         [Test]
         public void SouthPoleGnomonic()
         {
@@ -93,6 +120,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for SouthPoleLambertAzimuthalEqualArea       
+        /// </summary>
         [Test]
         public void SouthPoleLambertAzimuthalEqualArea()
         {
@@ -101,6 +131,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for SouthPoleOrthographic       
+        /// </summary>
         [Test]
         public void SouthPoleOrthographic()
         {
@@ -109,6 +142,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for SouthPoleStereographic       
+        /// </summary>
         [Test]
         public void SouthPoleStereographic()
         {
@@ -117,6 +153,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for UPSNorth       
+        /// </summary>
         [Test]
         public void UPSNorth()
         {
@@ -125,6 +164,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for UPSSouth       
+        /// </summary>
         [Test]
         public void UPSSouth()
         {
@@ -133,6 +175,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984AntarcticPolarStereographic       
+        /// </summary>
         [Test]
         [Ignore("Verify")]
         public void WGS1984AntarcticPolarStereographic()
@@ -142,6 +187,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984AustralianAntarcticLambert       
+        /// </summary>
         [Test]
         public void WGS1984AustralianAntarcticLambert()
         {
@@ -150,6 +198,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984AustralianAntarcticPolarStereographic       
+        /// </summary>
         [Test]
         [Ignore("Verify")]
         public void WGS1984AustralianAntarcticPolarStereographic()

@@ -1,12 +1,21 @@
-﻿using NUnit.Framework;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
+
+using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
 
 namespace DotSpatial.Projections.Tests
 {
+    /// <summary>
+    /// Contains the tests for Krovak projections.
+    /// </summary>
     [TestClass()]
     public class KrovakTest
     {
+        /// <summary>
+        /// Test for Wgs84ToKrovakWithTransform
+        /// </summary>
         [TestMethod()]
         public void Wgs84ToKrovakWithTransform()
         {
@@ -23,9 +32,12 @@ namespace DotSpatial.Projections.Tests
             Reproject.ReprojectPoints(myOut, myZ, source, myJTSKPI, 0, myZ.Length);
 
             Assert.AreEqual(myOut[0], -868208.52, 1.0);
-            Assert.AreEqual(myOut[1], -1095793.96, 1.0);       
+            Assert.AreEqual(myOut[1], -1095793.96, 1.0);
         }
 
+        /// <summary>
+        /// Test for Wgs84ToKrovak_KnownCoordSys
+        /// </summary>
         [TestMethod()]
         public void Wgs84ToKrovak_KnownCoordSys()
         {
@@ -41,15 +53,18 @@ namespace DotSpatial.Projections.Tests
             Reproject.ReprojectPoints(myOut, myZ, source, myJTSKPI, 0, myZ.Length);
 
             Assert.AreEqual(myOut[0], -868208.52, 1.0);
-            Assert.AreEqual(myOut[1], -1095793.96, 1.0);          
+            Assert.AreEqual(myOut[1], -1095793.96, 1.0);
         }
 
+        /// <summary>
+        /// Test for KrovakToWgs84WithTransform
+        /// </summary>
         [TestMethod()]
         public void KrovakToWgs84WithTransform()
         {
             double[] myOut = new double[2];
             myOut[0] = -868208.52;
-            myOut[1] = -1095793.96;       
+            myOut[1] = -1095793.96;
             double[] myZ = new double[1];
             myZ[0] = 0;
 
@@ -63,12 +78,15 @@ namespace DotSpatial.Projections.Tests
             Assert.AreEqual(myOut[1], 49.4522626972222, 1.0);
         }
 
+        /// <summary>
+        /// Test for KrovakToWgs84_KnownCoordSys
+        /// </summary>
         [TestMethod()]
         public void KrovakToWgs84_KnownCoordSys()
         {
             double[] myOut = new double[2];
             myOut[0] = -868208.52;
-            myOut[1] = -1095793.96;      
+            myOut[1] = -1095793.96;
             double[] myZ = new double[1];
             myZ[0] = 0;
 
@@ -84,19 +102,22 @@ namespace DotSpatial.Projections.Tests
             Assert.AreEqual(myOut[1], 49.4522626972222, 1.0);
         }
 
+        /// <summary>
+        /// Test for KrovakToWgs84_EsriString
+        /// </summary>
         [TestMethod()]
         public void KrovakToWgs84_EsriString()
         {
             double[] myOut = new double[2];
             myOut[0] = -868208.52;
-            myOut[1] = -1095793.96;        
+            myOut[1] = -1095793.96;
             double[] myZ = new double[1];
             myZ[0] = 0;
 
             string jtskEsriString = @"PROJCS[""S-JTSK_Krovak_East_North"",GEOGCS[""GCS_S_JTSK"",DATUM[""D_S_JTSK"",SPHEROID[""Bessel_1841"",6377397.155,299.1528128]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]],PROJECTION[""Krovak""],PARAMETER[""False_Easting"",0.0],PARAMETER[""False_Northing"",0.0],PARAMETER[""Pseudo_Standard_Parallel_1"",78.5],PARAMETER[""Scale_Factor"",0.9999],PARAMETER[""Azimuth"",30.28813975277778],PARAMETER[""Longitude_Of_Center"",24.83333333333333],PARAMETER[""Latitude_Of_Center"",49.5],PARAMETER[""X_Scale"",-1.0],PARAMETER[""Y_Scale"",1.0],PARAMETER[""XY_Plane_Rotation"",90.0],UNIT[""Meter"",1.0]]";
 
             ProjectionInfo projWGS84 = KnownCoordinateSystems.Geographic.World.WGS1984;
-            
+
             ProjectionInfo myJTSKPI = ProjectionInfo.FromEsriString(jtskEsriString);
 
             Reproject.ReprojectPoints(myOut, myZ, myJTSKPI, projWGS84, 0, myZ.Length);
@@ -105,6 +126,9 @@ namespace DotSpatial.Projections.Tests
             Assert.AreEqual(myOut[1], 49.4522626972222, 1.0);
         }
 
+        /// <summary>
+        /// Test for KrovakToWgs84_EsriString_2
+        /// </summary>
         [TestMethod()]
         public void KrovakToWgs84_EsriString_2()
         {

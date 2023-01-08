@@ -19,6 +19,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984ComplexUTMZone20N       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WGS1984ComplexUTMZone20N()
@@ -28,6 +31,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984ComplexUTMZone21N       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WGS1984ComplexUTMZone21N()
@@ -37,6 +43,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984ComplexUTMZone22N       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WGS1984ComplexUTMZone22N()
@@ -46,6 +55,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984ComplexUTMZone23N       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WGS1984ComplexUTMZone23N()
@@ -55,6 +67,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984ComplexUTMZone24N       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WGS1984ComplexUTMZone24N()
@@ -64,6 +79,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984ComplexUTMZone25N       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WGS1984ComplexUTMZone25N()
@@ -73,6 +91,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984ComplexUTMZone26N       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WGS1984ComplexUTMZone26N()
@@ -82,6 +103,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984ComplexUTMZone27N       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WGS1984ComplexUTMZone27N()
@@ -91,6 +115,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984ComplexUTMZone28N       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WGS1984ComplexUTMZone28N()
@@ -100,6 +127,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984ComplexUTMZone29N       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WGS1984ComplexUTMZone29N()
@@ -109,6 +139,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984ComplexUTMZone30N       
+        /// </summary>
         [Test]
         [Ignore("")]
         public void WGS1984ComplexUTMZone30N()
@@ -118,6 +151,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone10N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone10N()
         {
@@ -126,6 +162,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone10S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone10S()
         {
@@ -134,6 +173,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone11N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone11N()
         {
@@ -142,6 +184,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone11S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone11S()
         {
@@ -150,6 +195,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone12N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone12N()
         {
@@ -158,6 +206,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone12S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone12S()
         {
@@ -166,6 +217,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone13N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone13N()
         {
@@ -174,6 +228,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone13S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone13S()
         {
@@ -182,6 +239,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone14N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone14N()
         {
@@ -190,6 +250,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone14S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone14S()
         {
@@ -198,6 +261,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone15N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone15N()
         {
@@ -206,6 +272,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone15S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone15S()
         {
@@ -214,6 +283,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone16N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone16N()
         {
@@ -222,6 +294,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone16S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone16S()
         {
@@ -230,6 +305,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone17N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone17N()
         {
@@ -238,6 +316,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone17S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone17S()
         {
@@ -246,6 +327,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone18N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone18N()
         {
@@ -254,6 +338,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone18S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone18S()
         {
@@ -262,6 +349,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone19N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone19N()
         {
@@ -270,6 +360,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone19S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone19S()
         {
@@ -278,6 +371,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone1N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone1N()
         {
@@ -286,6 +382,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone1S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone1S()
         {
@@ -294,6 +393,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone20N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone20N()
         {
@@ -302,6 +404,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone20S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone20S()
         {
@@ -310,6 +415,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone21N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone21N()
         {
@@ -318,6 +426,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone21S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone21S()
         {
@@ -326,6 +437,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone22N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone22N()
         {
@@ -334,6 +448,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone22S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone22S()
         {
@@ -342,6 +459,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone23N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone23N()
         {
@@ -350,6 +470,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone23S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone23S()
         {
@@ -358,6 +481,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone24N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone24N()
         {
@@ -366,6 +492,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone24S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone24S()
         {
@@ -374,6 +503,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone25N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone25N()
         {
@@ -382,6 +514,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone25S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone25S()
         {
@@ -390,6 +525,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone26N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone26N()
         {
@@ -398,6 +536,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone26S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone26S()
         {
@@ -406,6 +547,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone27N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone27N()
         {
@@ -414,6 +558,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone27S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone27S()
         {
@@ -422,6 +569,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone28N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone28N()
         {
@@ -430,6 +580,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone28S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone28S()
         {
@@ -438,6 +591,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone29N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone29N()
         {
@@ -446,6 +602,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone29S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone29S()
         {
@@ -454,6 +613,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone2N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone2N()
         {
@@ -462,6 +624,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone2S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone2S()
         {
@@ -470,6 +635,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone30N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone30N()
         {
@@ -478,6 +646,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone30S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone30S()
         {
@@ -486,6 +657,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone31N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone31N()
         {
@@ -494,6 +668,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone31S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone31S()
         {
@@ -502,6 +679,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone32N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone32N()
         {
@@ -510,6 +690,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone32S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone32S()
         {
@@ -518,6 +701,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone33N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone33N()
         {
@@ -526,6 +712,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone33S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone33S()
         {
@@ -534,6 +723,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone34N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone34N()
         {
@@ -542,6 +734,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone34S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone34S()
         {
@@ -550,6 +745,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone35N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone35N()
         {
@@ -558,6 +756,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone35S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone35S()
         {
@@ -566,6 +767,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone36N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone36N()
         {
@@ -574,6 +778,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone36S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone36S()
         {
@@ -582,6 +789,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone37N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone37N()
         {
@@ -590,6 +800,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone37S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone37S()
         {
@@ -598,6 +811,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone38N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone38N()
         {
@@ -606,6 +822,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone38S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone38S()
         {
@@ -614,6 +833,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone39N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone39N()
         {
@@ -622,6 +844,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone39S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone39S()
         {
@@ -630,6 +855,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone3N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone3N()
         {
@@ -638,6 +866,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone3S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone3S()
         {
@@ -646,6 +877,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone40N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone40N()
         {
@@ -654,6 +888,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone40S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone40S()
         {
@@ -662,6 +899,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone41N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone41N()
         {
@@ -670,6 +910,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone41S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone41S()
         {
@@ -678,6 +921,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone42N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone42N()
         {
@@ -686,6 +932,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone42S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone42S()
         {
@@ -694,6 +943,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone43N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone43N()
         {
@@ -702,6 +954,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone43S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone43S()
         {
@@ -710,6 +965,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone44N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone44N()
         {
@@ -718,6 +976,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone44S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone44S()
         {
@@ -726,6 +987,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone45N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone45N()
         {
@@ -734,6 +998,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone45S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone45S()
         {
@@ -742,6 +1009,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone46N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone46N()
         {
@@ -750,6 +1020,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone46S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone46S()
         {
@@ -758,6 +1031,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone47N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone47N()
         {
@@ -766,6 +1042,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone47S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone47S()
         {
@@ -774,6 +1053,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone48N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone48N()
         {
@@ -782,6 +1064,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone48S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone48S()
         {
@@ -790,6 +1075,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone49N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone49N()
         {
@@ -798,6 +1086,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone49S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone49S()
         {
@@ -806,6 +1097,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone4N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone4N()
         {
@@ -814,6 +1108,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone4S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone4S()
         {
@@ -822,6 +1119,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone50N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone50N()
         {
@@ -830,6 +1130,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone50S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone50S()
         {
@@ -838,6 +1141,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone51N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone51N()
         {
@@ -846,6 +1152,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone51S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone51S()
         {
@@ -854,6 +1163,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone52N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone52N()
         {
@@ -862,6 +1174,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone52S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone52S()
         {
@@ -870,6 +1185,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone53N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone53N()
         {
@@ -878,6 +1196,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone53S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone53S()
         {
@@ -886,6 +1207,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone54N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone54N()
         {
@@ -894,6 +1218,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone54S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone54S()
         {
@@ -902,6 +1229,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone55N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone55N()
         {
@@ -910,6 +1240,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone55S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone55S()
         {
@@ -918,6 +1251,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone56N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone56N()
         {
@@ -926,6 +1262,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone56S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone56S()
         {
@@ -934,6 +1273,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone57N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone57N()
         {
@@ -942,6 +1284,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone57S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone57S()
         {
@@ -950,6 +1295,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone58N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone58N()
         {
@@ -958,6 +1306,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone58S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone58S()
         {
@@ -966,6 +1317,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone59N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone59N()
         {
@@ -974,6 +1328,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone59S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone59S()
         {
@@ -982,6 +1339,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone5N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone5N()
         {
@@ -990,6 +1350,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone5S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone5S()
         {
@@ -998,6 +1361,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone60N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone60N()
         {
@@ -1006,6 +1372,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone60S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone60S()
         {
@@ -1014,6 +1383,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone6N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone6N()
         {
@@ -1022,6 +1394,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone6S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone6S()
         {
@@ -1030,6 +1405,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone7N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone7N()
         {
@@ -1038,6 +1416,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone7S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone7S()
         {
@@ -1046,6 +1427,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone8N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone8N()
         {
@@ -1054,6 +1438,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone8S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone8S()
         {
@@ -1062,6 +1449,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone9N       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone9N()
         {
@@ -1070,6 +1460,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for WGS1984UTMZone9S       
+        /// </summary>
         [Test]
         public void WGS1984UTMZone9S()
         {

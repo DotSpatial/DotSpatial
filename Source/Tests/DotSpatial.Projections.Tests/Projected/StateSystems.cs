@@ -18,6 +18,9 @@ namespace DotSpatial.Projections.Tests.Projected
             
         }
 
+        /// <summary>
+        /// Test for NAD1927AlaskaAlbersFeet       
+        /// </summary>
         [Test]
         [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927AlaskaAlbersFeet()
@@ -26,6 +29,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for NAD1927AlaskaAlbersMeters       
+        /// </summary>
         [Test]
         [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927AlaskaAlbersMeters()
@@ -34,6 +40,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for NAD1927CaliforniaTealeAlbers       
+        /// </summary>
         [Test]
         [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927CaliforniaTealeAlbers()
@@ -42,6 +51,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for NAD1927GeorgiaStatewideAlbers       
+        /// </summary>
         [Test]
         [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927GeorgiaStatewideAlbers()
@@ -50,6 +62,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for NAD1927TexasStatewideMappingSystem       
+        /// </summary>
         [Test]
         [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927TexasStatewideMappingSystem()
@@ -58,6 +73,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for NAD1983CaliforniaTealeAlbers       
+        /// </summary>
         [Test]
         public void NAD1983CaliforniaTealeAlbers()
         {
@@ -65,6 +83,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for NAD1983GeorgiaStatewideLambert       
+        /// </summary>
         [Test]
         public void NAD1983GeorgiaStatewideLambert()
         {
@@ -73,6 +94,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983HARNOregonStatewideLambert       
+        /// </summary>
         [Test]
         public void NAD1983HARNOregonStatewideLambert()
         {
@@ -81,6 +105,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983HARNOregonStatewideLambertFeetIntl       
+        /// </summary>
         [Test]
         public void NAD1983HARNOregonStatewideLambertFeetIntl()
         {
@@ -89,6 +116,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983IdahoTM       
+        /// </summary>
         [Test]
         public void NAD1983IdahoTM()
         {
@@ -97,6 +127,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983OregonStatewideLambert       
+        /// </summary>
         [Test]
         public void NAD1983OregonStatewideLambert()
         {
@@ -105,6 +138,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983OregonStatewideLambertFeetIntl       
+        /// </summary>
         [Test]
         public void NAD1983OregonStatewideLambertFeetIntl()
         {
@@ -113,6 +149,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983TexasCentricMappingSystemAlbers       
+        /// </summary>
         [Test]
         public void NAD1983TexasCentricMappingSystemAlbers()
         {
@@ -121,6 +160,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983TexasCentricMappingSystemLambert       
+        /// </summary>
         [Test]
         public void NAD1983TexasCentricMappingSystemLambert()
         {
@@ -129,6 +171,9 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
+        /// <summary>
+        /// Test for NAD1983TexasStatewideMappingSystem       
+        /// </summary>
         [Test]
         public void NAD1983TexasStatewideMappingSystem()
         {

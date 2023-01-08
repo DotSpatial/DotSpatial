@@ -7,6 +7,9 @@ namespace DotSpatial.Projections.Tests.Nad
     [TestFixture]
     internal class NadTablesTests
     {
+        /// <summary>
+        /// Test for NonEmptyAfterInitialize       
+        /// </summary>
         [Test]
         public void NonEmptyAfterInitialize()
         {

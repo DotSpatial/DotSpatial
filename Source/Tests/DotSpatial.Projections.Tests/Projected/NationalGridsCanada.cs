@@ -1,3 +1,6 @@
+// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
+
 using NUnit.Framework;
 
 namespace DotSpatial.Projections.Tests.Projected
@@ -14,9 +17,12 @@ namespace DotSpatial.Projections.Tests.Projected
         [SetUp]
         public void Initialize()
         {
-            
+
         }
 
+        /// <summary>
+        /// Test for ATS1977MTM4NovaScotia       
+        /// </summary>
         [Test]
         public void ATS1977MTM4NovaScotia()
         {
@@ -24,7 +30,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for ATS1977MTM5NovaScotia       
+        /// </summary>
         [Test]
         public void ATS1977MTM5NovaScotia()
         {
@@ -32,7 +40,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for ATS1977NewBrunswickStereographic       
+        /// </summary>
         [Test]
         public void ATS1977NewBrunswickStereographic()
         {
@@ -40,6 +50,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for NAD192710TMAEPForest       
+        /// </summary>
         [Test]
         [Ignore("")] // GridShiftMissingException
         public void NAD192710TMAEPForest()
@@ -48,6 +61,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for NAD192710TMAEPResource       
+        /// </summary>
         [Test]
         [Ignore("")] // GridShiftMissingException
         public void NAD192710TMAEPResource()
@@ -56,6 +72,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for NAD19273TM111       
+        /// </summary>
         [Test]
         [Ignore("")] // GridShiftMissingException
         public void NAD19273TM111()
@@ -64,6 +83,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for NAD19273TM114       
+        /// </summary>
         [Test]
         [Ignore("")] // GridShiftMissingException
         public void NAD19273TM114()
@@ -72,6 +94,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for NAD19273TM117       
+        /// </summary>
         [Test]
         [Ignore("")] // GridShiftMissingException
         public void NAD19273TM117()
@@ -80,6 +105,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for NAD19273TM120       
+        /// </summary>
         [Test]
         [Ignore("")] // GridShiftMissingException
         public void NAD19273TM120()
@@ -88,7 +116,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77MTM10SCoPQ       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77MTM10SCoPQ()
         {
@@ -96,7 +126,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77MTM2SCoPQ       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77MTM2SCoPQ()
         {
@@ -104,7 +136,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77MTM3SCoPQ       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77MTM3SCoPQ()
         {
@@ -112,7 +146,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77MTM4SCoPQ       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77MTM4SCoPQ()
         {
@@ -120,7 +156,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77MTM5SCoPQ       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77MTM5SCoPQ()
         {
@@ -128,7 +166,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77MTM6SCoPQ       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77MTM6SCoPQ()
         {
@@ -136,7 +176,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77MTM7SCoPQ       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77MTM7SCoPQ()
         {
@@ -144,7 +186,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77MTM8SCoPQ       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77MTM8SCoPQ()
         {
@@ -152,7 +196,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77MTM9SCoPQ       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77MTM9SCoPQ()
         {
@@ -160,6 +206,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
+        /// <summary>
+        /// Test for NAD1927CGQ77QuebecLambert       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77QuebecLambert()
         {
@@ -167,7 +216,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77UTMZone17N       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77UTMZone17N()
         {
@@ -175,7 +226,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77UTMZone18N       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77UTMZone18N()
         {
@@ -183,7 +236,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77UTMZone19N       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77UTMZone19N()
         {
@@ -191,7 +246,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77UTMZone20N       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77UTMZone20N()
         {
@@ -199,7 +256,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927CGQ77UTMZone21N       
+        /// </summary>
         [Test]
         public void NAD1927CGQ77UTMZone21N()
         {
@@ -207,7 +266,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976MTM10       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976MTM10()
         {
@@ -215,7 +276,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976MTM11       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976MTM11()
         {
@@ -223,7 +286,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976MTM12       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976MTM12()
         {
@@ -231,7 +296,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976MTM13       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976MTM13()
         {
@@ -239,7 +306,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976MTM14       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976MTM14()
         {
@@ -247,7 +316,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976MTM15       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976MTM15()
         {
@@ -255,7 +326,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976MTM16       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976MTM16()
         {
@@ -263,7 +336,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976MTM17       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976MTM17()
         {
@@ -271,7 +346,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976MTM8       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976MTM8()
         {
@@ -279,7 +356,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976MTM9       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976MTM9()
         {
@@ -287,7 +366,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976UTMZone15N       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976UTMZone15N()
         {
@@ -295,7 +376,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976UTMZone16N       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976UTMZone16N()
         {
@@ -303,7 +386,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976UTMZone17N       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976UTMZone17N()
         {
@@ -311,7 +396,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927DEF1976UTMZone18N       
+        /// </summary>
         [Test]
         public void NAD1927DEF1976UTMZone18N()
         {
@@ -319,7 +406,10 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        
+
+        /// <summary>
+        /// Test for NAD1927MTM1       
+        /// </summary>
         [Test]
         [Ignore("")] // GridShiftMissingException
         public void NAD1927MTM1()
@@ -328,7 +418,10 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        
+
+        /// <summary>
+        /// Test for NAD1927MTM2       
+        /// </summary>
         [Test]
         [Ignore("")] // GridShiftMissingException
         public void NAD1927MTM2()
@@ -337,7 +430,10 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        
+
+        /// <summary>
+        /// Test for NAD1927MTM3       
+        /// </summary>
         [Test]
         [Ignore("")] // GridShiftMissingException
         public void NAD1927MTM3()
@@ -346,7 +442,10 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        
+
+        /// <summary>
+        /// Test for NAD1927MTM4       
+        /// </summary>
         [Test]
         [Ignore("")] // GridShiftMissingException
         public void NAD1927MTM4()
@@ -355,7 +454,10 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        
+
+        /// <summary>
+        /// Test for NAD1927MTM5       
+        /// </summary>
         [Test]
         [Ignore("")] // GridShiftMissingException
         public void NAD1927MTM5()
@@ -364,7 +466,10 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        
+
+        /// <summary>
+        /// Test for NAD1927MTM6       
+        /// </summary>
         [Test]
         [Ignore("")] // GridShiftMissingException
         public void NAD1927MTM6()
@@ -373,7 +478,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1927QuebecLambert       
+        /// </summary>
         [Test]
         [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927QuebecLambert()
@@ -382,7 +489,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD198310TMAEPForest       
+        /// </summary>
         [Test]
         public void NAD198310TMAEPForest()
         {
@@ -390,7 +499,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD198310TMAEPResource       
+        /// </summary>
         [Test]
         public void NAD198310TMAEPResource()
         {
@@ -398,7 +509,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD19833TM111       
+        /// </summary>
         [Test]
         public void NAD19833TM111()
         {
@@ -406,7 +519,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD19833TM114       
+        /// </summary>
         [Test]
         public void NAD19833TM114()
         {
@@ -414,7 +529,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD19833TM117       
+        /// </summary>
         [Test]
         public void NAD19833TM117()
         {
@@ -422,7 +539,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD19833TM120       
+        /// </summary>
         [Test]
         public void NAD19833TM120()
         {
@@ -430,7 +549,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983BCEnvironmentAlbers       
+        /// </summary>
         [Test]
         public void NAD1983BCEnvironmentAlbers()
         {
@@ -438,7 +559,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98MTM10       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98MTM10()
         {
@@ -446,7 +569,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98MTM2SCoPQ       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98MTM2SCoPQ()
         {
@@ -454,7 +579,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98MTM3       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98MTM3()
         {
@@ -462,7 +589,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98MTM4       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98MTM4()
         {
@@ -470,7 +599,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98MTM5       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98MTM5()
         {
@@ -478,7 +609,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98MTM6       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98MTM6()
         {
@@ -486,7 +619,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98MTM7       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98MTM7()
         {
@@ -494,7 +629,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98MTM8       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98MTM8()
         {
@@ -502,7 +639,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98MTM9       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98MTM9()
         {
@@ -510,7 +649,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98NewBrunswickStereographic       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98NewBrunswickStereographic()
         {
@@ -518,7 +659,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98PrinceEdwardIsland       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98PrinceEdwardIsland()
         {
@@ -526,7 +669,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98UTMZone11N       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98UTMZone11N()
         {
@@ -534,7 +679,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98UTMZone12N       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98UTMZone12N()
         {
@@ -542,7 +689,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98UTMZone13N       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98UTMZone13N()
         {
@@ -550,7 +699,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98UTMZone17N       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98UTMZone17N()
         {
@@ -558,7 +709,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98UTMZone18N       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98UTMZone18N()
         {
@@ -566,7 +719,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98UTMZone19N       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98UTMZone19N()
         {
@@ -574,7 +729,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98UTMZone20N       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98UTMZone20N()
         {
@@ -582,7 +739,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983CSRS98UTMZone21N       
+        /// </summary>
         [Test]
         public void NAD1983CSRS98UTMZone21N()
         {
@@ -590,7 +749,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM1       
+        /// </summary>
         [Test]
         public void NAD1983MTM1()
         {
@@ -598,7 +759,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM10       
+        /// </summary>
         [Test]
         public void NAD1983MTM10()
         {
@@ -606,7 +769,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM11       
+        /// </summary>
         [Test]
         public void NAD1983MTM11()
         {
@@ -614,7 +779,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM12       
+        /// </summary>
         [Test]
         public void NAD1983MTM12()
         {
@@ -622,7 +789,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM13       
+        /// </summary>
         [Test]
         public void NAD1983MTM13()
         {
@@ -630,7 +799,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM14       
+        /// </summary>
         [Test]
         public void NAD1983MTM14()
         {
@@ -638,7 +809,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM15       
+        /// </summary>
         [Test]
         public void NAD1983MTM15()
         {
@@ -646,7 +819,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM16       
+        /// </summary>
         [Test]
         public void NAD1983MTM16()
         {
@@ -654,7 +829,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM17       
+        /// </summary>
         [Test]
         public void NAD1983MTM17()
         {
@@ -662,7 +839,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM2       
+        /// </summary>
         [Test]
         public void NAD1983MTM2()
         {
@@ -670,7 +849,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM2SCoPQ       
+        /// </summary>
         [Test]
         public void NAD1983MTM2SCoPQ()
         {
@@ -678,7 +859,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM3       
+        /// </summary>
         [Test]
         public void NAD1983MTM3()
         {
@@ -686,7 +869,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM4       
+        /// </summary>
         [Test]
         public void NAD1983MTM4()
         {
@@ -694,7 +879,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM5       
+        /// </summary>
         [Test]
         public void NAD1983MTM5()
         {
@@ -702,7 +889,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM6       
+        /// </summary>
         [Test]
         public void NAD1983MTM6()
         {
@@ -710,7 +899,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM7       
+        /// </summary>
         [Test]
         public void NAD1983MTM7()
         {
@@ -718,7 +909,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM8       
+        /// </summary>
         [Test]
         public void NAD1983MTM8()
         {
@@ -726,7 +919,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983MTM9       
+        /// </summary>
         [Test]
         public void NAD1983MTM9()
         {
@@ -734,7 +929,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for NAD1983QuebecLambert       
+        /// </summary>
         [Test]
         public void NAD1983QuebecLambert()
         {
@@ -742,7 +939,9 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
+        /// <summary>
+        /// Test for PrinceEdwardIslandStereographic       
+        /// </summary>
         [Test]
         public void PrinceEdwardIslandStereographic()
         {

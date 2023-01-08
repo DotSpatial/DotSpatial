@@ -8,6 +8,9 @@ namespace DotSpatial.Projections.Tests
     [TestFixture]
     class MeridianTests
     {
+        /// <summary>
+        /// Test for DefaultCtor       
+        /// </summary>
         [Test]
         public void DefaultCtor()
         {
@@ -92,7 +95,9 @@ namespace DotSpatial.Projections.Tests
         }
 
 
+#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
         private static IEnumerable<Tuple<Proj4Meridian, double, int>> WellKnownMeridians()
+#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
         {
             yield return new Tuple<Proj4Meridian, double, int>(Proj4Meridian.Greenwich, 0, 8901);
             yield return new Tuple<Proj4Meridian, double, int>(Proj4Meridian.Lisbon, -9.131906111, 8902);
