@@ -111,6 +111,7 @@ namespace FlashShape
         private void btnFlashFirstSelectedShape_Click(object sender, EventArgs e)
         {
             //get the first *selected* shape of the first layer
+            //todo: the feature selection doesnt seem to be working
             if (appManager1.Map.Layers.Count > 0)
             {
                 //MapPolygonLayer lyr = (MapPolygonLayer)appManager1.Map.Layers[0];
@@ -148,28 +149,12 @@ namespace FlashShape
         /// </summary>
         /// <param name="featLyr">The feature layer that contains the feature to flash.</param>
         /// <param name="feat">The feature to flash.</param>
-        /// <remarks>
-        /// Needs some work as I couldnt get the shape to flash on and off without refreshing the map. Probably overkill
-        /// with the Redraw and the DoEvents.
-        /// </remarks>
-        public void FlashFeature(IFeatureLayer featLyr, IFeature feat)
-        {
-            FlashFeature(featLyr, feat, 3);
-        }
-
-        /// <summary>
-        /// Will simulate flash of a polygon shape by changing its outline and fill color for several seconds and will also
-        /// display a crosshair across the map centered on the shape. Tested with a polygon shapefile but should work with
-        /// lines and points.
-        /// </summary>
-        /// <param name="featLyr">The feature layer that contains the feature to flash.</param>
-        /// <param name="feat">The feature to flash.</param>
         /// <param name="cycleCount">Number of cycles to turn the shape on and off</param>
         /// <remarks>
         /// Needs some work as I couldnt get the shape to flash on and off without refreshing the map. Probably overkill
         /// with the Redraw and the DoEvents.
         /// </remarks>
-        public void FlashFeature(IFeatureLayer featLyr, IFeature feat, int cycleCount)
+        public void FlashFeature(IFeatureLayer featLyr, IFeature feat, int cycleCount = 3)
         {
             if (feat == null)
                 return;
