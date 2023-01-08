@@ -18,6 +18,8 @@ using NetTopologySuite.Geometries;
 using static System.Net.Mime.MediaTypeNames;
 using System.Diagnostics;
 using DotSpatial.Symbology.Forms;
+using DotSpatial.Data.Forms;
+using Microsoft.VisualBasic;
 
 namespace FlashShape
 {
@@ -79,7 +81,7 @@ namespace FlashShape
 
         private void btnFlashFirstShape_Click(object sender, EventArgs e)
         {
-            // get the first shape of the first layer
+            // get the first shape of the first layer and flash it
             if (appManager1.Map.Layers.Count > 0)
             {
                 MapPolygonLayer lyr = (MapPolygonLayer)appManager1.Map.Layers[0];
@@ -94,13 +96,13 @@ namespace FlashShape
 
         private void btnFlashLastShape_Click(object sender, EventArgs e)
         {
-            // get the first shape of the first layer
+            // get the last shape of the first layer and flash it
             if (appManager1.Map.Layers.Count > 0)
             {
                 MapPolygonLayer lyr = (MapPolygonLayer)appManager1.Map.Layers[0];
                 if (lyr.FeatureSet.Features.Count > 0)
                 {
-                    // our checks are done so flash the first shape in the shapefile
+                    // our checks are done so flash the last shape in the shapefile
                     int lastIdx = lyr.FeatureSet.Features.Count() - 1;
                     var lastFeat = lyr.FeatureSet.Features[lastIdx];
                     FlashFeature(lyr, lastFeat);
@@ -108,8 +110,35 @@ namespace FlashShape
             }
         }
 
+        private void btnFlashShapeIndex_Click(object sender, EventArgs e)
+        {
+            // get the index of the shape of the first layer from the user and flash it
+            if (appManager1.Map.Layers.Count > 0)
+            {
+                MapPolygonLayer lyr = (MapPolygonLayer)appManager1.Map.Layers[0];
+                if (lyr.FeatureSet.Features.Count > 0)
+                {
+                    //ask the user what shape index to flash
+                    var resp = Interaction.InputBox("What shape index would you like to flash?", "Shape index...", "26");
+                    int idx = int.Parse(resp);
+                    if (idx < 0 || idx > lyr.FeatureSet.Features.Count - 1)
+                    {
+                        MessageBox.Show("Shape index out of range of FeatureSet.", "Out of range", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // our checks are done so flash the shape in the shapefile
+                    var lastFeat = lyr.FeatureSet.Features[idx];
+                    FlashFeature(lyr, lastFeat);
+                }
+            }
+        }
+
         private void btnFlashFirstSelectedShape_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("Function not working yet.", "In progress...", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+
             //get the first *selected* shape of the first layer
             //todo: the feature selection doesnt seem to be working
             if (appManager1.Map.Layers.Count > 0)
@@ -294,5 +323,6 @@ namespace FlashShape
             System.Windows.Forms.Application.DoEvents();
             grll = null;
         }
+
     }
 }

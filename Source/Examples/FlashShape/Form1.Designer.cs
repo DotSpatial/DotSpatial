@@ -38,6 +38,7 @@ namespace FlashShape
             this.btnFlashFirstShape = new System.Windows.Forms.Button();
             this.btnFlashFirstSelectedShape = new System.Windows.Forms.Button();
             this.btnFlashLastShape = new System.Windows.Forms.Button();
+            this.btnFlashShapeIndex = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // appManager1
@@ -52,7 +53,7 @@ namespace FlashShape
             // btnFlashFirstShape
             // 
             this.btnFlashFirstShape.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnFlashFirstShape.Location = new System.Drawing.Point(12, 365);
+            this.btnFlashFirstShape.Location = new System.Drawing.Point(12, 335);
             this.btnFlashFirstShape.Name = "btnFlashFirstShape";
             this.btnFlashFirstShape.Size = new System.Drawing.Size(118, 23);
             this.btnFlashFirstShape.TabIndex = 0;
@@ -74,7 +75,7 @@ namespace FlashShape
             // btnFlashLastShape
             // 
             this.btnFlashLastShape.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnFlashLastShape.Location = new System.Drawing.Point(12, 394);
+            this.btnFlashLastShape.Location = new System.Drawing.Point(12, 364);
             this.btnFlashLastShape.Name = "btnFlashLastShape";
             this.btnFlashLastShape.Size = new System.Drawing.Size(118, 23);
             this.btnFlashLastShape.TabIndex = 2;
@@ -82,11 +83,23 @@ namespace FlashShape
             this.btnFlashLastShape.UseVisualStyleBackColor = true;
             this.btnFlashLastShape.Click += new System.EventHandler(this.btnFlashLastShape_Click);
             // 
+            // btnFlashShapeIndex
+            // 
+            this.btnFlashShapeIndex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnFlashShapeIndex.Location = new System.Drawing.Point(12, 393);
+            this.btnFlashShapeIndex.Name = "btnFlashShapeIndex";
+            this.btnFlashShapeIndex.Size = new System.Drawing.Size(118, 23);
+            this.btnFlashShapeIndex.TabIndex = 3;
+            this.btnFlashShapeIndex.Text = "Flash Shape Index...";
+            this.btnFlashShapeIndex.UseVisualStyleBackColor = true;
+            this.btnFlashShapeIndex.Click += new System.EventHandler(this.btnFlashShapeIndex_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(779, 503);
+            this.Controls.Add(this.btnFlashShapeIndex);
             this.Controls.Add(this.btnFlashLastShape);
             this.Controls.Add(this.btnFlashFirstSelectedShape);
             this.Controls.Add(this.btnFlashFirstShape);
@@ -105,5 +118,6 @@ namespace FlashShape
         private Button btnFlashFirstShape;
         private Button btnFlashFirstSelectedShape;
         private Button btnFlashLastShape;
+        private Button btnFlashShapeIndex;
     }
 }
