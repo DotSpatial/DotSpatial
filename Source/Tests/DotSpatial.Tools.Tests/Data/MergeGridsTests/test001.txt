@@ -1,0 +1,34 @@
+typ1=System.Int32 typ2=System.Single outFileTyp=Binary
+rstFileType=Binary
+  supports System.Int16
+  supports System.Int32
+  supports System.Single
+  supports System.Double
+==>checking typ1=System.Int32 and typ2=System.Single against suppTyp=System.Int16
+  CanConvert: typFrom=System.Int32 typTo=System.Int16
+    valFromMin=-2147483648
+    valFromMax=2147483647
+    ex:Value was either too large or too small for an Int16.
+==>checking typ1=System.Int32 and typ2=System.Single against suppTyp=System.Int32
+  CanConvert: typFrom=System.Int32 typTo=System.Int32
+    valFromMin=-2147483648
+    valFromMax=2147483647
+    valToMin=-2147483648
+    valToMax=2147483647
+  CanConvert: typFrom=System.Single typTo=System.Int32
+    valFromMin=-3.4028235E+38
+    valFromMax=3.4028235E+38
+    ex:Value was either too large or too small for an Int32.
+==>checking typ1=System.Int32 and typ2=System.Single against suppTyp=System.Single
+  CanConvert: typFrom=System.Int32 typTo=System.Single
+    valFromMin=-2147483648
+    valFromMax=2147483647
+    valToMin=-2.1474836E+09
+    valToMax=2.1474836E+09
+  CanConvert: typFrom=System.Single typTo=System.Single
+    valFromMin=-3.4028235E+38
+    valFromMax=3.4028235E+38
+    valToMin=-3.4028235E+38
+    valToMax=3.4028235E+38
+System.Int32 and System.Single can convert to System.Single
+typ1=System.Int32 typ2=System.Single outTyp=System.Single

@@ -1,0 +1,9 @@
+typ1=System.Double typ2=System.Double outFileTyp=Dted
+rstFileType=Dted
+  supports System.Int16
+==>checking typ1=System.Double and typ2=System.Double against suppTyp=System.Int16
+  CanConvert: typFrom=System.Double typTo=System.Int16
+    valFromMin=-1.7976931348623157E+308
+    valFromMax=1.7976931348623157E+308
+    ex:Value was either too large or too small for an Int32.
+typ1=System.Double typ2=System.Double outTyp=

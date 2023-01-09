@@ -1,0 +1,15 @@
+typ1=System.Single typ2=System.Int16 outFileTyp=Custom
+rstFileType=Custom
+==>checking typ1=System.Single against typ2=System.Int16
+  CanConvert: typFrom=System.Single typTo=System.Int16
+    valFromMin=-3.4028235E+38
+    valFromMax=3.4028235E+38
+    ex:Value was either too large or too small for an Int32.
+==>checking typ2=System.Int16 against typ1=System.Single
+  CanConvert: typFrom=System.Int16 typTo=System.Single
+    valFromMin=-32768
+    valFromMax=32767
+    valToMin=-32768
+    valToMax=32767
+System.Int16 can convert to System.Single
+typ1=System.Single typ2=System.Int16 outTyp=System.Single

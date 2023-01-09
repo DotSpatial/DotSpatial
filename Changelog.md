@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
  - Upgraded Examples to .NET Core 6 projects (#1485)
 
 ### Fixed
+- Merge grid update (#1482)
 
 ## V4.0
 

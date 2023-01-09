@@ -559,11 +559,11 @@ namespace DotSpatial.Data
             var eUp = extension?.ToUpper() ?? string.Empty;
             return eUp switch
             {
-                ".ASC" => RasterFileType.Ascii,
+                ".ASC" => RasterFileType.Ascii, // ESRI Arc/INFO ASCII Grid
                 ".ARC" => RasterFileType.Ascii,
                 ".BGD" => RasterFileType.Binary,
                 ".FLT" => RasterFileType.Flt,
-                ".ADF" => RasterFileType.Esri,
+                ".ADF" => RasterFileType.Esri,  // ESRI Arc/INFO Binary Grid
                 ".ECW" => RasterFileType.Ecw,
                 ".BIL" => RasterFileType.Bil,
                 ".SID" => RasterFileType.MrSid,
