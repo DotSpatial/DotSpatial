@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - A plug-in that converts coordinates from one projection to another (#1469)
 - Added a coordinate system type field to ProjectionInfo (#1473)
 - MapPointLayer.PreventCollisions to remove unnecessary points for drawing if they have been overlapped by other points (#1462)
+- Added a new project to the Examples to flash a shape (##1488)
 
 ### Changed
  - Change the code in "GenerateCentroid.cs" (#1465)

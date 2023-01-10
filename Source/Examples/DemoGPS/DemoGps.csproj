@@ -8,6 +8,11 @@
     <PackageIcon>Gps.ico</PackageIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="c#.backup\**" />
+    <EmbeddedResource Remove="c#.backup\**" />
+    <None Remove="c#.backup\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="DotSpatial.Controls" Version="4.0.656" />
     <PackageReference Include="DotSpatial.Positioning" Version="4.0.656" />
     <PackageReference Include="DotSpatial.Positioning.Forms" Version="4.0.656" />
