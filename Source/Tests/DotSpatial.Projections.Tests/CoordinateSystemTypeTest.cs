@@ -2,11 +2,7 @@
 // Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace DotSpatial.Projections.Tests
@@ -21,11 +17,11 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// CoordinateSystemType vs IsLatLon comparison test.
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void CoordSysIsLatLonComparisonTest()
         {
             //test projected coordinate systems
-            ICoordinateSystemCategoryHolder CoordSysCategoryHolder = (ICoordinateSystemCategoryHolder)KnownCoordinateSystems.Projected;
+            ICoordinateSystemCategoryHolder CoordSysCategoryHolder = KnownCoordinateSystems.Projected;
             TestCategoryHolder(CoordSysCategoryHolder);
 
             //test geographic coordinate systems
@@ -51,7 +47,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Alaska Zone 1 reprojection test
         /// </summary>
-        [Test]
+        [Test, Category("Projection")]
         public void AlaskaZone1Test()
         {
             try
@@ -142,12 +138,12 @@ namespace DotSpatial.Projections.Tests
         private void TestCategoryHolder(ICoordinateSystemCategoryHolder CoordSysCategoryHolder)
         {
             System.Diagnostics.Debug.Print("{0}==========================================", CoordSysCategoryHolder.ToString());
-            foreach (var majCatName in CoordSysCategoryHolder.Names)
+            foreach (string majCatName in CoordSysCategoryHolder.Names)
             {
-                var coordSysCat = CoordSysCategoryHolder.GetCategory(majCatName);
+                CoordinateSystemCategory coordSysCat = CoordSysCategoryHolder.GetCategory(majCatName);
                 if (coordSysCat != null)
                 {
-                    foreach (var minCatName in coordSysCat.Names)
+                    foreach (string minCatName in coordSysCat.Names)
                     {
                         ProjectionInfo prj = coordSysCat.GetProjection(minCatName);
                         DebugProjection(majCatName, minCatName, prj);

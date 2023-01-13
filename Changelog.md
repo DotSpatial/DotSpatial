@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file.
  - Upgraded Examples to .NET Core 6 projects (#1485)
 
 ### Fixed
+- Added tests to Appveyor Tests tab (#1489)
+
 
 ## V4.0
 
