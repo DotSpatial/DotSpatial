@@ -75,8 +75,10 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the Erase Opaeration tool programmatically.
+        /// Executes the Merge Grid Operation tool programmatically.
         /// Ping deleted static for external testing 01/2010.
+        /// The term 'Merge' here is equivalent to taking the non-empty value from each cell location. If both rasters have values
+        /// for a location, then the first raster wins. You can think of this routine as filling in holes in raster1 from raster2.
         /// </summary>
         /// <param name="input1">The first input raster.</param>
         /// <param name="input2">The second input raster.</param>
@@ -91,22 +93,26 @@ namespace DotSpatial.Tools
                 return false;
             }
 
+            // Determine coverage for both input rasters.
             Extent envelope = UnionEnvelope(input1, input2);
 
-            // Figures out which raster has smaller cells
+            // Figures out which raster has smaller cells.
             IRaster smallestCellRaster = input1.CellWidth < input2.CellWidth ? input1 : input2;
 
             // Given the envelope of the two rasters we calculate the number of columns / rows
             int noOfCol = Convert.ToInt32(Math.Abs(envelope.Width / smallestCellRaster.CellWidth));
             int noOfRow = Convert.ToInt32(Math.Abs(envelope.Height / smallestCellRaster.CellHeight));
 
-            // create output raster
+            // Create output raster.
             output = Raster.CreateRaster(output.Filename, string.Empty, noOfCol, noOfRow, 1, typeof(int), new[] { string.Empty });
             RasterBounds bound = new(noOfRow, noOfCol, envelope);
             output.Bounds = bound;
 
+            // The NoDataValue value will be from the first raster.
             output.NoDataValue = input1.NoDataValue;
 
+            // Cycle through the output raster cells, get the pixel value for the first raster, get the pixel value for the second raster,
+            // and determine which value we should output.
             int previous = 0;
             int max = output.Bounds.NumRows + 1;
             for (int i = 0; i < output.Bounds.NumRows; i++)
@@ -196,10 +202,10 @@ namespace DotSpatial.Tools
                 return false;
             }
 
-            // Determine coverage for both input rasters
+            // Determine coverage for both input rasters.
             Extent envelope = UnionEnvelope(input1, input2);
 
-            // Figures out which raster has smaller cells
+            // Figures out which raster has smaller cells.
             IRaster smallestCellRaster = input1.CellWidth < input2.CellWidth ? input1 : input2;
 
             // Given the envelope of the two rasters we calculate the number of columns / rows
