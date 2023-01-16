@@ -1,0 +1,51 @@
+<PAMDataset>
+  <Metadata>
+    <MDI key="DataType">Generic</MDI>
+  </Metadata>
+  <Metadata domain="Esri">
+    <MDI key="PyramidResamplingType">NEAREST</MDI>
+  </Metadata>
+  <PAMRasterBand band="1">
+    <NoDataValue>-3.27680000000000E+04</NoDataValue>
+    <GDALRasterAttributeTable tableType="thematic">
+      <FieldDefn index="0">
+        <Name>Rowid</Name>
+        <Type>0</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="1">
+        <Name>VALUE</Name>
+        <Type>0</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="2">
+        <Name>COUNT</Name>
+        <Type>0</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="3">
+        <Name>RED</Name>
+        <Type>0</Type>
+        <Usage>6</Usage>
+      </FieldDefn>
+      <FieldDefn index="4">
+        <Name>GREEN</Name>
+        <Type>0</Type>
+        <Usage>7</Usage>
+      </FieldDefn>
+      <FieldDefn index="5">
+        <Name>BLUE</Name>
+        <Type>0</Type>
+        <Usage>8</Usage>
+      </FieldDefn>
+    </GDALRasterAttributeTable>
+    <Metadata>
+      <MDI key="SourceBandIndex">0</MDI>
+      <MDI key="STATISTICS_MAXIMUM">215</MDI>
+      <MDI key="STATISTICS_MEAN">162.55128205128204</MDI>
+      <MDI key="STATISTICS_SKIPFACTORX">1</MDI>
+      <MDI key="STATISTICS_SKIPFACTORY">1</MDI>
+      <MDI key="STATISTICS_STDDEV">19.699438095092773</MDI>
+    </Metadata>
+  </PAMRasterBand>
+</PAMDataset>

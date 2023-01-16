@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
@@ -74,19 +75,15 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the Merge Grid Operation tool programmatically
+        /// Executes the Erase Opaeration tool programmatically
         /// Ping deleted static for external testing 01/2010.
-        /// The term 'Merge' here is equivalent to taking the non-empty value from each cell location. If both rasters have values
-        /// for a location, then the first raster wins. You can think of this routine as filling in holes in raster1 from raster2.
         /// </summary>
         /// <param name="input1">The first input raster.</param>
         /// <param name="input2">The second input raster.</param>
         /// <param name="output">The output raster.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>Boolean, true if the merge is successful.</returns>
-#pragma warning disable CA1822 // Member als statisch markieren
         public bool Execute(IRaster input1, IRaster input2, IRaster output, ICancelProgressHandler cancelProgressHandler)
-#pragma warning restore CA1822 // Member als statisch markieren
         {
             // Validates the input and output data
             if (input1 == null || input2 == null || output == null)
@@ -103,6 +100,113 @@ namespace DotSpatial.Tools
             int noOfCol = Convert.ToInt32(Math.Abs(envelope.Width / smallestCellRaster.CellWidth));
             int noOfRow = Convert.ToInt32(Math.Abs(envelope.Height / smallestCellRaster.CellHeight));
 
+            // create output raster
+            output = Raster.CreateRaster(output.Filename, string.Empty, noOfCol, noOfRow, 1, typeof(int), new[] { string.Empty });
+            RasterBounds bound = new(noOfRow, noOfCol, envelope);
+            output.Bounds = bound;
+
+            output.NoDataValue = input1.NoDataValue;
+
+            int previous = 0;
+            int max = output.Bounds.NumRows + 1;
+            for (int i = 0; i < output.Bounds.NumRows; i++)
+            {
+                for (int j = 0; j < output.Bounds.NumColumns; j++)
+                {
+                    Coordinate cellCenter = output.CellToProj(i, j);
+                    var v1 = input1.ProjToCell(cellCenter);
+                    double val1;
+                    if (v1.Row <= input1.EndRow && v1.Column <= input1.EndColumn && v1.Row > -1 && v1.Column > -1)
+                    {
+                        val1 = input1.Value[v1.Row, v1.Column];
+                    }
+                    else
+                    {
+                        val1 = input1.NoDataValue;
+                    }
+
+                    var v2 = input2.ProjToCell(cellCenter);
+                    double val2;
+                    if (v2.Row <= input2.EndRow && v2.Column <= input2.EndColumn && v2.Row > -1 && v2.Column > -1)
+                    {
+                        val2 = input2.Value[v2.Row, v2.Column];
+                    }
+                    else
+                    {
+                        val2 = input2.NoDataValue;
+                    }
+
+                    if (val1 == input1.NoDataValue && val2 == input2.NoDataValue)
+                    {
+                        output.Value[i, j] = output.NoDataValue;
+                    }
+                    else if (val1 != input1.NoDataValue && val2 == input2.NoDataValue)
+                    {
+                        output.Value[i, j] = val1;
+                    }
+                    else if (val1 == input1.NoDataValue && val2 != input2.NoDataValue)
+                    {
+                        output.Value[i, j] = val2;
+                    }
+                    else
+                    {
+                        output.Value[i, j] = val1;
+                    }
+
+                    if (cancelProgressHandler.Cancel)
+                    {
+                        return false;
+                    }
+                }
+
+                int current = Convert.ToInt32(Math.Round(i * 100D / max));
+
+                // only update when increment in persentage
+                if (current > previous)
+                {
+                    cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
+                }
+
+                previous = current;
+            }
+
+            // output = Temp;
+            output.Save();
+            return true;
+        }
+
+        /// <summary>
+        /// Executes the Merge Grid Operation tool programmatically
+        /// Ping deleted static for external testing 01/2010.
+        /// The term 'Merge' here is equivalent to taking the non-empty value from each cell location. If both rasters have values
+        /// for a location, then the first raster wins. You can think of this routine as filling in holes in raster1 from raster2.
+        /// </summary>
+        /// <param name="input1">The first input raster.</param>
+        /// <param name="input2">The second input raster.</param>
+        /// <param name="output">The output raster.</param>
+        /// <param name="cancelProgressHandler">The progress handler.</param>
+        /// <returns>Boolean, true if the merge is successful.</returns>
+#pragma warning disable CA1822 // Member als statisch markieren
+        public bool ExecuteNew(IRaster input1, IRaster input2, IRaster output, ICancelProgressHandler cancelProgressHandler)
+#pragma warning restore CA1822 // Member als statisch markieren
+        {
+            // Validates the input and output data
+            if (input1 == null || input2 == null || output == null)
+            {
+                return false;
+            }
+
+            // Determine coverage for both input rasters
+            Extent envelope = UnionEnvelope(input1, input2);
+
+            // Figures out which raster has smaller cells
+            IRaster smallestCellRaster = input1.CellWidth < input2.CellWidth ? input1 : input2;
+
+            // Given the envelope of the two rasters we calculate the number of columns / rows
+            int noOfCol = Convert.ToInt32(Math.Abs(envelope.Width / smallestCellRaster.CellWidth));
+            int noOfRow = Convert.ToInt32(Math.Abs(envelope.Height / smallestCellRaster.CellHeight));
+            Debug.Print("noOfCol={0} noOfRow={1}", noOfCol, noOfRow);
+
             // Determine what dataType the output will be. This ESRI source https://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/what-is-raster-data.htm
             // says that for a raster "Cell values can be either positive or negative, integer, or floating point. Integer values are best used to represent categorical (discrete)
             // data and floating-point values to represent continuous surfaces". This defintion will make us conclude that output type should depend on the type of the two input
@@ -113,13 +217,16 @@ namespace DotSpatial.Tools
             // would be considered an auto-determine, otherwise use what was passed in.
             Type outType = GetOutputType(input1.DataType, input2.DataType, output.FileType);
 
+            // If a good output type cant be found then qwe default to an int, which is what it was before this PR. However, there is a good argument to make the default a double.
+            // Hard to determine the default as there are so many combinations to consider.
             if (outType == null)
             {
                 outType = typeof(int);
             }
 
-            // determine if the output type is a floating point type
+            // Determine if the output type is a floating point type
             bool isOutTypFloatPnt = IsFloatingPoint(outType);
+            Debug.Print("outType={0} isOutTypFloatPnt={1}", outType, isOutTypFloatPnt);
 
             // Create output raster of type that can hold the data type of both input rasters and also abide by the raster type possibilities.
             output = Raster.CreateRaster(output.Filename, string.Empty, noOfCol, noOfRow, 1, outType, new[] { string.Empty });
@@ -128,6 +235,7 @@ namespace DotSpatial.Tools
 
             int previous = 0;
             int max = output.Bounds.NumRows + 1;
+            Debug.Print("output.Bounds.NumRows={0} output.Bounds.NumColumns={1}", output.Bounds.NumRows, output.Bounds.NumColumns);
 
             for (int i = 0; i < output.Bounds.NumRows; i++)
             {
@@ -186,6 +294,7 @@ namespace DotSpatial.Tools
                     {
                         // value is finite so any type can hold it
                         output.Value[i, j] = valRes;
+                        Debug.Print("@i={0} j={1} valRes={2}", i, j, valRes);
                     }
                     else
                     {
@@ -194,9 +303,11 @@ namespace DotSpatial.Tools
                         if (isOutTypFloatPnt)
                         {
                             output.Value[i, j] = valRes;
+                            Debug.Print("$i={0} j={1} valRes={2}", i, j, valRes);
                         }
                         else
                         {
+                            Debug.Print("!i={0} j={1} valRes={2}", i, j, valRes);
                             string msg = string.Format("The raster output type of {0} can not hold a non-finite value of {1} at row={2}, col={3}.", outType, valRes, i, j);
                             throw new NotFiniteNumberException(msg);
                         }
@@ -268,7 +379,7 @@ namespace DotSpatial.Tools
         /// <param name="typ2">Data <see cref="Type"/> of input 2</param>
         /// <param name="outFileTyp">The <see cref="RasterFileType"/> of the output raster.</param>
         /// <returns>A data <see cref="Type"/>.</returns>
-        private static Type GetOutputType(Type typ1, Type typ2, RasterFileType outFileTyp)
+        public static Type GetOutputType(Type typ1, Type typ2, RasterFileType outFileTyp)
         {
             if (typ1 == null || typ2 == null)
             {
@@ -395,7 +506,7 @@ namespace DotSpatial.Tools
         /// <param name="typ2">Data type of input 2</param>
         /// <returns>
         /// </returns>
-        private static Type GetClosestType(Type typ1, Type typ2)
+        public static Type GetClosestType(Type typ1, Type typ2)
         {
             if (CanConvertRange(typ1, typ2))
             {
@@ -443,6 +554,12 @@ namespace DotSpatial.Tools
         {
             try
             {
+                // basic check to make sure that both types are not null
+                if (typFrom == null || typTo == null)
+                {
+                    return false;
+                }
+
                 // basic check to make sure that both types are value types
                 if (!typFrom.IsValueType || !typTo.IsValueType)
                 {
@@ -459,8 +576,10 @@ namespace DotSpatial.Tools
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                //Debug.Print("***CanConvertRange error: typFrom={0} typTo={1}", typFrom, typTo);
+                //Debug.Print(ex.ToString());
                 return false;
             }
         }
@@ -470,10 +589,13 @@ namespace DotSpatial.Tools
         /// </summary>
         /// <param name="typ"></param>
         /// <returns></returns>
-        /// <remarks>https://learn.microsoft.com/en-us/dotnet/api/system.valuetype?view=net-7.0</remarks>
+        /// <remarks>
+        /// https://learn.microsoft.com/en-us/dotnet/api/system.valuetype?view=net-7.0
+        /// https://stackoverflow.com/questions/983030/type-checking-typeof-gettype-or-is
+        /// </remarks>
         public static bool IsFloatingPoint(Type typ)
         {
-            return typ is float | typ is double | typ is decimal;
+            return typ == typeof(float) | typ == typeof(double) | typ == typeof(decimal);
         }
 
         #endregion

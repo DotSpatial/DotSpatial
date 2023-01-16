@@ -1,0 +1,3 @@
+<?xml version="1.0"?>
+<!--<!DOCTYPE metadata SYSTEM "http://www.esri.com/metadata/esriprof80.dtd">-->
+<metadata xml:lang="en"><Esri><MetaID>{58D87FBA-2CBD-4A0B-BAE0-4B27C41E5269}</MetaID><CreaDate>20110518</CreaDate><CreaTime>12124500</CreaTime><SyncOnce>TRUE</SyncOnce><DataProperties><lineage><Process Name="Clip_3" ToolSource="C:\Program Files\ArcGIS\ArcToolbox\Toolboxes\Data Management Tools.tbx\Clip" Date="20110518" Time="121245">Clip elev_cm "1133475 1160805 1135665 1162605" D:\temp\ESRIGrid\NHDPlus03070103\elev_unit\elev_cm_Clip2 #</Process></lineage></DataProperties></Esri></metadata>
