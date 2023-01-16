@@ -75,8 +75,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-<<<<<<< Updated upstream
-        /// Executes the Erase Opaeration tool programmatically
+        /// Executes the Erase Opaeration tool programmatically.
         /// Ping deleted static for external testing 01/2010.
         /// </summary>
         /// <param name="input1">The first input raster.</param>
@@ -177,10 +176,7 @@ namespace DotSpatial.Tools
         }
 
         /// <summary>
-        /// Executes the Merge Grid Operation tool programmatically
-=======
         /// Executes the Merge Grid Operation tool programmatically.
->>>>>>> Stashed changes
         /// Ping deleted static for external testing 01/2010.
         /// The term 'Merge' here is equivalent to taking the non-empty value from each cell location. If both rasters have values
         /// for a location, then the first raster wins. You can think of this routine as filling in holes in raster1 from raster2.
