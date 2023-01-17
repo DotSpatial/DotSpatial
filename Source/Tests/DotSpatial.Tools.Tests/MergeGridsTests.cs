@@ -29,17 +29,17 @@ namespace DotSpatial.Tools.Tests
         [Test]
         public void FloatPointTest()
         {
-            System.Diagnostics.Debug.Print("-->FloatPointTest");
-            System.Diagnostics.Debug.Print("========================================================================");
+            Debug.Print("-->FloatPointTest");
+            Debug.Print("========================================================================");
             List<Type> types = new List<Type> { typeof(byte), typeof(Int16), typeof(Int32), typeof(Int64), typeof(float), typeof(double), typeof(decimal), typeof(TextBox), null };
 
             foreach (Type typ in types)
             {
                 bool isFloatPnt = MergeGrids.IsFloatingPoint(typ);
-                System.Diagnostics.Debug.Print("type={0} IsFloatingPoint={1}", typ, isFloatPnt);
+                Debug.Print("type={0} IsFloatingPoint={1}", typ, isFloatPnt);
             }
 
-            System.Diagnostics.Debug.Print("========================================================================");
+            Debug.Print("========================================================================");
         }
 
 
@@ -49,8 +49,8 @@ namespace DotSpatial.Tools.Tests
         [Test]
         public void BestOutputTypeTest()
         {
-            System.Diagnostics.Debug.Print("-->BestOutputTypeTest");
-            System.Diagnostics.Debug.Print("========================================================================");
+            Debug.Print("-->BestOutputTypeTest");
+            Debug.Print("========================================================================");
 
             List<Type> typesA = new List<Type> { typeof(byte), typeof(Int16), typeof(Int32), typeof(Int64), typeof(float), typeof(double), typeof(decimal), null };
             List<Type> typesB = new List<Type> { typeof(byte), typeof(Int16), typeof(Int32), typeof(Int64), typeof(float), typeof(double), typeof(decimal), null };
@@ -59,15 +59,15 @@ namespace DotSpatial.Tools.Tests
             {
                 foreach (var typB in typesB)
                 {
-                    System.Diagnostics.Debug.Print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                    System.Diagnostics.Debug.Print("Input: typA={0} typB={1}", typA, typB);
+                    Debug.Print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    Debug.Print("Input: typA={0} typB={1}", typA, typB);
                     var outTyp = MergeGrids.GetClosestType(typA, typB);
-                    System.Diagnostics.Debug.Print("Output: typA={0} typB={1} outTyp={2}", typA, typB, outTyp);
+                    Debug.Print("Output: typA={0} typB={1} outTyp={2}", typA, typB, outTyp);
                 }
             }
-            System.Diagnostics.Debug.Print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Debug.Print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-            System.Diagnostics.Debug.Print("========================================================================");
+            Debug.Print("========================================================================");
         }
 
         /// <summary>
@@ -88,6 +88,10 @@ namespace DotSpatial.Tools.Tests
             {
                 throw new Exception("Grid A does not exist.");
             }
+
+            var rstTypeA = Raster.GetGridFileType(fileNameA);
+            Debug.Print("gridA: RasterFileType={0}", rstTypeA);
+
             var gridA = p.Open(fileNameA);
             Debug.Print("gridA: min={0} max={1} cols={2} rows={3}", gridA.Minimum, gridA.Maximum, gridA.NumColumns, gridA.NumRows);
             Debug.Print("gridA: FileType={0} DataType={1}", gridA.FileType, gridA.DataType);
@@ -101,6 +105,10 @@ namespace DotSpatial.Tools.Tests
             {
                 throw new Exception("Grid B does not exist.");
             }
+
+            var rstTypeB = Raster.GetGridFileType(fileNameB);
+            Debug.Print("gridB: RasterFileType={0}", rstTypeB);
+
             var gridB = p.Open(fileNameB);
             Debug.Print("gridB: min={0} max={1} cols={2} rows={3}", gridB.Minimum, gridB.Maximum, gridB.NumColumns, gridB.NumRows);
             Debug.Print("gridB: FileType={0} DataType={1}", gridB.FileType, gridB.DataType);
@@ -113,57 +121,29 @@ namespace DotSpatial.Tools.Tests
             Debug.Print("fileNameOut={0}", fileNameOut);
             IRaster outGrid = new Raster { Filename = fileNameOut };
             bool isMerged = mergeGrids.Execute(gridA, gridB, outGrid, new MockProgressHandler());
-            if (isMerged)
+
+            if (!isMerged)
             {
-                Debug.Print("outGrid: min={0} max={1} cols={2} rows={3}", outGrid.Minimum, outGrid.Maximum, outGrid.NumColumns, outGrid.NumRows);
-                Debug.Print("outGrid: FileType={0} DataType={1}", outGrid.FileType, outGrid.DataType);
-                MessageBox.Show("The grids were merged.", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("The grids were not merged.", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                throw new Exception("The grids were not merged.");
             }
 
+            Debug.Print("outGrid: min={0} max={1} cols={2} rows={3}", outGrid.Minimum, outGrid.Maximum, outGrid.NumColumns, outGrid.NumRows);
+            Debug.Print("outGrid: FileType={0} DataType={1}", outGrid.FileType, outGrid.DataType);
+            Debug.Print("The grids were merged.");
 
+            ////////////////////////////////////////////////////////////////
+            //clean-up
+            ////////////////////////////////////////////////////////////////
+            // close the rasters
+            gridA.Close();
+            gridA.Dispose();
+            gridB.Close();
+            gridB.Dispose();
+            outGrid.Close();
+            outGrid.Dispose();
 
-
-
-
-
-
-            //outRaster = Raster.Open(outRaster.Filename);
-            //File.Delete(outRaster.Filename);
-
-
-
-
-            //string savedGridName = Path.Combine(gridDataFolder, @"merged.tif");
-            //var gridout = p.Open(savedGridName);
-            //ICancelProgressHandler cancelProgressHandler = null;
-
-            //IRaster input2 = _inputParam[1].Value as IRaster;
-
-            //IRaster output = _outputParam[0].Value as IRaster;
-
-            //return Execute(input1, input2, output, cancelProgressHandler);
-
-
-
-
-
-            //string savedGridName = Path.Combine(gridDataFolder, @"elev_cm.tif");
-            //sourceGrid.SaveAs(savedGridName);
-
-            //Assert.AreEqual(sourceGrid.Maximum, sourceGridMaximum, 0.0001);
-
-            //var savedSourceGrid = Raster.Open(savedGridName);
-
-            //Assert.AreEqual(sourceGridMaximum, savedSourceGrid.Maximum, 0.0001);
-
-            //sourceGrid.Close();
-            //savedSourceGrid.Close();
-            //File.Delete(savedGridName);
-
+            // delete the merged file (optional)
+            //File.Delete(fileNameOut);
         }
     }
 }
