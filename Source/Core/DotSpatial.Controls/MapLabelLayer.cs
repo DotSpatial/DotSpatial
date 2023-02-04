@@ -371,6 +371,69 @@ namespace DotSpatial.Controls
             }
         }
 
+
+
+
+        ///// <summary>
+        ///// Draws the labels for the given features.
+        ///// </summary>
+        ///// <param name="args">The GeoArgs that control how these features should be drawn.</param>
+        ///// <param name="features">The features that should be drawn.</param>
+        ///// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
+        ///// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
+        //public virtual void DrawFeatures_deprecated(MapArgs args, List<int> features, List<Rectangle> clipRectangles, bool useChunks)
+        //{
+        //    if (useChunks == false)
+        //    {
+        //        DrawFeatures(args, features);
+        //        return;
+        //    }
+
+        //    int count = features.Count;
+        //    int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
+
+        //    for (int chunk = 0; chunk < numChunks; chunk++)
+        //    {
+        //        int numFeatures = ChunkSize;
+        //        if (chunk == numChunks - 1)
+        //            numFeatures = features.Count - (chunk * ChunkSize);
+
+        //        // without checking vertices for NaN this will casuse some issues when reprojecting to certain map projections like
+        //        // Mercator and Orthographic. a valid coordinate in one projection could get a NaN in another projection.
+        //        // DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
+
+        //        // here we will test to see if any of the vertices have a NaN value and if so then we will remove that feature index
+        //        // from the list. it is essentially a filter so the labeler has a complete set of valid vertices to place a label. we
+        //        // first cache the indexes with invalid vertices and then after that we will remove them from the master list. I suppose
+        //        // there might already be a feature property that contains the vertice validity but dont know the codebase well enough to
+        //        // make that determination. it would save computation if it were available before this routine was reached.
+        //        var featsValid = features.GetRange(chunk * ChunkSize, numFeatures);
+        //        var invalidList = new List<int>();
+        //        foreach (int fid in featsValid)
+        //        {
+        //            var isValidVertices = AreFeatureVerticesValid(FeatureSet.ShapeIndices[fid].Parts);
+        //            if (!isValidVertices)
+        //            {
+        //                invalidList.Add(fid);
+        //            }
+        //        }
+
+        //        foreach (int invfid in invalidList)
+        //        {
+        //            featsValid.Remove(invfid);
+        //        }
+
+        //        DrawFeatures(args, featsValid);
+
+        //        if (numChunks > 0 && chunk < numChunks - 1)
+        //        {
+        //            OnBufferChanged(clipRectangles);
+        //            Application.DoEvents();
+        //        }
+        //    }
+        //}
+
+
         /// <summary>
         /// Draws the labels for the given features.
         /// </summary>
@@ -394,33 +457,7 @@ namespace DotSpatial.Controls
                 int numFeatures = ChunkSize;
                 if (chunk == numChunks - 1)
                     numFeatures = features.Count - (chunk * ChunkSize);
-
-                // without checking vertices for NaN this will casuse some issues when reprojecting to certain map projections like
-                // Mercator and Orthographic. a valid coordinate in one projection could get a NaN in another projection.
-                // DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
-
-                // here we will test to see if any of the vertices have a NaN value and if so then we will remove that feature index
-                // from the list. it is essentially a filter so the labeler has a complete set of valid vertices to place a label. we
-                // first cache the indexes with invalid vertices and then after that we will remove them from the master list. I suppose
-                // there might already be a feature property that contains the vertice validity but dont know the codebase well enough to
-                // make that determination. it would save computation if it were available before this routine was reached.
-                var featsValid = features.GetRange(chunk * ChunkSize, numFeatures);
-                var invalidList = new List<int>();
-                foreach (int fid in featsValid)
-                {
-                    var isValidVertices = AreFeatureVerticesValid(FeatureSet.ShapeIndices[fid].Parts);
-                    if (!isValidVertices)
-                    {
-                        invalidList.Add(fid);
-                    }
-                }
-
-                foreach (int invfid in invalidList)
-                {
-                    featsValid.Remove(invfid);
-                }
-
-                DrawFeatures(args, featsValid);
+                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
 
                 if (numChunks > 0 && chunk < numChunks - 1)
                 {
@@ -429,6 +466,11 @@ namespace DotSpatial.Controls
                 }
             }
         }
+
+
+
+
+
 
         /// <summary>
         /// This will draw any features that intersect this region. To specify the features
@@ -716,31 +758,31 @@ namespace DotSpatial.Controls
             return 0;
         }
 
-        /// <summary>
-        /// Determines if the part range has any invalid vertices for labeling. An invalid vertex is one with either an x or y value of
-        /// Infinity, -Infinity, or NaN.
-        /// </summary>
-        /// <param name="prts">part range</param>
-        /// <returns>True if none of the vertices have an x or value of Infinity, -Infinity, or NaN, False if at least one vertex has an
-        /// x or y value of Infinity, -Infinity, or NaN.</returns>
-        private static bool AreFeatureVerticesValid(List<PartRange> prts)
-        {
-            // cycle through all parts
-            foreach (PartRange prt in prts)
-            {
-                // we only need to find the first vertex that has a non-finite value in x or y. if we find it then the result is that the
-                // part range is not valid. The IsFinite () method returns true if a value is a finite number. Infinite (not finite) values
-                // are Infinity, -Infinity, or NaN
-                var idxInvalid = prt.ToList().FindIndex(v => !double.IsFinite(v.X) || !double.IsFinite(v.Y));
-                if (idxInvalid != -1)
-                {
-                    return false;
-                }
-            }
+        ///// <summary>
+        ///// Determines if the part range has any invalid vertices for labeling. An invalid vertex is one with either an x or y value of
+        ///// Infinity, -Infinity, or NaN.
+        ///// </summary>
+        ///// <param name="prts">part range</param>
+        ///// <returns>True if none of the vertices have an x or value of Infinity, -Infinity, or NaN, False if at least one vertex has an
+        ///// x or y value of Infinity, -Infinity, or NaN.</returns>
+        //private static bool AreFeatureVerticesValid(List<PartRange> prts)
+        //{
+        //    // cycle through all parts
+        //    foreach (PartRange prt in prts)
+        //    {
+        //        // we only need to find the first vertex that has a non-finite value in x or y. if we find it then the result is that the
+        //        // part range is not valid. The IsFinite () method returns true if a value is a finite number. Infinite (not finite) values
+        //        // are Infinity, -Infinity, or NaN
+        //        var idxInvalid = prt.ToList().FindIndex(v => !double.IsFinite(v.X) || !double.IsFinite(v.Y));
+        //        if (idxInvalid != -1)
+        //        {
+        //            return false;
+        //        }
+        //    }
 
-            // if we get to this line then all vertices are valid so the part range is valid
-            return true;
-        }
+        //    // if we get to this line then all vertices are valid so the part range is valid
+        //    return true;
+        //}
 
         /// <summary>
         /// Gets the segment of the LineString that is used to position and rotate the label.
