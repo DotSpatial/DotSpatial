@@ -42,7 +42,6 @@ namespace DotSpatial.Tools.Tests
             Debug.Print("========================================================================");
         }
 
-
         /// <summary>
         /// Tests the method that determines the best output type based on two input types.
         /// </summary>
