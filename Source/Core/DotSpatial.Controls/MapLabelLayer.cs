@@ -669,12 +669,11 @@ namespace DotSpatial.Controls
                     if (ls == null) return 0;
 
                     if (symb.LineOrientation == LineOrientation.Parallel)
-                        //NTS value for Angle is in radians so must convert to degrees
-                        return ToSingle(-ls.Angle * (180.0 / Math.PI));
+                    {
+                        return ToSingle(-GetDisplayAngle(ls));
+                    }
 
-                    //convert Angle to degrees and then adjust value by +90° to make it perpendicular.
-                    //an adjusment value of -90° would tend to make the label "upside down" for most projections.
-                    return ToSingle((-ls.Angle * (180.0 / Math.PI)) + 90.0);
+                    return ToSingle(-GetDisplayAngle(ls) - 90);
                 }
             }
 
@@ -718,6 +717,31 @@ namespace DotSpatial.Controls
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the angle that will be used to draw line based labels so they won't be on their head.
+        /// </summary>
+        private static double GetDisplayAngle(LineSegment ls)
+        {
+            double deltaX = ls.P1.X - ls.P0.X;
+            double deltaY = ls.P1.Y - ls.P0.Y;
+            double length = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+            double angleRAD = Math.Asin(Math.Abs(ls.P1.Y - ls.P0.Y) / length);
+
+            if (angleRAD != ls.Angle)
+            {
+                Debug.WriteLine(angleRAD + "!=" + ls.Angle);
+            }
+
+            double angle = (angleRAD * 180) / Math.PI;
+
+            if (((ls.P0.X < ls.P1.X) && (ls.P0.Y > ls.P1.Y)) || ((ls.P0.X > ls.P1.X) && (ls.P0.Y < ls.P1.Y)))
+            {
+                angle = 360 - angle;
+            }
+
+            return angle;
         }
 
         /// <summary>
