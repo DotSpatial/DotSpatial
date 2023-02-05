@@ -1,9 +1,11 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
+
+using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Forms;
-using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 
 namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequirements
@@ -15,7 +17,7 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
     [Export(typeof(IHeaderControl))]
     internal class CustomHeaderControl : HeaderControl, IPartImportsSatisfiedNotification
     {
-        private MainMenu _mainmenu;
+        private MenuStrip _menustrip;
         private FlowLayoutPanel _container;
 
         [Import("Shell", typeof(ContainerControl))]
@@ -26,10 +28,10 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
         /// </summary>
         public void OnImportsSatisfied()
         {
-            _mainmenu = new MainMenu();
+            _menustrip = new MenuStrip();
 
-            var form = (Form)Shell;
-            form.Menu = _mainmenu;
+            Form form = (Form)Shell;
+            form.MainMenuStrip = _menustrip;
 
             _container = new FlowLayoutPanel
             {
@@ -42,6 +44,7 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
                 AutoSizeMode = AutoSizeMode.GrowAndShrink
             };
             Shell.Controls.Add(_container);
+            Shell.Controls.Add(_menustrip);
         }
 
         public override void SelectRoot(string key)
@@ -51,25 +54,35 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
 
         public override object Add(SimpleActionItem item)
         {
-            var menu = new IconMenuItem(item.Caption, item.SmallImage, (sender, e) => item.OnClick(e))
-            {Name = item.Key, Enabled = item.Enabled, Visible = item.Visible,};
+            ToolStripMenuItem menu = new(item.Caption, item.SmallImage, (sender, e) => item.OnClick(e), item.Key)
+            {
+                Enabled = item.Enabled,
+                Visible = item.Visible
+            };
+
             item.PropertyChanged += SimpleActionItemPropertyChanged;
 
             EnsureNonNullRoot(item);
 
-            MenuItem root;
+            ToolStripItem root;
+
             if (item.MenuContainerKey == null)
             {
-                root = !_mainmenu.MenuItems.ContainsKey(item.RootKey)
-                    ? _mainmenu.MenuItems[_mainmenu.MenuItems.Add(new MenuItem(item.RootKey) {Name = item.RootKey})]
-                    : _mainmenu.MenuItems.Find(item.RootKey, true)[0];
+                if (!_menustrip.Items.ContainsKey(item.RootKey))
+                {
+                    root = _menustrip.Items[_menustrip.Items.Add(new ToolStripMenuItem(item.RootKey) { Name = item.RootKey })];
+                }
+                else
+                {
+                    root = _menustrip.Items.Find(item.RootKey, true)[0];
+                }
             }
             else
             {
-                root = _mainmenu.MenuItems.Find(item.MenuContainerKey, true)[0];
+                root = _menustrip.Items.Find(item.MenuContainerKey, true)[0];
             }
 
-            root.MenuItems.Add(menu);
+            (root as ToolStripMenuItem)?.DropDownItems.Add(menu);
             return menu;
         }
 
@@ -78,8 +91,7 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
         /// </summary>
         private void EnsureExtensionsTabExists()
         {
-            var exists = _mainmenu.MenuItems.ContainsKey(ExtensionsRootKey);
-            if (!exists)
+            if (!_menustrip.Items.ContainsKey(ExtensionsRootKey))
             {
                 Add(new RootItem(ExtensionsRootKey, "Extensions"));
             }
@@ -101,44 +113,45 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
 
         public override object Add(MenuContainerItem item)
         {
-            var submenu = new MenuItem
+            ToolStripMenuItem submenu = new()
             {
                 Name = item.Key,
                 Visible = item.Visible,
-                Text = item.Caption,
+                Text = item.Caption
             };
 
             item.PropertyChanged += RootItemPropertyChanged;
-            var root = _mainmenu.MenuItems.Find(item.RootKey, true)[0];
-            root.MenuItems.Add(submenu);
+            ToolStripItem root = _menustrip.Items.Find(item.RootKey, true)[0];
+            (root as ToolStripMenuItem)?.DropDownItems.Add(submenu);
             return submenu;
         }
 
         public override object Add(RootItem item)
         {
-            if (!_mainmenu.MenuItems.ContainsKey(item.Key))
+            if (!_menustrip.Items.ContainsKey(item.Key))
             {
-                var submenu = new MenuItem
+                ToolStripMenuItem submenu = new()
                 {
                     Name = item.Key,
                     Visible = item.Visible,
                     Text = item.Caption,
-                    MergeOrder = item.SortOrder
+                    MergeIndex = item.SortOrder
                 };
+
                 item.PropertyChanged += RootItemPropertyChanged;
-                _mainmenu.MenuItems.Add(submenu);
+                _menustrip.Items.Add(submenu);
                 return submenu;
             }
 
-            var root = _mainmenu.MenuItems.Find(item.Key, true)[0];
+            ToolStripItem root = _menustrip.Items.Find(item.Key, true)[0];
             root.Text = item.Caption;
-            root.MergeOrder = item.SortOrder;
+            root.MergeIndex = item.SortOrder;
             return root;
         }
 
         public override object Add(DropDownActionItem item)
         {
-            var combo = new ComboBox {Name = item.Key};
+            ComboBox combo = new() { Name = item.Key };
 
             ParseAllowEditingProperty(item, combo);
 
@@ -157,8 +170,8 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
             item.PropertyChanged += DropDownActionItemPropertyChanged;
             _container.Controls.Add(combo);
             return combo;
-            }
-       
+        }
+
         public override object Add(SeparatorItem item)
         {
             return null;
@@ -166,17 +179,20 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
 
         public override object Add(TextEntryActionItem item)
         {
-            var textBox = new TextBox {Name = item.Key};
+            TextBox textBox = new() { Name = item.Key };
+
             if (item.Width != 0)
             {
                 textBox.Width = item.Width;
             }
+
             textBox.TextChanged += delegate
             {
                 item.PropertyChanged -= TextEntryActionItemPropertyChanged;
                 item.Text = textBox.Text;
                 item.PropertyChanged += TextEntryActionItemPropertyChanged;
             };
+
             _container.Controls.Add(textBox);
             item.PropertyChanged += TextEntryActionItemPropertyChanged;
             return textBox;
@@ -184,20 +200,20 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
 
         private Control GetItem(string key)
         {
-            var item = _container.Controls.Find(key, true).FirstOrDefault();
+            Control item = _container.Controls.Find(key, true).FirstOrDefault();
             return item;
         }
 
-        private MenuItem GetMenuItem(string key)
+        private ToolStripItem GetMenuItem(string key)
         {
-            var item = _mainmenu.MenuItems.Find(key, true).FirstOrDefault();
+            ToolStripItem item = _menustrip.Items.Find(key, true).FirstOrDefault();
             return item;
         }
 
         private void DropDownActionItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var item = (DropDownActionItem)sender;
-            var guiItem = (ComboBox)GetItem(item.Key);
+            DropDownActionItem item = (DropDownActionItem)sender;
+            ComboBox guiItem = (ComboBox)GetItem(item.Key);
 
             switch (e.PropertyName)
             {
@@ -231,8 +247,8 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
 
         private void TextEntryActionItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var item = (TextEntryActionItem)sender;
-            var guiItem = (TextBox)GetItem(item.Key);
+            TextEntryActionItem item = (TextEntryActionItem)sender;
+            TextBox guiItem = (TextBox)GetItem(item.Key);
 
             switch (e.PropertyName)
             {
@@ -258,7 +274,7 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
         {
             if (item.GetType() == typeof(SimpleActionItem) || item.GetType() == typeof(RootItem))
             {
-                var guiItem = GetMenuItem(item.Key);
+                ToolStripItem guiItem = GetMenuItem(item.Key);
 
                 switch (e.PropertyName)
                 {
@@ -290,7 +306,7 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
             }
             else
             {
-                var guiItem = GetItem(item.Key);
+                Control guiItem = GetItem(item.Key);
                 switch (e.PropertyName)
                 {
                     case "Caption":
@@ -323,8 +339,8 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
 
         private void RootItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var item = (RootItem)sender;
-            var guiItem = GetItem(item.Key);
+            RootItem item = (RootItem)sender;
+            Control guiItem = GetItem(item.Key);
 
             switch (e.PropertyName)
             {
@@ -343,7 +359,7 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
 
         private void SimpleActionItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var item = (SimpleActionItem)sender;
+            SimpleActionItem item = (SimpleActionItem)sender;
             switch (e.PropertyName)
             {
                 case "SmallImage":

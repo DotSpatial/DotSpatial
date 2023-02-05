@@ -1,4 +1,7 @@
-﻿using System.Windows.Forms;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
+
+using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
 
@@ -9,31 +12,40 @@ namespace SimpleApp
     /// </summary>
     public class MapLegendExtension : Extension
     {
+        /// <summary>
+        /// Initialzes a new MapLegendExtension.
+        /// </summary>
         public MapLegendExtension()
         {
             DeactivationAllowed = false;
         }
 
-        public override int Priority
-        {
-            get { return -100; }
-        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public override int Priority => -100;
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public override void Activate()
         {
             base.Activate();
 
             // Add legend
-            var legend = new Legend{Text = "Legend"};
+            Legend legend = new() { Text = "Legend" };
             App.Legend = legend;
             App.DockManager.Add(new DockablePanel("kLegend", "Legend", legend, DockStyle.Left));
 
             // Add map
-            var map = new Map {Text = "Map", Legend = App.Legend};
+            Map map = new() { Text = "Map", Legend = App.Legend };
             App.Map = map;
             App.DockManager.Add(new DockablePanel("kMap", "Map", map, DockStyle.Fill));
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();

@@ -1,4 +1,7 @@
-﻿using DotSpatial.Controls;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
+
+using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 
 namespace DotSpatial.Examples.AppManagerCustomizationDesignTime
@@ -13,6 +16,9 @@ namespace DotSpatial.Examples.AppManagerCustomizationDesignTime
         private StatusPanel _xPanel;
         private StatusPanel _yPanel;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Activate()
         {
             _map = (Map)App.Map;
@@ -26,6 +32,9 @@ namespace DotSpatial.Examples.AppManagerCustomizationDesignTime
             base.Activate();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Deactivate()
         {
             _map.GeoMouseMove -= MapGeoMouseMove;
