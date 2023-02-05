@@ -458,7 +458,7 @@ namespace DotSpatial.Controls
                 if (chunk == numChunks - 1)
                     numFeatures = features.Count - (chunk * ChunkSize);
                 DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
-
+                
                 if (numChunks > 0 && chunk < numChunks - 1)
                 {
                     OnBufferChanged(clipRectangles);
@@ -758,31 +758,41 @@ namespace DotSpatial.Controls
             return 0;
         }
 
-        ///// <summary>
-        ///// Determines if the part range has any invalid vertices for labeling. An invalid vertex is one with either an x or y value of
-        ///// Infinity, -Infinity, or NaN.
-        ///// </summary>
-        ///// <param name="prts">part range</param>
-        ///// <returns>True if none of the vertices have an x or value of Infinity, -Infinity, or NaN, False if at least one vertex has an
-        ///// x or y value of Infinity, -Infinity, or NaN.</returns>
-        //private static bool AreFeatureVerticesValid(List<PartRange> prts)
-        //{
-        //    // cycle through all parts
-        //    foreach (PartRange prt in prts)
-        //    {
-        //        // we only need to find the first vertex that has a non-finite value in x or y. if we find it then the result is that the
-        //        // part range is not valid. The IsFinite () method returns true if a value is a finite number. Infinite (not finite) values
-        //        // are Infinity, -Infinity, or NaN
-        //        var idxInvalid = prt.ToList().FindIndex(v => !double.IsFinite(v.X) || !double.IsFinite(v.Y));
-        //        if (idxInvalid != -1)
-        //        {
-        //            return false;
-        //        }
-        //    }
+        private static void DebugGeom(List<int> fids)
+        {
+            foreach (int fid in fids)
+            {
+                //bool isValid = FeatureSet.Features[fid].Geometry.IsValid;
+                //var x = feat.Geometry.IsValid;
+                //Debug.Print("x={0}", x);
+            }
+        }
 
-        //    // if we get to this line then all vertices are valid so the part range is valid
-        //    return true;
-        //}
+        /// <summary>
+        /// Determines if the part range has any invalid vertices for labeling. An invalid vertex is one with either an x or y value of
+        /// Infinity, -Infinity, or NaN.
+        /// </summary>
+        /// <param name="prts">part range</param>
+        /// <returns>True if none of the vertices have an x or value of Infinity, -Infinity, or NaN, False if at least one vertex has an
+        /// x or y value of Infinity, -Infinity, or NaN.</returns>
+        private static bool AreFeatureVerticesValid(List<PartRange> prts)
+        {
+            // cycle through all parts
+            foreach (PartRange prt in prts)
+            {
+                // we only need to find the first vertex that has a non-finite value in x or y. if we find it then the result is that the
+                // part range is not valid. The IsFinite () method returns true if a value is a finite number. Infinite (not finite) values
+                // are Infinity, -Infinity, or NaN
+                var idxInvalid = prt.ToList().FindIndex(v => !double.IsFinite(v.X) || !double.IsFinite(v.Y));
+                if (idxInvalid != -1)
+                {
+                    return false;
+                }
+            }
+
+            // if we get to this line then all vertices are valid so the part range is valid
+            return true;
+        }
 
         /// <summary>
         /// Gets the segment of the LineString that is used to position and rotate the label.
@@ -1015,15 +1025,30 @@ namespace DotSpatial.Controls
             {
                 category.UpdateExpressionColumns(FeatureSet.DataTable.Columns);
                 var catFeatures = new List<int>();
+                Debug.Print("start<---");
                 foreach (int fid in features)
                 {
-                    if (drawStates[fid] == null || drawStates[fid].Category == null)
-                        continue;
+                    Debug.Print("fid={0}", fid);
+                    //Debug.Print("idx={0} Fid={1}", fid, FeatureSet.Features[fid].Fid);
+                    //bool isOk = FeatureSet.GetShape(fid, false).ToGeometry().IsValid;
+                    //Debug.Print("b:fid={0} isOk={1}", fid, isOk);
+                    //bool isValid = FeatureSet.Features[fid].Geometry.IsValid; //crash here
+                    //Debug.Print("c:fid={0} isValid={1}", fid, isValid);
+
+                    if (drawStates[fid] == null || drawStates[fid].Category == null) continue;
                     if (drawStates[fid].Category == category)
                     {
-                        catFeatures.Add(fid);
+                        // Check if the shapes vertices are valid (ie all vertices must be numeric and not NaN).
+                        // Todo: NaN vertices happen most often on a projected CS so maybe we can skip this step on a geographic CS.
+                        var hasValidVertices = AreFeatureVerticesValid(FeatureSet.ShapeIndices[fid].Parts);
+                        Debug.Print("  hasValidVertices={0}", hasValidVertices);
+                        if (hasValidVertices)
+                        {
+                            catFeatures.Add(fid);
+                        }
                     }
                 }
+                Debug.Print("end<---");
 
                 // Now that we are restricted to a certain category, we can look at priority
                 if (category.Symbolizer.PriorityField != "FID")
@@ -1053,8 +1078,29 @@ namespace DotSpatial.Controls
                 {
                     if (!FeatureLayer.DrawnStates[fid].Visible)
                         continue;
-                    var feature = FeatureSet.GetFeature(fid);
-                    drawFeature(fid, feature);
+
+                    // draw the feature only if it's valid. an example of this is an Orthographic projection where many vertices will be NaN.
+                    //prt.ToList().FindIndex(v => !double.IsFinite(v.X) || !double.IsFinite(v.Y));
+                    //FeatureSet.ShapeIndices[fid].Parts.First().ToList().FindIndex(x=>x.x)
+                    //Debug.Print("idx={0} Fid={1}", fid, FeatureSet.Features[fid].Fid);
+                    //Debug.Print("a:fid={0}", fid);
+                    //bool isOk = FeatureSet.GetShape(fid, false).ToGeometry().IsValid;
+                    //Debug.Print("b:fid={0} isOk={1}", fid, isOk);
+                    //bool isValid = FeatureSet.Features[fid].Geometry.IsValid;
+                    //Debug.Print("c:fid={0} isValid={1}", fid, isValid);
+                    //int oid= FeatureSet.GetFeature(fid).Fid;
+                    //Debug.Print("d:fid={0} oid={1}", fid, oid);
+                    bool isValid = true;
+                    ////bool isValid = FeatureSet.VerticesAreValid;
+                    if (isValid)
+                    {
+                        var feature = FeatureSet.GetFeature(fid); // bombs here
+                        drawFeature(fid, feature);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid fid="+fid);
+                    }
                 }
             }
 
