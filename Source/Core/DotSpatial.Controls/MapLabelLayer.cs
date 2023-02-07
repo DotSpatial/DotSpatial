@@ -670,10 +670,10 @@ namespace DotSpatial.Controls
 
                     if (symb.LineOrientation == LineOrientation.Parallel)
                     {
-                        return ToSingle(-GetDisplayAngle(ls));
+                        return ToSingle(-GetDisplayAngle(ls, 0));
                     }
 
-                    return ToSingle(-GetDisplayAngle(ls) - 90);
+                    return ToSingle(-GetDisplayAngle(ls, -Math.PI / 2));
                 }
             }
 
@@ -722,17 +722,14 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the angle that will be used to draw line based labels so they won't be on their head.
         /// </summary>
-        private static double GetDisplayAngle(LineSegment ls)
+        /// <param name="ls">Linestring, that is used to determine the display angle of the label.</param>
+        /// <param name="add">Angle in radian that needs to be added for the label to be rotated correctly (e.g. perpendicular labels get rotated by -90°)</param>
+        private static double GetDisplayAngle(LineSegment ls, double add)
         {
             double deltaX = ls.P1.X - ls.P0.X;
             double deltaY = ls.P1.Y - ls.P0.Y;
             double length = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-            double angleRAD = Math.Asin(Math.Abs(ls.P1.Y - ls.P0.Y) / length);
-
-            if (angleRAD != ls.Angle)
-            {
-                Debug.WriteLine(angleRAD + "!=" + ls.Angle);
-            }
+            double angleRAD = Math.Asin(Math.Abs(ls.P1.Y - ls.P0.Y) / length) + add;
 
             double angle = (angleRAD * 180) / Math.PI;
 
