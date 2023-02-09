@@ -14,8 +14,8 @@ All notable changes to this project will be documented in this file.
  - Upgraded Examples to .NET Core 6 projects (#1485)
 
 ### Fixed
+- LineOrientation fix for Parallel/Perpendicular labels (#1466)
 - Added tests to Appveyor Tests tab (#1489)
-
 
 ## V4.0
 
