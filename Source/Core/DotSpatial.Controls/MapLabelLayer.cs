@@ -239,6 +239,7 @@ namespace DotSpatial.Controls
 
             // Gets the features text and calculate the label size
             string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
+
             if (txt == null)
             {
                 return;
@@ -716,6 +717,7 @@ namespace DotSpatial.Controls
                 if (lineString is LineString ls1)
                 {
                     var ls = GetSegment(ls1, symb);
+
                     if (ls == null)
                     {
                         return 0;
@@ -779,7 +781,7 @@ namespace DotSpatial.Controls
         /// Gets the angle that will be used to draw line based labels so they won't be on their head.
         /// </summary>
         /// <param name="ls">Linestring, that is used to determine the display angle of the label.</param>
-        /// <param name="add">Angle in radian that needs to be added for the label to be rotated correctly (e.g. perpendicular labels get rotated by -90°)</param>
+        /// <param name="add">Angle in radian that needs to be added for the label to be rotated correctly (e.g. perpendicular labels get rotated by -90Â°)</param>
         private static double GetDisplayAngle(LineSegment ls, double add)
         {
             double deltaX = ls.P1.X - ls.P0.X;
@@ -1002,6 +1004,7 @@ namespace DotSpatial.Controls
             {
                 category.UpdateExpressionColumns(FeatureSet.DataTable.Columns);
                 var catFeatures = new List<int>();
+
                 foreach (int fid in features)
                 {
                     if (drawStates[fid] == null || drawStates[fid].Category == null)
@@ -1011,7 +1014,11 @@ namespace DotSpatial.Controls
 
                     if (drawStates[fid].Category == category)
                     {
-                        catFeatures.Add(fid);
+                        //// Check if the shapes vertices are valid (ie all vertices must be numeric and not NaN).
+                        if (!FeatureSet.ShapeIndices[fid].Parts.Any(_ => _.ToList().Any(v => !double.IsFinite(v.X) || !double.IsFinite(v.Y))))
+                        {
+                            catFeatures.Add(fid);
+                        }
                     }
                 }
 
@@ -1021,8 +1028,7 @@ namespace DotSpatial.Controls
                     Feature.ComparisonField = category.Symbolizer.PriorityField;
                     catFeatures.Sort();
 
-                    // When preventing collisions, we want to do high priority first.
-                    // Otherwise, do high priority last.
+                    // When preventing collisions, we want to do high priority first. Otherwise, do high priority last.
                     if (category.Symbolizer.PreventCollisions)
                     {
                         if (!category.Symbolizer.PrioritizeLowValues)
@@ -1124,15 +1130,13 @@ namespace DotSpatial.Controls
                     }
                 }
 
-                // Now that we are restricted to a certain category, we can look at
-                // priority
+                // Now that we are restricted to a certain category, we can look at priority
                 if (category.Symbolizer.PriorityField != "FID")
                 {
                     Feature.ComparisonField = cat.Symbolizer.PriorityField;
                     catFeatures.Sort();
 
-                    // When preventing collisions, we want to do high priority first.
-                    // otherwise, do high priority last.
+                    // When preventing collisions, we want to do high priority first. Otherwise, do high priority last.
                     if (cat.Symbolizer.PreventCollisions)
                     {
                         if (!cat.Symbolizer.PrioritizeLowValues)
