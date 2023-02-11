@@ -171,9 +171,11 @@ namespace DotSpatial.Controls
             // Gets the features text and calculate the label size
             string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
             if (txt == null)
+            {
                 return;
+            }
 
-            Func<SizeF> labelSize = () => g.MeasureString(txt, CacheList.GetFont(symb));
+            SizeF labelSize() => g.MeasureString(txt, CacheList.GetFont(symb));
 
             Geometry geo = f.Geometry;
 
@@ -204,7 +206,10 @@ namespace DotSpatial.Controls
                         LineString ls = geo.GetGeometryN(n) as LineString;
                         double tempLength = 0;
                         if (ls != null)
+                        {
                             tempLength = ls.Length;
+                        }
+
                         if (longestLine < tempLength)
                         {
                             longestLine = tempLength;
@@ -234,10 +239,14 @@ namespace DotSpatial.Controls
 
             // Gets the features text and calculate the label size
             string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
+
             if (txt == null)
+            {
                 return;
+            }
+
             var angle = GetAngleToRotate(symb, f);
-            Func<SizeF> labelSize = () => g.MeasureString(txt, CacheList.GetFont(symb));
+            SizeF labelSize() => g.MeasureString(txt, CacheList.GetFont(symb));
 
             // Depending on the labeling strategy we do different things
             if (symb.PartsLabelingMethod == PartLabelingMethod.LabelAllParts)
@@ -271,9 +280,12 @@ namespace DotSpatial.Controls
             // Gets the features text and calculate the label size
             string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
             if (txt == null)
+            {
                 return;
+            }
+
             var angle = GetAngleToRotate(symb, f);
-            Func<SizeF> labelSize = () => g.MeasureString(txt, CacheList.GetFont(symb));
+            SizeF labelSize() => g.MeasureString(txt, CacheList.GetFont(symb));
 
             Geometry geo = f.Geometry;
 
@@ -300,7 +312,10 @@ namespace DotSpatial.Controls
                     {
                         Polygon pg = geo.GetGeometryN(n) as Polygon;
                         if (pg == null)
+                        {
                             continue;
+                        }
+
                         double tempArea = pg.Area;
                         if (largestArea < tempArea)
                         {
@@ -324,7 +339,10 @@ namespace DotSpatial.Controls
         public void Clear(List<Rectangle> rectangles, Color color)
         {
             if (BackBuffer == null)
+            {
                 return;
+            }
+
             Graphics g = Graphics.FromImage(BackBuffer);
             foreach (Rectangle r in rectangles)
             {
@@ -360,7 +378,10 @@ namespace DotSpatial.Controls
             {
                 int numFeatures = ChunkSize;
                 if (chunk == numChunks - 1)
+                {
                     numFeatures = features.Count - (chunk * ChunkSize);
+                }
+
                 DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
 
                 if (numChunks > 0 && chunk < numChunks - 1)
@@ -370,69 +391,6 @@ namespace DotSpatial.Controls
                 }
             }
         }
-
-
-
-
-        ///// <summary>
-        ///// Draws the labels for the given features.
-        ///// </summary>
-        ///// <param name="args">The GeoArgs that control how these features should be drawn.</param>
-        ///// <param name="features">The features that should be drawn.</param>
-        ///// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
-        ///// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
-        //public virtual void DrawFeatures_deprecated(MapArgs args, List<int> features, List<Rectangle> clipRectangles, bool useChunks)
-        //{
-        //    if (useChunks == false)
-        //    {
-        //        DrawFeatures(args, features);
-        //        return;
-        //    }
-
-        //    int count = features.Count;
-        //    int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
-
-        //    for (int chunk = 0; chunk < numChunks; chunk++)
-        //    {
-        //        int numFeatures = ChunkSize;
-        //        if (chunk == numChunks - 1)
-        //            numFeatures = features.Count - (chunk * ChunkSize);
-
-        //        // without checking vertices for NaN this will casuse some issues when reprojecting to certain map projections like
-        //        // Mercator and Orthographic. a valid coordinate in one projection could get a NaN in another projection.
-        //        // DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
-
-        //        // here we will test to see if any of the vertices have a NaN value and if so then we will remove that feature index
-        //        // from the list. it is essentially a filter so the labeler has a complete set of valid vertices to place a label. we
-        //        // first cache the indexes with invalid vertices and then after that we will remove them from the master list. I suppose
-        //        // there might already be a feature property that contains the vertice validity but dont know the codebase well enough to
-        //        // make that determination. it would save computation if it were available before this routine was reached.
-        //        var featsValid = features.GetRange(chunk * ChunkSize, numFeatures);
-        //        var invalidList = new List<int>();
-        //        foreach (int fid in featsValid)
-        //        {
-        //            var isValidVertices = AreFeatureVerticesValid(FeatureSet.ShapeIndices[fid].Parts);
-        //            if (!isValidVertices)
-        //            {
-        //                invalidList.Add(fid);
-        //            }
-        //        }
-
-        //        foreach (int invfid in invalidList)
-        //        {
-        //            featsValid.Remove(invfid);
-        //        }
-
-        //        DrawFeatures(args, featsValid);
-
-        //        if (numChunks > 0 && chunk < numChunks - 1)
-        //        {
-        //            OnBufferChanged(clipRectangles);
-        //            Application.DoEvents();
-        //        }
-        //    }
-        //}
-
 
         /// <summary>
         /// Draws the labels for the given features.
@@ -456,9 +414,12 @@ namespace DotSpatial.Controls
             {
                 int numFeatures = ChunkSize;
                 if (chunk == numChunks - 1)
+                {
                     numFeatures = features.Count - (chunk * ChunkSize);
+                }
+
                 DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
-                
+
                 if (numChunks > 0 && chunk < numChunks - 1)
                 {
                     OnBufferChanged(clipRectangles);
@@ -466,11 +427,6 @@ namespace DotSpatial.Controls
                 }
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// This will draw any features that intersect this region. To specify the features
@@ -483,7 +439,9 @@ namespace DotSpatial.Controls
         public void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
             if (FeatureSet == null || selected)
+            {
                 return;
+            }
 #if DEBUG
             var sw = new Stopwatch();
             sw.Start();
@@ -544,7 +502,10 @@ namespace DotSpatial.Controls
         {
             OnFinishDrawing();
             if (Buffer != null && Buffer != BackBuffer)
+            {
                 Buffer.Dispose();
+            }
+
             Buffer = BackBuffer;
             FeatureLayer.Invalidate();
         }
@@ -566,7 +527,10 @@ namespace DotSpatial.Controls
             }
 
             if (BackBuffer != null && BackBuffer != Buffer)
+            {
                 BackBuffer.Dispose();
+            }
+
             BackBuffer = backBuffer;
             OnStartDrawing();
         }
@@ -620,7 +584,10 @@ namespace DotSpatial.Controls
         private static void CollisionDraw(string txt, Graphics g, ILabelSymbolizer symb, IFeature f, MapArgs e, RectangleF labelBounds, List<RectangleF> existingLabels, float angle)
         {
             if (labelBounds.IsEmpty || !e.ImageRectangle.IntersectsWith(labelBounds))
+            {
                 return;
+            }
+
             if (symb.PreventCollisions)
             {
                 if (!Collides(labelBounds, existingLabels))
@@ -738,7 +705,10 @@ namespace DotSpatial.Controls
             {
                 var angleField = symb.LabelAngleField;
                 if (string.IsNullOrEmpty(angleField))
+                {
                     return 0;
+                }
+
                 return ToSingle(feature.DataRow[angleField]);
             }
 
@@ -749,7 +719,9 @@ namespace DotSpatial.Controls
                     var ls = GetSegment(ls1, symb);
 
                     if (ls == null)
+                    {
                         return 0;
+                    }
 
                     if (symb.LineOrientation == LineOrientation.Parallel)
                     {
@@ -763,42 +735,6 @@ namespace DotSpatial.Controls
             return 0;
         }
 
-        private static void DebugGeom(List<int> fids)
-        {
-            foreach (int fid in fids)
-            {
-                //bool isValid = FeatureSet.Features[fid].Geometry.IsValid;
-                //var x = feat.Geometry.IsValid;
-                //Debug.Print("x={0}", x);
-            }
-        }
-
-        /// <summary>
-        /// Determines if the part range has any invalid vertices for labeling. An invalid vertex is one with either an x or y value of
-        /// Infinity, -Infinity, or NaN.
-        /// </summary>
-        /// <param name="prts">part range</param>
-        /// <returns>True if none of the vertices have an x or value of Infinity, -Infinity, or NaN, False if at least one vertex has an
-        /// x or y value of Infinity, -Infinity, or NaN.</returns>
-        private static bool AreFeatureVerticesValid(List<PartRange> prts)
-        {
-            // cycle through all parts
-            foreach (PartRange prt in prts)
-            {
-                // we only need to find the first vertex that has a non-finite value in x or y. if we find it then the result is that the
-                // part range is not valid. The IsFinite () method returns true if a value is a finite number. Infinite (not finite) values
-                // are Infinity, -Infinity, or NaN
-                var idxInvalid = prt.ToList().FindIndex(v => !double.IsFinite(v.X) || !double.IsFinite(v.Y));
-                if (idxInvalid != -1)
-                {
-                    return false;
-                }
-            }
-
-            // if we get to this line then all vertices are valid so the part range is valid
-            return true;
-        }
-
         /// <summary>
         /// Gets the segment of the LineString that is used to position and rotate the label.
         /// </summary>
@@ -808,7 +744,9 @@ namespace DotSpatial.Controls
         private static LineSegment GetSegment(LineString lineString, ILabelSymbolizer symb)
         {
             if (lineString.Coordinates.Length <= 2)
+            {
                 return new LineSegment(lineString.StartPoint.Coordinate, lineString.EndPoint.Coordinate);
+            }
 
             var coords = lineString.Coordinates;
             switch (symb.LineLabelPlacementMethod)
@@ -816,7 +754,7 @@ namespace DotSpatial.Controls
                 case LineLabelPlacementMethod.FirstSegment:
                     return new LineSegment(coords[0], coords[1]);
                 case LineLabelPlacementMethod.LastSegment:
-                    return new LineSegment(coords[coords.Length - 2], coords[coords.Length - 1]);
+                    return new LineSegment(coords[^2], coords[^1]);
                 case LineLabelPlacementMethod.MiddleSegment:
                     int start = (int)Math.Ceiling(coords.Length / 2D) - 1;
                     return new LineSegment(coords[start], coords[start + 1]);
@@ -873,7 +811,10 @@ namespace DotSpatial.Controls
         private static RectangleF PlaceLabel(Coordinate c, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, double angle)
         {
             if (!e.GeographicExtents.Intersects(c))
+            {
                 return RectangleF.Empty;
+            }
+
             var lz = labelSize();
             PointF adjustment = Position(symb, lz);
             RotatePoint(ref adjustment, angle); // rotates the adjustment according to the given angle
@@ -895,11 +836,15 @@ namespace DotSpatial.Controls
         {
             LineString ls = lineString as LineString;
             if (ls == null)
+            {
                 return Rectangle.Empty;
+            }
 
             var ls1 = GetSegment(ls, symb);
             if (ls1 == null)
+            {
                 return Rectangle.Empty;
+            }
 
             return PlaceLabel(ls1.ToGeometry(Geometry.DefaultFactory).Centroid.Coordinate, e, labelSize, symb, angle);
         }
@@ -923,7 +868,10 @@ namespace DotSpatial.Controls
         {
             Polygon pg = geom as Polygon;
             if (pg == null)
+            {
                 return RectangleF.Empty;
+            }
+
             Coordinate c = symb.LabelPlacementMethod switch
             {
                 LabelPlacementMethod.Centroid => pg.Centroid.Coordinates[0],
@@ -1012,7 +960,9 @@ namespace DotSpatial.Controls
         {
             // Check that exists at least one category with Expression
             if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression)))
+            {
                 return;
+            }
 
             Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
             Matrix origTransform = g.Transform;
@@ -1025,7 +975,9 @@ namespace DotSpatial.Controls
 
             FastLabelDrawnState[] drawStates = FastDrawnStates;
             if (drawStates == null)
+            {
                 return;
+            }
 
             // Sets the graphics objects smoothing modes
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
@@ -1052,30 +1004,23 @@ namespace DotSpatial.Controls
             {
                 category.UpdateExpressionColumns(FeatureSet.DataTable.Columns);
                 var catFeatures = new List<int>();
-                Debug.Print("start<---");
+
                 foreach (int fid in features)
                 {
-                    Debug.Print("fid={0}", fid);
-                    //Debug.Print("idx={0} Fid={1}", fid, FeatureSet.Features[fid].Fid);
-                    //bool isOk = FeatureSet.GetShape(fid, false).ToGeometry().IsValid;
-                    //Debug.Print("b:fid={0} isOk={1}", fid, isOk);
-                    //bool isValid = FeatureSet.Features[fid].Geometry.IsValid; //crash here
-                    //Debug.Print("c:fid={0} isValid={1}", fid, isValid);
+                    if (drawStates[fid] == null || drawStates[fid].Category == null)
+                    {
+                        continue;
+                    }
 
-                    if (drawStates[fid] == null || drawStates[fid].Category == null) continue;
                     if (drawStates[fid].Category == category)
                     {
-                        // Check if the shapes vertices are valid (ie all vertices must be numeric and not NaN).
-                        // Todo: NaN vertices happen most often on a projected CS so maybe we can skip this step on a geographic CS.
-                        var hasValidVertices = AreFeatureVerticesValid(FeatureSet.ShapeIndices[fid].Parts);
-                        Debug.Print("  hasValidVertices={0}", hasValidVertices);
-                        if (hasValidVertices)
+                        //// Check if the shapes vertices are valid (ie all vertices must be numeric and not NaN).
+                        if (!FeatureSet.ShapeIndices[fid].Parts.Any(_ => _.ToList().Any(v => !double.IsFinite(v.X) || !double.IsFinite(v.Y))))
                         {
                             catFeatures.Add(fid);
                         }
                     }
                 }
-                Debug.Print("end<---");
 
                 // Now that we are restricted to a certain category, we can look at priority
                 if (category.Symbolizer.PriorityField != "FID")
@@ -1083,8 +1028,7 @@ namespace DotSpatial.Controls
                     Feature.ComparisonField = category.Symbolizer.PriorityField;
                     catFeatures.Sort();
 
-                    // When preventing collisions, we want to do high priority first.
-                    // Otherwise, do high priority last.
+                    // When preventing collisions, we want to do high priority first. Otherwise, do high priority last.
                     if (category.Symbolizer.PreventCollisions)
                     {
                         if (!category.Symbolizer.PrioritizeLowValues)
@@ -1104,37 +1048,23 @@ namespace DotSpatial.Controls
                 foreach (var fid in catFeatures)
                 {
                     if (!FeatureLayer.DrawnStates[fid].Visible)
+                    {
                         continue;
+                    }
 
-                    // draw the feature only if it's valid. an example of this is an Orthographic projection where many vertices will be NaN.
-                    //prt.ToList().FindIndex(v => !double.IsFinite(v.X) || !double.IsFinite(v.Y));
-                    //FeatureSet.ShapeIndices[fid].Parts.First().ToList().FindIndex(x=>x.x)
-                    //Debug.Print("idx={0} Fid={1}", fid, FeatureSet.Features[fid].Fid);
-                    //Debug.Print("a:fid={0}", fid);
-                    //bool isOk = FeatureSet.GetShape(fid, false).ToGeometry().IsValid;
-                    //Debug.Print("b:fid={0} isOk={1}", fid, isOk);
-                    //bool isValid = FeatureSet.Features[fid].Geometry.IsValid;
-                    //Debug.Print("c:fid={0} isValid={1}", fid, isValid);
-                    //int oid= FeatureSet.GetFeature(fid).Fid;
-                    //Debug.Print("d:fid={0} oid={1}", fid, oid);
-                    bool isValid = true;
-                    ////bool isValid = FeatureSet.VerticesAreValid;
-                    if (isValid)
-                    {
-                        var feature = FeatureSet.GetFeature(fid); // bombs here
-                        drawFeature(fid, feature);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid fid="+fid);
-                    }
+                    var feature = FeatureSet.GetFeature(fid); // bombs here
+                    drawFeature(fid, feature);
                 }
             }
 
             if (e.Device == null)
+            {
                 g.Dispose();
+            }
             else
+            {
                 g.Transform = origTransform;
+            }
         }
 
         /// <summary>
@@ -1146,7 +1076,9 @@ namespace DotSpatial.Controls
         {
             // Check that exists at least one category with Expression
             if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression)))
+            {
                 return;
+            }
 
             Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
             Matrix origTransform = g.Transform;
@@ -1160,7 +1092,9 @@ namespace DotSpatial.Controls
 
             Dictionary<IFeature, LabelDrawState> drawStates = DrawnStates;
             if (drawStates == null)
+            {
                 return;
+            }
 
             // Sets the graphics objects smoothing modes
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
@@ -1196,15 +1130,13 @@ namespace DotSpatial.Controls
                     }
                 }
 
-                // Now that we are restricted to a certain category, we can look at
-                // priority
+                // Now that we are restricted to a certain category, we can look at priority
                 if (category.Symbolizer.PriorityField != "FID")
                 {
                     Feature.ComparisonField = cat.Symbolizer.PriorityField;
                     catFeatures.Sort();
 
-                    // When preventing collisions, we want to do high priority first.
-                    // otherwise, do high priority last.
+                    // When preventing collisions, we want to do high priority first. Otherwise, do high priority last.
                     if (cat.Symbolizer.PreventCollisions)
                     {
                         if (!cat.Symbolizer.PrioritizeLowValues)
@@ -1224,15 +1156,22 @@ namespace DotSpatial.Controls
                 for (int i = 0; i < catFeatures.Count; i++)
                 {
                     if (!FeatureLayer.DrawnStates[i].Visible)
+                    {
                         continue;
+                    }
+
                     drawFeature(catFeatures[i]);
                 }
             }
 
             if (e.Device == null)
+            {
                 g.Dispose();
+            }
             else
+            {
                 g.Transform = origTransform;
+            }
         }
 
         #endregion
