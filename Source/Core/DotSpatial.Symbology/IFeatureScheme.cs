@@ -46,13 +46,7 @@ namespace DotSpatial.Symbology
         /// Gets the number of categories of this scheme.
         /// </summary>
         int NumCategories { get; }
-
-        /// <summary>
-        /// Gets the UITypeEditor to use for editing this FeatureScheme.
-        /// </summary>
-        /// <returns>The UITypeEditor.</returns>
-        //UITypeEditor PropertyEditor { get; }
-
+     
         #endregion
 
         #region Methods

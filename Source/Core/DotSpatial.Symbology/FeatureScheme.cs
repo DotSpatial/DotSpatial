@@ -122,14 +122,7 @@ namespace DotSpatial.Symbology
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual int NumCategories => 0;
-
-        /// <summary>
-        /// Gets or sets the UITypeEditor to use for editing this FeatureScheme.
-        /// </summary>
-        //[Browsable(false)]
-        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        //public UITypeEditor PropertyEditor { get; protected set; }
-
+      
         #endregion
 
         #region Methods
@@ -142,7 +135,10 @@ namespace DotSpatial.Symbology
         public void CreateCategories(DataTable table)
         {
             string fieldName = EditorSettings.FieldName;
-            if (EditorSettings.ClassificationType == ClassificationType.Custom) return;
+            if (EditorSettings.ClassificationType == ClassificationType.Custom)
+            {
+                return;
+            }
 
             if (EditorSettings.ClassificationType == ClassificationType.UniqueValues)
             {
@@ -176,7 +172,10 @@ namespace DotSpatial.Symbology
         public void CreateCategories(IAttributeSource source, ICancelProgressHandler progressHandler)
         {
             string fieldName = EditorSettings.FieldName;
-            if (EditorSettings.ClassificationType == ClassificationType.Custom) return;
+            if (EditorSettings.ClassificationType == ClassificationType.Custom)
+            {
+                return;
+            }
 
             if (EditorSettings.ClassificationType == ClassificationType.UniqueValues)
             {
@@ -256,14 +255,22 @@ namespace DotSpatial.Symbology
                         DataRow[] rows = table.Select("NOT (" + EditorSettings.ExcludeExpression + ")");
                         foreach (DataRow row in rows)
                         {
-                            double val;
-                            if (!double.TryParse(row[fieldName].ToString(), out val)) continue;
-                            if (double.IsNaN(val)) continue;
+                            if (!double.TryParse(row[fieldName].ToString(), out double val))
+                            {
+                                continue;
+                            }
+
+                            if (double.IsNaN(val))
+                            {
+                                continue;
+                            }
 
                             if (normField != null)
                             {
-                                double norm;
-                                if (!double.TryParse(row[normField].ToString(), out norm) || double.IsNaN(val)) continue;
+                                if (!double.TryParse(row[normField].ToString(), out double norm) || double.IsNaN(val))
+                                {
+                                    continue;
+                                }
 
                                 Values.Add(val / norm);
                                 continue;
@@ -276,14 +283,22 @@ namespace DotSpatial.Symbology
                     {
                         foreach (DataRow row in table.Rows)
                         {
-                            double val;
-                            if (!double.TryParse(row[fieldName].ToString(), out val)) continue;
-                            if (double.IsNaN(val)) continue;
+                            if (!double.TryParse(row[fieldName].ToString(), out double val))
+                            {
+                                continue;
+                            }
+
+                            if (double.IsNaN(val))
+                            {
+                                continue;
+                            }
 
                             if (normField != null)
                             {
-                                double norm;
-                                if (!double.TryParse(row[normField].ToString(), out norm) || double.IsNaN(val)) continue;
+                                if (!double.TryParse(row[normField].ToString(), out double norm) || double.IsNaN(val))
+                                {
+                                    continue;
+                                }
 
                                 Values.Add(val / norm);
                                 continue;
@@ -317,10 +332,20 @@ namespace DotSpatial.Symbology
                         {
                             index = rnd.Next(ap.StartIndex, ap.StartIndex + pageSize);
                             DataRow dr = ap.Row(index);
-                            if (!double.TryParse(dr[fieldName].ToString(), out val)) failed = true;
-                            if (normField == null) continue;
+                            if (!double.TryParse(dr[fieldName].ToString(), out val))
+                            {
+                                failed = true;
+                            }
 
-                            if (!double.TryParse(dr[normField].ToString(), out norm)) failed = true;
+                            if (normField == null)
+                            {
+                                continue;
+                            }
+
+                            if (!double.TryParse(dr[normField].ToString(), out norm))
+                            {
+                                failed = true;
+                            }
                         }
                         while (randomValues.ContainsKey(index) || double.IsNaN(val) || failed);
 
@@ -365,14 +390,22 @@ namespace DotSpatial.Symbology
                 {
                     if (rows.Length < EditorSettings.MaxSampleCount)
                     {
-                        double val;
-                        if (!double.TryParse(row[fieldName].ToString(), out val)) continue;
-                        if (double.IsNaN(val)) continue;
+                        if (!double.TryParse(row[fieldName].ToString(), out double val))
+                        {
+                            continue;
+                        }
+
+                        if (double.IsNaN(val))
+                        {
+                            continue;
+                        }
 
                         if (normField != null)
                         {
-                            double norm;
-                            if (!double.TryParse(row[normField].ToString(), out norm) || double.IsNaN(val)) continue;
+                            if (!double.TryParse(row[normField].ToString(), out double norm) || double.IsNaN(val))
+                            {
+                                continue;
+                            }
 
                             Values.Add(val / norm);
                             continue;
@@ -398,10 +431,20 @@ namespace DotSpatial.Symbology
                             do
                             {
                                 index = rnd.Next(max);
-                                if (!double.TryParse(rows[index][fieldName].ToString(), out val)) failed = true;
-                                if (normField == null) continue;
+                                if (!double.TryParse(rows[index][fieldName].ToString(), out val))
+                                {
+                                    failed = true;
+                                }
 
-                                if (!double.TryParse(rows[index][normField].ToString(), out norm)) failed = true;
+                                if (normField == null)
+                                {
+                                    continue;
+                                }
+
+                                if (!double.TryParse(rows[index][normField].ToString(), out norm))
+                                {
+                                    failed = true;
+                                }
                             }
                             while (randomValues.ContainsKey(index) || double.IsNaN(val) || failed);
 
@@ -429,9 +472,15 @@ namespace DotSpatial.Symbology
                 // Simply grab all the values
                 foreach (DataRow row in table.Rows)
                 {
-                    double val;
-                    if (!double.TryParse(row[fieldName].ToString(), out val)) continue;
-                    if (double.IsNaN(val)) continue;
+                    if (!double.TryParse(row[fieldName].ToString(), out double val))
+                    {
+                        continue;
+                    }
+
+                    if (double.IsNaN(val))
+                    {
+                        continue;
+                    }
 
                     if (normField == null)
                     {
@@ -439,8 +488,10 @@ namespace DotSpatial.Symbology
                         continue;
                     }
 
-                    double norm;
-                    if (!double.TryParse(row[normField].ToString(), out norm) || double.IsNaN(val)) continue;
+                    if (!double.TryParse(row[normField].ToString(), out double norm) || double.IsNaN(val))
+                    {
+                        continue;
+                    }
 
                     Values.Add(val / norm);
                 }
@@ -463,10 +514,20 @@ namespace DotSpatial.Symbology
                     do
                     {
                         index = rnd.Next(max);
-                        if (!double.TryParse(table.Rows[index][fieldName].ToString(), out val)) failed = true;
-                        if (normField == null) continue;
+                        if (!double.TryParse(table.Rows[index][fieldName].ToString(), out val))
+                        {
+                            failed = true;
+                        }
 
-                        if (!double.TryParse(table.Rows[index][normField].ToString(), out norm)) failed = true;
+                        if (normField == null)
+                        {
+                            continue;
+                        }
+
+                        if (!double.TryParse(table.Rows[index][normField].ToString(), out norm))
+                        {
+                            failed = true;
+                        }
                     }
                     while (randomValues.ContainsKey(index) || double.IsNaN(val) || failed);
 
@@ -493,12 +554,18 @@ namespace DotSpatial.Symbology
         /// <returns>True, if the layer is selected.</returns>
         public bool IsWithinLegendSelection()
         {
-            if (IsSelected) return true;
+            if (IsSelected)
+            {
+                return true;
+            }
 
             ILayer lyr = GetParentItem() as ILayer;
             while (lyr != null)
             {
-                if (lyr.IsSelected) return true;
+                if (lyr.IsSelected)
+                {
+                    return true;
+                }
 
                 lyr = lyr.GetParentItem() as ILayer;
             }
@@ -541,7 +608,10 @@ namespace DotSpatial.Symbology
         /// <returns>A hastable with the unique colors.</returns>
         protected Hashtable GenerateUniqueColors(IFeatureSet fs, string uniqueField, Func<Color, IFeatureCategory> categoryFunc)
         {
-            if (categoryFunc == null) throw new ArgumentNullException(nameof(categoryFunc));
+            if (categoryFunc == null)
+            {
+                throw new ArgumentNullException(nameof(categoryFunc));
+            }
 
             var result = new Hashtable(); // a hashtable of colors
             var dt = fs.DataTable;
@@ -564,7 +634,10 @@ namespace DotSpatial.Symbology
                     i++;
                 }
 
-                if (ind == -1) continue;
+                if (ind == -1)
+                {
+                    continue;
+                }
 
                 var item = vals[ind];
                 var c = rnd.NextColor();
@@ -632,7 +705,11 @@ namespace DotSpatial.Symbology
             else
             {
                 Size2D sizes = new(2, 2);
-                if (EditorSettings.TemplateSymbolizer is IPointSymbolizer ps) sizes = ps.GetSize();
+                if (EditorSettings.TemplateSymbolizer is IPointSymbolizer ps)
+                {
+                    sizes = ps.GetSize();
+                }
+
                 double size = Math.Max(sizes.Width, sizes.Height);
                 for (int i = 0; i < count; i++)
                 {
@@ -716,7 +793,10 @@ namespace DotSpatial.Symbology
         protected override void OnSetParentItem(ILegendItem value)
         {
             base.OnSetParentItem(value);
-            if (AppearsInLegend) return;
+            if (AppearsInLegend)
+            {
+                return;
+            }
 
             IEnumerable<IFeatureCategory> categories = GetCategories();
             foreach (IFeatureCategory category in categories)
@@ -771,7 +851,11 @@ namespace DotSpatial.Symbology
             }
 
             List<Break> result = new();
-            if (containsNull) result.Add(new Break("[NULL]"));
+            if (containsNull)
+            {
+                result.Add(new Break("[NULL]"));
+            }
+
             foreach (object item in lst.OrderBy(o => o))
             {
                 result.Add(new Break(string.Format(CultureInfo.InvariantCulture, "{0}", item))); // Changed by jany_ (2015-07-27) use InvariantCulture because this is used in Datatable.Select in FeatureCategoryControl and causes error when german localization is used
@@ -795,11 +879,21 @@ namespace DotSpatial.Symbology
             foreach (Dictionary<string, object> dr in ac)
             {
                 object val = dr[fieldName] ?? "[NULL]";
-                if (val.ToString() == string.Empty) val = "[NULL]";
-                if (lst.Contains(val)) continue;
+                if (val.ToString() == string.Empty)
+                {
+                    val = "[NULL]";
+                }
+
+                if (lst.Contains(val))
+                {
+                    continue;
+                }
 
                 lst.Add(val);
-                if (lst.Count > numValues) return true;
+                if (lst.Count > numValues)
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -828,8 +922,14 @@ namespace DotSpatial.Symbology
                 if (CreateNewCategory(randomColor, size) is IFeatureCategory cat)
                 {
                     cat.LegendText = brk.Name;
-                    if (isStringField) cat.FilterExpression = fieldExpression + "= '" + brk.Name.Replace("'", "''") + "'";
-                    else cat.FilterExpression = fieldExpression + "=" + brk.Name;
+                    if (isStringField)
+                    {
+                        cat.FilterExpression = fieldExpression + "= '" + brk.Name.Replace("'", "''") + "'";
+                    }
+                    else
+                    {
+                        cat.FilterExpression = fieldExpression + "=" + brk.Name;
+                    }
 
                     AddCategory(cat);
                 }
@@ -863,8 +963,15 @@ namespace DotSpatial.Symbology
                 {
                     cat.LegendText = brk.Name;
 
-                    if (isStringField) cat.FilterExpression = fieldExpression + "= '" + brk.Name.Replace("'", "''") + "'";
-                    else cat.FilterExpression = fieldExpression + "=" + brk.Name;
+                    if (isStringField)
+                    {
+                        cat.FilterExpression = fieldExpression + "= '" + brk.Name.Replace("'", "''") + "'";
+                    }
+                    else
+                    {
+                        cat.FilterExpression = fieldExpression + "=" + brk.Name;
+                    }
+
                     if (cat.FilterExpression != null)
                     {
                         if (cat.FilterExpression.Contains("=[NULL]"))
@@ -907,21 +1014,34 @@ namespace DotSpatial.Symbology
                 for (int row = 0; row < source.NumRows(); row++)
                 {
                     object val = ap.Row(row)[fieldName] ?? "[NULL]";
-                    if (val.ToString() == string.Empty) val = "[NULL]";
-                    if (lst.Contains(val)) continue;
+                    if (val.ToString() == string.Empty)
+                    {
+                        val = "[NULL]";
+                    }
+
+                    if (lst.Contains(val))
+                    {
+                        continue;
+                    }
 
                     lst.Add(val);
                     if (lst.Count > 1000 && !hugeCountOk)
                     {
                         CancelEventArgs args = new(true);
                         TooManyCategories?.Invoke(this, args);
-                        if (args.Cancel) break;
+                        if (args.Cancel)
+                        {
+                            break;
+                        }
 
                         hugeCountOk = true;
                     }
 
                     pm.CurrentValue = row;
-                    if (progressHandler.Cancel) break;
+                    if (progressHandler.Cancel)
+                    {
+                        break;
+                    }
                 }
 
                 lst.Sort();

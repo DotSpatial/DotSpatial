@@ -1052,7 +1052,7 @@ namespace DotSpatial.Controls
                         continue;
                     }
 
-                    var feature = FeatureSet.GetFeature(fid); // bombs here
+                    var feature = FeatureSet.GetFeature(fid);
                     drawFeature(fid, feature);
                 }
             }
