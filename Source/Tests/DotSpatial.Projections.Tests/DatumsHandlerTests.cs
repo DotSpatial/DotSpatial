@@ -5,7 +5,10 @@ namespace DotSpatial.Projections.Tests
     [TestFixture]
     internal class DatumsHandlerTests
     {
-        [Test]
+        /// <summary>
+        /// Test for NonEmptyAfterInitialize       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NonEmptyAfterInitialize()
         {
             var target = new DatumsHandler();

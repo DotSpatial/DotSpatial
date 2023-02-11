@@ -19,7 +19,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NorthPoleAzimuthalEquidistant       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NorthPoleAzimuthalEquidistant()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.NorthPoleAzimuthalEquidistant;
@@ -27,7 +30,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NorthPoleGnomonic       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NorthPoleGnomonic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.NorthPoleGnomonic;
@@ -35,7 +41,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NorthPoleLambertAzimuthalEqualArea       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NorthPoleLambertAzimuthalEqualArea()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.NorthPoleLambertAzimuthalEqualArea;
@@ -43,7 +52,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NorthPoleOrthographic       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NorthPoleOrthographic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.NorthPoleOrthographic;
@@ -51,7 +63,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NorthPoleStereographic       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NorthPoleStereographic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.NorthPoleStereographic;
@@ -59,7 +74,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for Perroud1950TerreAdeliePolarStereographic       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("Verify")]
         public void Perroud1950TerreAdeliePolarStereographic()
         {
@@ -68,7 +86,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for Petrels1972TerreAdeliePolarStereographic       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("Verify")]
         public void Petrels1972TerreAdeliePolarStereographic()
         {
@@ -77,7 +98,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for SouthPoleAzimuthalEquidistant       
+        /// </summary>
+        [Test, Category("Projection")]
         public void SouthPoleAzimuthalEquidistant()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.SouthPoleAzimuthalEquidistant;
@@ -85,7 +109,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for SouthPoleGnomonic       
+        /// </summary>
+        [Test, Category("Projection")]
         public void SouthPoleGnomonic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.SouthPoleGnomonic;
@@ -93,7 +120,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for SouthPoleLambertAzimuthalEqualArea       
+        /// </summary>
+        [Test, Category("Projection")]
         public void SouthPoleLambertAzimuthalEqualArea()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.SouthPoleLambertAzimuthalEqualArea;
@@ -101,7 +131,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for SouthPoleOrthographic       
+        /// </summary>
+        [Test, Category("Projection")]
         public void SouthPoleOrthographic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.SouthPoleOrthographic;
@@ -109,7 +142,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for SouthPoleStereographic       
+        /// </summary>
+        [Test, Category("Projection")]
         public void SouthPoleStereographic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.SouthPoleStereographic;
@@ -117,7 +153,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for UPSNorth       
+        /// </summary>
+        [Test, Category("Projection")]
         public void UPSNorth()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.UPSNorth;
@@ -125,7 +164,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for UPSSouth       
+        /// </summary>
+        [Test, Category("Projection")]
         public void UPSSouth()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.UPSSouth;
@@ -133,7 +175,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for WGS1984AntarcticPolarStereographic       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("Verify")]
         public void WGS1984AntarcticPolarStereographic()
         {
@@ -142,7 +187,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for WGS1984AustralianAntarcticLambert       
+        /// </summary>
+        [Test, Category("Projection")]
         public void WGS1984AustralianAntarcticLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.WGS1984AustralianAntarcticLambert;
@@ -150,7 +198,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for WGS1984AustralianAntarcticPolarStereographic       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("Verify")]
         public void WGS1984AustralianAntarcticPolarStereographic()
         {

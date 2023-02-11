@@ -18,7 +18,10 @@ namespace DotSpatial.Projections.Tests.Projected
             
         }
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlabamaEastFIPS0101Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneAlabamaEastFIPS0101Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneAlabamaEastFIPS0101Feet;
@@ -26,7 +29,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlabamaWestFIPS0102Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneAlabamaWestFIPS0102Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneAlabamaWestFIPS0102Feet;
@@ -34,7 +40,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska10FIPS5010Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneAlaska10FIPS5010Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneAlaska10FIPS5010Feet;
@@ -42,7 +51,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska1FIPS5001Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("Verify this test")]
         public void NAD1983StatePlaneAlaska1FIPS5001Feet()
         {
@@ -51,7 +63,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska2FIPS5002Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneAlaska2FIPS5002Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneAlaska2FIPS5002Feet;
@@ -59,7 +74,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska3FIPS5003Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneAlaska3FIPS5003Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneAlaska3FIPS5003Feet;
@@ -67,7 +85,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska4FIPS5004Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneAlaska4FIPS5004Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneAlaska4FIPS5004Feet;
@@ -75,7 +96,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska5FIPS5005Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneAlaska5FIPS5005Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneAlaska5FIPS5005Feet;
@@ -83,7 +107,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska6FIPS5006Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneAlaska6FIPS5006Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneAlaska6FIPS5006Feet;
@@ -91,7 +118,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska7FIPS5007Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneAlaska7FIPS5007Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneAlaska7FIPS5007Feet;
@@ -99,7 +129,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska8FIPS5008Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneAlaska8FIPS5008Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneAlaska8FIPS5008Feet;
@@ -107,7 +140,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneAlaska9FIPS5009Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneAlaska9FIPS5009Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneAlaska9FIPS5009Feet;
@@ -115,7 +151,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneArizonaCentralFIPS0202Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneArizonaCentralFIPS0202Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneArizonaCentralFIPS0202Feet;
@@ -123,7 +162,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneArizonaEastFIPS0201Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneArizonaEastFIPS0201Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneArizonaEastFIPS0201Feet;
@@ -131,7 +173,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneArizonaWestFIPS0203Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneArizonaWestFIPS0203Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneArizonaWestFIPS0203Feet;
@@ -139,7 +184,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneArkansasNorthFIPS0301Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneArkansasNorthFIPS0301Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneArkansasNorthFIPS0301Feet;
@@ -147,7 +195,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneArkansasSouthFIPS0302Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneArkansasSouthFIPS0302Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneArkansasSouthFIPS0302Feet;
@@ -155,7 +206,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneCaliforniaIFIPS0401Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneCaliforniaIFIPS0401Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneCaliforniaIFIPS0401Feet;
@@ -163,7 +217,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneCaliforniaIIFIPS0402Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneCaliforniaIIFIPS0402Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneCaliforniaIIFIPS0402Feet;
@@ -171,7 +228,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneCaliforniaIIIFIPS0403Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneCaliforniaIIIFIPS0403Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneCaliforniaIIIFIPS0403Feet;
@@ -179,7 +239,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneCaliforniaIVFIPS0404Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneCaliforniaIVFIPS0404Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneCaliforniaIVFIPS0404Feet;
@@ -187,7 +250,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneCaliforniaVFIPS0405Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneCaliforniaVFIPS0405Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneCaliforniaVFIPS0405Feet;
@@ -195,7 +261,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneCaliforniaVIFIPS0406Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneCaliforniaVIFIPS0406Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneCaliforniaVIFIPS0406Feet;
@@ -203,7 +272,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneColoradoCentralFIPS0502Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneColoradoCentralFIPS0502Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneColoradoCentralFIPS0502Feet;
@@ -211,7 +283,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneColoradoNorthFIPS0501Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneColoradoNorthFIPS0501Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneColoradoNorthFIPS0501Feet;
@@ -219,7 +294,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneColoradoSouthFIPS0503Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneColoradoSouthFIPS0503Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneColoradoSouthFIPS0503Feet;
@@ -227,7 +305,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneConnecticutFIPS0600Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneConnecticutFIPS0600Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneConnecticutFIPS0600Feet;
@@ -235,7 +316,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneDelawareFIPS0700Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneDelawareFIPS0700Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneDelawareFIPS0700Feet;
@@ -243,7 +327,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneFloridaEastFIPS0901Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneFloridaEastFIPS0901Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneFloridaEastFIPS0901Feet;
@@ -251,7 +338,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneFloridaNorthFIPS0903Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneFloridaNorthFIPS0903Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneFloridaNorthFIPS0903Feet;
@@ -259,7 +349,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneFloridaWestFIPS0902Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneFloridaWestFIPS0902Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneFloridaWestFIPS0902Feet;
@@ -267,7 +360,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneGeorgiaEastFIPS1001Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneGeorgiaEastFIPS1001Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneGeorgiaEastFIPS1001Feet;
@@ -275,7 +371,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneGeorgiaWestFIPS1002Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneGeorgiaWestFIPS1002Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneGeorgiaWestFIPS1002Feet;
@@ -283,7 +382,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneGuamFIPS5400Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneGuamFIPS5400Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneGuamFIPS5400Feet;
@@ -291,7 +393,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneHawaii1FIPS5101Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneHawaii1FIPS5101Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneHawaii1FIPS5101Feet;
@@ -299,7 +404,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneHawaii2FIPS5102Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneHawaii2FIPS5102Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneHawaii2FIPS5102Feet;
@@ -307,7 +415,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneHawaii3FIPS5103Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneHawaii3FIPS5103Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneHawaii3FIPS5103Feet;
@@ -315,7 +426,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneHawaii4FIPS5104Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneHawaii4FIPS5104Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneHawaii4FIPS5104Feet;
@@ -323,7 +437,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneHawaii5FIPS5105Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneHawaii5FIPS5105Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneHawaii5FIPS5105Feet;
@@ -331,7 +448,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneIdahoCentralFIPS1102Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneIdahoCentralFIPS1102Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneIdahoCentralFIPS1102Feet;
@@ -339,7 +459,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneIdahoEastFIPS1101Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneIdahoEastFIPS1101Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneIdahoEastFIPS1101Feet;
@@ -347,7 +470,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneIdahoWestFIPS1103Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneIdahoWestFIPS1103Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneIdahoWestFIPS1103Feet;
@@ -355,7 +481,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneIllinoisEastFIPS1201Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneIllinoisEastFIPS1201Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneIllinoisEastFIPS1201Feet;
@@ -363,7 +492,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneIllinoisWestFIPS1202Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneIllinoisWestFIPS1202Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneIllinoisWestFIPS1202Feet;
@@ -371,7 +503,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneIndianaEastFIPS1301Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneIndianaEastFIPS1301Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneIndianaEastFIPS1301Feet;
@@ -379,7 +514,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneIndianaWestFIPS1302Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneIndianaWestFIPS1302Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneIndianaWestFIPS1302Feet;
@@ -387,7 +525,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneIowaNorthFIPS1401Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneIowaNorthFIPS1401Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneIowaNorthFIPS1401Feet;
@@ -395,7 +536,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneIowaSouthFIPS1402Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneIowaSouthFIPS1402Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneIowaSouthFIPS1402Feet;
@@ -403,7 +547,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneKansasNorthFIPS1501Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneKansasNorthFIPS1501Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneKansasNorthFIPS1501Feet;
@@ -411,7 +558,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneKansasSouthFIPS1502Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneKansasSouthFIPS1502Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneKansasSouthFIPS1502Feet;
@@ -419,7 +569,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneKentuckyFIPS1600Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneKentuckyFIPS1600Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneKentuckyFIPS1600Feet;
@@ -427,7 +580,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneKentuckyNorthFIPS1601Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneKentuckyNorthFIPS1601Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneKentuckyNorthFIPS1601Feet;
@@ -435,7 +591,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneKentuckySouthFIPS1602Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneKentuckySouthFIPS1602Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneKentuckySouthFIPS1602Feet;
@@ -443,7 +602,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneLouisianaNorthFIPS1701Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneLouisianaNorthFIPS1701Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneLouisianaNorthFIPS1701Feet;
@@ -451,7 +613,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneLouisianaSouthFIPS1702Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneLouisianaSouthFIPS1702Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneLouisianaSouthFIPS1702Feet;
@@ -459,7 +624,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMaineEastFIPS1801Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMaineEastFIPS1801Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMaineEastFIPS1801Feet;
@@ -467,7 +635,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMaineWestFIPS1802Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMaineWestFIPS1802Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMaineWestFIPS1802Feet;
@@ -475,7 +646,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMarylandFIPS1900Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMarylandFIPS1900Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMarylandFIPS1900Feet;
@@ -483,7 +657,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMassachusettsIslandFIPS2002Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMassachusettsIslandFIPS2002Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMassachusettsIslandFIPS2002Feet;
@@ -491,7 +668,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMassachusettsMainlandFIPS2001Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMassachusettsMainlandFIPS2001Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMassachusettsMainlandFIPS2001Feet;
@@ -499,7 +679,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMichiganCentralFIPS2112Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMichiganCentralFIPS2112Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMichiganCentralFIPS2112Feet;
@@ -507,7 +690,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMichiganNorthFIPS2111Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMichiganNorthFIPS2111Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMichiganNorthFIPS2111Feet;
@@ -515,7 +701,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMichiganSouthFIPS2113Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMichiganSouthFIPS2113Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMichiganSouthFIPS2113Feet;
@@ -523,7 +712,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMinnesotaCentralFIPS2202Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMinnesotaCentralFIPS2202Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMinnesotaCentralFIPS2202Feet;
@@ -531,7 +723,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMinnesotaNorthFIPS2201Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMinnesotaNorthFIPS2201Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMinnesotaNorthFIPS2201Feet;
@@ -539,7 +734,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMinnesotaSouthFIPS2203Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMinnesotaSouthFIPS2203Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMinnesotaSouthFIPS2203Feet;
@@ -547,7 +745,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMississippiEastFIPS2301Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMississippiEastFIPS2301Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMississippiEastFIPS2301Feet;
@@ -555,7 +756,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMississippiWestFIPS2302Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMississippiWestFIPS2302Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMississippiWestFIPS2302Feet;
@@ -563,7 +767,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMissouriCentralFIPS2402Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMissouriCentralFIPS2402Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMissouriCentralFIPS2402Feet;
@@ -571,7 +778,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMissouriEastFIPS2401Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMissouriEastFIPS2401Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMissouriEastFIPS2401Feet;
@@ -579,7 +789,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMissouriWestFIPS2403Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMissouriWestFIPS2403Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMissouriWestFIPS2403Feet;
@@ -587,7 +800,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneMontanaFIPS2500Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneMontanaFIPS2500Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneMontanaFIPS2500Feet;
@@ -595,7 +811,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNebraskaFIPS2600Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNebraskaFIPS2600Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNebraskaFIPS2600Feet;
@@ -603,7 +822,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNevadaCentralFIPS2702Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNevadaCentralFIPS2702Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNevadaCentralFIPS2702Feet;
@@ -611,7 +833,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNevadaEastFIPS2701Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNevadaEastFIPS2701Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNevadaEastFIPS2701Feet;
@@ -619,7 +844,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNevadaWestFIPS2703Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNevadaWestFIPS2703Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNevadaWestFIPS2703Feet;
@@ -627,7 +855,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewHampshireFIPS2800Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNewHampshireFIPS2800Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNewHampshireFIPS2800Feet;
@@ -635,7 +866,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewJerseyFIPS2900Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNewJerseyFIPS2900Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNewJerseyFIPS2900Feet;
@@ -643,7 +877,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewMexicoCentralFIPS3002Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNewMexicoCentralFIPS3002Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNewMexicoCentralFIPS3002Feet;
@@ -651,7 +888,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewMexicoEastFIPS3001Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNewMexicoEastFIPS3001Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNewMexicoEastFIPS3001Feet;
@@ -659,7 +899,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewMexicoWestFIPS3003Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNewMexicoWestFIPS3003Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNewMexicoWestFIPS3003Feet;
@@ -667,7 +910,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewYorkCentralFIPS3102Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNewYorkCentralFIPS3102Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNewYorkCentralFIPS3102Feet;
@@ -675,7 +921,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewYorkEastFIPS3101Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNewYorkEastFIPS3101Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNewYorkEastFIPS3101Feet;
@@ -683,7 +932,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewYorkLongIslandFIPS3104Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNewYorkLongIslandFIPS3104Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNewYorkLongIslandFIPS3104Feet;
@@ -691,7 +943,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNewYorkWestFIPS3103Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNewYorkWestFIPS3103Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNewYorkWestFIPS3103Feet;
@@ -699,7 +954,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNorthCarolinaFIPS3200Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNorthCarolinaFIPS3200Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNorthCarolinaFIPS3200Feet;
@@ -707,7 +965,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNorthDakotaNorthFIPS3301Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNorthDakotaNorthFIPS3301Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNorthDakotaNorthFIPS3301Feet;
@@ -715,7 +976,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneNorthDakotaSouthFIPS3302Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneNorthDakotaSouthFIPS3302Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneNorthDakotaSouthFIPS3302Feet;
@@ -723,7 +987,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneOhioNorthFIPS3401Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneOhioNorthFIPS3401Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneOhioNorthFIPS3401Feet;
@@ -731,7 +998,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneOhioSouthFIPS3402Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneOhioSouthFIPS3402Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneOhioSouthFIPS3402Feet;
@@ -739,7 +1009,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneOklahomaNorthFIPS3501Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneOklahomaNorthFIPS3501Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneOklahomaNorthFIPS3501Feet;
@@ -747,7 +1020,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneOklahomaSouthFIPS3502Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneOklahomaSouthFIPS3502Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneOklahomaSouthFIPS3502Feet;
@@ -755,7 +1031,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneOregonNorthFIPS3601Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneOregonNorthFIPS3601Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneOregonNorthFIPS3601Feet;
@@ -763,7 +1042,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneOregonSouthFIPS3602Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneOregonSouthFIPS3602Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneOregonSouthFIPS3602Feet;
@@ -771,7 +1053,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlanePennsylvaniaNorthFIPS3701Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlanePennsylvaniaNorthFIPS3701Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlanePennsylvaniaNorthFIPS3701Feet;
@@ -779,7 +1064,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlanePennsylvaniaSouthFIPS3702Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlanePennsylvaniaSouthFIPS3702Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlanePennsylvaniaSouthFIPS3702Feet;
@@ -787,7 +1075,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlanePRVirginIslandsFIPS5200Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlanePRVirginIslandsFIPS5200Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlanePRVirginIslandsFIPS5200Feet;
@@ -795,7 +1086,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneRhodeIslandFIPS3800Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneRhodeIslandFIPS3800Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneRhodeIslandFIPS3800Feet;
@@ -803,7 +1097,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneSouthCarolinaFIPS3900Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneSouthCarolinaFIPS3900Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneSouthCarolinaFIPS3900Feet;
@@ -811,7 +1108,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneSouthDakotaNorthFIPS4001Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneSouthDakotaNorthFIPS4001Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneSouthDakotaNorthFIPS4001Feet;
@@ -819,7 +1119,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneSouthDakotaSouthFIPS4002Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneSouthDakotaSouthFIPS4002Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneSouthDakotaSouthFIPS4002Feet;
@@ -827,7 +1130,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneTennesseeFIPS4100Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneTennesseeFIPS4100Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneTennesseeFIPS4100Feet;
@@ -835,7 +1141,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneTexasCentralFIPS4203Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneTexasCentralFIPS4203Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneTexasCentralFIPS4203Feet;
@@ -843,7 +1152,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneTexasNorthCentralFIPS4202Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneTexasNorthCentralFIPS4202Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneTexasNorthCentralFIPS4202Feet;
@@ -851,7 +1163,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneTexasNorthFIPS4201Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneTexasNorthFIPS4201Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneTexasNorthFIPS4201Feet;
@@ -859,7 +1174,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneTexasSouthCentralFIPS4204Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneTexasSouthCentralFIPS4204Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneTexasSouthCentralFIPS4204Feet;
@@ -867,7 +1185,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneTexasSouthFIPS4205Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneTexasSouthFIPS4205Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneTexasSouthFIPS4205Feet;
@@ -875,7 +1196,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneUtahCentralFIPS4302Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneUtahCentralFIPS4302Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneUtahCentralFIPS4302Feet;
@@ -883,7 +1207,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneUtahNorthFIPS4301Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneUtahNorthFIPS4301Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneUtahNorthFIPS4301Feet;
@@ -891,7 +1218,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneUtahSouthFIPS4303Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneUtahSouthFIPS4303Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneUtahSouthFIPS4303Feet;
@@ -899,7 +1229,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneVermontFIPS4400Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneVermontFIPS4400Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneVermontFIPS4400Feet;
@@ -907,7 +1240,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneVirginiaNorthFIPS4501Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneVirginiaNorthFIPS4501Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneVirginiaNorthFIPS4501Feet;
@@ -915,7 +1251,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneVirginiaSouthFIPS4502Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneVirginiaSouthFIPS4502Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneVirginiaSouthFIPS4502Feet;
@@ -923,7 +1262,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneWashingtonNorthFIPS4601Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneWashingtonNorthFIPS4601Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneWashingtonNorthFIPS4601Feet;
@@ -931,7 +1273,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneWashingtonSouthFIPS4602Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneWashingtonSouthFIPS4602Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneWashingtonSouthFIPS4602Feet;
@@ -939,7 +1284,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneWestVirginiaNorthFIPS4701Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneWestVirginiaNorthFIPS4701Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneWestVirginiaNorthFIPS4701Feet;
@@ -947,7 +1295,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneWestVirginiaSouthFIPS4702Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneWestVirginiaSouthFIPS4702Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneWestVirginiaSouthFIPS4702Feet;
@@ -955,7 +1306,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneWisconsinCentralFIPS4802Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneWisconsinCentralFIPS4802Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneWisconsinCentralFIPS4802Feet;
@@ -963,7 +1317,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneWisconsinNorthFIPS4801Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneWisconsinNorthFIPS4801Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneWisconsinNorthFIPS4801Feet;
@@ -971,7 +1328,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneWisconsinSouthFIPS4803Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneWisconsinSouthFIPS4803Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneWisconsinSouthFIPS4803Feet;
@@ -979,7 +1339,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneWyomingEastCentralFIPS4902Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneWyomingEastCentralFIPS4902Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneWyomingEastCentralFIPS4902Feet;
@@ -987,7 +1350,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneWyomingEastFIPS4901Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneWyomingEastFIPS4901Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneWyomingEastFIPS4901Feet;
@@ -995,7 +1361,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneWyomingWestCentralFIPS4903Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneWyomingWestCentralFIPS4903Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneWyomingWestCentralFIPS4903Feet;
@@ -1003,7 +1372,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for NAD1983StatePlaneWyomingWestFIPS4904Feet       
+        /// </summary>
+        [Test, Category("Projection")]
         public void NAD1983StatePlaneWyomingWestFIPS4904Feet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983Feet.NAD1983StatePlaneWyomingWestFIPS4904Feet;
