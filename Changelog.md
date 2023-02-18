@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
  - Upgraded Examples to .NET Core 6 projects (#1485)
 
 ### Fixed
+ - Shorten column names to max 10 characters on writing to dbf file (#1494)
 
 ## V4.0
 
