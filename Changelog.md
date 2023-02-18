@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Polygon Labeler Crash with Mercator or Orthographic projection (#1199) 
 - LineOrientation fix for Parallel/Perpendicular labels (#1466)
 - Added tests to Appveyor Tests tab (#1489)
+- Shorten column names to max 10 characters on writing to dbf file (#1494)
 
 ## V4.0
 

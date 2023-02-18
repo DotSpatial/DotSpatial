@@ -1068,6 +1068,86 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
+        /// Gets all the column names shortend to max. 10 characters if necessary. If this causes duplicate column names numbers get added to make all column names unique.
+        /// </summary>
+        /// <returns>The list of the column names.</returns>
+        private List<string> GetShortenedColumnNames()
+        {
+            var list = new List<string>();
+
+            foreach (var col in _columns)
+            {
+                var colName = col.ColumnName.Substring(0, Math.Min(col.ColumnName.Length, MaxDbfColumnNameLength));
+
+                if (list.Contains(colName))
+                {
+                    // try to add the column shortened with adding a number 
+                    if (!TryAdd(ref list, col.ColumnName, 1, 100)) // the column couldn't be added with a number at the end
+                    {
+                        // try to add the column with another name and a number
+                        if (!TryAdd(ref list, "column", 1, 100))
+                        {
+                            return null;
+                        }
+                    }
+                }
+                else
+                {
+                    // the column was added completely or shortened without adding a number
+                    list.Add(colName);
+                }
+            }
+
+            return list;
+        }
+        const int MaxDbfColumnNameLength = 10;
+
+        /// <summary>
+        /// Tries to add the given column to the list. Shortens the column name if it is longer than 10 and adds a number if a column with the name already exists.
+        /// </summary>
+        /// <param name="list">List the column should get added to.</param>
+        /// <param name="colName">Name of the column.</param>
+        /// <param name="addMinNum">Minimal number that could get added.</param>
+        /// <param name="addMaxNum">Maximal number that could get added.</param>
+        /// <returns></returns>
+        private bool TryAdd(ref List<string> list, string colName, int addMinNum, int addMaxNum)
+        {
+            for (int i = addMinNum; i <= addMaxNum; i++)
+            {
+                var num = i.ToString();
+                var numLength = num.Length; // length of the number that gets added
+
+                string newColName;
+
+                if (colName.Length + numLength <= MaxDbfColumnNameLength)
+                {
+                    newColName = colName + num;
+                }
+                else
+                {
+                    // number of characters that must get removed for the new column name to be shorter than 11
+                    var removeNum = colName.Length + numLength - MaxDbfColumnNameLength;
+
+                    if (!(colName.Length > removeNum))
+                    {
+                        // can't add the numbers because the whole column name would only contain numbers
+                        return false;
+                    }
+
+                    newColName = colName.Substring(0, colName.Length - removeNum) + num;
+                }
+
+                if (!list.Contains(newColName))
+                {
+                    list.Add(newColName);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Write the header data to the DBF file.
         /// </summary>
         /// <param name="writer">BinaryWriter used for writing.</param>
@@ -1104,11 +1184,20 @@ namespace DotSpatial.Data
                 writer.Write((byte)0);
             }
 
-            // write all of the header records
-            foreach (Field currentField in _columns)
+            var colNames = GetShortenedColumnNames();
+
+            if (colNames == null || colNames.Count != _columns.Count)
             {
+                throw new DbfColNameToLongException("Can't write the header to file because there are columns with a length of more than 10 characters that couldn't be shortend automatically.");
+            }
+
+            // write all of the header records
+            for (int i = 0; i < _columns.Count; i++)
+            {
+                Field currentField = _columns[i];
+
                 // write the field name (can't be more than 11 bytes)
-                char[] characters = currentField.ColumnName.ToCharArray();
+                char[] characters = colNames[i].ToCharArray();
                 int totalBytes = 0;
                 for (int j = 0; j < characters.Length; j++)
                 {
