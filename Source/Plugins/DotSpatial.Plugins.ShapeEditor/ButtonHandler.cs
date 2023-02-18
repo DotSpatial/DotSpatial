@@ -18,11 +18,9 @@ namespace DotSpatial.Plugins.ShapeEditor
         #region Fields
 
         private readonly IHeaderControl _header;
-        private IFeatureLayer? _activeLayer;
+        private IFeatureLayer _activeLayer;
         private SimpleActionItem _addShape;
         private AddShapeFunction _addShapeFunction;
-        private bool _disposed;
-
         private bool _doSnapping = true;
 
         private IMap _geoMap;
@@ -39,7 +37,9 @@ namespace DotSpatial.Plugins.ShapeEditor
         public ButtonHandler(AppManager manager)
         {
             if (manager.HeaderControl == null)
+            {
                 throw new ArgumentNullException(nameof(manager), MessageStrings.HeaderControlMustBeAvailable);
+            }
 
             _header = manager.HeaderControl;
             AddButtons();
@@ -60,7 +60,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <summary>
         /// Gets a value indicating whether the "dispose" method has been called.
         /// </summary>
-        public bool IsDisposed => _disposed;
+        public bool IsDisposed { get; private set; }
 
         /// <summary>
         /// Gets or sets the 2D Geographic map to use with this feature editing toolkit.
@@ -111,7 +111,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <param name="disposeManagedResources">Disposes of the resources.</param>
         protected virtual void Dispose(bool disposeManagedResources)
         {
-            if (!_disposed)
+            if (!IsDisposed)
             {
                 // One option would be to leave the non-working tools,
                 // but if this gets disposed we should clean up after
@@ -130,7 +130,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     _moveVertexFunction = null;
                 }
 
-                _disposed = true;
+                IsDisposed = true;
             }
         }
 
@@ -185,13 +185,10 @@ namespace DotSpatial.Plugins.ShapeEditor
                 return;
             }
 
-            if (_addShapeFunction == null)
-            {
-                _addShapeFunction = new AddShapeFunction(_geoMap)
+            _addShapeFunction ??= new AddShapeFunction(_geoMap)
                 {
                     Name = "AddShape"
                 };
-            }
 
             if (_geoMap.MapFunctions.Contains(_addShapeFunction) == false)
             {
@@ -226,9 +223,14 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
 
             if (_moveVertexFunction != null)
+            {
                 UpdateMoveVertexFunctionLayer();
+            }
+
             if (_addShapeFunction != null) // changed by jany_ (2016-02-24) update both because moveFeature might not be the active function just because it is not null
+            {
                 UpdateAddShapeFunctionLayer();
+            }
         }
 
         private void MapFrameOnLayerRemoved(object sender, LayerEventArgs e)
@@ -251,13 +253,10 @@ namespace DotSpatial.Plugins.ShapeEditor
                 return;
             }
 
-            if (_moveVertexFunction == null)
-            {
-                _moveVertexFunction = new MoveVertexFunction(_geoMap)
+            _moveVertexFunction ??= new MoveVertexFunction(_geoMap)
                 {
                     Name = "MoveVertex"
                 };
-            }
 
             if (!_geoMap.MapFunctions.Contains(_moveVertexFunction))
             {
@@ -343,7 +342,9 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             func.DoSnapping = _doSnapping;
             if (!_doSnapping)
+            {
                 return;
+            }
 
             foreach (var fl in _geoMap.GetFeatureLayers())
             {

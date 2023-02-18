@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) DotSpatial Team. All rights reserved.
+// Licensed under the MIT, license. See License.txt file in the project root for full license information.
+
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using DotSpatial.Tests.Common;
@@ -16,13 +19,15 @@ namespace DotSpatial.Projections.Tests
 
         public static Delegate LoadFunction<T>(string dllPath, string functionName)
         {
-            var hModule = LoadLibrary(dllPath);
-            var functionAddress = GetProcAddress(hModule, functionName);
+            IntPtr hModule = LoadLibrary(dllPath);
+            IntPtr functionAddress = GetProcAddress(hModule, functionName);
             return Marshal.GetDelegateForFunctionPointer(functionAddress, typeof(T));
         }
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class Proj4
     {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -45,8 +50,8 @@ namespace DotSpatial.Projections.Tests
         static Proj4()
         {
             // init proj delegates
-            var basePath = (IntPtr.Size == 8) ? "x64" : "x86";
-            var path = System.IO.Path.Combine(Common.AbsolutePath(basePath), "proj.dll");
+            string basePath = (IntPtr.Size == 8) ? "x64" : "x86";
+            string path = System.IO.Path.Combine(Common.AbsolutePath(basePath), "proj.dll");
 
             _pj_init_plus = (pj_init_plus_delegate)FunctionLoader.LoadFunction<pj_init_plus_delegate>(path, "pj_init_plus");
             _pj_free = (pj_free_delegate)FunctionLoader.LoadFunction<pj_free_delegate>(path, "pj_free");
@@ -116,17 +121,22 @@ namespace DotSpatial.Projections.Tests
                 x *= DEG_TO_RAD;
                 y *= DEG_TO_RAD;
             }
+
             double z = 0;
             int retcode = _pj_transform(_srcPrj, _destPrj, 1, 0, ref x, ref y, ref z);
             if (retcode != 0)
             {
                 throw new ProjectionException(retcode);
             }
-            if (!_convertToDegrees) return;
+
+            if (!_convertToDegrees)
+            {
+                return;
+            }
+
             x *= RAD_TO_DEG;
             y *= RAD_TO_DEG;
         }
-
 
         /// <summary>
         /// Releases memory used by the srcPrj and destPrj structures.
@@ -143,6 +153,7 @@ namespace DotSpatial.Projections.Tests
                 {
                     Debug.WriteLine(ex.ToString());
                 }
+
                 _srcPrj = IntPtr.Zero;
             }
 
@@ -156,6 +167,7 @@ namespace DotSpatial.Projections.Tests
                 {
                     Debug.WriteLine(ex.ToString());
                 }
+
                 _destPrj = IntPtr.Zero;
             }
         }

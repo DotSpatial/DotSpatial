@@ -7,13 +7,17 @@ All notable changes to this project will be documented in this file.
 - A plug-in that converts coordinates from one projection to another (#1469)
 - Added a coordinate system type field to ProjectionInfo (#1473)
 - MapPointLayer.PreventCollisions to remove unnecessary points for drawing if they have been overlapped by other points (#1462)
+- Added Fathom as a DistanceUnit (#1422) 
 
 ### Changed
  - Change the code in "GenerateCentroid.cs" (#1465)
  - Upgraded Examples to .NET Core 6 projects (#1485)
 
 ### Fixed
- - Shorten column names to max 10 characters on writing to dbf file (#1494)
+- Polygon Labeler Crash with Mercator or Orthographic projection (#1199) 
+- LineOrientation fix for Parallel/Perpendicular labels (#1466)
+- Added tests to Appveyor Tests tab (#1489)
+- Shorten column names to max 10 characters on writing to dbf file (#1494)
 
 ## V4.0
 
