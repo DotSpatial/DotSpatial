@@ -296,7 +296,7 @@ namespace DotSpatial.Examples.AppManagerCustomizationDesignTime
             // 
             this.map1.AllowDrop = true;
             this.map1.BackColor = System.Drawing.Color.White;
-            this.map1.CollectAfterDraw = false;
+            //this.map1.CollectAfterDraw = false;
             this.map1.CollisionDetection = false;
             this.map1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.map1.ExtendBuffer = false;

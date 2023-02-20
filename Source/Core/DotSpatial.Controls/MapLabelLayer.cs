@@ -170,9 +170,12 @@ namespace DotSpatial.Controls
 
             // Gets the features text and calculate the label size
             string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
-            if (txt == null) return;
+            if (txt == null)
+            {
+                return;
+            }
 
-            Func<SizeF> labelSize = () => g.MeasureString(txt, CacheList.GetFont(symb));
+            SizeF labelSize() => g.MeasureString(txt, CacheList.GetFont(symb));
 
             Geometry geo = f.Geometry;
 
@@ -202,7 +205,11 @@ namespace DotSpatial.Controls
                     {
                         LineString ls = geo.GetGeometryN(n) as LineString;
                         double tempLength = 0;
-                        if (ls != null) tempLength = ls.Length;
+                        if (ls != null)
+                        {
+                            tempLength = ls.Length;
+                        }
+
                         if (longestLine < tempLength)
                         {
                             longestLine = tempLength;
@@ -232,9 +239,14 @@ namespace DotSpatial.Controls
 
             // Gets the features text and calculate the label size
             string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
-            if (txt == null) return;
+
+            if (txt == null)
+            {
+                return;
+            }
+
             var angle = GetAngleToRotate(symb, f);
-            Func<SizeF> labelSize = () => g.MeasureString(txt, CacheList.GetFont(symb));
+            SizeF labelSize() => g.MeasureString(txt, CacheList.GetFont(symb));
 
             // Depending on the labeling strategy we do different things
             if (symb.PartsLabelingMethod == PartLabelingMethod.LabelAllParts)
@@ -267,9 +279,13 @@ namespace DotSpatial.Controls
 
             // Gets the features text and calculate the label size
             string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
-            if (txt == null) return;
+            if (txt == null)
+            {
+                return;
+            }
+
             var angle = GetAngleToRotate(symb, f);
-            Func<SizeF> labelSize = () => g.MeasureString(txt, CacheList.GetFont(symb));
+            SizeF labelSize() => g.MeasureString(txt, CacheList.GetFont(symb));
 
             Geometry geo = f.Geometry;
 
@@ -295,7 +311,11 @@ namespace DotSpatial.Controls
                     for (int n = 0; n < geo.NumGeometries; n++)
                     {
                         Polygon pg = geo.GetGeometryN(n) as Polygon;
-                        if (pg == null) continue;
+                        if (pg == null)
+                        {
+                            continue;
+                        }
+
                         double tempArea = pg.Area;
                         if (largestArea < tempArea)
                         {
@@ -318,7 +338,11 @@ namespace DotSpatial.Controls
         /// will replace content with transparent pixels.</param>
         public void Clear(List<Rectangle> rectangles, Color color)
         {
-            if (BackBuffer == null) return;
+            if (BackBuffer == null)
+            {
+                return;
+            }
+
             Graphics g = Graphics.FromImage(BackBuffer);
             foreach (Rectangle r in rectangles)
             {
@@ -353,7 +377,11 @@ namespace DotSpatial.Controls
             for (int chunk = 0; chunk < numChunks; chunk++)
             {
                 int numFeatures = ChunkSize;
-                if (chunk == numChunks - 1) numFeatures = features.Count - (chunk * ChunkSize);
+                if (chunk == numChunks - 1)
+                {
+                    numFeatures = features.Count - (chunk * ChunkSize);
+                }
+
                 DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
 
                 if (numChunks > 0 && chunk < numChunks - 1)
@@ -385,7 +413,11 @@ namespace DotSpatial.Controls
             for (int chunk = 0; chunk < numChunks; chunk++)
             {
                 int numFeatures = ChunkSize;
-                if (chunk == numChunks - 1) numFeatures = features.Count - (chunk * ChunkSize);
+                if (chunk == numChunks - 1)
+                {
+                    numFeatures = features.Count - (chunk * ChunkSize);
+                }
+
                 DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
 
                 if (numChunks > 0 && chunk < numChunks - 1)
@@ -406,7 +438,10 @@ namespace DotSpatial.Controls
         /// <param name="selected">If this is true, nothing is painted, because selected labels get painted together with not selected labels.</param>
         public void DrawRegions(MapArgs args, List<Extent> regions, bool selected)
         {
-            if (FeatureSet == null || selected) return;
+            if (FeatureSet == null || selected)
+            {
+                return;
+            }
 #if DEBUG
             var sw = new Stopwatch();
             sw.Start();
@@ -466,7 +501,11 @@ namespace DotSpatial.Controls
         public void FinishDrawing()
         {
             OnFinishDrawing();
-            if (Buffer != null && Buffer != BackBuffer) Buffer.Dispose();
+            if (Buffer != null && Buffer != BackBuffer)
+            {
+                Buffer.Dispose();
+            }
+
             Buffer = BackBuffer;
             FeatureLayer.Invalidate();
         }
@@ -487,7 +526,11 @@ namespace DotSpatial.Controls
                 g.DrawImageUnscaled(Buffer, 0, 0);
             }
 
-            if (BackBuffer != null && BackBuffer != Buffer) BackBuffer.Dispose();
+            if (BackBuffer != null && BackBuffer != Buffer)
+            {
+                BackBuffer.Dispose();
+            }
+
             BackBuffer = backBuffer;
             OnStartDrawing();
         }
@@ -540,7 +583,11 @@ namespace DotSpatial.Controls
         /// <param name="angle">Angle in degree the label gets rotated by.</param>
         private static void CollisionDraw(string txt, Graphics g, ILabelSymbolizer symb, IFeature f, MapArgs e, RectangleF labelBounds, List<RectangleF> existingLabels, float angle)
         {
-            if (labelBounds.IsEmpty || !e.ImageRectangle.IntersectsWith(labelBounds)) return;
+            if (labelBounds.IsEmpty || !e.ImageRectangle.IntersectsWith(labelBounds))
+            {
+                return;
+            }
+
             if (symb.PreventCollisions)
             {
                 if (!Collides(labelBounds, existingLabels))
@@ -657,7 +704,11 @@ namespace DotSpatial.Controls
             if (symb.UseLabelAngleField)
             {
                 var angleField = symb.LabelAngleField;
-                if (string.IsNullOrEmpty(angleField)) return 0;
+                if (string.IsNullOrEmpty(angleField))
+                {
+                    return 0;
+                }
+
                 return ToSingle(feature.DataRow[angleField]);
             }
 
@@ -666,10 +717,18 @@ namespace DotSpatial.Controls
                 if (lineString is LineString ls1)
                 {
                     var ls = GetSegment(ls1, symb);
-                    if (ls == null) return 0;
+
+                    if (ls == null)
+                    {
+                        return 0;
+                    }
+
                     if (symb.LineOrientation == LineOrientation.Parallel)
-                        return ToSingle(-ls.Angle);
-                    return ToSingle(-ls.Angle - 90);
+                    {
+                        return ToSingle(-GetDisplayAngle(ls, 0));
+                    }
+
+                    return ToSingle(-GetDisplayAngle(ls, -Math.PI / 2));
                 }
             }
 
@@ -684,7 +743,10 @@ namespace DotSpatial.Controls
         /// <returns>Null on unnown LineLabelPlacementMethod else the calculated segment. </returns>
         private static LineSegment GetSegment(LineString lineString, ILabelSymbolizer symb)
         {
-            if (lineString.Coordinates.Length <= 2) return new LineSegment(lineString.StartPoint.Coordinate, lineString.EndPoint.Coordinate);
+            if (lineString.Coordinates.Length <= 2)
+            {
+                return new LineSegment(lineString.StartPoint.Coordinate, lineString.EndPoint.Coordinate);
+            }
 
             var coords = lineString.Coordinates;
             switch (symb.LineLabelPlacementMethod)
@@ -692,7 +754,7 @@ namespace DotSpatial.Controls
                 case LineLabelPlacementMethod.FirstSegment:
                     return new LineSegment(coords[0], coords[1]);
                 case LineLabelPlacementMethod.LastSegment:
-                    return new LineSegment(coords[coords.Length - 2], coords[coords.Length - 1]);
+                    return new LineSegment(coords[^2], coords[^1]);
                 case LineLabelPlacementMethod.MiddleSegment:
                     int start = (int)Math.Ceiling(coords.Length / 2D) - 1;
                     return new LineSegment(coords[start], coords[start + 1]);
@@ -716,6 +778,28 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Gets the angle that will be used to draw line based labels so they won't be on their head.
+        /// </summary>
+        /// <param name="ls">Linestring, that is used to determine the display angle of the label.</param>
+        /// <param name="add">Angle in radian that needs to be added for the label to be rotated correctly (e.g. perpendicular labels get rotated by -90°)</param>
+        private static double GetDisplayAngle(LineSegment ls, double add)
+        {
+            double deltaX = ls.P1.X - ls.P0.X;
+            double deltaY = ls.P1.Y - ls.P0.Y;
+            double length = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+            double angleRAD = Math.Asin(Math.Abs(ls.P1.Y - ls.P0.Y) / length) + add;
+
+            double angle = (angleRAD * 180) / Math.PI;
+
+            if (((ls.P0.X < ls.P1.X) && (ls.P0.Y > ls.P1.Y)) || ((ls.P0.X > ls.P1.X) && (ls.P0.Y < ls.P1.Y)))
+            {
+                angle = 360 - angle;
+            }
+
+            return angle;
+        }
+
+        /// <summary>
         /// Creates the RectangleF for the label.
         /// </summary>
         /// <param name="c">Coordinate, where the label should be placed.</param>
@@ -726,7 +810,11 @@ namespace DotSpatial.Controls
         /// <returns>Empty Rectangle if Coordinate is outside of the drawn extent, otherwise Rectangle needed to draw the label.</returns>
         private static RectangleF PlaceLabel(Coordinate c, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, double angle)
         {
-            if (!e.GeographicExtents.Intersects(c)) return RectangleF.Empty;
+            if (!e.GeographicExtents.Intersects(c))
+            {
+                return RectangleF.Empty;
+            }
+
             var lz = labelSize();
             PointF adjustment = Position(symb, lz);
             RotatePoint(ref adjustment, angle); // rotates the adjustment according to the given angle
@@ -747,10 +835,16 @@ namespace DotSpatial.Controls
         private static RectangleF PlaceLineLabel(Geometry lineString, Func<SizeF> labelSize, MapArgs e, ILabelSymbolizer symb, float angle)
         {
             LineString ls = lineString as LineString;
-            if (ls == null) return Rectangle.Empty;
+            if (ls == null)
+            {
+                return Rectangle.Empty;
+            }
 
             var ls1 = GetSegment(ls, symb);
-            if (ls1 == null) return Rectangle.Empty;
+            if (ls1 == null)
+            {
+                return Rectangle.Empty;
+            }
 
             return PlaceLabel(ls1.ToGeometry(Geometry.DefaultFactory).Centroid.Coordinate, e, labelSize, symb, angle);
         }
@@ -773,7 +867,11 @@ namespace DotSpatial.Controls
         private static RectangleF PlacePolygonLabel(Geometry geom, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, float angle)
         {
             Polygon pg = geom as Polygon;
-            if (pg == null) return RectangleF.Empty;
+            if (pg == null)
+            {
+                return RectangleF.Empty;
+            }
+
             Coordinate c = symb.LabelPlacementMethod switch
             {
                 LabelPlacementMethod.Centroid => pg.Centroid.Coordinates[0],
@@ -861,7 +959,10 @@ namespace DotSpatial.Controls
         private void DrawFeatures(MapArgs e, IEnumerable<int> features)
         {
             // Check that exists at least one category with Expression
-            if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression))) return;
+            if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression)))
+            {
+                return;
+            }
 
             Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
             Matrix origTransform = g.Transform;
@@ -873,7 +974,10 @@ namespace DotSpatial.Controls
             }
 
             FastLabelDrawnState[] drawStates = FastDrawnStates;
-            if (drawStates == null) return;
+            if (drawStates == null)
+            {
+                return;
+            }
 
             // Sets the graphics objects smoothing modes
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
@@ -900,12 +1004,21 @@ namespace DotSpatial.Controls
             {
                 category.UpdateExpressionColumns(FeatureSet.DataTable.Columns);
                 var catFeatures = new List<int>();
+
                 foreach (int fid in features)
                 {
-                    if (drawStates[fid] == null || drawStates[fid].Category == null) continue;
+                    if (drawStates[fid] == null || drawStates[fid].Category == null)
+                    {
+                        continue;
+                    }
+
                     if (drawStates[fid].Category == category)
                     {
-                        catFeatures.Add(fid);
+                        //// Check if the shapes vertices are valid (ie all vertices must be numeric and not NaN).
+                        if (!FeatureSet.ShapeIndices[fid].Parts.Any(_ => _.ToList().Any(v => !double.IsFinite(v.X) || !double.IsFinite(v.Y))))
+                        {
+                            catFeatures.Add(fid);
+                        }
                     }
                 }
 
@@ -915,8 +1028,7 @@ namespace DotSpatial.Controls
                     Feature.ComparisonField = category.Symbolizer.PriorityField;
                     catFeatures.Sort();
 
-                    // When preventing collisions, we want to do high priority first.
-                    // Otherwise, do high priority last.
+                    // When preventing collisions, we want to do high priority first. Otherwise, do high priority last.
                     if (category.Symbolizer.PreventCollisions)
                     {
                         if (!category.Symbolizer.PrioritizeLowValues)
@@ -935,14 +1047,24 @@ namespace DotSpatial.Controls
 
                 foreach (var fid in catFeatures)
                 {
-                    if (!FeatureLayer.DrawnStates[fid].Visible) continue;
+                    if (!FeatureLayer.DrawnStates[fid].Visible)
+                    {
+                        continue;
+                    }
+
                     var feature = FeatureSet.GetFeature(fid);
                     drawFeature(fid, feature);
                 }
             }
 
-            if (e.Device == null) g.Dispose();
-            else g.Transform = origTransform;
+            if (e.Device == null)
+            {
+                g.Dispose();
+            }
+            else
+            {
+                g.Transform = origTransform;
+            }
         }
 
         /// <summary>
@@ -953,7 +1075,10 @@ namespace DotSpatial.Controls
         private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features)
         {
             // Check that exists at least one category with Expression
-            if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression))) return;
+            if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression)))
+            {
+                return;
+            }
 
             Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
             Matrix origTransform = g.Transform;
@@ -966,7 +1091,10 @@ namespace DotSpatial.Controls
             }
 
             Dictionary<IFeature, LabelDrawState> drawStates = DrawnStates;
-            if (drawStates == null) return;
+            if (drawStates == null)
+            {
+                return;
+            }
 
             // Sets the graphics objects smoothing modes
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
@@ -1002,15 +1130,13 @@ namespace DotSpatial.Controls
                     }
                 }
 
-                // Now that we are restricted to a certain category, we can look at
-                // priority
+                // Now that we are restricted to a certain category, we can look at priority
                 if (category.Symbolizer.PriorityField != "FID")
                 {
                     Feature.ComparisonField = cat.Symbolizer.PriorityField;
                     catFeatures.Sort();
 
-                    // When preventing collisions, we want to do high priority first.
-                    // otherwise, do high priority last.
+                    // When preventing collisions, we want to do high priority first. Otherwise, do high priority last.
                     if (cat.Symbolizer.PreventCollisions)
                     {
                         if (!cat.Symbolizer.PrioritizeLowValues)
@@ -1029,13 +1155,23 @@ namespace DotSpatial.Controls
 
                 for (int i = 0; i < catFeatures.Count; i++)
                 {
-                    if (!FeatureLayer.DrawnStates[i].Visible) continue;
+                    if (!FeatureLayer.DrawnStates[i].Visible)
+                    {
+                        continue;
+                    }
+
                     drawFeature(catFeatures[i]);
                 }
             }
 
-            if (e.Device == null) g.Dispose();
-            else g.Transform = origTransform;
+            if (e.Device == null)
+            {
+                g.Dispose();
+            }
+            else
+            {
+                g.Transform = origTransform;
+            }
         }
 
         #endregion

@@ -21,6 +21,9 @@ namespace DotSpatial.Plugins.StatusBarImprovements
 
         #region Methods
 
+        /// <summary>
+        /// Initializes a new Instance of the StatusShowSelectionCount class.
+        /// </summary>
         public StatusShowSelectionCount()
         {
             _panel = new StatusPanel

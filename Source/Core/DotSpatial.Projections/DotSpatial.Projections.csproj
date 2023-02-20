@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
-		<OutputPath>$(ProjectDir)..\..\bin\$(Configuration)\$(TargetFramework)\</OutputPath>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<LangVersion>10.0</LangVersion>
 	</PropertyGroup>
 
@@ -59,9 +58,4 @@
 			<LastGenOutput>ProjectionNames.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
-
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(TargetFramework)'=='net6.0'">
-		<Exec Command="xcopy /y ..\..\bin\$(Configuration)\$(TargetFramework)\*.* ..\..\bin\$(Configuration)\" />
-	</Target>
-
 </Project>

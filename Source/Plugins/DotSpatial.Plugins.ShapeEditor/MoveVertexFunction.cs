@@ -165,7 +165,7 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             if (_dragging)
             {
-                if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
+                if (_featureSet.FeatureType is FeatureType.Point or FeatureType.MultiPoint)
                 {
                     Rectangle r = new(_mousePosition.X - (_imageRect.Width / 2), _mousePosition.Y - (_imageRect.Height / 2), _imageRect.Width, _imageRect.Height);
                     _selectedCategory.Symbolizer.Draw(e.Graphics, r);
@@ -198,7 +198,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <inheritdoc />
         protected override void OnMouseDown(GeoMouseArgs e)
         {
-            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
+            if (e.Button is MouseButtons.Left or MouseButtons.Right)
             {
                 _mousePosition = e.Location;
                 if (_dragging)
@@ -271,7 +271,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                             _dragging = true;
                             Map.IsBusy = true;
                             _dragCoord = _activeFeature.Geometry.Coordinates[0];
-                            MapPointLayer? mpl = _layer as MapPointLayer;
+                            MapPointLayer mpl = _layer as MapPointLayer;
                             mpl?.SetVisible(_activeFeature, false);
 
                             if (_selectedCategory is not IPointCategory)
@@ -358,7 +358,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 Map.IsBusy = false;
                 _featureSet.InvalidateVertices();
 
-                if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
+                if (_featureSet.FeatureType is FeatureType.Point or FeatureType.MultiPoint)
                 {
                     if (_activeFeature == null)
                     {
@@ -504,7 +504,9 @@ namespace DotSpatial.Plugins.ShapeEditor
         private bool ShapeHighlight(GeoMouseArgs e)
         {
             if (e == null)
+            {
                 throw new ArgumentNullException(nameof(e), "e is null.");
+            }
 
             Rectangle mouseRect = new(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             Extent ext = Map.PixelToProj(mouseRect);
@@ -512,7 +514,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             bool requiresInvalidate = false;
             foreach (IFeature feature in _featureSet.Features)
             {
-                if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
+                if (_featureSet.FeatureType is FeatureType.Point or FeatureType.MultiPoint)
                 {
                     if (_layer is MapPointLayer mpl)
                     {
