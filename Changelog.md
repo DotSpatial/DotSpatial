@@ -4,20 +4,11 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
-- A plug-in that converts coordinates from one projection to another (#1469)
-- Added a coordinate system type field to ProjectionInfo (#1473)
-- MapPointLayer.PreventCollisions to remove unnecessary points for drawing if they have been overlapped by other points (#1462)
-- Added Fathom as a DistanceUnit (#1422) 
+- Added an overload to the ReprojectMapFrame method to reproject the map frame without losing the original vertices by reloading the data from the source (#1470)
 
 ### Changed
- - Change the code in "GenerateCentroid.cs" (#1465)
- - Upgraded Examples to .NET Core 6 projects (#1485)
 
 ### Fixed
-- Polygon Labeler Crash with Mercator or Orthographic projection (#1199) 
-- LineOrientation fix for Parallel/Perpendicular labels (#1466)
-- Added tests to Appveyor Tests tab (#1489)
-- Shorten column names to max 10 characters on writing to dbf file (#1494)
 
 ## V4.0
 
@@ -218,5 +209,3 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Bug in AzimuthalEquidistant class (#1342)
 - Bug in moving legend items (#1368)
 - Bug in ExtentExt.Reproportion discussed in #1351 (#1370)
-- False polygon outlines are drawn at map boundary when not in edit mode (#1474)
-- Non UI Projects as .netstandard2.0 libraries (#1479 )
