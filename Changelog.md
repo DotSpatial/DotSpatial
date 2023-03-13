@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - LineOrientation fix for Parallel/Perpendicular labels (#1466)
 - Added tests to Appveyor Tests tab (#1489)
 - Shorten column names to max 10 characters on writing to dbf file (#1494)
+- DotSpatial.Plugins.Taudem/Hydrology.cs RunTaudem function does not execute correctly (#1496) 
 
 ## V4.0
 
