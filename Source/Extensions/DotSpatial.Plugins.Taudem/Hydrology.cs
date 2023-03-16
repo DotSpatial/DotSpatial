@@ -1751,6 +1751,7 @@ namespace DotSpatial.Plugins.Taudem
             {
                 StartInfo =
                 {
+                    UseShellExecute = true,
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Minimized,
                     WorkingDirectory = TaudemExeDir(),
@@ -1768,6 +1769,7 @@ namespace DotSpatial.Plugins.Taudem
                 {
                     StartInfo =
                     {
+                        UseShellExecute = true,
                         FileName = Path.GetFileName(tempFile),
                         WorkingDirectory = Path.GetDirectoryName(tempFile)
                     }
