@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - Added tests to Appveyor Tests tab (#1489)
 - Shorten column names to max 10 characters on writing to dbf file (#1494)
 - DotSpatial.Plugins.Taudem/Hydrology.cs RunTaudem function does not execute correctly (#1496) 
+- Dotspatial.Projections does not work with AOT Compilation (#1500)
 
 ## V4.0
 
