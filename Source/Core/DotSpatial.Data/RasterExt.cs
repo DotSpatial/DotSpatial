@@ -327,8 +327,6 @@ namespace DotSpatial.Data
                 pRaster.WriteBlock(myBlockRaster, 0, myRowCount - k, myColumnCount, k);
             }
         }
-
-
         #endregion
     }
 }
