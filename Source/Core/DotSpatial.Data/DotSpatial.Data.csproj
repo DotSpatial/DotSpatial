@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-      <LangVersion>9.0</LangVersion>
-      <TargetFramework>netstandard2.0</TargetFramework>
+	  <TargetFrameworks>netstandard2.0</TargetFrameworks>
+	  <LangVersion>10.0</LangVersion>
       <Description>GIS Data objects for DotSpatial.</Description>
   </PropertyGroup>
 

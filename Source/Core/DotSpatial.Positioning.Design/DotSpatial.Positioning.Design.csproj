@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+	  <TargetFrameworks>netstandard2.0;</TargetFrameworks>
+	  <LangVersion>10.0</LangVersion>
     <Description>This assembly provides objects used to design geographic applications.</Description>
   </PropertyGroup>
 
