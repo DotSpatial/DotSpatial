@@ -899,7 +899,8 @@ namespace DotSpatial.Plugins.Taudem
         public static bool ApplyWatershedSlopeAttribute(string subBasinShapePath, string slopeGridPath, ElevationUnits elevUnits, IProgressHandler callback)
         {
             var path = Path.GetDirectoryName(slopeGridPath);
-            if (path == null) return false;
+            if (path == null)
+                return false;
 
             // CWG 23/1/2011 changed to GeoTiff for Taudem V5
             var tmpClipPath = Path.Combine(path, Path.GetFileNameWithoutExtension(slopeGridPath) + "_clip.tif");
@@ -1726,7 +1727,19 @@ namespace DotSpatial.Plugins.Taudem
                 }
             }
 
-            DataManagement.TryCopy(Path.ChangeExtension(demGridPath, ".prj"), Path.ChangeExtension(streamShapeResultPath, ".prj"));
+            //Set stream shape prj file
+            var myDemPrjFile = Path.ChangeExtension(demGridPath, ".prj");
+            var myStreamShapePrjFile = Path.ChangeExtension(streamShapeResultPath, ".prj");
+            if (File.Exists(myDemPrjFile))
+            {
+                DataManagement.TryCopy(myDemPrjFile, myStreamShapePrjFile);
+            }
+            else
+            {
+                IRaster myDemRaster = Raster.Open(demGridPath);
+                myDemRaster.Projection.SaveAs(myStreamShapePrjFile);
+                myDemRaster.Close();
+            }
 
             callback?.Reset();
 
@@ -1751,6 +1764,7 @@ namespace DotSpatial.Plugins.Taudem
             {
                 StartInfo =
                 {
+                    UseShellExecute = true,
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Minimized,
                     WorkingDirectory = TaudemExeDir(),
@@ -1768,6 +1782,7 @@ namespace DotSpatial.Plugins.Taudem
                 {
                     StartInfo =
                     {
+                        UseShellExecute = true,
                         FileName = Path.GetFileName(tempFile),
                         WorkingDirectory = Path.GetDirectoryName(tempFile)
                     }
@@ -2118,7 +2133,8 @@ namespace DotSpatial.Plugins.Taudem
                 var pt = streamShape.GetShape(sindx).Geometry.Coordinates[i];
 
                 RcIndex position = demGrid.ProjToCell(pt.X, pt.Y);
-                if (position.IsEmpty()) continue;
+                if (position.IsEmpty())
+                    continue;
 
                 double currVal = demGrid.Value[position.Row, position.Column];
                 if (currVal < elevLow)
@@ -2166,8 +2182,10 @@ namespace DotSpatial.Plugins.Taudem
 
         private static IFeature MergeAbuttingPolygons(IFeature shape1, IFeature shape2)
         {
-            if (shape1 == null) return shape2;
-            if (shape2 == null) return shape1;
+            if (shape1 == null)
+                return shape2;
+            if (shape2 == null)
+                return shape1;
             IFeature mergeShape = null;
 
             // check both shapes are single parts
@@ -2192,7 +2210,8 @@ namespace DotSpatial.Plugins.Taudem
         /// <returns>The merge result.</returns>
         private static IFeature MergeBasinsByDrainage(IFeatureSet shed, BinTree drainage)
         {
-            if (drainage == null) return null;
+            if (drainage == null)
+                return null;
             IFeature left = MergeBasinsByDrainage(shed, drainage.Left);
             IFeature right = MergeBasinsByDrainage(shed, drainage.Right);
             IFeature lr = MergeAbuttingPolygons(left, right);
@@ -2225,7 +2244,8 @@ namespace DotSpatial.Plugins.Taudem
         /// <returns>The resulting geometry.</returns>
         private static Geometry MergeBasinsByDrainageI(Shapefile shed, BinTree drainage)
         {
-            if (drainage == null) return null;
+            if (drainage == null)
+                return null;
             Geometry left = MergeBasinsByDrainageI(shed, drainage.Left);
             Geometry right = MergeBasinsByDrainageI(shed, drainage.Right);
             IFeature outlet = shed.GetShape(drainage.Val);

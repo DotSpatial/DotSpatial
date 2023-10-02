@@ -106,7 +106,10 @@ namespace DotSpatial.Symbology
         /// <returns>False, if DataColumn was null.</returns>
         public bool AddField(DataColumn col)
         {
-            if (col == null) return false;
+            if (col == null)
+            {
+                return false;
+            }
 
             _fields.Add(new Field(col.ColumnName, col.DataType));
             return true;
@@ -119,10 +122,16 @@ namespace DotSpatial.Symbology
         /// <returns>The calculated expression.</returns>
         public string CalculateRowValue(DataRow row, int fid)
         {
-            if (IsEmpty()) return string.Empty;
+            if (IsEmpty())
+            {
+                return string.Empty;
+            }
 
             ErrorMessage = string.Empty;
-            if (!_valid && !_expChanged) return ReplaceFieldsOnly(row, fid); // expression is invalid and hasn't changed => simply replace fields
+            if (!_valid && !_expChanged)
+            {
+                return ReplaceFieldsOnly(row, fid); // expression is invalid and hasn't changed => simply replace fields
+            }
 
             foreach (Element e in _variables)
             {
@@ -166,7 +175,10 @@ namespace DotSpatial.Symbology
         /// <returns>True, if operations can be calculated.</returns>
         public bool IsValidOperation(ref string retVal, DataRow row = null)
         {
-            if (IsEmpty()) return false;
+            if (IsEmpty())
+            {
+                return false;
+            }
 
             ErrorMessage = string.Empty;
             if (row == null)
@@ -236,10 +248,16 @@ namespace DotSpatial.Symbology
             else
             {
                 _expChanged = false;
-                if (_valid) return true;
+                if (_valid)
+                {
+                    return true;
+                }
             }
 
-            if (s.Length == 0) return false;
+            if (s == null || s.Length == 0)
+            {
+                return false;
+            }
 
             // ExpressionPart bracket = new ExpressionPart();
             _saveOperations = true;
@@ -297,13 +315,18 @@ namespace DotSpatial.Symbology
             {
                 // seeking brackets
                 int begin = 0;
-                int end;
-                found = GetBrackets(s, ref begin, out end);
+                found = GetBrackets(s, ref begin, out int end);
 
                 string expression = found ? s.Substring(begin + 1, end - begin - 1) : s;
-                if (!ParseExpressionPart(expression)) return false;
+                if (!ParseExpressionPart(expression))
+                {
+                    return false;
+                }
 
-                if (found) ReplaceSubString(ref s, begin, end - begin + 1, "{p" + (_parts.Count - 1) + "}");
+                if (found)
+                {
+                    ReplaceSubString(ref s, begin, end - begin + 1, "{p" + (_parts.Count - 1) + "}");
+                }
             }
 
             _strings.Clear();
@@ -331,7 +354,10 @@ namespace DotSpatial.Symbology
         public bool UpdateFields(DataColumnCollection columns)
         {
             ClearFields();
-            if (columns == null) return false;
+            if (columns == null)
+            {
+                return false;
+            }
 
             foreach (DataColumn col in columns)
             {
@@ -354,7 +380,10 @@ namespace DotSpatial.Symbology
         {
             // closing bracket
             end = expression.IndexOf(closingSymbol, StringComparison.Ordinal);
-            if (end == -1) return false;
+            if (end == -1)
+            {
+                return false;
+            }
 
             // opening bracket
             begin = expression.LastIndexOf(openingSymbol, end, StringComparison.Ordinal);
@@ -369,12 +398,17 @@ namespace DotSpatial.Symbology
         /// <returns>False if character can't belong to a number.</returns>
         private static bool IsDecimal(char chr, ref bool exponential)
         {
-            if (chr >= '0' && chr <= '9') return true;
-
-            if ((chr == '.') || (chr == ',')) // specify decimal separator explicitly
+            if (chr is >= '0' and <= '9')
+            {
                 return true;
+            }
 
-            if ((chr == 'e') || (chr == 'E'))
+            if (chr is '.' or ',') // specify decimal separator explicitly
+            {
+                return true;
+            }
+
+            if (chr is 'e' or 'E')
             {
                 exponential = true;
                 return true;
@@ -400,8 +434,15 @@ namespace DotSpatial.Symbology
             string part1 = string.Empty;
             string part2 = string.Empty;
 
-            if (begin > 0) part1 = s.Substring(0, begin);
-            if ((begin + length) < s.Length) part2 = s.Substring(begin + length);
+            if (begin > 0)
+            {
+                part1 = s.Substring(0, begin);
+            }
+
+            if ((begin + length) < s.Length)
+            {
+                part2 = s.Substring(begin + length);
+            }
 
             s = part1 + replacement + part2;
         }
@@ -423,7 +464,10 @@ namespace DotSpatial.Symbology
         /// <returns>Null, if not calculated successfully, otherwise the resulting value.</returns>
         private ExpressionValue Calculate()
         {
-            if (_parts.Count == 0) return null;
+            if (_parts.Count == 0)
+            {
+                return null;
+            }
 
             // int operation, left, right;
             Operation operation = null;
@@ -434,7 +478,10 @@ namespace DotSpatial.Symbology
             int operationCount = 0;
 
             // if the operations should be cached we'll ensure that there is no obsolete data in vector
-            if (_saveOperations) _operations.Clear();
+            if (_saveOperations)
+            {
+                _operations.Clear();
+            }
 
             foreach (var part in _parts)
             {
@@ -464,7 +511,8 @@ namespace DotSpatial.Symbology
                     }
                     else
                     {
-                        if (operation == null) operation = new Operation();
+                        operation ??= new Operation();
+
                         found = FindOperation(part, operation);
                     }
 
@@ -741,22 +789,46 @@ namespace DotSpatial.Symbology
                     elLeft.CalcValue.Type = TkValueType.VtString;
                     break;
                 case TkOperation.OperLess:
-                    if (res < 0) elLeft.CalcValue.Bln = true;
+                    if (res < 0)
+                    {
+                        elLeft.CalcValue.Bln = true;
+                    }
+
                     break;
                 case TkOperation.OperLessEqual:
-                    if (res <= 0) elLeft.CalcValue.Bln = true;
+                    if (res <= 0)
+                    {
+                        elLeft.CalcValue.Bln = true;
+                    }
+
                     break;
                 case TkOperation.OperGreater:
-                    if (res > 0) elLeft.CalcValue.Bln = true;
+                    if (res > 0)
+                    {
+                        elLeft.CalcValue.Bln = true;
+                    }
+
                     break;
                 case TkOperation.OperGrEqual:
-                    if (res >= 0) elLeft.CalcValue.Bln = true;
+                    if (res >= 0)
+                    {
+                        elLeft.CalcValue.Bln = true;
+                    }
+
                     break;
                 case TkOperation.OperEqual:
-                    if (res == 0) elLeft.CalcValue.Bln = true;
+                    if (res == 0)
+                    {
+                        elLeft.CalcValue.Bln = true;
+                    }
+
                     break;
                 case TkOperation.OperNotEqual:
-                    if (res != 0) elLeft.CalcValue.Bln = true;
+                    if (res != 0)
+                    {
+                        elLeft.CalcValue.Bln = true;
+                    }
+
                     break;
                 default:
                     ErrorMessage = SymbologyMessageStrings.Expression_OperationNotSupported;
@@ -812,7 +884,7 @@ namespace DotSpatial.Symbology
                 {
                     if (element.Type == TkElementType.EtOperation)
                     {
-                        if (element.OperationType != TkOperation.OperNot && element.OperationType != TkOperation.OperChangeSign)
+                        if (element.OperationType is not TkOperation.OperNot and not TkOperation.OperChangeSign)
                         {
                             ErrorMessage = SymbologyMessageStrings.Expression_OpereratorInsteadOfValue;
                             return false;
@@ -833,7 +905,7 @@ namespace DotSpatial.Symbology
             }
 
             // if the operator is binary, seeking left operand
-            if (elements[operation.Id].OperationType != TkOperation.OperNot && elements[operation.Id].OperationType != TkOperation.OperChangeSign)
+            if (elements[operation.Id].OperationType is not TkOperation.OperNot and not TkOperation.OperChangeSign)
             {
                 for (int i = operation.Id - 1; i >= 0; i--)
                 {
@@ -882,7 +954,10 @@ namespace DotSpatial.Symbology
         {
             Element element = part.Elements[elementId];
 
-            if (element.WasCalculated) return element.CalcValue;
+            if (element.WasCalculated)
+            {
+                return element.CalcValue;
+            }
 
             return element.PartIndex != -1 ? _parts[element.PartIndex].Value : element.Value;
         }
@@ -921,27 +996,42 @@ namespace DotSpatial.Symbology
             for (int i = 0; i < s.Length; i++)
             {
                 SkipSpaces(s, ref i);
-                if (i >= s.Length) break;
+                if (i >= s.Length)
+                {
+                    break;
+                }
 
                 // reading element
                 Element element = new(ref _floatingFormat);
                 if (readVal)
                 {
-                    if (!ReadValue(s, ref i, element)) return false;
+                    if (!ReadValue(s, ref i, element))
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
-                    if (!ReadOperation(s, ref i, element)) return false;
+                    if (!ReadOperation(s, ref i, element))
+                    {
+                        return false;
+                    }
                 }
 
                 // saving element
                 part.Elements.Add(element);
 
                 // in case operation was unary the next element should be value as well
-                if (element.OperationType != TkOperation.OperNot && element.OperationType != TkOperation.OperChangeSign) readVal = !readVal;
+                if (element.OperationType is not TkOperation.OperNot and not TkOperation.OperChangeSign)
+                {
+                    readVal = !readVal;
+                }
             }
 
-            if (part.Elements.Count <= 0) return false;
+            if (part.Elements.Count <= 0)
+            {
+                return false;
+            }
 
             _parts.Add(part);
             return true;
@@ -1164,7 +1254,11 @@ namespace DotSpatial.Symbology
 
                         while (position < closingIndex)
                         {
-                            if (char.IsDigit(s[position])) sub += s[position];
+                            if (char.IsDigit(s[position]))
+                            {
+                                sub += s[position];
+                            }
+
                             position++;
                         }
 
@@ -1231,15 +1325,17 @@ namespace DotSpatial.Symbology
                         {
                             sub += chr;
                             position++;
-                            if (position > s.Length - 1) break;
+                            if (position > s.Length - 1)
+                            {
+                                break;
+                            }
 
                             chr = s[position];
                         }
 
                         position--;
 
-                        double res;
-                        if (double.TryParse(sub, out res))
+                        if (double.TryParse(sub, out double res))
                         {
                             element.Type = TkElementType.EtValue;
                             element.Value.Type = TkValueType.VtDouble;
@@ -1326,7 +1422,10 @@ namespace DotSpatial.Symbology
         /// <returns>ExpressionString with replaced Fields.</returns>
         private string ReplaceFieldsOnly(DataRow row, int fid)
         {
-            if (_expressionString == null) return string.Empty;
+            if (_expressionString == null)
+            {
+                return string.Empty;
+            }
 
             string s = _expressionString;
 
@@ -1357,8 +1456,15 @@ namespace DotSpatial.Symbology
         /// <returns>value as string.</returns>
         private string SaveToString(object value)
         {
-            if (value == null || value == DBNull.Value) return string.Empty;
-            if (value is short || value is ushort || value is int || value is uint || value is long || value is ulong || value is float || value is double || value is decimal) return Convert.ToDouble(value).ToString(_floatingFormat);
+            if (value == null || value == DBNull.Value)
+            {
+                return string.Empty;
+            }
+
+            if (value is short or ushort or int or uint or long or ulong or float or double or decimal)
+            {
+                return Convert.ToDouble(value).ToString(_floatingFormat);
+            }
 
             return value.ToString();
         }
@@ -1456,22 +1562,43 @@ namespace DotSpatial.Symbology
 
             public bool SetValue(object value)
             {
-                if (IsField) Value.Type = Field.ValueType;
+                if (IsField)
+                {
+                    Value.Type = Field.ValueType;
+                }
 
                 if (Value.Type == TkValueType.VtBoolean)
                 {
-                    if (value is bool) Value.Bln = (bool)value;
-                    else return false;
+                    if (value is bool bValue)
+                    {
+                        Value.Bln = bValue;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else if (Value.Type == TkValueType.VtString)
                 {
-                    if (value == null || value == DBNull.Value) Value.Str = string.Empty;
-                    else Value.Str = value.ToString();
+                    if (value == null || value == DBNull.Value)
+                    {
+                        Value.Str = string.Empty;
+                    }
+                    else
+                    {
+                        Value.Str = value.ToString();
+                    }
                 }
                 else if (Value.Type == TkValueType.VtDouble)
                 {
-                    if (value is short || value is ushort || value is int || value is uint || value is long || value is ulong || value is float || value is double || value is decimal) Value.Dbl = Convert.ToDouble(value);
-                    else return false;
+                    if (value is short or ushort or int or uint or long or ulong or float or double or decimal)
+                    {
+                        Value.Dbl = Convert.ToDouble(value);
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else if (Value.Type == TkValueType.VtObject)
                 {
@@ -1553,14 +1680,21 @@ namespace DotSpatial.Symbology
             {
                 switch (Type)
                 {
-                    case TkValueType.VtString: return Str;
+                    case TkValueType.VtString:
+                        return Str;
                     case TkValueType.VtObject:
-                        if (Obj == null || Obj == DBNull.Value) return null;
+                        if (Obj == null || Obj == DBNull.Value)
+                        {
+                            return null;
+                        }
 
                         return Obj.ToString();
-                    case TkValueType.VtDouble: return Dbl.ToString(_floatingFormat);
-                    case TkValueType.VtBoolean: return Bln.ToString();
-                    default: return null;
+                    case TkValueType.VtDouble:
+                        return Dbl.ToString(_floatingFormat);
+                    case TkValueType.VtBoolean:
+                        return Bln.ToString();
+                    default:
+                        return null;
                 }
             }
 

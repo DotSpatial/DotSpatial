@@ -421,8 +421,9 @@ namespace DotSpatial.Controls
             }
 
             FastDrawnState state = new(selected, Symbology.Categories[0]);
+
+            Rectangle clipRect = ComputeClippingRectangle(e);
             Extent drawExtents = e.GeographicExtents;
-            Rectangle clipRect = e.ProjToPixel(e.GeographicExtents);
             SoutherlandHodgman shClip = new(clipRect);
 
             List<ShapeRange> shapes = DataSet.ShapeIndices;

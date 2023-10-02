@@ -17,7 +17,10 @@ namespace DotSpatial.Projections.Tests.Projected
 
         }
 
-        [Test]
+        /// <summary>
+        /// Test for Aitoffworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void Aitoffworld()
         {
@@ -26,7 +29,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for Behrmannworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void Behrmannworld()
         {
@@ -35,7 +41,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for Bonneworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void Bonneworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Bonneworld;
@@ -43,7 +52,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for CrasterParabolicworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void CrasterParabolicworld()
         {
@@ -52,7 +64,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for Cubeworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void Cubeworld()
         {
@@ -61,7 +76,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for CylindricalEqualAreaworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void CylindricalEqualAreaworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.CylindricalEqualAreaworld;
@@ -69,7 +87,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for EckertIIIworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void EckertIIIworld()
         {
@@ -78,7 +99,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for EckertIIworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void EckertIIworld()
         {
@@ -87,7 +111,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for EckertIVworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void EckertIVworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EckertIVworld;
@@ -95,7 +122,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for EckertIworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void EckertIworld()
         {
@@ -104,7 +134,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for EckertVIworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void EckertVIworld()
         {
@@ -113,7 +146,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for EckertVworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void EckertVworld()
         {
@@ -122,7 +158,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for EquidistantConicworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void EquidistantConicworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EquidistantConicworld;
@@ -130,7 +169,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for EquidistantCylindricalworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void EquidistantCylindricalworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.EquidistantCylindricalworld;
@@ -138,7 +180,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for FlatPolarQuarticworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void FlatPolarQuarticworld()
         {
@@ -147,7 +192,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for Fullerworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void Fullerworld()
         {
@@ -156,7 +204,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for GallStereographicworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void GallStereographicworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.GallStereographicworld;
@@ -164,7 +215,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for HammerAitoffworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void HammerAitoffworld()
         {
@@ -173,7 +227,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for Loximuthalworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void Loximuthalworld()
         {
@@ -182,7 +239,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for Mercatorworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void Mercatorworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Mercatorworld;
@@ -190,7 +250,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for MillerCylindricalworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void MillerCylindricalworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.MillerCylindricalworld;
@@ -198,7 +261,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for Mollweideworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void Mollweideworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Mollweideworld;
@@ -206,21 +272,30 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for PlateCarreeworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void PlateCarreeworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.PlateCarreeworld;
             Tester.TestProjection(pStart);
         }
 
-        [Test]
+        /// <summary>
+        /// Test for PlateCarreeFromEsriString       
+        /// </summary>
+        [Test, Category("Projection")]
         public void PlateCarreeFromEsriString()
         {
             ProjectionInfo pStart = ProjectionInfo.FromEsriString("PROJCS[\"WGS_1984_Plate_Carree\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Plate_Carree\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",0.0],UNIT[\"Meter\",1.0]]");
             Tester.TestProjection(pStart);
         }
 
-        [Test]
+        /// <summary>
+        /// Test for Polyconicworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void Polyconicworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Polyconicworld;
@@ -228,7 +303,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for QuarticAuthalicworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void QuarticAuthalicworld()
         {
@@ -237,7 +315,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for Robinsonworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void Robinsonworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Robinsonworld;
@@ -245,7 +326,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for Sinusoidalworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void Sinusoidalworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.Sinusoidalworld;
@@ -253,7 +337,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for TheWorldfromSpace       
+        /// </summary>
+        [Test, Category("Projection")]
         public void TheWorldfromSpace()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.TheWorldfromSpace;
@@ -261,7 +348,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for Timesworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void Timesworld()
         {
@@ -270,7 +360,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for VanderGrintenIworld       
+        /// </summary>
+        [Test, Category("Projection")]
         public void VanderGrintenIworld()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.VanderGrintenIworld;
@@ -278,7 +371,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for VerticalPerspectiveworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void VerticalPerspectiveworld()
         {
@@ -287,7 +383,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for WebMercator       
+        /// </summary>
+        [Test, Category("Projection")]
         public void WebMercator()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.World.WebMercator;
@@ -295,7 +394,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for WinkelIIworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void WinkelIIworld()
         {
@@ -304,7 +406,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for WinkelIworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void WinkelIworld()
         {
@@ -313,7 +418,10 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
 
-        [Test]
+        /// <summary>
+        /// Test for WinkelTripelNGSworld       
+        /// </summary>
+        [Test, Category("Projection")]
         [Ignore("")]
         public void WinkelTripelNGSworld()
         {

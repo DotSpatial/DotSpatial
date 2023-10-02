@@ -4,7 +4,6 @@
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 
-
 namespace DotSpatial.Plugins.StatusBarImprovements
 {
     /// <summary>
@@ -20,6 +19,9 @@ namespace DotSpatial.Plugins.StatusBarImprovements
 
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the StatusShowCoordinates class.
+        /// </summary>
         public StatusShowCoordinates()
         {
             _xPanel = new StatusPanel

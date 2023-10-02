@@ -7,13 +7,20 @@ All notable changes to this project will be documented in this file.
 - A plug-in that converts coordinates from one projection to another (#1469)
 - Added a coordinate system type field to ProjectionInfo (#1473)
 - MapPointLayer.PreventCollisions to remove unnecessary points for drawing if they have been overlapped by other points (#1462)
+- Added Fathom as a DistanceUnit (#1422) 
 
 ### Changed
  - Change the code in "GenerateCentroid.cs" (#1465)
  - Upgraded Examples to .NET Core 6 projects (#1485)
 
 ### Fixed
- - Dynamic Visibility settings don't work for the layers in a MapGroup (#1289)
+- Polygon Labeler Crash with Mercator or Orthographic projection (#1199) 
+- LineOrientation fix for Parallel/Perpendicular labels (#1466)
+- Added tests to Appveyor Tests tab (#1489)
+- Shorten column names to max 10 characters on writing to dbf file (#1494)
+- DotSpatial.Plugins.Taudem/Hydrology.cs RunTaudem function does not execute correctly (#1496) 
+- Taudem set stream shape prj file (#1501)
+- Dynamic Visibility settings don't work for the layers in a MapGroup (#1289)
 
 ## V4.0
 
@@ -21,15 +28,13 @@ All notable changes to this project will be documented in this file.
 - Switched to VS2022
 - Switched to .Net 6
 
-## Fixed
+### Fixed
 - Fixed angle calculation for second and third quadrant (#1405) 
 
 ## V3.0.1
 
 ### Added
 - Label Setup dialog can now accept any font size (#1434)
-
-### Changed
 
 ### Fixed
 - Error when using wildcards in Symbology FilterExpression (#1160)
@@ -216,3 +221,5 @@ Be aware that code written for 1.9 will not work out of the box because DotSpati
 - Bug in AzimuthalEquidistant class (#1342)
 - Bug in moving legend items (#1368)
 - Bug in ExtentExt.Reproportion discussed in #1351 (#1370)
+- False polygon outlines are drawn at map boundary when not in edit mode (#1474)
+- Non UI Projects as .netstandard2.0 libraries (#1479 )

@@ -20,6 +20,14 @@ namespace DotSpatial.Positioning
 
         #region Constants
 
+        private const double FATHOMS_PER_CENTIMETER = 0.0054680665;
+        private const double FATHOMS_PER_METER = 0.5468066492;
+        private const double FATHOMS_PER_FOOT = 0.1666666667;
+        private const double FATHOMS_PER_INCH = 0.0138888889;
+        private const double FATHOMS_PER_KILOMETER = 546.8066491689;
+        private const double FATHOMS_PER_STATUTE_MILE = 880.0017600035;
+        private const double FATHOMS_PER_NAUTICAL_MILE = 1012.6859142607;
+
         /// <summary>
         ///
         /// </summary>
@@ -45,6 +53,11 @@ namespace DotSpatial.Positioning
         /// </summary>
         private const double FEET_PER_NAUTICAL_MILE = 6076.11549;
         /// <summary>
+        /// 1 fathom is equal to 6 ft
+        /// </summary>
+        private const double FEET_PER_FATHOM = 6;
+
+        /// <summary>
         ///
         /// </summary>
         private const double INCHES_PER_METER = 39.3700787;
@@ -68,6 +81,11 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private const double INCHES_PER_NAUTICAL_MILE = 72913.3858;
+        /// <summary>
+        /// 1 fathom is equal to 72 inches
+        /// </summary>
+        private const double INCHES_PER_FATHOM = 72;
+
         /// <summary>
         ///
         /// </summary>
@@ -93,6 +111,11 @@ namespace DotSpatial.Positioning
         /// </summary>
         private const double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;
         /// <summary>
+        /// 1 fathom is equal to 0.0011363614 mi
+        /// </summary>
+        private const double STATUTE_MILES_PER_FATHOM = 0.0011363614;
+
+        /// <summary>
         ///
         /// </summary>
         private const double NAUTICAL_MILES_PER_METER = 0.000539956803;
@@ -116,6 +139,11 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private const double NAUTICAL_MILES_PER_STATUTE_MILE = 0.868976242;
+        /// <summary>
+        /// 1 fathom is equal to 0.000987473 nautical mile
+        /// </summary>
+        private const double NAUTICAL_MILES_PER_FATHOM = 0.000987473;
+
         /// <summary>
         ///
         /// </summary>
@@ -141,6 +169,11 @@ namespace DotSpatial.Positioning
         /// </summary>
         private const double CENTIMETERS_PER_NAUTICAL_MILE = 185200;
         /// <summary>
+        /// 1 fathom is equal to 182.88 cm
+        /// </summary>
+        private const double CENTIMETERS_PER_FATHOM = 182.88;
+
+        /// <summary>
         ///
         /// </summary>
         private const double METERS_PER_STATUTE_MILE = 1609.344;
@@ -165,6 +198,11 @@ namespace DotSpatial.Positioning
         /// </summary>
         private const double METERS_PER_NAUTICAL_MILE = 1852;
         /// <summary>
+        /// 1 fathom is equal to 1.8288 m
+        /// </summary>
+        private const double METERS_PER_FATHOM = 1.8288;
+
+        /// <summary>
         ///
         /// </summary>
         private const double KILOMETERS_PER_METER = 0.001;
@@ -188,14 +226,17 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private const double KILOMETERS_PER_NAUTICAL_MILE = 1.852;
+        /// <summary>
+        /// 1 fathom is equal to 0.0018288 km
+        /// </summary>
+        private const double KILOMETERS_PER_FATHOM = 0.0018288;
 
         #endregion Constants
 
         #region Fields
 
         /// <summary>
-        /// Returns the distance from the center of the Earth to the equator according to the
-        /// WGS1984 ellipsoid.
+        /// Returns the distance from the center of the Earth to the equator according to the WGS1984 ellipsoid.
         /// </summary>
         /// <seealso cref="EarthsPolarRadiusWgs1984">EarthsPolarRadiusWgs1984
         /// Field</seealso>
@@ -207,8 +248,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         public static readonly Distance Infinity = new(double.PositiveInfinity, DistanceUnit.Meters);
         /// <summary>
-        /// Returns the distance from the center of the Earth to a pole according to the
-        /// WGS1984 ellipsoid.
+        /// Returns the distance from the center of the Earth to a pole according to the WGS1984 ellipsoid.
         /// </summary>
         /// <seealso cref="EarthsEquatorialRadiusWgs1984">EarthsEquatorialRadiusWgs1984 Field</seealso>
         ///
@@ -322,10 +362,7 @@ namespace DotSpatial.Positioning
             }
 
             // Default to the current culture if none is given
-            if (culture == null)
-            {
-                culture = CultureInfo.CurrentCulture;
-            }
+            culture ??= CultureInfo.CurrentCulture;
 
             // Trim surrounding spaces and switch to uppercase
             value = value.Trim()
@@ -412,6 +449,10 @@ namespace DotSpatial.Positioning
             else if (unit is "FT" or "FT." or "'" or "FOOT" or "FEET")
             {
                 Units = DistanceUnit.Feet;
+            }
+            else if (unit is "FM" or "FATH" or "FATHOM")
+            {
+                Units = DistanceUnit.Fathom;
             }
             else
             {
@@ -602,6 +643,7 @@ namespace DotSpatial.Positioning
         ///
         /// <seealso cref="ToStatuteMiles">ToStatuteMiles Method</seealso>
         ///
+        /// <seealso cref="ToFathom">ToFathom Method</seealso>
         /// <example>
         /// This example converts various distances into feet.  notice that the ToFeet method converts distances
         /// from any source type.
@@ -639,6 +681,7 @@ namespace DotSpatial.Positioning
                 DistanceUnit.Kilometers => new Distance(Value * FEET_PER_KILOMETER, DistanceUnit.Feet),
                 DistanceUnit.StatuteMiles => new Distance(Value * FEET_PER_STATUTE_MILE, DistanceUnit.Feet),
                 DistanceUnit.NauticalMiles => new Distance(Value * FEET_PER_NAUTICAL_MILE, DistanceUnit.Feet),
+                DistanceUnit.Fathom => new Distance(Value * FEET_PER_FATHOM, DistanceUnit.Feet),
                 _ => Empty,
             };
         }
@@ -682,6 +725,8 @@ namespace DotSpatial.Positioning
         /// <seealso cref="ToNauticalMiles">ToNauticalMiles Method</seealso>
         ///
         /// <seealso cref="ToStatuteMiles">ToStatuteMiles Method</seealso>
+        /// 
+        /// <seealso cref="ToFathom">ToFathom Method</seealso>
         /// <remarks>This method will perform a conversion into feet regardless of the current unit
         /// type. You may convert from any unit type to any unit type.</remarks>
         public Distance ToInches()
@@ -695,6 +740,7 @@ namespace DotSpatial.Positioning
                 DistanceUnit.Kilometers => new Distance(Value * INCHES_PER_KILOMETER, DistanceUnit.Inches),
                 DistanceUnit.StatuteMiles => new Distance(Value * INCHES_PER_STATUTE_MILE, DistanceUnit.Inches),
                 DistanceUnit.NauticalMiles => new Distance(Value * INCHES_PER_NAUTICAL_MILE, DistanceUnit.Inches),
+                DistanceUnit.Fathom => new Distance(Value * INCHES_PER_FATHOM, DistanceUnit.Inches),
                 _ => Empty,
             };
         }
@@ -738,6 +784,8 @@ namespace DotSpatial.Positioning
         /// <seealso cref="ToNauticalMiles">ToNauticalMiles Method</seealso>
         ///
         /// <seealso cref="ToStatuteMiles">ToStatuteMiles Method</seealso>
+        /// 
+        /// <seealso cref="ToFathom">ToFathom Method</seealso>
         /// <remarks>This method will perform a conversion into feet regardless of the current unit
         /// type. You may convert from any unit type to any unit type.</remarks>
         public Distance ToKilometers()
@@ -751,6 +799,7 @@ namespace DotSpatial.Positioning
                 DistanceUnit.Kilometers => this,
                 DistanceUnit.StatuteMiles => new Distance(Value * KILOMETERS_PER_STATUTE_MILE, DistanceUnit.Kilometers),
                 DistanceUnit.NauticalMiles => new Distance(Value * KILOMETERS_PER_NAUTICAL_MILE, DistanceUnit.Kilometers),
+                DistanceUnit.Fathom => new Distance(Value * KILOMETERS_PER_FATHOM, DistanceUnit.Kilometers),
                 _ => Empty,
             };
         }
@@ -794,6 +843,8 @@ namespace DotSpatial.Positioning
         /// <seealso cref="ToNauticalMiles">ToNauticalMiles Method</seealso>
         ///
         /// <seealso cref="ToStatuteMiles">ToStatuteMiles Method</seealso>
+        /// 
+        /// <seealso cref="ToFathom">ToFathom Method</seealso>
         /// <remarks>This method will perform a conversion into feet regardless of the current unit
         /// type. You may convert from any unit type to any unit type.</remarks>
         public Distance ToMeters()
@@ -807,6 +858,7 @@ namespace DotSpatial.Positioning
                 DistanceUnit.Kilometers => new Distance(Value * METERS_PER_KILOMETER, DistanceUnit.Meters),
                 DistanceUnit.StatuteMiles => new Distance(Value * METERS_PER_STATUTE_MILE, DistanceUnit.Meters),
                 DistanceUnit.NauticalMiles => new Distance(Value * METERS_PER_NAUTICAL_MILE, DistanceUnit.Meters),
+                DistanceUnit.Fathom => new Distance(Value * METERS_PER_FATHOM, DistanceUnit.Meters),
                 _ => Empty,
             };
         }
@@ -850,6 +902,8 @@ namespace DotSpatial.Positioning
         /// <seealso cref="ToNauticalMiles">ToNauticalMiles Method</seealso>
         ///
         /// <seealso cref="ToStatuteMiles">ToStatuteMiles Method</seealso>
+        /// 
+        /// <seealso cref="ToFathom">ToFathom Method</seealso>
         /// <remarks>This method will perform a conversion into feet regardless of the current unit
         /// type. You may convert from any unit type to any unit type.</remarks>
         public Distance ToCentimeters()
@@ -863,6 +917,7 @@ namespace DotSpatial.Positioning
                 DistanceUnit.Kilometers => new Distance(Value * CENTIMETERS_PER_KILOMETER, DistanceUnit.Centimeters),
                 DistanceUnit.StatuteMiles => new Distance(Value * CENTIMETERS_PER_STATUTE_MILE, DistanceUnit.Centimeters),
                 DistanceUnit.NauticalMiles => new Distance(Value * CENTIMETERS_PER_NAUTICAL_MILE, DistanceUnit.Centimeters),
+                DistanceUnit.Fathom => new Distance(Value * CENTIMETERS_PER_FATHOM, DistanceUnit.Centimeters),
                 _ => Empty,
             };
         }
@@ -906,6 +961,8 @@ namespace DotSpatial.Positioning
         /// <seealso cref="ToMeters">ToMeters Method</seealso>
         ///
         /// <seealso cref="ToStatuteMiles">ToStatuteMiles Method</seealso>
+        /// 
+        /// <seealso cref="ToFathom">ToFathom Method</seealso>
         /// <remarks>This method will perform a conversion into feet regardless of the current unit
         /// type. You may convert from any unit type to any unit type.</remarks>
         public Distance ToNauticalMiles()
@@ -919,6 +976,7 @@ namespace DotSpatial.Positioning
                 DistanceUnit.Kilometers => new Distance(Value * NAUTICAL_MILES_PER_KILOMETER, DistanceUnit.NauticalMiles),
                 DistanceUnit.StatuteMiles => new Distance(Value * NAUTICAL_MILES_PER_STATUTE_MILE, DistanceUnit.NauticalMiles),
                 DistanceUnit.NauticalMiles => this,
+                DistanceUnit.Fathom => new Distance(Value * NAUTICAL_MILES_PER_FATHOM, DistanceUnit.NauticalMiles),
                 _ => Empty,
             };
         }
@@ -962,6 +1020,8 @@ namespace DotSpatial.Positioning
         /// <seealso cref="ToMeters">ToMeters Method</seealso>
         ///
         /// <seealso cref="ToNauticalMiles">ToNauticalMiles Method</seealso>
+        /// 
+        /// <seealso cref="ToFathom">ToFathom Method</seealso>
         /// <remarks>This method will perform a conversion into feet regardless of the current unit
         /// type. You may convert from any unit type to any unit type.</remarks>
         public Distance ToStatuteMiles()
@@ -975,6 +1035,52 @@ namespace DotSpatial.Positioning
                 DistanceUnit.Kilometers => new Distance(Value * STATUTE_MILES_PER_KILOMETER, DistanceUnit.StatuteMiles),
                 DistanceUnit.StatuteMiles => this,
                 DistanceUnit.NauticalMiles => new Distance(Value * STATUTE_MILES_PER_NAUTICAL_MILE, DistanceUnit.StatuteMiles),
+                DistanceUnit.Fathom => new Distance(Value * STATUTE_MILES_PER_FATHOM, DistanceUnit.StatuteMiles),
+                _ => Empty,
+            };
+        }
+
+        /// <summary>
+        /// Converts the current measurement into fathoms.
+        /// </summary>
+        /// <returns>A new <strong>Distance</strong> object containing the converted value.</returns>
+        /// <example>
+        /// This example converts various distances into fathoms. Notice that the ToFathom method converts distances from any source type.
+        ///   <code lang="C#">
+        /// // Create distances of different unit types
+        /// Distance Distance1 = new Distance(10, DistanceUnit.Feet);
+        /// Distance Distance2 = new Distance(20, DistanceUnit.StatuteMiles);
+        /// Distance Distance3 = new Distance(50, DistanceUnit.Inches);
+        /// // Convert the distance measurements to fathom and output the result
+        /// Debug.WriteLine(Distance1.ToFathom().ToString());
+        /// Debug.WriteLine(Distance2.ToFathom().ToString());
+        /// Debug.WriteLine(Distance3.ToFathom().ToString());
+        ///   </code>
+        ///   </example>
+        /// <seealso cref="ToFathom">ToCentimeters Method</seealso>
+        /// 
+        /// <seealso cref="ToFeet">ToFeet Method</seealso>
+        ///
+        /// <seealso cref="ToInches">ToInches Method</seealso>
+        ///
+        /// <seealso cref="ToKilometers">ToKilometers Method</seealso>
+        ///
+        /// <seealso cref="ToNauticalMiles">ToNauticalMiles Method</seealso>
+        ///
+        /// <seealso cref="ToStatuteMiles">ToStatuteMiles Method</seealso>
+        /// <remarks>This method will perform a conversion into fathoms regardless of the current unit type. You may convert from any unit type to any unit type.</remarks>
+        public Distance ToFathom()
+        {
+            return Units switch
+            {
+                DistanceUnit.Centimeters => new Distance(Value * FATHOMS_PER_CENTIMETER, DistanceUnit.Fathom),
+                DistanceUnit.Meters => new Distance(Value * FATHOMS_PER_METER, DistanceUnit.Fathom),
+                DistanceUnit.Feet => new Distance(Value * FATHOMS_PER_FOOT, DistanceUnit.Fathom),
+                DistanceUnit.Inches => new Distance(Value * FATHOMS_PER_INCH, DistanceUnit.Fathom),
+                DistanceUnit.Kilometers => new Distance(Value * FATHOMS_PER_KILOMETER, DistanceUnit.Fathom),
+                DistanceUnit.StatuteMiles => new Distance(Value * FATHOMS_PER_STATUTE_MILE, DistanceUnit.Fathom),
+                DistanceUnit.NauticalMiles => new Distance(Value * FATHOMS_PER_NAUTICAL_MILE, DistanceUnit.Fathom),
+                DistanceUnit.Fathom => this,
                 _ => Empty,
             };
         }
@@ -995,6 +1101,7 @@ namespace DotSpatial.Positioning
                 DistanceUnit.Meters => ToMeters(),
                 DistanceUnit.NauticalMiles => ToNauticalMiles(),
                 DistanceUnit.StatuteMiles => ToStatuteMiles(),
+                DistanceUnit.Fathom => ToFathom(),
                 _ => Empty,
             };
         }
@@ -1003,10 +1110,8 @@ namespace DotSpatial.Positioning
         /// Attempts to adjust the unit type to keep the value above 1 and uses the local region measurement system.
         /// </summary>
         /// <returns>A <strong>Distance</strong> converted to the chosen unit type.</returns>
-        /// <remarks>When a distance becomes smaller, it may make more sense to the
-        /// user to be expressed in a smaller unit type.  For example, a distance of
-        /// 0.001 kilometers might be better expressed as 1 meter.  This method will
-        /// determine the smallest Imperial unit type.</remarks>
+        /// <remarks>When a distance becomes smaller, it may make more sense to the user to be expressed in a smaller unit type.  For example, a distance of
+        /// 0.001 kilometers might be better expressed as 1 meter. This method will determine the smallest Imperial unit type.</remarks>
         public Distance ToImperialUnitType()
         {
             // Start with the largest possible unit
@@ -1034,10 +1139,8 @@ namespace DotSpatial.Positioning
         /// Attempts to adjust the unit type to keep the value above 1 and uses the local region measurement system.
         /// </summary>
         /// <returns>A <strong>Distance</strong> converted to the chosen unit type.</returns>
-        /// <remarks>When a distance becomes smaller, it may make more sense to the
-        /// user to be expressed in a smaller unit type.  For example, a distance of
-        /// 0.001 kilometers might be better expressed as 1 meter.  This method will
-        /// determine the smallest metric unit type.</remarks>
+        /// <remarks>When a distance becomes smaller, it may make more sense to the user to be expressed in a smaller unit type.  For example, a distance of
+        /// 0.001 kilometers might be better expressed as 1 meter. This method will determine the smallest metric unit type.</remarks>
         public Distance ToMetricUnitType()
         {
             // Yes. Start with the largest possible unit
@@ -1062,10 +1165,8 @@ namespace DotSpatial.Positioning
         /// Attempts to adjust the unit type to keep the value above 1 and uses the local region measurement system.
         /// </summary>
         /// <returns>A <strong>Distance</strong> converted to the chosen unit type.</returns>
-        /// <remarks>When a distance becomes smaller, it may make more sense to the
-        /// user to be expressed in a smaller unit type.  For example, a distance of
-        /// 0.001 kilometers might be better expressed as 1 meter.  This method will
-        /// find the smallest unit type and convert the unit to the user's local
+        /// <remarks>When a distance becomes smaller, it may make more sense to the user to be expressed in a smaller unit type.  For example, a distance of
+        /// 0.001 kilometers might be better expressed as 1 meter.  This method will find the smallest unit type and convert the unit to the user's local
         /// numeric system (Imperial or Metric).</remarks>
         public Distance ToLocalUnitType()
         {
@@ -1082,8 +1183,7 @@ namespace DotSpatial.Positioning
         /// Returns the distance traveled at the current speed for the specified time.
         /// </summary>
         /// <param name="time">A length of time to travel.</param>
-        /// <returns>A <strong>Distance</strong> representing the distance travelled at
-        /// the current speed for the specified length of time.</returns>
+        /// <returns>A <strong>Distance</strong> representing the distance travelled at the current speed for the specified length of time.</returns>
         public Speed ToSpeed(TimeSpan time)
         {
             return new Speed(ToMeters().Value / (time.TotalMilliseconds / 1000.0), SpeedUnit.MetersPerSecond).ToLocalUnitType();
@@ -1379,6 +1479,16 @@ namespace DotSpatial.Positioning
         }
 
         /// <summary>
+        /// Froms the fathoms.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public static Distance FromFathom(double value)
+        {
+            return new Distance(value, DistanceUnit.Fathom);
+        }
+
+        /// <summary>
         /// Froms the feet.
         /// </summary>
         /// <param name="value">The value.</param>
@@ -1446,6 +1556,16 @@ namespace DotSpatial.Positioning
         public static Distance FromCentimeters(int value)
         {
             return new Distance(value, DistanceUnit.Centimeters);
+        }
+
+        /// <summary>
+        /// Froms the fathoms.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public static Distance FromFathom(int value)
+        {
+            return new Distance(value, DistanceUnit.Fathom);
         }
 
         /// <summary>
@@ -1863,6 +1983,9 @@ namespace DotSpatial.Positioning
                                 case DistanceUnit.NauticalMiles:
                                     format = format.Replace("U", "nm");
                                     break;
+                                case DistanceUnit.Fathom:
+                                    format = format.Replace("U", "fm");
+                                    break;
                             }
 
                             break;
@@ -1889,6 +2012,9 @@ namespace DotSpatial.Positioning
                                     break;
                                 case DistanceUnit.NauticalMiles:
                                     format = format.Replace("UU", "nm");
+                                    break;
+                                case DistanceUnit.Fathom:
+                                    format = format.Replace("UU", "fm");
                                     break;
                             }
 
@@ -1919,6 +2045,9 @@ namespace DotSpatial.Positioning
                                     case DistanceUnit.NauticalMiles:
                                         format = format.Replace("UUU", "nautical mile");
                                         break;
+                                    case DistanceUnit.Fathom:
+                                        format = format.Replace("UUU", "fathom");
+                                        break;
                                 }
                             }
                             else
@@ -1946,6 +2075,9 @@ namespace DotSpatial.Positioning
                                     case DistanceUnit.NauticalMiles:
                                         format = format.Replace("UUU", "nautical miles");
                                         break;
+                                    case DistanceUnit.Fathom:
+                                        format = format.Replace("UUU", "fathom");
+                                        break;
                                 }
                             }
 
@@ -1959,10 +2091,6 @@ namespace DotSpatial.Positioning
             {
                 throw new FormatException(Resources.Distance_InvalidFormat, ex);
             }
-            // catch
-            //{
-            //    throw new FormatException(Properties.Resources.Distance_InvalidFormat));
-            //}
         }
 
         #endregion IFormattable Members
@@ -2036,10 +2164,8 @@ namespace DotSpatial.Positioning
     /// <seealso cref="Distance.Value">Value Property (Distance Class)</seealso>
     ///
     /// <seealso cref="Distance.Units">Units Property (Distance Class)</seealso>
-    /// <remarks>This enumeration is most frequently used by the
-    /// <see cref="Distance.Units">Units</see> property of the
-    /// <see cref="Distance">Distance</see>
-    /// class in conjunction with the <see cref="Distance.Value">Value</see>
+    /// <remarks>This enumeration is most frequently used by the <see cref="Distance.Units">Units</see> property of the
+    /// <see cref="Distance">Distance</see> class in conjunction with the <see cref="Distance.Value">Value</see>
     /// property to describe a straight-line distance.</remarks>
     public enum DistanceUnit
     {
@@ -2056,6 +2182,8 @@ namespace DotSpatial.Positioning
         /// <summary>Imperial System. Feet.</summary>
         Feet,
         /// <summary>Imperial System. Inches.</summary>
-        Inches
+        Inches,
+        /// <summary>Fathom</summary>
+        Fathom
     }
 }

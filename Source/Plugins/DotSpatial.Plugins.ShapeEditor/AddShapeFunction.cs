@@ -77,7 +77,11 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             set
             {
-                if (_layer == value) return;
+                if (_layer == value)
+                {
+                    return;
+                }
+
                 _layer = value;
                 _featureSet = _layer?.DataSet;
             }
@@ -118,7 +122,10 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <param name="e">An empty EventArgs class.</param>
         public void FinishPart(object sender, EventArgs e)
         {
-            if (_featureSet.FeatureType == FeatureType.Polygon && !_coordinates[0].Equals2D(_coordinates[^1])) _coordinates.Add(_coordinates[0]); // close polygons because they must be closed
+            if (_featureSet.FeatureType == FeatureType.Polygon && !_coordinates[0].Equals2D(_coordinates[^1]))
+            {
+                _coordinates.Add(_coordinates[0]); // close polygons because they must be closed
+            }
 
             _parts.Add(_coordinates);
             _coordinates = new List<Coordinate>();
@@ -134,13 +141,13 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             if (_featureSet != null && !_featureSet.IsDisposed)
             {
-                Feature? f = null;
+                Feature f = null;
                 if (_featureSet.FeatureType == FeatureType.MultiPoint)
                 {
                     f = new Feature(new MultiPoint(_coordinates.CastToPointArray()));
                 }
 
-                if (_featureSet.FeatureType == FeatureType.Line || _featureSet.FeatureType == FeatureType.Polygon)
+                if (_featureSet.FeatureType is FeatureType.Line or FeatureType.Polygon)
                 {
                     FinishPart(sender, e);
                     Shape shp = new(_featureSet.FeatureType);
@@ -211,14 +218,17 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         protected override void OnActivate()
         {
-            if (_coordinateDialog == null) _coordinateDialog = new CoordinateDialog();
+            _coordinateDialog ??= new CoordinateDialog();
 
             _coordinateDialog.ShowZValues = _featureSet.CoordinateType == CoordinateType.Z;
-            _coordinateDialog.ShowMValues = _featureSet.CoordinateType == CoordinateType.M || _featureSet.CoordinateType == CoordinateType.Z;
+            _coordinateDialog.ShowMValues = _featureSet.CoordinateType is CoordinateType.M or CoordinateType.Z;
 
-            if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
+            if (_featureSet.FeatureType is FeatureType.Point or FeatureType.MultiPoint)
             {
-                if (_context.Items.Contains(_finishPart)) _context.Items.Remove(_finishPart);
+                if (_context.Items.Contains(_finishPart))
+                {
+                    _context.Items.Remove(_finishPart);
+                }
             }
             else if (!_context.Items.Contains(_finishPart))
             {
@@ -227,7 +237,11 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             _coordinateDialog.Show();
             _coordinateDialog.FormClosing += CoordinateDialogFormClosing;
-            if (!_standBy) _coordinates = new List<Coordinate>();
+            if (!_standBy)
+            {
+                _coordinates = new List<Coordinate>();
+            }
+
             if (_tempLayer != null)
             {
                 Map.MapFrame.DrawingLayers.Remove(_tempLayer);
@@ -418,7 +432,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 return;
             }
 
-            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
+            if (e.Button is MouseButtons.Left or MouseButtons.Right)
             {
                 // Add the current point to the featureset
                 if (_featureSet.FeatureType == FeatureType.Point)
@@ -443,10 +457,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 }
                 else
                 {
-                    if (_coordinates == null)
-                    {
-                        _coordinates = new List<Coordinate>();
-                    }
+                    _coordinates ??= new List<Coordinate>();
 
                     // Begin snapping changes
                     Coordinate snappedCoord = e.GeographicLocation;
