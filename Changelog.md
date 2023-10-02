@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
  - Upgraded Examples to .NET Core 6 projects (#1485)
 
 ### Fixed
+ - Dynamic Visibility settings don't work for the layers in a MapGroup (#1289)
 
 ## V4.0
 
