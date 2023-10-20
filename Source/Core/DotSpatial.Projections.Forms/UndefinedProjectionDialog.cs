@@ -3,7 +3,6 @@
 
 using System;
 using System.Windows.Forms;
-using DotSpatial.Projections.Forms.Properties;
 
 namespace DotSpatial.Projections.Forms
 {
@@ -103,7 +102,10 @@ namespace DotSpatial.Projections.Forms
 
             set
             {
-                if (value == _layerName) return;
+                if (value == _layerName)
+                {
+                    return;
+                }
 
                 _layerName = value;
 
@@ -126,7 +128,11 @@ namespace DotSpatial.Projections.Forms
             set
             {
                 _mapProjection = value;
-                if (value != null) lblMapProjection.Text = value.ToString();
+
+                if (value != null)
+                {
+                    lblMapProjection.Text = value.ToString();
+                }
             }
         }
 
@@ -221,7 +227,11 @@ namespace DotSpatial.Projections.Forms
             {
                 SelectedCoordinateSystem = SelectedCoordinateSystem
             };
-            if (dialog.ShowDialog(this) != DialogResult.OK) return;
+
+            if (dialog.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
 
             SelectedCoordinateSystem = dialog.SelectedCoordinateSystem;
         }
