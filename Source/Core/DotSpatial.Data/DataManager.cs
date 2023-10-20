@@ -120,7 +120,8 @@ namespace DotSpatial.Data
             get
             {
                 // The developer can bypass the default behavior simply by caching something here.
-                if (_dialogReadFilter != null) return _dialogReadFilter;
+                if (_dialogReadFilter != null)
+                    return _dialogReadFilter;
 
                 var rasterExtensions = new List<string>();
                 var vectorExtensions = new List<string>();
@@ -141,10 +142,13 @@ namespace DotSpatial.Data
                             if (extensions.Contains(potentialExtension) == false)
                             {
                                 extensions.Add(potentialExtension);
-                                if (dp is IRasterProvider) rasterExtensions.Add(potentialExtension);
+                                if (dp is IRasterProvider)
+                                    rasterExtensions.Add(potentialExtension);
                                 if (dp is IVectorProvider && potentialExtension != "*.shx"
-                                    && potentialExtension != "*.dbf") vectorExtensions.Add(potentialExtension);
-                                if (dp is IImageDataProvider) imageExtensions.Add(potentialExtension);
+                                    && potentialExtension != "*.dbf")
+                                    vectorExtensions.Add(potentialExtension);
+                                if (dp is IImageDataProvider)
+                                    imageExtensions.Add(potentialExtension);
                             }
                         }
                     }
@@ -154,9 +158,12 @@ namespace DotSpatial.Data
                 extensions.Remove("*.dbf");
                 extensions.Remove("*.shx");
                 var result = new StringBuilder("All Supported Formats|" + string.Join(";", extensions.ToArray()));
-                if (vectorExtensions.Count > 0) result.Append("|Vectors|" + string.Join(";", vectorExtensions.ToArray()));
-                if (rasterExtensions.Count > 0) result.Append("|Rasters|" + string.Join(";", rasterExtensions.ToArray()));
-                if (imageExtensions.Count > 0) result.Append("|Images|" + string.Join(";", imageExtensions.ToArray()));
+                if (vectorExtensions.Count > 0)
+                    result.Append("|Vectors|" + string.Join(";", vectorExtensions.ToArray()));
+                if (rasterExtensions.Count > 0)
+                    result.Append("|Rasters|" + string.Join(";", rasterExtensions.ToArray()));
+                if (imageExtensions.Count > 0)
+                    result.Append("|Images|" + string.Join(";", imageExtensions.ToArray()));
 
                 foreach (KeyValuePair<string, IDataProvider> item in PreferredProviders)
                 {
@@ -485,7 +492,8 @@ namespace DotSpatial.Data
         /// <exception cref="IOException">Raised when suitable DataProvider not found.</exception>
         public IFeatureSet CreateVector(string fileName, FeatureType featureType, IProgressHandler progHandler)
         {
-            if (fileName == null) throw new ArgumentNullException(nameof(fileName), DataStrings.FileNameShouldNotBeNull);
+            if (fileName == null)
+                throw new ArgumentNullException(nameof(fileName), DataStrings.FileNameShouldNotBeNull);
 
             // To Do: Add Customization that allows users to specify which plugins to use in priority order.
 
@@ -495,7 +503,8 @@ namespace DotSpatial.Data
             {
                 var vp = pdp as IVectorProvider;
                 var result = vp?.CreateNew(fileName, featureType, true, progHandler);
-                if (result != null) return result;
+                if (result != null)
+                    return result;
 
                 // if we get here, we found the provider, but it did not succeed in opening the file.
             }
@@ -534,7 +543,8 @@ namespace DotSpatial.Data
                 foreach (string potentialExtension in potentialExtensions)
                 {
                     string ext = potentialExtension.TrimStart(wild);
-                    if (extensions.Contains(ext) == false) extensions.Add(ext);
+                    if (extensions.Contains(ext) == false)
+                        extensions.Add(ext);
                 }
             }
 
@@ -682,53 +692,43 @@ namespace DotSpatial.Data
             string ext = Path.GetExtension(fileName)?.ToLower();
             if (ext != null)
             {
+                List<IDataProvider> triedProviders = new();
                 IDataSet result;
 
                 if (providerName != string.Empty)
                 {
                     // if a provider name was given we try to find this provider and use it to open the file
                     var provider = PreferredProviders.FirstOrDefault(kvp => kvp.Value.Name == providerName);
-                    if (provider.Value != null)
+
+                    if (TryToOpenWith(provider.Value, ext, fileName, out result, triedProviders))
                     {
-                        if (GetSupportedExtensions(provider.Value.DialogReadFilter).Contains(ext))
-                        {
-                            result = provider.Value.Open(fileName);
-                            if (result != null)
-                                return result;
-                        }
+                        return result;
                     }
 
                     var dp = DataProviders.FirstOrDefault(kvp => kvp.Name == providerName);
-                    if (dp != null)
+
+                    if (TryToOpenWith(dp, ext, fileName, out result, triedProviders))
                     {
-                        if (GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
-                        {
-                            result = dp.Open(fileName);
-                            if (result != null)
-                                return result;
-                        }
+                        return result;
                     }
                 }
 
                 // Check for the extension in the preferred plugins list
-                if (PreferredProviders.ContainsKey(ext))
+                if (PreferredProviders.ContainsKey(ext) && !triedProviders.Contains(PreferredProviders[ext]))
                 {
-                    result = PreferredProviders[ext].Open(fileName);
-                    if (result != null) return result;
-
-                    // if we get here, we found the provider, but it did not succeed in opening the file.
+                    if (TryToOpenWith(PreferredProviders[ext], ext, fileName, out result, triedProviders))
+                    {
+                        return result;
+                    }
                 }
 
                 // Check the general list of developer specified providers... but not the directory providers
                 foreach (IDataProvider dp in DataProviders)
                 {
-                    if (!GetSupportedExtensions(dp.DialogReadFilter).Contains(ext)) continue;
-
-                    // attempt to open with the fileName.
-                    dp.ProgressHandler = ProgressHandler;
-
-                    result = dp.Open(fileName);
-                    if (result != null) return result;
+                    if (TryToOpenWith(dp, ext, fileName, out result, triedProviders))
+                    {
+                        return result;
+                    }
                 }
             }
 
@@ -879,7 +879,8 @@ namespace DotSpatial.Data
                 if (PreferredProviders.ContainsKey(ext))
                 {
                     result = PreferredProviders[ext].Open(fileName) as IRaster;
-                    if (result != null) return result;
+                    if (result != null)
+                        return result;
 
                     // if we get here, we found the provider, but it did not succeed in opening the file.
                 }
@@ -887,13 +888,15 @@ namespace DotSpatial.Data
                 // Then check the general list of developer specified providers... but not the directory providers
                 foreach (IDataProvider dp in DataProviders)
                 {
-                    if (!GetSupportedExtensions(dp.DialogReadFilter).Contains(ext)) continue;
+                    if (!GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
+                        continue;
 
                     // attempt to open with the fileName.
                     dp.ProgressHandler = ProgressHandler;
 
                     result = dp.Open(fileName) as IRaster;
-                    if (result != null) return result;
+                    if (result != null)
+                        return result;
                 }
             }
 
@@ -950,7 +953,8 @@ namespace DotSpatial.Data
                     {
                         if (extensions.Contains(potentialExtension) == false)
                         {
-                            if (dp is T) extensions.Add(potentialExtension);
+                            if (dp is T)
+                                extensions.Add(potentialExtension);
                         }
                     }
                 }
@@ -959,7 +963,8 @@ namespace DotSpatial.Data
             var result = new StringBuilder();
 
             // We now have a list of all the file extensions supported
-            if (extensions.Count > 0) result.Append($"{description}|" + string.Join(";", extensions.ToArray()));
+            if (extensions.Count > 0)
+                result.Append($"{description}|" + string.Join(";", extensions.ToArray()));
 
             foreach (KeyValuePair<string, IDataProvider> item in PreferredProviders)
             {
@@ -1011,6 +1016,39 @@ namespace DotSpatial.Data
             where T : IDataProvider
         {
             return GetFilter<T>(description, d => d.DialogWriteFilter);
+        }
+
+        /// <summary>
+        /// Attempts to open the given file with the given IDataProvider, if the provider is not contained by triedProviders. If the provider can't open the file it gets added to triedProviders so it won't be tried again.
+        /// </summary>
+        /// <param name="dp">The Dataprovider that should open the file.</param>
+        /// <param name="ext">The files extension to check whether the provider can open the file.</param>
+        /// <param name="fileName">The filename of the file to open.</param>
+        /// <param name="result">The parameter that takes the opened IDataSet.</param>
+        /// <param name="triedProviders">The list of the tried providers to make sure they won't be tried again.</param>
+        /// <returns>True, if the provider was able to open the file.</returns>
+        private bool TryToOpenWith(IDataProvider dp, string ext, string fileName, out IDataSet result, IList<IDataProvider> triedProviders)
+        {
+            result = null;
+
+            if (dp != null && !triedProviders.Contains(dp))
+            {
+                if (GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
+                {
+                    dp.ProgressHandler = ProgressHandler;
+
+                    result = dp.Open(fileName);
+
+                    if (result != null)
+                    {
+                        return true;
+                    }
+
+                    triedProviders.Add(dp);
+                }
+            }
+
+            return false;
         }
 
         #endregion
