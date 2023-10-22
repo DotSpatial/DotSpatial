@@ -87,61 +87,33 @@ namespace DotSpatial.Tools
                 return false;
             }
 
-            Extent envelope = input1.Bounds.Extent;
+            Extent myExtent = input1.Bounds.Extent;
 
             // Calculate new number of columns and rows
-            int noOfCol = Convert.ToInt32(Math.Abs(envelope.Width / newCellWidth));
-            int noOfRow = Convert.ToInt32(Math.Abs(envelope.Height / newCellHeight));
-
-            int previous = 0;
+            int myNoOfCol = Convert.ToInt32(Math.Abs(myExtent.Width / newCellWidth));
+            int myNoOfRow = Convert.ToInt32(Math.Abs(myExtent.Height / newCellHeight));
 
             // create output raster
-            output = Raster.CreateRaster(output.Filename, string.Empty, noOfCol, noOfRow, 1, input1.DataType, new[] { string.Empty });
-            RasterBounds bound = new(noOfRow, noOfCol, envelope);
+            output = Raster.CreateRaster(output.Filename, string.Empty, myNoOfCol, myNoOfRow, 1, input1.DataType, new[] { string.Empty });
+            RasterBounds bound = new(myNoOfRow, myNoOfCol, myExtent);
             output.Bounds = bound;
-
+            output.Projection = input1.Projection;
             output.NoDataValue = input1.NoDataValue;
+            output.WriteHeader();
 
-            // Loop throug every cell for new value
-            int max = output.Bounds.NumRows + 1;
-            for (int i = 0; i < output.Bounds.NumRows; i++)
+            output.WriteInBlocks((int i, int j) =>
             {
-                for (int j = 0; j < output.Bounds.NumColumns; j++)
+                Coordinate myCellCoordinate = output.CellToProj(i, j);
+                myCellCoordinate.X += input1.CellWidth / 2;
+                myCellCoordinate.Y -= input1.CellHeight / 2;
+                var myRcIndex = input1.ProjToCell(myCellCoordinate);
+                double myValue = output.NoDataValue;
+                if (myRcIndex.Row <= input1.EndRow && myRcIndex.Column <= input1.EndColumn && myRcIndex.Row > -1 && myRcIndex.Column > -1)
                 {
-                    // Projet the cell position to Map
-                    Coordinate cellCenter = output.CellToProj(i, j);
-                    var index1 = input1.ProjToCell(cellCenter);
-
-                    double val;
-                    if (index1.Row <= input1.EndRow && index1.Column <= input1.EndColumn && index1.Row > -1 && index1.Column > -1)
-                    {
-                        val = input1.Value[index1.Row, index1.Column] == input1.NoDataValue ? output.NoDataValue : input1.Value[index1.Row, index1.Column];
-                    }
-                    else
-                    {
-                        val = output.NoDataValue;
-                    }
-
-                    output.Value[i, j] = val;
-
-                    if (cancelProgressHandler.Cancel)
-                    {
-                        return false;
-                    }
+                    myValue = input1.Value[myRcIndex.Row, myRcIndex.Column];
                 }
-
-                int current = Convert.ToInt32(Math.Round(i * 100D / max));
-
-                // only update when increment in persentage
-                if (current > previous)
-                {
-                    cancelProgressHandler.Progress(current, current + TextStrings.progresscompleted);
-                }
-
-                previous = current;
-            }
-
-            output.Save();
+                return myValue;
+            }, cancelProgressHandler);
             return true;
         }
 
@@ -152,23 +124,23 @@ namespace DotSpatial.Tools
         {
             _inputParam = new Parameter[3];
             _inputParam[0] = new RasterParam(TextStrings.inputRaster)
-                                 {
-                                     HelpText = TextStrings.InputtheRasterforCellsizeChange
-                                 };
+            {
+                HelpText = TextStrings.InputtheRasterforCellsizeChange
+            };
             _inputParam[1] = new DoubleParam(TextStrings.InputnewcellHight)
-                                 {
-                                     HelpText = TextStrings.DisplayingistheOldCellHight
-                                 };
+            {
+                HelpText = TextStrings.DisplayingistheOldCellHight
+            };
             _inputParam[2] = new DoubleParam(TextStrings.InputnewcellWidth)
-                                 {
-                                     HelpText = TextStrings.DisplayingistheOldCellHight
-                                 };
+            {
+                HelpText = TextStrings.DisplayingistheOldCellHight
+            };
 
             _outputParam = new Parameter[2];
             _outputParam[0] = new RasterParam(TextStrings.OutputRaster)
-                                  {
-                                      HelpText = TextStrings.newrastername
-                                  };
+            {
+                HelpText = TextStrings.newrastername
+            };
             _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 

@@ -40,11 +40,15 @@ namespace DotSpatial.Data
         /// <returns>True, if the whole raster is inside the window.</returns>
         public static bool IsFullyWindowed(this IRaster raster)
         {
-            if (raster.StartRow != 0) return false;
-            if (raster.StartColumn != 0) return false;
+            if (raster.StartRow != 0)
+                return false;
+            if (raster.StartColumn != 0)
+                return false;
 
-            if (raster.EndRow != raster.NumRowsInFile - 1) return false;
-            if (raster.EndColumn != raster.NumColumnsInFile - 1) return false;
+            if (raster.EndRow != raster.NumRowsInFile - 1)
+                return false;
+            if (raster.EndColumn != raster.NumColumnsInFile - 1)
+                return false;
             return true;
         }
 
@@ -144,8 +148,10 @@ namespace DotSpatial.Data
         public static double GetNearestValue(this IRaster raster, Coordinate location)
         {
             RcIndex position = raster.ProjToCell(location.X, location.Y);
-            if (position.Row < 0 || position.Row >= raster.NumRows) return raster.NoDataValue;
-            if (position.Column < 0 || position.Column >= raster.NumColumns) return raster.NoDataValue;
+            if (position.Row < 0 || position.Row >= raster.NumRows)
+                return raster.NoDataValue;
+            if (position.Column < 0 || position.Column >= raster.NumColumns)
+                return raster.NoDataValue;
             return raster.Value[position.Row, position.Column];
         }
 
@@ -160,8 +166,10 @@ namespace DotSpatial.Data
         public static double GetNearestValue(this IRaster raster, double x, double y)
         {
             RcIndex position = raster.ProjToCell(x, y);
-            if (position.Row < 0 || position.Row >= raster.NumRows) return raster.NoDataValue;
-            if (position.Column < 0 || position.Column >= raster.NumColumns) return raster.NoDataValue;
+            if (position.Row < 0 || position.Row >= raster.NumRows)
+                return raster.NoDataValue;
+            if (position.Column < 0 || position.Column >= raster.NumColumns)
+                return raster.NoDataValue;
             return raster.Value[position.Row, position.Column];
         }
 
@@ -176,8 +184,10 @@ namespace DotSpatial.Data
         public static void SetNearestValue(this IRaster raster, double x, double y, double value)
         {
             RcIndex position = raster.ProjToCell(x, y);
-            if (position.Row < 0 || position.Row >= raster.NumRows) return;
-            if (position.Column < 0 || position.Column >= raster.NumColumns) return;
+            if (position.Row < 0 || position.Row >= raster.NumRows)
+                return;
+            if (position.Column < 0 || position.Column >= raster.NumColumns)
+                return;
             raster.Value[position.Row, position.Column] = value;
         }
 
@@ -191,8 +201,10 @@ namespace DotSpatial.Data
         public static void SetNearestValue(this IRaster raster, Coordinate location, double value)
         {
             RcIndex position = raster.ProjToCell(location.X, location.Y);
-            if (position.Row < 0 || position.Row >= raster.NumRows) return;
-            if (position.Column < 0 || position.Column >= raster.NumColumns) return;
+            if (position.Row < 0 || position.Row >= raster.NumRows)
+                return;
+            if (position.Column < 0 || position.Column >= raster.NumColumns)
+                return;
             raster.Value[position.Row, position.Column] = value;
         }
 
@@ -231,7 +243,8 @@ namespace DotSpatial.Data
         /// <returns>The RcIndex that describes the zero based integer row and column indices.</returns>
         public static RcIndex ProjToCell(this IRaster raster, Coordinate location)
         {
-            if (raster?.Bounds == null) return RcIndex.Empty;
+            if (raster?.Bounds == null)
+                return RcIndex.Empty;
             return raster.Bounds.ProjToCell(location);
         }
 
@@ -244,12 +257,76 @@ namespace DotSpatial.Data
         /// <returns>The RcIndex that describes the zero based integer row and column indices.</returns>
         public static RcIndex ProjToCell(this IRaster raster, double x, double y)
         {
-            if (raster?.Bounds == null) return RcIndex.Empty;
+            if (raster?.Bounds == null)
+                return RcIndex.Empty;
             return raster.Bounds.ProjToCell(new Coordinate(x, y));
         }
 
         #endregion
 
+        /// <summary>
+        /// Write raster value in blocks
+        /// </summary>
+        /// <param name="pRaster"></param>
+        /// <param name="pGetValue"></param>
+        /// <param name="pCancelPH"></param>
+        /// <param name="pMaxBlockSize"></param>
+        public static void WriteInBlocks(this IRaster pRaster, Func<int, int, double> pGetValue, ICancelProgressHandler pCancelPH, int pMaxBlockSize = 1000000)
+        {
+            int myRowCount = pRaster.NumRows;
+            int myColumnCount = pRaster.NumColumns;
+
+            //Get Block
+            int myBlockRowCount = pMaxBlockSize / myColumnCount;
+            if (myBlockRowCount == 0)
+            {
+                myBlockRowCount = 1;
+            }
+
+            if (myBlockRowCount > myRowCount)
+            {
+                myBlockRowCount = myRowCount;
+            }
+
+            var myBlockRaster = pRaster.ReadBlock(0, 0, myColumnCount, myBlockRowCount);
+
+            //Write Values
+            int myPrevious = 0;
+            int k = 0;
+            for (int i = 0; i < myRowCount; i++)
+            {
+                for (int j = 0; j < myColumnCount; j++)
+                {
+                    double myValue = pGetValue(i, j);
+                    myBlockRaster.Value[k, j] = myValue;
+                    if (pCancelPH.Cancel)
+                    {
+                        return;
+                    }
+                }
+
+                k++;
+                if (k == myBlockRowCount)
+                {
+                    pRaster.WriteBlock(myBlockRaster, 0, i + 1 - k, myColumnCount, k);
+                    k = 0;
+                }
+
+                //cal process value, only update when increment in persentage
+                int myCurrent = Convert.ToInt32(Math.Round(i * 100D / (myRowCount + 1)));
+                if (myCurrent > myPrevious)
+                {
+                    pCancelPH.Progress(myCurrent, myCurrent.ToString() + "%");
+                    myPrevious = myCurrent;
+                }
+            }
+
+            //Write remaining part
+            if (k > 0)
+            {
+                pRaster.WriteBlock(myBlockRaster, 0, myRowCount - k, myColumnCount, k);
+            }
+        }
         #endregion
     }
 }

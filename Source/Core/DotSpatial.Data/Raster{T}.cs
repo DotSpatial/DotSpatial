@@ -482,6 +482,14 @@ namespace DotSpatial.Data
             Value = temp.Value;
         }
 
+        /// <summary>
+        /// Write header info
+        /// </summary>
+        public override void WriteHeader()
+        {
+            this.UpdateHeader();
+        }
+
         /// <inheritdoc/>
         public override void WriteBlock(IRaster blockValues, int xOff, int yOff, int xSize, int ySize)
         {
