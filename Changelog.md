@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - DotSpatial.Plugins.Taudem/Hydrology.cs RunTaudem function does not execute correctly (#1496) 
 - Taudem set stream shape prj file (#1501)
 - Selection issue if LabelLayer is present and EditMode=true (#1519)
+- Dynamic Visibility settings don't work for the layers in a MapGroup (#1289)
 
 ## V4.0
 
