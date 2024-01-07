@@ -129,6 +129,12 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             var dataset = Helpers.Open(fileName);
             if (dataset != null)
             {
+                if (dataset.RasterCount > 1)
+                {
+                    dataset.Dispose();
+                    return null;
+                }
+
                 // Single band rasters are easy, just return the band as the raster.
                 // TODO: make a more complicated raster structure with individual bands.
                 result = GetBand(fileName, dataset, dataset.GetRasterBand(1));
