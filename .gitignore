@@ -192,7 +192,10 @@ _Pvt_Extensions/
 
 # Rider IDE
 .idea
-.DS_Store
+.DS_Store	
 
 # Notepad ++
 *.bak
+
+# Code Rush
+.cr/

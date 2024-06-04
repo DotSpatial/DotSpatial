@@ -9,7 +9,7 @@
 
 <Target Name="CopyNtsDlls" AfterTargets="Build">
 		<PropertyGroup>
-			<MyFolder>$(ProjectDir)..\..\packages\nettopologysuite\2.4.0\lib\netstandard2.0\</MyFolder>
+			<MyFolder>$(NugetPackageRoot)\nettopologysuite\2.4.0\lib\netstandard2.0\</MyFolder>
 		</PropertyGroup>
 		
 		<Copy SourceFiles="$(MyFolder)NetTopologySuite.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />

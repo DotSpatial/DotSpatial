@@ -41,7 +41,7 @@
 
 	<Target Name="CopyGdalDlls" AfterTargets="Build">
 		<PropertyGroup>
-			<MyFolder>$(SolutionDir)packages\gdal\3.4.1\lib\netstandard2.0\</MyFolder>
+			<MyFolder>$(NugetPackageRoot)\gdal\3.4.1\lib\netstandard2.0\</MyFolder>
 		</PropertyGroup>
 		
 		<Copy SourceFiles="$(MyFolder)gdal_csharp.dll;$(MyFolder)gdalconst_csharp.dll;$(MyFolder)ogr_csharp.dll;$(MyFolder)osr_csharp.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="false" />
