@@ -72,8 +72,8 @@ namespace DotSpatial.Projections
                 return;
 
             if (esriString.Contains("UNIT") == false) return;
-            int iStart = esriString.IndexOf("UNIT") + 5;
-            int iEnd = esriString.IndexOf("]", iStart);
+            int iStart = esriString.IndexOf("UNIT", StringComparison.Ordinal) + 5;
+            int iEnd = esriString.IndexOf("]", iStart, StringComparison.Ordinal);
             if (iEnd < iStart) return;
             string extracted = esriString.Substring(iStart, iEnd - iStart);
             string[] terms = extracted.Split(',');
