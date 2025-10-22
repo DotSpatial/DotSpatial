@@ -2,6 +2,8 @@
 // Licensed under the MIT, license. See License.txt file in the project root for full license information.
 
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 using NUnit.Framework;
 
 namespace DotSpatial.Projections.Tests.Projected
@@ -49,6 +51,25 @@ namespace DotSpatial.Projections.Tests.Projected
 
             // Test Y
             Assert.AreEqual(lat, xy[1], 0.00001);
+        }
+
+        /// <summary>
+        /// Test for PlateCarreeFromEsriString       
+        /// </summary>
+        [Test, Category("Projection")]
+        public void ETRS1989LAEAFromEsriStringInThai()
+        {
+            var projectionInfo = KnownCoordinateSystems.Projected.Europe.ETRS1989LAEA;
+            var toEsriString = projectionInfo.ToEsriString();
+
+            // Set the culture to Thai (Thailand)
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("th-TH");
+
+            var projectionInfoFromEsriString = ProjectionInfo.FromEsriString(toEsriString);
+
+            // Test that the angular unit was parsed correctly
+            Assert.AreEqual("Degree", projectionInfoFromEsriString.GeographicInfo.Unit.Name);
+            Assert.AreEqual(0.01745, projectionInfoFromEsriString.GeographicInfo.Unit.Radians, 0.00001);
         }
 
 #pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
